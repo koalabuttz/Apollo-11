@@ -4,12 +4,11 @@
  * (c64-port/src/lm_p40_p47.c): lm_p40_p47_basic (the basic code) and
  * lm_p40_p47_interpretive (the order pairs).
  *
- * The file is written part by part, so the tables carry every key of the
- * faithful ones, in their order (p40_keys.inc, which tools/p20_p25_keys.py
- * writes from them): a key the parts written so far cover runs a readable
- * routine; any other runs the faithful port's, built into the program as
- * faithful_lm_p40_p47_basic and faithful_lm_p40_p47_interpretive
- * (tests/x86_readable.py renames them).
+ * The tables carry every key of the faithful ones, in their order
+ * (p40_keys.inc, which tools/p20_p25_keys.py writes from them), and every
+ * key runs a readable routine: the file was written part by part, and is
+ * whole. The side-by-side test (tests/p40_cases.c) checks that no key is
+ * left without one.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
  * the file's code (PHASCHNG, BANKCALL, IBNKCALL, FINDVAC, BURNBABY, ...,
@@ -20,7 +19,8 @@
  *
  * The device is the LM's io record with the input channels after it
  * (lm_channel_io). ENGINOF3 reads and writes channel 11 (DSALMOUT) and
- * sets a bit of channel 14: the program's hardware record's.
+ * sets a bit of channel 14, and TRIMGIMB drives the gimbal through
+ * channel 12: the program's hardware record's.
  *
  * The states the faithful routines take, at every key: FB the key's bank,
  * 27 or 36, with the superbank bit clear in bank 36; at an order pair Z at NEWOPS, BANKSET
@@ -47,10 +47,7 @@
 #define KEY(bank, address) (uint16_t)((bank) * 1024u + ((address) & 01777u))
 #define SUPERBANK_BIT      0100u
 
-/* The faithful tables, renamed. */
-extern const agc_routine_table faithful_lm_p40_p47_basic, faithful_lm_p40_p47_interpretive;
-
-static agc_hardware *hardware_now;
+static agc_hardware *hardware_now, hardware_kept; /* (the latches before a basic run) */
 static jmp_buf back;
 
 static void leave(void)
@@ -58,20 +55,27 @@ static void leave(void)
     longjmp(back, 1);
 }
 
-/* Channels 11 and 14, the hardware's latches. */
+/* Channels 11, 12 and 14, the hardware's latches; any other is not
+ * modelled, nor a run with no hardware record. */
+static agc_word *latch(unsigned number)
+{
+    if (!hardware_now) not_modelled();
+    switch (number) {
+    case 011u: return &hardware_now->channel11;
+    case 012u: return &hardware_now->channel12;
+    case 014u: return &hardware_now->channel14;
+    default: not_modelled(); return NULL;
+    }
+}
+
 static word channel_in(unsigned number)
 {
-    if ((number != 011u && number != 014u) || !hardware_now) not_modelled();
-    return number == 011u ? hardware_now->channel11 : hardware_now->channel14;
+    return (word)*latch(number);
 }
 
 static void channel_out(unsigned number, word value)
 {
-    if ((number != 011u && number != 014u) || !hardware_now) not_modelled();
-    if (number == 011u)
-        hardware_now->channel11 = value;
-    else
-        hardware_now->channel14 = value;
+    *latch(number) = value;
 }
 
 /* The interpreter's fixed operands are the rope's. */
@@ -235,6 +239,15 @@ static const struct basic_entry {
     {KEY(027u, S40_9), s40_9, true},
     {KEY(027u, ENDS40_9 + 1u), ends40_9_after_exit, false},
     {KEY(027u, ENDS40_9 + 3u), ends40_9_after_phaschng, false},
+    /* Part 3: TRIMGIMB */
+    {KEY(027u, TRIMGIMB), trimgimb, false},
+    {KEY(027u, TRIMGIMB + 2u), trimgimb_after_downflag, false},
+    {KEY(027u, TRIMGIMB + 012u), trimgimb_after_fixdelay, false},
+    {KEY(027u, TRIMGIMB + 023u), trimgimb_after_twiddle, false},
+    {KEY(027u, TRIMGIMB + 025u), trimgimb_after_vardelay, false},
+    {KEY(027u, ROLLOVER + 010u), rollover_after_novac, false},
+    {KEY(027u, PITCHOFF), pitchoff, false},
+    {KEY(027u, PITCHOFF + 6u), pitchoff_after_upflag, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -253,7 +266,8 @@ static const struct interpretive_code *const codes[] = {
     &P42_CODE,      &P47_CODE,      &CALCN83_CODE,    &CALCN83_DELVCTL_CODE, &P47BODY_CODE,
     &UPDATEVG_CODE, &ENDSTEER_CODE, &NO_9_CODE,       &STEERING_CODE,        &S40_1_CODE,
     &S40_2_3_CODE,  &S40_8_CODE,    &ALARMIT_CODE,    &S40_13_CODE,          &S40_13D_CODE,
-    &S40_130V_CODE, &S40_138_CODE,  &APSTGO_CODE,     &S40_9_CODE,
+    &S40_130V_CODE, &S40_138_CODE,  &APSTGO_CODE,     &S40_9_CODE,           &RASTEER1_CODE,
+    &S41_1_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */
@@ -270,40 +284,33 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
 
 /* ---- The keys, in the faithful tables' order ---- */
 
-/* Each key's routine: the readable one, or the faithful port's. A basic
- * routine runs from its key, whatever Z holds (the trampoline calls it
- * there). */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each key's routine. A basic routine runs from its key, whatever Z
+ * holds (the trampoline calls it there). */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct basic_entry *entry = basic_entry(key);
     lm_channel_io *io = device, kept;
     apollo_overlay_state before;
-    agc_word channel11, channel14;
 
-    if (!entry) return faithful_lm_p40_p47_basic.entries[index].call(program, state, device);
-    if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
+    if (!entry || !program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     if (!in_bank(key / 1024u) || !sane(entry->with_work_area)) return EXEC_OUT_OF_SCOPE;
 
     before = *state;
     kept = *io;
-    channel11 = hardware_now ? hardware_now->channel11 : 0u;
-    channel14 = hardware_now ? hardware_now->channel14 : 0u;
+    if (hardware_now) hardware_kept = *hardware_now;
     if (setjmp(back)) {
         *state = before;
         *io = kept;
-        if (hardware_now) {
-            hardware_now->channel11 = channel11;
-            hardware_now->channel14 = channel14;
-        }
+        if (hardware_now) *hardware_now = hardware_kept;
         return EXEC_OUT_OF_SCOPE;
     }
     entry->routine();
     return EXEC_OK;
 }
 
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
@@ -312,8 +319,6 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     const struct interpretive_code *code;
     enum exec_status status;
 
-    if (!code_at(bank, (word)(02000u + key % 1024u)))
-        return faithful_lm_p40_p47_interpretive.entries[index].call(program, state, device);
     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     code = code_at(bank, LOC);
@@ -342,13 +347,13 @@ bool p40_p47_readable(uint16_t key, bool order_pair)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #include "p40_keys.inc"
 #undef BASIC

@@ -8,25 +8,22 @@
  *
  * First the words: the readable interpretive code (src/p40_p47/), written
  * in the listing's notation, must be the LM's rope, word for word. Then
- * the keys, which must be the faithful tables', and the keys the parts
- * written so far hold must run readable code, the others the faithful
- * port's. Then the runs: each readable key from 4,096 states (each other
- * key from 16), each one of the port's frozen test states
+ * the keys, which must be the faithful tables', each running readable
+ * code: the file is whole. Then the runs: each key from 4,096 states,
+ * each one of the port's frozen test states
  * (c64-port/tests/lm_p40_p47_vectors.h) entered at the key, most stirred
  * further: MPAC and its mode, the push-down list and its pointer, the
  * index registers, A (now and then with overflow), Q, the flag words
  * (often one bit changed), the vectors and times (any erasable bank's
  * words), NEWJOB, the overflow indicator, PHASE2 and DISPDEX, now and
- * then any word but the interpreter's own, the latches, channels 11 and
- * 14, no hardware record, or a state the routines refuse (another work
+ * then any word but the interpreter's own, the latches, channels 11, 12
+ * and 14, no hardware record, or a state the routines refuse (another work
  * area, BBANK not the two banks, a word of 16 bits). Each runs once on
  * each side, as the program's trampoline would call the key's routine.
  * Where either port runs, the other must too, with the same memory, io
  * record and channels, word for word; where the readable one refuses, it
  * must leave everything as it found it; and the faithful routine must run
- * from at least 1 in 16 of the states of every readable key. A key the
- * binding hands to the faithful port must give the faithful routine's
- * result, refusals and all. */
+ * from at least 1 in 16 of the states of every key. */
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -46,13 +43,15 @@ struct interpretive_code {
 extern const struct interpretive_code P40_CODE, P41_CODE, P41_VGBODY_CODE, DYNMDISP_CODE,
     CALCN85_CODE, P42_CODE, P47_CODE, CALCN83_CODE, CALCN83_DELVCTL_CODE, P47BODY_CODE,
     UPDATEVG_CODE, ENDSTEER_CODE, NO_9_CODE, STEERING_CODE, S40_1_CODE, S40_2_3_CODE, S40_8_CODE,
-    ALARMIT_CODE, S40_13_CODE, S40_13D_CODE, S40_130V_CODE, S40_138_CODE, APSTGO_CODE, S40_9_CODE;
+    ALARMIT_CODE, S40_13_CODE, S40_13D_CODE, S40_130V_CODE, S40_138_CODE, APSTGO_CODE, S40_9_CODE,
+    RASTEER1_CODE, S41_1_CODE;
 static const struct interpretive_code *const codes[] = {
     &P40_CODE,      &P41_CODE,      &P41_VGBODY_CODE, &DYNMDISP_CODE,        &CALCN85_CODE,
     &P42_CODE,      &P47_CODE,      &CALCN83_CODE,    &CALCN83_DELVCTL_CODE, &P47BODY_CODE,
     &UPDATEVG_CODE, &ENDSTEER_CODE, &NO_9_CODE,       &STEERING_CODE,        &S40_1_CODE,
     &S40_2_3_CODE,  &S40_8_CODE,    &ALARMIT_CODE,    &S40_13_CODE,          &S40_13D_CODE,
-    &S40_130V_CODE, &S40_138_CODE,  &APSTGO_CODE,     &S40_9_CODE,
+    &S40_130V_CODE, &S40_138_CODE,  &APSTGO_CODE,     &S40_9_CODE,           &RASTEER1_CODE,
+    &S41_1_CODE,
 };
 #define readable_basic_table        lm_p40_p47_basic
 #define readable_interpretive_table lm_p40_p47_interpretive
@@ -64,10 +63,6 @@ static const struct interpretive_code *const codes[] = {
 #define ROPE                        0u
 #define MISSION                     "LM"
 #define NEWOPS_AT                   06070u
-/* The parts written so far: part 1, the programs, the engine off routines
- * and steering (36,3147-3746); part 2, S40.1 to S40.13 and S40.9
- * (27,2246-2730). */
-#define WRITTEN {036u, 03147u, 03746u}, {027u, 02246u, 02730u}
 extern const agc_routine_table readable_basic_table, readable_interpretive_table;
 extern const agc_routine_table faithful_basic, faithful_interpretive;
 bool p40_p47_readable(uint16_t key, bool order_pair);
@@ -89,8 +84,7 @@ bool p40_p47_readable(uint16_t key, bool order_pair);
 #define DISPDEX_AT   01163u                /* (in E7) */
 #define RETURN_WORDS 03632u, 03665u, 0052u /* QTEMP, QTEMP1 (E7), QPRET */
 
-#define CASES       4096u
-#define OTHER_CASES 16u
+#define CASES 4096u
 
 static uint32_t seed = 3435u;
 static uint16_t rnd(void)
@@ -133,30 +127,15 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* Whether a key is in the parts written so far (its bank, and its
- * address in 02000-03777, fixed-fixed ones too). */
-static bool in_written_part(uint16_t key)
-{
-    static const struct {
-        unsigned bank, first, last;
-    } written[] = {WRITTEN};
-    unsigned z = 02000u + key % 1024u, i;
-
-    for (i = 0; i < sizeof written / sizeof written[0]; ++i)
-        if (key / 1024u == written[i].bank && z >= written[i].first && z <= written[i].last)
-            return true;
-    return false;
-}
-
-static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
+/* The file is whole: every key of a faithful table runs readable code. */
+static unsigned unreadable(const agc_routine_table *table, bool order_pair)
 {
     unsigned i, failures = 0;
 
     for (i = 0; i < table->count; ++i) {
         uint16_t key = table->entries[i].physical;
-        if (in_written_part(key) != p40_p47_readable(key, order_pair)) {
-            printf("FAIL: %02o,%04o %s readable\n", key / 1024u, 02000u + key % 1024u,
-                   in_written_part(key) ? "is not" : "is");
+        if (!p40_p47_readable(key, order_pair)) {
+            printf("FAIL: %02o,%04o is not readable\n", key / 1024u, 02000u + key % 1024u);
             ++failures;
         }
     }
@@ -308,17 +287,15 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
 }
 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
-                     int interpretive, unsigned *runs, unsigned *readable_keys)
+                     int interpretive, unsigned *runs)
 {
     unsigned i, n, failures = 0;
 
     for (i = 0; i < faithful->count; ++i) {
         uint16_t key = faithful->entries[i].physical, z = (uint16_t)(02000u + key % 1024u);
-        bool written = p40_p47_readable(key, interpretive != 0);
-        unsigned ran = 0, bad = 0, cases = written ? CASES : OTHER_CASES;
+        unsigned ran = 0, bad = 0;
 
-        *readable_keys += written;
-        for (n = 0; n < cases; ++n) {
+        for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;
             lm_channel_io io, fio, rio;
             agc_hardware hardware, fhw, rhw;
@@ -329,10 +306,12 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             state(&start, &io, key, interpretive, n);
             fa = ra = start;
             fio = rio = io;
-            /* Channels 11 and 14: any, or the engine bits on or off;
-             * now and then no hardware record. */
+            /* Channels 11, 12 and 14: any, or the engine bits and the
+             * gimbal drive bits on or off; now and then no hardware
+             * record. */
             memset(&hardware, 0, sizeof hardware);
             hardware.channel11 = rnd() % 2u ? any_word() : (uint16_t)(rnd() % 4u << 12);
+            hardware.channel12 = rnd() % 2u ? any_word() : (uint16_t)(rnd() % 16u << 8);
             hardware.channel14 = rnd() % 2u ? any_word() : (uint16_t)(rnd() % 2u << 3);
             fhw = rhw = hardware;
             memset(&p, 0, sizeof p);
@@ -344,13 +323,8 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             sf = faithful->entries[i].call(&fp, &fa, &fio);
             sr = readable->entries[i].call(&rp, &ra, &rio);
             ran += sf == EXEC_OK;
-            if (!written) { /* the faithful routine on both sides, refusals and all */
-                if (sf != sr || memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio) ||
-                    memcmp(&fhw, &rhw, sizeof fhw))
-                    why = "the table does not run the faithful routine";
-            } else if (sr != EXEC_OK &&
-                       (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio) ||
-                        memcmp(&rhw, &hardware, sizeof rhw)))
+            if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio) ||
+                                  memcmp(&rhw, &hardware, sizeof rhw)))
                 why = "readable refusal changed the state";
             else if (sf == EXEC_OK && sr != EXEC_OK)
                 why = "readable refused, faithful ran";
@@ -370,14 +344,13 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                                fa.words[w], start.words[w]);
             }
         }
-        /* Each readable key's faithful routine must run in at least 1 of
-         * 16 states, so that a change to the states cannot quietly leave a
-         * key with a handful of live ones. (The states are tuned to a
-         * part's keys when it is written.) */
-        if (written && ran < cases / 16u && bad == 0u) {
+        /* Each key's faithful routine must run in at least 1 of 16
+         * states, so that a change to the states cannot quietly leave a
+         * key with a handful of live ones. */
+        if (ran < CASES / 16u && bad == 0u) {
             printf("FAIL %02o,%04o: the faithful routine ran in %u of %u states (fewer than 1 in "
                    "16)\n",
-                   key / 1024u, z, ran, cases);
+                   key / 1024u, z, ran, CASES);
             ++bad;
         }
         *runs += ran;
@@ -388,7 +361,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 
 int main(int argc, char **argv)
 {
-    unsigned i, words = 0, failures = 0, runs = 0, readable_basic = 0, readable_pairs = 0;
+    unsigned i, words = 0, failures = 0, runs = 0;
 
     if (argc < 3 || !apollo_rope_load(0, argv[1]) || !apollo_rope_load(1, argv[2])) {
         printf("usage: %s ROPE_LM ROPE_CM\n", argv[0]);
@@ -402,21 +375,17 @@ int main(int argc, char **argv)
     }
     failures += tables_differ(&readable_basic_table, &faithful_basic, "basic");
     failures += tables_differ(&readable_interpretive_table, &faithful_interpretive, "interpretive");
-    failures += parts_unwritten(&faithful_basic, false);
-    failures += parts_unwritten(&faithful_interpretive, true);
+    failures += unreadable(&faithful_basic, false);
+    failures += unreadable(&faithful_interpretive, true);
     if (failures || !mission_count) {
         printf("p40-cases (" MISSION "): %u failures\n", failures + !mission_count);
         return 1;
     }
-    failures += keys(&readable_basic_table, &faithful_basic, 0, &runs, &readable_basic);
-    failures +=
-        keys(&readable_interpretive_table, &faithful_interpretive, 1, &runs, &readable_pairs);
-    printf("p40-cases (" MISSION
-           "): %u words as the rope's, %u of %u keys readable (%u basic, %u order "
-           "pairs) from %u states each (the others from %u), %u run by the faithful routines, "
-           "%u failures\n",
-           words, readable_basic + readable_pairs,
-           readable_basic_table.count + readable_interpretive_table.count, readable_basic,
-           readable_pairs, CASES, OTHER_CASES, runs, failures);
+    failures += keys(&readable_basic_table, &faithful_basic, 0, &runs);
+    failures += keys(&readable_interpretive_table, &faithful_interpretive, 1, &runs);
+    printf("p40-cases (" MISSION "): %u words as the rope's, all %u keys readable (%u basic, "
+           "%u order pairs) from %u states each, %u run by the faithful routines, %u failures\n",
+           words, readable_basic_table.count + readable_interpretive_table.count,
+           readable_basic_table.count, readable_interpretive_table.count, CASES, runs, failures);
     return failures != 0;
 }
