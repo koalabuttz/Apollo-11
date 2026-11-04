@@ -152,6 +152,8 @@ SO_SOURCES := $(INTERPRETER_SOURCES) src/stable_orbit/stable_orbit.c \
 	src/rtb_op_codes/rtb_op_codes.c src/binding/stable_orbit_routines.c
 BB_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/burn_baby/*.c)) \
 	src/binding/burn_baby_routines.c
+LLD_SOURCES := $(INTERPRETER_SOURCES) src/lunar_landing/lunar_landing.c \
+	src/binding/lunar_landing_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
 	src/binding/imu_performance_routines.c
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
@@ -166,11 +168,11 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) $(R60_SOURCES) \
-	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(P40_SOURCES) $(CP40_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SO_SOURCES) $(BB_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
+	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(P40_SOURCES) $(CP40_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SO_SOURCES) $(BB_SOURCES) $(LLD_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
 HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
@@ -179,7 +181,8 @@ all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases
 	attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases \
 	imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases \
 	p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases \
-	r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases
+	r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases \
+	lunar-landing-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1191,12 +1194,14 @@ pinball-cases: $(BUILD)/pin-readable-lm.o $(BUILD)/pin-readable-cm.o tests/pinba
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in
 # place of the faithful kernel (build/x86-flight/).
-# R47's, P07's and BURN, BABY, BURN's routines stop where they reach the
+# R47's, P07's, BURN, BABY, BURN's and THE_LUNAR_LANDING's routines stop
+# where they reach the
 # interpreter in the flight program, as the port's flight builds of their
 # files do.
 $(BUILD)/x86-lm/binding/ags_initialization_routines.o: FLIGHT_DEFINES := -DAGC_FLIGHT_INTERPRETER
 $(BUILD)/x86-lm/binding/imu_performance_routines.o: FLIGHT_DEFINES := -DAGC_FLIGHT_INTERPRETER
 $(BUILD)/x86-lm/binding/burn_baby_routines.o: FLIGHT_DEFINES := -DAGC_FLIGHT_INTERPRETER
+$(BUILD)/x86-lm/binding/lunar_landing_routines.o: FLIGHT_DEFINES := -DAGC_FLIGHT_INTERPRETER
 $(BUILD)/x86-lm/%.o: src/%.c $(HEADERS)
 	@mkdir -p $(dir $@)
 	$(CC) $(READABLE_CFLAGS) $(INCLUDES) $(LM) $(FLIGHT_DEFINES) -c $< -o $@
@@ -2089,6 +2094,50 @@ burn-baby-cases: $(BUILD)/bb-oracle $(BUILD)/bb-cases $(BUILD)/bb-cases-flight
 	./$(BUILD)/bb-oracle $(ROPES)
 	./$(BUILD)/bb-cases $(ROPES)
 	./$(BUILD)/bb-cases-flight $(ROPES)
+
+# THE_LUNAR_LANDING.agc, the LM's P63 set-up and P68:
+# tests/lunar_landing_oracle.c runs the port's frozen cases
+# (c64-port/tests/lm_lunar_landing_vectors.h, yaAGC digests) and refusals
+# on the readable routines; then tests/lunar_landing_cases.c runs readable
+# and faithful side by side, as the host runs them and as the flight
+# program does (stopping at the interpreter, -DAGC_FLIGHT_INTERPRETER).
+# The faithful object, its tables renamed, gives the oracle the case keys.
+LLD_NAMES := lm_lunar_landing_routines lm_lunar_landing_interpretive
+LLD_COMMON := $(PORT)/src/lm_interp_orders.c $(PORT)/src/lm_interp_steps.c $(KU_COMMON) \
+	$(PORT)/src/rope_image_host.c $(PORT)/tests/lm_lunar_landing_cases.c
+LLD_FLIGHT_OBJECTS := $(LLD_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+LLD_FLIGHT_OBJECTS := $(filter-out %/lunar_landing_routines.o,$(LLD_FLIGHT_OBJECTS)) \
+	$(BUILD)/lld-flight/lunar_landing_routines.o
+
+$(BUILD)/lld-flight/lunar_landing_routines.o: src/binding/lunar_landing_routines.c $(HEADERS)
+	@mkdir -p $(dir $@)
+	$(CC) $(READABLE_CFLAGS) $(INCLUDES) $(LM) -DRK_SEAMS=1 -DAGC_FLIGHT_INTERPRETER -c $< -o $@
+$(BUILD)/lld-faithful.o: $(PORT)/src/lm_lunar_landing.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -DP66_NATIVE_DISPATCH_ONLY \
+		$(foreach n,$(LLD_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/lld-faithful-flight.o: $(PORT)/src/lm_lunar_landing.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -DP66_NATIVE_DISPATCH_ONLY -DAGC_FLIGHT_INTERPRETER \
+		$(foreach n,$(LLD_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/lld-oracle: $(LLD_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/lld-faithful.o \
+		tests/lunar_landing_oracle.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(LLD_COMMON) $(filter %.o,$^) \
+		tests/lunar_landing_oracle.c -o $@
+$(BUILD)/lld-cases: $(LLD_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/lld-faithful.o \
+		tests/lunar_landing_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(LLD_COMMON) $(filter %.o,$^) \
+		tests/lunar_landing_cases.c -o $@
+$(BUILD)/lld-cases-flight: $(LLD_FLIGHT_OBJECTS) $(BUILD)/lld-faithful-flight.o \
+		tests/lunar_landing_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) -DAGC_FLIGHT_INTERPRETER $(LLD_COMMON) $(filter %.o,$^) \
+		tests/lunar_landing_cases.c -o $@
+
+lunar-landing-cases: $(BUILD)/lld-oracle $(BUILD)/lld-cases $(BUILD)/lld-cases-flight
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/lld-oracle $(ROPES)
+	./$(BUILD)/lld-cases $(ROPES)
+	./$(BUILD)/lld-cases-flight $(ROPES)
 
 # P40-P47.agc, the LM's burn programs: the port's test
 # (tests/test_lm_p40_p47.c, its frozen cases run to their stops through
