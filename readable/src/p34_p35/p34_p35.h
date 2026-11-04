@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P34-35_P74-75.agc, both missions' (Luminary099 pp. 658-698, Comanche055
- * pp. 461-500): the rendezvous programs after CDH. P34 and P74, transfer
+/* P34-35_P74-75.agc, both missions' (Luminary099 pp. 658-702, Comanche055
+ * pp. 461-504): the rendezvous programs after CDH. P34 and P74, transfer
  * phase initiation (TPI); P35 and P75, the mid-course corrections; and
  * the subroutines they share. The faithful C is c64-port/src/
  * lm_p34_p35.c and cm_p34_p35.c.
@@ -11,6 +11,9 @@
  * is P35 and P75, and S33/34.1. Part 3 is the subroutines S34/35.1 to
  * S34/35.4, LOMAT, GOINT and INTINT (s34_35.c), and S34/35.5, VN1645 and
  * the clock routines after it (vn1645.c). Part 4 is INITVEL (initvel.c).
+ * Part 5 is MIDGIM and SELECTMU (midgim.c), and PERIAPO to SHIFTR1
+ * (periapo.c). Part 6 is R36, the out-of-plane display (r36.c). The file
+ * is whole.
  *
  * The interpretive code is in the listing's notation, run by the readable
  * interpreter. The entries below are the basic code's: each program's
@@ -121,5 +124,28 @@ extern const struct interpretive_code INITVEL_CODE;
 
 extern const struct interpretive_code MIDGIM_CODE, SELECTMU_CODE, PERIAPO_CODE, PRECSET_CODE,
     VECSHIFT_CODE;
+
+/* ---- Part 6: R36 (r36.c); the LM's in bank 4, the CM's in 20 and 40-42 ---- */
+
+extern const struct interpretive_code ASTROTIM_CODE, ENTTIM2_CODE, R36INT_CODE, R36B_CODE,
+    R36TAG2_CODE;
+#if COMANCHE055
+void r36(void);           /* R36, bank 20: the vehicle asked for */
+void r36_terminate(void); /* GOXDSPF's returns */
+void r36_proceed(void);
+void r36_loaded(void);
+void r36_to_r36a(void); /* R36 +12, the TC POSTJUMP */
+#endif
+void r36_start(void);          /* the LM's R36, the CM's R36A */
+void r36_ask_time(void);       /* verb 06 noun 16 */
+void r36_time_terminate(void); /* its returns */
+void r36_time_proceed(void);
+void r36_time_recycle(void);
+void astrotim(void);          /* ASTROTIM */
+void lregchk(void);           /* LREGCHK */
+void r36_after_exit(void);    /* R36TAG2 +5: verb 06 noun 90 */
+void r36_end_terminate(void); /* its returns */
+void r36_end_proceed(void);
+void r36_redisplay(void);
 
 #endif

@@ -172,9 +172,9 @@ REPLACED = (
 # the faithful ones, renamed, are no longer called (--gc-sections drops
 # them). P32-P33_P72-P73 (src/p32_p33_cm): the CM's routine tables, all
 # readable; the faithful ones, renamed, are no longer called
-# (--gc-sections drops them). P34-35_P74-75 (src/p34_p35): both missions',
-# readable part by part; its binding hands the keys not yet written to the
-# faithful tables, renamed.
+# (--gc-sections drops them). P34-35_P74-75 (src/p34_p35): both missions'
+# routine tables, all readable; the faithful ones, renamed, are no longer
+# called (--gc-sections drops them).
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],
