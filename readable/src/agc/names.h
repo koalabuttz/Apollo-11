@@ -3431,6 +3431,69 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define VB99DEX                ((word)KW_VB99DEX)
 #endif
 
+#if LUMINARY099
+/* P40-P47 (LM): P40, P41, P42 and P47, the burn programs; the engine off
+ * routines and STEERING. Its erasable words (WHICH, DVTHRUSH, DVCNTR,
+ * DISPDEX, AVEGEXIT, TRKMKCNT, TGO, PHASE2 ...) are named by ADDRESS_OF. */
+#define ACADN83          ((word)K_ACADN83) /* 2CADR CALCN83 */
+#define ACADN85          ((word)K_ACADN85) /* = P41TABLE +2 */
+#define ALLCOAST         ((word)K_ALLCOAST)
+#define BLNKWAIT         ((word)K_BLNKWAIT)
+#define CALCN83          ((word)K_CALCN83)
+#define CALCN85          ((word)K_CALCN85)
+#define COASTSET         ((word)K_COASTSET)
+#define DYNMDISP         ((word)K_DYNMDISP)
+#define ENDSTEER         ((word)K_ENDSTEER)
+#define ENGINOF1         ((word)K_ENGINOF1)
+#define ENGINOF2         ((word)K_ENGINOF2)
+#define ENGINOF3         ((word)K_ENGINOF3)
+#define ENGINOF4         ((word)K_ENGINOF4)
+#define ENGINOFF         ((word)K_ENGINOFF)
+#define ENGOFTSK         ((word)K_ENGOFTSK)
+#define GETDT            ((word)K_GETDT)
+#define GODSPRET         ((word)K_GODSPRET)
+#define GOFLASHR         ((word)K_GOFLASHR)
+#define NO_9             ((word)K_NO_9) /* NO.9 */
+#define NOULLAGE         ((word)K_NOULLAGE)
+#define NSTEER           ((word)K_NSTEER)
+#define ONE_EIGHTY_SETUP ((word)K_180SETUP) /* 180SETUP */
+#define P40LM            ((word)K_P40LM)
+#define P40PHS1          ((word)K_P40PHS1)
+#define P40SXT4          ((word)K_P40SXT4)
+#define P41LM            ((word)K_P41LM)
+#define P42LM            ((word)K_P42LM)
+#define P42STAGE         ((word)K_P42STAGE)
+#define P47BOD           ((word)K_P47BOD)
+#define P47BODY          ((word)K_P47BODY)
+#define P47LM            ((word)K_P47LM)
+#define PFLITEDB         ((word)K_PFLITEDB)
+#define POSTBURN         ((word)K_POSTBURN)
+#define R02BOTH          ((word)K_R02BOTH)
+#define REDO6_7          ((word)K_REDO6_7) /* REDO6.7 */
+#define REFLASHR         ((word)K_REFLASHR)
+#define RESTORDB         ((word)K_RESTORDB)
+#define SERVCADR         ((word)K_SERVCADR) /* = P63TABLE +7 */
+#define SERVEXIT         ((word)K_SERVEXIT)
+#define SETMINDB         ((word)K_SETMINDB)
+#define STARTP47         ((word)K_STARTP47)
+#define STEERING         ((word)K_STEERING)
+#define TERM40           ((word)K_TERM40)
+#define TIGNOW           ((word)K_TIGNOW)
+#define UPDATEVG         ((word)K_UPDATEVG)
+#define ZATTEROR         ((word)K_ZATTEROR)
+#define HIRTHROT         ((word)KW_HIRTHROT) /* = BIT13 */
+#define IDLEFBIT         ((word)KW_IDLEFBIT) /* = BIT7 */
+#define P40ADRES         ((word)KW_P40ADRES) /* ADRES P40TABLE */
+#define P41ADRES         ((word)KW_P41ADRES) /* ADRES P41TABLE -5 */
+#define P42ADRES         ((word)KW_P42ADRES) /* ADRES P42TABLE */
+#define THRESH1          ((word)KW_THRESH1)  /* DEC 24 B-14 */
+#define THRESH2          ((word)KW_THRESH2)  /* DEC 308 B-14 */
+#define THRESH3          ((word)KW_THRESH3)  /* DEC 12 B-14 */
+#define USEQRJTS         ((word)KW_USEQRJTS) /* = BIT14 */
+#define V1683            ((word)KW_V1683)    /* VN 1683 */
+#define V16N40           ((word)KW_V16N40)   /* VN 1640 */
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

@@ -131,6 +131,7 @@
 #define ORDER_DSU        0151u
 #define ORDER_DSU_STAR   0153u /* DSU* */
 #define ORDER_CALL       0152u
+#define ORDER_CALRB      0152u /* (CALL's code: one order, under two names) */
 #define ORDER_VSR7       0154u
 #define ORDER_BDSU       0155u
 #define ORDER_BDSU_STAR  0157u /* BDSU* */

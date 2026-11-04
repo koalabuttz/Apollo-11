@@ -199,14 +199,17 @@ REPLACED = (
 # readable; the faithful ones, renamed, are no longer called
 # (--gc-sections drops them). P34-35_P74-75 (src/p34_p35): both missions'
 # routine tables, all readable; the faithful ones, renamed, are no longer
-# called (--gc-sections drops them).
+# called (--gc-sections drops them). P40-P47 (src/p40_p47): the LM's
+# routine tables, part by part; the faithful ones, renamed, run the keys
+# not yet written.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],
            'cm_p20_p25.o': lambda m: ['cm_p20_p25_basic', 'cm_p20_p25_interpretive'] if m == 'cm' else [],
            'cm_p32_p33.o': lambda m: ['cm_p32_p33_basic', 'cm_p32_p33_interpretive'] if m == 'cm' else [],
            'lm_p34_p35.o': lambda m: ['lm_p34_p35_basic', 'lm_p34_p35_interpretive'] if m == 'lm' else [],
-           'cm_p34_p35.o': lambda m: ['cm_p34_p35_basic', 'cm_p34_p35_interpretive'] if m == 'cm' else []}
+           'cm_p34_p35.o': lambda m: ['cm_p34_p35_basic', 'cm_p34_p35_interpretive'] if m == 'cm' else [],
+           'lm_p40_p47.o': lambda m: ['lm_p40_p47_basic', 'lm_p40_p47_interpretive'] if m == 'lm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
@@ -229,10 +232,11 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # LM's REV83, the CM's R34LOS). The LM's P76 starts with interpretive
 # code (P76_CODE), the CM's does not. The CM's R30 updates the splash
 # error in P00 and P11 (candel), the LM's does not. BURN, BABY, BURN is the
-# LM's alone (killtsk2).
+# LM's alone (killtsk2), as is the NSTEER of its P40-P47.
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
                           'radsamp', 'prog20a', 'p30n33', 'p32strt',
-                          'p31_after_p20flgon', 'prog21', 'rev83', 'P76_CODE', 'killtsk2'),
+                          'p31_after_p20flgon', 'prog21', 'rev83', 'P76_CODE', 'killtsk2',
+                          'nsteer'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
                           'pikup20', 'p30phsi', 'P32STRT_CODE', 'prog21', 'r34los_after_exit', 'candel',
                           'rtrn')}
