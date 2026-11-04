@@ -177,6 +177,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | P34-35_P74-75, part 1: P34 and P74 | `P34-35_P74-75.agc` (LM pp. 658-663 and 682-683, CM pp. 461-465 and 483-484) | [`src/p34_p35/`](src/p34_p35/) | TPI, transfer phase initiation, the same program in both missions (bank 35). P34 (this vehicle active) and P74 (the other): AVFLAGA or AVFLAGP, P20FLGON, verb 06 noun 37 for TTPI, and verb 06 noun 55 (DISPLAYE) for the elevation angle and central angle (the LM's sets the angle to 130 degrees first). With an angle given, ETPIFLAG set: S33/34.1 finds the time from it, else the angle from the time, alarm 611 when it fails; the time shown again (P34/P74D). Then the transfer: TIMETHET for the passive vehicle's time through the central angle, S34/35.2 (INITVEL) for the velocity at TPI that reaches it, the delta V of each burn (DELVTPI, DELVTPF) and the perigee after TPI (POSTTPI), shown by verb 06 noun 58; S34/35.5 and VN1645, and round again. With them the display subroutines: DISPLAYE, VNPOOH (the CM's in fixed-fixed memory, keeping the caller's bank in TBASE5) and P3XORP7X. The rest of the file is still the faithful port's, which the binding hands those keys to |
 | P34-35_P74-75, part 2: P35, P75 and S33/34.1 | `P34-35_P74-75.agc` (LM pp. 664-671, CM pp. 466-473) | [`src/p34_p35/`](src/p34_p35/) | P35 and P75, the mid-course corrections, the same in both missions (bank 35): AVFLAGA or AVFLAGP, the time to the maneuver (ATIGINC or PTIGINC) to KT, P20FLGON; then round and round, the time now (RTB LOADTIME) plus KT to TIG, both vehicles there (PRECSET), S34/35.1 and S34/35.2 for the delta V to the intercept at TPASS4, S34/35.5 and VN1645. S33/34.1, which P33, P34 and P74 call: the elevation angle of the line of sight at TTPI (ELCALC); with ITSWICH set, a search for the time at which it is ELEV, each pass a step from the vehicles' angular rates (FIGTIME), at most SECMAX, a third of it and half the step back when the last pass crossed the angle, turned round when it went the wrong way, both vehicles moved on (GOINT) and the angle again, until within ELEPS or too many passes |
 | P34-35_P74-75, part 3: the S34/35 subroutines and VN1645 | `P34-35_P74-75.agc` (LM pp. 672-681, CM pp. 474-482) | [`src/p34_p35/`](src/p34_p35/) | The subroutines both programs share, in bank 35 (the CM's S34/35.1 in bank 36). S34/35.1, the unit line of sight and the unit normal to the active vehicle's orbit. S34/35.2: the passive vehicle moved to TPASS4 (INTINT, by conic when NN is zero) for the target RTARG, the active vehicle's central angle of transfer (ACTCENT), INITVEL for the velocity at TIG, and its delta V in local vertical coordinates (LOMAT's matrix). S34/35.3, the target again from a delta V the astronaut keyed in, and S34/35.4 without one, both ending at NOVRWRT, the delta V along the line of sight (DVLOS). LOMAT, the local vertical matrix; GOINT and INTINT, a state vector integrated to a time. S34/35.5 shows the delta V (verb 06 noun 81; the LM compares it word by word with a copy in GDT/2 and sets NTARGFLG when it changed, the CM compares vectors with DVLOS) and the delta V along the line of sight (verb 06 noun 59). VN1645: the middle gimbal angle (GET+MGA, or -.01 and -.02), the clock (COMPTGO) and verb 16 noun 45, whose returns are KILCLOCK (terminate), N45PROC (the next pass the final one) and CLUPDATE (the next pass, its radar updates off) |
+| P34-35_P74-75, part 4: INITVEL | `P34-35_P74-75.agc` (LM pp. 685-690, CM pp. 486-490) | [`src/p34_p35/`](src/p34_p35/) | INITVEL (bank 11 in both missions), the velocity needed at RINIT to reach RTARG in DELLT4: LAMBERT for the conic, and with iterations asked for, INTEGRVS along the precision trajectory and the conic's target moved by the miss each time, which leaves an offset target for cross-product steering. Near a 180-degree transfer (inside the cone 2D gives) the target is first turned into the plane of RINIT and VINIT. DELVEET3, VIPRIME and VTPRIME out, shifted back in the Moon's sphere. The LM also keeps RTMAG, calls LAMBERT through SETITCTR, and sets MU/A and MUASTEER for steering |
 
 Beside them:
 
@@ -535,17 +536,20 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    `make p34-cases` runs the faithful port's tests of both missions'
    P34-35_P74-75 (509 checks for the LM, 513 for the CM, against yaAGC
    digests) through the readable tables, then checks the interpretive
-   words of the parts written so far against each rope (501 and 505),
+   words of the parts written so far against each rope (690 and 679),
    and runs readable and faithful side by side at every key from 4,096
-   states each for the keys those parts cover (55 basic and 246 order
-   pairs for the LM, 53 and 248 for the CM), and from 16 for the others,
+   states each for the keys those parts cover (55 basic and 345 order
+   pairs for the LM, 53 and 337 for the CM), and from 16 for the others,
    which the binding hands to the faithful tables (renamed) and which
    must match them exactly. A pass that ends at P35/P75B's RTB LOADTIME
    runs LOADTIME and the DANZIG after it, as the faithful pair does. The
    states keep the words the interpretive code returns through by GOTO
    (NORMEX, SUBEXIT, QSAVED, RTRN) fixed CADRs: a chain of erasable ones
    never ends in the AGC, and the faithful port's host build stops the
-   test there.
+   test there. RTX1 and RTX2 are mostly the Earth's or the Moon's (-2 and
+   0, -10D and 2): the LM's faithful INITVELX carries only the two words
+   of MUTABLE those read with DLOAD* MUTABLE -2,1, and refuses any other
+   load, as the binding does.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
