@@ -20,9 +20,9 @@
  * or 41), MRKRTMP, PHASE5 and NVWORD1 (each sign), TVCPHASE (often -1),
  * the channels (11 and 12 in the io record, 5 in the hardware record),
  * now and then any word but the interpreter's own, the latches, no
- * hardware record, or a state the routines refuse (another work area, BBANK not the two banks, a word of
- * 16 bits). Each runs once on each side, as the program's trampoline
- * would call the key's routine. Where either port runs, the other must
+ * hardware record, or a state the routines refuse (another work area,
+ * BBANK not the two banks, a word of 16 bits). Each runs once on each
+ * side, as the program's trampoline would call the key's routine. Where either port runs, the other must
  * too, with the same memory, io record and hardware record, word for
  * word; where the readable one refuses, it must leave everything as it
  * found it; and the faithful routine must run from at least 1 in 16 of
@@ -49,11 +49,13 @@ struct interpretive_code {
 };
 extern const struct interpretive_code P40CSM_CODE, P40PVA_CODE, P40TTOG_CODE, P40S_SV_CODE,
     P41_DSP_CODE, P40CNV85_CODE, CALCN85_CODE, P41CSM_CODE, P47CSM_CODE, CALCN83_CODE, P47BODY_CODE,
-    UPDATEVG_CODE, CALL40_8_CODE, SURELY_9_CODE, STEERING_CODE, DYNDISP_CODE;
+    UPDATEVG_CODE, CALL40_8_CODE, SURELY_9_CODE, STEERING_CODE, DYNDISP_CODE, S40_1_CODE,
+    AGAIN_CODE, S40_2_3_CODE, S41_1_CODE;
 static const struct interpretive_code *const codes[] = {
-    &P40CSM_CODE,   &P40PVA_CODE,   &P40TTOG_CODE,  &P40S_SV_CODE, &P41_DSP_CODE, &P40CNV85_CODE,
-    &CALCN85_CODE,  &P41CSM_CODE,   &P47CSM_CODE,   &CALCN83_CODE, &P47BODY_CODE, &UPDATEVG_CODE,
-    &CALL40_8_CODE, &SURELY_9_CODE, &STEERING_CODE, &DYNDISP_CODE,
+    &P40CSM_CODE,   &P40PVA_CODE,   &P40TTOG_CODE,  &P40S_SV_CODE,  &P41_DSP_CODE,
+    &P40CNV85_CODE, &CALCN85_CODE,  &P41CSM_CODE,   &P47CSM_CODE,   &CALCN83_CODE,
+    &P47BODY_CODE,  &UPDATEVG_CODE, &CALL40_8_CODE, &SURELY_9_CODE, &STEERING_CODE,
+    &DYNDISP_CODE,  &S40_1_CODE,    &AGAIN_CODE,    &S40_2_3_CODE,  &S41_1_CODE,
 };
 #define readable_basic_table        cm_p40_p47_basic
 #define readable_interpretive_table cm_p40_p47_interpretive
@@ -66,8 +68,12 @@ static const struct interpretive_code *const codes[] = {
 #define NEWOPS_AT                   06037u
 /* The parts written so far: part 1, the programs' start (24,2073-2462,
  * and P41CSM, 27,2614-2630); part 2, P47CSM to TVCZAP (24,2463-3103);
- * part 3, UPDATEVG to ENDV97E (24,3104-3573). */
-#define WRITTEN {024u, 02073u, 03573u}, {027u, 02614u, 02630u}
+ * part 3, UPDATEVG to ENDV97E (24,3104-3573); part 4, S40.1 (16,2020-2150),
+ * AGAIN and CALCUT (30,3651-3745), S40.2,3 (24,3574-3752) and S41.1
+ * (22,3431-3444). */
+#define WRITTEN                                                                                    \
+    {024u, 02073u, 03752u}, {027u, 02614u, 02630u}, {016u, 02020u, 02150u},                        \
+        {030u, 03651u, 03745u}, {022u, 03431u, 03444u}
 extern const agc_routine_table readable_basic_table, readable_interpretive_table;
 extern const agc_routine_table faithful_basic, faithful_interpretive;
 bool cm_p40_p47_readable(uint16_t key, bool order_pair);
@@ -91,6 +97,7 @@ bool cm_p40_p47_runs_on(uint16_t z);
 #define PHASE5_AT   0763u
 #define TVCPHASE_AT 01644u /* (in E6) */
 #define NVWORD1_AT  01145u
+#define QTEMP_AT    03657u /* (in E7) */
 #define QTEMP1_AT   03730u /* (in E7) */
 
 /* SETMINDB, SETMAXDB -1, SETMAXDB, SPSOFF, TVCZAP and E7SETTER, which end
@@ -216,6 +223,13 @@ static uint16_t a_return(void)
     return returns[rnd() % COUNT(returns)];
 }
 
+/* Whether a key's code may run in the NOVAC work area: not the two that
+ * store a vector at 6D (S40.2,3B's STCALL, BADVCTOR's STORE). */
+static bool novac_area_ok(uint16_t key)
+{
+    return key != 024u * 1024u + 01724u && key != 024u * 1024u + 01751u;
+}
+
 /* The frozen cases. */
 static unsigned mission_cases[FROZEN_CASES], mission_count;
 
@@ -312,6 +326,11 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
                                 : k == 1u ? near[rnd() % COUNT(near)]
                                           : (uint16_t)(rnd() % 02000u);
     }
+    /* S40.2,3B's STCALL 6D and BADVCTOR's STORE 6D in a VAC area: in the
+     * NOVAC one (FIXLOC 0110), 6D is FIXLOC and OVFIND themselves, and the
+     * CALL or RVQ after it indexes by a FIXLOC the store has changed, the
+     * whole TS QPRET added, which neither port models (as below). */
+    if (fixloc == 0110u && !novac_area_ok(key)) fixloc = w[FIXLOC_AT] = 0401u;
     /* The push-down list in the work area. Not over FIXLOC and OVFIND (a
      * NOVAC job's list, from MPAC -36D, takes them in): a PUSH there makes
      * FIXLOC a word of MPAC, which a CALL's INDEX FIXLOC adds to the
@@ -327,10 +346,12 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
     if (n % 4u != 0u && rnd() % 64u == 0u) w[3u + rnd() % 03775u] |= 0100000u;
     if (n % 4u != 0u && rnd() % 64u == 0u) w[2] |= 0100000u; /* Q, which may hold 16 bits */
     w[BANKSET_AT] = rnd() % 32u ? w[6] : any_word();
-    /* QTEMP1, which UPDATEVG returns through by GOTO, a fixed CADR (as STQ
-     * leaves it): a chain of erasable CADRs that never reaches a fixed one
-     * loops in the AGC until the night watchman restarts it, and the
-     * faithful port's host build stops the test there. */
+    /* QTEMP and QTEMP1, which the interpretive code returns through by
+     * GOTO, fixed CADRs (as STQ leaves them): a chain of erasable CADRs
+     * that never reaches a fixed one loops in the AGC until the night
+     * watchman restarts it, and the faithful port's host build stops the
+     * test there. */
+    if (!(w[QTEMP_AT] & 074000u)) w[QTEMP_AT] = (uint16_t)(04000u + rnd() % 074000u);
     if (!(w[QTEMP1_AT] & 074000u)) w[QTEMP1_AT] = (uint16_t)(04000u + rnd() % 074000u);
     /* The interrupt latch either way now and then. */
     if (n % 4u != 0u && rnd() % 8u == 0u) io->interrupt_enabled = (uint16_t)(rnd() % 2u);

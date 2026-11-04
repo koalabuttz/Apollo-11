@@ -89,6 +89,7 @@
 #define ORDER_XAD_2      0102u /* XAD,2 */
 #define ORDER_DMPR_STAR  0103u /* DMPR* */
 #define ORDER_SL3R       0104u
+#define ORDER_VSL5       0104u /* (SL3R's code too) */
 #define ORDER_VCOMP      0100u /* (DCOMP's code too) */
 #define ORDER_DDV        0105u
 #define ORDER_XAD_1      0106u /* XAD,1 */
@@ -101,6 +102,7 @@
 #define ORDER_VSL        0115u /* (a vector's general shift: SL's code, by MODE) */
 #define ORDER_VSR        0115u
 #define ORDER_SLR        0115u
+#define ORDER_SRR        0115u
 #define ORDER_XSU_1      0116u /* XSU,1 */
 #define ORDER_VSL_STAR   0117u /* VSL* (a general shift, indexed) */
 #define ORDER_SR_STAR    0117u /* (SR*, SRR* and SLR* too: VSL*'s code, by their address) */
@@ -254,6 +256,7 @@
  * round bit (1000) for SLR. */
 #define SL_COUNT(n)  ((word)(020000u + 0200u + (unsigned)(n) + 1u))
 #define SLR_COUNT(n) ((word)(020000u + 01000u + 0200u + (unsigned)(n) + 1u))
+#define SRR_COUNT(n) ((word)(020000u + 01000u + 0600u + (unsigned)(n) + 1u))
 /* "0 -7,2": an indexed general shift's (VSL*'s) address, the shift count
  * n indexed by X2. yaYUL assembles it as 20000 plus 200 (a left shift's
  * bit, "ADAD" in its rules) plus n, one more as any address, and

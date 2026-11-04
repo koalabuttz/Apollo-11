@@ -16,6 +16,8 @@
  * during the burn (steering.c, pp. 699-702: UPDATEVG, STEERING) and the
  * countdown's display with the crew's answers to it (clocktask.c, pp.
  * 703-709: CLOKTASK, CLOCKJOB, verbs 99 and 97, E7SETTER, E6SETTER).
+ * Part 4 adds the burn's targeting, all interpretive (s40.c, pp.
+ * 709-718): S40.1 with AGAIN and CALCUT, S40.2,3 and S41.1.
  *
  * The interpretive code is in the listing's notation, run by the readable
  * interpreter. The entries below are the basic code's: each program's
@@ -33,7 +35,8 @@
 
 extern const struct interpretive_code P40CSM_CODE, P40PVA_CODE, P40TTOG_CODE, P40S_SV_CODE,
     P41_DSP_CODE, P40CNV85_CODE, CALCN85_CODE, P41CSM_CODE, P47CSM_CODE, CALCN83_CODE, P47BODY_CODE,
-    UPDATEVG_CODE, CALL40_8_CODE, SURELY_9_CODE, STEERING_CODE, DYNDISP_CODE;
+    UPDATEVG_CODE, CALL40_8_CODE, SURELY_9_CODE, STEERING_CODE, DYNDISP_CODE, S40_1_CODE,
+    AGAIN_CODE, S40_2_3_CODE, S41_1_CODE;
 
 void p40csm(void);                      /* P40CSM */
 void p40csm_after_downflag(void);       /* P40CSM +2: TC INTPRET */

@@ -27,12 +27,13 @@
  * routines take the program's hardware record for their channel orders,
  * and without one refuse, so the binding does too: channel 5 is the
  * hardware record's, channels 11 (DSALMOUT) and 12 the io record's. The
- * states the faithful routines take, at every key: FB the
- * key's bank, ZERO +0, the bank registers agreeing, the interrupt and
- * superbank latches in range, and every erasable word an ordinary one; at
- * an order pair Z at NEWOPS, BANKSET the BBANK, INTBIT15 the bank's bit
- * 15, NEWJOB +0 or a core set and FIXLOC one of the VAC areas or 0110. A
- * run the readable code refuses part way leaves the state as it was. */
+ * states the faithful routines take, at every key: FB the key's bank (in
+ * bank 30 with the superbank bit clear), ZERO +0, the bank registers
+ * agreeing, the interrupt and superbank latches in range, and every
+ * erasable word an ordinary one; at an order pair Z at NEWOPS, BANKSET
+ * the BBANK, INTBIT15 the bank's bit 15, NEWJOB +0 or a core set and
+ * FIXLOC one of the VAC areas or 0110. A run the readable code refuses
+ * part way leaves the state as it was. */
 #include <setjmp.h>
 #include <stddef.h>
 #include "binding.h"
@@ -46,6 +47,9 @@
 
 /* A key: the bank, and the address in it. */
 #define KEY(bank, address) (uint16_t)((bank) * 1024u + ((address) & 01777u))
+
+/* Channel 7's superbank bit. */
+#define SUPERBANK_BIT 0100u
 
 /* The faithful tables, renamed. */
 extern const agc_routine_table faithful_cm_p40_p47_basic, faithful_cm_p40_p47_interpretive;
@@ -119,6 +123,13 @@ static bool sane(bool order_pair)
     for (i = 3u; i < 2048u; ++i)
         if (agc.memory[i] > 077777u) return false;
     return true;
+}
+
+/* The key's bank selected: FB, and in banks 30 to 37 the superbank bit
+ * clear (with it set, FB 30 to 37 would be banks 40 to 47). */
+static bool in_bank(unsigned bank)
+{
+    return FBANK == (word)(bank << 10) && (bank < 030u || !(*agc.superbank & SUPERBANK_BIT));
 }
 
 /* ---- The basic code ---- */
@@ -360,9 +371,10 @@ bool cm_p40_p47_runs_on(uint16_t z)
 /* ---- The order pairs ---- */
 
 static const struct interpretive_code *const codes[] = {
-    &P40CSM_CODE,   &P40PVA_CODE,   &P40TTOG_CODE,  &P40S_SV_CODE, &P41_DSP_CODE, &P40CNV85_CODE,
-    &CALCN85_CODE,  &P41CSM_CODE,   &P47CSM_CODE,   &CALCN83_CODE, &P47BODY_CODE, &UPDATEVG_CODE,
-    &CALL40_8_CODE, &SURELY_9_CODE, &STEERING_CODE, &DYNDISP_CODE,
+    &P40CSM_CODE,   &P40PVA_CODE,   &P40TTOG_CODE,  &P40S_SV_CODE,  &P41_DSP_CODE,
+    &P40CNV85_CODE, &CALCN85_CODE,  &P41CSM_CODE,   &P47CSM_CODE,   &CALCN83_CODE,
+    &P47BODY_CODE,  &UPDATEVG_CODE, &CALL40_8_CODE, &SURELY_9_CODE, &STEERING_CODE,
+    &DYNDISP_CODE,  &S40_1_CODE,    &AGAIN_CODE,    &S40_2_3_CODE,  &S41_1_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */
@@ -423,7 +435,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     code = code_at(bank, LOC);
-    if (Z != NEWOPS || FBANK != (word)(bank << 10) || !code || BANKSET != BBANK ||
+    if (Z != NEWOPS || !in_bank(bank) || !code || BANKSET != BBANK ||
         INTBIT15 != (FBANK & 040000u) || !sane(true))
         return EXEC_OUT_OF_SCOPE;
 
