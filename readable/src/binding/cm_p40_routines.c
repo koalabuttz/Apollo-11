@@ -66,12 +66,13 @@ static void leave(void)
 }
 
 /* SPSOFF's and TVCZAP's channel 12 (WOR, WAND), STEERING's channel 11
- * (RAND DSALMOUT) and ULAGEOFF's channel 5 (WRITE), as the faithful port
- * keeps them. */
+ * (RAND DSALMOUT), S40.13's channel 31 (RXOR) and ULAGEOFF's channel 5
+ * (WRITE), as the faithful port keeps them. */
 static word channel_in(unsigned number)
 {
     if (number == 011u) return (word)io_now->channel11;
     if (number == 012u) return (word)io_now->channel12;
+    if (number == 031u && hardware_now) return (word)hardware_now->channel31;
     not_modelled(); /* the readable parts read no other channel */
     return 0;
 }
@@ -299,6 +300,22 @@ static const struct basic_entry {
     {KEY(020u, INCRSVG + 1u), incrsvg_after_exit},
     {KEY(020u, INCRSVG + 3u), incrsvg_after_alarm},
     {KEY(020u, LOTHRUST + 6u), lothrust_after_exit},
+    /* Part 6: S40.9 and S40.13 */
+    {KEY(016u, S40_9), s40_9},
+    {KEY(016u, S40_9 + 017u), s40_9_after_exit},
+    {KEY(016u, S40_9 + 022u), s40_9_after_phaschng},
+    {KEY(016u, MOONCASE + 1u), mooncase_after_exit},
+    {KEY(016u, COPY40_9), copy40_9},
+    {KEY(016u, ENDS40_9 - 2u), copy40_9_after_exit},
+    {KEY(016u, ENDS40_9 + 2u), ends40_9_after_phaschng},
+    {KEY(016u, REDO40_9), redo40_9},
+    {KEY(016u, REDO40_9 + 011u), redo40_9_after_exit},
+    {KEY(016u, S40_13), s40_13},
+    {KEY(016u, S40_13 + 7u), s40_13_after_exit},
+    {KEY(016u, S40_132 + 1u), s40_132_after_exit},
+    {KEY(016u, S40_132 + 2u), s40_132_after_tpagree},
+    {KEY(016u, S40_134), s40_133_after_exit},
+    {KEY(016u, S40_134 + 2u), s40_134_after_phaschng},
     /* Part 1: P41CSM */
     {KEY(027u, P41CSM), p41csm},
     {KEY(027u, P41CSM + 2u), p41csm_after_upflag},
@@ -384,7 +401,9 @@ static const struct interpretive_code *const codes[] = {
     &P47BODY_CODE,  &UPDATEVG_CODE,      &CALL40_8_CODE, &SURELY_9_CODE,     &STEERING_CODE,
     &DYNDISP_CODE,  &S40_1_CODE,         &AGAIN_CODE,    &S40_2_3_CODE,      &S41_1_CODE,
     &S40_8_CODE,    &LOTHRUST_TEST_CODE, &TGOCALC_CODE,  &S40_81_CODE,       &S40_81_END_CODE,
-    &INCRSVG_CODE,  &INCRSVG_END_CODE,   &LOTHRUST_CODE, &LOTHRUST_END_CODE,
+    &INCRSVG_CODE,  &INCRSVG_END_CODE,   &LOTHRUST_CODE, &LOTHRUST_END_CODE, &S40_9_CODE,
+    &ENDLAMB_CODE,  &COPY40_9_CODE,      &REDO40_9_CODE, &S40_13_CODE,       &ULLAGE_CODE,
+    &S40_133_CODE,  &NOTADDUL_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */

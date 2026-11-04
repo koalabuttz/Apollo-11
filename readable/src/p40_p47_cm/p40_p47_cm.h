@@ -18,7 +18,9 @@
  * 703-709: CLOKTASK, CLOCKJOB, verbs 99 and 97, E7SETTER, E6SETTER).
  * Part 4 adds the burn's targeting, all interpretive (s40.c, pp.
  * 709-718): S40.1 with AGAIN and CALCUT, S40.2,3 and S41.1. Part 5
- * adds S40.8, the cross-product steering (s40.c, pp. 719-722).
+ * adds S40.8, the cross-product steering (s40.c, pp. 719-722). Part 6 adds
+ * S40.9, the velocity to be gained of a Lambert burn, and S40.13, the
+ * burn's time (timeburn.c, pp. 723-728).
  *
  * The interpretive code is in the listing's notation, run by the readable
  * interpreter. The entries below are the basic code's: each program's
@@ -38,7 +40,9 @@ extern const struct interpretive_code P40CSM_CODE, P40PVA_CODE, P40TTOG_CODE, P4
     P41_DSP_CODE, P40CNV85_CODE, CALCN85_CODE, P41CSM_CODE, P47CSM_CODE, CALCN83_CODE, P47BODY_CODE,
     UPDATEVG_CODE, CALL40_8_CODE, SURELY_9_CODE, STEERING_CODE, DYNDISP_CODE, S40_1_CODE,
     AGAIN_CODE, S40_2_3_CODE, S41_1_CODE, S40_8_CODE, LOTHRUST_TEST_CODE, TGOCALC_CODE, S40_81_CODE,
-    S40_81_END_CODE, INCRSVG_CODE, INCRSVG_END_CODE, LOTHRUST_CODE, LOTHRUST_END_CODE;
+    S40_81_END_CODE, INCRSVG_CODE, INCRSVG_END_CODE, LOTHRUST_CODE, LOTHRUST_END_CODE, S40_9_CODE,
+    ENDLAMB_CODE, COPY40_9_CODE, REDO40_9_CODE, S40_13_CODE, ULLAGE_CODE, S40_133_CODE,
+    NOTADDUL_CODE;
 
 void p40csm(void);                      /* P40CSM */
 void p40csm_after_downflag(void);       /* P40CSM +2: TC INTPRET */
@@ -244,6 +248,24 @@ void s40_81_after_exit(void);        /* S40.81 +5: CAF POSMAX */
 void incrsvg_after_exit(void);       /* INCRSVG +1: TC ALARM */
 void incrsvg_after_alarm(void);      /* INCRSVG +3: TC INTPRET */
 void lothrust_after_exit(void);      /* LOTHRUST +6: CS ZERO */
+
+/* ---- Part 6: S40.9 and S40.13 (timeburn.c) ---- */
+
+void s40_9(void);                   /* S40.9 */
+void s40_9_after_exit(void);        /* S40.9 +017: PHASCHNG */
+void s40_9_after_phaschng(void);    /* S40.9 +022: TC INTPRET */
+void mooncase_after_exit(void);     /* MOONCASE +1: PHASCHNG */
+void copy40_9(void);                /* COPY40.9 */
+void copy40_9_after_exit(void);     /* ENDS40.9 -2: CS ONE */
+void ends40_9_after_phaschng(void); /* ENDS40.9 +2: TCF ENDOFJOB */
+void redo40_9(void);                /* REDO40.9 */
+void redo40_9_after_exit(void);     /* REDO40.9 +011: TCF ENDS40.9 -2 */
+void s40_13(void);                  /* S40.13 */
+void s40_13_after_exit(void);       /* S40.13 +7: CAF BIT7 */
+void s40_132_after_exit(void);      /* S40.132 +1: TC TPAGREE */
+void s40_132_after_tpagree(void);   /* S40.132 +2: CA MPAC */
+void s40_133_after_exit(void);      /* S40.134: PHASCHNG */
+void s40_134_after_phaschng(void);  /* S40.134 +2: TCF ENDOFJOB */
 
 /* Words of programs.c the parts run on into. */
 void ttgphs(void); /* TTGPHS, the countdown's restart group 4 */

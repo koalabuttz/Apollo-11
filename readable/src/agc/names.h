@@ -3537,7 +3537,10 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define DYNDISP    ((word)K_DYNDISP)
 #define E6SETTER   ((word)K_E6SETTER)
 #define E7SETTER   ((word)K_E7SETTER)
+#define COPY40_9   ((word)K_COPY40_9) /* COPY40.9 */
 #define ENDIGN     ((word)K_ENDIGN)
+#define ENDLAMB    ((word)K_ENDLAMB)
+#define ENDS40_9   ((word)K_ENDS40_9) /* ENDS40.9 */
 #define ENDV97E    ((word)K_ENDV97E)
 #define ENDV97P    ((word)K_ENDV97P)
 #define ENDV97T    ((word)K_ENDV97T)
@@ -3553,7 +3556,9 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define INCRSVG    ((word)K_INCRSVG)
 #define MASSBACK   ((word)K_MASSBACK)
 #define LOTHRUST   ((word)K_LOTHRUST)
+#define MOONCASE   ((word)K_MOONCASE)
 #define NOFLASH    ((word)K_NOFLASH)
+#define NOTADDUL   ((word)K_NOTADDUL)
 #define P40BLNKR   ((word)K_P40BLNKR)
 #define P40CLK     ((word)K_P40CLK)
 #define P40CSM     ((word)K_P40CSM)
@@ -3582,10 +3587,17 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define PREPTVC    ((word)K_PREPTVC)
 #define QUICKIGN   ((word)K_QUICKIGN)
 #define R40ENABL   ((word)K_R40ENABL)
+#define REDO40_9   ((word)K_REDO40_9) /* REDO40.9 */
 #define S40_1      ((word)K_S40_1)   /* S40.1 */
 #define S40_2_3    ((word)K_S40_2_3) /* S40.2,3 */
 #define S40_8      ((word)K_S40_8)   /* S40.8 */
 #define S40_81     ((word)K_S40_81)  /* S40.81 */
+#define S40_9      ((word)K_S40_9)   /* S40.9 */
+#define S40_13     ((word)K_S40_13)  /* S40.13 */
+#define S40_130    ((word)K_S40_130) /* S40.130 */
+#define S40_132    ((word)K_S40_132) /* S40.132 */
+#define S40_133    ((word)K_S40_133) /* S40.133 */
+#define S40_134    ((word)K_S40_134) /* S40.134 */
 #define S41_1      ((word)K_S41_1)   /* S41.1 */
 #define SEC29_96   ((word)K_SEC29_96) /* SEC29.96: 2DEC 2996 */
 #define SERVCADR   ((word)K_SERVCADR) /* 2CADR SERVEXIT */
