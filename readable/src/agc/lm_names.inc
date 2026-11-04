@@ -1698,6 +1698,7 @@
 #define K_PITCHOFF 03260u
 #define K_RASTEER1 02731u
 #define K_S41_1 03267u
+#define K_SETMAXDB 02127u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -4193,6 +4194,7 @@
 #define I_EARTHMU 056022u
 #define I_UNITGOBL 003520u
 #define I_FIRSTTME 057171u
+#define I_DVTOTAL 003507u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u
