@@ -212,7 +212,7 @@ static const struct interpretive_code *const codes[] = {
     &P34_TTPI_CODE, &P34_SWCHCLR_CODE, &P34_P74D_CODE, &P34_P74E_CODE, &P34_N58_CODE,
     &P35_CODE,      &S33_34_1_CODE,    &FIGTIME_CODE,  &OKMAX_CODE,    &S34_35_1_CODE,
     &S34_35_2_CODE, &S34_35_3_CODE,    &LOMAT_CODE,    &S34_35_5_CODE, &S34_35_5_LOADED_CODE,
-    &FLAGOFF_CODE,  &VN1645_CODE,      &GETMGA_CODE,   &CLUPDATE_CODE,
+    &FLAGOFF_CODE,  &VN1645_CODE,      &GETMGA_CODE,   &CLUPDATE_CODE, &INITVEL_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */
@@ -268,6 +268,21 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     return EXEC_OK;
 }
 
+#if LUMINARY099
+/* INITVELX's DLOAD* MUTABLE -2,1, X1 from RTX1 (LXA,1 in the same pass):
+ * the faithful port carries only the two words a load with RTX1 -2 (the
+ * Earth's) or -10D (the Moon's) reads, and refuses a load from anywhere
+ * else; so does the binding. */
+static bool outside_mutable(uint16_t key)
+{
+    word rtx1 = agc.memory[I_RTX1];
+
+    return key == KEY(011u, I_INITVELX) && rtx1 != 077775u && rtx1 != 077765u;
+}
+#else
+#define outside_mutable(key) false
+#endif
+
 static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
@@ -283,7 +298,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     bind(program, state, io);
     code = code_at(bank, LOC);
     if (Z != NEWOPS || !in_bank(bank) || !code || BANKSET != BBANK ||
-        INTBIT15 != (FBANK & 040000u) || !sane())
+        INTBIT15 != (FBANK & 040000u) || !sane() || outside_mutable(key))
         return EXEC_OUT_OF_SCOPE;
 
     before = *state;

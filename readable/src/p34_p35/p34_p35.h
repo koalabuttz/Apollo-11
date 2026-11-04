@@ -10,7 +10,7 @@
  * they call (displays.c): DISPLAYE, P3XORP7X and VNPOOH. Part 2 (p35.c)
  * is P35 and P75, and S33/34.1. Part 3 is the subroutines S34/35.1 to
  * S34/35.4, LOMAT, GOINT and INTINT (s34_35.c), and S34/35.5, VN1645 and
- * the clock routines after it (vn1645.c).
+ * the clock routines after it (vn1645.c). Part 4 is INITVEL (initvel.c).
  *
  * The interpretive code is in the listing's notation, run by the readable
  * interpreter. The entries below are the basic code's: each program's
@@ -111,5 +111,9 @@ void n45proc(void);                 /* N45PROC */
 void n45proc_after_phaschng(void);  /* N45PROC +6 */
 void clupdate(void);                /* CLUPDATE */
 void clupdate_after_phaschng(void); /* CLUPDATE +4, the TC INTPRET */
+
+/* ---- Part 4: INITVEL (initvel.c), in bank 11 ---- */
+
+extern const struct interpretive_code INITVEL_CODE;
 
 #endif
