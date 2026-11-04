@@ -180,6 +180,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | P34-35_P74-75, part 4: INITVEL | `P34-35_P74-75.agc` (LM pp. 685-690, CM pp. 486-490) | [`src/p34_p35/`](src/p34_p35/) | INITVEL (bank 11 in both missions), the velocity needed at RINIT to reach RTARG in DELLT4: LAMBERT for the conic, and with iterations asked for, INTEGRVS along the precision trajectory and the conic's target moved by the miss each time, which leaves an offset target for cross-product steering. Near a 180-degree transfer (inside the cone 2D gives) the target is first turned into the plane of RINIT and VINIT. DELVEET3, VIPRIME and VTPRIME out, shifted back in the Moon's sphere. The LM also keeps RTMAG, calls LAMBERT through SETITCTR, and sets MU/A and MUASTEER for steering |
 | P34-35_P74-75, part 5: MIDGIM, SELECTMU and PERIAPO to SHIFTR1 | `P34-35_P74-75.agc` (LM pp. 692-699, CM pp. 493-500) | [`src/p34_p35/`](src/p34_p35/) | The small subroutines (the LM's in banks 6, 10 and 23, the CM's in banks 4 and 22). GET+MGA, the middle gimbal angle of a burn along a delta V (the arc sine of its component on the stable member's Y axis, made positive), and GET.LVC, the delta V in local vertical coordinates; the CM's MIDGIM picks one by the active vehicle and the computer it runs in. SELECTMU, the primary body's index (RTX1, RTX2) and constants from MUTABLE (RTMU, RTSR1/MU), FINALFLG clear, on to VN1645. PERIAPO1 and PERIAPO, the apocenter and pericenter radii and altitudes (APSIDES), above the pad radius RPAD or the landing site's (SETRAD). PRECSET, both vehicles' states at a time, to the active and passive vehicle's words by AVFLAG. VECSHIFT and SHIFTR1, the shifts between the Earth's and the Moon's scales |
 | P34-35_P74-75, part 6: R36 | `P34-35_P74-75.agc` (LM pp. 700-702, CM pp. 501-504), with DPMODE of `RTB_OP_CODES.agc` (LM p. 1401, CM p. 1514) in [`src/rtb_op_codes/`](src/rtb_op_codes/) | [`src/p34_p35/`](src/p34_p35/) | R36, the out-of-plane rendezvous display (verb 90; the LM's in bank 4, the CM's in bank 20 and the superbank's banks 40-42). Verb 06 noun 16 for the time of the event (zero for now: LOADTIME); both vehicles integrated to it (OTHPREC, THISPREC); the first one's orbit gives the plane (RPASS36, UNP36), and the second's position and velocity give Y, YDOT and PSI (RANGE, RRATE, RTHETA), shown by verb 06 noun 90 with the time again (SGNAGREE). The CM's first asks which vehicle by verb 04 noun 12 (OPTIONY) and integrates them in that order. With it the file is whole: the binding no longer hands any key to the faithful tables |
+| R31 | `R31.agc` (LM pp. 703-708, CM pp. 505-510), with NORMUNX1 of `RTB_OP_CODES.agc` (LM pp. 1401-1402, CM pp. 1514-1515) in [`src/rtb_op_codes/`](src/rtb_op_codes/) | [`src/r31/`](src/r31/) | R31, the rendezvous parameter display (verb 83; the LM's in bank 37 with R31CALL in bank 40, the CM's in bank 31). R31CALL starts a job at V83CALL, waits (DSPDELAY: the LM's a waitlist task by FIXDELAY, the CM's a job by DELAYJOB) until bit 12 of EXTVBACT says the first values are there, and shows them, verb 16 noun 54 (DISPN5X; the CM's noun 53 for R34 with R31FLAG clear), until the astronaut answers. The V83CALL job extrapolates both vehicles to now and works out the range, the range rate and theta, the angle of the vehicle's own axis out of its local horizontal plane (COMPDISP), then sets bit 12 and goes round again (REV83, the CM's V83) until the display is answered. The LM keeps base vectors from a first precision pass and extrapolates them by conic, by precision for the LM on the surface (R31SURF), and with average G on takes RN and VN (GETRVN; MUNG? and GETRVN2 for the CSM). The CM integrates from its base vectors (STATEXTP, HAVEBASE, GETRVN5, GETRVN6, GETRVN) and finds the optics' line of sight (R34LOS) for R34. The faithful port has the LM's file twice, a compiled copy and an older module whose basic routines stop at each jump, which the flight program tries first: the readable file takes the place of both, its routines ending at each jump and its binding running on where the compiled copy does |
 
 Beside them:
 
@@ -552,6 +553,19 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    (and the LM's INITVELX) carries only the words of MUTABLE those read
    by index, and refuses any other load, as the binding does. The CM's
    R36 keys in banks 40-42 get the superbank bit set.
+   `make r31-cases` does the same for both missions' R31: the faithful
+   port's tests (2,637 checks for the LM, 356 for the CM, against yaAGC
+   digests) through the readable tables, the interpretive words against
+   each rope (144 and 171), and readable and faithful side by side at
+   every key (14 basic and 68 order pairs for the LM, 11 and 78 for the
+   CM, and the 18 basic routines of the LM's older module) from 4,096
+   states each; the older module's order pairs are left out, as the
+   flight program tries them only after the compiled copy's.
+   A pass that ends at RTB LOADTIME, or the LM's RTB NORMUNX1, runs the
+   routine and the rest of the pair, as the faithful pair does; NORMUNX1
+   only on a vector, which is all the faithful one takes. The LM's
+   R31CALL and DSPDELAY keys (bank 40) get the superbank bit set, and the
+   CM's 0D, where GETRVN keeps its return, a fixed CADR.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

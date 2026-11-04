@@ -6,6 +6,7 @@
 #include "rtb_op_codes.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
+#include "../interbank/interbank.h"
 
 static void one_to2sub(void);
 
@@ -91,6 +92,72 @@ void dpmode(void)
 {
     set_A(ZERO);    /* CAF ZERO */
     sload2_plus2(); /* TCF SLOAD2 +2 */
+}
+
+/* NORMUNX1 and NORMUNIT -- LM pp. 1401-1402, CM pp. 1514-1515.
+ * "RTB OP CODE NORMUNIT IS LIKE INTERPRETIVE INSTRUCTION UNIT, EXCEPT THAT
+ * IT CAN BE DEPENDED ON NOT TO BLOW UP WHEN THE VECTOR BEING UNITIZED IS
+ * VERY SMALL": the vector in MPAC with "SIGN AGREEMENT IN ALL COMPONENTS"
+ * (VECAGREE, by BANKCALL); if the upper halves of all three are zero,
+ * each is shifted "LEFT 13" (times BIT14, added back in by DAS, which
+ * "GAINS A LITTLE ACCURACY") and the shift count, 13, goes to 37D of the
+ * work area (NOSHIFT: else +0); then UNIT past its own VECAGREE (OFFTUNIT,
+ * by POSTJUMP to UNIT +1), which ends at DANZIG. NORMUNX1 leaves the count
+ * one word on, in X1 (38D). */
+static void normunit_plus1(void);
+static void offtunit_minus2(void);
+
+/* CCS: +0 or -0 goes on (TCF +2, or the next word), the rest to NOSHIFT. */
+static bool upper_half_zero(unsigned address)
+{
+    enum sign sign = ccs_at(address);
+
+    return sign == IS_PLUS_ZERO || sign == IS_MINUS_ZERO;
+}
+
+void normunx1(void)
+{
+    set_A(ONE);       /* CAF ONE */
+    normunit_plus1(); /* TCF NORMUNIT +1 */
+}
+
+static void normunit_plus1(void)
+{
+    ad_at(ADDRESS_OF(FIXLOC));
+    ts(MPAC_AT(2u)); /* the work area, one word on for NORMUNX1 */
+    tc_at(NORMUNIT + 3u);
+    bankcall(); /* "GET SIGN AGREEMENT IN ALL COMPONENTS" (CADR VECAGREE) */
+    vecagree();
+    swreturn();
+    /* CCS MPAC, MPAC +3 and MPAC +5 in turn: an upper half other than
+     * zero goes to NOSHIFT. */
+    if (!upper_half_zero(MPAC_AT(0u)) || !upper_half_zero(MPAC_AT(3u)) ||
+        !upper_half_zero(MPAC_AT(5u))) {
+        set_A(ZERO); /* NOSHIFT: CAF ZERO, TCF OFFTUNIT -2 */
+        offtunit_minus2();
+        return;
+    }
+    ca(MPAC_AT(1u)); /* "SHIFT ALL COMPONENTS LEFT 13" */
+    mp(BIT14);
+    das(MPAC_AT(0u)); /* "DAS GAINS A LITTLE ACCURACY" */
+    ca(MPAC_AT(4u));
+    mp(BIT14);
+    das(MPAC_AT(3u));
+    ca(MPAC_AT(6u));
+    mp(BIT14);
+    das(MPAC_AT(5u));
+    set_A(THIRTEEN);
+    offtunit_minus2();
+}
+
+/* OFFTUNIT -2: the count to 37D of the work area kept in MPAC +2 (INDEX
+ * MPAC +2; TS 37D), and UNIT +1, which skips the VECAGREE just done. */
+static void offtunit_minus2(void)
+{
+    ts(indexed(37u, fetch(MPAC_AT(2u))));
+    tc_at(OFFTUNIT);
+    postjump(); /* CADR UNIT +1 */
+    unit_plus1();
 }
 
 /* TPMODE -- LM p. 1398, CM p. 1509.

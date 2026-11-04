@@ -1876,8 +1876,8 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define ONE_SEC  ((word)KW_1SEC)   /* 1SEC: DEC 100 */
 #endif
 
-/* 1STO2S, V1STO2S, 2V1STO2S and their 1TO2SUB, LOADTIME, TPMODE and
- * DPMODE, RTB routines (RTB_OP_CODES.agc). */
+/* 1STO2S, V1STO2S, 2V1STO2S and their 1TO2SUB, LOADTIME, TPMODE,
+ * DPMODE and NORMUNX1, RTB routines (RTB_OP_CODES.agc). */
 #define LOADTIME    ((word)K_LOADTIME)
 #define ONE_STO2S   ((word)K_1STO2S)
 #define TWO_V1STO2S ((word)K_2V1STO2S)
@@ -1885,6 +1885,9 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define V1STO2S     ((word)K_V1STO2S)
 #define TPMODE      ((word)K_TPMODE)
 #define DPMODE      ((word)K_DPMODE)
+#define NORMUNX1    ((word)K_NORMUNX1)
+#define NORMUNIT    ((word)K_NORMUNIT)
+#define OFFTUNIT    ((word)K_OFFTUNIT)
 
 /* ---- SYSTEM_TEST_STANDARD_LEAD_INS ---- */
 
@@ -3172,6 +3175,25 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define R36A     ((word)K_R36A)
 #define R36P3    ((word)K_R36P3)
 #define OPTION36 ((word)KW_OPTION36) /* VN 0412 */
+#endif
+/* R31, the rendezvous parameter display (verb 83): the LM's R31CALL and
+ * DSPDELAY in bank 40, the rest in its bank 37; the CM's all in bank 31. */
+#define R31CALL  ((word)K_R31CALL)
+#define DSPDELAY ((word)K_DSPDELAY)
+#define DISPN5X  ((word)K_DISPN5X)
+#define V83CALL  ((word)K_V83CALL)
+#define GETRVN   ((word)K_GETRVN)
+#define V16N54   ((word)KW_V16N54) /* VN 1654 */
+#if LUMINARY099
+#define REV83   ((word)K_REV83)
+#define R31SURF ((word)K_R31SURF)
+#define MUNG_Q  ((word)K_MUNG_Q) /* MUNG? */
+#define ONEBASE ((word)K_ONEBASE)
+#else
+#define V83    ((word)K_V83)
+#define R34LOS ((word)K_R34LOS)
+#define V16N53 ((word)KW_V16N53) /* VN 1653 */
+#define PRIO3  ((word)KW_PRIO3)
 #endif
 #if LUMINARY099
 #define DEG130 ((word)K_130DEG) /* 130DEG, 2DEC .3611111111 */

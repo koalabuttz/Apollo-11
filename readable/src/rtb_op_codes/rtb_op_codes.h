@@ -5,9 +5,10 @@
  * ends back at DANZIG). Only LOADTIME (for R63), CDULOGIC (for AOTMARK's
  * sightings and the geometry), 2V1STO2S (for the LM's radar angles),
  * V1STO2S (for the maneuver's CDU angles, KALCMANU_STEERING), TPMODE (for
- * the LM's measurement incorporation, LSR22.3), DPMODE (for R36), and
- * 1STO2S, TRANSP1 and TRANSP2 (for the CM's sextant geometry) are here so
- * far; the rest of the file is the faithful port's. */
+ * the LM's measurement incorporation, LSR22.3), DPMODE (for R36),
+ * NORMUNX1 (for the LM's R31) and 1STO2S, TRANSP1 and TRANSP2 (for the
+ * CM's sextant geometry) are here so far; the rest of the file is the
+ * faithful port's. */
 #ifndef READABLE_RTB_OP_CODES_H
 #define READABLE_RTB_OP_CODES_H
 
@@ -20,6 +21,7 @@ void v1sto2s(void);
 void two_v1sto2s(void);
 void tpmode(void);
 void dpmode(void);
+void normunx1(void);
 #if !LUMINARY099
 void transp1(void);
 void transp2(void);
