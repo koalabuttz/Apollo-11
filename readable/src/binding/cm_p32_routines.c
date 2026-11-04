@@ -153,7 +153,8 @@ static const struct basic_entry *basic_entry(uint16_t key)
 static const struct interpretive_code *const codes[] = {
     &P32STRT_CODE,     &ALMXITA_CODE,  &P32_P72A_CODE,      &VN0637_CODE,   &P32_P72E_CODE,
     &P32_P72_N75_CODE, &P33_P73A_CODE, &P33_P73_ALARM_CODE, &P33_P73C_CODE, &P33_P73E_CODE,
-    &P33_P73_N75_CODE, &DISDVLVC_CODE, &DISDVLVC_EXIT_CODE,
+    &P33_P73_N75_CODE, &DISDVLVC_CODE, &DISDVLVC_EXIT_CODE, &CSI_A_CODE,    &CSI_B2_CODE,
+    &CSI_B23_CODE,     &CSINEXT_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */
@@ -210,6 +211,17 @@ static bool store_spills(word w)
     if (a <= 45u) return false; /* the work area, or word 45 itself */
     n = MODE == 0u || MODE == 077777u ? 1u : (MODE & 040000u) ? 5u : 2u;
     return (a & 0377u) + n > 0377u;
+}
+
+/* Whether a pass in a bank below 30 runs with the superbank bit set. The
+ * faithful pairs there take the bit either way, and read their constants
+ * where the listing has them; but the bit moves banks 30 to 37 to 40 to
+ * 47, so the AGC would read the constants this file keeps in bank 35
+ * (ONETHTH, NICKELDP, 1RTEB2, PMINE...) from bank 45, which the rope
+ * lacks. No program runs the file so, and the binding refuses it. */
+static bool superbank_set_below_30(unsigned bank)
+{
+    return bank < 030u && (*agc.superbank & SUPERBANK_BIT);
 }
 
 /* ---- The keys, in the faithful tables' order ---- */
@@ -275,7 +287,8 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     bind(program, state, io);
     code = code_at(bank, LOC);
     if (Z != NEWOPS || !in_bank(bank) || !code || BANKSET != BBANK ||
-        INTBIT15 != (FBANK & 040000u) || !sane() || outside_table(key))
+        INTBIT15 != (FBANK & 040000u) || !sane() || outside_table(key) ||
+        superbank_set_below_30(bank))
         return EXEC_OUT_OF_SCOPE;
     if (!(code->words[LOC - code->first] & 040000u) && store_spills(code->words[LOC - code->first]))
         return EXEC_OUT_OF_SCOPE;

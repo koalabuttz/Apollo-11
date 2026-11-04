@@ -47,11 +47,13 @@ struct interpretive_code {
 };
 extern const struct interpretive_code P32STRT_CODE, ALMXITA_CODE, P32_P72A_CODE, VN0637_CODE,
     P32_P72E_CODE, P32_P72_N75_CODE, P33_P73A_CODE, P33_P73_ALARM_CODE, P33_P73C_CODE,
-    P33_P73E_CODE, P33_P73_N75_CODE, DISDVLVC_CODE, DISDVLVC_EXIT_CODE;
+    P33_P73E_CODE, P33_P73_N75_CODE, DISDVLVC_CODE, DISDVLVC_EXIT_CODE, CSI_A_CODE, CSI_B2_CODE,
+    CSI_B23_CODE, CSINEXT_CODE;
 static const struct interpretive_code *const codes[] = {
     &P32STRT_CODE,     &ALMXITA_CODE,  &P32_P72A_CODE,      &VN0637_CODE,   &P32_P72E_CODE,
     &P32_P72_N75_CODE, &P33_P73A_CODE, &P33_P73_ALARM_CODE, &P33_P73C_CODE, &P33_P73E_CODE,
-    &P33_P73_N75_CODE, &DISDVLVC_CODE, &DISDVLVC_EXIT_CODE,
+    &P33_P73_N75_CODE, &DISDVLVC_CODE, &DISDVLVC_EXIT_CODE, &CSI_A_CODE,    &CSI_B2_CODE,
+    &CSI_B23_CODE,     &CSINEXT_CODE,
 };
 extern const agc_routine_table cm_p32_p33_basic, cm_p32_p33_interpretive;
 extern const agc_routine_table faithful_cm_p32_p33_basic, faithful_cm_p32_p33_interpretive;
@@ -121,13 +123,15 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 }
 
 /* The keys the parts written so far hold: part 1, the programs (banks 4
- * and 14, bank 12 to P33/P73D's end, and bank 37 to DISDVLVC's end). */
+ * and 14, bank 12 to P33/P73D's end, and bank 37 to DISDVLVC's end); part
+ * 2, CSI/A to CIRCL (bank 6, the rest of bank 12, bank 22, and bank 23 to
+ * NTP/2). */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
-    return bank == 04u || bank == 014u || (bank == 012u && z < 02013u) ||
-           (bank == 037u && z < 02645u);
+    return bank == 04u || bank == 06u || bank == 012u || bank == 014u || bank == 022u ||
+           (bank == 023u && z < 03151u) || (bank == 037u && z < 02645u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -309,6 +313,20 @@ static bool faithful_spills(uint16_t key, const apollo_overlay_state *start)
     return spill;
 }
 
+/* An order pair in a bank below 30 with the superbank bit set: the
+ * faithful pairs there take the bit either way, and read their constants
+ * where the listing has them, where the AGC would read those in bank 35
+ * from bank 45, which the rope lacks; the binding refuses it. */
+static unsigned superbank_states;
+
+static bool superbank_set_below_30(uint16_t key, int interpretive, const cm_native_io *io)
+{
+    bool set = interpretive && key / 1024u < 030u && (io->superbank & 0100u);
+
+    superbank_states += set;
+    return set;
+}
+
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
                      int interpretive, unsigned *runs, unsigned *readable_keys)
 {
@@ -351,7 +369,9 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                         memcmp(&rhw, &hardware, sizeof rhw)))
                 why = "readable refusal changed the state";
             else if (sf == EXEC_OK && sr != EXEC_OK)
-                why = faithful_spills(key, &start) ? 0 : "readable refused, faithful ran";
+                why = faithful_spills(key, &start) || superbank_set_below_30(key, interpretive, &io)
+                          ? 0
+                          : "readable refused, faithful ran";
             else if (sf != EXEC_OK && sr == EXEC_OK)
                 why = "readable ran, faithful refused";
             else if (sf == EXEC_OK && memcmp(&fa, &ra, sizeof fa))
@@ -412,9 +432,9 @@ int main(int argc, char **argv)
                      &readable_pairs);
     printf("cm-p32-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
            "pairs) from %u states each, the others from %u, %u run by the faithful routines, "
-           "%u store spills refused, %u failures\n",
+           "%u store spills and %u superbank states refused, %u failures\n",
            words, readable_basic + readable_pairs,
            cm_p32_p33_basic.count + cm_p32_p33_interpretive.count, readable_basic, readable_pairs,
-           CASES, OTHER_CASES, runs, spills, failures);
+           CASES, OTHER_CASES, runs, spills, superbank_states, failures);
     return failures != 0;
 }
