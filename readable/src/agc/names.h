@@ -221,6 +221,7 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define WTLST5       ((word)K_WTLST5)
 #define WTABORT      ((word)K_WTABORT)
 #define FIXDELAY     ((word)K_FIXDELAY)
+#define TWIDDLE      ((word)K_TWIDDLE)
 #define SVCT3        ((word)K_SVCT3)
 #define SVCT3X       ((word)K_SVCT3X)
 #define TASKOVER     ((word)K_TASKOVER)
@@ -1976,7 +1977,6 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define SOMERR2     ((word)K_SOMERR2)
 #define REDO        ((word)K_REDO)
 #define NEWMODEX    ((word)K_NEWMODEX)
-#define TWIDDLE     ((word)K_TWIDDLE)
 #define CHANG1      ((word)K_CHANG1)
 /* ATIGINC: the erasable program (EBANK 7) PERFERAS calls. */
 #define ATIGINC ((word)K_ATIGINC)
@@ -3518,24 +3518,39 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
  * NVWORD1, TIG ...) are named by ADDRESS_OF. */
 #define ACADN83    ((word)K_ACADN83) /* 2CADR CALCN83 */
 #define ACADN85    ((word)K_ACADN85) /* 2CADR CALCN85 */
+#define ASTNV99P   ((word)K_ASTNV99P)
 #define BESTTRIM   ((word)K_BESTTRIM)
 #define BTRIMR     ((word)K_BTRIMR)
 #define CALCN83    ((word)K_CALCN83)
 #define CALCN85    ((word)K_CALCN85)
+#define CALL40_8   ((word)K_CALL40_8) /* CALL40.8 */
+#define CKNVWRD1   ((word)K_CKNVWRD1)
+#define CLOCKJOB   ((word)K_CLOCKJOB)
+#define CLOCKON    ((word)K_CLOCKON)
+#define CLOKTASK   ((word)K_CLOKTASK)
 #define DOSPSOFF   ((word)K_DOSPSOFF)
 #define DOSTRULL   ((word)K_DOSTRULL)
 #define DOTVCON    ((word)K_DOTVCON)
 #define DOTVCRCS   ((word)K_DOTVCRCS)
+#define DPAGREE    ((word)K_DPAGREE)
+#define DYNDISP    ((word)K_DYNDISP)
 #define E6SETTER   ((word)K_E6SETTER)
 #define E7SETTER   ((word)K_E7SETTER)
 #define ENDIGN     ((word)K_ENDIGN)
 #define ENDV97E    ((word)K_ENDV97E)
+#define ENDV97P    ((word)K_ENDV97P)
+#define ENDV97T    ((word)K_ENDV97T)
+#define ENDV99P    ((word)K_ENDV99P)
+#define ENDV99PI   ((word)K_ENDV99PI)
 #define ENGINOFF   ((word)K_ENGINOFF)
+#define ENGREQST   ((word)K_ENGREQST)
+#define FAILDSP    ((word)K_FAILDSP)
 #define IGNITION   ((word)K_IGNITION)
 #define IMPLBURN   ((word)K_IMPLBURN)
 #define IMPLCONT   ((word)K_IMPLCONT)
 #define IMPULCHK   ((word)K_IMPULCHK)
 #define MASSBACK   ((word)K_MASSBACK)
+#define NOFLASH    ((word)K_NOFLASH)
 #define P40BLNKR   ((word)K_P40BLNKR)
 #define P40CLK     ((word)K_P40CLK)
 #define P40CSM     ((word)K_P40CSM)
@@ -3562,15 +3577,24 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define POSTBURN   ((word)K_POSTBURN)
 #define PRECHECK   ((word)K_PRECHECK)
 #define PREPTVC    ((word)K_PREPTVC)
+#define QUICKIGN   ((word)K_QUICKIGN)
+#define R40ENABL   ((word)K_R40ENABL)
 #define SEC29_96   ((word)K_SEC29_96) /* SEC29.96: 2DEC 2996 */
 #define SERVCADR   ((word)K_SERVCADR) /* 2CADR SERVEXIT */
 #define SERVXT     ((word)K_SERVXT)
+#define SETCLOCK   ((word)K_SETCLOCK)
 #define SETMAXDB   ((word)K_SETMAXDB)
 #define SETMINDB   ((word)K_SETMINDB)
+#define SETTB6     ((word)K_SETTB6)
+#define SETUPDYN   ((word)K_SETUPDYN)
+#define SETUP_9    ((word)K_SETUP_9) /* SETUP.9 */
 #define SPSOFF     ((word)K_SPSOFF)
+#define SPSOFF97   ((word)K_SPSOFF97)
 #define SPSON      ((word)K_SPSON)
 #define STEERADS   ((word)K_STEERADS) /* 2CADR STEERING */
+#define STEERING   ((word)K_STEERING)
 #define STEERULL   ((word)K_STEERULL)
+#define SURELY_9   ((word)K_SURELY_9) /* SURELY.9 */
 #define T5IDL24    ((word)K_T5IDL24) /* 2CADR T5IDLOC */
 #define TIGAVEG    ((word)K_TIGAVEG)
 #define TIGBLNK    ((word)K_TIGBLNK)
@@ -3585,6 +3609,22 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define TVCON2C    ((word)K_TVCON2C) /* 2CADR TVCDAPON */
 #define TVCZAP     ((word)K_TVCZAP)
 #define ULAGEOFF   ((word)K_ULAGEOFF)
+#define UPDATEVG   ((word)K_UPDATEVG)
+#define V97E       ((word)K_V97E)
+#define V97E40_6   ((word)K_V97E40_6) /* V97E40.6 */
+#define V97ETASK   ((word)K_V97ETASK)
+#define V97P       ((word)K_V97P)
+#define V97PTASK   ((word)K_V97PTASK)
+#define V97T       ((word)K_V97T)
+#define V97TRCS    ((word)K_V97TRCS)
+#define V97TTASK   ((word)K_V97TTASK)
+#define V99E       ((word)K_V99E)
+#define V99EJOB    ((word)K_V99EJOB)
+#define V99FLASH   ((word)K_V99FLASH)
+#define V99P       ((word)K_V99P)
+#define V99P_TIG   ((word)K_V99P_TIG) /* V99P/TIG */
+#define V99T       ((word)K_V99T)
+#define V99TJOB    ((word)K_V99TJOB)
 #define FIVE_SECDP ((word)K_5SECDP) /* 5SECDP: 2DEC 500 */
 #define EIGHTEEN_SEC ((word)KW_18SEC) /* 18SEC: DEC 1800 */
 #define FIVE_SEC   ((word)KW_5SEC)    /* 5SEC: DEC 500 */
@@ -3593,6 +3633,8 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define OCT27_24   ((word)KW_OCT27_24) /* OCT27/24: OCT 27 */
 #define ONE_SEC    ((word)KW_1SEC)     /* 1SEC: DEC 100 */
 #define SEC24_96   ((word)KW_SEC24_96) /* SEC24.96: DEC 2496 */
+#define THREE_MDOT ((word)KW_3MDOT)    /* 3MDOT: "3SEC MASS LOSS" */
+#define PRIO27     ((word)KW_PRIO27)
 #define SEC29_96_PLUS_1 ((word)KW_SEC29_96P1) /* SEC29.96 +1: its low word, 2996 */
 #define MINDB      ((word)KW_MINDB)   /* DEC 46 */
 #define P40CKLS2   ((word)KW_P40CKLS2) /* OCT 204 */

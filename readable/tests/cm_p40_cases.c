@@ -17,21 +17,20 @@
  * index registers, A (now and then with overflow), Q (often a return of
  * bank 24), the flag words (often one bit changed), the vectors and times
  * (any erasable bank's words), NEWJOB, the overflow indicator, MODREG (40
- * or 41), MRKRTMP and PHASE5 (each sign), TVCPHASE (often -1), the
- * channels (12 in the io record, 5 in the hardware record), now and then
- * any word but the
- * interpreter's own, the latches, no hardware record, or a state the
- * routines refuse (another work area, BBANK not the two banks, a word of
+ * or 41), MRKRTMP, PHASE5 and NVWORD1 (each sign), TVCPHASE (often -1),
+ * the channels (11 and 12 in the io record, 5 in the hardware record),
+ * now and then any word but the interpreter's own, the latches, no
+ * hardware record, or a state the routines refuse (another work area, BBANK not the two banks, a word of
  * 16 bits). Each runs once on each side, as the program's trampoline
  * would call the key's routine. Where either port runs, the other must
  * too, with the same memory, io record and hardware record, word for
  * word; where the readable one refuses, it must leave everything as it
  * found it; and the faithful routine must run from at least 1 in 16 of
  * the states of every readable key. One refusal is counted, not failed:
- * the TC Q of SETMINDB, SETMAXDB, SPSOFF and TVCZAP to a word of bank 24
- * the parts written so far do not cover, where the faithful port runs on. A key the binding
- * hands to the faithful port must give the faithful routine's result,
- * refusals and all. */
+ * the TC Q of SETMINDB, SETMAXDB, SPSOFF, TVCZAP and E7SETTER to FENG,
+ * the constant after CALCN85's TC SERVXT, where the faithful port fails.
+ * A key the binding hands to the faithful port must give the faithful
+ * routine's result, refusals and all. */
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -49,10 +48,12 @@ struct interpretive_code {
     const uint16_t *words;
 };
 extern const struct interpretive_code P40CSM_CODE, P40PVA_CODE, P40TTOG_CODE, P40S_SV_CODE,
-    P41_DSP_CODE, P40CNV85_CODE, CALCN85_CODE, P41CSM_CODE, P47CSM_CODE, CALCN83_CODE, P47BODY_CODE;
+    P41_DSP_CODE, P40CNV85_CODE, CALCN85_CODE, P41CSM_CODE, P47CSM_CODE, CALCN83_CODE, P47BODY_CODE,
+    UPDATEVG_CODE, CALL40_8_CODE, SURELY_9_CODE, STEERING_CODE, DYNDISP_CODE;
 static const struct interpretive_code *const codes[] = {
-    &P40CSM_CODE,  &P40PVA_CODE, &P40TTOG_CODE, &P40S_SV_CODE, &P41_DSP_CODE, &P40CNV85_CODE,
-    &CALCN85_CODE, &P41CSM_CODE, &P47CSM_CODE,  &CALCN83_CODE, &P47BODY_CODE,
+    &P40CSM_CODE,   &P40PVA_CODE,   &P40TTOG_CODE,  &P40S_SV_CODE, &P41_DSP_CODE, &P40CNV85_CODE,
+    &CALCN85_CODE,  &P41CSM_CODE,   &P47CSM_CODE,   &CALCN83_CODE, &P47BODY_CODE, &UPDATEVG_CODE,
+    &CALL40_8_CODE, &SURELY_9_CODE, &STEERING_CODE, &DYNDISP_CODE,
 };
 #define readable_basic_table        cm_p40_p47_basic
 #define readable_interpretive_table cm_p40_p47_interpretive
@@ -64,8 +65,9 @@ static const struct interpretive_code *const codes[] = {
 #define ROPE                        1u
 #define NEWOPS_AT                   06037u
 /* The parts written so far: part 1, the programs' start (24,2073-2462,
- * and P41CSM, 27,2614-2630); part 2, P47CSM to TVCZAP (24,2463-3103). */
-#define WRITTEN {024u, 02073u, 03103u}, {027u, 02614u, 02630u}
+ * and P41CSM, 27,2614-2630); part 2, P47CSM to TVCZAP (24,2463-3103);
+ * part 3, UPDATEVG to ENDV97E (24,3104-3573). */
+#define WRITTEN {024u, 02073u, 03573u}, {027u, 02614u, 02630u}
 extern const agc_routine_table readable_basic_table, readable_interpretive_table;
 extern const agc_routine_table faithful_basic, faithful_interpretive;
 bool cm_p40_p47_readable(uint16_t key, bool order_pair);
@@ -88,12 +90,16 @@ bool cm_p40_p47_runs_on(uint16_t z);
 #define MRKRTMP_AT  01445u /* (in E6) */
 #define PHASE5_AT   0763u
 #define TVCPHASE_AT 01644u /* (in E6) */
+#define NVWORD1_AT  01145u
+#define QTEMP1_AT   03730u /* (in E7) */
 
-/* SETMINDB, SETMAXDB -1, SETMAXDB, SPSOFF and TVCZAP, which end in TC Q. */
+/* SETMINDB, SETMAXDB -1, SETMAXDB, SPSOFF, TVCZAP and E7SETTER, which end
+ * in TC Q. */
 #define SETMINDB_KEY (024u * 1024u + 0304u)
 #define SETMAXDB_KEY (024u * 1024u + 0320u)
 #define SPSOFF_KEY   (024u * 1024u + 01017u)
 #define TVCZAP_KEY   (024u * 1024u + 01071u)
+#define E7SETTER_KEY (024u * 1024u + 01366u)
 
 #define CASES       4096u
 #define OTHER_CASES 16u
@@ -205,7 +211,8 @@ static uint16_t a_return(void)
         02124u, 02134u, 02135u, 02205u, 02216u, 02263u, 02073u, 02304u, 02317u, 02320u,
         02437u, 02463u, 02410u, 02555u, 02556u, 02557u, 02717u, 02720u, 02737u, 02763u,
         02767u, 02775u, 03003u, 03010u, 02570u, 02713u, 03017u, 03071u, 02724u, 03060u,
-        03120u, 03366u, 03573u, 03574u, 03765u, 00045u, 04662u, 01776u, 02000u, 03777u};
+        03120u, 03366u, 03573u, 03574u, 03765u, 03225u, 03401u, 03407u, 03452u, 03530u,
+        03536u, 00045u, 04662u, 01776u, 02000u, 03777u};
     return returns[rnd() % COUNT(returns)];
 }
 
@@ -282,6 +289,13 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
         if (rnd() % 2u) w[PHASE5_AT] = edge_or_any();
         if (rnd() % 2u) w[erasable_at(w, TVCPHASE_AT)] = rnd() % 2u ? 077776u : edge_or_any();
         io->channel12 = any_word();
+        /* NVWORD1 (CKNVWRD1's CCS, SETCLOCK's test): each sign, or verb
+         * 06 noun 85 or 40; channel 11 (STEERING's RAND). */
+        if (rnd() % 2u) {
+            k = rnd() % 4u;
+            w[NVWORD1_AT] = k == 0u ? 01525u : k == 1u ? 01450u : edge_or_any();
+        }
+        if (rnd() % 2u) io->channel11 = any_word();
         if (rnd() % 16u == 0u) io->superbank = (uint16_t)(rnd() & (rnd() % 2u ? 0160u : 0177u));
         if (rnd() % 32u == 0u) io->interrupt_enabled = (uint16_t)(rnd() % 3u);
         if (rnd() % 32u == 0u) w[4] = (uint16_t)(rnd() & 076000u);
@@ -313,11 +327,16 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
     if (n % 4u != 0u && rnd() % 64u == 0u) w[3u + rnd() % 03775u] |= 0100000u;
     if (n % 4u != 0u && rnd() % 64u == 0u) w[2] |= 0100000u; /* Q, which may hold 16 bits */
     w[BANKSET_AT] = rnd() % 32u ? w[6] : any_word();
+    /* QTEMP1, which UPDATEVG returns through by GOTO, a fixed CADR (as STQ
+     * leaves it): a chain of erasable CADRs that never reaches a fixed one
+     * loops in the AGC until the night watchman restarts it, and the
+     * faithful port's host build stops the test there. */
+    if (!(w[QTEMP1_AT] & 074000u)) w[QTEMP1_AT] = (uint16_t)(04000u + rnd() % 074000u);
     /* The interrupt latch either way now and then. */
     if (n % 4u != 0u && rnd() % 8u == 0u) io->interrupt_enabled = (uint16_t)(rnd() % 2u);
 }
 
-/* Whether the TC Q of SETMINDB, SETMAXDB, SPSOFF or TVCZAP, from a state, goes to a word of
+/* Whether the TC Q of one of them, from a state, goes to a word of
  * bank 24 the binding does not run on at: Q overflow-corrected, an
  * address in the bank. */
 static bool runs_on_unwritten(const apollo_overlay_state *s)
@@ -370,10 +389,10 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                     why = "the table does not run the faithful routine";
             } else if (sr != EXEC_OK && !interpretive &&
                        (key == SETMINDB_KEY || key == SETMAXDB_KEY - 1u || key == SETMAXDB_KEY ||
-                        key == SPSOFF_KEY || key == TVCZAP_KEY) &&
+                        key == SPSOFF_KEY || key == TVCZAP_KEY || key == E7SETTER_KEY) &&
                        sf != EXEC_OUT_OF_SCOPE && !memcmp(&ra, &start, sizeof ra) &&
                        !memcmp(&rio, &io, sizeof rio) && runs_on_unwritten(&start)) {
-                ++*counted; /* a TC Q to a word of bank 24 not yet written */
+                ++*counted; /* a TC Q to FENG */
             } else if (sr != EXEC_OK &&
                        (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio) ||
                         memcmp(&rhw, &hardware, sizeof rhw)))
@@ -440,7 +459,7 @@ int main(int argc, char **argv)
                      &readable_pairs, &counted);
     printf("cm-p40-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
            "pairs) from %u states each (the others from %u), %u run by the faithful routines, "
-           "%u returns to bank 24 not yet written refused, %u failures\n",
+           "%u returns to FENG refused, %u failures\n",
            words, readable_basic + readable_pairs,
            readable_basic_table.count + readable_interpretive_table.count, readable_basic,
            readable_pairs, CASES, OTHER_CASES, runs, counted, failures);

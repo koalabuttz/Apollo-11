@@ -44,22 +44,18 @@ static void tc_q(void)
     Z = at;
 }
 
-/* TCR E7SETTER and TCR E6SETTER at a word: EBANK 7 (or 6), and TC Q back
- * to the word after the TCR. */
+/* TCR E7SETTER and TCR E6SETTER at a word: EBANK 7 (or 6), and back to
+ * the word after the TCR. */
 static void tcr_e7setter(word at)
 {
     tc_at(at);
-    set_A(EBANK7);
-    ts(EBANK_ADDRESS);
-    tc_q();
+    e7setter();
 }
 
 static void tcr_e6setter(word at)
 {
     tc_at(at);
-    set_A(EBANK6); /* "SET UP EBANK6" */
-    ts(EBANK_ADDRESS);
-    tc_q();
+    e6setter();
 }
 
 /* ---- TIG-5 -- p. 694 ---- */

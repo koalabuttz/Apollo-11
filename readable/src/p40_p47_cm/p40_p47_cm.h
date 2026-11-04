@@ -12,7 +12,10 @@
  * thrust monitor, and the countdown's TIG-30 (programs.c, p. 693), and
  * the burn itself (ignition.c, pp. 694-699): TIG-5, TIG-0, IGNITION,
  * the TVC's start (DOTVCON, DOSTRULL), IMPLBURN, the shutdown (ENGINOFF,
- * DOSPSOFF, SPSOFF, DOTVCRCS) and TVCZAP.
+ * DOSPSOFF, SPSOFF, DOTVCRCS) and TVCZAP. Part 3 adds the steering
+ * during the burn (steering.c, pp. 699-702: UPDATEVG, STEERING) and the
+ * countdown's display with the crew's answers to it (clocktask.c, pp.
+ * 703-709: CLOKTASK, CLOCKJOB, verbs 99 and 97, E7SETTER, E6SETTER).
  *
  * The interpretive code is in the listing's notation, run by the readable
  * interpreter. The entries below are the basic code's: each program's
@@ -29,7 +32,8 @@
 /* ---- Part 1: the programs' start (programs.c) ---- */
 
 extern const struct interpretive_code P40CSM_CODE, P40PVA_CODE, P40TTOG_CODE, P40S_SV_CODE,
-    P41_DSP_CODE, P40CNV85_CODE, CALCN85_CODE, P41CSM_CODE, P47CSM_CODE, CALCN83_CODE, P47BODY_CODE;
+    P41_DSP_CODE, P40CNV85_CODE, CALCN85_CODE, P41CSM_CODE, P47CSM_CODE, CALCN83_CODE, P47BODY_CODE,
+    UPDATEVG_CODE, CALL40_8_CODE, SURELY_9_CODE, STEERING_CODE, DYNDISP_CODE;
 
 void p40csm(void);                      /* P40CSM */
 void p40csm_after_downflag(void);       /* P40CSM +2: TC INTPRET */
@@ -62,6 +66,8 @@ void postburn(void);                    /* POSTBURN */
 void postburn_terminate(void);          /* POSTBURN +3: V34 */
 void postburn_proceed(void);            /* POSTBURN +4 */
 void postburn_recycle(void);            /* POSTBURN +5 */
+void post41(void);                      /* POST41 */
+void p40rcs(void);                      /* P40RCS */
 void p40mindb(void);                    /* P40MINDB: DELAYJOB's return */
 void p40mindb_after_setmindb(void);     /* P40MINDB +1: RELINT */
 void tignow(void);                      /* TIGNOW */
@@ -146,7 +152,85 @@ void dotvcrcs_after_novac(void);    /* DOTVCRCS +014: TASKOVER */
 void spsoff(void);                  /* SPSOFF */
 void tvczap(void);                  /* TVCZAP */
 
-/* Words of later parts the ones above run on into. */
+/* ---- Part 3: the steering (steering.c) ---- */
+
+void updatevg_after_exit(void);     /* after UPDATEVG_CODE's EXIT */
+void updatevg_after_phaschng(void); /* UPDATEVG +021: TC INTPRET */
+void surely_9_after_exit(void);     /* SURELY.9 +1: CAF PRIO10 */
+void surely_9_after_findvac(void);  /* SURELY.9 +5: 2PHSCHNG */
+void surely_9_after_2phschng(void); /* SURELY.9 +010: TC INTPRET */
+void steering(void);                /* STEERING */
+void steering_after_exit(void);     /* after STEERING_CODE's EXIT */
+void steering_after_e7setter(void); /* STEERING +020: INHINT */
+void steering_after_dpagree(void);  /* STEERING +030: CAE MPAC +1 */
+void steering_after_waitlist(void); /* STEERING +045: 2PHSCHNG */
+void steering_after_2phschng(void); /* STEERING +050: DOWNFLAG */
+void steering_after_downflag(void); /* STEERING +052: TCF SERVXT */
+
+/* ---- Part 3: the countdown's display, verbs 99 and 97 (clocktask.c) ---- */
+
+void cloktask(void);                /* CLOKTASK */
+void cloktask_after_phaschng(void); /* CLOKTASK +6: TASKOVER */
+void setclock_after_waitlist(void); /* SETCLOCK +4: CCS NVWORD1 */
+void settb6(void);                  /* SETTB6 */
+void setupdyn_after_findvac(void);  /* SETUPDYN +4: TCF SETTB6 */
+void dyndisp(void);                 /* DYNDISP */
+void dyndisp_after_exit(void);      /* DYNDISP +4: TCF CKNVWRD1 */
+void clockjob(void);                /* CLOCKJOB */
+void cknvwrd1(void);                /* CKNVWRD1 */
+void faildsp_terminate(void);       /* FAILDSP +3: TCF V97T */
+void faildsp_proceed(void);         /* FAILDSP +4: TCF V97P */
+void faildsp_enter(void);           /* FAILDSP +5: TCF V97E */
+void engreqst_terminate(void);      /* ENGREQST +3: TCF V99T */
+void engreqst_proceed(void);        /* ENGREQST +4: TCF V99P */
+void engreqst_enter(void);          /* ENGREQST +5: TCF V99E */
+void e7setter(void);                /* E7SETTER */
+void e6setter(void);                /* E6SETTER */
+void v99e(void);                    /* V99E */
+void v99ejob(void);                 /* V99EJOB */
+void v99ejob_after_tvczap(void);    /* V99EJOB +1: TCF P40RCS */
+void v99t(void);                    /* V99T */
+void v99tjob(void);                 /* V99TJOB */
+void v99tjob_after_tvczap(void);    /* V99TJOB +1: TCF POST41 */
+void v99p(void);                    /* V99P */
+void v99p_tig(void);                /* V99P/TIG */
+void v97t(void);                    /* V97T */
+void v97t_after_2phschng(void);     /* V97T +3: CAF ONE */
+void v97t_after_twiddle(void);      /* V97T +6: ENDOFJOB */
+void v97ttask(void);                /* V97TTASK */
+void v97ttask_after_phaschng(void); /* V97TTASK +010: TCR SPSOFF */
+void v97ttask_after_spsoff(void);   /* V97TTASK +011: PHASCHNG */
+void v97ttask_tailoff(void);        /* V97TTASK +013: FIXDELAY */
+void v97trcs(void);                 /* V97TRCS */
+void v97trcs_after_rcsdapon(void);  /* V97TRCS +2: CAF PRIO27 */
+void endv97t(void);                 /* ENDV97T */
+void v97p(void);                    /* V97P */
+void v97p_after_phaschng(void);     /* V97P +2: CAF ONE */
+void v97p_after_twiddle(void);      /* V97P +5: ENDOFJOB */
+void v97ptask(void);                /* V97PTASK */
+void v97ptask_after_idlefail(void); /* V97PTASK +6: UPFLAG */
+void v97ptask_after_steersw(void);  /* V97PTASK +010: PHASCHNG */
+void v97ptask_after_phaschng(void); /* V97PTASK +012: FIXDELAY */
+void r40enabl(void);                /* R40ENABL */
+void r40enabl_after_downflag(void); /* R40ENABL +2: PHASCHNG */
+void endv97p(void);                 /* ENDV97P */
+void v97e(void);                    /* V97E */
+void v97e_after_phaschng(void);     /* V97E +2: CAF ONE */
+void v97e_after_waitlist(void);     /* V97E +6: ENDOFJOB */
+void v97etask(void);                /* V97ETASK */
+void v97etask_after_e6setter(void); /* V97ETASK +5: CAF 3MDOT */
+void spsoff97(void);                /* SPSOFF97 */
+void spsoff97_after_spsoff(void);   /* SPSOFF97 +1: PHASCHNG */
+void spsoff97_after_phaschng(void); /* SPSOFF97 +3: FIXDELAY */
+void v97e40_6(void);                /* V97E40.6 */
+void v97e40_6_after_waitlist(void); /* V97E40.6 +4: IBNKCALL */
+void v97e40_6_after_rcsdapon(void); /* V97E40.6 +6: 2PHSCHNG */
+void quickign(void);                /* QUICKIGN */
+void v99flash(void);                /* V99FLASH */
+void v99flash_after_2phschng(void); /* V99FLASH +5: CAF PRIO20 */
+void endv97e(void);                 /* ENDV97E */
+
+/* Words of programs.c the parts run on into. */
 void ttgphs(void); /* TTGPHS, the countdown's restart group 4 */
 void servxt(void); /* SERVXT, back to SERVICER */
 
