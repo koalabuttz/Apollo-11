@@ -144,6 +144,8 @@ R31_SOURCES := $(INTERPRETER_SOURCES) src/r31/r31.c src/rtb_op_codes/rtb_op_code
 P76_SOURCES := $(INTERPRETER_SOURCES) src/p76/p76.c src/binding/p76_routines.c
 R30_SOURCES := $(INTERPRETER_SOURCES) src/r30/r30.c src/rtb_op_codes/rtb_op_codes.c \
 	src/binding/r30_routines.c
+SO_SOURCES := $(INTERPRETER_SOURCES) src/stable_orbit/stable_orbit.c \
+	src/rtb_op_codes/rtb_op_codes.c src/binding/stable_orbit_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
 	src/binding/imu_performance_routines.c
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
@@ -158,11 +160,11 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) $(R60_SOURCES) \
-	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
+	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SO_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
 HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
@@ -171,7 +173,7 @@ all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases
 	attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases \
 	imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases \
 	p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases \
-	r31-cases p76-cases r30-cases
+	r31-cases p76-cases r30-cases stable-orbit-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1974,6 +1976,54 @@ r30-cases: $(BUILD)/r30-oracle-lm $(BUILD)/r30-oracle-cm $(BUILD)/r30-cases-lm $
 	./$(BUILD)/r30-oracle-cm $(ROPES)
 	./$(BUILD)/r30-cases-lm $(ROPES)
 	./$(BUILD)/r30-cases-cm $(ROPES)
+
+# STABLE_ORBIT_-_P38-P39.agc, both missions' stable orbit programs (P38,
+# P39, P78, P79): each mission's port test (tests/test_lm_stable_orbit.c,
+# tests/test_cm_stable_orbit.c: its frozen cases run to their stops through
+# the program of its target, against the original program's yaAGC
+# digests) through the readable tables, tests/with_ropes.c loading the
+# ropes the readable interpreter reads; then tests/stable_orbit_cases.c side
+# by side with the faithful routines (renamed faithful_), for each mission.
+SO_NAMES_LM := lm_stable_orbit_basic lm_stable_orbit_interpretive
+SO_NAMES_CM := cm_stable_orbit_basic cm_stable_orbit_interpretive
+SO_COMMON := $(R63_COMMON)
+
+$(BUILD)/so-faithful-lm.o: $(PORT)/src/lm_stable_orbit.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(SO_NAMES_LM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/so-faithful-cm.o: $(PORT)/src/cm_stable_orbit.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(SO_NAMES_CM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/so-test-lm.o: $(PORT)/tests/test_lm_stable_orbit.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/so-test-cm.o: $(PORT)/tests/test_cm_stable_orbit.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/so-oracle-lm: $(SO_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/so-test-lm.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(SO_COMMON) $(PORT)/tests/lm_stable_orbit_target.c \
+		tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/so-oracle-cm: $(SO_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/so-test-cm.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(SO_COMMON) $(PORT)/tests/cm_stable_orbit_target.c \
+		tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/so-cases-lm: $(SO_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/so-faithful-lm.o \
+		tests/stable_orbit_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(SO_COMMON) $(filter %.o,$^) tests/stable_orbit_cases.c \
+		-o $@
+$(BUILD)/so-cases-cm: $(SO_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/so-faithful-cm.o \
+		tests/stable_orbit_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(SO_COMMON) $(filter %.o,$^) tests/stable_orbit_cases.c \
+		-o $@
+
+stable-orbit-cases: $(BUILD)/so-oracle-lm $(BUILD)/so-oracle-cm $(BUILD)/so-cases-lm \
+		$(BUILD)/so-cases-cm
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/so-oracle-lm $(ROPES)
+	./$(BUILD)/so-oracle-cm $(ROPES)
+	./$(BUILD)/so-cases-lm $(ROPES)
+	./$(BUILD)/so-cases-cm $(ROPES)
 
 # SYSTEM_TEST_STANDARD_LEAD_INS, both missions: the port's three yaAGC
 # oracles with each mission's readable tables and the other mission's

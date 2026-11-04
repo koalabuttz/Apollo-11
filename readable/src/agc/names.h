@@ -3234,6 +3234,41 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define SPLRET1 ((word)K_SPLRET1)
 #define CANDEL  ((word)K_CANDEL)
 #endif
+
+/* P38-P39 (STABLE_ORBIT), the stable orbit programs, the LM's in bank 34,
+ * the CM's in bank 4: their labels, their displays (V06N33SR ... V06N81SR,
+ * VN 0633 ... VN 0681) and the LM's DECTWO (OCT 2). */
+#define P38      ((word)K_P38)
+#define P78      ((word)K_P78)
+#define OPTN1    ((word)K_OPTN1)
+#define JUNCTN1  ((word)K_JUNCTN1)
+#define RECYCLE  ((word)K_RECYCLE)
+#define OPTN2    ((word)K_OPTN2)
+#define JUNCTN2  ((word)K_JUNCTN2)
+#define MAINRTNE ((word)K_MAINRTNE)
+#define TEST3979 ((word)K_TEST3979)
+#define P39P79   ((word)K_P39P79)
+#define MAINRTN1 ((word)K_MAINRTN1)
+#define DSPLY58  ((word)K_DSPLY58)
+#define DSPLY81  ((word)K_DSPLY81)
+#define P39      ((word)K_P39)
+#define P79      ((word)K_P79)
+#define P39_P79A ((word)K_P39_P79A) /* P39/P79A */
+#define P39_P79B ((word)K_P39_P79B) /* P39/P79B */
+#define PREC_TT  ((word)K_PREC_TT)  /* PREC/TT */
+#define INTRPVP  ((word)K_INTRPVP)
+#define OTHERV   ((word)K_OTHERV)
+#define VNDSPLY  ((word)K_VNDSPLY)
+#define V06N33SR ((word)KW_V06N33SR) /* VN 0633 */
+#define V06N55SR ((word)KW_V06N55SR) /* VN 0655 */
+#define V04N06SR ((word)KW_V04N06SR) /* VN 0406 */
+#define V06N57SR ((word)KW_V06N57SR) /* VN 0657 */
+#define V06N34SR ((word)KW_V06N34SR) /* VN 0634 */
+#define V06N58SR ((word)KW_V06N58SR) /* VN 0658 */
+#define V06N81SR ((word)KW_V06N81SR) /* VN 0681 */
+#if LUMINARY099
+#define DECTWO ((word)KW_DECTWO) /* OCT 2 */
+#endif
 #if LUMINARY099
 #define DEG130 ((word)K_130DEG) /* 130DEG, 2DEC .3611111111 */
 #else
