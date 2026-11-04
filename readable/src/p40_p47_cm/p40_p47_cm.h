@@ -8,7 +8,11 @@
  * 24 and 27, pp. 684-690): P40CSM and P41CSM, the burn attitude and the
  * gimbal test, the countdown's displays (P40S/SV, P41/DSP, P40CNV85,
  * CALCN85), the end of the burn (POSTBURN, TIGNOW, POST41) and the
- * autopilot's deadbands (SETMINDB, SETMAXDB).
+ * autopilot's deadbands (SETMINDB, SETMAXDB). Part 2 adds P47CSM, the
+ * thrust monitor, and the countdown's TIG-30 (programs.c, p. 693), and
+ * the burn itself (ignition.c, pp. 694-699): TIG-5, TIG-0, IGNITION,
+ * the TVC's start (DOTVCON, DOSTRULL), IMPLBURN, the shutdown (ENGINOFF,
+ * DOSPSOFF, SPSOFF, DOTVCRCS) and TVCZAP.
  *
  * The interpretive code is in the listing's notation, run by the readable
  * interpreter. The entries below are the basic code's: each program's
@@ -25,7 +29,7 @@
 /* ---- Part 1: the programs' start (programs.c) ---- */
 
 extern const struct interpretive_code P40CSM_CODE, P40PVA_CODE, P40TTOG_CODE, P40S_SV_CODE,
-    P41_DSP_CODE, P40CNV85_CODE, CALCN85_CODE, P41CSM_CODE;
+    P41_DSP_CODE, P40CNV85_CODE, CALCN85_CODE, P41CSM_CODE, P47CSM_CODE, CALCN83_CODE, P47BODY_CODE;
 
 void p40csm(void);                      /* P40CSM */
 void p40csm_after_downflag(void);       /* P40CSM +2: TC INTPRET */
@@ -82,6 +86,65 @@ void tigblnk_after_novac(void);         /* TIGBLNK +012: CS OCT37 */
 void p40tsk_after_newphase(void);       /* P40TSK +2: TASKOVER */
 void p41csm(void);                      /* P41CSM */
 void p41csm_after_upflag(void);         /* P41CSM +2: TC INTPRET */
+
+/* ---- Part 2: P47CSM and TIG-30 (programs.c) ---- */
+
+void p47csm(void);                 /* P47CSM */
+void p47csm_after_r02both(void);   /* P47CSM +2: TC INTPRET */
+void p47csm_after_midtoav2(void);  /* P47CSM +5: CALRB's return */
+void p47csm_after_waitlist(void);  /* P47CSM +012: PHASCHNG */
+void p47csm_after_phaschng(void);  /* P47CSM +014: ENDOFJOB */
+void tigon(void);                  /* TIGON */
+void tigon_after_novac(void);      /* TIGON +7: CS BIT2 */
+void calcn83(void);                /* CALCN83 */
+void calcn83_after_exit(void);     /* after CALCN83_CODE's EXIT: PHASCHNG */
+void calcn83_after_phaschng(void); /* CALCN83 +016: GENTRAN */
+void calcn83_after_gentran(void);  /* CALCN83 +022: TC SERVXT */
+void p47body(void);                /* P47BODY */
+void p47bod(void);                 /* P47BOD, after P47BODY_CODE's EXIT */
+void p47bod_after_priochng(void);  /* P47BOD +2: PHASCHNG */
+void p47_dsp(void);                /* P47/DSP */
+void p47_dsp_terminate(void);      /* P47/DSP +3: GOTOPOOH */
+void p47_dsp_proceed(void);        /* P47/DSP +4: GOTOPOOH */
+void p47_dsp_recycle(void);        /* P47/DSP +5: TCF P47BODY */
+void tigaveg(void);                /* TIGAVEG */
+void tigaveg_p41(void);            /* TIGAVEG +1: TCF P41REDSP */
+void tigaveg_p40(void);            /* TIGAVEG +2 */
+void tigaveg_after_waitlist(void); /* TIGAVEG +010: CS SIX */
+void precheck(void);               /* PRECHECK */
+
+/* ---- Part 2: the burn (ignition.c) ---- */
+
+void tig_5(void);                   /* TIG-5 */
+void tig_5_after_waitlist(void);    /* TIG-5 +4 */
+void tig_5_after_2phschng(void);    /* TIG-5 +011: CAF PRIO20 */
+void tig_5_after_findvac(void);     /* TIG-5 +015: TASKOVER */
+void tig_0(void);                   /* TIG-0 */
+void ignition(void);                /* IGNITION */
+void preptvc_after_newphase(void);  /* PREPTVC +011: FIXDELAY */
+void dotvcon(void);                 /* DOTVCON */
+void dotvcon_after_newphase(void);  /* DOTVCON +022: CAF POSMAX */
+void dostrull(void);                /* DOSTRULL */
+void dostrull_after_steerull(void); /* DOSTRULL +4: TCR ULAGEOFF */
+void dostrull_after_ulageoff(void); /* DOSTRULL +5: kill group 4 */
+void implburn_after_e7setter(void); /* IMPLBURN +4 */
+void implburn_after_2phschng(void); /* IMPLBURN +020: CAE TGO +1 */
+void implcont(void);                /* IMPLCONT */
+void implcont_after_e6setter(void); /* IMPLCONT +4: CAF ZERO */
+void enginoff(void);                /* ENGINOFF */
+void enginoff_after_e6setter(void); /* ENGINOFF +1: CAE CSMMASS */
+void dospsoff(void);                /* DOSPSOFF */
+void dospsoff_after_spsoff(void);   /* DOSPSOFF +1: CS OCT27/24 */
+void dospsoff_after_newphase(void); /* DOSPSOFF +4: FIXDELAY */
+void dotvcrcs(void);                /* DOTVCRCS */
+void dotvcrcs_after_setmaxdb(void); /* DOTVCRCS +1: IBNKCALL RCSDAPON */
+void dotvcrcs_after_rcsdapon(void); /* DOTVCRCS +3: IBNKCALL MASSPROP */
+void dotvcrcs_after_massprop(void); /* DOTVCRCS +5: TCR TVCZAP */
+void dotvcrcs_after_tvczap(void);   /* DOTVCRCS +6: PHASCHNG */
+void dotvcrcs_after_phaschng(void); /* DOTVCRCS +010: CAF PRIO12 */
+void dotvcrcs_after_novac(void);    /* DOTVCRCS +014: TASKOVER */
+void spsoff(void);                  /* SPSOFF */
+void tvczap(void);                  /* TVCZAP */
 
 /* Words of later parts the ones above run on into. */
 void ttgphs(void); /* TTGPHS, the countdown's restart group 4 */

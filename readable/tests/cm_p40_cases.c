@@ -17,7 +17,9 @@
  * index registers, A (now and then with overflow), Q (often a return of
  * bank 24), the flag words (often one bit changed), the vectors and times
  * (any erasable bank's words), NEWJOB, the overflow indicator, MODREG (40
- * or 41) and MRKRTMP (each sign), now and then any word but the
+ * or 41), MRKRTMP and PHASE5 (each sign), TVCPHASE (often -1), the
+ * channels (12 in the io record, 5 in the hardware record), now and then
+ * any word but the
  * interpreter's own, the latches, no hardware record, or a state the
  * routines refuse (another work area, BBANK not the two banks, a word of
  * 16 bits). Each runs once on each side, as the program's trampoline
@@ -26,8 +28,8 @@
  * word; where the readable one refuses, it must leave everything as it
  * found it; and the faithful routine must run from at least 1 in 16 of
  * the states of every readable key. One refusal is counted, not failed:
- * SETMINDB's and SETMAXDB's TC Q to a word of bank 24 the parts written
- * so far do not cover, where the faithful port runs on. A key the binding
+ * the TC Q of SETMINDB, SETMAXDB, SPSOFF and TVCZAP to a word of bank 24
+ * the parts written so far do not cover, where the faithful port runs on. A key the binding
  * hands to the faithful port must give the faithful routine's result,
  * refusals and all. */
 #include <stdbool.h>
@@ -47,10 +49,10 @@ struct interpretive_code {
     const uint16_t *words;
 };
 extern const struct interpretive_code P40CSM_CODE, P40PVA_CODE, P40TTOG_CODE, P40S_SV_CODE,
-    P41_DSP_CODE, P40CNV85_CODE, CALCN85_CODE, P41CSM_CODE;
+    P41_DSP_CODE, P40CNV85_CODE, CALCN85_CODE, P41CSM_CODE, P47CSM_CODE, CALCN83_CODE, P47BODY_CODE;
 static const struct interpretive_code *const codes[] = {
-    &P40CSM_CODE,  &P40PVA_CODE,   &P40TTOG_CODE, &P40S_SV_CODE,
-    &P41_DSP_CODE, &P40CNV85_CODE, &CALCN85_CODE, &P41CSM_CODE,
+    &P40CSM_CODE,  &P40PVA_CODE, &P40TTOG_CODE, &P40S_SV_CODE, &P41_DSP_CODE, &P40CNV85_CODE,
+    &CALCN85_CODE, &P41CSM_CODE, &P47CSM_CODE,  &CALCN83_CODE, &P47BODY_CODE,
 };
 #define readable_basic_table        cm_p40_p47_basic
 #define readable_interpretive_table cm_p40_p47_interpretive
@@ -62,8 +64,8 @@ static const struct interpretive_code *const codes[] = {
 #define ROPE                        1u
 #define NEWOPS_AT                   06037u
 /* The parts written so far: part 1, the programs' start (24,2073-2462,
- * and P41CSM, 27,2614-2630). */
-#define WRITTEN {024u, 02073u, 02462u}, {027u, 02614u, 02630u}
+ * and P41CSM, 27,2614-2630); part 2, P47CSM to TVCZAP (24,2463-3103). */
+#define WRITTEN {024u, 02073u, 03103u}, {027u, 02614u, 02630u}
 extern const agc_routine_table readable_basic_table, readable_interpretive_table;
 extern const agc_routine_table faithful_basic, faithful_interpretive;
 bool cm_p40_p47_readable(uint16_t key, bool order_pair);
@@ -84,10 +86,14 @@ bool cm_p40_p47_runs_on(uint16_t z);
 #define PUSHLOC_AT  0166u
 #define MODREG_AT   01011u
 #define MRKRTMP_AT  01445u /* (in E6) */
+#define PHASE5_AT   0763u
+#define TVCPHASE_AT 01644u /* (in E6) */
 
-/* SETMINDB, SETMAXDB -1 and SETMAXDB, which end in TC Q. */
+/* SETMINDB, SETMAXDB -1, SETMAXDB, SPSOFF and TVCZAP, which end in TC Q. */
 #define SETMINDB_KEY (024u * 1024u + 0304u)
 #define SETMAXDB_KEY (024u * 1024u + 0320u)
+#define SPSOFF_KEY   (024u * 1024u + 01017u)
+#define TVCZAP_KEY   (024u * 1024u + 01071u)
 
 #define CASES       4096u
 #define OTHER_CASES 16u
@@ -190,13 +196,16 @@ static unsigned erasable_at(const uint16_t *w, unsigned address)
 }
 
 /* A return for Q: a word of bank 24 the faithful port runs on at (the
- * returns of the file's subroutines, keys of part 1 and of later parts,
- * a constant), or one in erasable or fixed-fixed memory. */
+ * returns of the file's subroutines, keys of the parts written and of
+ * later parts, a constant, a word it stops at), or one in erasable or
+ * fixed-fixed memory. */
 static uint16_t a_return(void)
 {
-    static const uint16_t returns[] = {02124u, 02134u, 02135u, 02205u, 02216u, 02263u, 02073u,
-                                       02304u, 02317u, 02320u, 02437u, 02463u, 02410u, 02555u,
-                                       03366u, 00045u, 04662u, 01776u, 02000u, 03777u};
+    static const uint16_t returns[] = {
+        02124u, 02134u, 02135u, 02205u, 02216u, 02263u, 02073u, 02304u, 02317u, 02320u,
+        02437u, 02463u, 02410u, 02555u, 02556u, 02557u, 02717u, 02720u, 02737u, 02763u,
+        02767u, 02775u, 03003u, 03010u, 02570u, 02713u, 03017u, 03071u, 02724u, 03060u,
+        03120u, 03366u, 03573u, 03574u, 03765u, 00045u, 04662u, 01776u, 02000u, 03777u};
     return returns[rnd() % COUNT(returns)];
 }
 
@@ -268,6 +277,11 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
          * CCS): each sign. */
         if (rnd() % 2u) w[MODREG_AT] = rnd() % 4u ? (uint16_t)(40u + rnd() % 2u) : any_word();
         if (rnd() % 2u) w[erasable_at(w, MRKRTMP_AT)] = edge_or_any();
+        /* PHASE5 (PRECHECK's CCS): each sign; TVCPHASE (SPSOFF's test):
+         * often -1; channel 12. */
+        if (rnd() % 2u) w[PHASE5_AT] = edge_or_any();
+        if (rnd() % 2u) w[erasable_at(w, TVCPHASE_AT)] = rnd() % 2u ? 077776u : edge_or_any();
+        io->channel12 = any_word();
         if (rnd() % 16u == 0u) io->superbank = (uint16_t)(rnd() & (rnd() % 2u ? 0160u : 0177u));
         if (rnd() % 32u == 0u) io->interrupt_enabled = (uint16_t)(rnd() % 3u);
         if (rnd() % 32u == 0u) w[4] = (uint16_t)(rnd() & 076000u);
@@ -284,9 +298,14 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
                                 : k == 1u ? near[rnd() % COUNT(near)]
                                           : (uint16_t)(rnd() % 02000u);
     }
-    /* The push-down list in the work area. */
+    /* The push-down list in the work area. Not over FIXLOC and OVFIND (a
+     * NOVAC job's list, from MPAC -36D, takes them in): a PUSH there makes
+     * FIXLOC a word of MPAC, which a CALL's INDEX FIXLOC adds to the
+     * whole TS QPRET, an instruction neither port models. */
     if (w[PUSHLOC_AT] < fixloc || w[PUSHLOC_AT] > fixloc + 037u || n % 4u != 0u)
         w[PUSHLOC_AT] = (uint16_t)(fixloc + rnd() % 040u);
+    if (w[PUSHLOC_AT] <= OVFIND_AT && w[PUSHLOC_AT] + 6u > FIXLOC_AT)
+        w[PUSHLOC_AT] = OVFIND_AT + 1u;
     w[6] = (uint16_t)((w[4] & 076000u) | eb);
     /* Now and then a state no program has: BBANK not the two banks, or a
      * word of 16 bits. */
@@ -298,7 +317,7 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
     if (n % 4u != 0u && rnd() % 8u == 0u) io->interrupt_enabled = (uint16_t)(rnd() % 2u);
 }
 
-/* Whether SETMINDB's or SETMAXDB's TC Q, from a state, goes to a word of
+/* Whether the TC Q of SETMINDB, SETMAXDB, SPSOFF or TVCZAP, from a state, goes to a word of
  * bank 24 the binding does not run on at: Q overflow-corrected, an
  * address in the bank. */
 static bool runs_on_unwritten(const apollo_overlay_state *s)
@@ -330,10 +349,11 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             state(&start, &io, key, interpretive, n);
             fa = ra = start;
             fio = rio = io;
-            /* A hardware record (the routines use none of its channels),
-             * now and then none. */
+            /* A hardware record (ULAGEOFF writes its channel 5), now and
+             * then none. */
             memset(&hardware, 0, sizeof hardware);
             hardware.channel30 = any_word();
+            hardware.channel5 = any_word();
             fhw = rhw = hardware;
             memset(&p, 0, sizeof p);
             fp = rp = p;
@@ -349,7 +369,8 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                     memcmp(&fhw, &rhw, sizeof fhw))
                     why = "the table does not run the faithful routine";
             } else if (sr != EXEC_OK && !interpretive &&
-                       (key == SETMINDB_KEY || key == SETMAXDB_KEY - 1u || key == SETMAXDB_KEY) &&
+                       (key == SETMINDB_KEY || key == SETMAXDB_KEY - 1u || key == SETMAXDB_KEY ||
+                        key == SPSOFF_KEY || key == TVCZAP_KEY) &&
                        sf != EXEC_OUT_OF_SCOPE && !memcmp(&ra, &start, sizeof ra) &&
                        !memcmp(&rio, &io, sizeof rio) && runs_on_unwritten(&start)) {
                 ++*counted; /* a TC Q to a word of bank 24 not yet written */

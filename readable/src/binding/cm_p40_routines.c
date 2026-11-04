@@ -18,16 +18,18 @@
  * which ends at the pair's DANZIG, at an EXIT, or where a CALL or GOTO
  * leaves it.
  *
- * SETMINDB and SETMAXDB end in TC Q. Entered at their keys, Q can hold
- * any return; the faithful port runs on where it is a word of bank 24 it
- * has code for, and so does the binding, up to the last word the parts
- * written so far reach. Past it the binding refuses (the side-by-side
- * test counts these).
+ * SETMINDB, SETMAXDB, SPSOFF and TVCZAP end in TC Q. Entered at their
+ * keys, Q can hold any return; the faithful port runs on where it is a
+ * word of bank 24 it has code for, and so does the binding, up to the last
+ * word the parts written so far reach. Past it, up to the file's last word
+ * in the bank, the binding refuses (the side-by-side test counts these);
+ * beyond that both stop.
  *
  * The device is the CM's io record (cm_native_io); the faithful basic
  * routines take the program's hardware record for their channel orders,
- * and without one refuse, so the binding does too (these parts use no
- * channel). The states the faithful routines take, at every key: FB the
+ * and without one refuse, so the binding does too: channel 5 is the
+ * hardware record's, channels 11 (DSALMOUT) and 12 the io record's. The
+ * states the faithful routines take, at every key: FB the
  * key's bank, ZERO +0, the bank registers agreeing, the interrupt and
  * superbank latches in range, and every erasable word an ordinary one; at
  * an order pair Z at NEWOPS, BANKSET the BBANK, INTBIT15 the bank's bit
@@ -52,9 +54,32 @@ extern const agc_routine_table faithful_cm_p40_p47_basic, faithful_cm_p40_p47_in
 
 static jmp_buf back;
 
+/* The run's io record and hardware record. */
+static cm_native_io *io_now;
+static agc_hardware *hardware_now;
+
 static void leave(void)
 {
     longjmp(back, 1);
+}
+
+/* SPSOFF's and TVCZAP's channel 12 (WOR, WAND), and ULAGEOFF's channel 5
+ * (WRITE), as the faithful port keeps them. */
+static word channel_in(unsigned number)
+{
+    if (number == 012u) return (word)io_now->channel12;
+    not_modelled(); /* the readable parts read no other channel */
+    return 0;
+}
+
+static void channel_out(unsigned number, word value)
+{
+    if (number == 012u)
+        io_now->channel12 = (agc_word)value;
+    else if (number == 05u && hardware_now)
+        hardware_now->channel5 = (agc_word)value;
+    else
+        not_modelled(); /* the readable parts write no other channel */
 }
 
 /* The interpreter's fixed operands are the rope's. */
@@ -69,6 +94,10 @@ static word rope_word(unsigned physical)
 static void bind(const agc_native_program *program, apollo_overlay_state *state, cm_native_io *io)
 {
     bind_machine(program, state, io);
+    io_now = io;
+    hardware_now = program->hardware;
+    agc.channel_in = channel_in;
+    agc.channel_out = channel_out;
     agc.fixed_memory = rope_word;
     agc.leave = leave;
 }
@@ -146,6 +175,50 @@ static const struct basic_entry {
     {KEY(024u, TIGBLNK + 4u), tigblnk_after_waitlist},
     {KEY(024u, TIGBLNK + 012u), tigblnk_after_novac},
     {KEY(024u, P40TSK + 2u), p40tsk_after_newphase},
+    /* Part 2: P47CSM to TVCZAP */
+    {KEY(024u, P47CSM), p47csm},
+    {KEY(024u, P47CSM + 2u), p47csm_after_r02both},
+    {KEY(024u, P47CSM + 5u), p47csm_after_midtoav2},
+    {KEY(024u, P47CSM + 012u), p47csm_after_waitlist},
+    {KEY(024u, P47CSM + 014u), p47csm_after_phaschng},
+    {KEY(024u, TIGON), tigon},
+    {KEY(024u, TIGON + 7u), tigon_after_novac},
+    {KEY(024u, CALCN83), calcn83},
+    {KEY(024u, CALCN83 + 014u), calcn83_after_exit},
+    {KEY(024u, CALCN83 + 016u), calcn83_after_phaschng},
+    {KEY(024u, CALCN83 + 022u), calcn83_after_gentran},
+    {KEY(024u, P47BODY), p47body},
+    {KEY(024u, P47BOD), p47bod},
+    {KEY(024u, P47BOD + 2u), p47bod_after_priochng},
+    {KEY(024u, P47_DSP), p47_dsp},
+    {KEY(024u, P47_DSP + 3u), p47_dsp_terminate},
+    {KEY(024u, P47_DSP + 4u), p47_dsp_proceed},
+    {KEY(024u, P47_DSP + 5u), p47_dsp_recycle},
+    {KEY(024u, TIGAVEG), tigaveg},
+    {KEY(024u, TIGAVEG + 010u), tigaveg_after_waitlist},
+    {KEY(024u, PRECHECK), precheck},
+    {KEY(024u, TIG_5), tig_5},
+    {KEY(024u, TIG_5 + 4u), tig_5_after_waitlist},
+    {KEY(024u, TIG_5 + 011u), tig_5_after_2phschng},
+    {KEY(024u, TIG_5 + 015u), tig_5_after_findvac},
+    {KEY(024u, TIG_0), tig_0},
+    {KEY(024u, IGNITION), ignition},
+    {KEY(024u, PREPTVC + 011u), preptvc_after_newphase},
+    {KEY(024u, DOTVCON), dotvcon},
+    {KEY(024u, DOTVCON + 022u), dotvcon_after_newphase},
+    {KEY(024u, DOSTRULL), dostrull},
+    {KEY(024u, IMPLBURN + 020u), implburn_after_2phschng},
+    {KEY(024u, IMPLCONT), implcont},
+    {KEY(024u, ENGINOFF), enginoff},
+    {KEY(024u, DOSPSOFF), dospsoff},
+    {KEY(024u, DOSPSOFF + 4u), dospsoff_after_newphase},
+    {KEY(024u, DOTVCRCS), dotvcrcs},
+    {KEY(024u, DOTVCRCS + 3u), dotvcrcs_after_rcsdapon},
+    {KEY(024u, DOTVCRCS + 5u), dotvcrcs_after_massprop},
+    {KEY(024u, DOTVCRCS + 010u), dotvcrcs_after_phaschng},
+    {KEY(024u, DOTVCRCS + 014u), dotvcrcs_after_novac},
+    {KEY(024u, SPSOFF), spsoff},
+    {KEY(024u, TVCZAP), tvczap},
     /* Part 1: P41CSM */
     {KEY(027u, P41CSM), p41csm},
     {KEY(027u, P41CSM + 2u), p41csm_after_upflag},
@@ -160,6 +233,16 @@ static const struct basic_entry returns[] = {
     {KEY(024u, P40S_SV + 1u), p40s_sv_after_e7setter},
     {KEY(024u, P40SET), p40set},
     {KEY(024u, P40MINDB + 1u), p40mindb_after_setmindb},
+    {KEY(024u, TIGAVEG + 1u), tigaveg_p41},
+    {KEY(024u, TIGAVEG + 2u), tigaveg_p40},
+    {KEY(024u, DOSTRULL + 4u), dostrull_after_steerull},
+    {KEY(024u, DOSTRULL + 5u), dostrull_after_ulageoff},
+    {KEY(024u, IMPLBURN + 4u), implburn_after_e7setter},
+    {KEY(024u, IMPLCONT + 4u), implcont_after_e6setter},
+    {KEY(024u, ENGINOFF + 1u), enginoff_after_e6setter},
+    {KEY(024u, DOSPSOFF + 1u), dospsoff_after_spsoff},
+    {KEY(024u, DOTVCRCS + 1u), dotvcrcs_after_setmaxdb},
+    {KEY(024u, DOTVCRCS + 6u), dotvcrcs_after_tvczap},
 };
 
 static const struct basic_entry *entry_in(const struct basic_entry *entries, unsigned count,
@@ -178,17 +261,20 @@ static const struct basic_entry *basic_entry(uint16_t key)
 }
 
 /* The last word of bank 24 the parts written so far reach. */
-#define LAST_WRITTEN (P40TSK + 010u)
+#define LAST_WRITTEN (TVCZAP + 012u)
 
 /* Whether the binding follows a TC Q to a word of bank 24: one in the
  * parts written so far (or below them, another file's), but not FENG,
- * the constant after CALCN85's TC SERVXT, where the faithful port fails. */
+ * the constant after CALCN85's TC SERVXT, where the faithful port fails;
+ * or one past ENDV97E, the file's last word in the bank, where it stops. */
 static bool follows(word z)
 {
+    if (z > ENDV97E) return true;
     return z <= LAST_WRITTEN && z != (word)(CALCN85 + 7u);
 }
 
-/* After SETMINDB's or SETMAXDB's TC Q, to a word of bank 24: on at a key
+/* After the TC Q of SETMINDB, SETMAXDB, SPSOFF or TVCZAP, to a word of
+ * bank 24: on at a key
  * or one of the returns above, as the faithful port does; at any other
  * word it stops there too. Refused where the binding does not follow (the
  * side-by-side test counts these). Erasable and fixed-fixed returns end
@@ -214,8 +300,8 @@ bool cm_p40_p47_runs_on(uint16_t z)
 /* ---- The order pairs ---- */
 
 static const struct interpretive_code *const codes[] = {
-    &P40CSM_CODE,  &P40PVA_CODE,   &P40TTOG_CODE, &P40S_SV_CODE,
-    &P41_DSP_CODE, &P40CNV85_CODE, &CALCN85_CODE, &P41CSM_CODE,
+    &P40CSM_CODE,  &P40PVA_CODE, &P40TTOG_CODE, &P40S_SV_CODE, &P41_DSP_CODE, &P40CNV85_CODE,
+    &CALCN85_CODE, &P41CSM_CODE, &P47CSM_CODE,  &CALCN83_CODE, &P47BODY_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */
@@ -256,7 +342,7 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     }
     entry->routine();
     if (entry->routine == setmindb || entry->routine == setmaxdb_inhint ||
-        entry->routine == setmaxdb)
+        entry->routine == setmaxdb || entry->routine == spsoff || entry->routine == tvczap)
         run_on();
     return EXEC_OK;
 }
