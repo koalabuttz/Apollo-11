@@ -3137,6 +3137,22 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define GOPERF4  ((word)K_GOPERF4)
 #define V6N34    ((word)KW_V6N34)  /* VN 00634 */
 #define V06N43   ((word)KW_V06N43) /* VN 00643 */
+/* P34-35_P74-75.agc (both): P34 and P74, the transfer phase initiation
+ * programs; DISPLAYE, the elevation angle and central angle display; and
+ * P3XORP7X, which tells P3x from P7x. Their erasable words (NORMEX, TBASE5,
+ * RTRN, VERBNOUN) are named by ADDRESS_OF. */
+#define P34      ((word)K_P34)
+#define P74      ((word)K_P74)
+#define P34_P74A ((word)K_P34_P74A)
+#define P34_P74E ((word)K_P34_P74E)
+#define DISPLAYE ((word)K_DISPLAYE)
+#define P3XORP7X ((word)K_P3XORP7X)
+#define V06N58   ((word)KW_V06N58) /* VN 0658 */
+#if LUMINARY099
+#define DEG130 ((word)K_130DEG) /* 130DEG, 2DEC .3611111111 */
+#else
+#define VNBANK ((word)K_VNBANK) /* VNPOOH's TC -5, its bank */
+#endif
 #if COMANCHE055
 /* The CM's: P31, the routines P30 and P31 share, their displays (DISP45,
  * verb 16 noun 45), S31.1 and DELRSPL. */
