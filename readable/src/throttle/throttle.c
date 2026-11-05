@@ -223,7 +223,6 @@ static void doit(void)
  * SUBROUTINE": BIT13, "4096 PULSES", to WHATOUT. */
 void flatout(void)
 {
-    need_tc_return(Q);
     set_A(BIT13);
     whatout();
 }
