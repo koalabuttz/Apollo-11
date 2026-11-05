@@ -2134,6 +2134,7 @@
 #define K_V 01673u
 #define K_BUF2 00133u
 #define K_MPAC 00154u
+#define K_PHSNAME5 01446u
 #define KW_EXECBANK 002626u
 #define KW_FAKEPRET 000110u
 #define KW_NO_CORES 000006u
@@ -4245,6 +4246,12 @@
 #define I_HDOTDISP 003314u
 #define I_R 000002u
 #define I_V 003673u
+#define I_PIPTIME 001204u
+#define I_UNITY 055330u
+#define I_UNITX 055332u
+#define I_STAR_NBSM_STAR 047646u
+#define I_STAR_SMNB_STAR 047644u
+#define I_TRG_STARSMNB 047624u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u

@@ -13,15 +13,16 @@
  * readable code reads.
  *
  * Not counted: a case the readable routines refuse where a computed
- * transfer (a TC Q, SERVOUT's DXCH Z through AVGEXIT) took the run to a
- * word of the file no readable function starts at, which the faithful
- * port runs on from. The case states draw Q and AVGEXIT at random, so the
- * faithful port goes on from the middle of a routine there; the flight
- * program never does. The stop is recognised by its address, the case's
- * own Q or AVGEXIT: the binding records it (lm_servicer_unentered) only at
- * a word of the file no readable function starts at, which a readable
- * routine's own transfers never reach (servicer-cases checks each such run
- * again with the return made one a readable function starts at). */
+ * transfer (a TC Q, SETPOS's TC LRADRET, SERVOUT's DXCH Z through
+ * AVGEXIT) took the run to a word of the file no readable function starts
+ * at, which the faithful port runs on from. The case states draw Q,
+ * AVGEXIT and LRADRET at random, so the faithful port goes on from the
+ * middle of a routine there; the flight program never does. The stop is
+ * recognised by its address, the case's own Q, AVGEXIT or LRADRET: the
+ * binding records it (lm_servicer_unentered) only at a word of the file
+ * no readable function starts at, which a readable routine's own
+ * transfers never reach (servicer-cases checks each such run again with
+ * the return made one a readable function starts at). */
 #include <stdio.h>
 #include <string.h>
 #include "rope_image.h"
@@ -33,14 +34,15 @@ extern uint16_t lm_servicer_unentered;
 #define E7(a) (7u * 0400u + (a) - 01400u)
 
 /* Whether the word the readable run stopped at (lm_servicer_unentered) is
- * where the case's own Q or AVGEXIT sent it. */
-static int from_q_or_avgexit(const apollo_overlay_state *start)
+ * where the case's own Q, AVGEXIT or LRADRET sent it. */
+static int from_drawn_return(const apollo_overlay_state *start)
 {
     unsigned at = lm_servicer_unentered, address;
 
     if (!at) return 0;
     address = at >= 04000u && at < 010000u ? at : at % 1024u + 02000u;
-    return address == (start->words[2] & 07777u) || address == (start->words[01252] & 07777u);
+    return address == (start->words[2] & 07777u) || address == (start->words[01252] & 07777u) ||
+           address == (start->words[E7(01650u)] & 07777u);
 }
 
 static unsigned checks, failures;
@@ -135,7 +137,7 @@ int main(int argc, char **argv)
 
         lmsv_input(&start, &c, (uint16_t)n);
         kind = lmsv_run(&s, (uint16_t)n, 0);
-        if (digest != lmsv_expected[n] && kind == LMSV_REFUSED && from_q_or_avgexit(&start)) {
+        if (digest != lmsv_expected[n] && kind == LMSV_REFUSED && from_drawn_return(&start)) {
             ++unentered;
             continue;
         }

@@ -27,11 +27,12 @@
  * run in at least 1 in 16 of the states entered at it (key_floor.h).
  *
  * Not counted: a run the readable routines refuse where a computed
- * transfer (a TC Q, SERVOUT's DXCH Z through AVGEXIT) went to a word of
- * the file no readable function starts at, which the faithful port runs on
- * from (the case states draw Q and AVGEXIT at random); and NEWJOB
- * negative, which the readable interpreter refuses at any pair where the
- * faithful one refuses it only at DANZIG, as in make stateup-cases. Each
+ * transfer (a TC Q, SETPOS's TC LRADRET, SERVOUT's DXCH Z through
+ * AVGEXIT) went to a word of the file no readable function starts at,
+ * which the faithful port runs on from (the case states draw Q, AVGEXIT
+ * and LRADRET at random); and NEWJOB negative, which the readable
+ * interpreter refuses at any pair where the faithful one refuses it only
+ * at DANZIG, as in make stateup-cases. Each
  * only if the same state, with that return made one a readable function
  * starts at or with NEWJOB +0, runs on both sides alike: so the run up to
  * the transfer, or the whole run, is checked all the same. */
@@ -56,11 +57,14 @@ struct interpretive_code {
 };
 extern const struct interpretive_code GETABVAL_CODE, AVERAGEG_CODE, AVGEND_CODE, NORMLIZE_CODE,
     NORMLIZ1_CODE, MUNRETRN_CODE, NOR29NOW_CODE, CALCGRAV_CODE, CALCRVG_CODE, RVBOTH_CODE,
-    RVBOTH_2_CODE, MUNRVG_CODE, MUNGRAV_CODE;
+    RVBOTH_2_CODE, MUNRVG_CODE, MUNGRAV_CODE, POSUPDAT_CODE, POSUPDAT_2_CODE, POSUPDAT_3_CODE,
+    NOREASON_CODE, NOREASON_2_CODE, VELUPDAT_CODE, VELUPDAT_2_CODE, WSTOR_CODE, SETPOS_CODE;
 static const struct interpretive_code *const codes[] = {
-    &GETABVAL_CODE, &AVERAGEG_CODE, &AVGEND_CODE,   &NORMLIZE_CODE, &NORMLIZ1_CODE,
-    &MUNRETRN_CODE, &NOR29NOW_CODE, &CALCGRAV_CODE, &CALCRVG_CODE,  &RVBOTH_CODE,
-    &RVBOTH_2_CODE, &MUNRVG_CODE,   &MUNGRAV_CODE,
+    &GETABVAL_CODE,   &AVERAGEG_CODE, &AVGEND_CODE,     &NORMLIZE_CODE, &NORMLIZ1_CODE,
+    &MUNRETRN_CODE,   &NOR29NOW_CODE, &CALCGRAV_CODE,   &CALCRVG_CODE,  &RVBOTH_CODE,
+    &RVBOTH_2_CODE,   &MUNRVG_CODE,   &MUNGRAV_CODE,    &POSUPDAT_CODE, &POSUPDAT_2_CODE,
+    &POSUPDAT_3_CODE, &NOREASON_CODE, &NOREASON_2_CODE, &VELUPDAT_CODE, &VELUPDAT_2_CODE,
+    &WSTOR_CODE,      &SETPOS_CODE,
 };
 extern const agc_routine_table faithful_lm_servicer_routines, faithful_lm_servicer_interpretive;
 extern uint16_t lm_servicer_unentered;
@@ -69,16 +73,18 @@ extern uint16_t lm_servicer_unentered;
 #define CASES        (2u * LMSV_BASE_CASES)
 #define E7(a)        (7u * 0400u + (a) - 01400u)
 #define AVGEXIT      01252u
+#define LRADRET      E7(01650u)
 
 /* Whether the word the readable run stopped at (lm_servicer_unentered) is
- * where the case's own Q or AVGEXIT sent it. */
-static int from_q_or_avgexit(const apollo_overlay_state *start)
+ * where the case's own Q, AVGEXIT or LRADRET sent it. */
+static int from_drawn_return(const apollo_overlay_state *start)
 {
     unsigned at = lm_servicer_unentered, address;
 
     if (!at) return 0;
     address = at >= 04000u && at < 010000u ? at : at % 1024u + 02000u;
-    return address == (start->words[2] & 07777u) || address == (start->words[AVGEXIT] & 07777u);
+    return address == (start->words[2] & 07777u) || address == (start->words[AVGEXIT] & 07777u) ||
+           address == (start->words[LRADRET] & 07777u);
 }
 
 static uint32_t seed = 271828u;
@@ -255,7 +261,8 @@ static const char *verdict(const struct both *b, const apollo_overlay_state *sta
 
 /* The state with the return that sent the readable run to a word no
  * readable function starts at made one it starts at: Q a return in the
- * bank FB selects, AVGEXIT AVGEND's 2CADR. */
+ * bank FB selects, AVGEXIT AVGEND's 2CADR, LRADRET the return of
+ * POSGOOD's TC SETPOS2. */
 static void redirect(apollo_overlay_state *s)
 {
     static const struct {
@@ -273,6 +280,7 @@ static void redirect(apollo_overlay_state *s)
         s->words[AVGEXIT] = 03661u;
         s->words[AVGEXIT + 1u] = 044067u;
     }
+    if (address == (s->words[LRADRET] & 07777u)) s->words[LRADRET] = 03700u;
 }
 
 int main(int argc, char **argv)
@@ -318,7 +326,7 @@ int main(int argc, char **argv)
         if (b.sr != EXEC_OK &&
             (memcmp(&b.ra, &start, sizeof b.ra) || io_differs(&b.rio, &io_start)))
             why = "readable refusal changed the state";
-        else if (b.sf == EXEC_OK && b.sr != EXEC_OK && from_q_or_avgexit(&start)) {
+        else if (b.sf == EXEC_OK && b.sr != EXEC_OK && from_drawn_return(&start)) {
             /* Not counted only if the same state with that return made a
              * readable one runs alike on both sides: the run up to the
              * computed transfer is right. */
