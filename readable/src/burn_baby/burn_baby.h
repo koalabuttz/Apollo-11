@@ -4,6 +4,9 @@
  * ignition for P12, P40, P41, P42, P63 and the aborts, and KILLTASK. The
  * faithful C is c64-port/src/lm_burn_baby.c.
  *
+ * Words of the listing no instruction names, so no C name either: ? (=
+ * GOTOPOOH) and OCT20 (= BIT5), p. 749.
+ *
  * The code is in bank 36, with P40AUTO in bank 35, TIGTASK1 and the zoom
  * tasks in bank 17, KILLTSK2 in bank 27 and KILLTASK in fixed-fixed. Each
  * entry below ends where its code leaves it: at a TC or TCF out of the file

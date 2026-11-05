@@ -7,7 +7,9 @@
  * tools/p20_p25_keys.py writes from them). The faithful port also has an
  * older module of the same routines (c64-port/src/lm_p70_p71.c), whose
  * tables the flight program tries only after the file's: here they are
- * empty.
+ * empty. Eight of its keys are not the file's, words inside ABRTJASK and
+ * THROTUP and THROTUP's two returns into UPTHROT; tests/p70_cases.c
+ * (older_only) says why no dispatch comes to them.
  *
  * Plumbing only. A basic routine runs from its key until its code leaves
  * the file (TWIDDLE, FLIP, LANDISP, CLRADMOD, PHASCHNG, ...) or reaches

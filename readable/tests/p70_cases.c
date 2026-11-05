@@ -10,7 +10,9 @@
  * written in the listing's notation, must be the LM's rope, word for word.
  * Then the keys, which must be the faithful tables', each running readable
  * code, and the older module's tables (lm_p70_p71_basic,
- * lm_p70_p71_interpretive) must be empty. Then the runs: each key from
+ * lm_p70_p71_interpretive) must be empty, each of the faithful older
+ * module's keys a key of the file's but for the eight of older_only.
+ * Then the runs: each key from
  * 4,096 states, each one of the port's frozen test states
  * (c64-port/tests/lm_p70_p71_file_vectors.h) entered at the key, most
  * stirred further: MPAC and its mode, the push-down list and its pointer,
@@ -53,6 +55,60 @@ extern const agc_routine_table lm_p70_p71_file_basic, lm_p70_p71_file_interpreti
 extern const agc_routine_table faithful_lm_p70_p71_file_basic,
     faithful_lm_p70_p71_file_interpretive;
 extern const agc_routine_table lm_p70_p71_basic, lm_p70_p71_interpretive;
+extern const agc_routine_table faithful_lm_p70_p71_basic, faithful_lm_p70_p71_interpretive;
+
+/* The older module's keys that are not the file's: words inside ABRTJASK
+ * (05,3432 EXTEND, 05,3434 AD BIT13, 05,3435 EXTEND, 05,3437 CAF LRBYBIT)
+ * and THROTUP (32,3751 EXTEND, 32,3753 TC Q), where the older module was
+ * resumed from outside around the channel instructions (RAND and WRITE
+ * DSALMOUT, WOR CHAN14) that the file's routines run themselves, running
+ * on through these words; and THROTUP's two returns into UPTHROT (32,3674
+ * TC PHASCHNG and UPTHROT1), which the file's routines reach only through
+ * THROTUP's TC Q (src/binding/p70_routines.c). No dispatch of the flight
+ * program comes to any of them, and the readable tables leave them out. */
+static const uint16_t older_only[] = {05u << 10 | 01432u,  05u << 10 | 01434u,  05u << 10 | 01435u,
+                                      05u << 10 | 01437u,  032u << 10 | 01674u, 032u << 10 | 01701u,
+                                      032u << 10 | 01751u, 032u << 10 | 01753u};
+
+static bool in_table(const agc_routine_table *table, uint16_t key)
+{
+    unsigned i;
+
+    for (i = 0; i < table->count; ++i)
+        if (table->entries[i].physical == key) return true;
+    return false;
+}
+
+/* Each key of the older module's tables must be a key of the file's, or
+ * one of older_only, and each of older_only must be in the older tables
+ * and not the file's. */
+static unsigned older_keys_differ(void)
+{
+    const agc_routine_table *older[] = {&faithful_lm_p70_p71_basic,
+                                        &faithful_lm_p70_p71_interpretive};
+    unsigned i, j, t, failures = 0;
+
+    for (t = 0; t < 2u; ++t)
+        for (i = 0; i < older[t]->count; ++i) {
+            uint16_t key = older[t]->entries[i].physical;
+            bool listed = false;
+
+            for (j = 0; j < COUNT(older_only); ++j) listed |= key == older_only[j];
+            if (listed == (in_table(&faithful_lm_p70_p71_file_basic, key) ||
+                           in_table(&faithful_lm_p70_p71_file_interpretive, key))) {
+                printf("FAIL: the older module's key %02o,%04o %s\n", key / 1024u,
+                       02000u + key % 1024u, listed ? "is the file's" : "is not the file's");
+                ++failures;
+            }
+        }
+    for (j = 0; j < COUNT(older_only); ++j)
+        if (!in_table(older[0], older_only[j]) && !in_table(older[1], older_only[j])) {
+            printf("FAIL: %02o,%04o is not the older module's\n", older_only[j] / 1024u,
+                   02000u + older_only[j] % 1024u);
+            ++failures;
+        }
+    return failures;
+}
 bool p70_p71_readable(uint16_t key, bool order_pair);
 
 /* The addresses of the words the routines use. */
@@ -395,6 +451,7 @@ int main(int argc, char **argv)
         printf("FAIL: the older module's tables are not empty\n");
         ++failures;
     }
+    failures += older_keys_differ();
     if (failures || !mission_count) {
         printf("p70-cases: %u failures\n", failures + !mission_count);
         return 1;

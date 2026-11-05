@@ -1575,12 +1575,17 @@ radar-leadin-cases: $(BUILD)/rlr-oracle $(BUILD)/rlr-cases
 	./$(BUILD)/rlr-oracle $(ROPES)
 	./$(BUILD)/rlr-cases $(ROPES)
 
-# The oracles of the files from P20-P25 on (P20-P25 to P40-P47) link the
-# readable tables and no faithful object: the port's test calls only the
-# tables it is given, so a key with no readable routine fails its digests
-# there. The renamed faithful objects are for the side-by-side cases
-# alone. (The BURN, BABY, BURN oracle below links one for its case keys
-# and KILLTASK's sites.)
+# The oracles of P20-P25 to P40-P47 link the readable tables and no
+# faithful object: the port's test calls only the tables it is given, so a
+# key with no readable routine fails its digests there. The renamed
+# faithful objects are for the side-by-side cases alone. The later oracles
+# link one for its data, under its own names: BURN, BABY, BURN's
+# (bb-oracle) its case keys and KILLTASK's sites, THE_LUNAR_LANDING's and
+# SERVICER's (lld-, svc-oracle) their case keys (and SERVICER's flag
+# sites), FINDCDUW's, P51-P53's and LUNAR_LANDING_GUIDANCE_EQUATIONS'
+# (fcw-, p51-, llge-oracle) their points, external routines and CADR
+# words. (P51-P53's readable tables also run the renamed faithful routines
+# at the keys no part has written yet.)
 
 # P20-P25, the LM's rendezvous programs and radar routines, readable part
 # by part: the port's test (tests/test_lm_p20_p25.c, its frozen cases run
@@ -2303,13 +2308,18 @@ llge-cases: $(BUILD)/llge-oracle $(BUILD)/llge-cases
 # tests/lm_p70_p71_file_target.c, against the original program's yaAGC
 # digests) through the readable tables, with tests/with_ropes.c loading the
 # rope the readable interpreter reads; then tests/p70_cases.c side by side
-# with the faithful routines (renamed faithful_).
+# with the faithful routines (renamed faithful_), with the older module's
+# tables (renamed too) for their keys.
 P70_NAMES := lm_p70_p71_file_basic lm_p70_p71_file_interpretive
 P70_COMMON := $(R63_COMMON)
 
 $(BUILD)/p70-faithful.o: $(PORT)/src/lm_p70_p71_file.c
 	@mkdir -p $(dir $@)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(P70_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/p70-older.o: $(PORT)/src/lm_p70_p71.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dlm_p70_p71_basic=faithful_lm_p70_p71_basic \
+		-Dlm_p70_p71_interpretive=faithful_lm_p70_p71_interpretive -c $< -o $@
 $(BUILD)/p70-test.o: $(PORT)/tests/test_lm_p70_p71_file.c
 	@mkdir -p $(dir $@)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
@@ -2318,7 +2328,7 @@ $(BUILD)/p70-oracle: $(P70_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p70-t
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(P70_COMMON) $(PORT)/tests/lm_p70_p71_file_target.c \
 		tests/with_ropes.c $(filter %.o,$^) -o $@
 $(BUILD)/p70-cases: $(P70_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p70-faithful.o \
-		tests/p70_cases.c
+		$(BUILD)/p70-older.o tests/p70_cases.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(P70_COMMON) $(filter %.o,$^) tests/p70_cases.c -o $@
 
 p70-cases: $(BUILD)/p70-oracle $(BUILD)/p70-cases

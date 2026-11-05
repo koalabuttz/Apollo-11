@@ -19,6 +19,9 @@
  *
  * The faithful C is c64-port/src/lm_ascent.c.
  *
+ * Words of the listing no instruction names, so no C name either: the
+ * constant BIT4H (OCT 10, p. 855).
+ *
  * Each function runs from a word the program can resume at (an entry, a
  * subroutine's return, the word after an EXIT) until its code leaves the
  * file: at a TC or TCF out of it (Z the routine, Q the return), or at a TC
