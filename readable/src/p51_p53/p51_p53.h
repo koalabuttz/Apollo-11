@@ -137,6 +137,42 @@ void coarfine(void);            /* CAL53A +030 (PHASCHNG's return) */
 void rdcdus(void);              /* RDCDUS, an RTB's routine */
 extern const struct interpretive_code R55_CODE, R55RET_CODE, CHKSDATA_CODE, CHKSDATA_ENTER_CODE,
     CHKSDA_CODE, CAL53A_CODE, COARFINE_CODE, MATMOVE_CODE;
+
+/* Part 5, P51, COARSE, NCOARSE, S52.2 and S52.3 -- p51.c */
+void p51(void);                   /* P51 */
+void p51_plus2(void);             /* P51 +2 (IMUCHK's return) */
+void p51_terminate(void);         /* P51 +5 (GOPERF1's return) */
+void p51_proceed(void);           /* P51 +6 */
+void p51_enter(void);             /* P51 +7 */
+void p51_zero_gimbals(void);      /* P51 +011 (PHASCHNG's return) */
+void p51_display_v41(void);       /* P51 +020 */
+void p51_coarse(void);            /* P51 +023 */
+void p51_after_coarse(void);      /* P51 +027 (after EXIT) */
+void p51_again(void);             /* P51 +031 (PHASCHNG's return) */
+void p51b_ncoarse(void);          /* P51B +2 (PHASCHNG's return) */
+void p51c_plus1(void);            /* P51C +1 (after EXIT) */
+void p51c_aotmark(void);          /* P51C +3 (PHASCHNG's return) */
+void p51c_after_aotmark(void);    /* P51C +5 */
+void p51c_failed(void);           /* P51C +7 */
+void p51c_star(void);             /* P51C +010 (CURTAINS's return) */
+void p51d_plus1(void);            /* P51D +1 (after EXIT) */
+void p51d_star(void);             /* P51D +3 (PHASCHNG's return) */
+void p51d_planet(void);           /* P51D +7 (PHASCHNG's return) */
+void p51d_second_star(void);      /* P51D +015 (after EXIT) */
+void p51e_planet(void);           /* P51E +2 (PHASCHNG's return) */
+void p51e_again(void);            /* P51E +021 (after EXIT) */
+void p51g_finis(void);            /* P51G +011 (after EXIT) */
+void coarse_imucoars(void);       /* COARSE +1 (after EXIT) */
+void coarse_after_imucoars(void); /* COARSE +3 */
+void coarse_failed(void);         /* COARSE +5 */
+void coarse_imufine(void);        /* COARSE +6 (CURTAINS's return) */
+void coarse_after_imufine(void);  /* COARSE +010 */
+void coarse_fine_failed(void);    /* COARSE +012 */
+void coarse_return(void);         /* COARSE +013 (CURTAINS's return) */
+void ncoarse_plus1(void);         /* NCOARSE +1 (after EXIT) */
+extern const struct interpretive_code P51_CODE, P51B_CODE, P51C_CODE, P51D_CODE, P51E_CODE,
+    P51G_CODE, COARSE_CODE, COARSE_RETURN_CODE, NCOARSE_CODE, NCOARSE_GCOMP_CODE, S52_2_CODE,
+    S52_3_CODE;
 #endif
 
 #endif

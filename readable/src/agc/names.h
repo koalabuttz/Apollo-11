@@ -4024,6 +4024,17 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define RDCDUS      ((word)K_RDCDUS)
 #define V06N93      ((word)KW_V06N93)
 #define VB6N5       ((word)KW_VB6N5)
+#define P51         ((word)K_P51)
+#define P51B        ((word)K_P51B)
+#define P51C        ((word)K_P51C)
+#define P51D        ((word)K_P51D)
+#define P51E        ((word)K_P51E)
+#define P51G        ((word)K_P51G)
+#define COARSE      ((word)K_COARSE)
+#define NCOARSE     ((word)K_NCOARSE)
+#define S52_2       ((word)K_S52_2) /* S52.2 */
+#define S52_3       ((word)K_S52_3) /* S52.3 */
+#define V41K        ((word)KW_V41K)
 #endif
 
 #if COMANCHE055
