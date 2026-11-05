@@ -3992,6 +3992,25 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define PIC2        ((word)K_PIC2)
 #define PIC4        ((word)K_PIC4)
 #define STRAT       ((word)K_STRAT)
+#define R51         ((word)K_R51)
+#define R51_1       ((word)K_R51_1) /* R51.1 */
+#define R51_2       ((word)K_R51_2) /* R51.2 */
+#define R51_3       ((word)K_R51_3) /* R51.3 */
+#define R51_4       ((word)K_R51_4) /* R51.4 */
+#define R51C        ((word)K_R51C)
+#define R51E        ((word)K_R51E)
+#define R51F        ((word)K_R51F)
+#define R51I        ((word)K_R51I)
+#define R51K        ((word)K_R51K)
+#define R51P63      ((word)K_R51P63)
+#define GYCOARS     ((word)K_GYCOARS)
+#define GOPERF1     ((word)K_GOPERF1)
+#define IMUPULSE    ((word)K_IMUPULSE)
+#define OPTSTALL    ((word)K_OPTSTALL)
+#define OCT14       ((word)KW_OCT14)
+#define VB05N09     ((word)KW_VB05N09)
+#define V16N20      ((word)KW_V16N20)
+#define R55CDR      ((word)KW_R55CDR)
 #endif
 
 #if COMANCHE055

@@ -170,7 +170,7 @@ FCW_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/findcduw/*.c)) \
 	src/powered_flight/quictrig.c src/single_precision/single_precision.c \
 	src/rtb_op_codes/rtb_op_codes.c src/binding/findcduw_routines.c
 P51_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p51_p53/*.c)) \
-	src/binding/p51_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/p51_routines.c
 LAD_SOURCES := src/agc/agc.c src/binding/machine.c src/landing_displays/landing_displays.c \
 	src/binding/landing_displays_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \

@@ -46,7 +46,8 @@ struct interpretive_code {
 };
 extern const struct interpretive_code P52E_CODE, P52V_CODE, P52W_CODE, P52H_CODE, REGCOARS_CODE,
     COARSTYP_CODE, P52LS_CODE, N89DISP_CODE, LSDISP_CODE, LOCSAM_CODE, PICAPAR_CODE, PICEND_CODE,
-    PICGXT_CODE;
+    PICGXT_CODE, R51_CODE, R51C_CODE, R51_3_CODE, R51_MARK_CODE, R51_SECOND_CODE, R51_TORQUE_CODE,
+    R51P63_CODE, R51_4_CODE, GYCOARS_CODE, GYCOARS_DONE_CODE;
 extern const agc_routine_table lm_p51_p53_basic, lm_p51_p53_interpretive;
 extern const agc_routine_table faithful_lm_p51_p53_basic, faithful_lm_p51_p53_interpretive;
 bool p51_readable(uint16_t key, bool order_pair);
@@ -120,13 +121,13 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 
 /* The parts written so far: part 1, bank 15's P52 (PROG52 to P52LS) and
  * bank 14's N89DISP and LSDISP; part 2, bank 14's S50 and R56 (LOCSAM to
- * PICNSWP +1). */
+ * PICNSWP +1); part 3, R51 and GYCOARS (to its GOTO R51K). */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     return (bank == 015u && z >= 02050u && z <= 02243u) ||
-           (bank == 014u && z >= 02446u && z <= 03012u);
+           (bank == 014u && z >= 02446u && z <= 03222u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -400,9 +401,11 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 }
 
 static const struct interpretive_code *const codes[] = {
-    &P52E_CODE,     &P52V_CODE,   &P52W_CODE,    &P52H_CODE,   &REGCOARS_CODE,
-    &COARSTYP_CODE, &P52LS_CODE,  &N89DISP_CODE, &LSDISP_CODE, &LOCSAM_CODE,
-    &PICAPAR_CODE,  &PICEND_CODE, &PICGXT_CODE,
+    &P52E_CODE,     &P52V_CODE,     &P52W_CODE,         &P52H_CODE,       &REGCOARS_CODE,
+    &COARSTYP_CODE, &P52LS_CODE,    &N89DISP_CODE,      &LSDISP_CODE,     &LOCSAM_CODE,
+    &PICAPAR_CODE,  &PICEND_CODE,   &PICGXT_CODE,       &R51_CODE,        &R51C_CODE,
+    &R51_3_CODE,    &R51_MARK_CODE, &R51_SECOND_CODE,   &R51_TORQUE_CODE, &R51P63_CODE,
+    &R51_4_CODE,    &GYCOARS_CODE,  &GYCOARS_DONE_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

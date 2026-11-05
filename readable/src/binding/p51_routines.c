@@ -32,12 +32,16 @@
 #include "lm_p51_p53.h"
 #include "../p51_p53/p51_p53.h"
 #include "../interpreter/interpreter.h"
+#include "../rtb_op_codes/rtb_op_codes.h"
 #include "../agc/names.h"
 
 #if LUMINARY099
 
 /* A key: the bank, and the address in it. */
 #define KEY(bank, address) (uint16_t)((bank) * 1024u + ((address) & 01777u))
+
+/* LOADTIME's bank (FB), from its FCADR. */
+#define LOADTIME_BANK ((word)(I_LOADTIME & 076000u))
 
 static jmp_buf back;
 
@@ -139,6 +143,41 @@ static const struct basic_entry {
     {KEY(014u, PICAPAR + 1u), picapar_after_makecadr, true},
     {KEY(014u, PICEND + 3u), picend_after_exit, false},
     {KEY(014u, PICNSWP + 1u), picnswp_after_exit, false},
+    /* Part 3: R51 and GYCOARS */
+    {KEY(014u, R51_1 + 1u), r51_after_exit, false},
+    {KEY(014u, R51C), r51c, false},
+    {KEY(014u, R51C + 3u), r51c_terminate, false},
+    {KEY(014u, R51C + 4u), r51c_proceed, true},
+    {KEY(014u, R51C + 5u), r51c_enter, true},
+    {KEY(014u, R51C + 6u), r51c_pick_stars, true},
+    {KEY(014u, R51C + 015u), r51c_after_exit, false},
+    {KEY(014u, R51F - 1u), r51c_no_stars, true},
+    {KEY(014u, R51F), r51f, true},
+    {KEY(014u, R51I), r51i, false},
+    {KEY(014u, R51I + 2u), r51i_after_alarm, false},
+    {KEY(014u, R51I + 5u), r51i_terminate, false},
+    {KEY(014u, R51I + 6u), r51i_proceed, true},
+    {KEY(014u, R51I + 7u), r51i_enter, true},
+    {KEY(014u, R51E), r51e, true},
+    {KEY(014u, R51_3 + 1u), r51_3_after_exit, false},
+    {KEY(014u, R51_3 + 3u), r51_3_restart, true},
+    {KEY(014u, R51_3 + 7u), r51_mark_after_exit, false},
+    {KEY(014u, R51_3 + 011u), r51_mark_after_aotmark, false},
+    {KEY(014u, R51_3 + 013u), r51_mark_failed, false},
+    {KEY(014u, R51_3 + 014u), r51_marked, true},
+    {KEY(014u, R51_3 + 017u), r51_both_marked, true},
+    {KEY(014u, R51_3 + 024u), r51_second_after_exit, false},
+    {KEY(014u, R51_3 + 026u), r51_second_restart, true},
+    {KEY(014u, R51P63), r51p63, false},
+    {KEY(014u, R51P63 + 3u), r51p63_terminate, false},
+    {KEY(014u, R51P63 + 4u), r51p63_enter, true},
+    {KEY(014u, R51P63 + 5u), r51p63_proceed, true},
+    {KEY(014u, GYCOARS + 7u), gycoars_after_exit, false},
+    {KEY(014u, GYCOARS + 012u), gycoars_torque, false},
+    {KEY(014u, GYCOARS + 015u), gycoars_after_imupulse, false},
+    {KEY(014u, GYCOARS + 017u), gycoars_failed, false},
+    {KEY(014u, GYCOARS + 020u), gycoars_torqued, false},
+    {KEY(014u, GYCOARS + 022u), gycoars_restart, true},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -168,6 +207,17 @@ static const struct interpretive_code *const codes[] = {
     &PICAPAR_CODE,
     &PICEND_CODE,
     &PICGXT_CODE,
+    /* Part 3: R51 and GYCOARS */
+    &R51_CODE,
+    &R51C_CODE,
+    &R51_3_CODE,
+    &R51_MARK_CODE,
+    &R51_SECOND_CODE,
+    &R51_TORQUE_CODE,
+    &R51P63_CODE,
+    &R51_4_CODE,
+    &GYCOARS_CODE,
+    &GYCOARS_DONE_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
@@ -228,6 +278,22 @@ static bool loads_outside_star_catalog(uint16_t key)
     return false;
 }
 
+/* One pass; after R51C's RTB LOADTIME, LOADTIME (src/rtb_op_codes/) and
+ * the pass on from its DANZIG, as the faithful pair runs them. */
+static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
+                                 p66_bias_io *io, const struct interpretive_code *code)
+{
+    if (interpret_listing(program, state, io, code) != EXEC_OK) return EXEC_OUT_OF_SCOPE;
+    bind(program, state, io);
+    if (Z == LOADTIME && FBANK == LOADTIME_BANK) {
+        if (!sane(true)) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
+        if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
+        loadtime();
+        return interpret_listing(program, state, io, code);
+    }
+    return EXEC_OK;
+}
+
 /* ---- The keys, in the faithful tables' order ---- */
 
 /* The faithful tables, renamed. */
@@ -280,7 +346,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
 
     before = *state;
     kept = *io;
-    status = interpret_listing(program, state, io, code);
+    status = one_pass(program, state, io, code);
     if (status != EXEC_OK) {
         *state = before;
         *io = kept;

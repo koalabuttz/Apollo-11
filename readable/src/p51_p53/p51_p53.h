@@ -14,6 +14,8 @@
  *   part 2, s50_r56.c: S50 (LOCSAM), the sun, earth and moon as the LM
  *     sees them, and R56 (PICAPAR), which picks the stars to sight (pp.
  *     934-940).
+ *   part 3, r51.c: R51, the fine alignment, and GYCOARS, the gyro torque
+ *     coarse alignment (pp. 941-944).
  * The binding (src/binding/p51_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -75,6 +77,44 @@ void picapar_after_makecadr(void); /* PICAPAR +1 (MAKECADR's return) */
 void picend_after_exit(void);      /* PICEND +3 */
 void picnswp_after_exit(void);     /* PICNSWP +1 */
 extern const struct interpretive_code LOCSAM_CODE, PICAPAR_CODE, PICEND_CODE, PICGXT_CODE;
+
+/* Part 3, R51 and GYCOARS -- r51.c */
+void r51_after_exit(void);         /* R51.1 +1 */
+void r51c(void);                   /* R51C (PHASCHNG's return) */
+void r51c_terminate(void);         /* R51C +3 (BANKCALL's return) */
+void r51c_proceed(void);           /* R51C +4 */
+void r51c_enter(void);             /* R51C +5 */
+void r51c_pick_stars(void);        /* R51C +6 */
+void r51c_after_exit(void);        /* R51C +015 */
+void r51c_no_stars(void);          /* R51F -1 (R56's +2) */
+void r51f(void);                   /* R51F (R56's +3) */
+void r51i(void);                   /* R51I */
+void r51i_after_alarm(void);       /* R51I +2 */
+void r51i_terminate(void);         /* R51I +5 (BANKCALL's return) */
+void r51i_proceed(void);           /* R51I +6 */
+void r51i_enter(void);             /* R51I +7 */
+void r51e(void);                   /* R51E */
+void r51_3_after_exit(void);       /* R51.3 +1 */
+void r51_3_restart(void);          /* R51.3 +3 (PHASCHNG's return) */
+void r51_mark_after_exit(void);    /* R51.3 +7 */
+void r51_mark_after_aotmark(void); /* R51.3 +011 */
+void r51_mark_failed(void);        /* R51.3 +013 */
+void r51_marked(void);             /* R51.3 +014 (CURTAINS's return) */
+void r51_both_marked(void);        /* R51.3 +017 */
+void r51_second_after_exit(void);  /* R51.3 +024 */
+void r51_second_restart(void);     /* R51.3 +026 */
+void r51p63(void);                 /* R51P63 */
+void r51p63_terminate(void);       /* R51P63 +3 */
+void r51p63_enter(void);           /* R51P63 +4 */
+void r51p63_proceed(void);         /* R51P63 +5 */
+void gycoars_after_exit(void);     /* GYCOARS +7 */
+void gycoars_torque(void);         /* GYCOARS +012 (GODSPR's return) */
+void gycoars_after_imupulse(void); /* GYCOARS +015 */
+void gycoars_failed(void);         /* GYCOARS +017 */
+void gycoars_torqued(void);        /* GYCOARS +020 (CURTAINS's return) */
+void gycoars_restart(void);        /* GYCOARS +022 */
+extern const struct interpretive_code R51_CODE, R51C_CODE, R51_3_CODE, R51_MARK_CODE,
+    R51_SECOND_CODE, R51_TORQUE_CODE, R51P63_CODE, R51_4_CODE, GYCOARS_CODE, GYCOARS_DONE_CODE;
 #endif
 
 #endif
