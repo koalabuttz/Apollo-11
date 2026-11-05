@@ -186,6 +186,9 @@ REPLACED = (
     # THE_LUNAR_LANDING.agc, the LM's P63 set-up and P68
     # (src/lunar_landing): the port's compiled file.
     'lm_lunar_landing.o',
+    # THROTTLE_CONTROL_ROUTINES.agc, the LM's throttle (src/throttle), and
+    # FASTCHNG (src/landing_guidance): the port's compiled file.
+    'lm_throttle.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
@@ -239,11 +242,12 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # code (P76_CODE), the CM's does not. The CM's R30 updates the splash
 # error in P00 and P11 (candel), the LM's does not. BURN, BABY, BURN is the
 # LM's alone (killtsk2), as is the NSTEER of its P40-P47 and THE_LUNAR_LANDING
-# (ddumcalc); the CM's P40-P47 starts at P40CSM (p40csm).
+# (ddumcalc) and THROTTLE_CONTROL_ROUTINES (massmult); the CM's P40-P47
+# starts at P40CSM (p40csm).
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
                           'radsamp', 'prog20a', 'p30n33', 'p32strt',
                           'p31_after_p20flgon', 'prog21', 'rev83', 'P76_CODE', 'killtsk2',
-                          'nsteer', 'ddumcalc'),
+                          'nsteer', 'ddumcalc', 'massmult'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
                           'pikup20', 'p30phsi', 'P32STRT_CODE', 'prog21', 'r34los_after_exit', 'candel',
                           'rtrn', 'p40csm')}

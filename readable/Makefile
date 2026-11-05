@@ -154,6 +154,8 @@ BB_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/burn_baby/*.c)) \
 	src/binding/burn_baby_routines.c
 LLD_SOURCES := $(INTERPRETER_SOURCES) src/lunar_landing/lunar_landing.c \
 	src/binding/lunar_landing_routines.c
+THR_SOURCES := $(INTERPRETER_SOURCES) src/throttle/throttle.c src/landing_guidance/fastchng.c \
+	src/binding/throttle_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
 	src/binding/imu_performance_routines.c
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
@@ -168,11 +170,11 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) $(R60_SOURCES) \
-	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(P40_SOURCES) $(CP40_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SO_SOURCES) $(BB_SOURCES) $(LLD_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
+	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(P40_SOURCES) $(CP40_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SO_SOURCES) $(BB_SOURCES) $(LLD_SOURCES) $(THR_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
 HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases throttle-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
@@ -182,7 +184,7 @@ all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases
 	imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases \
 	p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases \
 	r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases \
-	lunar-landing-cases
+	lunar-landing-cases throttle-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -2138,6 +2140,30 @@ lunar-landing-cases: $(BUILD)/lld-oracle $(BUILD)/lld-cases $(BUILD)/lld-cases-f
 	./$(BUILD)/lld-oracle $(ROPES)
 	./$(BUILD)/lld-cases $(ROPES)
 	./$(BUILD)/lld-cases-flight $(ROPES)
+
+# THROTTLE_CONTROL_ROUTINES.agc, the LM's throttle, with
+# LUNAR_LANDING_GUIDANCE_EQUATIONS' FASTCHNG: tests/throttle_oracle.c runs
+# the port's frozen cases (c64-port/tests/lm_throttle_vectors.h, yaAGC
+# digests) and refusals on the readable routines; then
+# tests/throttle_cases.c runs readable and faithful side by side, one call
+# each, the faithful table renamed.
+THR_COMMON := $(KU_COMMON) $(PORT)/src/rope_image_host.c $(PORT)/tests/lm_throttle_cases.c
+
+$(BUILD)/thr-faithful.o: $(PORT)/src/lm_throttle.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dlm_throttle_routines=faithful_lm_throttle_routines -c $< -o $@
+$(BUILD)/thr-oracle: $(THR_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) tests/throttle_oracle.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(THR_COMMON) $(filter %.o,$^) \
+		tests/throttle_oracle.c -o $@
+$(BUILD)/thr-cases: $(THR_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/thr-faithful.o \
+		tests/throttle_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(THR_COMMON) $(filter %.o,$^) \
+		tests/throttle_cases.c -o $@
+
+throttle-cases: $(BUILD)/thr-oracle $(BUILD)/thr-cases
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/thr-oracle $(ROPES)
+	./$(BUILD)/thr-cases $(ROPES)
 
 # P40-P47.agc, the LM's burn programs: the port's test
 # (tests/test_lm_p40_p47.c, its frozen cases run to their stops through
