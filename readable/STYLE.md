@@ -80,6 +80,8 @@ C cannot spell every AGC name, so:
 | `+` inside a name | `_PLUS_` | `Q+10000` → `Q_PLUS_10000`, `q_plus_10000()` |
 | a leading `/` | `SLASH_` | `/NORM` → `SLASH_NORM` |
 | a leading `*` | `STAR_` | `*SMNB*` → `STAR_SMNB_STAR` |
+| a trailing `?` | `_Q` | `STABL?` → `STABL_Q`, `stabl_q()` |
+| a leading `?` | `Q_` | `?GUIDSUB` → `Q_GUIDSUB`, `q_guidsub_plus1()` |
 | `*` (the indexed forms) | `_STAR` | `DLOAD*` → `DLOAD_STAR`, `dodload_star()` |
 | `=` | `_EQ_` | `ACOS=0` → `ACOS_EQ_0` |
 | `(` ... `)` | `_` and nothing | `LAT(SPL)` → `LAT_SPL` |
