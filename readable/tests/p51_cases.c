@@ -48,7 +48,9 @@ extern const struct interpretive_code P52E_CODE, P52V_CODE, P52W_CODE, P52H_CODE
     COARSTYP_CODE, P52LS_CODE, N89DISP_CODE, LSDISP_CODE, LOCSAM_CODE, PICAPAR_CODE, PICEND_CODE,
     PICGXT_CODE, R51_CODE, R51C_CODE, R51_3_CODE, R51_MARK_CODE, R51_SECOND_CODE, R51_TORQUE_CODE,
     R51P63_CODE, R51_4_CODE, GYCOARS_CODE, GYCOARS_DONE_CODE, R55_CODE, R55RET_CODE, CHKSDATA_CODE,
-    CHKSDATA_ENTER_CODE, CHKSDA_CODE, CAL53A_CODE, COARFINE_CODE, MATMOVE_CODE;
+    CHKSDATA_ENTER_CODE, CHKSDA_CODE, CAL53A_CODE, COARFINE_CODE, MATMOVE_CODE, P51_CODE, P51B_CODE,
+    P51C_CODE, P51D_CODE, P51E_CODE, P51G_CODE, COARSE_CODE, COARSE_RETURN_CODE, NCOARSE_CODE,
+    NCOARSE_GCOMP_CODE, S52_2_CODE, S52_3_CODE;
 extern const agc_routine_table lm_p51_p53_basic, lm_p51_p53_interpretive;
 extern const agc_routine_table faithful_lm_p51_p53_basic, faithful_lm_p51_p53_interpretive;
 bool p51_readable(uint16_t key, bool order_pair);
@@ -122,13 +124,14 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 
 /* The parts written so far: part 1, bank 15's P52 (PROG52 to P52LS) and
  * bank 14's N89DISP and LSDISP; part 2, bank 14's S50 and R56 (LOCSAM to
- * PICNSWP +1); part 3, R51 and GYCOARS (to its GOTO R51K). */
+ * PICNSWP +1); part 3, R51 and GYCOARS (to its GOTO R51K); part 4, R55 to
+ * RDCDUS; part 5, P51 to S52.3. */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     return (bank == 015u && z >= 02050u && z <= 02243u) ||
-           (bank == 014u && z >= 02446u && z <= 03410u);
+           (bank == 014u && z >= 02446u && z <= 03667u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -201,8 +204,9 @@ static uint16_t index_or_star(void)
 }
 
 /* An index register for part 4's indexed operands (CHKSB's marks,
- * CALOOP's angles, MATMOVE's matrices), which the program only ever points
- * into erasable memory: at CALOOP the count, 1 to 3 (AXT,1 3; TIX,1);
+ * CALOOP's angles, MATMOVE's matrices; part 5's S52.2A axes), which the
+ * program only ever points into erasable memory: in a loop the count, 1
+ * to 3 times its step (CALOOP's AXT,1 3, by 1; S52.2A's AXT,1 18D, by 6);
  * elsewhere as the program sets it (index_word), or the complement of any
  * place from 0400 to 03377 not so near the end of its 256 words that a
  * matrix would run past them. (An index that takes such an operand into
@@ -210,11 +214,11 @@ static uint16_t index_or_star(void)
  * the AGC's indexed address goes on into fixed memory, reads the rope on
  * the readable side, where the faithful port has no copy of it; one that
  * stores over the interpreter's own words, below 0400, no program does.) */
-static uint16_t index_erasable(bool caloop)
+static uint16_t index_erasable(unsigned step)
 {
     unsigned place;
 
-    if (caloop) return (uint16_t)(1u + rnd() % 3u);
+    if (step) return (uint16_t)(step * (1u + rnd() % 3u));
     if (rnd() % 2u) return index_word();
     place = 0400u + rnd() % (03400u - 0400u);
     if ((place & 0377u) > 0355u) place -= 022u;
@@ -343,9 +347,10 @@ static void state(apollo_overlay_state *s, p66_bias_io *io, uint16_t key, int in
      * faithful port's copy of the catalog, or into erasable memory (part
      * 4's from index_erasable); S1 (050) any. */
     if (key / 1024u == 014u && key % 1024u + 02000u >= 03224u) {
-        bool caloop = key % 1024u + 02000u == 03340u || key % 1024u + 02000u == 03342u;
-        w[(fixloc + X1_AT) & 03777u] = index_erasable(caloop);
-        w[(fixloc + X1_AT + 1u) & 03777u] = index_erasable(caloop);
+        unsigned z = key % 1024u + 02000u;
+        unsigned step = z == 03340u || z == 03342u ? 1u : z >= 03630u && z <= 03635u ? 6u : 0u;
+        w[(fixloc + X1_AT) & 03777u] = index_erasable(step);
+        w[(fixloc + X1_AT + 1u) & 03777u] = index_erasable(step);
     } else {
         w[(fixloc + X1_AT) & 03777u] = index_or_star();
         w[(fixloc + X1_AT + 1u) & 03777u] = index_or_star();
@@ -429,13 +434,17 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 }
 
 static const struct interpretive_code *const codes[] = {
-    &P52E_CODE,     &P52V_CODE,           &P52W_CODE,         &P52H_CODE,       &REGCOARS_CODE,
-    &COARSTYP_CODE, &P52LS_CODE,          &N89DISP_CODE,      &LSDISP_CODE,     &LOCSAM_CODE,
-    &PICAPAR_CODE,  &PICEND_CODE,         &PICGXT_CODE,       &R51_CODE,        &R51C_CODE,
-    &R51_3_CODE,    &R51_MARK_CODE,       &R51_SECOND_CODE,   &R51_TORQUE_CODE, &R51P63_CODE,
-    &R51_4_CODE,    &GYCOARS_CODE,        &GYCOARS_DONE_CODE, &R55_CODE,        &R55RET_CODE,
-    &CHKSDATA_CODE, &CHKSDATA_ENTER_CODE, &CHKSDA_CODE,       &CAL53A_CODE,     &COARFINE_CODE,
-    &MATMOVE_CODE,
+    &P52E_CODE,          &P52V_CODE,       &P52W_CODE,           &P52H_CODE,
+    &REGCOARS_CODE,      &COARSTYP_CODE,   &P52LS_CODE,          &N89DISP_CODE,
+    &LSDISP_CODE,        &LOCSAM_CODE,     &PICAPAR_CODE,        &PICEND_CODE,
+    &PICGXT_CODE,        &R51_CODE,        &R51C_CODE,           &R51_3_CODE,
+    &R51_MARK_CODE,      &R51_SECOND_CODE, &R51_TORQUE_CODE,     &R51P63_CODE,
+    &R51_4_CODE,         &GYCOARS_CODE,    &GYCOARS_DONE_CODE,   &R55_CODE,
+    &R55RET_CODE,        &CHKSDATA_CODE,   &CHKSDATA_ENTER_CODE, &CHKSDA_CODE,
+    &CAL53A_CODE,        &COARFINE_CODE,   &MATMOVE_CODE,        &P51_CODE,
+    &P51B_CODE,          &P51C_CODE,       &P51D_CODE,           &P51E_CODE,
+    &P51G_CODE,          &COARSE_CODE,     &COARSE_RETURN_CODE,  &NCOARSE_CODE,
+    &NCOARSE_GCOMP_CODE, &S52_2_CODE,      &S52_3_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

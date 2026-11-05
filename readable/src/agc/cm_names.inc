@@ -1641,6 +1641,14 @@
 #define K_MATMOVE 03053u
 #define K_RDCDUS 02324u
 #define K_SGNAGREE 03544u
+#define K_P51 03067u
+#define K_P51B 03140u
+#define K_P51C 03161u
+#define K_P51D 03211u
+#define K_P51E 03217u
+#define K_P51G 03260u
+#define K_S52_2 02331u
+#define K_S52_3 02661u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -2718,6 +2726,7 @@
 #define KW_R55CDR 002757u
 #define KW_V06N93 001535u
 #define KW_VB6N5 001405u
+#define KW_V41K 012200u
 #define KW_ENDTASK {072471u,073714u}
 #define KW_DPBIT14 {000000u,020000u}
 #define KW_LGCL2CDR {003461u,002063u}
@@ -4395,6 +4404,9 @@
 #define I_NORMTEM1 001045u
 #define I_DEGREE1 031065u
 #define I_DEG359 031066u
+#define I_P51G 031260u
+#define I_S52_2A 022343u
+#define I_CHKSDATA 030714u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u
