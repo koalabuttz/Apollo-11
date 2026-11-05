@@ -3873,6 +3873,44 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define RNGEDBIT         ((word)KW_RNGEDBIT)
 #define VELDABIT         ((word)KW_VELDABIT)
 #define VXINHBIT         ((word)KW_VXINHBIT)
+
+/* LANDING_ANALOG_DISPLAYS.agc */
+#define ABORTON  ((word)K_ABORTON)
+#define ALTOUT   ((word)K_ALTOUT)
+#define ALTROUT  ((word)K_ALTROUT)
+#define ARCOMP   ((word)K_ARCOMP)
+#define CHKLASTY ((word)K_CHKLASTY)
+#define DATAOUT  ((word)K_DATAOUT)
+#define DISINDAT ((word)K_DISINDAT)
+#define DISPRSET ((word)K_DISPRSET)
+#define GET22_32 ((word)K_GET22_32) /* GET22/32 */
+#define INTLZE   ((word)K_INTLZE)
+#define LASTNEGY ((word)K_LASTNEGY)
+#define LASTOK   ((word)K_LASTOK)
+#define LASTPOSY ((word)K_LASTPOSY)
+#define LATFWDV  ((word)K_LATFWDV)
+#define LATVNEG  ((word)K_LATVNEG)
+#define LATVPOS  ((word)K_LATVPOS)
+#define LVLIMITS ((word)K_LVLIMITS)
+#define LVMINLM  ((word)K_LVMINLM)
+#define NEGLMLV  ((word)K_NEGLMLV)
+#define NEGVMAXY ((word)K_NEGVMAXY)
+#define NEWDATA  ((word)K_NEWDATA)
+#define OLDDATA  ((word)K_OLDDATA)
+#define POSVMAXY ((word)K_POSVMAXY)
+#define SPEEDRUN ((word)K_SPEEDRUN)
+#define VMONITOR ((word)K_VMONITOR)
+#define ZDATA2   ((word)K_ZDATA2)
+#define ZERODATA ((word)K_ZERODATA)
+#define ZEROLSTY ((word)K_ZEROLSTY)
+#define ARCONV   ((word)KW_ARCONV)
+#define ARTOA    ((word)KW_ARTOA)
+#define ARTOA2   ((word)KW_ARTOA2)
+#define BITS8_7  ((word)KW_BITS8_7) /* BITS8/7, OCT 00300 */
+#define BITSET   PRIO6              /* BITSET = PRIO6 */
+#define KPIP1_5  ((word)KW_KPIP1_5) /* KPIP1(5) */
+#define MAXVBITS ((word)KW_MAXVBITS)
+#define VELCONV  ((word)KW_VELCONV)
 #endif
 
 #if COMANCHE055
