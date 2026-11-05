@@ -18,13 +18,15 @@ src/binding/llge_keys.inc; and the LM's P70-P71
 LM's P12 (c64-port/src/lm_p12.c) as src/binding/p12_keys.inc; and the
 LM's ASCENT_GUIDANCE (c64-port/src/lm_ascent.c) as
 src/binding/ascent_keys.inc; and the LM's SERVICER
-(c64-port/src/lm_servicer.c) as src/binding/servicer_keys.inc. For the
+(c64-port/src/lm_servicer.c) as src/binding/servicer_keys.inc; and the
+LM's FINDCDUW--GUIDAP_INTERFACE (c64-port/src/lm_findcduw.c) as
+src/binding/findcduw_keys.inc. For the
 readable bindings
 (src/binding/p20_p25_routines.c, cm_p20_p25_routines.c,
 cm_p30_routines.c, p32_routines.c, cm_p32_routines.c, p34_routines.c,
 cm_p34_routines.c, p40_routines.c, cm_p40_routines.c, llge_routines.c,
-p70_routines.c, p12_routines.c, ascent_routines.c and
-servicer_routines.c).
+p70_routines.c, p12_routines.c, ascent_routines.c,
+servicer_routines.c and findcduw_routines.c).
 
 A binding must define the faithful tables' names with the same keys in the
 same order, so it takes them from here: one line per key, BASIC(index,
@@ -52,7 +54,8 @@ FILES = (('lm_p20_p25', READABLE / 'src/binding/p20_p25_keys.inc'),
          ('lm_llge', READABLE / 'src/binding/llge_keys.inc'),
          ('lm_p70_p71_file', READABLE / 'src/binding/p70_keys.inc'),
          ('lm_p12', READABLE / 'src/binding/p12_keys.inc'),
-         ('lm_ascent', READABLE / 'src/binding/ascent_keys.inc'))
+         ('lm_ascent', READABLE / 'src/binding/ascent_keys.inc'),
+         ('lm_findcduw', READABLE / 'src/binding/findcduw_keys.inc'))
 
 
 def generate(m):
