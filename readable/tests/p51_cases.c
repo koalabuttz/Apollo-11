@@ -50,7 +50,8 @@ extern const struct interpretive_code P52E_CODE, P52V_CODE, P52W_CODE, P52H_CODE
     R51P63_CODE, R51_4_CODE, GYCOARS_CODE, GYCOARS_DONE_CODE, R55_CODE, R55RET_CODE, CHKSDATA_CODE,
     CHKSDATA_ENTER_CODE, CHKSDA_CODE, CAL53A_CODE, COARFINE_CODE, MATMOVE_CODE, P51_CODE, P51B_CODE,
     P51C_CODE, P51D_CODE, P51E_CODE, P51G_CODE, COARSE_CODE, COARSE_RETURN_CODE, NCOARSE_CODE,
-    NCOARSE_GCOMP_CODE, S52_2_CODE, S52_3_CODE;
+    NCOARSE_GCOMP_CODE, S52_2_CODE, S52_3_CODE, R52_CODE, AZEL_CODE, R52_RETURN_CODE, R59A_CODE,
+    INCAZ_CODE, ZSPCR_CODE, NXAX_CODE;
 extern const agc_routine_table lm_p51_p53_basic, lm_p51_p53_interpretive;
 extern const agc_routine_table faithful_lm_p51_p53_basic, faithful_lm_p51_p53_interpretive;
 bool p51_readable(uint16_t key, bool order_pair);
@@ -125,13 +126,15 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 /* The parts written so far: part 1, bank 15's P52 (PROG52 to P52LS) and
  * bank 14's N89DISP and LSDISP; part 2, bank 14's S50 and R56 (LOCSAM to
  * PICNSWP +1); part 3, R51 and GYCOARS (to its GOTO R51K); part 4, R55 to
- * RDCDUS; part 5, P51 to S52.3. */
+ * RDCDUS; part 5, P51 to S52.3; part 6, R52 (bank 14) and R59 to R59OUT
+ * +4 (bank 15: R59OUT +5's TCF R59RET goes with P57). */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     return (bank == 015u && z >= 02050u && z <= 02243u) ||
-           (bank == 014u && z >= 02446u && z <= 03667u);
+           (bank == 015u && z >= 02245u && z <= 02461u) ||
+           (bank == 014u && z >= 02446u && z <= 03773u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -356,6 +359,16 @@ static void state(apollo_overlay_state *s, p66_bias_io *io, uint16_t key, int in
         w[(fixloc + X1_AT + 1u) & 03777u] = index_or_star();
     }
     if (n % 4u != 0u && rnd() % 2u) w[(fixloc + S1_AT) & 03777u] = any_word();
+    /* STARIND where R52 and R59A index BESTI by it: 0 or 1, the first star
+     * or the second, or any index that keeps the word in erasable memory
+     * (an index into fixed memory reads the rope on the readable side,
+     * where the faithful port has no copy of it). */
+    if (key == 014u * 1024u + 01672u || key == 015u * 1024u + 0255u) {
+        uint16_t index = rnd() % 2u   ? (uint16_t)(rnd() % 2u)
+                         : rnd() % 2u ? (uint16_t)(rnd() % 023u)
+                                      : (uint16_t)(~(rnd() % 01755u) & 077777u);
+        w[((w[3] >> 8) & 7u) * 0400u + 0357u] = index; /* STARIND, 01757 in the E-bank */
+    }
     w[6] = (uint16_t)((w[4] & 076000u) | eb);
     /* Now and then a state no program has: BBANK not the two banks, or a
      * word of 16 bits. */
@@ -444,7 +457,9 @@ static const struct interpretive_code *const codes[] = {
     &CAL53A_CODE,        &COARFINE_CODE,   &MATMOVE_CODE,        &P51_CODE,
     &P51B_CODE,          &P51C_CODE,       &P51D_CODE,           &P51E_CODE,
     &P51G_CODE,          &COARSE_CODE,     &COARSE_RETURN_CODE,  &NCOARSE_CODE,
-    &NCOARSE_GCOMP_CODE, &S52_2_CODE,      &S52_3_CODE,
+    &NCOARSE_GCOMP_CODE, &S52_2_CODE,      &S52_3_CODE,          &R52_CODE,
+    &AZEL_CODE,          &R52_RETURN_CODE, &R59A_CODE,           &INCAZ_CODE,
+    &ZSPCR_CODE,         &NXAX_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
