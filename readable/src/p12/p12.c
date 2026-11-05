@@ -275,7 +275,7 @@ void p12ret_after_pflitedb(void)
 
 /* ---- P12INIT and COMMINIT -- pp. 840-841 ---- */
 
-/* P12INIT: "INITIALIZE ENGINE DATA. USED FOR P12 AND P71.": the ascent
+/* P12INIT: "INITIALIZE ENGINE DATA. USED FOR P12 AND ... P71.": the ascent
  * engine's 1/DV1 to 1/DV3, AT, TBUP and TTO (from ATDECAY), and VE (from
  * APSVEX); with FLAP clear (P70 has not run) on to COMMINIT, else back
  * (RVQ). COMMINIT: "INITIALIZE TARGET DATA. USED BY P12, P70 AND P71 IF
