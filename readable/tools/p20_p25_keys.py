@@ -13,11 +13,13 @@ src/binding/cm_p32_keys.inc; and each mission's P34-35_P74-75
 cm_p34_keys.inc; and each mission's P40-P47 (c64-port/src/<m>_p40_p47.c)
 as src/binding/p40_keys.inc and cm_p40_keys.inc; and the LM's
 LUNAR_LANDING_GUIDANCE_EQUATIONS (c64-port/src/lm_llge.c) as
-src/binding/llge_keys.inc. For the readable bindings
+src/binding/llge_keys.inc; and the LM's P70-P71
+(c64-port/src/lm_p70_p71_file.c) as src/binding/p70_keys.inc. For the
+readable bindings
 (src/binding/p20_p25_routines.c, cm_p20_p25_routines.c,
 cm_p30_routines.c, p32_routines.c, cm_p32_routines.c, p34_routines.c,
-cm_p34_routines.c, p40_routines.c, cm_p40_routines.c and
-llge_routines.c).
+cm_p34_routines.c, p40_routines.c, cm_p40_routines.c, llge_routines.c
+and p70_routines.c).
 
 A binding must define the faithful tables' names with the same keys in the
 same order, so it takes them from here: one line per key, BASIC(index,
@@ -42,7 +44,8 @@ FILES = (('lm_p20_p25', READABLE / 'src/binding/p20_p25_keys.inc'),
          ('cm_p34_p35', READABLE / 'src/binding/cm_p34_keys.inc'),
          ('lm_p40_p47', READABLE / 'src/binding/p40_keys.inc'),
          ('cm_p40_p47', READABLE / 'src/binding/cm_p40_keys.inc'),
-         ('lm_llge', READABLE / 'src/binding/llge_keys.inc'))
+         ('lm_llge', READABLE / 'src/binding/llge_keys.inc'),
+         ('lm_p70_p71_file', READABLE / 'src/binding/p70_keys.inc'))
 
 
 def generate(m):
