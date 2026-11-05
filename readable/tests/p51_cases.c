@@ -51,7 +51,8 @@ extern const struct interpretive_code P52E_CODE, P52V_CODE, P52W_CODE, P52H_CODE
     CHKSDATA_ENTER_CODE, CHKSDA_CODE, CAL53A_CODE, COARFINE_CODE, MATMOVE_CODE, P51_CODE, P51B_CODE,
     P51C_CODE, P51D_CODE, P51E_CODE, P51G_CODE, COARSE_CODE, COARSE_RETURN_CODE, NCOARSE_CODE,
     NCOARSE_GCOMP_CODE, S52_2_CODE, S52_3_CODE, R52_CODE, AZEL_CODE, R52_RETURN_CODE, R59A_CODE,
-    INCAZ_CODE, ZSPCR_CODE, NXAX_CODE;
+    INCAZ_CODE, ZSPCR_CODE, NXAX_CODE, PLANET_CODE, PLANET_VECTOR_CODE, NOTPLAN_CODE, CALSAM_CODE,
+    GVDETER_CODE, PROGRAV_CODE, LUNG_CODE, GREED_CODE, ADDGRAV_CODE, QMINEXIT_CODE;
 extern const agc_routine_table lm_p51_p53_basic, lm_p51_p53_interpretive;
 extern const agc_routine_table faithful_lm_p51_p53_basic, faithful_lm_p51_p53_interpretive;
 bool p51_readable(uint16_t key, bool order_pair);
@@ -503,7 +504,9 @@ static const struct interpretive_code *const codes[] = {
     &P51G_CODE,          &COARSE_CODE,     &COARSE_RETURN_CODE,  &NCOARSE_CODE,
     &NCOARSE_GCOMP_CODE, &S52_2_CODE,      &S52_3_CODE,          &R52_CODE,
     &AZEL_CODE,          &R52_RETURN_CODE, &R59A_CODE,           &INCAZ_CODE,
-    &ZSPCR_CODE,         &NXAX_CODE,
+    &ZSPCR_CODE,         &NXAX_CODE,       &PLANET_CODE,         &PLANET_VECTOR_CODE,
+    &NOTPLAN_CODE,       &CALSAM_CODE,     &GVDETER_CODE,        &PROGRAV_CODE,
+    &LUNG_CODE,          &GREED_CODE,      &ADDGRAV_CODE,        &QMINEXIT_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
