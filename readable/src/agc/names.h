@@ -1877,8 +1877,8 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define ONE_SEC  ((word)KW_1SEC)   /* 1SEC: DEC 100 */
 #endif
 
-/* 1STO2S, V1STO2S, 2V1STO2S and their 1TO2SUB, LOADTIME, TPMODE,
- * DPMODE and NORMUNX1, RTB routines (RTB_OP_CODES.agc). */
+/* 1STO2S, V1STO2S, 2V1STO2S and their 1TO2SUB, LOADTIME, SGNAGREE,
+ * TPMODE, DPMODE and NORMUNX1, RTB routines (RTB_OP_CODES.agc). */
 #define LOADTIME    ((word)K_LOADTIME)
 #define ONE_STO2S   ((word)K_1STO2S)
 #define TWO_V1STO2S ((word)K_2V1STO2S)
@@ -1888,6 +1888,7 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define DPMODE      ((word)K_DPMODE)
 #define NORMUNX1    ((word)K_NORMUNX1)
 #define NORMUNIT    ((word)K_NORMUNIT)
+#define SGNAGREE    ((word)K_SGNAGREE)
 #define OFFTUNIT    ((word)K_OFFTUNIT)
 
 /* ---- SYSTEM_TEST_STANDARD_LEAD_INS ---- */
@@ -4011,6 +4012,18 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define VB05N09     ((word)KW_VB05N09)
 #define V16N20      ((word)KW_V16N20)
 #define R55CDR      ((word)KW_R55CDR)
+#define R55         ((word)K_R55)
+#define R55_1       ((word)K_R55_1) /* R55.1 */
+#define R55_2       ((word)K_R55_2) /* R55.2 */
+#define R55RET      ((word)K_R55RET)
+#define CHKSDATA    ((word)K_CHKSDATA)
+#define CHKSDA      ((word)K_CHKSDA)
+#define CAL53A      ((word)K_CAL53A)
+#define COARFINE    ((word)K_COARFINE)
+#define MATMOVE     ((word)K_MATMOVE)
+#define RDCDUS      ((word)K_RDCDUS)
+#define V06N93      ((word)KW_V06N93)
+#define VB6N5       ((word)KW_VB6N5)
 #endif
 
 #if COMANCHE055

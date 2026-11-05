@@ -40,8 +40,10 @@
 /* A key: the bank, and the address in it. */
 #define KEY(bank, address) (uint16_t)((bank) * 1024u + ((address) & 01777u))
 
-/* LOADTIME's bank (FB), from its FCADR. */
+/* The banks (FB) of the RTB routines the pairs run, from their FCADRs. */
 #define LOADTIME_BANK ((word)(I_LOADTIME & 076000u))
+#define SGNAGREE_BANK ((word)(I_SGNAGREE & 076000u))
+#define RDCDUS_BANK   ((word)(I_RDCDUS & 076000u))
 
 static jmp_buf back;
 
@@ -178,6 +180,23 @@ static const struct basic_entry {
     {KEY(014u, GYCOARS + 017u), gycoars_failed, false},
     {KEY(014u, GYCOARS + 020u), gycoars_torqued, false},
     {KEY(014u, GYCOARS + 022u), gycoars_restart, true},
+    /* Part 4: R55, R54 (CHKSDATA) and CAL53A */
+    {KEY(014u, R55_1), r55_1, false},
+    {KEY(014u, R55_1 + 3u), r55_terminate, false},
+    {KEY(014u, R55_1 + 4u), r55_proceed, true},
+    {KEY(014u, R55_1 + 5u), r55_enter, true},
+    {KEY(014u, R55_2), r55_2, false},
+    {KEY(014u, R55_2 + 2u), r55_torque, false},
+    {KEY(014u, R55_2 + 5u), r55_after_imupulse, false},
+    {KEY(014u, R55_2 + 7u), r55_failed, false},
+    {KEY(014u, R55_2 + 010u), r55_torqued, false},
+    {KEY(014u, R55RET), r55ret, true},
+    {KEY(014u, CHKSDATA + 034u), chksdata_after_exit, false},
+    {KEY(014u, CHKSDATA + 037u), chksdata_terminate, false},
+    {KEY(014u, CHKSDATA + 040u), chksdata_proceed, true},
+    {KEY(014u, CHKSDATA + 041u), chksdata_enter, true},
+    {KEY(014u, CAL53A + 026u), cal53a_after_exit, false},
+    {KEY(014u, CAL53A + 030u), coarfine, true},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -218,6 +237,15 @@ static const struct interpretive_code *const codes[] = {
     &R51_4_CODE,
     &GYCOARS_CODE,
     &GYCOARS_DONE_CODE,
+    /* Part 4: R55, R54 (CHKSDATA), CAL53A and MATMOVE */
+    &R55_CODE,
+    &R55RET_CODE,
+    &CHKSDATA_CODE,
+    &CHKSDATA_ENTER_CODE,
+    &CHKSDA_CODE,
+    &CAL53A_CODE,
+    &COARFINE_CODE,
+    &MATMOVE_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
@@ -278,20 +306,28 @@ static bool loads_outside_star_catalog(uint16_t key)
     return false;
 }
 
-/* One pass; after R51C's RTB LOADTIME, LOADTIME (src/rtb_op_codes/) and
- * the pass on from its DANZIG, as the faithful pair runs them. */
+/* One pass; after an RTB (R51C's LOADTIME, CHKSD's SGNAGREE, CAL53A's
+ * RDCDUS), the routine (src/rtb_op_codes/, or RDCDUS in r55.c) and the
+ * pass on from its DANZIG, as the faithful pair runs them. */
 static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
                                  p66_bias_io *io, const struct interpretive_code *code)
 {
+    void (*routine)(void);
+
     if (interpret_listing(program, state, io, code) != EXEC_OK) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
-    if (Z == LOADTIME && FBANK == LOADTIME_BANK) {
-        if (!sane(true)) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
-        if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
-        loadtime();
-        return interpret_listing(program, state, io, code);
-    }
-    return EXEC_OK;
+    if (Z == LOADTIME && FBANK == LOADTIME_BANK)
+        routine = loadtime;
+    else if (Z == SGNAGREE && FBANK == SGNAGREE_BANK)
+        routine = sgnagree;
+    else if (Z == RDCDUS && FBANK == RDCDUS_BANK)
+        routine = rdcdus;
+    else
+        return EXEC_OK;
+    if (!sane(true)) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
+    if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
+    routine();
+    return interpret_listing(program, state, io, code);
 }
 
 /* ---- The keys, in the faithful tables' order ---- */
