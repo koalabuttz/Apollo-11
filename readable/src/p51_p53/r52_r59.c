@@ -38,40 +38,6 @@ static void seventy_nine_disp(void);
 static void r59e(void);
 static void r59out(void);
 
-/* ---- INDEX before CA, TS and DXCH ---- */
-
-/* INDEX adds the index to the whole instruction word after it
- * (indexed_instruction). Not modelled: an index that turns it into
- * another instruction, or that points a TS or a DXCH at the bank
- * registers or Z (EBANK, FBANK, Z, BBANK), which no program here does. */
-static unsigned indexed_ca(unsigned address, word index)
-{
-    word instruction = indexed_instruction((word)(030000u | address), index);
-
-    if (OPERATION_CODE(instruction) != 3u) not_modelled();
-    return ADDRESS_FIELD(instruction);
-}
-
-static unsigned indexed_ts(unsigned address, word index)
-{
-    word instruction = indexed_instruction((word)(054000u | address), index);
-    unsigned to = instruction & 01777u;
-
-    if ((instruction & 076000u) != 054000u || (to >= EBANK_ADDRESS && to <= 6u)) not_modelled();
-    return to;
-}
-
-/* DXCH k is written k + 1. */
-static unsigned indexed_dxch(unsigned address, word index)
-{
-    word instruction = indexed_instruction((word)(052000u | (address + 1u)), index);
-    unsigned to = (instruction & 01777u) - 1u;
-
-    if ((instruction & 076000u) != 052000u || (to <= 6u && to + 1u >= EBANK_ADDRESS))
-        not_modelled();
-    return to;
-}
-
 /* ---- R52 -- pp. 955-956 ---- */
 
 /* R52: the caller's return to SAVQR52. */

@@ -51,7 +51,8 @@ extern const struct interpretive_code P52E_CODE, P52V_CODE, P52W_CODE, P52H_CODE
     CHKSDATA_ENTER_CODE, CHKSDA_CODE, CAL53A_CODE, COARFINE_CODE, MATMOVE_CODE, P51_CODE, P51B_CODE,
     P51C_CODE, P51D_CODE, P51E_CODE, P51G_CODE, COARSE_CODE, COARSE_RETURN_CODE, NCOARSE_CODE,
     NCOARSE_GCOMP_CODE, S52_2_CODE, S52_3_CODE, R52_CODE, AZEL_CODE, R52_RETURN_CODE, R59A_CODE,
-    INCAZ_CODE, ZSPCR_CODE, NXAX_CODE;
+    INCAZ_CODE, ZSPCR_CODE, NXAX_CODE, PLANET_CODE, PLANET_VECTOR_CODE, NOTPLAN_CODE, CALSAM_CODE,
+    GVDETER_CODE, PROGRAV_CODE, LUNG_CODE, GREED_CODE, ADDGRAV_CODE, QMINEXIT_CODE;
 extern const agc_routine_table lm_p51_p53_basic, lm_p51_p53_interpretive;
 extern const agc_routine_table faithful_lm_p51_p53_basic, faithful_lm_p51_p53_interpretive;
 bool p51_readable(uint16_t key, bool order_pair);
@@ -134,6 +135,8 @@ static bool in_written_part(uint16_t key)
 
     return (bank == 015u && z >= 02050u && z <= 02243u) ||
            (bank == 015u && z >= 02245u && z <= 02461u) ||
+           (bank == 015u && z >= 02472u && z <= 02662u) ||
+           (bank == 015u && z >= 02664u && z <= 02771u) ||
            (bank == 014u && z >= 02446u && z <= 03773u);
 }
 
@@ -226,6 +229,18 @@ static uint16_t index_erasable(unsigned step)
     place = 0400u + rnd() % (03400u - 0400u);
     if ((place & 0377u) > 0355u) place -= 022u;
     return (uint16_t)(~place & 077777u);
+}
+
+/* An index register for part 7's indexed operands, which take the
+ * operand at address (an interpretive address: erasable memory is 0 to
+ * 03777) to n words somewhere in erasable memory from 0400 up, within
+ * 256 words (see index_erasable): the address less the index. */
+static uint16_t index_to(unsigned address, unsigned n)
+{
+    unsigned place = 0400u + rnd() % (04000u - 0400u);
+
+    if ((place & 0377u) > 0400u - n) place -= n;
+    return (uint16_t)(place <= address ? address - place : ~(place - address) & 077777u);
 }
 
 /* A fixed CADR (as STQ leaves one): a chain of erasable CADRs that never
@@ -359,14 +374,44 @@ static void state(apollo_overlay_state *s, p66_bias_io *io, uint16_t key, int in
         w[(fixloc + X1_AT + 1u) & 03777u] = index_or_star();
     }
     if (n % 4u != 0u && rnd() % 2u) w[(fixloc + S1_AT) & 03777u] = any_word();
-    /* STARIND where R52 and R59A index BESTI by it: 0 or 1, the first star
+    /* Part 7's indexed operands (GRAVEL's by X1 and X2, CALSAM's by X1),
+     * as the program sets the index or (index_to) anywhere in erasable
+     * memory; XUNIT -6,2, a load from fixed memory, only as the program
+     * steps X2 through the unit vectors (-6, -4, -2), where the faithful
+     * port has the words. */
+    if (key / 1024u == 015u) {
+        static const uint16_t unit_steps[] = {077771u, 077773u, 077775u};
+        uint16_t *x1 = &w[(fixloc + X1_AT) & 03777u], *x2 = &w[(fixloc + X1_AT + 1u) & 03777u];
+        unsigned z = key % 1024u + 02000u;
+
+        if (z == 02553u) /* DLOAD* BESTI,1 (BESTI is 02755) */
+            *x1 = rnd() % 2u ? (uint16_t)(077777u - rnd() % 2u) : index_to(02755u, 2u);
+        if (z == 02556u) /* VLOAD* STARAD -228D,1 (STARAD is 02706) */
+            *x1 = rnd() % 2u ? (uint16_t)(~(228u + 6u * (rnd() % 3u)) & 077777u)
+                             : index_to(02706u - 228u, 6u);
+        if (z == 02603u || z == 02616u) *x2 = unit_steps[rnd() % 3u];
+        /* LXC,2 X2, then VXSC* STAR +6,2 (STAR is 02730): 2 words, or 6
+         * where MPAC holds a scalar and the operand is the vector. */
+        if (z == 02611u)
+            *x2 = rnd() % 2u ? unit_steps[rnd() % 3u]
+                             : (uint16_t)(~index_to(02730u + 6u, 6u) & 077777u);
+        if (z == 02606u) /* STORE XNB +18D,1 (XNB is 02664) */
+            *x1 = rnd() % 2u ? (uint16_t)(6u * (1u + rnd() % 3u)) : index_to(02664u + 18u, 6u);
+        if (z == 02621u) /* STORE XSM +18D,1 (XSM is 02642) */
+            *x1 = rnd() % 2u ? (uint16_t)(6u * (1u + rnd() % 3u)) : index_to(02642u + 18u, 6u);
+    }
+    /* STARIND where R52, R59A and PLANET index BESTI by it: 0 or 1, the first star
      * or the second, or any index that keeps the word in erasable memory
      * (an index into fixed memory reads the rope on the readable side,
      * where the faithful port has no copy of it). */
-    if (key == 014u * 1024u + 01672u || key == 015u * 1024u + 0255u) {
+    if (key == 014u * 1024u + 01672u || key == 015u * 1024u + 0255u ||
+        key == 015u * 1024u + 0477u) {
         uint16_t index = rnd() % 2u   ? (uint16_t)(rnd() % 2u)
                          : rnd() % 2u ? (uint16_t)(rnd() % 023u)
                                       : (uint16_t)(~(rnd() % 01755u) & 077777u);
+        /* (PLANET's TS BESTI by 2 would store over STARIND itself, and the
+         * CA BESTI after it read past erasable memory.) */
+        if (key == 015u * 1024u + 0477u && index == 2u) index = 1u;
         w[((w[3] >> 8) & 7u) * 0400u + 0357u] = index; /* STARIND, 01757 in the E-bank */
     }
     w[6] = (uint16_t)((w[4] & 076000u) | eb);
@@ -459,7 +504,9 @@ static const struct interpretive_code *const codes[] = {
     &P51G_CODE,          &COARSE_CODE,     &COARSE_RETURN_CODE,  &NCOARSE_CODE,
     &NCOARSE_GCOMP_CODE, &S52_2_CODE,      &S52_3_CODE,          &R52_CODE,
     &AZEL_CODE,          &R52_RETURN_CODE, &R59A_CODE,           &INCAZ_CODE,
-    &ZSPCR_CODE,         &NXAX_CODE,
+    &ZSPCR_CODE,         &NXAX_CODE,       &PLANET_CODE,         &PLANET_VECTOR_CODE,
+    &NOTPLAN_CODE,       &CALSAM_CODE,     &GVDETER_CODE,        &PROGRAV_CODE,
+    &LUNG_CODE,          &GREED_CODE,      &ADDGRAV_CODE,        &QMINEXIT_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

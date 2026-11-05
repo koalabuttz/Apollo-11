@@ -1651,6 +1651,9 @@
 #define K_S52_3 02661u
 #define K_R52 02011u
 #define K_R52A 02026u
+#define K_PLANET 02340u
+#define K_NOTPLAN 02401u
+#define K_CALSAM1 02415u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -2734,6 +2737,7 @@
 #define KW_1_6TH 005253u
 #define KW_V01N70 000306u
 #define KW_DEC227 000343u
+#define KW_VNPLANV 001530u
 #define KW_ENDTASK {072471u,073714u}
 #define KW_DPBIT14 {000000u,020000u}
 #define KW_LGCL2CDR {003461u,002063u}
