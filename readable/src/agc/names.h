@@ -3736,6 +3736,68 @@ static const word SVEXITAD[2] = KW_SVEXITAD; /* 2CADR SERVEXIT */
 #define V16N63      ((word)KW_V16N63)      /* VN 1663 */
 #define V16N85C     ((word)KW_V16N85C)     /* VN 1685 */
 static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
+
+/* SERVICER.agc */
+#define ASCSPOT  ((word)K_ASCSPOT)
+#define AVEGOUT  ((word)K_AVEGOUT)
+#define AVERAGEG ((word)K_AVERAGEG)
+#define AVERTRN  ((word)K_AVERTRN)
+#define AVGEND   ((word)K_AVGEND)
+#define BIBIBIAS ((word)K_BIBIBIAS)
+#define CHKTEMX  ((word)K_CHKTEMX)
+#define COPYCYC  ((word)K_COPYCYC)
+#define COPYCYCL ((word)K_COPYCYCL)
+#define DECCNTR  ((word)K_DECCNTR)
+#define DODELVZ  ((word)K_DODELVZ)
+#define EIGHTEEN ((word)KW_EIGHTEEN) /* DEC 18 */
+#define DVCNTSET ((word)K_DVCNTSET)
+#define DVMON    ((word)K_DVMON)
+#define GETABVAL ((word)K_GETABVAL)
+#define GNUFAZE5 ((word)K_GNUFAZE5)
+#define GNUTFAZ5 ((word)K_GNUTFAZ5)
+#define GOREADAX ((word)K_GOREADAX)
+#define GOSERV   ((word)K_GOSERV)
+#define GRP2OFF  ((word)K_GRP2OFF)
+#define LOTHRUST ((word)K_LOTHRUST)
+#define MAKEACCS ((word)K_MAKEACCS)
+#define MASSMON  ((word)K_MASSMON)
+#define MOONSPOT ((word)K_MOONSPOT)
+#define NODVMON1 ((word)K_NODVMON1)
+#define NODVMON2 ((word)K_NODVMON2)
+#define NORMLIZ1 ((word)K_NORMLIZ1)
+#define NORMLIZ2 ((word)K_NORMLIZ2)
+#define NORMLIZE ((word)K_NORMLIZE)
+#define PIPASR   ((word)K_PIPASR)
+#define PIPSDONE ((word)K_PIPSDONE)
+#define PRIO32   ((word)KW_PRIO32)
+#define PREREAD  ((word)K_PREREAD)
+#define QUIKFAZ5 ((word)K_QUIKFAZ5)
+#define READACCS ((word)K_READACCS)
+#define REDO5_5  ((word)K_REDO5_5) /* REDO5.5 */
+#define REPIP1   ((word)K_REPIP1)
+#define REPIP3   ((word)K_REPIP3)
+#define REPIP4   ((word)K_REPIP4)
+#define REREADAC ((word)K_REREADAC)
+#define SERVICER ((word)K_SERVICER)
+#define SERVIDLE ((word)K_SERVIDLE)
+#define SERVOUT  ((word)K_SERVOUT)
+#define TMPTOSPT ((word)K_TMPTOSPT)
+#define USEGTS   ((word)K_USEGTS)
+#define USEJETS  ((word)K_USEJETS)
+#define AUXFLBIT ((word)KW_AUXFLBIT)
+#define DONEADR  ((word)KW_DONEADR) /* GENADR PIPSDONE */
+#define DPSVEX   ((word)KW_DPSVEX) /* APSVEX +1, the descent engine's */
+#define ENDJBCAD ((word)KW_ENDJBCAD) /* CADR SERVEXIT +2 */
+#define KPIP     ((word)KW_KPIP)
+#define KPIP1    ((word)KW_KPIP1)
+#define NOLRRBIT ((word)KW_NOLRRBIT)
+#define OCT37771 ((word)KW_OCT37771)
+#define READLBIT ((word)KW_READLBIT)
+#define SUPER011 ((word)KW_SUPER011)
+#define XNBPIPAD ((word)KW_XNBPIPAD) /* ECADR XNBPIP */
+static const word APSVEX[2] = KW_APSVEX;     /* 2DEC: the exhaust velocities, APS and DPS */
+static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
+static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #endif
 
 #if COMANCHE055
