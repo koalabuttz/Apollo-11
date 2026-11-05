@@ -229,7 +229,9 @@ REPLACED = (
 # routine tables, all readable; the faithful ones, renamed, are no longer
 # called (--gc-sections drops them). FINDCDUW--GUIDAP_INTERFACE
 # (src/findcduw): the LM's routine tables, all readable; the faithful ones,
-# renamed, are no longer called (--gc-sections drops them).
+# renamed, are no longer called (--gc-sections drops them). P51-P53
+# (src/p51_p53): the LM's routine tables, readable part by part; the
+# faithful ones, renamed, run the keys no part has written yet.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],
@@ -241,7 +243,8 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'cm_p40_p47.o': lambda m: ['cm_p40_p47_basic', 'cm_p40_p47_interpretive'] if m == 'cm' else [],
            'lm_llge.o': lambda m: ['lm_llge_basic', 'lm_llge_interpretive'] if m == 'lm' else [],
            'lm_servicer.o': lambda m: ['lm_servicer_routines', 'lm_servicer_interpretive'] if m == 'lm' else [],
-           'lm_findcduw.o': lambda m: ['lm_findcduw_basic', 'lm_findcduw_interpretive'] if m == 'lm' else []}
+           'lm_findcduw.o': lambda m: ['lm_findcduw_basic', 'lm_findcduw_interpretive'] if m == 'lm' else [],
+           'lm_p51_p53.o': lambda m: ['lm_p51_p53_basic', 'lm_p51_p53_interpretive'] if m == 'lm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
@@ -268,12 +271,13 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # (ddumcalc) and THROTTLE_CONTROL_ROUTINES (massmult) and P66's RODCOMP
 # (rodcomp, LUNAR_LANDING_GUIDANCE_EQUATIONS); the CM's P40-P47
 # starts at P40CSM (p40csm). LANDING_ANALOG_DISPLAYS is the LM's alone
-# (landisp), as is FINDCDUW--GUIDAP_INTERFACE (fltrsub).
+# (landisp), as is FINDCDUW--GUIDAP_INTERFACE (fltrsub). The LM's P52 is
+# readable so far (prog52), the CM's not yet.
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
                           'radsamp', 'prog20a', 'p30n33', 'p32strt',
                           'p31_after_p20flgon', 'prog21', 'rev83', 'P76_CODE', 'killtsk2',
                           'nsteer', 'ddumcalc', 'massmult', 'rodcomp', 'abrtjask', 'p12lm',
-                          'atmag', 'rereadac', 'landisp', 'fltrsub'),
+                          'atmag', 'rereadac', 'landisp', 'fltrsub', 'prog52'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
                           'pikup20', 'p30phsi', 'P32STRT_CODE', 'prog21', 'r34los_after_exit', 'candel',
                           'rtrn', 'p40csm')}
