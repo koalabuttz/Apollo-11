@@ -125,6 +125,7 @@
 #define ORDER_BPL        0132u
 #define ORDER_SR3        0134u
 #define ORDER_DOT        0135u
+#define ORDER_DOT_STAR   0137u /* DOT* */
 #define ORDER_BMN        0136u
 #define ORDER_VSQ        0140u
 #define ORDER_VXV        0141u
@@ -149,6 +150,7 @@
 #define ORDER_BOF        0162u
 #define ORDER_BOFSET     0162u
 #define ORDER_BOFF       0162u /* (BOF under its other name) */
+#define ORDER_BOFINV     0162u
 #define ORDER_BON        0162u
 #define ORDER_BONCLR     0162u
 #define ORDER_CLEAR      0162u
@@ -185,6 +187,7 @@
 #define SWITCH_BOFSET 0040u
 #define SWITCH_CLRGO  0220u
 #define SWITCH_SETGO  0020u
+#define SWITCH_BOFINV 0140u
 #define SWITCH(order, flag)                                                                        \
     ((word)((((I_##flag) / 15u) << 8) | ((I_##flag) % 15u) | SWITCH_##order))
 
