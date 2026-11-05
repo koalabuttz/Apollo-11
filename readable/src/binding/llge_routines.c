@@ -43,6 +43,7 @@
 #include "rope_image.h"
 #include "../landing_guidance/landing_guidance.h"
 #include "../interpreter/interpreter.h"
+#include "../rtb_op_codes/rtb_op_codes.h"
 #include "../agc/names.h"
 
 #if LUMINARY099
@@ -50,6 +51,10 @@
 /* A key: the bank, and the address in it. */
 #define KEY(bank, address) (uint16_t)((bank) * 1024u + ((address) & 01777u))
 #define SUPERBANK_BIT      0100u
+
+/* NORMUNIT's bank (FB), from its FCADR. */
+#define NORMUNIT_BANK ((word)(I_NORMUNIT & 076000u))
+#define VECTOR_MODE   077776u /* MODE -1 */
 
 /* The faithful tables, renamed. */
 extern const agc_routine_table faithful_lm_llge_basic, faithful_lm_llge_interpretive;
@@ -159,6 +164,36 @@ static const struct basic_entry {
     {KEY(031u, ROOTLOOP + 024u), rootloop_after_abs, true},
     {KEY(031u, INTPRETX), intpretx, true},
     {KEY(031u, FASTCHNG), fastchng, false},
+    /* Part 2: QUADGUID to EXTLOGIC */
+    {KEY(031u, QUADGUID), quadguid, true},
+    {KEY(031u, AFCCLEND + 1u), afcclend_after_exit, true},
+    {KEY(031u, AFCCLEND + 2u), afcclend_after_fastchng, true},
+    {KEY(031u, EXTLOGIC), extlogic, true},
+    {KEY(031u, EXSPOT1 + 4u), exspot1_after_fastchng, true},
+    /* Part 2: the exits */
+    {KEY(031u, EXGSUB + 011u), exgsub_after_exit, true},
+    {KEY(031u, EXGSUB + 017u), exgsub_postjump, false},
+    {KEY(031u, EXBRAK + 5u), steer, true},
+    {KEY(031u, EXNORM + 013u), exnorm_after_exit, true},
+    {KEY(031u, RATESTOP), ratestop, true},
+    {KEY(031u, RATESTOP + 7u), dispexit, true},
+    {KEY(031u, GDUMP1 + 1u), gdump1_after_throttle, true},
+    /* Part 2: the displays */
+    {KEY(031u, DISPEXIT), dispexit, true},
+    {KEY(031u, DISPEXIT + 3u), dispexit_plus3, true},
+    {KEY(031u, P63DISPS - 2u), p63disps_phaschng, false},
+    {KEY(031u, P63DISPS), p63disps, false},
+    {KEY(031u, P63DISPS + 3u), endlljob, false},
+    {KEY(031u, P64DISPS + 012u), p64disps_terminate, false},
+    {KEY(031u, P64DISPS + 013u), p64ceed, false},
+    {KEY(031u, P64DISPS + 014u), p64disps, false},
+    {KEY(031u, P64DISPS + 015u), endlljob, false},
+    {KEY(031u, P64CEED + 5u), p64ceed_after_upflag, false},
+    {KEY(031u, REDES_OK), redes_ok, false},
+    /* Part 2: P67 */
+    {KEY(031u, P67VERT + 2u), p67vert_after_phaschng, true},
+    /* Part 2: 1406ALM's return */
+    {KEY(031u, ALM1406 + 2u), alm1406_after_alarm, true},
     /* Part 1: P66 */
     {KEY(032u, RODTASK), rodtask, false},
     {KEY(032u, RODTASK + 4u), rodtask_after_findvac, false},
@@ -181,7 +216,9 @@ static const struct basic_entry *basic_entry(uint16_t key)
 
 /* ---- The order pairs ---- */
 
-static const struct interpretive_code *const codes[] = {&ITRPNT1_CODE, &VHORCOMP_CODE};
+static const struct interpretive_code *const codes[] = {
+    &QUADGUID_CODE, &CGCALC_CODE,  &EXGSUB_CODE,  &EXBRAK_CODE,  &EXNORM_CODE,
+    &GDUMP1_CODE,   &P65VERT_CODE, &P67VERT_CODE, &ITRPNT1_CODE, &VHORCOMP_CODE};
 
 /* The table an address is in, in a bank, or none. */
 static const struct interpretive_code *code_at(unsigned bank, word address)
@@ -234,6 +271,25 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     return EXEC_OK;
 }
 
+/* One pass; after RTB NORMUNIT, NORMUNIT and the DANZIG it ends at, on
+ * through the rest of the pair, as the faithful pair does. Its alarm 1302
+ * (POODOO1) ends the pair. */
+static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
+                                 lm_channel_io *io, const struct interpretive_code *code)
+{
+    enum exec_status status = interpret_listing(program, state, &io->io, code);
+
+    if (status != EXEC_OK) return status;
+    bind(program, state, io);
+    if (Z != NORMUNIT || FBANK != NORMUNIT_BANK) return EXEC_OK;
+    if (MODE != VECTOR_MODE || !sane(true))
+        return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it: a vector) */
+    if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
+    normunit();
+    if (Z == POODOO1) return EXEC_OK;
+    return interpret_listing(program, state, &io->io, code);
+}
+
 static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
@@ -260,7 +316,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
 
     before = *state;
     kept = *io;
-    status = interpret_listing(program, state, &io->io, code);
+    status = one_pass(program, state, io, code);
     if (status != EXEC_OK) {
         *state = before;
         *io = kept;

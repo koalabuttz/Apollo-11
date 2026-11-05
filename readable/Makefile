@@ -157,7 +157,7 @@ LLD_SOURCES := $(INTERPRETER_SOURCES) src/lunar_landing/lunar_landing.c \
 THR_SOURCES := $(INTERPRETER_SOURCES) src/throttle/throttle.c src/landing_guidance/subroutines.c \
 	src/binding/throttle_routines.c
 LLGE_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/landing_guidance/*.c)) \
-	src/binding/llge_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/llge_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
 	src/binding/imu_performance_routines.c
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \

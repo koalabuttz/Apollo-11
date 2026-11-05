@@ -47,8 +47,11 @@ struct interpretive_code {
     unsigned count;
     const uint16_t *words;
 };
-extern const struct interpretive_code ITRPNT1_CODE, VHORCOMP_CODE;
-static const struct interpretive_code *const codes[] = {&ITRPNT1_CODE, &VHORCOMP_CODE};
+extern const struct interpretive_code QUADGUID_CODE, CGCALC_CODE, EXGSUB_CODE, EXBRAK_CODE,
+    EXNORM_CODE, GDUMP1_CODE, P65VERT_CODE, P67VERT_CODE, ITRPNT1_CODE, VHORCOMP_CODE;
+static const struct interpretive_code *const codes[] = {
+    &QUADGUID_CODE, &CGCALC_CODE,  &EXGSUB_CODE,  &EXBRAK_CODE,  &EXNORM_CODE,
+    &GDUMP1_CODE,   &P65VERT_CODE, &P67VERT_CODE, &ITRPNT1_CODE, &VHORCOMP_CODE};
 #define readable_basic_table        lm_llge_basic
 #define readable_interpretive_table lm_llge_interpretive
 #define faithful_basic              faithful_lm_llge_basic
@@ -61,10 +64,11 @@ static const struct interpretive_code *const codes[] = {&ITRPNT1_CODE, &VHORCOMP
 #define DANZIG_AT                   06061u
 /* The parts written so far: part 1, the redesignator trap (bank 11), the
  * rate of descent trap (bank 20), ROOTPSRS to INTPRETX (31,3553-3677, and
- * FASTCHNG, 31,3740) and P66 (32,3263-3531). */
+ * FASTCHNG, 31,3740) and P66 (32,3263-3531); part 2, QUADGUID to P67VERT
+ * (31,3121-3552) and 1406ALM's return (31,3737). */
 #define WRITTEN                                                                                    \
-    {011u, 02275u, 02372u}, {020u, 02115u, 02122u}, {031u, 03553u, 03677u},                        \
-        {031u, 03740u, 03740u}, {032u, 03263u, 03531u}
+    {011u, 02275u, 02372u}, {020u, 02115u, 02122u}, {031u, 03121u, 03677u},                        \
+        {031u, 03737u, 03740u}, {032u, 03263u, 03531u}
 /* The words after ROOTPSRS's TC USPRCADRs, entered at DANZIG. */
 #define AFTER_USPRCADR(key)                                                                        \
     ((key) == 031u * 1024u + 01575u || (key) == 031u * 1024u + 01642u ||                           \
@@ -94,6 +98,7 @@ bool llge_readable(uint16_t key, bool order_pair);
 #define DERPTR_AT   0141u
 #define PWRCNT_AT   0140u
 #define WCHPHASE_AT 01351u
+#define WCHPHOLD_AT 03621u
 
 #define CASES       4096u
 #define OTHER_CASES 16u
@@ -260,6 +265,17 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
             k = 010u + rnd() % 03770u;
             if ((k < 0154u || k > 0166u) && k != FIXLOC_AT && k != EDOP_AT) w[k] = any_word();
         }
+        /* X1 as INTPRETX leaves it: minus the phase's target index (-0,
+         * -034 or +1); else minus a small count. (Not a word that indexes
+         * the guidance's tables out of their E-bank: past it the faithful
+         * orders read the wrong words, which the readable interpreter
+         * does not.) */
+        if (rnd() % 8u) {
+            static const uint16_t x1[] = {077777u, 077743u, 1u};
+            w[(fixloc + X1_AT) & 03777u] = x1[rnd() % COUNT(x1)];
+        } else {
+            w[(fixloc + X1_AT) & 03777u] = (uint16_t)(077777u - rnd() % 0100u);
+        }
         /* The redesignator's ELVIRA and ZERLINA (the last pass's bits and
          * the quiet passes left: each sign, or small) and RODCOUNT. */
         k = rnd() % 4u;
@@ -285,11 +301,17 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
         if (bank == 031u && z >= 03553u && z <= 03677u && rnd() % 4u == 0u)
             w[MODE_AT] = (uint16_t)(rnd() % 2u ? 010u : rnd() % 020u); /* ROOTPSRS's flags */
         w[RETROOT_AT] = rnd() % 8u ? (uint16_t)(02000u + rnd() % 06000u) : any_word();
-        /* WCHPHASE: -1 to 2, one past either end, or any. */
+        /* WCHPHASE: -1 to 2, one past either end, -0, or any. */
         if (rnd() % 2u) {
-            static const uint16_t phases[] = {077776u, 0u, 1u, 2u, 077775u, 3u};
-            k = rnd() % 7u;
-            w[WCHPHASE_AT] = k < 6u ? phases[k] : any_word();
+            static const uint16_t phases[] = {077776u, 0u, 1u, 2u, 077775u, 3u, 077777u};
+            k = rnd() % 8u;
+            w[WCHPHASE_AT] = k < 7u ? phases[k] : any_word();
+        }
+        /* WCHPHOLD: the same, or the largest positive (+1 overflows). */
+        k = rnd() % 12u;
+        if (k < 6u) {
+            static const uint16_t holds[] = {077776u, 0u, 1u, 2u, 037777u};
+            w[WCHPHOLD_AT] = k < 5u ? holds[k] : any_word();
         }
         /* Channel 31: the hand controller's pulse bits and the attitude
          * hold bit (13), or any. */

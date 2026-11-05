@@ -121,6 +121,12 @@ void normunx1(void)
     normunit_plus1(); /* TCF NORMUNIT +1 */
 }
 
+void normunit(void)
+{
+    set_A(ZERO);      /* CAF ZERO */
+    normunit_plus1(); /* (on into NORMUNIT +1) */
+}
+
 static void normunit_plus1(void)
 {
     ad_at(ADDRESS_OF(FIXLOC));

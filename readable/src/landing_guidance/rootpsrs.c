@@ -19,54 +19,10 @@
  * interpretive code through USPRCADR, each a call of its own here. The
  * faithful C is c64-port/src/lm_llge.c. */
 #include "landing_guidance.h"
+#include "indexing.h"
 #include "../agc/names.h"
 
 #if LUMINARY099
-
-/* TC at, to a routine out of the file: Q gets the return and the routine
- * runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
-/* EXTEND; INDEX pointer; DCA k, and INDEX pointer; CA k: the word (or
- * double word) k past the address the pointer holds, which is an erasable
- * table. The AGC adds the index to the whole instruction; not modelled:
- * an index that makes it another instruction or takes it out of erasable
- * memory, nor a DCA of 1777, whose second word is fixed memory's 2000.
- * (DCA's address field is the address plus one.) */
-static void dca_indexed(unsigned pointer, word k)
-{
-    word instruction = indexed_instruction((word)(030000u + k + 1u), fetch(pointer));
-
-    if (OPERATION_CODE(instruction) != 3u || ADDRESS_FIELD(instruction) == 0u ||
-        ADDRESS_FIELD(instruction) >= 02000u)
-        not_modelled();
-    dca(ADDRESS_FIELD(instruction) - 1u);
-}
-
-static void ca_indexed(unsigned pointer, word k)
-{
-    word instruction = indexed_instruction((word)(030000u + k), fetch(pointer));
-
-    if (OPERATION_CODE(instruction) != 3u || ADDRESS_FIELD(instruction) >= 02000u) not_modelled();
-    ca(ADDRESS_FIELD(instruction));
-}
-
-/* INDEX pointer; DXCH k: the same for DXCH (an erasable instruction: its
- * address field is ten bits). Not modelled too: a pair that takes in a
- * bank register or Z, or an address field of 0 (DXCH -1). */
-static void dxch_indexed(unsigned pointer, word k)
-{
-    word instruction = indexed_instruction((word)(052000u + k + 1u), fetch(pointer));
-    word field = (word)(instruction & 01777u);
-
-    if ((instruction & 076000u) != 052000u || field == 0u || (field <= 7u && field >= 3u))
-        not_modelled();
-    dxch(field - 1u);
-}
 
 /* ---- Entry: the derivative's table -- pp. 823-824 ---- */
 
