@@ -15,13 +15,14 @@
  * frozen test states (c64-port/tests/p51_p53_vectors.h, the LM's) entered
  * at the key, most stirred further: MPAC and its mode, the push-down list
  * and its pointer, the index registers (X1 and X2 as the program sets
- * them, S1 any), A, Q (a return address, or any), MODREG (often 52 or 57),
- * OPTION2 (P52's option, often 1 to 4), DSPTEM1 (often +0 or -0, the
- * crew's time of alignment not loaded), TIME2 and TIME1, the flag words
- * (the REFSMMAT, preferred attitude, lunar and earth flags: often one bit
- * changed), the vectors and times (any erasable bank's words), NEWJOB (+0,
- * a core set, or -0), the overflow indicator, now and then any word but
- * the interpreter's own, the latches, or a state the routines refuse
+ * them, or star numbers times 6 as R56 counts them, S1 any), A, Q (a
+ * return address, or any), MODREG (often 52 or 57), OPTION2 (P52's
+ * option, often 1 to 4), DSPTEM1 (often +0 or -0, the crew's time of
+ * alignment not loaded), TIME2 and TIME1, the flag words (the REFSMMAT,
+ * preferred attitude, lunar, earth, VFLAG and occultation flags: often one
+ * bit changed), the vectors and times (any erasable bank's words), NEWJOB
+ * (+0, a core set, or -0), the overflow indicator, now and then any word
+ * but the interpreter's own, the latches, or a state the routines refuse
  * (another work area, BBANK not the two banks, a word of 16 bits). Each
  * runs once on each side, as the program's trampoline would call the key's
  * routine. Where either port runs, the other must too, with the same memory
@@ -44,7 +45,8 @@ struct interpretive_code {
     const uint16_t *words;
 };
 extern const struct interpretive_code P52E_CODE, P52V_CODE, P52W_CODE, P52H_CODE, REGCOARS_CODE,
-    COARSTYP_CODE, P52LS_CODE, N89DISP_CODE, LSDISP_CODE;
+    COARSTYP_CODE, P52LS_CODE, N89DISP_CODE, LSDISP_CODE, LOCSAM_CODE, PICAPAR_CODE, PICEND_CODE,
+    PICGXT_CODE;
 extern const agc_routine_table lm_p51_p53_basic, lm_p51_p53_interpretive;
 extern const agc_routine_table faithful_lm_p51_p53_basic, faithful_lm_p51_p53_interpretive;
 bool p51_readable(uint16_t key, bool order_pair);
@@ -117,13 +119,14 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 }
 
 /* The parts written so far: part 1, bank 15's P52 (PROG52 to P52LS) and
- * bank 14's N89DISP and LSDISP. */
+ * bank 14's N89DISP and LSDISP; part 2, bank 14's S50 and R56 (LOCSAM to
+ * PICNSWP +1). */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     return (bank == 015u && z >= 02050u && z <= 02243u) ||
-           (bank == 014u && z >= 02446u && z <= 02503u);
+           (bank == 014u && z >= 02446u && z <= 03012u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -168,6 +171,31 @@ static uint16_t return_word(void)
 static uint16_t index_word(void)
 {
     return (uint16_t)(077777u - (0400u + rnd() % 0340u));
+}
+
+/* An index register: as the program sets it (index_word), a star's index
+ * in the catalog (its number, 1 to 38, times 6), -5 to 243, one that
+ * takes CATLOG's address (030346, the address word less one) into
+ * erasable memory (the work area below 0100, or a bank's words, not so
+ * near the bank's end that a vector would run past it; as a positive
+ * index, or a negative one whose sum overflows), or into another fixed
+ * bank (2 to 13). */
+static uint16_t index_or_star(void)
+{
+    unsigned k = rnd() % 5u;
+
+    if (k == 0u) return index_word();
+    if (k == 1u) return (uint16_t)(6u * (1u + rnd() % 38u));
+    if (k == 2u) {
+        k = rnd() % 249u;
+        return (uint16_t)(k < 5u ? 077777u - (k + 1u) : k - 5u);
+    }
+    if (k == 3u) {
+        k = rnd() % 04000u;
+        if ((k & 0377u) > 0371u) k -= 6u;
+        return (uint16_t)(rnd() % 2u ? 030346u - k : ~(07432u + k) & 077777u);
+    }
+    return (uint16_t)(030346u - (04000u + rnd() % 024000u));
 }
 
 /* A fixed CADR (as STQ leaves one): a chain of erasable CADRs that never
@@ -286,9 +314,13 @@ static void state(apollo_overlay_state *s, p66_bias_io *io, uint16_t key, int in
     /* The push-down list in the work area. */
     if (w[PUSHLOC_AT] < fixloc || w[PUSHLOC_AT] > fixloc + 037u || n % 4u != 0u)
         w[PUSHLOC_AT] = (uint16_t)(fixloc + rnd() % 040u);
-    /* X1 and X2 (the work area's 046 and 047); S1 (050) any. */
-    w[(fixloc + X1_AT) & 03777u] = index_word();
-    w[(fixloc + X1_AT + 1u) & 03777u] = index_word();
+    /* X1 and X2 (the work area's 046 and 047), each as the program sets
+     * it, a star number times 6 as R56 counts them through the star
+     * catalog (CATLOG,1 and CATLOG,2), -5 to 243 round the ends of the
+     * faithful port's copy of the catalog, or into erasable memory; S1
+     * (050) any. */
+    w[(fixloc + X1_AT) & 03777u] = index_or_star();
+    w[(fixloc + X1_AT + 1u) & 03777u] = index_or_star();
     if (n % 4u != 0u && rnd() % 2u) w[(fixloc + S1_AT) & 03777u] = any_word();
     w[6] = (uint16_t)((w[4] & 076000u) | eb);
     /* Now and then a state no program has: BBANK not the two banks, or a
@@ -368,8 +400,9 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 }
 
 static const struct interpretive_code *const codes[] = {
-    &P52E_CODE,     &P52V_CODE,  &P52W_CODE,    &P52H_CODE,   &REGCOARS_CODE,
-    &COARSTYP_CODE, &P52LS_CODE, &N89DISP_CODE, &LSDISP_CODE,
+    &P52E_CODE,     &P52V_CODE,   &P52W_CODE,    &P52H_CODE,   &REGCOARS_CODE,
+    &COARSTYP_CODE, &P52LS_CODE,  &N89DISP_CODE, &LSDISP_CODE, &LOCSAM_CODE,
+    &PICAPAR_CODE,  &PICEND_CODE, &PICGXT_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

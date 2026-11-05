@@ -134,6 +134,11 @@ static const struct basic_entry {
     {KEY(014u, LSDISP + 3u), lsdisp_terminate, false},
     {KEY(014u, LSDISP + 4u), lsdisp_proceed, true},
     {KEY(014u, LSDISP + 5u), lsdisp_enter, false},
+    /* Part 2: S50 and R56 */
+    {KEY(014u, PICAPAR), picapar, false},
+    {KEY(014u, PICAPAR + 1u), picapar_after_makecadr, true},
+    {KEY(014u, PICEND + 3u), picend_after_exit, false},
+    {KEY(014u, PICNSWP + 1u), picnswp_after_exit, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -147,10 +152,23 @@ static const struct basic_entry *basic_entry(uint16_t key)
 
 /* ---- The order pairs ---- */
 
-static const struct interpretive_code *const codes[] = {/* Part 1: P52 */
-                                                        &P52E_CODE,  &P52V_CODE,     &P52W_CODE,
-                                                        &P52H_CODE,  &REGCOARS_CODE, &COARSTYP_CODE,
-                                                        &P52LS_CODE, &N89DISP_CODE,  &LSDISP_CODE};
+static const struct interpretive_code *const codes[] = {
+    /* Part 1: P52 */
+    &P52E_CODE,
+    &P52V_CODE,
+    &P52W_CODE,
+    &P52H_CODE,
+    &REGCOARS_CODE,
+    &COARSTYP_CODE,
+    &P52LS_CODE,
+    &N89DISP_CODE,
+    &LSDISP_CODE,
+    /* Part 2: S50 and R56 */
+    &LOCSAM_CODE,
+    &PICAPAR_CODE,
+    &PICEND_CODE,
+    &PICGXT_CODE,
+};
 
 /* The table an address of a bank is in, or none. */
 static const struct interpretive_code *code_at(unsigned bank, word address)
@@ -162,6 +180,52 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
             address < codes[i]->first + codes[i]->count)
             return codes[i];
     return NULL;
+}
+
+/* R56 loads stars from the catalog in fixed memory, bank 14, by X1 and
+ * X2 (VLOAD* CATLOG,1, DOT* CATLOG,2). The faithful port carries only the
+ * words a load of CATLOG less 0 to 228 reads (14,2002 to 14,2353) and
+ * refuses a load from fixed memory outside them. */
+static const struct catalog_load {
+    uint16_t key;
+    bool by_x1, by_x2;
+} catalog_loads[] = {
+    {KEY(014u, PIC2), true, false},        {KEY(014u, PIC4), false, true},
+    {KEY(014u, PIC4 + 6u), true, true},    {KEY(014u, PIC4 + 014u), true, false},
+    {KEY(014u, PIC4 + 022u), false, true}, {KEY(014u, STRAT), true, true},
+    {KEY(014u, PICGXT + 3u), true, false}, {KEY(014u, PICGXT + 6u), false, true},
+};
+
+/* Whether CATLOG less x is a fixed word outside the faithful port's copy:
+ * the address word, less one, less x (ones' complement: end around, or
+ * where x is negative, overflow corrected as ADS leaves ADDRWD), in fixed
+ * memory where any of its top four bits is set (INDEX2's MASK HIGH4); its
+ * top five bits are the bank (TS FBANK), so a load past bank 14's words
+ * is outside too. */
+static bool outside_star_catalog(word x)
+{
+    unsigned first = (I_CATLOG & 037777u) - 38u * 6u, sum;
+
+    sum = (I_CATLOG & 037777u) + (~x & 077777u);
+    if (sum > 077777u)
+        sum = (sum + 1u) & 077777u; /* end around */
+    else if ((x & 040000u) && (sum & 040000u))
+        sum &= 037777u; /* overflow corrected */
+    if (!(sum & 074000u)) return false;
+    return sum < first || sum + 6u > first + 234u;
+}
+
+static bool loads_outside_star_catalog(uint16_t key)
+{
+    word x1 = agc.memory[(FIXLOC + ADDRESS_OF(X1)) & 03777u];
+    word x2 = agc.memory[(FIXLOC + ADDRESS_OF(X2)) & 03777u];
+    unsigned i;
+
+    for (i = 0; i < COUNT(catalog_loads); ++i)
+        if (catalog_loads[i].key == key)
+            return (catalog_loads[i].by_x1 && outside_star_catalog(x1)) ||
+                   (catalog_loads[i].by_x2 && outside_star_catalog(x2));
+    return false;
 }
 
 /* ---- The keys, in the faithful tables' order ---- */
@@ -212,6 +276,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
         LOC != (word)(02000u + key % 1024u) || BANKSET != BBANK || INTBIT15 != (FBANK & 040000u) ||
         !sane(true))
         return EXEC_OUT_OF_SCOPE;
+    if (loads_outside_star_catalog(key)) return EXEC_OUT_OF_SCOPE;
 
     before = *state;
     kept = *io;

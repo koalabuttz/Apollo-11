@@ -11,6 +11,9 @@
  *   part 1, p52.c: P52, PROG52 to P52OUT, the gyro torque coarse
  *     alignment option COARSTYP, the landing site's orientation (P52LS)
  *     and N89DISP, which displays the landing site (pp. 926-933).
+ *   part 2, s50_r56.c: S50 (LOCSAM), the sun, earth and moon as the LM
+ *     sees them, and R56 (PICAPAR), which picks the stars to sight (pp.
+ *     934-940).
  * The binding (src/binding/p51_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -65,6 +68,13 @@ void lsdisp_proceed(void);        /* LSDISP +4 */
 void lsdisp_enter(void);          /* LSDISP +5 */
 extern const struct interpretive_code P52E_CODE, P52V_CODE, P52W_CODE, P52H_CODE, REGCOARS_CODE,
     COARSTYP_CODE, P52LS_CODE, N89DISP_CODE, LSDISP_CODE;
+
+/* Part 2, S50 and R56 -- s50_r56.c */
+void picapar(void);                /* PICAPAR */
+void picapar_after_makecadr(void); /* PICAPAR +1 (MAKECADR's return) */
+void picend_after_exit(void);      /* PICEND +3 */
+void picnswp_after_exit(void);     /* PICNSWP +1 */
+extern const struct interpretive_code LOCSAM_CODE, PICAPAR_CODE, PICEND_CODE, PICGXT_CODE;
 #endif
 
 #endif
