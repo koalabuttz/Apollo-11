@@ -115,6 +115,7 @@
 #define ORDER_VAD_STAR   0123u /* VAD* */
 #define ORDER_BZE        0122u
 #define ORDER_SL3        0124u
+#define ORDER_VSL6       0124u /* (SL3's code too) */
 #define ORDER_VSU        0125u
 #define ORDER_GOTO       0126u
 #define ORDER_ABS        0130u

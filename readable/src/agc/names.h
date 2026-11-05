@@ -3703,6 +3703,14 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 static const word ATMAGAD[2] = KW_ATMAGAD;   /* 2CADR ATMAG */
 static const word CNTABTAD[2] = KW_CNTABTAD; /* 2CADR CONTABRT */
 static const word SVEXITAD[2] = KW_SVEXITAD; /* 2CADR SERVEXIT */
+/* P12.agc */
+#define GUIDINIT ((word)K_GUIDINIT)
+#define NEWLOAD  ((word)K_NEWLOAD)
+#define P12INIT  ((word)K_P12INIT)
+#define P12LM    ((word)K_P12LM)
+#define P12ADRES ((word)KW_P12ADRES) /* REMADR P12TABLE */
+#define V06N33A  ((word)KW_V06N33A)  /* VN 0633 */
+#define V06N76   ((word)KW_V06N76)   /* VN 0676 */
 #endif
 
 #if COMANCHE055
