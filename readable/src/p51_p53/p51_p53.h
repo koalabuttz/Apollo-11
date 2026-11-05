@@ -173,6 +173,37 @@ void ncoarse_plus1(void);         /* NCOARSE +1 (after EXIT) */
 extern const struct interpretive_code P51_CODE, P51B_CODE, P51C_CODE, P51D_CODE, P51E_CODE,
     P51G_CODE, COARSE_CODE, COARSE_RETURN_CODE, NCOARSE_CODE, NCOARSE_GCOMP_CODE, S52_2_CODE,
     S52_3_CODE;
+
+/* Part 6, R52 and R59 -- r52_r59.c */
+void r52_starcode(void);                /* R52 +2 (after EXIT) */
+void r52_terminate(void);               /* R52A +3 (GOFLASH's return) */
+void r52_proceed(void);                 /* R52A +4 */
+void r52_enter(void);                   /* R52A +5 */
+void r52b_detent(void);                 /* R52B +2 (DOWNFLAG's return) */
+void getazel_terminate(void);           /* GETAZEL +3 (GOFLASH's return) */
+void getazel_proceed(void);             /* GETAZEL +4 */
+void getazel_enter(void);               /* GETAZEL +5 */
+void azel_r60lem(void);                 /* AZEL +014 (after EXIT) */
+void azel_after_r60lem(void);           /* AZEL +016 (BANKCALL's return) */
+void r59(void);                         /* R59 */
+void r59_terminate(void);               /* R59 +7 (GOFLASH's return) */
+void r59_proceed(void);                 /* R59 +010 */
+void r59_recycle(void);                 /* R59 +011 */
+void r59a_after_exit(void);             /* R59A +027 */
+void r59d_display(void);                /* R59D +015 (after EXIT) */
+void zspcr_plus1(void);                 /* ZSPCR +1 (after EXIT) */
+void nxax_plus1(void);                  /* NXAX +1 (after EXIT) */
+void r59alm_after_alarm(void);          /* R59ALM +2 (ALARM's return) */
+void r59alm_terminate(void);            /* R59ALM +5 (GOFLASH's return) */
+void r59alm_proceed(void);              /* R59ALM +6 */
+void r59alm_recycle(void);              /* R59ALM +7 */
+void seventy_nine_disp_terminate(void); /* 79DISP +3 (GOFLASH's return) */
+void seventy_nine_disp_proceed(void);   /* 79DISP +4 */
+void seventy_nine_disp_recycle(void);   /* 79DISP +5 */
+void r59out_after_aotmark(void);        /* R59OUT +2 (BANKCALL's return) */
+void r59out_badend(void);               /* R59OUT +4 (BANKCALL's return) */
+extern const struct interpretive_code R52_CODE, AZEL_CODE, R52_RETURN_CODE, R59A_CODE, INCAZ_CODE,
+    ZSPCR_CODE, NXAX_CODE;
 #endif
 
 #endif

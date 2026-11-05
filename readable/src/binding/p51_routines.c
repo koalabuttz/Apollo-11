@@ -40,11 +40,6 @@
 /* A key: the bank, and the address in it. */
 #define KEY(bank, address) (uint16_t)((bank) * 1024u + ((address) & 01777u))
 
-/* The banks (FB) of the RTB routines the pairs run, from their FCADRs. */
-#define LOADTIME_BANK ((word)(I_LOADTIME & 076000u))
-#define SGNAGREE_BANK ((word)(I_SGNAGREE & 076000u))
-#define RDCDUS_BANK   ((word)(I_RDCDUS & 076000u))
-
 static jmp_buf back;
 
 static void leave(void)
@@ -229,6 +224,34 @@ static const struct basic_entry {
     {KEY(014u, COARSE + 012u), coarse_fine_failed, false},
     {KEY(014u, COARSE + 013u), coarse_return, true},
     {KEY(014u, NCOARSE + 1u), ncoarse_plus1, true},
+    /* Part 6: R52 and R59 (R59OUT +5, TCF R59RET, goes with P57) */
+    {KEY(014u, R52 + 2u), r52_starcode, false},
+    {KEY(014u, R52A + 3u), r52_terminate, false},
+    {KEY(014u, R52A + 4u), r52_proceed, false},
+    {KEY(014u, R52A + 5u), r52_enter, false},
+    {KEY(014u, R52B + 2u), r52b_detent, true},
+    {KEY(014u, GETAZEL + 3u), getazel_terminate, false},
+    {KEY(014u, GETAZEL + 4u), getazel_proceed, true},
+    {KEY(014u, GETAZEL + 5u), getazel_enter, false},
+    {KEY(014u, AZEL + 014u), azel_r60lem, false},
+    {KEY(014u, AZEL + 016u), azel_after_r60lem, true},
+    {KEY(015u, R59), r59, false},
+    {KEY(015u, R59 + 7u), r59_terminate, false},
+    {KEY(015u, R59 + 010u), r59_proceed, true},
+    {KEY(015u, R59 + 011u), r59_recycle, false},
+    {KEY(015u, R59A + 027u), r59a_after_exit, true},
+    {KEY(015u, R59D + 015u), r59d_display, false},
+    {KEY(015u, ZSPCR + 1u), zspcr_plus1, false},
+    {KEY(015u, NXAX + 1u), nxax_plus1, true},
+    {KEY(015u, R59ALM + 2u), r59alm_after_alarm, false},
+    {KEY(015u, R59ALM + 5u), r59alm_terminate, false},
+    {KEY(015u, R59ALM + 6u), r59alm_proceed, false},
+    {KEY(015u, R59ALM + 7u), r59alm_recycle, false},
+    {KEY(015u, SEVENTY_NINE_DISP + 3u), seventy_nine_disp_terminate, false},
+    {KEY(015u, SEVENTY_NINE_DISP + 4u), seventy_nine_disp_proceed, false},
+    {KEY(015u, SEVENTY_NINE_DISP + 5u), seventy_nine_disp_recycle, false},
+    {KEY(015u, R59OUT + 2u), r59out_after_aotmark, false},
+    {KEY(015u, R59OUT + 4u), r59out_badend, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -291,6 +314,14 @@ static const struct interpretive_code *const codes[] = {
     &NCOARSE_GCOMP_CODE,
     &S52_2_CODE,
     &S52_3_CODE,
+    /* Part 6: R52 and R59 */
+    &R52_CODE,
+    &AZEL_CODE,
+    &R52_RETURN_CODE,
+    &R59A_CODE,
+    &INCAZ_CODE,
+    &ZSPCR_CODE,
+    &NXAX_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
@@ -317,6 +348,7 @@ static const struct catalog_load {
     {KEY(014u, PIC4 + 6u), true, true},    {KEY(014u, PIC4 + 014u), true, false},
     {KEY(014u, PIC4 + 022u), false, true}, {KEY(014u, STRAT), true, true},
     {KEY(014u, PICGXT + 3u), true, false}, {KEY(014u, PICGXT + 6u), false, true},
+    {KEY(015u, R59A + 020u), true, false},
 };
 
 /* Whether CATLOG less x is a fixed word outside the faithful port's copy:
@@ -351,27 +383,33 @@ static bool loads_outside_star_catalog(uint16_t key)
     return false;
 }
 
-/* One pass; after an RTB (R51C's LOADTIME, CHKSD's SGNAGREE, CAL53A's
- * RDCDUS), the routine (src/rtb_op_codes/, or RDCDUS in r55.c) and the
- * pass on from its DANZIG, as the faithful pair runs them. */
+/* The RTB routines the pairs run, at their addresses under their banks
+ * (FB, from their FCADRs). */
+static const struct {
+    word at, bank;
+    void (*routine)(void);
+} rtb_routines[] = {
+    {LOADTIME, I_LOADTIME & 076000u, loadtime}, /* R51C, AZEL */
+    {SGNAGREE, I_SGNAGREE & 076000u, sgnagree}, /* CHKSD */
+    {RDCDUS, I_RDCDUS & 076000u, rdcdus},       /* CAL53A (r55.c) */
+    {ONE_STO2S, I_1STO2S & 076000u, one_sto2s}, /* R59D */
+};
+
+/* One pass; after an RTB, the routine (src/rtb_op_codes/, or RDCDUS in
+ * r55.c) and the pass on from its DANZIG, as the faithful pair runs them. */
 static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
                                  p66_bias_io *io, const struct interpretive_code *code)
 {
-    void (*routine)(void);
+    unsigned i;
 
     if (interpret_listing(program, state, io, code) != EXEC_OK) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
-    if (Z == LOADTIME && FBANK == LOADTIME_BANK)
-        routine = loadtime;
-    else if (Z == SGNAGREE && FBANK == SGNAGREE_BANK)
-        routine = sgnagree;
-    else if (Z == RDCDUS && FBANK == RDCDUS_BANK)
-        routine = rdcdus;
-    else
-        return EXEC_OK;
+    for (i = 0; i < COUNT(rtb_routines); ++i)
+        if (Z == rtb_routines[i].at && FBANK == rtb_routines[i].bank) break;
+    if (i == COUNT(rtb_routines)) return EXEC_OK;
     if (!sane(true)) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
-    routine();
+    rtb_routines[i].routine();
     return interpret_listing(program, state, io, code);
 }
 

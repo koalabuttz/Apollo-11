@@ -4035,6 +4035,27 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define S52_2       ((word)K_S52_2) /* S52.2 */
 #define S52_3       ((word)K_S52_3) /* S52.3 */
 #define V41K        ((word)KW_V41K)
+#define R52         ((word)K_R52)
+#define R52A        ((word)K_R52A)
+#define R52B        ((word)K_R52B)
+#define GETAZEL     ((word)K_GETAZEL)
+#define AZEL        ((word)K_AZEL)
+#define ONE_6TH     ((word)KW_1_6TH) /* 1/6TH */
+#define V01N70      ((word)KW_V01N70)
+#define V06N87      ((word)KW_V06N87)
+#define R59         ((word)K_R59)
+#define R59A        ((word)K_R59A)
+#define INCAZ       ((word)K_INCAZ)
+#define R59D        ((word)K_R59D)
+#define ZSPCR       ((word)K_ZSPCR)
+#define NXAX        ((word)K_NXAX)
+#define R59ALM      ((word)K_R59ALM)
+#define SEVENTY_NINE_DISP ((word)K_79DISP) /* 79DISP */
+#define R59E        ((word)K_R59E)
+#define R59OUT      ((word)K_R59OUT)
+#define V01N70_STAR ((word)KW_V01N70_STAR) /* V01N70* */
+#define V06N79      ((word)KW_V06N79)
+#define DEC227      ((word)KW_DEC227)
 #endif
 
 #if COMANCHE055

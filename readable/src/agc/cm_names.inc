@@ -1649,6 +1649,8 @@
 #define K_P51G 03260u
 #define K_S52_2 02331u
 #define K_S52_3 02661u
+#define K_R52 02011u
+#define K_R52A 02026u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -1942,6 +1944,8 @@
 #define K_QSAVED 01766u
 #define K_GDT_2 01206u
 #define K_DELVLVC 01404u
+#define K_BESTI 00302u
+#define K_SAVQR52 01576u
 #define K_DVTOTAL 01425u
 #define K_TEVENT 01336u
 #define K_TGO 01427u
@@ -2727,6 +2731,9 @@
 #define KW_V06N93 001535u
 #define KW_VB6N5 001405u
 #define KW_V41K 012200u
+#define KW_1_6TH 005253u
+#define KW_V01N70 000306u
+#define KW_DEC227 000343u
 #define KW_ENDTASK {072471u,073714u}
 #define KW_DPBIT14 {000000u,020000u}
 #define KW_LGCL2CDR {003461u,002063u}
@@ -4407,6 +4414,10 @@
 #define I_P51G 031260u
 #define I_S52_2A 022343u
 #define I_CHKSDATA 030714u
+#define I_SAVQR52 002576u
+#define I_3_4 023763u
+#define I_XUNIT 011563u
+#define I_CDU_STARSMNB 047621u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u
