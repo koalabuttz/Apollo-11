@@ -3654,6 +3654,55 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define TABLTTFL        ((word)KW_TABLTTFL) /* ADRES TABLTTF +3 */
 #define TREDESCL        ((word)KW_TREDESCL) /* DEC -.08 */
 #define TSCALINV        ((word)KW_TSCALINV) /* = BIT4 */
+
+/* P70-P71 (LM): the aborts, P70 on the descent engine and P71 on the
+ * ascent engine, and R10,R11's abort monitor. Its erasable words by
+ * ADDRESS_OF (PIPCTR, PIPCTR1, TGO1 and the like). */
+#define ABORTALM  ((word)K_ABORTALM)
+#define ABRTJASK  ((word)K_ABRTJASK)
+#define BOTHPOLY  ((word)K_BOTHPOLY)
+#define CONTABRT  ((word)K_CONTABRT)
+#define FLASHH_Q  ((word)K_FLASHH_Q) /* FLASHH? */
+#define FLASHV_Q  ((word)K_FLASHV_Q) /* FLASHV? */
+#define GOABORT   ((word)K_GOABORT)
+#define GRP4OFF   ((word)K_GRP4OFF)
+#define INJTARG   ((word)K_INJTARG)
+#define LANDISP   ((word)K_LANDISP)
+#define LEGAL_Q   ((word)K_LEGAL_Q) /* LEGAL? */
+#define LRHTASK   ((word)K_LRHTASK)
+#define MODE70    ((word)K_MODE70) /* DEC 70, then OCTAL27 and MODE71 (DEC 71) */
+#define OLDTIME   ((word)K_OLDTIME)
+#define P70       ((word)K_P70)
+#define P70A      ((word)K_P70A)
+#define P70INIT   ((word)K_P70INIT)
+#define P70NOW_Q  ((word)K_P70NOW_Q) /* P70NOW? */
+#define P71       ((word)K_P71)
+#define P71A      ((word)K_P71A)
+#define P71NOW_Q  ((word)K_P71NOW_Q) /* P71NOW? */
+#define P71RET    ((word)K_P71RET)
+#define R10_R11   ((word)K_R10_R11)  /* R10,R11 */
+#define R10_R11A  ((word)K_R10_R11A) /* R10,R11A */
+#define TEN_11    ((word)K_10_11)    /* 10,11 */
+#define TGOCOMP   ((word)K_TGOCOMP)
+#define THROTUP   ((word)K_THROTUP)
+#define UPRATE    ((word)K_UPRATE)
+#define UPTHROT   ((word)K_UPTHROT)
+#define UPTHROT1  ((word)K_UPTHROT1)
+#define YOK       ((word)K_YOK)
+#define ABRTJADR  ((word)KW_ABRTJADR) /* TCF ABRTJASK */
+#define DAPBITS   ((word)KW_DAPBITS)  /* OCT 00640: bits 6, 8 and 9 */
+#define HLITE     ((word)KW_HLITE)    /* = BIT5 */
+#define OCT37774  ((word)KW_OCT37774)
+#define OCTAL27   ((word)KW_OCTAL27)  /* OCT 27 */
+#define ONE_DEC70 ((word)KW_1DEC70)   /* 1DEC70: DEC 70 */
+#define ONE_DEC71 ((word)KW_1DEC71)   /* 1DEC71: DEC 71 */
+#define R10FLBIT  ((word)KW_R10FLBIT) /* R10FLAG's bit (FLAGWRD0) */
+#define VFLSHBIT  ((word)KW_VFLSHBIT) /* = BIT2 */
+#define VLITE     ((word)KW_VLITE)    /* = BIT3 */
+#define WHICHADR  ((word)KW_WHICHADR) /* REMADR ABRTABLE */
+static const word ATMAGAD[2] = KW_ATMAGAD;   /* 2CADR ATMAG */
+static const word CNTABTAD[2] = KW_CNTABTAD; /* 2CADR CONTABRT */
+static const word SVEXITAD[2] = KW_SVEXITAD; /* 2CADR SERVEXIT */
 #endif
 
 #if COMANCHE055
