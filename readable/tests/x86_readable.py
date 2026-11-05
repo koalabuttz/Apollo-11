@@ -194,6 +194,8 @@ REPLACED = (
     # binding defines empty.
     'lm_p70_p71_file.o',
     'lm_p70_p71.o',
+    # P12.agc, the LM's powered ascent (src/p12): the port's compiled file.
+    'lm_p12.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
@@ -257,7 +259,7 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
                           'radsamp', 'prog20a', 'p30n33', 'p32strt',
                           'p31_after_p20flgon', 'prog21', 'rev83', 'P76_CODE', 'killtsk2',
-                          'nsteer', 'ddumcalc', 'massmult', 'rodcomp', 'abrtjask'),
+                          'nsteer', 'ddumcalc', 'massmult', 'rodcomp', 'abrtjask', 'p12lm'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
                           'pikup20', 'p30phsi', 'P32STRT_CODE', 'prog21', 'r34los_after_exit', 'candel',
                           'rtrn', 'p40csm')}

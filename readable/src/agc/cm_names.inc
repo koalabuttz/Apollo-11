@@ -4168,6 +4168,17 @@
 #define I_QPRET 000052u
 #define I_LOADTIME 045510u
 #define I_TIG 003412u
+#define I_LEMPREC 027105u
+#define I_VATT 000006u
+#define I_RATT 000000u
+#define I_RDOT 003677u
+#define I_HI6ZEROS 055334u
+#define I_VRECTCSM 001562u
+#define I_RRECTCSM 001554u
+#define I_TEMPR60 001146u
+#define I_UNITZ 055326u
+#define I_RP_TO_R 055344u
+#define I_RLS 002025u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u
