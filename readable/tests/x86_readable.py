@@ -232,7 +232,8 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'cm_p34_p35.o': lambda m: ['cm_p34_p35_basic', 'cm_p34_p35_interpretive'] if m == 'cm' else [],
            'lm_p40_p47.o': lambda m: ['lm_p40_p47_basic', 'lm_p40_p47_interpretive'] if m == 'lm' else [],
            'cm_p40_p47.o': lambda m: ['cm_p40_p47_basic', 'cm_p40_p47_interpretive'] if m == 'cm' else [],
-           'lm_llge.o': lambda m: ['lm_llge_basic', 'lm_llge_interpretive'] if m == 'lm' else []}
+           'lm_llge.o': lambda m: ['lm_llge_basic', 'lm_llge_interpretive'] if m == 'lm' else [],
+           'lm_servicer.o': lambda m: ['lm_servicer_routines', 'lm_servicer_interpretive'] if m == 'lm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
@@ -263,7 +264,7 @@ MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'g
                           'radsamp', 'prog20a', 'p30n33', 'p32strt',
                           'p31_after_p20flgon', 'prog21', 'rev83', 'P76_CODE', 'killtsk2',
                           'nsteer', 'ddumcalc', 'massmult', 'rodcomp', 'abrtjask', 'p12lm',
-                          'atmag'),
+                          'atmag', 'rereadac'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
                           'pikup20', 'p30phsi', 'P32STRT_CODE', 'prog21', 'r34los_after_exit', 'candel',
                           'rtrn', 'p40csm')}
