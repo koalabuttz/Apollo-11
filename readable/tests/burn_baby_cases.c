@@ -23,18 +23,24 @@
  * no undo image. Each case runs once on each side, from its key until
  * control leaves the file. Where the faithful routine runs, the readable
  * one must too, with the same memory and io record, word for word; where
- * the readable one refuses, it must leave everything as it found it.
+ * the readable one refuses, it must leave everything as it found it; and
+ * each key's faithful routine must run in at least 1 in 16 of the states
+ * entered at it (key_floor.h).
  *
  * Not counted: a run the readable routines refuse where a computed
  * transfer (a TC Q, DEAD's DTCB) went to a word of the file no readable
  * function starts at, which the faithful port runs on from (the case
  * states draw Q and ITEMP1 at random); and NEWJOB negative, which the
  * readable interpreter refuses at any pair where the faithful one refuses
- * it only at DANZIG, as in make stateup-cases. */
+ * it only at DANZIG, as in make stateup-cases. Each only if the same
+ * state, with that return made 3021 (a word a readable function starts
+ * at) or with NEWJOB +0, runs on both sides alike: so the run up to the
+ * transfer, or the whole run, is checked all the same. */
 #include <stdio.h>
 #include <string.h>
 #include "rope_image.h"
 #include "lm_burn_baby_cases.h"
+#include "key_floor.h"
 
 #ifdef AGC_FLIGHT_INTERPRETER
 #define MODE "flight"
@@ -164,6 +170,9 @@ banks:
     s->words[6] = (uint16_t)((s->words[4] & 076000u) | (s->words[3] >> 8)); /* BBANK */
 }
 
+static uint16_t resolved_point; /* the last run's entry point */
+static agc_routine resolved;
+
 static enum exec_status run(const agc_routine_table *basic, const agc_routine_table *interp,
                             apollo_overlay_state *s, lm_bb_io *io)
 {
@@ -180,7 +189,9 @@ static enum exec_status run(const agc_routine_table *basic, const agc_routine_ta
     program.interpreter_fetch = (uint16_t)(2048u + 06070u - 04000u);
     program.loc = 0164;
     program.bankset = 0165;
-    call = agc_transfer_resolve(&program, s, io->control.superbank);
+    resolved_point =
+        agc_transfer_next(&program, s, io->control.superbank, AGC_TRANSFER_NONE, &call);
+    resolved = call;
     return call ? call(&program, s, io) : EXEC_OUT_OF_SCOPE;
 }
 
@@ -191,10 +202,60 @@ static int io_differs(const lm_bb_io *a, const lm_bb_io *b)
            a->chan14 != b->chan14 || a->chan30 != b->chan30;
 }
 
-int main(int argc, char **argv)
+/* Both sides from one state. */
+struct both {
+    apollo_overlay_state fa, ra;
+    lm_bb_io fio, rio;
+    enum exec_status sf, sr;
+};
+static void both_run(struct both *b, const apollo_overlay_state *start, const lm_bb_io *io_start,
+                     int undo)
 {
     static apollo_overlay_state faithful_undo, readable_undo;
+
+    b->fa = b->ra = *start;
+    b->fio = b->rio = *io_start;
+    b->fio.undo = undo ? &faithful_undo : 0;
+    b->rio.undo = undo ? &readable_undo : 0;
+    b->sf =
+        run(&faithful_lm_burn_baby_routines, &faithful_lm_burn_baby_interpretive, &b->fa, &b->fio);
+    b->sr = run(&lm_burn_baby_routines, &lm_burn_baby_interpretive, &b->ra, &b->rio);
+}
+
+/* What is wrong with a pair of runs from a state, or 0. */
+static const char *verdict(const struct both *b, const apollo_overlay_state *start,
+                           const lm_bb_io *io_start)
+{
+    if (b->sr != EXEC_OK && (memcmp(&b->ra, start, sizeof b->ra) || io_differs(&b->rio, io_start)))
+        return "readable refusal changed the state";
+    if (b->sf != b->sr)
+        return b->sf == EXEC_OK ? "readable refused, faithful ran"
+                                : "readable ran, faithful refused";
+    if (b->sf == EXEC_OK && memcmp(&b->fa, &b->ra, sizeof b->fa)) return "different memory";
+    if (b->sf == EXEC_OK && io_differs(&b->fio, &b->rio)) return "different io";
+    return 0;
+}
+
+/* The state with the return that sent the readable run to a word no
+ * readable function starts at (from_q_or_itemp1) made one it starts at,
+ * 3021 (after NULLCLOK's TC NOULLAGE), or for KILLTASK's Q +1, 3020. */
+static void redirect(apollo_overlay_state *s)
+{
+    unsigned at = lm_burn_baby_unentered;
+    unsigned address = at >= 04000u && at < 010000u ? at : at % 1024u + 02000u;
+
+    if (address == (s->words[2] & 07777u))
+        s->words[2] = (uint16_t)((s->words[2] & ~07777u) | 03021u);
+    else if (address == ((s->words[2] + 1u) & 07777u))
+        s->words[2] = (uint16_t)((s->words[2] & ~07777u) | 03020u);
+    if (address == (s->words[061] & 07777u))
+        s->words[061] = (uint16_t)((s->words[061] & ~07777u) | 03021u);
+}
+
+int main(int argc, char **argv)
+{
     static unsigned unentered_at[65536];
+    static struct both b, redirected;
     unsigned i, n, checks = 0, failures = 0, unentered = 0, newjob = 0, ran = 0;
 
     if (argc < 3 || !apollo_rope_load(0, argv[1]) || !apollo_rope_load(1, argv[2])) {
@@ -206,10 +267,10 @@ int main(int argc, char **argv)
     failures += tables_differ(&lm_burn_baby_interpretive, &faithful_lm_burn_baby_interpretive,
                               "interpretive");
     for (n = 0; n < CASES; ++n) {
-        apollo_overlay_state start, fa, ra;
+        apollo_overlay_state start, start2;
         lmbb_case c;
-        lm_bb_io io_start, fio, rio;
-        enum exec_status sf, sr;
+        lm_bb_io io_start;
+        const struct both *shown = &b;
         const char *why = 0;
         int undo;
 
@@ -220,37 +281,56 @@ int main(int argc, char **argv)
         io_start.chan11 = c.chan11;
         io_start.chan14 = c.chan14;
         io_start.chan30 = c.chan30;
-        fa = ra = start;
-        fio = rio = io_start;
-        fio.undo = undo ? &faithful_undo : 0;
-        rio.undo = undo ? &readable_undo : 0;
-        sf = run(&faithful_lm_burn_baby_routines, &faithful_lm_burn_baby_interpretive, &fa, &fio);
-        sr = run(&lm_burn_baby_routines, &lm_burn_baby_interpretive, &ra, &rio);
+        both_run(&b, &start, &io_start, undo);
         ++checks;
-        if (sf == EXEC_OK) ++ran;
-        if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || io_differs(&rio, &io_start)))
+        if (b.sf == EXEC_OK) ++ran;
+#ifdef AGC_FLIGHT_INTERPRETER
+        if (!key_in(&lm_burn_baby_interpretive, resolved_point, resolved))
+#endif
+            key_tally(resolved_point, resolved, b.sf == EXEC_OK);
+        if (b.sr != EXEC_OK &&
+            (memcmp(&b.ra, &start, sizeof b.ra) || io_differs(&b.rio, &io_start)))
             why = "readable refusal changed the state";
-        else if (sf == EXEC_OK && sr != EXEC_OK && from_q_or_itemp1(&start)) {
-            ++unentered;
-            ++unentered_at[lm_burn_baby_unentered];
-        } else if (sf == EXEC_OK && sr != EXEC_OK && start.words[067] > 037777u)
-            ++newjob;
-        else if (sf != sr)
-            why =
-                sf == EXEC_OK ? "readable refused, faithful ran" : "readable ran, faithful refused";
-        else if (sf == EXEC_OK && memcmp(&fa, &ra, sizeof fa))
-            why = "different memory";
-        else if (sf == EXEC_OK && io_differs(&fio, &rio))
-            why = "different io";
+        else if (b.sf == EXEC_OK && b.sr != EXEC_OK && from_q_or_itemp1(&start)) {
+            /* Not counted only if the same state with that return made a
+             * readable one runs alike on both sides: the run up to the
+             * computed transfer is right. */
+            unsigned at = lm_burn_baby_unentered;
+            start2 = start;
+            redirect(&start2);
+            both_run(&redirected, &start2, &io_start, undo);
+            if (verdict(&redirected, &start2, &io_start) || redirected.sf != EXEC_OK) {
+                why = "on from a word no readable function starts at, and wrong with the return "
+                      "redirected";
+                shown = &redirected;
+            } else {
+                ++unentered;
+                ++unentered_at[at];
+            }
+        } else if (b.sf == EXEC_OK && b.sr != EXEC_OK && start.words[067] > 037777u) {
+            /* Not counted only if the same state with NEWJOB +0 runs
+             * alike on both sides: the faithful run never reached a
+             * DANZIG, so NEWJOB was all the readable one refused. */
+            start2 = start;
+            start2.words[067] = 0u;
+            both_run(&redirected, &start2, &io_start, undo);
+            if (verdict(&redirected, &start2, &io_start) || redirected.sf != EXEC_OK) {
+                why = "NEWJOB negative, and wrong with NEWJOB +0";
+                shown = &redirected;
+            } else
+                ++newjob;
+        } else
+            why = verdict(&b, &start, &io_start);
         if (why && ++failures <= 30) {
             unsigned w;
             printf("FAIL case %u, Z %05o FB %05o: %s\n", n, start.words[5], start.words[4], why);
             for (w = 0; w < APOLLO_SHARED_WORDS; ++w)
-                if (fa.words[w] != ra.words[w])
-                    printf("  word %04o: %06o, faithful %06o (start %06o)\n", w, ra.words[w],
-                           fa.words[w], start.words[w]);
+                if (shown->fa.words[w] != shown->ra.words[w])
+                    printf("  word %04o: %06o, faithful %06o (start %06o)\n", w, shown->ra.words[w],
+                           shown->fa.words[w], start.words[w]);
         }
     }
+    failures += keys_under_floor("burn-baby-cases " MODE);
     printf("burn-baby-cases %s: %u words as the rope's, %u checks (%u run by the faithful "
            "routines; not counted: %u on from a word no readable function starts at, %u NEWJOB "
            "negative), %u failures\n",

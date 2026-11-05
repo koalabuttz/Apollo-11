@@ -13,6 +13,11 @@
  * (timeburn.c); part 3 RASTEER1 (rasteer1.c), TRIMGIMB and S41.1
  * (trimgimb.c). With it the file is whole.
  *
+ * Words of the listing no instruction names, so no C name either: the
+ * constants SEC15DP, SEC15, SEC30DP, SEC45DP, SEC45, 26SECS and SEC01 (=
+ * 1SEC), p. 763, and the labels TGDCALC (p. 771) and S40.127 (p. 775),
+ * whose code the routines before them run on into.
+ *
  * The interpretive code is in the listing's notation, run by the readable
  * interpreter. The entries below are the basic code's: each program's
  * start, the words a routine outside the file comes back to, and the

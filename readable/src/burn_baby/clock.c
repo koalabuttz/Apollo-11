@@ -451,8 +451,10 @@ void gocutoff_after_phaschng(void)
     continue_at(ENDOFJOB);
 }
 
-/* IGNITE: before TIG (IGNFLAG clear), IGNITION at once (TWIDDLE, BIT1);
- * then, or after it, IGNITE1. (A MASK leaves no negative word.) -- p. 747 */
+/* IGNITE: with IGNFLAG still clear (before TIG: CS FLAGWRD7 leaves its
+ * bit set, CCS positive), only IGNITE1; once it is set (TIG has passed,
+ * +0), IGNITION at once (TWIDDLE, BIT1). (A MASK leaves no negative
+ * word.) -- p. 747 */
 void ignite(void)
 {
     cs(ADDRESS_OF(FLAGWRD7));

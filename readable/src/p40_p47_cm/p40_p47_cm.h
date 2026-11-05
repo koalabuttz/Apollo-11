@@ -25,6 +25,12 @@
  * DAPFIG) and the RCS autopilot's start (RCSUP, RCSDAPON) (dap_data.c,
  * pp. 729-736).
  *
+ * Words of the listing no instruction names, so no C name either: the
+ * constants 40CST5 (OCT 37730, "40 CS FOR THE T5 CLOCK", p. 689) and OCT53
+ * (p. 690), SPBIT1 (00D, p. 719), POS-2.5 (OCT 37405) and RCSCADR (2CADR
+ * RCSUP) (p. 735), and the label ENDS40.6 (p. 731), whose TCF TASKOVER the
+ * code before it runs on into.
+ *
  * The interpretive code is in the listing's notation, run by the readable
  * interpreter. The entries below are the basic code's: each program's
  * start, the words a routine outside the file comes back to, and the
