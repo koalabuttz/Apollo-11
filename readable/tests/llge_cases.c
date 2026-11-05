@@ -9,9 +9,8 @@
  * First the words: the readable interpretive code (src/landing_guidance/),
  * written in the listing's notation, must be the LM's rope, word for word.
  * Then the keys, which must be the faithful tables', each running readable
- * code where the parts written so far cover it (WRITTEN). Then the runs:
- * each readable key from 4,096 states (any other from 16), each one of the
- * port's frozen test states (c64-port/tests/lm_llge_vectors.h) entered at
+ * code: the file is whole. Then the runs: each key from 4,096 states,
+ * each one of the port's frozen test states (c64-port/tests/lm_llge_vectors.h) entered at
  * the key, most stirred further: MPAC and its mode, the push-down list and
  * its pointer, the index registers, A (now and then with overflow), Q,
  * the flag words (often one bit changed), the vectors and times (any
@@ -28,9 +27,7 @@
  * Where either port runs, the other must too, with the same memory, io
  * record and channels, word for word; where the readable one refuses, it
  * must leave everything as it found it; and the faithful routine must run
- * from at least 1 in 16 of the states of every readable key. A key the
- * binding hands to the faithful port must give the faithful routine's
- * result, refusals and all. */
+ * from at least 1 in 16 of the states of every key. */
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -47,11 +44,13 @@ struct interpretive_code {
     unsigned count;
     const uint16_t *words;
 };
-extern const struct interpretive_code QUADGUID_CODE, CGCALC_CODE, EXGSUB_CODE, EXBRAK_CODE,
-    EXNORM_CODE, GDUMP1_CODE, P65VERT_CODE, P67VERT_CODE, ITRPNT1_CODE, VHORCOMP_CODE;
+extern const struct interpretive_code Q_GUIDSUB_CODE, STRTP66A_CODE, TTFINCR_CODE, REDESIG_CODE,
+    CALCRGVG_CODE, RGVGCALC_CODE, TTF_8CL_CODE, QUADGUID_CODE, CGCALC_CODE, EXGSUB_CODE,
+    EXBRAK_CODE, EXNORM_CODE, GDUMP1_CODE, P65VERT_CODE, P67VERT_CODE, ITRPNT1_CODE, VHORCOMP_CODE;
 static const struct interpretive_code *const codes[] = {
-    &QUADGUID_CODE, &CGCALC_CODE,  &EXGSUB_CODE,  &EXBRAK_CODE,  &EXNORM_CODE,
-    &GDUMP1_CODE,   &P65VERT_CODE, &P67VERT_CODE, &ITRPNT1_CODE, &VHORCOMP_CODE};
+    &Q_GUIDSUB_CODE, &STRTP66A_CODE, &TTFINCR_CODE, &REDESIG_CODE, &CALCRGVG_CODE, &RGVGCALC_CODE,
+    &TTF_8CL_CODE,   &QUADGUID_CODE, &CGCALC_CODE,  &EXGSUB_CODE,  &EXBRAK_CODE,   &EXNORM_CODE,
+    &GDUMP1_CODE,    &P65VERT_CODE,  &P67VERT_CODE, &ITRPNT1_CODE, &VHORCOMP_CODE};
 #define readable_basic_table        lm_llge_basic
 #define readable_interpretive_table lm_llge_interpretive
 #define faithful_basic              faithful_lm_llge_basic
@@ -62,13 +61,6 @@ static const struct interpretive_code *const codes[] = {
 #define ROPE                        0u
 #define NEWOPS_AT                   06070u
 #define DANZIG_AT                   06061u
-/* The parts written so far: part 1, the redesignator trap (bank 11), the
- * rate of descent trap (bank 20), ROOTPSRS to INTPRETX (31,3553-3677, and
- * FASTCHNG, 31,3740) and P66 (32,3263-3531); part 2, QUADGUID to P67VERT
- * (31,3121-3552) and 1406ALM's return (31,3737). */
-#define WRITTEN                                                                                    \
-    {011u, 02275u, 02372u}, {020u, 02115u, 02122u}, {031u, 03121u, 03677u},                        \
-        {031u, 03737u, 03740u}, {032u, 03263u, 03531u}
 /* The words after ROOTPSRS's TC USPRCADRs, entered at DANZIG. */
 #define AFTER_USPRCADR(key)                                                                        \
     ((key) == 031u * 1024u + 01575u || (key) == 031u * 1024u + 01642u ||                           \
@@ -99,9 +91,15 @@ bool llge_readable(uint16_t key, bool order_pair);
 #define PWRCNT_AT   0140u
 #define WCHPHASE_AT 01351u
 #define WCHPHOLD_AT 03621u
+#define FLPASS0_AT  03623u
+#define TREDES_AT   03666u
+#define MODREG_AT   01011u
+#define FLAGWRD1_AT 0075u
+#define FLAGWRD6_AT 0102u
+#define RODFLBIT    04000u /* RODFLAG's bit of FLAGWRD1 */
+#define REDFLBIT    040u   /* REDFLAG's bit of FLAGWRD6 */
 
-#define CASES       4096u
-#define OTHER_CASES 16u
+#define CASES 4096u
 
 static uint32_t seed = 3435u;
 static uint16_t rnd(void)
@@ -144,30 +142,15 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* Whether a key is in the parts written so far (its bank, and its
- * address in 02000-03777). */
-static bool in_written_part(uint16_t key)
-{
-    static const struct {
-        unsigned bank, first, last;
-    } written[] = {WRITTEN};
-    unsigned z = 02000u + key % 1024u, i;
-
-    for (i = 0; i < sizeof written / sizeof written[0]; ++i)
-        if (key / 1024u == written[i].bank && z >= written[i].first && z <= written[i].last)
-            return true;
-    return false;
-}
-
-static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
+/* The file is whole: every key of a faithful table runs readable code. */
+static unsigned unreadable(const agc_routine_table *table, bool order_pair)
 {
     unsigned i, failures = 0;
 
     for (i = 0; i < table->count; ++i) {
         uint16_t key = table->entries[i].physical;
-        if (in_written_part(key) != llge_readable(key, order_pair)) {
-            printf("FAIL: %02o,%04o %s readable\n", key / 1024u, 02000u + key % 1024u,
-                   in_written_part(key) ? "is not" : "is");
+        if (!llge_readable(key, order_pair)) {
+            printf("FAIL: %02o,%04o is not readable\n", key / 1024u, 02000u + key % 1024u);
             ++failures;
         }
     }
@@ -296,6 +279,9 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
          * then A, the AGC's fixed memory's 2000. No table is there.) */
         if (w[PWRPTR_AT] == 01774u || w[PWRPTR_AT] == 01776u) w[PWRPTR_AT] = 0u;
         w[DERPTR_AT] = rnd() % 8u ? (uint16_t)(rnd() % 02000u) : any_word();
+        /* (Nor a DXCH of -1 through DERPTR, -4: the faithful port takes
+         * the word below erasable memory's first.) */
+        if (w[DERPTR_AT] == 077773u) w[DERPTR_AT] = 0u;
         if (rnd() % 2u) w[MPAC_AT + 4u] = rnd() % 2u ? (uint16_t)(rnd() % 6u) : edge_or_any();
         if (rnd() % 2u) w[PWRCNT_AT] = rnd() % 2u ? (uint16_t)(rnd() % 6u) : edge_or_any();
         if (bank == 031u && z >= 03553u && z <= 03677u && rnd() % 4u == 0u)
@@ -313,6 +299,20 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
             static const uint16_t holds[] = {077776u, 0u, 1u, 2u, 037777u};
             w[WCHPHOLD_AT] = k < 5u ? holds[k] : any_word();
         }
+        /* Part 3's: the pass counter FLPASS0 (each sign), the time left
+         * to redesignate TREDES (zero, small, or any), the program number
+         * (P63 to P67, or any), RODFLAG and REDFLAG either way, and channel
+         * 30's auto-throttle bit (5). */
+        if (rnd() % 2u) {
+            static const uint16_t passes[] = {0u, 1u, 077776u, 077777u, 5u};
+            k = rnd() % 6u;
+            w[FLPASS0_AT] = k < 5u ? passes[k] : any_word();
+        }
+        if (rnd() % 2u) w[TREDES_AT] = rnd() % 2u ? (uint16_t)(rnd() % 3u) : edge_or_any();
+        if (rnd() % 2u) w[MODREG_AT] = rnd() % 8u ? (uint16_t)(63u + rnd() % 5u) : any_word();
+        if (rnd() % 2u) w[FLAGWRD1_AT] ^= RODFLBIT;
+        if (rnd() % 2u) w[FLAGWRD6_AT] ^= REDFLBIT;
+        if (rnd() % 2u) io->in.channel30 ^= 020u;
         /* Channel 31: the hand controller's pulse bits and the attitude
          * hold bit (13), or any. */
         if (rnd() % 2u)
@@ -332,6 +332,10 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
         fixloc = w[FIXLOC_AT] = k == 0u   ? (uint16_t)(MPAC_AT - 044u)
                                 : k == 1u ? near[rnd() % COUNT(near)]
                                           : (uint16_t)(rnd() % 02000u);
+        /* (Not a VAC area by chance: its X1 is not one the rule above
+         * sets.) */
+        if (fixloc >= 0401u && fixloc <= 0661u && (fixloc - 0401u) % 054u == 0u)
+            fixloc = w[FIXLOC_AT] = (uint16_t)(fixloc + 1u);
     }
     /* The push-down list in the work area. */
     if (w[PUSHLOC_AT] < fixloc || w[PUSHLOC_AT] > fixloc + 037u || n % 4u != 0u)
@@ -348,17 +352,15 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
 }
 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
-                     int interpretive, unsigned *runs, unsigned *readable_keys)
+                     int interpretive, unsigned *runs)
 {
     unsigned i, n, failures = 0;
 
     for (i = 0; i < faithful->count; ++i) {
         uint16_t key = faithful->entries[i].physical, z = (uint16_t)(02000u + key % 1024u);
-        bool written = llge_readable(key, interpretive != 0);
-        unsigned ran = 0, bad = 0, cases = written ? CASES : OTHER_CASES;
+        unsigned ran = 0, bad = 0;
 
-        *readable_keys += written;
-        for (n = 0; n < cases; ++n) {
+        for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;
             lm_channel_io io, fio, rio;
             agc_hardware hardware, fhw, rhw;
@@ -383,13 +385,8 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             sf = faithful->entries[i].call(&fp, &fa, &fio);
             sr = readable->entries[i].call(&rp, &ra, &rio);
             ran += sf == EXEC_OK;
-            if (!written) { /* the faithful routine on both sides, refusals and all */
-                if (sf != sr || memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio) ||
-                    memcmp(&fhw, &rhw, sizeof fhw))
-                    why = "the table does not run the faithful routine";
-            } else if (sr != EXEC_OK &&
-                       (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio) ||
-                        memcmp(&rhw, &hardware, sizeof rhw)))
+            if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio) ||
+                                  memcmp(&rhw, &hardware, sizeof rhw)))
                 why = "readable refusal changed the state";
             else if (sf == EXEC_OK && sr != EXEC_OK)
                 why = "readable refused, faithful ran";
@@ -409,13 +406,13 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                                fa.words[w], start.words[w]);
             }
         }
-        /* Each readable key's faithful routine must run in at least 1 of
-         * 16 states, so that a change to the states cannot quietly leave a
-         * key with a handful of live ones. */
-        if (written && ran < cases / 16u && bad == 0u) {
+        /* Each key's faithful routine must run in at least 1 of 16
+         * states, so that a change to the states cannot quietly leave a key
+         * with a handful of live ones. */
+        if (ran < CASES / 16u && bad == 0u) {
             printf("FAIL %02o,%04o: the faithful routine ran in %u of %u states (fewer than 1 in "
                    "16)\n",
-                   key / 1024u, z, ran, cases);
+                   key / 1024u, z, ran, CASES);
             ++bad;
         }
         *runs += ran;
@@ -426,7 +423,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 
 int main(int argc, char **argv)
 {
-    unsigned i, words = 0, failures = 0, runs = 0, readable_basic = 0, readable_pairs = 0;
+    unsigned i, words = 0, failures = 0, runs = 0;
 
     if (argc < 3 || !apollo_rope_load(0, argv[1]) || !apollo_rope_load(1, argv[2])) {
         printf("usage: %s ROPE_LM ROPE_CM\n", argv[0]);
@@ -440,20 +437,17 @@ int main(int argc, char **argv)
     }
     failures += tables_differ(&readable_basic_table, &faithful_basic, "basic");
     failures += tables_differ(&readable_interpretive_table, &faithful_interpretive, "interpretive");
-    failures += parts_unwritten(&faithful_basic, false);
-    failures += parts_unwritten(&faithful_interpretive, true);
+    failures += unreadable(&faithful_basic, false);
+    failures += unreadable(&faithful_interpretive, true);
     if (failures || !mission_count) {
         printf("llge-cases: %u failures\n", failures + !mission_count);
         return 1;
     }
-    failures += keys(&readable_basic_table, &faithful_basic, 0, &runs, &readable_basic);
-    failures +=
-        keys(&readable_interpretive_table, &faithful_interpretive, 1, &runs, &readable_pairs);
-    printf("llge-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
-           "pairs) from %u states each (the others from %u), %u run by the faithful routines, "
-           "%u failures\n",
-           words, readable_basic + readable_pairs,
-           readable_basic_table.count + readable_interpretive_table.count, readable_basic,
-           readable_pairs, CASES, OTHER_CASES, runs, failures);
+    failures += keys(&readable_basic_table, &faithful_basic, 0, &runs);
+    failures += keys(&readable_interpretive_table, &faithful_interpretive, 1, &runs);
+    printf("llge-cases: %u words as the rope's, all %u keys readable (%u basic, %u order pairs) "
+           "from %u states each, %u run by the faithful routines, %u failures\n",
+           words, readable_basic_table.count + readable_interpretive_table.count,
+           readable_basic_table.count, readable_interpretive_table.count, CASES, runs, failures);
     return failures != 0;
 }

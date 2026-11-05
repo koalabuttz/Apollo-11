@@ -2102,6 +2102,8 @@
 #define K_T5PHASE 01465u
 #define K_DAPDATR2 01467u
 #define K_PHSNAME3 01442u
+#define K_HDOTDISP 01714u
+#define K_PIPTIME1 01245u
 #define K_TEMX 01224u
 #define K_TEMY 01225u
 #define K_TEMZ 01226u
@@ -4153,6 +4155,12 @@
 #define I_R 000002u
 #define I_NORMUNIT 045726u
 #define I_V 003673u
+#define I_PBIASZ 001456u
+#define I_PBIASY 001454u
+#define I_PBIASX 001452u
+#define I_TEMX 001224u
+#define I_VATT1 000024u
+#define I_REFSMMAT 001735u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u

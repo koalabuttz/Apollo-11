@@ -4,12 +4,11 @@
  * the faithful port's (c64-port/src/lm_llge.c): lm_llge_basic (the basic
  * code) and lm_llge_interpretive (the order pairs).
  *
- * The file is written part by part, so the tables carry every key of the
- * faithful ones, in their order (llge_keys.inc, which tools/p20_p25_keys.py
- * writes from them): a key the parts written so far cover runs a readable
- * routine; any other runs the faithful port's, built into the program as
- * faithful_lm_llge_basic and faithful_lm_llge_interpretive
- * (tests/x86_readable.py renames them).
+ * The tables carry every key of the faithful ones, in their order
+ * (llge_keys.inc, which tools/p20_p25_keys.py writes from them), and every
+ * key runs a readable routine: the file was written part by part, and is
+ * whole. The side-by-side test (tests/llge_cases.c) checks that no key is
+ * left without one.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
  * the file's code (CHECKMM, TWIDDLE, FINDVAC, POWRSERS, USPRCADR, ...) or
@@ -55,9 +54,6 @@
 /* NORMUNIT's bank (FB), from its FCADR. */
 #define NORMUNIT_BANK ((word)(I_NORMUNIT & 076000u))
 #define VECTOR_MODE   077776u /* MODE -1 */
-
-/* The faithful tables, renamed. */
-extern const agc_routine_table faithful_lm_llge_basic, faithful_lm_llge_interpretive;
 
 static const agc_input_channels *inputs_now;
 static agc_hardware *hardware_now;
@@ -153,6 +149,43 @@ static const struct basic_entry {
     {KEY(011u, REDESMON), redesmon, false},
     {KEY(011u, RESETRPT + 3u), resetrpt_taskover, false},
     {KEY(020u, DESCBITS), descbits, false},
+    /* Part 3: the entries and GUILDENSTERN */
+    {KEY(031u, Q_GUIDSUB + 1u), q_guidsub_plus1, true},
+    {KEY(031u, LUNLAND), lunland, false},
+    {KEY(031u, LUNLAND + 2u), lunland_plus2, false},
+    {KEY(031u, GUILDEN), guilden, true},
+    {KEY(031u, P67NOW_Q + 2u), p67now_q_plus2, true},
+    {KEY(031u, STARTP66), startp66, false},
+    {KEY(031u, STARTP66 + 1u), startp66_after_fastchng, false},
+    {KEY(031u, STARTP66 + 3u), startp66_after_newmodex, true},
+    {KEY(031u, STRTP66A + 025u), strtp66a_after_exit, false},
+    {KEY(031u, VRTSTART + 6u), vrtstart_after_stoprate, false},
+    {KEY(031u, VRTSTART + 010u), vrtstart_after_xovinflg, false},
+    {KEY(031u, VRTSTART + 012u), vrtstart_after_redflag, true},
+    {KEY(031u, STARTP67), startp67, false},
+    {KEY(031u, STARTP67 + 2u), startp67_after_newmodex, false},
+    /* Part 3: the pass's start, TTFINCR and REDESIG */
+    {KEY(031u, GUILDRET + 6u), guildret_after_fastchng, true},
+    {KEY(031u, P65START), p65start, false},
+    {KEY(031u, P65START + 2u), p65start_after_newmodex, false},
+    {KEY(031u, P65START + 6u), p65start_after_downflag, true},
+    {KEY(031u, STARTP64), startp64, false},
+    {KEY(031u, STARTP64 + 2u), startp64_after_newmodex, false},
+    {KEY(031u, TTFINCR), ttfincr, true},
+    {KEY(031u, TTFINCR + 020u), ttfincr_after_exit, true},
+    {KEY(031u, TTFINCR + 023u), ttfincr_after_fastchng, true},
+    {KEY(031u, TTFINCR + 040u), ttfincr_after_tdispset, true},
+    {KEY(031u, BRSPOT2), brspot2, true},
+    {KEY(031u, REDESIG + 015u), redesig_after_fastchng, true},
+    {KEY(031u, REDESIG + 064u), redes1_after_exit, true},
+    {KEY(031u, REDESIG + 065u), redes1_after_fastchng, true},
+    /* Part 3: the state in guidance coordinates and the time to go */
+    {KEY(031u, RGVGCALC), rgvgcalc, true},
+    {KEY(031u, RGVGCALC + 032u), rgvgcalc_after_exit, false},
+    {KEY(031u, RGVGCALC + 040u), rgvgcalc_after_sparcsin, true},
+    {KEY(031u, TTF_8CL + 021u), ttf_8cl_after_exit, true},
+    {KEY(031u, TTF_8CL + 032u), ttf_8cl_bad_root, false},
+    {KEY(031u, TTF_8CL + 034u), ttf_8cl_good_root, true},
     /* Part 1: ROOTPSRS, INTPRETX and FASTCHNG */
     {KEY(031u, ROOTPSRS), rootpsrs, false},
     {KEY(031u, ROOTPSRS + 021u), rootpsrs_after_shortmp, false},
@@ -217,8 +250,9 @@ static const struct basic_entry *basic_entry(uint16_t key)
 /* ---- The order pairs ---- */
 
 static const struct interpretive_code *const codes[] = {
-    &QUADGUID_CODE, &CGCALC_CODE,  &EXGSUB_CODE,  &EXBRAK_CODE,  &EXNORM_CODE,
-    &GDUMP1_CODE,   &P65VERT_CODE, &P67VERT_CODE, &ITRPNT1_CODE, &VHORCOMP_CODE};
+    &Q_GUIDSUB_CODE, &STRTP66A_CODE, &TTFINCR_CODE, &REDESIG_CODE, &CALCRGVG_CODE, &RGVGCALC_CODE,
+    &TTF_8CL_CODE,   &QUADGUID_CODE, &CGCALC_CODE,  &EXGSUB_CODE,  &EXBRAK_CODE,   &EXNORM_CODE,
+    &GDUMP1_CODE,    &P65VERT_CODE,  &P67VERT_CODE, &ITRPNT1_CODE, &VHORCOMP_CODE};
 
 /* The table an address is in, in a bank, or none. */
 static const struct interpretive_code *code_at(unsigned bank, word address)
@@ -242,10 +276,9 @@ static bool after_usprcadr(uint16_t key)
 
 /* ---- The keys, in the faithful tables' order ---- */
 
-/* Each key's routine: the readable one, or the faithful port's. A basic
- * routine runs from its key, whatever Z holds (the trampoline calls it
- * there). */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each key's routine. A basic routine runs from its key, whatever Z
+ * holds (the trampoline calls it there). */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct basic_entry *entry = basic_entry(key);
@@ -253,8 +286,7 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     apollo_overlay_state before;
     agc_word channel13;
 
-    if (!entry) return faithful_lm_llge_basic.entries[index].call(program, state, device);
-    if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
+    if (!entry || !program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     if (!in_bank(key / 1024u) || !sane(entry->with_work_area)) return EXEC_OUT_OF_SCOPE;
 
@@ -290,7 +322,7 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
     return interpret_listing(program, state, &io->io, code);
 }
 
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
@@ -299,8 +331,6 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     const struct interpretive_code *code = NULL;
     enum exec_status status;
 
-    if (!code_at(bank, (word)(02000u + key % 1024u)) && !after_usprcadr(key))
-        return faithful_lm_llge_interpretive.entries[index].call(program, state, device);
     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     if (after_usprcadr(key)) {
@@ -336,13 +366,13 @@ bool llge_readable(uint16_t key, bool order_pair)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #include "llge_keys.inc"
 #undef BASIC

@@ -1,13 +1,16 @@
 /* SPDX-License-Identifier: MIT */
 /* LUNAR_LANDING_GUIDANCE_EQUATIONS.agc (Luminary099 pp. 798-828): the
- * landing's guidance, written part by part. So far: the phase tables and
- * GUIDSUB (entries.c, pp. 798-799), the main guidance equation to the
+ * landing's guidance. The phase tables and entry points (entries.c, pp.
+ * 798-799), the R13 monitor GUILDENSTERN (guildenstern.c, pp. 800-801),
+ * the pass's start, TTFINCR and REDESIG (pass.c, pp. 801-805), the state
+ * in guidance coordinates (state.c, pp. 805-807), the time to go
+ * (ttf8cl.c, pp. 807-808 and 826), the main guidance equation to the
  * exit logic (quadguid.c, pp. 808-811), the exits (exits.c, pp. 811-814),
  * the displays (displays.c, pp. 814-815), P65 and P67 (vertguid.c, pp.
  * 815-816), P66's rate of descent mode (p66.c, pp. 816-819), the
  * redesignator and rate of descent traps (redesignator.c, pp. 820-822),
- * the root finder ROOTPSRS (rootpsrs.c, pp. 822-825), and INTPRETX and
- * FASTCHNG (subroutines.c, pp. 825-826). The faithful C is
+ * the root finder ROOTPSRS (rootpsrs.c, pp. 822-825), and INTPRETX,
+ * TDISPSET and FASTCHNG (subroutines.c, pp. 825-826). The faithful C is
  * c64-port/src/lm_llge.c. Steps more than one file takes are in
  * indexing.h.
  *
@@ -45,11 +48,66 @@ void resetrpt_taskover(void); /* RESETRPT +3: TCF TASKOVER */
 void descbits(void);          /* DESCBITS */
 
 /* The phase tables and entry points -- entries.c */
-void tcf_table_word(word table, word at);   /* a word of AFTRGUID, WHATEXIT, WHATDISP */
+void tcf_table_word(word table, word at);   /* a word of NEWPHASE ... WHATALM */
 void tcf_by_phase(word table, unsigned at); /* INDEX at; TCF table */
+void q_guidsub_plus1(void);                 /* ?GUIDSUB +1 */
 void guidsub(void);                         /* GUIDSUB */
 void lunland(void);                         /* LUNLAND */
-void calcrgvg(void);                        /* CALCRGVG */
+void lunland_plus2(void);                   /* LUNLAND +2 */
+extern const struct interpretive_code Q_GUIDSUB_CODE;
+
+/* GUILDENSTERN (R13) -- guildenstern.c */
+void guilden(void);                 /* GUILDEN */
+void p67now_q_plus2(void);          /* P67NOW? +2: CHECKMM's return, TCF STABL? */
+void startp66(void);                /* STARTP66 */
+void startp66_after_fastchng(void); /* STARTP66 +1: TC NEWMODEX */
+void startp66_after_newmodex(void); /* STARTP66 +3 */
+void strtp66a(void);                /* STRTP66A */
+void strtp66a_after_exit(void);     /* its EXIT +1 */
+void vrtstart_after_stoprate(void); /* VRTSTART +6: TC DOWNFLAG */
+void vrtstart_after_xovinflg(void); /* VRTSTART +010: TC DOWNFLAG */
+void vrtstart_after_redflag(void);  /* VRTSTART +012: TCF VERTGUID */
+void startp67(void);                /* STARTP67 */
+void startp67_after_newmodex(void); /* STARTP67 +2 */
+extern const struct interpretive_code STRTP66A_CODE;
+
+/* The pass's start, TTFINCR and REDESIG -- pass.c */
+void guildret(void);                /* GUILDRET */
+void guildret_plus2(void);          /* GUILDRET +2 */
+void guildret_after_fastchng(void); /* GUILDRET +6; BRSPOT1 */
+void p65start(void);                /* P65START */
+void p65start_after_newmodex(void); /* P65START +2 */
+void p65start_after_downflag(void); /* P65START +6: TCF TTFINCR */
+void startp64(void);                /* STARTP64 */
+void startp64_after_newmodex(void); /* STARTP64 +2 */
+void ttfincr(void);                 /* TTFINCR */
+void ttfincr_after_exit(void);      /* its EXIT +1 */
+void ttfincr_after_fastchng(void);  /* TTFINCR +023 */
+void ttfincr_after_tdispset(void);  /* TTFINCR +040: TC FASTCHNG */
+void brspot2(void);                 /* BRSPOT2 */
+void redesig(void);                 /* REDESIG */
+void redesig_after_fastchng(void);  /* REDESIG +015 */
+void redes1_after_exit(void);       /* REDES1's EXIT +1: TC FASTCHNG */
+void redes1_after_fastchng(void);   /* its return */
+extern const struct interpretive_code TTFINCR_CODE, REDESIG_CODE;
+
+/* The state in guidance coordinates -- state.c */
+void calcrgvg(void);                /* CALCRGVG */
+void rgvgcalc(void);                /* RGVGCALC */
+void rgvgcalc_after_exit(void);     /* its EXIT +1 */
+void rgvgcalc_after_sparcsin(void); /* SPARCSIN's return */
+void brspot3(void);                 /* BRSPOT3 */
+extern const struct interpretive_code CALCRGVG_CODE, RGVGCALC_CODE;
+
+/* The time to go -- ttf8cl.c */
+void ttf_8cl(void);             /* TTF/8CL */
+void ttf_8cl_after_exit(void);  /* its EXIT +1 */
+void ttf_8cl_bad_root(void);    /* ROOTPSRS's return */
+void ttf_8cl_good_root(void);   /* its return +2: "GOOD RETURN" */
+void p00_1406(void);            /* 1406P00 */
+void alm1406(void);             /* 1406ALM */
+void alm1406_after_alarm(void); /* 1406ALM's ALARM return: TCF RATESTOP */
+extern const struct interpretive_code TTF_8CL_CODE;
 
 /* QUADGUID to EXTLOGIC -- quadguid.c */
 void quadguid(void);                /* QUADGUID */
@@ -111,9 +169,9 @@ void rootloop_after_ddv(void);        /* the root corrected; TC USPRCADR, CADR A
 void rootloop_after_abs(void);        /* the test: BADROOT, ROOTLOOP or ROOTSTOR */
 
 /* The subroutines -- subroutines.c */
-void intpretx(void);            /* INTPRETX */
-void alm1406_after_alarm(void); /* 1406ALM's ALARM return: TCF RATESTOP */
-void fastchng(void);            /* FASTCHNG */
+void intpretx(void); /* INTPRETX */
+void tdispset(void); /* TDISPSET */
+void fastchng(void); /* FASTCHNG */
 #endif
 
 #endif

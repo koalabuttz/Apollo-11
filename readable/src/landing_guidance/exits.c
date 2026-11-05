@@ -207,13 +207,6 @@ void ratestop(void)
         tc_to(RATESTOP + 5u, BANKCALL); /* CADR STOPRATE */
 }
 
-/* 1406ALM's ALARM return (p. 826; alarm 1406, from the time to go's
- * computation): TCF RATESTOP. */
-void alm1406_after_alarm(void)
-{
-    ratestop();
-}
-
 /* GDUMP1: THROTTLE, then the CDU commands' interpretive code. */
 void gdump1(void)
 {

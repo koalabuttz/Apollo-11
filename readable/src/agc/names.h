@@ -3608,6 +3608,34 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define SHORTMP  ((word)K_SHORTMP)
 #define TARGTDEX ((word)K_TARGTDEX)
 #define VHORCOMP ((word)K_VHORCOMP)
+#define BRSPOT1   ((word)K_BRSPOT1)
+#define BRSPOT2   ((word)K_BRSPOT2)
+#define BRSPOT3   ((word)K_BRSPOT3)
+#define GUIDSUB   ((word)K_GUIDSUB)
+#define GUILDEN   ((word)K_GUILDEN)
+#define GUILDRET  ((word)K_GUILDRET)
+#define NEWPHASE  ((word)K_NEWPHASE)
+#define P00_1406  ((word)K_1406P00) /* 1406P00 */
+#define P65START  ((word)K_P65START)
+#define P66NOW_Q  ((word)K_P66NOW_Q) /* P66NOW? */
+#define P67NOW_Q  ((word)K_P67NOW_Q) /* P67NOW? */
+#define PREGUIDE  ((word)K_PREGUIDE)
+#define Q_GUIDSUB ((word)K__QGUIDSUB) /* ?GUIDSUB */
+#define REDESIG   ((word)K_REDESIG)
+#define RESTART_Q ((word)K_RESTART_Q) /* RESTART? */
+#define RGVGCALC  ((word)K_RGVGCALC)
+#define SPARCSIN  ((word)K_SPARCSIN)
+#define STABL_Q   ((word)K_STABL_Q) /* STABL? */
+#define STARTP64  ((word)K_STARTP64)
+#define STARTP66  ((word)K_STARTP66)
+#define STARTP67  ((word)K_STARTP67)
+#define STRTP66A  ((word)K_STRTP66A)
+#define TDISPSET  ((word)K_TDISPSET)
+#define TTF_8CL   ((word)K_TTF_8CL) /* TTF/8CL */
+#define TTFINCR   ((word)K_TTFINCR)
+#define VRTSTART  ((word)K_VRTSTART)
+#define WHATALM   ((word)K_WHATALM)
+#define WHATGUID  ((word)K_WHATGUID)
 #define ALL4BITS ((word)KW_ALL4BITS) /* OCT 00063 */
 #define AZEACH   ((word)KW_AZEACH)   /* DEC .03491: "2 DEGREES" */
 #define DERTABLL ((word)KW_DERTABLL) /* ADRES DERCOFN -3 */
@@ -3619,6 +3647,13 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define V06N60   ((word)KW_V06N60)   /* VN 0660: "P65, P66, P67" */
 #define V06N63   ((word)KW_V06N63)   /* VN 0663: "P63" */
 #define V06N64   ((word)KW_V06N64)   /* VN 0664: "P64" */
+#define HALF_DEG        ((word)KW_1_2DEG)   /* 1/2DEG: DEC +.00278 */
+#define MINUS_DEC103    ((word)KW_MDEC103)  /* -DEC103: DEC -103 */
+#define ONE_EIGHTY_DEGS ((word)KW_180DEGS)  /* 180DEGS: DEC +180 */
+#define PLUS_DEC99      ((word)KW_PDEC99)   /* +DEC99: DEC +99 */
+#define TABLTTFL        ((word)KW_TABLTTFL) /* ADRES TABLTTF +3 */
+#define TREDESCL        ((word)KW_TREDESCL) /* DEC -.08 */
+#define TSCALINV        ((word)KW_TSCALINV) /* = BIT4 */
 #endif
 
 #if COMANCHE055

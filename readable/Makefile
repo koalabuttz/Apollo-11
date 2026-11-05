@@ -2167,13 +2167,13 @@ throttle-cases: $(BUILD)/thr-oracle $(BUILD)/thr-cases
 	./$(BUILD)/thr-oracle $(ROPES)
 	./$(BUILD)/thr-cases $(ROPES)
 
-# LUNAR_LANDING_GUIDANCE_EQUATIONS.agc, the LM's landing guidance, readable
-# part by part: the port's test (tests/test_lm_llge.c, its frozen cases run
-# to their stops through the program of tests/lm_llge_target.c, against the
-# original program's yaAGC digests) through the readable tables, which hand
-# the keys not yet written to the faithful routines (renamed faithful_),
-# with tests/with_ropes.c loading the rope the readable interpreter reads;
-# then tests/llge_cases.c side by side.
+# LUNAR_LANDING_GUIDANCE_EQUATIONS.agc, the LM's landing guidance: the
+# port's test (tests/test_lm_llge.c, its frozen cases run to their stops
+# through the program of tests/lm_llge_target.c, against the original
+# program's yaAGC digests) through the readable tables, with
+# tests/with_ropes.c loading the rope the readable interpreter reads; then
+# tests/llge_cases.c side by side with the faithful routines (renamed
+# faithful_).
 LLGE_NAMES := lm_llge_basic lm_llge_interpretive
 LLGE_COMMON := $(R63_COMMON) $(addprefix $(PORT)/src/,lm_normunit.c rtb_vector.c rtb_unit.c \
 	guidance_unit_phased.c guidance_length_phased.c guidance_norm.c guidance_product.c)
