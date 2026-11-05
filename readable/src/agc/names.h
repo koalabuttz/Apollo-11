@@ -3798,6 +3798,38 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 static const word APSVEX[2] = KW_APSVEX;     /* 2DEC: the exhaust velocities, APS and DPS */
 static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
+#define ALTCHK           ((word)K_ALTCHK)
+#define ALTCRIT          ((word)K_ALTCRIT) /* ALTCRIT = 25KFT */
+#define BRANCH           ((word)K_BRANCH)
+#define CALCGRAV         ((word)K_CALCGRAV)
+#define CALCGRV1         ((word)K_CALCGRV1)
+#define CALCRVG          ((word)K_CALCRVG)
+#define CONTSERV         ((word)K_CONTSERV)
+#define COPYCYC1         ((word)K_COPYCYC1)
+#define COPYCYC2         ((word)K_COPYCYC2)
+#define HIGATASK         ((word)K_HIGATASK)
+#define HIGATCHK         ((word)K_HIGATCHK)
+#define HITEST           ((word)K_HITEST)
+#define LRPOSALM         ((word)K_LRPOSALM)
+#define MUNGRAV          ((word)K_MUNGRAV)
+#define MUNRETRN         ((word)K_MUNRETRN)
+#define MUNRVG           ((word)K_MUNRVG)
+#define NOR29NOW         ((word)K_NOR29NOW)
+#define POS1CHK          ((word)K_POS1CHK)
+#define POS2CHK          ((word)K_POS2CHK)
+#define R29NODES         ((word)K_R29NODES)
+#define R29_Q            ((word)K_R29_Q) /* R29? */
+#define RVBOTH           ((word)K_RVBOTH)
+#define THIRTY_FIVE_KCHK ((word)K_35KCHK) /* 35KCHK */
+#define UPDATCHK         ((word)K_UPDATCHK)
+#define XORCHK           ((word)K_XORCHK)
+#define BITS4_7          ((word)KW_BITS4_7) /* BITS4-7, OCT 110 */
+#define NR29_RDR         ((word)KW_NR29_RDR) /* NR29&RDR */
+#define OCT10002         ((word)KW_OCT10002)
+#define PSTHIBIT         ((word)KW_PSTHIBIT)
+#define XORFLBIT         ((word)KW_XORFLBIT)
+#define I_MINUS_MUDT     I_MMUDT    /* -MUDT */
+#define I_MINUS_MUDTMUN  I_MMUDTMUN /* -MUDTMUN */
 #endif
 
 #if COMANCHE055

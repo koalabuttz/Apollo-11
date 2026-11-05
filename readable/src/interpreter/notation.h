@@ -96,6 +96,7 @@
 #define ORDER_DDV_STAR   0107u /* DDV* */
 #define ORDER_VDEF       0110u
 #define ORDER_BDDV       0111u
+#define ORDER_BDDV_STAR  0113u /* BDDV* */
 #define ORDER_XSU_2      0112u /* XSU,2 */
 #define ORDER_SR         0115u /* (SL, SLR and SRR too: the general shifts, by their address) */
 #define ORDER_SL         0115u
