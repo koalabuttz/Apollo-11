@@ -16,6 +16,14 @@
  *     934-940).
  *   part 3, r51.c: R51, the fine alignment, and GYCOARS, the gyro torque
  *     coarse alignment (pp. 941-944).
+ *   part 4, r55.c: R55, the gyro torque; R54 (CHKSDATA), the star data
+ *     test; CAL53A and MATMOVE (pp. 945-948).
+ *   part 5, p51.c: P51, the orientation determination, with COARSE,
+ *     NCOARSE, S52.2 and S52.3 (pp. 949-954).
+ *   part 6, r52_r59.c: R52, the automatic optics positioning, and R59, the
+ *     lunar surface star acquisition (pp. 955-960).
+ *   part 7, planet_gvdeter.c: PLANET, the sighted body's direction, and
+ *     GVDETER, the gravity vector determination (pp. 961-966).
  * The binding (src/binding/p51_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -204,6 +212,49 @@ void r59out_after_aotmark(void);        /* R59OUT +2 (BANKCALL's return) */
 void r59out_badend(void);               /* R59OUT +4 (BANKCALL's return) */
 extern const struct interpretive_code R52_CODE, AZEL_CODE, R52_RETURN_CODE, R59A_CODE, INCAZ_CODE,
     ZSPCR_CODE, NXAX_CODE;
+
+/* Part 7, PLANET and GVDETER -- planet_gvdeter.c */
+void planet_after_exit(void);       /* PLANET +5 */
+void planet_terminate(void);        /* PLANET +021 (GOFLASH's return) */
+void planet_proceed(void);          /* PLANET +022 */
+void planet_enter(void);            /* PLANET +023 */
+void planet_vector(void);           /* PLANET +024 (the TC +2's return) */
+void gvdeter(void);                 /* GVDETER */
+void gravel_after_exit(void);       /* GVDETER +060 */
+void gravel_display(void);          /* GVDETER +062 (DOWNFLAG's return) */
+void gravel_terminate(void);        /* GVDETER +065 (GOFLASH's return) */
+void gravel_proceed(void);          /* GVDETER +066 */
+void gravel_recycle(void);          /* GVDETER +067 */
+void prograv(void);                 /* PROGRAV (UPFLAG's return) */
+void prograv_after_phaschng(void);  /* PROGRAV +2 */
+void lung_after_exit(void);         /* LUNG +5 */
+void lung_coarse(void);             /* LUNG +7 (PHASCHNG's return) */
+void lung_after_imucoars(void);     /* LUNG +011 (BANKCALL's return) */
+void lung_coarse_failed(void);      /* LUNG +013 */
+void lung_fine(void);               /* LUNG +014 (CURTAINS's return) */
+void lung_after_imufine(void);      /* LUNG +016 (BANKCALL's return) */
+void lung_fine_failed(void);        /* LUNG +020 */
+void lung_aligned(void);            /* LUNG +021 (CURTAINS's return) */
+void lung_after_gcompzer(void);     /* LUNG +027 (BANKCALL's return) */
+void lung_pipas(void);              /* LUNG +031 (PHASCHNG's return) */
+void lung_after_pipsrine(void);     /* LUNG +033 (BANKCALL's return) */
+void greed_after_exit(void);        /* GREED +1 */
+void greed_after_twiddle(void);     /* GREED +4 (TWIDDLE's return) */
+void grabgrav(void);                /* GRABGRAV, the task */
+void grabgrav_after_pipsrine(void); /* GRABGRAV +2 (IBNKCALL's return) */
+void grabgrav_after_findvac(void);  /* GRABGRAV +6 */
+void addgrav(void);                 /* ADDGRAV, the job */
+void addgrav_after_pipa(void);      /* ADDGRAV +2 (BANKCALL's return) */
+void addgrav_after_exit(void);      /* ADDGRAV +023 */
+void qminexit(void);                /* QMINEXIT (PHASCHNG's return) */
+extern const struct interpretive_code PLANET_CODE, PLANET_VECTOR_CODE, NOTPLAN_CODE, CALSAM_CODE,
+    GVDETER_CODE, PROGRAV_CODE, LUNG_CODE, GREED_CODE, ADDGRAV_CODE, QMINEXIT_CODE;
+
+/* INDEX before CA, TS and DXCH (R52, R59 and PLANET) -- indexed.c: the
+ * address the indexed instruction works on. */
+unsigned indexed_ca(unsigned address, word index);
+unsigned indexed_ts(unsigned address, word index);
+unsigned indexed_dxch(unsigned address, word index);
 #endif
 
 #endif

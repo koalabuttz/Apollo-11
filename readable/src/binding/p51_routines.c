@@ -252,6 +252,40 @@ static const struct basic_entry {
     {KEY(015u, SEVENTY_NINE_DISP + 5u), seventy_nine_disp_recycle, false},
     {KEY(015u, R59OUT + 2u), r59out_after_aotmark, false},
     {KEY(015u, R59OUT + 4u), r59out_badend, false},
+    /* Part 7: PLANET and GVDETER (PROGRAV +7, TCF ATTCHK, goes with P57) */
+    {KEY(015u, PLANET + 5u), planet_after_exit, true},
+    {KEY(015u, PLANET + 021u), planet_terminate, true},
+    {KEY(015u, PLANET + 022u), planet_proceed, true},
+    {KEY(015u, PLANET + 023u), planet_enter, true},
+    {KEY(015u, PLANET + 024u), planet_vector, true},
+    {KEY(015u, GVDETER), gvdeter, true},
+    {KEY(015u, GVDETER + 060u), gravel_after_exit, false},
+    {KEY(015u, GVDETER + 062u), gravel_display, false},
+    {KEY(015u, GVDETER + 065u), gravel_terminate, false},
+    {KEY(015u, GVDETER + 066u), gravel_proceed, false},
+    {KEY(015u, GVDETER + 067u), gravel_recycle, false},
+    {KEY(015u, PROGRAV), prograv, false},
+    {KEY(015u, PROGRAV + 2u), prograv_after_phaschng, true},
+    {KEY(015u, LUNG + 5u), lung_after_exit, false},
+    {KEY(015u, LUNG + 7u), lung_coarse, false},
+    {KEY(015u, LUNG + 011u), lung_after_imucoars, false},
+    {KEY(015u, LUNG + 013u), lung_coarse_failed, false},
+    {KEY(015u, LUNG + 014u), lung_fine, false},
+    {KEY(015u, LUNG + 016u), lung_after_imufine, false},
+    {KEY(015u, LUNG + 020u), lung_fine_failed, false},
+    {KEY(015u, LUNG + 021u), lung_aligned, false},
+    {KEY(015u, LUNG + 027u), lung_after_gcompzer, false},
+    {KEY(015u, LUNG + 031u), lung_pipas, false},
+    {KEY(015u, LUNG + 033u), lung_after_pipsrine, true},
+    {KEY(015u, GREED + 1u), greed_after_exit, false},
+    {KEY(015u, GREED + 4u), greed_after_twiddle, false},
+    {KEY(015u, GRABGRAV), grabgrav, false},
+    {KEY(015u, GRABGRAV + 2u), grabgrav_after_pipsrine, false},
+    {KEY(015u, GRABGRAV + 6u), grabgrav_after_findvac, false},
+    {KEY(015u, ADDGRAV), addgrav, false},
+    {KEY(015u, ADDGRAV + 2u), addgrav_after_pipa, true},
+    {KEY(015u, ADDGRAV + 023u), addgrav_after_exit, false},
+    {KEY(015u, QMINEXIT), qminexit, true},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -322,6 +356,17 @@ static const struct interpretive_code *const codes[] = {
     &INCAZ_CODE,
     &ZSPCR_CODE,
     &NXAX_CODE,
+    /* Part 7: PLANET and GVDETER */
+    &PLANET_CODE,
+    &PLANET_VECTOR_CODE,
+    &NOTPLAN_CODE,
+    &CALSAM_CODE,
+    &GVDETER_CODE,
+    &PROGRAV_CODE,
+    &LUNG_CODE,
+    &GREED_CODE,
+    &ADDGRAV_CODE,
+    &QMINEXIT_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
@@ -337,7 +382,8 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
 }
 
 /* R56 loads stars from the catalog in fixed memory, bank 14, by X1 and
- * X2 (VLOAD* CATLOG,1, DOT* CATLOG,2). The faithful port carries only the
+ * X2 (VLOAD* CATLOG,1, DOT* CATLOG,2), as R59A and PLANET do by X1 from
+ * bank 15 (14,2002 is CATLOG's address word). The faithful port carries only the
  * words a load of CATLOG less 0 to 228 reads (14,2002 to 14,2353) and
  * refuses a load from fixed memory outside them. */
 static const struct catalog_load {
@@ -348,7 +394,7 @@ static const struct catalog_load {
     {KEY(014u, PIC4 + 6u), true, true},    {KEY(014u, PIC4 + 014u), true, false},
     {KEY(014u, PIC4 + 022u), false, true}, {KEY(014u, STRAT), true, true},
     {KEY(014u, PICGXT + 3u), true, false}, {KEY(014u, PICGXT + 6u), false, true},
-    {KEY(015u, R59A + 020u), true, false},
+    {KEY(015u, R59A + 020u), true, false}, {KEY(015u, NOTPLAN + 011u), true, false},
 };
 
 /* Whether CATLOG less x is a fixed word outside the faithful port's copy:

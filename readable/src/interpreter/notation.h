@@ -118,6 +118,7 @@
 #define ORDER_SL3        0124u
 #define ORDER_VSL6       0124u /* (SL3's code too) */
 #define ORDER_VSU        0125u
+#define ORDER_VSU_STAR   0127u /* VSU* */
 #define ORDER_GOTO       0126u
 #define ORDER_ABS        0130u
 #define ORDER_ABVAL      0130u /* (ABS's code: a vector's length, by MODE) */
