@@ -3959,6 +3959,30 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define MINUS_DELGMB_AT(n) (K_MDELGMB + (n)) /* -DELGMB +n */
 #define TEM2               ERASABLE(K_TEM2)
 #define NDXCDUW            ERASABLE(K_NDXCDUW)
+
+/* P51-P53.agc (LM) */
+#define COARSRET    ((word)K_COARSRET)
+#define COARSTYP    ((word)K_COARSTYP)
+#define LSDISP      ((word)K_LSDISP)
+#define N89DISP     ((word)K_N89DISP)
+#define OPT4        ((word)K_OPT4)
+#define P52A        ((word)K_P52A)
+#define P52B        ((word)K_P52B)
+#define P52D        ((word)K_P52D)
+#define P52E        ((word)K_P52E)
+#define P52F        ((word)K_P52F)
+#define P52H        ((word)K_P52H)
+#define P52LS       ((word)K_P52LS)
+#define P52OUT      ((word)K_P52OUT)
+#define P52T        ((word)K_P52T)
+#define P52V        ((word)K_P52V)
+#define P52W        ((word)K_P52W)
+#define PROG52      ((word)K_PROG52)
+#define REGCOARS    ((word)K_REGCOARS)
+#define PFRATBIT    ((word)KW_PFRATBIT)
+#define V06N34_STAR ((word)KW_V06N34_STAR) /* V06N34* */
+#define V06N89_STAR ((word)KW_V06N89_STAR) /* V06N89* */
+#define OCT13       ((word)KW_OCT13)
 #endif
 
 #if COMANCHE055
