@@ -1602,6 +1602,7 @@
 #define K_CHKTEMX 03337u
 #define K_CALCGRAV 03353u
 #define K_CALCRVG 03420u
+#define K_QUICTRIG 03555u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -2135,6 +2136,15 @@
 #define K_BUF2 00133u
 #define K_MPAC 00154u
 #define K_PHSNAME5 01446u
+#define K_SINCDU 00736u
+#define K_COSCDU 00744u
+#define K_TEM2 00142u
+#define K_TEM3 00143u
+#define K_TEM5 00145u
+#define K_SINCDUX 00742u
+#define K_SINCDUZ 00740u
+#define K_COSCDUX 00750u
+#define K_COSCDUZ 00746u
 #define KW_EXECBANK 002626u
 #define KW_FAKEPRET 000110u
 #define KW_NO_CORES 000006u
@@ -4252,6 +4262,7 @@
 #define I_STAR_NBSM_STAR 047646u
 #define I_STAR_SMNB_STAR 047644u
 #define I_TRG_STARSMNB 047624u
+#define I_QUICTRIG 047555u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u

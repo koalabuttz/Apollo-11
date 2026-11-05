@@ -3911,6 +3911,54 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define KPIP1_5  ((word)KW_KPIP1_5) /* KPIP1(5) */
 #define MAXVBITS ((word)KW_MAXVBITS)
 #define VELCONV  ((word)KW_VELCONV)
+
+/* FINDCDUW--GUIDAP_INTERFACE.agc (and QUICTRIG, POWERED_FLIGHT_SUBROUTINES) */
+#define AFTRFLTR    ((word)K_AFTRFLTR)
+#define ALARMMGA    ((word)K_ALARMMGA)
+#define ARCTRGSP    ((word)K_ARCTRGSP)
+#define CDUWXFR     ((word)K_CDUWXFR)
+#define DAXMAX      ((word)K_DAXMAX)   /* (DAZMAX = DAXMAX) */
+#define DAY_2MAX    ((word)K_DAY_2MAX) /* DAY/2MAX */
+#define DCMCL       ((word)K_DCMCL)
+#define DELGMBLP    ((word)K_DELGMBLP)
+#define DVBYCOSM    ((word)K_DVBYCOSM)
+#define FETCHZNB    ((word)K_FETCHZNB)
+#define FINDCDUW    ((word)K_FINDCDUW)
+#define FLTRSUB     ((word)K_FLTRSUB)
+#define GAINFLTR    ((word)K_GAINFLTR)
+#define INITCDUW    ((word)K_INITCDUW)
+#define LIMITSUB    ((word)K_LIMITSUB)
+#define MGARET      ((word)K_MGARET)
+#define NB2CDUSP    ((word)K_NB2CDUSP)
+#define NOATTCNT    ((word)K_NOATTCNT)
+#define ONESTO2S    ((word)K_ONESTO2S)
+#define ONE_TO2_TCQ ((word)K_1TO2_TCQ) /* 1TO2&TCQ */
+#define PAUTNO      ((word)K_PAUTNO)
+#define QUICTRIG    ((word)K_QUICTRIG)
+#define SINZERO     ((word)K_SINZERO)
+#define TCQCDUW     ((word)K_TCQCDUW)
+#define TSL_TCQ     ((word)K_TSL_TCQ) /* TSL&TCQ */
+#define UNWCTEST    ((word)K_UNWCTEST)
+#define USECOS      ((word)K_USECOS)
+#define CDUZDLIM    ((word)KW_CDUZDLIM)
+#define DELERLIM    ((word)KW_DAY_2MAX) /* DELERLIM = DAY/2MAX */
+#define DPL1        ((word)KW_DPL1)
+#define DPL3        ((word)KW_DPL3)
+#define DPL5        ((word)KW_DPL5)
+#define DPL7        ((word)KW_DPL7)
+#define DPL9        ((word)KW_DPL9)
+#define DT_DELT     ((word)KW_DT_DELT) /* DT/DELT */
+#define DUNFVLIM    ((word)KW_DUNFVLIM)
+#define ECDUWL      ((word)KW_ECDUWL)
+#define OCT_16      ((word)KW_16OCT) /* 16OCT */
+#define UNFVLIM     ((word)KW_UNFVLIM)
+#define XOVINHIB    ((word)KW_XOVINHIB)
+/* The erasable words, by address: -DELGMB +n, and the tables FINDCDUW and
+ * QUICTRIG index (CPHI, DELCDUX, OMEGAPD, DELPEROR, 1JACC, CDUSPOT, SINCDU,
+ * COSCDU). */
+#define MINUS_DELGMB_AT(n) (K_MDELGMB + (n)) /* -DELGMB +n */
+#define TEM2               ERASABLE(K_TEM2)
+#define NDXCDUW            ERASABLE(K_NDXCDUW)
 #endif
 
 #if COMANCHE055
