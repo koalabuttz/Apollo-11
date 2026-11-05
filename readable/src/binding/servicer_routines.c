@@ -18,12 +18,6 @@
  * stops where Z leaves the file (a basic address of another file, or
  * NEWOPS with LOC outside it).
  *
- * The file is readable so far up to UPDATCHK (pp. 857-883): where a run
- * reaches the rest (bank 33 from 03155, and bank 34), the faithful port's
- * routines run it on from there (faithful_lm_servicer_routines, the
- * faithful tables renamed), with the state and io record as the run left
- * them.
- *
  * Built with AGC_FLIGHT_INTERPRETER, as the faithful port's flight program
  * builds its file, a run stops instead where it reaches NEWOPS: there the
  * flight program's interpreter takes the file's interpretive code, and its
@@ -140,14 +134,6 @@ static bool in_file(uint16_t at)
            (at >= KEY(037u, 03410u) && at <= KEY(037u, 03654u));
 }
 
-/* The words the faithful port runs still: bank 33 from UPDATCHK, and bank
- * 34. */
-static bool faithful_part(uint16_t at)
-{
-    return (at >= KEY(033u, UPDATCHK) && at <= KEY(033u, 03776u)) ||
-           (at >= KEY(034u, 03716u) && at <= KEY(034u, 03774u));
-}
-
 /* Each word of the file a basic run starts at: the keys, the returns of
  * the file's own subroutines, and the words after the EXITs. */
 static const struct {
@@ -230,6 +216,87 @@ static const struct {
     {KEY(033u, RVBOTH + 021u), rvboth_after_quikfaz5},
     {KEY(033u, RVBOTH + 032u), rvboth_after_second_exit},
     {KEY(033u, RVBOTH + 033u), rvboth_after_second_quikfaz5},
+    {KEY(033u, UPDATCHK), updatchk},
+    {KEY(033u, POSUPDAT), posupdat},
+    {KEY(033u, POSUPDAT + 015u), posupdat_after_exit},
+    {KEY(033u, POSUPDAT + 023u), posupdat_after_shortmp},
+    {KEY(033u, POSUPDAT + 036u), posupdat_after_second_exit},
+    {KEY(033u, POSUPDAT + 050u), posupdat_after_third_exit},
+    {KEY(033u, POSUPDAT + 052u), posupdat_after_branch},
+    {KEY(033u, POSUPDAT + 053u), posupdat_after_branch_zero},
+    {KEY(033u, POSUPDAT + 054u), posupdat_after_branch_negative},
+    {KEY(033u, NOREASON), noreason},
+    {KEY(033u, NOREASON + 010u), noreason_after_exit},
+    {KEY(033u, NOREASON + 014u), noreason_after_alsignag},
+    {KEY(033u, NOREASON + 032u), noreason_after_shortmp2},
+    {KEY(033u, NOREASON + 042u), noreason_after_second_exit},
+    {KEY(033u, NOREASON + 043u), noreason_after_quikfaz5},
+    {KEY(033u, RUPDATED), rupdated},
+    {KEY(033u, VMEASCHK), vmeaschk},
+    {KEY(033u, VMEASCHK + 1u), vmeaschk_after_quikfaz5},
+    {KEY(033u, VELUPDAT), velupdat},
+    {KEY(033u, VELUPDAT + 021u), velupdat_after_quictrig},
+    {KEY(033u, VELUPDAT + 035u), velupdat_after_exit},
+    {KEY(033u, VELUPDAT + 0100u), velupdat_after_second_exit},
+    {KEY(033u, VELUPDAT + 0102u), velupdat_after_branch},
+    {KEY(033u, VELUPDAT + 0103u), velupdat_after_branch_zero},
+    {KEY(033u, VELUPDAT + 0104u), velupdat_after_branch_negative},
+    {KEY(033u, VELUPDAT + 0106u), velupdat_after_vflshflg},
+    {KEY(033u, VELUPDAT + 0114u), velupdat_after_vxinh},
+    {KEY(033u, VUPDAT), vupdat},
+    {KEY(033u, USEVF), usevf},
+    {KEY(033u, WSTOR), wstor},
+    {KEY(033u, WSTOR + 017u), wstor_after_exit},
+    {KEY(033u, WSTOR + 020u), wstor_after_quikfaz5},
+    {KEY(033u, VUPDATED), vupdated},
+    {KEY(033u, VALTCHK), valtchk},
+    {KEY(033u, VALTCHK + 1u), valtchk_after_quikfaz5},
+    {KEY(033u, READV), readv},
+    {KEY(033u, READV + 4u), readv_after_novac},
+    {KEY(033u, GNURVST), gnurvst},
+    {KEY(033u, QUIKFAZ5), quikfaz5},
+    {KEY(033u, HFAIL), hfail},
+    {KEY(033u, NORLITE), norlite},
+    {KEY(033u, VFAIL), vfail},
+    {KEY(033u, NOLITE), nolite},
+    {KEY(033u, NOLITE + 6u), nolite_after_vxinh},
+    {KEY(033u, LRVJOB), lrvjob},
+    {KEY(033u, LRVJOB + 4u), lrvjob_after_waitlist},
+    {KEY(033u, LRVJOB + 012u), lrvjob_after_lrvel},
+    {KEY(033u, LRVJOB + 014u), lrvjob_bad_exit},
+    {KEY(033u, LRVJOB + 015u), lrvjob_good_exit},
+    {KEY(033u, ENDLRV), endlrv},
+    {KEY(033u, VBAD), vbad},
+    {KEY(033u, VSTILBAD), vstilbad},
+    {KEY(033u, HIGATJOB), higatjob},
+    {KEY(033u, HIGATJOB + 2u), higatjob_after_lrpos2},
+    {KEY(033u, HIGATJOB + 4u), higatjob_bad_exit},
+    {KEY(033u, POSGOOD), posgood},
+    {KEY(033u, POSGOOD + 2u), posgood_after_priochng},
+    {KEY(033u, POSGOOD + 3u), posgood_after_setpos2},
+    {KEY(033u, POSGOOD + 5u), posgood_after_nolrread},
+    {KEY(033u, POSALARM), posalarm},
+    {KEY(033u, POSALARM + 3u), posalarm_terminate},
+    {KEY(033u, POSALARM + 4u), posalarm_proceed},
+    {KEY(033u, POSALARM + 5u), posalarm_enter},
+    {KEY(033u, POSALARM + 6u), posalarm_immediate_return},
+    {KEY(033u, POSALARM + 7u), posalarm_retry},
+    {KEY(033u, SETPOS1), setpos1},
+    {KEY(033u, SETPOS1 + 1u), setpos1_after_makecadr},
+    {KEY(033u, SETPOS1 + 014u), setpos1_after_setpos},
+    {KEY(033u, SETPOS2), setpos2},
+    {KEY(033u, SETPOS), setpos},
+    {KEY(033u, SETPOS + 036u), setpos_after_exit},
+    {KEY(034u, LRHJOB), lrhjob},
+    {KEY(034u, LRHJOB + 2u), lrhjob_after_lralt},
+    {KEY(034u, LRHJOB + 4u), lrhjob_bad_exit},
+    {KEY(034u, LRHJOB + 5u), lrhjob_good_exit},
+    {KEY(034u, ENDLRH), endlrh},
+    {KEY(034u, HBAD), hbad},
+    {KEY(034u, HBAD + 6u), hbad_after_rngscflg},
+    {KEY(034u, HSTILBAD - 1u), hbad_reset},
+    {KEY(034u, HSTILBAD), hstilbad},
+    {KEY(034u, RDGIMS), rdgims},
     {KEY(037u, PREREAD), preread},
     {KEY(037u, PREREAD + 2u), preread_after_gnufaze5},
     {KEY(037u, BIBIBIAS), bibibias},
@@ -258,9 +325,11 @@ static const struct {
 
 /* The interpretive code, by its first word. */
 static const struct interpretive_code *const codes[] = {
-    &AVGEND_CODE,   &NORMLIZE_CODE, &GETABVAL_CODE, &AVERAGEG_CODE, &NORMLIZ1_CODE,
-    &MUNRETRN_CODE, &NOR29NOW_CODE, &CALCGRAV_CODE, &CALCRVG_CODE,  &RVBOTH_CODE,
-    &RVBOTH_2_CODE, &MUNRVG_CODE,   &MUNGRAV_CODE,
+    &AVGEND_CODE,     &NORMLIZE_CODE, &GETABVAL_CODE,   &AVERAGEG_CODE, &NORMLIZ1_CODE,
+    &MUNRETRN_CODE,   &NOR29NOW_CODE, &CALCGRAV_CODE,   &CALCRVG_CODE,  &RVBOTH_CODE,
+    &RVBOTH_2_CODE,   &MUNRVG_CODE,   &MUNGRAV_CODE,    &POSUPDAT_CODE, &POSUPDAT_2_CODE,
+    &POSUPDAT_3_CODE, &NOREASON_CODE, &NOREASON_2_CODE, &VELUPDAT_CODE, &VELUPDAT_2_CODE,
+    &WSTOR_CODE,      &SETPOS_CODE,
 };
 
 /* The faithful tables' keys. */
@@ -321,25 +390,6 @@ static bool work_area(void)
     return false;
 }
 
-extern const agc_routine_table faithful_lm_servicer_routines;
-
-/* The faithful routines on from here, with an undo image of their own (a
- * refusal there leaves the state as this run found it at its start: the
- * caller restores it). */
-static enum exec_status faithful_rest(const agc_native_program *program,
-                                      apollo_overlay_state *state, lm_sv_io *io)
-{
-    static apollo_overlay_state scratch;
-    lm_sv_io rest = *io;
-    enum exec_status status;
-
-    rest.undo = &scratch;
-    status = faithful_lm_servicer_routines.entries[0].call(program, state, &rest);
-    rest.undo = io->undo;
-    *io = rest;
-    return status;
-}
-
 /* Whether store code w would store past the end of the E-bank window
  * (01777): the AGC then writes into fixed memory and reads it back into A
  * and L, which the readable machine does not model. DOSTORE's index (X1
@@ -363,43 +413,46 @@ static word ads_value(word memory, reg16 a)
     return overflow_corrected(add16(sign_extend(memory), a));
 }
 
-/* Whether CALCGRV1's BDDV* -MUDT,1 reads a fixed word that is not one of
- * the file's constants: -MUDT less X1, the earth's or the moon's (X1 +0
- * or -2, as CALCGRAV's LXC,1 RTX2 leaves it). The readable interpreter
- * reads the rope there, the faithful routines refuse; so the binding works
- * the address out before the pass, as the interpreter's INDEX forms it:
- * the address word less one (CS; CCS), INTBIT15 added where it is fixed
- * (MASK HIGH4), then less X1 (CS X1; ADS ADDRWD). In the work area or
+/* Whether an indexed operand reads n words the faithful routines do not
+ * hold (CALCGRV1's BDDV* -MUDT,1, VELUPDAT's VLOAD* VZBEAMNB,1 and DMP*
+ * VZSCAL,2). The readable interpreter reads the rope or the erasable
+ * words there, the faithful routines refuse; so the binding works the
+ * address out before the pass, as the interpreter's INDEX forms it: the
+ * address word less one (CS; CCS: the magnitude less one of an X2 word,
+ * which is negative), INTBIT15 added where it is fixed (MASK HIGH4), then
+ * less the index register (CS X1 or X2; ADS ADDRWD). In the work area or
  * erasable memory (E bank ADDRWD's top bits, the word 01400 on by its low
- * eight) it is the faithful routines' too, but for the window's last word
- * (the second word past it); in fixed memory, the bank its top five bits
- * name. */
-static bool mu_outside_constants(word address_word)
+ * eight) the words must end in the window; in fixed memory, in the bank
+ * its top five bits name, they must be the file's constants. */
+static bool indexed_outside(word address_word, unsigned n)
 {
-    word sum = (word)(address_word - 1u);
-    unsigned physical;
+    bool x2 = (address_word & 040000u) != 0u;
+    word sum = (word)((x2 ? (word)(~address_word & 077777u) : address_word) - 1u);
+    unsigned index = x2 ? K_X2 : K_X1, physical;
 
     if (sum & HIGH4) sum = ads_value(sum, sign_extend(INTBIT15));
-    sum = ads_value(sum, (reg16)~sign_extend(agc.memory[(FIXLOC + K_X1) & 03777u]));
+    sum = ads_value(sum, (reg16)~sign_extend(agc.memory[(FIXLOC + index) & 03777u]));
     if (!(sum & HIGH9)) return false;
-    if (!(sum & HIGH4)) return (sum & 0377u) == 0377u;
+    if (!(sum & HIGH4)) return (sum & 0377u) + n > 0400u;
     physical = ((sum >> 10) & 037u) * 1024u + (sum & 01777u);
-    return !file_constant(physical) || !file_constant(physical + 1u);
+    return !file_constant(physical) || !file_constant(physical + n - 1u);
 }
 
 /* The faithful routines' refusals at the start of a pass the readable
- * interpreter would run: a store code that spills, and CALCGRV1's BDDV*
- * off the constants. */
+ * interpreter would run: a store code that spills, and an indexed operand
+ * off the words they hold. */
 static bool refused_pass(uint16_t at, const struct interpretive_code *code)
 {
-    word first = code->words[LOC - code->first];
+    const word *words = code->words + (LOC - code->first);
 
-    if (!(first & 040000u) && store_spills(first)) return true;
-    return at == KEY(033u, CALCGRV1 + 3u) &&
-           mu_outside_constants(code->words[LOC + 1u - code->first]);
+    if (!(words[0] & 040000u) && store_spills(words[0])) return true;
+    if (at == KEY(033u, CALCGRV1 + 3u)) return indexed_outside(words[1], 2u);
+    if (at == KEY(033u, VELUPDAT + 024u)) return indexed_outside(words[1], 6u);
+    if (at == KEY(033u, VELUPDAT + 032u)) return indexed_outside(words[1], 2u);
+    return false;
 }
 
-enum step { GO_ON, LEFT, REFUSED, DONE };
+enum step { GO_ON, LEFT, REFUSED };
 
 static enum step step(const agc_native_program *program, apollo_overlay_state *state, lm_sv_io *io,
                       unsigned n)
@@ -414,7 +467,6 @@ static enum step step(const agc_native_program *program, apollo_overlay_state *s
 #ifdef AGC_FLIGHT_INTERPRETER
         return LEFT; /* the flight program's interpreter goes on */
 #endif
-        if (faithful_part(at)) return faithful_rest(program, state, io) == EXEC_OK ? DONE : REFUSED;
         code = code_at(at);
         if (!code || ((FBANK ^ BANKSET) & 076000u) || !work_area() || refused_pass(at, code))
             return REFUSED;
@@ -422,7 +474,6 @@ static enum step step(const agc_native_program *program, apollo_overlay_state *s
     } else {
         at = Z < 02000u ? AGC_TRANSFER_NONE : physical(Z, FBANK);
         if (at == AGC_TRANSFER_NONE || !in_file(at)) return LEFT;
-        if (faithful_part(at)) return faithful_rest(program, state, io) == EXEC_OK ? DONE : REFUSED;
         routine = basic_at(at);
         if (!routine) { /* a word no function starts at */
             if (n > 0u) lm_servicer_unentered = at;
@@ -452,7 +503,6 @@ static enum exec_status run(const agc_native_program *program, apollo_overlay_st
     for (n = 0; n < RUN_LIMIT; ++n) {
         switch (step(program, state, io, n)) {
         case GO_ON: continue;
-        case DONE: return EXEC_OK;
         case LEFT:
             if (n > 0u) return EXEC_OK;
             break;

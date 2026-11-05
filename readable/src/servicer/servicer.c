@@ -28,16 +28,39 @@ static void not_into_the_interpreter(word address)
     if (at <= 03734u - 02000u || (at >= 02000u + 0344u && at <= 02000u + 0600u)) not_modelled();
 }
 
-/* TC Q: back to the TC in fixed memory that called. Not modelled: a Q
- * that is not such a return (02000-07777). */
+/* Not modelled: a computed transfer to an address that is not a fixed
+ * one (02000-07777), or into the interpreter's own code. */
+static void computed(reg16 address)
+{
+    if (address < 02000u || address > 07777u) not_modelled();
+    not_into_the_interpreter((word)address);
+}
+
+/* TC Q: back to the TC in fixed memory that called. */
 void return_to_q(void)
 {
     word at = (word)Q;
 
-    if (Q < 02000u || Q > 07777u) not_modelled();
-    not_into_the_interpreter(at);
+    computed(Q);
     tc_at(Q_ADDRESS);
     continue_at(at);
+}
+
+/* TC A: to the address in A (QUIKFAZ5's return). */
+void return_to_a(void)
+{
+    word at = (word)A;
+
+    computed(A);
+    tc_at(A_ADDRESS);
+    continue_at(at);
+}
+
+/* TC to an erasable word that holds a return (SETPOS's TC LRADRET). */
+void tc_through_computed(unsigned address)
+{
+    computed(fetch(address));
+    tc_through(address);
 }
 
 /* ---- SERVICER -- pp. 860-861 ---- */

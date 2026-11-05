@@ -222,6 +222,8 @@ REPLACED = (
 # no longer called (--gc-sections drops them).
 # LUNAR_LANDING_GUIDANCE_EQUATIONS (src/landing_guidance): the LM's
 # routine tables, all readable; the faithful ones, renamed, are no longer
+# called (--gc-sections drops them). SERVICER (src/servicer): the LM's
+# routine tables, all readable; the faithful ones, renamed, are no longer
 # called (--gc-sections drops them).
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],

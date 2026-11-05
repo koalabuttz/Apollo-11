@@ -24,9 +24,13 @@
  *     and the altitude and state for R10.
  *   CALCGRAV, CALCRVG, RVBOTH, MUNRVG, MUNGRAV (average_g.c, bank 33, pp.
  *     880-883): the average G integration.
- *
- * The rest of the file (UPDATCHK on, pp. 884-897) is the faithful port's
- * still: the binding runs it there.
+ *   UPDATCHK, POSUPDAT, VELUPDAT, VUPDAT, VALTCHK, GNURVST, QUIKFAZ5
+ *     (lr_update.c, bank 33, pp. 884-891): the landing radar's
+ *     measurements checked and weighted into the state, and the restart
+ *     point.
+ *   LRVJOB, LRHJOB, RDGIMS, HIGATJOB, SETPOS (lr_jobs.c, banks 33 and 34,
+ *     pp. 892-897): the landing radar's reading jobs and task, the move to
+ *     position 2, and the beams' vectors.
  *
  * The faithful C is c64-port/src/lm_servicer.c.
  *
@@ -35,8 +39,8 @@
  * at a TC or TCF out of the file (Z the routine, Q the return), at a TC
  * to one of the file's own subroutines (Z that subroutine, Q the return,
  * which is a function of its own), at a TC INTPRET (run on to NEWOPS), or
- * at a transfer to an address the code computes (a TC Q, SERVOUT's DXCH
- * Z). The binding, src/binding/servicer_routines.c, runs on from there
+ * at a transfer to an address the code computes (a TC Q, TC A, TC
+ * LRADRET, SERVOUT's DXCH Z). The binding, src/binding/servicer_routines.c, runs on from there
  * while the address is the file's. */
 #ifndef READABLE_SERVICER_H
 #define READABLE_SERVICER_H
@@ -58,8 +62,11 @@ static inline void tc_to(word at, word routine)
     continue_at(routine);
 }
 
-/* TC Q: back to the word after the TC that called (servicer.c). */
+/* TC Q: back to the word after the TC that called; TC A, to the address
+ * in A; TC to an erasable word that holds a return (servicer.c). */
 void return_to_q(void);
+void return_to_a(void);
+void tc_through_computed(unsigned address);
 
 /* EXTEND; DCA of a two-word constant of the file. */
 static inline void dca_constant(const word pair[2])
@@ -80,7 +87,8 @@ static inline void group_off(unsigned minus_phase)
 /* The interpretive code. */
 extern const struct interpretive_code GETABVAL_CODE, AVERAGEG_CODE, AVGEND_CODE, NORMLIZE_CODE,
     NORMLIZ1_CODE, MUNRETRN_CODE, NOR29NOW_CODE, CALCGRAV_CODE, CALCRVG_CODE, RVBOTH_CODE,
-    RVBOTH_2_CODE, MUNRVG_CODE, MUNGRAV_CODE;
+    RVBOTH_2_CODE, MUNRVG_CODE, MUNGRAV_CODE, POSUPDAT_CODE, POSUPDAT_2_CODE, POSUPDAT_3_CODE,
+    NOREASON_CODE, NOREASON_2_CODE, VELUPDAT_CODE, VELUPDAT_2_CODE, WSTOR_CODE, SETPOS_CODE;
 
 /* ---- readaccs.c: pp. 857-859 ---- */
 void preread(void);                 /* PREREAD */
@@ -195,6 +203,91 @@ void rvboth_after_exit(void);            /* the word after RVBOTH's EXIT */
 void rvboth_after_quikfaz5(void);        /* its TC QUIKFAZ5's return: TC INTPRET */
 void rvboth_after_second_exit(void);     /* the word after the second EXIT */
 void rvboth_after_second_quikfaz5(void); /* its TC QUIKFAZ5's return: TC INTPRET */
+
+/* ---- lr_update.c: pp. 884-891 ---- */
+void updatchk(void);                       /* UPDATCHK */
+void posupdat(void);                       /* POSUPDAT: TC INTPRET */
+void posupdat_after_exit(void);            /* the word after its EXIT */
+void posupdat_after_shortmp(void);         /* +3: TC SHORTMP's return, TC INTPRET */
+void posupdat_after_second_exit(void);     /* the word after the second EXIT */
+void posupdat_after_third_exit(void);      /* the word after the third EXIT */
+void posupdat_after_branch(void);          /* TC BRANCH's return, positive */
+void posupdat_after_branch_zero(void);     /* its return on +0 */
+void posupdat_after_branch_negative(void); /* its return, negative */
+void noreason(void);                       /* NOREASON: (ADRES HFLSHFLG) */
+void noreason_after_exit(void);            /* the word after its EXIT */
+void noreason_after_alsignag(void);        /* TC ALSIGNAG's return */
+void noreason_after_shortmp2(void);        /* TC SHORTMP2's return: TC INTPRET */
+void noreason_after_second_exit(void);     /* the word after the second EXIT */
+void noreason_after_quikfaz5(void);        /* its TC QUIKFAZ5's return */
+void rupdated(void);                       /* RUPDATED */
+void vmeaschk(void);                       /* VMEASCHK: TC GNURVST's return */
+void vmeaschk_after_quikfaz5(void);        /* its TC QUIKFAZ5's return */
+void velupdat(void);                       /* VELUPDAT */
+void velupdat_after_quictrig(void);        /* (BANKCALL QUICTRIG): TC INTPRET */
+void velupdat_after_exit(void);            /* the word after its EXIT: TC INTPRET */
+void velupdat_after_second_exit(void);     /* the word after the second EXIT */
+void velupdat_after_branch(void);          /* TC BRANCH's return, positive */
+void velupdat_after_branch_zero(void);     /* its return on +0 */
+void velupdat_after_branch_negative(void); /* its return, negative */
+void velupdat_after_vflshflg(void);        /* (ADRES VFLSHFLG) */
+void velupdat_after_vxinh(void);           /* (ADRES VXINH) */
+void vupdat(void);                         /* VUPDAT */
+void usevf(void);                          /* USEVF */
+void wstor(void);                          /* WSTOR: TC INTPRET */
+void wstor_after_exit(void);               /* the word after its EXIT */
+void wstor_after_quikfaz5(void);           /* its TC QUIKFAZ5's return */
+void vupdated(void);                       /* VUPDATED */
+void valtchk(void);                        /* VALTCHK: TC GNURVST's return */
+void valtchk_after_quikfaz5(void);         /* its TC QUIKFAZ5's return */
+void readv(void);                          /* READV: (ADRES READVEL) */
+void readv_after_novac(void);              /* (the job's 2CADR LRVJOB) */
+void gnurvst(void);                        /* GNURVST */
+void quikfaz5(void);                       /* QUIKFAZ5 */
+void hfail(void);                          /* HFAIL */
+void norlite(void);                        /* NORLITE: (ADRES HFLSHFLG) */
+void vfail(void);                          /* VFAIL */
+void nolite(void);                         /* NOLITE: (ADRES VFLSHFLG) */
+void nolite_after_vxinh(void);             /* (ADRES VXINH) */
+
+/* ---- lr_jobs.c: pp. 892-897 ---- */
+void lrvjob(void);                    /* LRVJOB */
+void lrvjob_after_waitlist(void);     /* (the task's 2CADR RDGIMS) */
+void lrvjob_after_lrvel(void);        /* (BANKCALL LRVEL) */
+void lrvjob_bad_exit(void);           /* (BANKCALL RADSTALL), bad */
+void lrvjob_good_exit(void);          /* its return a word on, good */
+void endlrv(void);                    /* ENDLRV */
+void vbad(void);                      /* VBAD */
+void vstilbad(void);                  /* VSTILBAD */
+void lrhjob(void);                    /* LRHJOB */
+void lrhjob_after_lralt(void);        /* (BANKCALL LRALT) */
+void lrhjob_bad_exit(void);           /* (BANKCALL RADSTALL), bad */
+void lrhjob_good_exit(void);          /* its return a word on, good */
+void endlrh(void);                    /* ENDLRH */
+void hbad(void);                      /* HBAD */
+void hbad_after_rngscflg(void);       /* (ADRES RNGSCFLG) */
+void hbad_reset(void);                /* HSTILBAD -1 */
+void hstilbad(void);                  /* HSTILBAD */
+void rdgims(void);                    /* RDGIMS */
+void higatjob(void);                  /* HIGATJOB */
+void higatjob_after_lrpos2(void);     /* (BANKCALL LRPOS2) */
+void higatjob_bad_exit(void);         /* (BANKCALL RADSTALL), bad */
+void posgood(void);                   /* POSGOOD: its return a word on, good */
+void posgood_after_priochng(void);    /* TC PRIOCHNG's return */
+void posgood_after_setpos2(void);     /* TC SETPOS2's return */
+void posgood_after_nolrread(void);    /* (ADRES NOLRREAD) */
+void posalarm(void);                  /* POSALARM */
+void posalarm_terminate(void);        /* (BANKCALL PRIOLARM), terminate */
+void posalarm_proceed(void);          /* its proceed return */
+void posalarm_enter(void);            /* its enter return */
+void posalarm_immediate_return(void); /* its immediate return */
+void posalarm_retry(void);            /* POSALARM +7 */
+void setpos1(void);                   /* SETPOS1 */
+void setpos1_after_makecadr(void);    /* TC MAKECADR's return */
+void setpos1_after_setpos(void);      /* TC SETPOS's return */
+void setpos2(void);                   /* SETPOS2 */
+void setpos(void);                    /* SETPOS: TC INTPRET */
+void setpos_after_exit(void);         /* the word after its EXIT */
 
 #endif
 
