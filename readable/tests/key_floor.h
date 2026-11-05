@@ -61,4 +61,19 @@ static unsigned keys_under_floor(const char *test)
     return failures;
 }
 
+/* The keys of a table no state was entered at, each a failure: a key the
+ * cases never start at is a key the floor cannot see. */
+static inline unsigned keys_unentered(const agc_routine_table *table, const char *test)
+{
+    unsigned i, failures = 0;
+
+    for (i = 0; i < table->count; ++i)
+        if (!key_tallies[table->entries[i].physical].tried) {
+            printf("FAIL %s %02o,%04o: no state was entered at the key\n", test,
+                   table->entries[i].physical / 1024u, 02000u + table->entries[i].physical % 1024u);
+            ++failures;
+        }
+    return failures;
+}
+
 #endif

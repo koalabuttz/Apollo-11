@@ -34,6 +34,9 @@
  *
  * The faithful C is c64-port/src/lm_servicer.c.
  *
+ * Words of the listing no instruction names, so no C name either: the
+ * constant 1.95SECS (DEC 195, p. 883).
+ *
  * Each function runs from a word the program can resume at (an entry, a
  * subroutine's return, the word after an EXIT) until its code leaves it:
  * at a TC or TCF out of the file (Z the routine, Q the return), at a TC

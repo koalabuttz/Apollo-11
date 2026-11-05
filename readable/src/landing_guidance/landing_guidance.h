@@ -14,6 +14,11 @@
  * c64-port/src/lm_llge.c. Steps more than one file takes are in
  * indexing.h.
  *
+ * Words of the listing no instruction names, so no C name either: the
+ * labels -AZ, +AZ, -EL and +EL (p. 821), the redesignator's four steps,
+ * which the CCS before each runs on into, and the constant TTFSCALE (=
+ * BIT12, p. 827).
+ *
  * Each function runs from a word the program can resume at (an entry, a
  * subroutine's return, the word after an EXIT) until its code leaves the
  * file: at a TC or TCF out of it (Z the routine, Q the return), or at a TC

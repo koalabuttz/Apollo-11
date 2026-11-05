@@ -90,6 +90,11 @@ C cannot spell every AGC name, so:
 | a name that is its value | what the value is | `9,6,4` → `BITS_9_6_4`, `.5SEC` → `HALF_SEC` |
 | a C keyword or library name | a trailing `_` | `GOTO` → `goto_()`, `ABS` → `abs_()` |
 
+Inside the operand macros (`ADDRESS_OF`, `ADDRESS`, `ADDRESS_PLUS_ONE`,
+`STORE` and the rest), which paste the name onto a prefix, a leading
+digit stays as it is: `1/PIPADT` → `ADDRESS_OF(1_PIPADT)`, `4SEC(28)` →
+`ADDRESS_PLUS_ONE(4SEC_28)`.
+
 An erasable word named as a downlist or noun table operand, as its ECADR
 (E-bank bits and address in the bank, the way a DNADR holds it), is
 `E_<name>`: `E_R_OTHER` for `R-OTHER`, `E_MINUS_TPER` for `-TPER`.

@@ -15,7 +15,8 @@
  * case is one of the port's test states (c64-port/tests/lm_servicer_cases.c:
  * every key, the indexes one of the values their producers store, Q a
  * return into the file in half of them, the PHASE words and the values the
- * file's CCS and BZF tests single out), half of them stirred further: FB,
+ * file's CCS and BZF tests single out), each drawn 32 times (4,096
+ * states a key), all but half of the first draw stirred further: FB,
  * BANKSET, EDOP, the work area and its push-down pointer, NEWJOB, the
  * superbank, A, Q at the file's own return points, AVGEXIT one of the
  * 2CADRs SERVICER exits through, the PHASE words, DVCNTR, PIPAGE and the
@@ -24,18 +25,22 @@
  * faithful routine runs, the readable one must too, with the same memory
  * and io record, word for word; where the readable one refuses, it must
  * leave everything as it found it; and each key's faithful routine must
- * run in at least 1 in 16 of the states entered at it (key_floor.h).
+ * run in at least 1 in 16 of the states entered at it, and every key of
+ * the basic table must be entered (key_floor.h). In the flight build a
+ * quarter of the basic cases start instead at one of the words after an
+ * EXIT in their key's bank, the flight build's own keys.
  *
  * Not counted: a run the readable routines refuse where a computed
  * transfer (a TC Q, SETPOS's TC LRADRET, SERVOUT's DXCH Z through
  * AVGEXIT) went to a word of the file no readable function starts at,
  * which the faithful port runs on from (the case states draw Q, AVGEXIT
- * and LRADRET at random); and NEWJOB negative, which the readable
- * interpreter refuses at any pair where the faithful one refuses it only
- * at DANZIG, as in make stateup-cases. Each
- * only if the same state, with that return made one a readable function
- * starts at or with NEWJOB +0, runs on both sides alike: so the run up to
- * the transfer, or the whole run, is checked all the same. */
+ * and LRADRET at random, LRADRET at times a word that is no TC); and
+ * NEWJOB negative, which the readable interpreter refuses at any pair
+ * where the faithful one refuses it only at DANZIG, as in make
+ * stateup-cases. Each only if the same state, with that return made one a
+ * readable function starts at or with NEWJOB +0 (or both), runs on both
+ * sides alike: so the run up to the transfer, or the whole run, is checked
+ * all the same. */
 #include <stdio.h>
 #include <string.h>
 #include "rope_image.h"
@@ -70,10 +75,27 @@ extern const agc_routine_table faithful_lm_servicer_routines, faithful_lm_servic
 extern uint16_t lm_servicer_unentered;
 
 #define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-#define CASES        (2u * LMSV_BASE_CASES)
+#define ROUNDS       32u /* 4,096 states a key */
+#define CASES        (ROUNDS * LMSV_BASE_CASES)
 #define E7(a)        (7u * 0400u + (a) - 01400u)
 #define AVGEXIT      01252u
-#define LRADRET      E7(01650u)
+
+/* The word SETPOS's TC LRADRET runs: LRADRET in the erasable bank the
+ * run has there, BANKSET's after an EXIT (a case at NEWOPS), else EB's;
+ * with that bank drawn other than 7, another bank's word. */
+static unsigned lradret(const apollo_overlay_state *s)
+{
+    unsigned eb = s->words[5] == 06070u ? s->words[0165] & 7u : s->words[3] >> 8 & 7u;
+
+    return eb * 0400u + 01650u - 01400u;
+}
+
+/* Whether that word is no TC: the TC runs it as an instruction, and on to
+ * wherever the drawn words lead. */
+static int lradret_no_tc(const apollo_overlay_state *s)
+{
+    return s->words[lradret(s)] > 07777u;
+}
 
 /* Whether the word the readable run stopped at (lm_servicer_unentered) is
  * where the case's own Q, AVGEXIT or LRADRET sent it. */
@@ -84,7 +106,7 @@ static int from_drawn_return(const apollo_overlay_state *start)
     if (!at) return 0;
     address = at >= 04000u && at < 010000u ? at : at % 1024u + 02000u;
     return address == (start->words[2] & 07777u) || address == (start->words[AVGEXIT] & 07777u) ||
-           address == (start->words[LRADRET] & 07777u);
+           address == (start->words[lradret(start)] & 07777u) || lradret_no_tc(start);
 }
 
 static uint32_t seed = 271828u;
@@ -139,8 +161,42 @@ static const uint16_t returns[] = {03412u, 03437u, 03451u, 03453u, 03524u, 03417
 static const uint16_t exits[][2] = {
     {03661u, 044067u}, {03770u, 064067u}, {02000u, 034067u}, {03100u, 060007u}, {02316u, 066007u}};
 
+#ifdef AGC_FLIGHT_INTERPRETER
+/* The flight build's own basic keys, the words after the interpretive
+ * code's EXITs: the keys of its table that the port's cases never start
+ * at (none of lmsv_routine_keys). */
+static uint16_t flight_keys[64];
+static unsigned flight_key_count;
+
+static void find_flight_keys(void)
+{
+    unsigned i, j;
+
+    for (i = 0; i < lm_servicer_routines.count; ++i) {
+        uint16_t key = lm_servicer_routines.entries[i].physical;
+
+        for (j = 0; j < LMSV_BASIC_ROUTINES && lmsv_routine_keys[j] != key; ++j);
+        if (j == LMSV_BASIC_ROUTINES && flight_key_count < COUNT(flight_keys))
+            flight_keys[flight_key_count++] = key;
+    }
+}
+
+/* The k-th flight key of a bank (counting round), or 0 if it has none. */
+static uint16_t flight_key(unsigned bank, unsigned k)
+{
+    unsigned i, in_bank = 0;
+
+    for (i = 0; i < flight_key_count; ++i) in_bank += flight_keys[i] / 1024u == bank;
+    if (!in_bank) return 0;
+    k %= in_bank;
+    for (i = 0;; ++i)
+        if (flight_keys[i] / 1024u == bank && !k--) return flight_keys[i];
+}
+#endif
+
 /* The run of the first step in the flight build: a quarter of the basic
- * cases start at a word after an EXIT instead (GETABVAL's or ASCSPOT's). */
+ * cases start at one of the flight keys of their key's bank instead, each
+ * in turn. */
 static void state(apollo_overlay_state *s, lmsv_case *c, int *undo, unsigned n)
 {
     uint16_t base = (uint16_t)(n % LMSV_BASE_CASES);
@@ -157,8 +213,8 @@ static void state(apollo_overlay_state *s, lmsv_case *c, int *undo, unsigned n)
         s->words[s->words[0120] + 046u] = (uint16_t)(rnd() % 2u ? 077777u : 077775u);
 #ifdef AGC_FLIGHT_INTERPRETER
     if (base % LMSV_ROUTINES < LMSV_BASIC_ROUTINES && base / LMSV_ROUTINES % 4u == 1u) {
-        if (key / 1024u == 033u) s->words[5] = 02223u;
-        if (key / 1024u == 023u) s->words[5] = 02504u;
+        uint16_t at = flight_key(key / 1024u, n / LMSV_ROUTINES / 4u);
+        if (at) s->words[5] = (uint16_t)(02000u + at % 1024u);
     }
 #endif
     if (n % 2u == 0u && n < LMSV_BASE_CASES) goto banks;
@@ -280,7 +336,8 @@ static void redirect(apollo_overlay_state *s)
         s->words[AVGEXIT] = 03661u;
         s->words[AVGEXIT + 1u] = 044067u;
     }
-    if (address == (s->words[LRADRET] & 07777u)) s->words[LRADRET] = 03700u;
+    if (address == (s->words[lradret(s)] & 07777u) || lradret_no_tc(s))
+        s->words[lradret(s)] = 03700u;
 }
 
 int main(int argc, char **argv)
@@ -300,6 +357,9 @@ int main(int argc, char **argv)
     failures += tables_differ(&lm_servicer_routines, &faithful_lm_servicer_routines, "basic");
     failures += tables_differ(&lm_servicer_interpretive, &faithful_lm_servicer_interpretive,
                               "interpretive");
+#ifdef AGC_FLIGHT_INTERPRETER
+    find_flight_keys();
+#endif
     for (n = 0; n < CASES; ++n) {
         apollo_overlay_state start, start2;
         lmsv_case c;
@@ -345,10 +405,17 @@ int main(int argc, char **argv)
         } else if (b.sf == EXEC_OK && b.sr != EXEC_OK && start.words[067] > 037777u) {
             /* Not counted only if the same state with NEWJOB +0 runs
              * alike on both sides: the faithful run never reached a
-             * DANZIG, so NEWJOB was all the readable one refused. */
+             * DANZIG, so NEWJOB was all the readable one refused. (With
+             * the return redirected too, if that run goes on from a drawn
+             * return.) */
             start2 = start;
             start2.words[067] = 0u;
             both_run(&redirected, &start2, &io_start, undo);
+            if (redirected.sf == EXEC_OK && redirected.sr != EXEC_OK &&
+                from_drawn_return(&start2)) {
+                redirect(&start2);
+                both_run(&redirected, &start2, &io_start, undo);
+            }
             if (verdict(&redirected, &start2, &io_start) || redirected.sf != EXEC_OK) {
                 why = "NEWJOB negative, and wrong with NEWJOB +0";
                 shown = &redirected;
@@ -366,6 +433,7 @@ int main(int argc, char **argv)
         }
     }
     failures += keys_under_floor("servicer-cases " MODE);
+    failures += keys_unentered(&lm_servicer_routines, "servicer-cases " MODE);
     printf("servicer-cases %s: %u words as the rope's, %u checks (%u run by the faithful "
            "routines; not counted: %u on from a word no readable function starts at, %u NEWJOB "
            "negative), %u failures\n",

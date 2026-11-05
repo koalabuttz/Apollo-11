@@ -14,7 +14,8 @@
  * constants 70DEC (GOABORT's DEC 70 after TC CHECKMM, p. 833) and MODE71
  * (DEC 71, which INDEX Q reads as MODE70 +2, p. 832), and the labels
  * P71NOW? and P70NOW? (p. 830), GRP4OFF (p. 835), INJTARG, BOTHPOLY,
- * UPRATE, YOK and OLDTIME (pp. 833-835), which are interpretive.
+ * UPRATE, YOK and OLDTIME (pp. 833-835), which are interpretive, and the
+ * constant ORBMANAD (ADRES ORBMANUV, p. 837).
  *
  * Each function runs from a word the program can resume at (an entry, a
  * subroutine's return, the word after an EXIT) until its code leaves the

@@ -711,8 +711,10 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    `make servicer-cases` does the same for SERVICER: the faithful test's
    frozen cases (yaAGC digests) through the readable routines, the
    interpretive words against the rope, then readable and faithful side
-   by side from every key of the faithful tables, with Q, AVGEXIT and
-   LRADRET stirred.
+   by side from every key of the faithful tables (4,096 states each, as
+   the host runs the file and as the flight program does, which also
+   starts at the words after the EXITs), with Q, AVGEXIT and LRADRET
+   stirred.
    `make landing-displays-cases` does the same for
    LANDING_ANALOG_DISPLAYS: the faithful test's frozen cases (16,384,
    yaAGC digests) and refusals through the readable table, then readable
