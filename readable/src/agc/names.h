@@ -3563,8 +3563,35 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
  * (ELVIRA, ZERLINA, AZINCR1, ELINCR1, RODCOUNT, RETROOT, PWRPTR, DERPTR,
  * PWRCNT, ROOTPS, DXCRIT, RODSCAL1, VDGVERT, OLDPIPAX, PIPATMPX, TEMX,
  * DELVROD ...) are named by ADDRESS_OF. */
+#define AFCCLEND ((word)K_AFCCLEND)
+#define ALM1406  ((word)K_1406ALM) /* 1406ALM */
+#define AFTRGUID ((word)K_AFTRGUID)
+#define CALCRGVG ((word)K_CALCRGVG)
+#define CGCALC   ((word)K_CGCALC)
 #define CHAN31   031u
 #define DERCLOOP ((word)K_DERCLOOP)
+#define DISPCOMN ((word)K_DISPCOMN)
+#define DISPEXIT ((word)K_DISPEXIT)
+#define EXBRAK   ((word)K_EXBRAK)
+#define EXGSUB   ((word)K_EXGSUB)
+#define EXNORM   ((word)K_EXNORM)
+#define EXOVFLOW ((word)K_EXOVFLOW)
+#define EXSPOT1  ((word)K_EXSPOT1)
+#define EXTLOGIC ((word)K_EXTLOGIC)
+#define GDUMP1   ((word)K_GDUMP1)
+#define LUNLAND  ((word)K_LUNLAND)
+#define P63DISPS ((word)K_P63DISPS)
+#define P64CEED  ((word)K_P64CEED)
+#define P64DISPS ((word)K_P64DISPS)
+#define P65VERT  ((word)K_P65VERT)
+#define P66VERT  ((word)K_P66VERT)
+#define P67VERT  ((word)K_P67VERT)
+#define QUADGUID ((word)K_QUADGUID)
+#define RATESTOP ((word)K_RATESTOP)
+#define RED_OVER ((word)K_RED_OVER) /* RED-OVER */
+#define REDES_OK ((word)K_REDES_OK) /* REDES-OK */
+#define WHATDISP ((word)K_WHATDISP)
+#define WHATEXIT ((word)K_WHATEXIT)
 #define DMPNSUB  ((word)K_DMPNSUB)
 #define INTPRETX ((word)K_INTPRETX)
 #define ITRPNT1  ((word)K_ITRPNT1)
@@ -3585,6 +3612,13 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define AZEACH   ((word)KW_AZEACH)   /* DEC .03491: "2 DEGREES" */
 #define DERTABLL ((word)KW_DERTABLL) /* ADRES DERCOFN -3 */
 #define ELEACH   ((word)KW_ELEACH)   /* DEC .00873: "1/2 DEGREE" */
+#define PROJMAX  ((word)KW_PROJMAX)  /* DEC .42262 B-3: "SIN(25')/8" */
+#define PROJMIN  ((word)KW_PROJMIN)  /* DEC .25882 B-3: "SIN(15')/8" */
+#define REDFLBIT ((word)KW_REDFLBIT) /* REDFLAG's bit (FLAGWRD6) */
+#define STEERBIT ((word)KW_STEERBIT) /* STEERSW's bit (FLAGWRD2) */
+#define V06N60   ((word)KW_V06N60)   /* VN 0660: "P65, P66, P67" */
+#define V06N63   ((word)KW_V06N63)   /* VN 0663: "P63" */
+#define V06N64   ((word)KW_V06N64)   /* VN 0664: "P64" */
 #endif
 
 #if COMANCHE055

@@ -8,17 +8,10 @@
  * of descent switch runs DESCBITS, which counts it in RODCOUNT. The
  * faithful C is c64-port/src/lm_llge.c. */
 #include "landing_guidance.h"
+#include "indexing.h"
 #include "../agc/names.h"
 
 #if LUMINARY099
-
-/* TC at, to a routine out of the file: Q gets the return and the routine
- * runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
 
 /* ---- REDESIGNATOR TRAP -- p. 820 ---- */
 

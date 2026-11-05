@@ -9,6 +9,7 @@
  * horizontal velocity goes to the display (VHORIZ, noun 60). The faithful
  * C is c64-port/src/lm_llge.c. */
 #include "landing_guidance.h"
+#include "indexing.h"
 #include "../agc/names.h"
 
 #if LUMINARY099
@@ -16,14 +17,6 @@
 #include "../interpreter/notation.h"
 
 #define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-/* TC at, to a routine out of the file: Q gets the return and the routine
- * runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
 
 /* RODTASK: the second's task, which starts RODCOMP as a job (FINDVAC,
  * priority 22, "EBANK= DVCNTR", 2CADR RODCOMP), */

@@ -1,10 +1,15 @@
 /* SPDX-License-Identifier: MIT */
 /* LUNAR_LANDING_GUIDANCE_EQUATIONS.agc (Luminary099 pp. 798-828): the
- * landing's guidance, written part by part. So far: P66's rate of descent
- * mode (p66.c, pp. 816-819), the redesignator and rate of descent traps
- * (redesignator.c, pp. 820-822), the root finder ROOTPSRS (rootpsrs.c,
- * pp. 822-825), and INTPRETX and FASTCHNG (subroutines.c, pp. 825-826).
- * The faithful C is c64-port/src/lm_llge.c.
+ * landing's guidance, written part by part. So far: the phase tables and
+ * GUIDSUB (entries.c, pp. 798-799), the main guidance equation to the
+ * exit logic (quadguid.c, pp. 808-811), the exits (exits.c, pp. 811-814),
+ * the displays (displays.c, pp. 814-815), P65 and P67 (vertguid.c, pp.
+ * 815-816), P66's rate of descent mode (p66.c, pp. 816-819), the
+ * redesignator and rate of descent traps (redesignator.c, pp. 820-822),
+ * the root finder ROOTPSRS (rootpsrs.c, pp. 822-825), and INTPRETX and
+ * FASTCHNG (subroutines.c, pp. 825-826). The faithful C is
+ * c64-port/src/lm_llge.c. Steps more than one file takes are in
+ * indexing.h.
  *
  * Each function runs from a word the program can resume at (an entry, a
  * subroutine's return, the word after an EXIT) until its code leaves the
@@ -39,6 +44,62 @@ void redesmon(void);          /* REDESMON */
 void resetrpt_taskover(void); /* RESETRPT +3: TCF TASKOVER */
 void descbits(void);          /* DESCBITS */
 
+/* The phase tables and entry points -- entries.c */
+void tcf_table_word(word table, word at);   /* a word of AFTRGUID, WHATEXIT, WHATDISP */
+void tcf_by_phase(word table, unsigned at); /* INDEX at; TCF table */
+void guidsub(void);                         /* GUIDSUB */
+void lunland(void);                         /* LUNLAND */
+void calcrgvg(void);                        /* CALCRGVG */
+
+/* QUADGUID to EXTLOGIC -- quadguid.c */
+void quadguid(void);                /* QUADGUID */
+void afcclend_after_exit(void);     /* AFCCLEND's EXIT +1: TC FASTCHNG */
+void afcclend_after_fastchng(void); /* its return; BRSPOT4 */
+void brspot4(void);                 /* BRSPOT4 */
+void cgcalc(void);                  /* CGCALC */
+void extlogic(void);                /* EXTLOGIC */
+void exspot1(void);                 /* EXSPOT1 */
+void exspot1_after_fastchng(void);  /* its TC FASTCHNG's return */
+extern const struct interpretive_code QUADGUID_CODE, CGCALC_CODE;
+
+/* The exits -- exits.c */
+void exgsub(void);                /* EXGSUB */
+void exgsub_after_exit(void);     /* its EXIT +1 */
+void exgsub_postjump(void);       /* +3: TC POSTJUMP, CADR DDUMCALC */
+void exbrak(void);                /* EXBRAK */
+void exnorm(void);                /* EXNORM */
+void exnorm_after_exit(void);     /* its EXIT +1 */
+void unwcloop(void);              /* UNWCLOOP */
+void steer(void);                 /* STEER? */
+void exvert(void);                /* EXVERT */
+void ratestop(void);              /* RATESTOP */
+void gdump1(void);                /* GDUMP1 */
+void gdump1_after_throttle(void); /* GDUMP1 +1: TC INTPRET */
+extern const struct interpretive_code EXGSUB_CODE, EXBRAK_CODE, EXNORM_CODE, GDUMP1_CODE;
+
+/* The displays -- displays.c */
+void dispexit(void);             /* DISPEXIT */
+void dispexit_plus3(void);       /* DISPEXIT +3 */
+void p63disps_phaschng(void);    /* P63DISPS -2 */
+void p63disps(void);             /* P63DISPS */
+void dispcomn(void);             /* DISPCOMN */
+void endlljob(void);             /* ENDLLJOB */
+void p64disps(void);             /* P64DISPS */
+void p64disps_terminate(void);   /* REFLASHR's first return: TCF GOTOPOOH */
+void p64ceed(void);              /* P64CEED */
+void p64ceed_after_upflag(void); /* UPFLAG's return: TCF ENDOFJOB */
+void red_over(void);             /* RED-OVER */
+void redes_ok(void);             /* REDES-OK */
+void vertdisp(void);             /* VERTDISP */
+
+/* The vertical phase's guidance -- vertguid.c */
+void vertguid(void);               /* VERTGUID */
+void p65vert(void);                /* P65VERT */
+void p66vert(void);                /* P66VERT */
+void p67vert(void);                /* P67VERT */
+void p67vert_after_phaschng(void); /* P67VERT +2: TC INTPRET */
+extern const struct interpretive_code P65VERT_CODE, P67VERT_CODE;
+
 /* ROOTPSRS -- rootpsrs.c */
 void rootpsrs(void);                  /* ROOTPSRS */
 void rootpsrs_after_shortmp(void);    /* TC USPRCADR, CADR ABS */
@@ -50,8 +111,9 @@ void rootloop_after_ddv(void);        /* the root corrected; TC USPRCADR, CADR A
 void rootloop_after_abs(void);        /* the test: BADROOT, ROOTLOOP or ROOTSTOR */
 
 /* The subroutines -- subroutines.c */
-void intpretx(void); /* INTPRETX */
-void fastchng(void); /* FASTCHNG */
+void intpretx(void);            /* INTPRETX */
+void alm1406_after_alarm(void); /* 1406ALM's ALARM return: TCF RATESTOP */
+void fastchng(void);            /* FASTCHNG */
 #endif
 
 #endif
