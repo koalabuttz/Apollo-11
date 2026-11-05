@@ -11,7 +11,10 @@
  * every caller runs them. Each call runs one entry, as the faithful port's
  * do. Where the readable code calls not_modelled() (a return word that is
  * not a TC to fixed memory), the call is refused and the state and
- * channel 14 are left as they were. */
+ * channel 14 are left as they were. The faithful table takes FASTCHNG's
+ * return (Q) only as a TC to fixed memory, 02000 to 07777, and so does
+ * this one (FASTCHNG itself, as LUNAR_LANDING_GUIDANCE_EQUATIONS' table
+ * runs it, takes any TC). */
 #include <setjmp.h>
 #include <stddef.h>
 #include "binding.h"
@@ -87,6 +90,7 @@ static enum exec_status run(const agc_native_program *program, apollo_overlay_st
     agc.fixed_memory = rope_word;
     agc.leave = leave;
     if ((FBANK & 076000u) != BANK31 || EBANK != 03400u) return EXEC_OUT_OF_SCOPE;
+    if (Z == FASTCHNG && (Q < 02000u || Q > 07777u)) return EXEC_OUT_OF_SCOPE;
     for (i = 0; i < COUNT(entries); ++i) {
         if (entries[i].at != Z) continue;
         before = *state;
