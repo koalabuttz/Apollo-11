@@ -55,9 +55,12 @@ struct interpretive_code {
     const uint16_t *words;
 };
 extern const struct interpretive_code GETABVAL_CODE, AVERAGEG_CODE, AVGEND_CODE, NORMLIZE_CODE,
-    NORMLIZ1_CODE;
+    NORMLIZ1_CODE, MUNRETRN_CODE, NOR29NOW_CODE, CALCGRAV_CODE, CALCRVG_CODE, RVBOTH_CODE,
+    RVBOTH_2_CODE, MUNRVG_CODE, MUNGRAV_CODE;
 static const struct interpretive_code *const codes[] = {
-    &GETABVAL_CODE, &AVERAGEG_CODE, &AVGEND_CODE, &NORMLIZE_CODE, &NORMLIZ1_CODE,
+    &GETABVAL_CODE, &AVERAGEG_CODE, &AVGEND_CODE,   &NORMLIZE_CODE, &NORMLIZ1_CODE,
+    &MUNRETRN_CODE, &NOR29NOW_CODE, &CALCGRAV_CODE, &CALCRVG_CODE,  &RVBOTH_CODE,
+    &RVBOTH_2_CODE, &MUNRVG_CODE,   &MUNGRAV_CODE,
 };
 extern const agc_routine_table faithful_lm_servicer_routines, faithful_lm_servicer_interpretive;
 extern uint16_t lm_servicer_unentered;

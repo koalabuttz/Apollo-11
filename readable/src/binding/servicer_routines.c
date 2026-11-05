@@ -18,8 +18,8 @@
  * stops where Z leaves the file (a basic address of another file, or
  * NEWOPS with LOC outside it).
  *
- * The file is readable so far up to HIGATASK (pp. 857-872): where a run
- * reaches the rest (bank 33 from 02447, and bank 34), the faithful port's
+ * The file is readable so far up to UPDATCHK (pp. 857-883): where a run
+ * reaches the rest (bank 33 from 03155, and bank 34), the faithful port's
  * routines run it on from there (faithful_lm_servicer_routines, the
  * faithful tables renamed), with the state and io record as the run left
  * them.
@@ -68,12 +68,24 @@ static void leave(void)
     longjmp(back, 1);
 }
 
-/* The file's fixed words are the rope's. */
+/* The fixed words the file's code reads, its constants: the rope's. (The
+ * faithful port holds just these: a read of any other fixed word, an
+ * operand indexed out of them, is not modelled.) */
+static bool file_constant(unsigned physical)
+{
+    return (physical >= KEY(033u, 02000u) && physical <= KEY(033u, 02044u)) ||
+           (physical >= KEY(033u, 02677u) && physical <= KEY(033u, 02707u)) ||
+           (physical >= KEY(033u, 03026u) && physical <= KEY(033u, 03031u)) ||
+           (physical >= KEY(033u, 03143u) && physical <= KEY(033u, 03153u)) ||
+           (physical >= KEY(023u, 02511u) && physical <= KEY(023u, 02526u));
+}
+
 static word rope_word(unsigned physical)
 {
     agc_word value = 0;
 
-    if (physical > 0xFFFFu || !apollo_rope_read(0u, (uint16_t)physical, &value)) not_modelled();
+    if (!file_constant(physical) || !apollo_rope_read(0u, (uint16_t)physical, &value))
+        not_modelled();
     return (word)(value & MINUS_ZERO);
 }
 
@@ -128,11 +140,11 @@ static bool in_file(uint16_t at)
            (at >= KEY(037u, 03410u) && at <= KEY(037u, 03654u));
 }
 
-/* The words the faithful port runs still: bank 33 from HIGATASK, and bank
+/* The words the faithful port runs still: bank 33 from UPDATCHK, and bank
  * 34. */
 static bool faithful_part(uint16_t at)
 {
-    return (at >= KEY(033u, 02447u) && at <= KEY(033u, 03776u)) ||
+    return (at >= KEY(033u, UPDATCHK) && at <= KEY(033u, 03776u)) ||
            (at >= KEY(034u, 03716u) && at <= KEY(034u, 03774u));
 }
 
@@ -187,6 +199,37 @@ static const struct {
     {KEY(033u, COPYCYC), copycyc},
     {KEY(033u, COPYCYC + 1u), copycyc_plus_1},
     {KEY(033u, TMPTOSPT), tmptospt},
+    {KEY(033u, HIGATASK), higatask},
+    {KEY(033u, HIGATASK + 011u), higatask_after_findvac},
+    {KEY(033u, MUNRETRN + 1u), munretrn_after_exit},
+    {KEY(033u, HITEST), hitest},
+    {KEY(033u, POS2CHK), pos2chk},
+    {KEY(033u, HIGATCHK), higatchk},
+    {KEY(033u, POS1CHK), pos1chk},
+    {KEY(033u, LRPOSALM), lrposalm},
+    {KEY(033u, CONTSERV), contserv},
+    {KEY(033u, COPYCYC1), copycyc1},
+    {KEY(033u, R29_Q), r29_q},
+    {KEY(033u, R29NODES), r29nodes},
+    {KEY(033u, NOR29NOW), nor29now},
+    {KEY(033u, COPYCYC2 + 1u), copycyc2_after_exit},
+    {KEY(033u, ALTCHK), altchk},
+    {KEY(033u, ALTCHK + 010u), altchk_after_branch},
+    {KEY(033u, ALTCHK + 011u), altchk_after_branch_zero},
+    {KEY(033u, ALTCHK + 012u), altchk_after_branch_negative},
+    {KEY(033u, XORCHK), xorchk},
+    {KEY(033u, XORCHK + 3u), xorchk_after_altchk},
+    {KEY(033u, XORCHK + 4u), xorchk_below},
+    {KEY(033u, XORCHK + 6u), xorchk_after_xovinflg},
+    {KEY(033u, XORCHK + 010u), xorchk_after_xorflg},
+    {KEY(033u, THIRTY_FIVE_KCHK), thirty_five_kchk},
+    {KEY(033u, THIRTY_FIVE_KCHK + 3u), thirty_five_kchk_after_altchk},
+    {KEY(033u, THIRTY_FIVE_KCHK + 4u), thirty_five_kchk_below},
+    {KEY(033u, THIRTY_FIVE_KCHK + 6u), thirty_five_kchk_after_readlr},
+    {KEY(033u, RVBOTH + 020u), rvboth_after_exit},
+    {KEY(033u, RVBOTH + 021u), rvboth_after_quikfaz5},
+    {KEY(033u, RVBOTH + 032u), rvboth_after_second_exit},
+    {KEY(033u, RVBOTH + 033u), rvboth_after_second_quikfaz5},
     {KEY(037u, PREREAD), preread},
     {KEY(037u, PREREAD + 2u), preread_after_gnufaze5},
     {KEY(037u, BIBIBIAS), bibibias},
@@ -215,7 +258,9 @@ static const struct {
 
 /* The interpretive code, by its first word. */
 static const struct interpretive_code *const codes[] = {
-    &AVGEND_CODE, &NORMLIZE_CODE, &GETABVAL_CODE, &AVERAGEG_CODE, &NORMLIZ1_CODE,
+    &AVGEND_CODE,   &NORMLIZE_CODE, &GETABVAL_CODE, &AVERAGEG_CODE, &NORMLIZ1_CODE,
+    &MUNRETRN_CODE, &NOR29NOW_CODE, &CALCGRAV_CODE, &CALCRVG_CODE,  &RVBOTH_CODE,
+    &RVBOTH_2_CODE, &MUNRVG_CODE,   &MUNGRAV_CODE,
 };
 
 /* The faithful tables' keys. */
@@ -295,6 +340,65 @@ static enum exec_status faithful_rest(const agc_native_program *program,
     return status;
 }
 
+/* Whether store code w would store past the end of the E-bank window
+ * (01777): the AGC then writes into fixed memory and reads it back into A
+ * and L, which the readable machine does not model. DOSTORE's index (X1
+ * or X2) and STORE's addressing, from w - 1 (NEWOPS's CCS); MODE says how
+ * many words (DP, TP or vector). The faithful routines refuse such a store
+ * too (lmi_store_spills). */
+static bool store_spills(word w)
+{
+    unsigned v = (unsigned)w - 1u, kind = (v >> 11) & 7u, a = v & 03777u, n;
+
+    if (kind == 1u || kind == 2u)
+        a = (a + (~agc.memory[(FIXLOC + K_X1 + kind - 1u) & 03777u] & 077777u)) % 077777u;
+    if (a <= 45u) return false; /* the work area, or word 45 itself */
+    n = MODE == 0u || MODE == 077777u ? 1u : (MODE & 040000u) ? 5u : 2u;
+    return (a & 0377u) + n > 0377u;
+}
+
+/* ADS: memory plus A, the sum overflow-corrected. */
+static word ads_value(word memory, reg16 a)
+{
+    return overflow_corrected(add16(sign_extend(memory), a));
+}
+
+/* Whether CALCGRV1's BDDV* -MUDT,1 reads a fixed word that is not one of
+ * the file's constants: -MUDT less X1, the earth's or the moon's (X1 +0
+ * or -2, as CALCGRAV's LXC,1 RTX2 leaves it). The readable interpreter
+ * reads the rope there, the faithful routines refuse; so the binding works
+ * the address out before the pass, as the interpreter's INDEX forms it:
+ * the address word less one (CS; CCS), INTBIT15 added where it is fixed
+ * (MASK HIGH4), then less X1 (CS X1; ADS ADDRWD). In the work area or
+ * erasable memory (E bank ADDRWD's top bits, the word 01400 on by its low
+ * eight) it is the faithful routines' too, but for the window's last word
+ * (the second word past it); in fixed memory, the bank its top five bits
+ * name. */
+static bool mu_outside_constants(word address_word)
+{
+    word sum = (word)(address_word - 1u);
+    unsigned physical;
+
+    if (sum & HIGH4) sum = ads_value(sum, sign_extend(INTBIT15));
+    sum = ads_value(sum, (reg16)~sign_extend(agc.memory[(FIXLOC + K_X1) & 03777u]));
+    if (!(sum & HIGH9)) return false;
+    if (!(sum & HIGH4)) return (sum & 0377u) == 0377u;
+    physical = ((sum >> 10) & 037u) * 1024u + (sum & 01777u);
+    return !file_constant(physical) || !file_constant(physical + 1u);
+}
+
+/* The faithful routines' refusals at the start of a pass the readable
+ * interpreter would run: a store code that spills, and CALCGRV1's BDDV*
+ * off the constants. */
+static bool refused_pass(uint16_t at, const struct interpretive_code *code)
+{
+    word first = code->words[LOC - code->first];
+
+    if (!(first & 040000u) && store_spills(first)) return true;
+    return at == KEY(033u, CALCGRV1 + 3u) &&
+           mu_outside_constants(code->words[LOC + 1u - code->first]);
+}
+
 enum step { GO_ON, LEFT, REFUSED, DONE };
 
 static enum step step(const agc_native_program *program, apollo_overlay_state *state, lm_sv_io *io,
@@ -312,7 +416,8 @@ static enum step step(const agc_native_program *program, apollo_overlay_state *s
 #endif
         if (faithful_part(at)) return faithful_rest(program, state, io) == EXEC_OK ? DONE : REFUSED;
         code = code_at(at);
-        if (!code || ((FBANK ^ BANKSET) & 076000u) || !work_area()) return REFUSED;
+        if (!code || ((FBANK ^ BANKSET) & 076000u) || !work_area() || refused_pass(at, code))
+            return REFUSED;
         if (interpret_listing(program, state, &io->control, code) != EXEC_OK) return REFUSED;
     } else {
         at = Z < 02000u ? AGC_TRANSFER_NONE : physical(Z, FBANK);

@@ -19,8 +19,13 @@
  *   PIPASR, REREADAC, TMPTOSPT, LRHTASK (pipa_reader.c, banks 37, 33 and
  *     21, pp. 869-872): the PIPA reader and its restart, and the landing
  *     radar's altitude task.
+ *   HIGATASK, MUNRETRN, R29?, NOR29NOW, ALTCHK (munretrn.c, bank 33, pp.
+ *     873-879): the landing's part of each pass, the landing radar checks
+ *     and the altitude and state for R10.
+ *   CALCGRAV, CALCRVG, RVBOTH, MUNRVG, MUNGRAV (average_g.c, bank 33, pp.
+ *     880-883): the average G integration.
  *
- * The rest of the file (HIGATASK on, pp. 873-897) is the faithful port's
+ * The rest of the file (UPDATCHK on, pp. 884-897) is the faithful port's
  * still: the binding runs it there.
  *
  * The faithful C is c64-port/src/lm_servicer.c.
@@ -74,7 +79,8 @@ static inline void group_off(unsigned minus_phase)
 
 /* The interpretive code. */
 extern const struct interpretive_code GETABVAL_CODE, AVERAGEG_CODE, AVGEND_CODE, NORMLIZE_CODE,
-    NORMLIZ1_CODE;
+    NORMLIZ1_CODE, MUNRETRN_CODE, NOR29NOW_CODE, CALCGRAV_CODE, CALCRVG_CODE, RVBOTH_CODE,
+    RVBOTH_2_CODE, MUNRVG_CODE, MUNGRAV_CODE;
 
 /* ---- readaccs.c: pp. 857-859 ---- */
 void preread(void);                 /* PREREAD */
@@ -154,6 +160,41 @@ void chktemx(void);       /* CHKTEMX */
 void tmptospt(void);      /* TMPTOSPT */
 void lrhtask(void);       /* LRHTASK */
 void grp2off(void);       /* GRP2OFF: (the job's 2CADR LRHJOB) */
+
+/* ---- munretrn.c: pp. 873-879 ---- */
+void higatask(void);                      /* HIGATASK */
+void higatask_after_findvac(void);        /* (the job's 2CADR HIGATJOB) */
+void munretrn_after_exit(void);           /* the word after MUNRETRN's EXIT */
+void hitest(void);                        /* HITEST */
+void pos2chk(void);                       /* POS2CHK */
+void higatchk(void);                      /* HIGATCHK */
+void pos1chk(void);                       /* POS1CHK */
+void lrposalm(void);                      /* LRPOSALM */
+void contserv(void);                      /* CONTSERV: TC ALARM's return */
+void copycyc1(void);                      /* COPYCYC1: (IBNKCALL R12LITES) */
+void r29_q(void);                         /* R29?: TC QUIKFAZ5's return */
+void r29nodes(void);                      /* R29NODES */
+void nor29now(void);                      /* NOR29NOW: TC INTPRET */
+void copycyc2_after_exit(void);           /* the word after COPYCYC2's EXIT */
+void altchk(void);                        /* ALTCHK */
+void altchk_after_branch(void);           /* TC BRANCH +4's return, positive */
+void altchk_after_branch_zero(void);      /* its return on +0 */
+void altchk_after_branch_negative(void);  /* its return, negative */
+void xorchk(void);                        /* XORCHK */
+void xorchk_after_altchk(void);           /* (BANKCALL ALTCHK), above */
+void xorchk_below(void);                  /* its return a word on, below */
+void xorchk_after_xovinflg(void);         /* (ADRES XOVINFLG) */
+void xorchk_after_xorflg(void);           /* (ADRES XORFLG) */
+void thirty_five_kchk(void);              /* 35KCHK */
+void thirty_five_kchk_after_altchk(void); /* (BANKCALL ALTCHK), above */
+void thirty_five_kchk_below(void);        /* its return a word on, below */
+void thirty_five_kchk_after_readlr(void); /* (ADRES READLR) */
+
+/* ---- average_g.c: pp. 880-883 ---- */
+void rvboth_after_exit(void);            /* the word after RVBOTH's EXIT */
+void rvboth_after_quikfaz5(void);        /* its TC QUIKFAZ5's return: TC INTPRET */
+void rvboth_after_second_exit(void);     /* the word after the second EXIT */
+void rvboth_after_second_quikfaz5(void); /* its TC QUIKFAZ5's return: TC INTPRET */
 
 #endif
 
