@@ -3711,6 +3711,31 @@ static const word SVEXITAD[2] = KW_SVEXITAD; /* 2CADR SERVEXIT */
 #define P12ADRES ((word)KW_P12ADRES) /* REMADR P12TABLE */
 #define V06N33A  ((word)KW_V06N33A)  /* VN 0633 */
 #define V06N76   ((word)KW_V06N76)   /* VN 0676 */
+
+/* ASCENT_GUIDANCE.agc */
+#define ANG1CHEK    ((word)K_ANG1CHEK)
+#define ASCENT      ((word)K_ASCENT)
+#define ASCTERM     ((word)K_ASCTERM)
+#define ASCTERM1    ((word)K_ASCTERM1)
+#define ASCTERM2    ((word)K_ASCTERM2)
+#define ASCTERM4    ((word)K_ASCTERM4)
+#define ATMAG       ((word)K_ATMAG)
+#define CHECKALT    ((word)K_CHECKALT)
+#define CHECKYAW    ((word)K_CHECKYAW)
+#define CUTOFF      ((word)K_CUTOFF)
+#define CUTOFF1     ((word)K_CUTOFF1)
+#define CUTOFF2     ((word)K_CUTOFF2)
+#define ENGOFF      ((word)K_ENGOFF)
+#define ENGOFF1     ((word)K_ENGOFF1)
+#define KEEPVR      ((word)K_KEEPVR)
+#define LOGSUB      ((word)K_LOGSUB)
+#define TERMASC     ((word)K_TERMASC)
+#define YCOMP       ((word)K_YCOMP)
+#define FLRCSBIT    ((word)KW_FLRCSBIT)
+#define V06N63_STAR ((word)KW_V06N63_STAR) /* V06N63*: VN 0663 */
+#define V16N63      ((word)KW_V16N63)      /* VN 1663 */
+#define V16N85C     ((word)KW_V16N85C)     /* VN 1685 */
+static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #endif
 
 #if COMANCHE055

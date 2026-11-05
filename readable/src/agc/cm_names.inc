@@ -4179,6 +4179,15 @@
 #define I_UNITZ 055326u
 #define I_RP_TO_R 055344u
 #define I_RLS 002025u
+#define I_R 000002u
+#define I_V 003673u
+#define I_GDT1_2 001247u
+#define I_VGBODY 003664u
+#define I_KT1 055236u
+#define I_NEARONE 057371u
+#define I_TTOGO 003660u
+#define I_PIPTIME 001204u
+#define I_10SECS 054646u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u
