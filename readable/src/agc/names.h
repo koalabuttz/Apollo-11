@@ -3558,6 +3558,35 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define THROTLAG      ((word)KW_THROTLAG)  /* DEC +20 (TAU (TH)) */
 #endif
 
+#if LUMINARY099
+/* LUNAR_LANDING_GUIDANCE_EQUATIONS (LM), part by part. Its erasable words
+ * (ELVIRA, ZERLINA, AZINCR1, ELINCR1, RODCOUNT, RETROOT, PWRPTR, DERPTR,
+ * PWRCNT, ROOTPS, DXCRIT, RODSCAL1, VDGVERT, OLDPIPAX, PIPATMPX, TEMX,
+ * DELVROD ...) are named by ADDRESS_OF. */
+#define CHAN31   031u
+#define DERCLOOP ((word)K_DERCLOOP)
+#define DMPNSUB  ((word)K_DMPNSUB)
+#define INTPRETX ((word)K_INTPRETX)
+#define ITRPNT1  ((word)K_ITRPNT1)
+#define ITRPNT2  ((word)K_ITRPNT2)
+#define P66VERTA ((word)K_P66VERTA)
+#define POWRSERS ((word)K_POWRSERS)
+#define PREMON2  ((word)K_PREMON2)
+#define REDESMON ((word)K_REDESMON)
+#define RESETRPT ((word)K_RESETRPT)
+#define RODCOMP  ((word)K_RODCOMP)
+#define RODTASK  ((word)K_RODTASK)
+#define ROOTLOOP ((word)K_ROOTLOOP)
+#define ROOTPSRS ((word)K_ROOTPSRS)
+#define SHORTMP  ((word)K_SHORTMP)
+#define TARGTDEX ((word)K_TARGTDEX)
+#define VHORCOMP ((word)K_VHORCOMP)
+#define ALL4BITS ((word)KW_ALL4BITS) /* OCT 00063 */
+#define AZEACH   ((word)KW_AZEACH)   /* DEC .03491: "2 DEGREES" */
+#define DERTABLL ((word)KW_DERTABLL) /* ADRES DERCOFN -3 */
+#define ELEACH   ((word)KW_ELEACH)   /* DEC .00873: "1/2 DEGREE" */
+#endif
+
 #if COMANCHE055
 /* P40-P47 (CM): P40 and P41, the SPS and RCS burns; P47, the thrust
  * monitor; the burn's countdown and the steering. Its erasable words

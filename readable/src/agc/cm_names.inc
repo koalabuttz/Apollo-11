@@ -2101,6 +2101,9 @@
 #define K_T5PHASE 01465u
 #define K_DAPDATR2 01467u
 #define K_PHSNAME3 01442u
+#define K_TEMX 01224u
+#define K_TEMY 01225u
+#define K_TEMZ 01226u
 #define KW_EXECBANK 002626u
 #define KW_FAKEPRET 000110u
 #define KW_NO_CORES 000006u
@@ -4136,6 +4139,10 @@
 #define I_RLS 002025u
 #define I_RNDVZFLG 000010u
 #define I_ZEROVECS 055334u
+#define I_KPIP1 077450u
+#define I_HDOTDISP 003314u
+#define I_CDU_STARNBSM 047634u
+#define I_MASS 003075u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u
