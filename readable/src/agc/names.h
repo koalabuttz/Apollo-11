@@ -3536,6 +3536,28 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define V06N43_STAR ((word)KW_V06N43_STAR) /* V06N43*: VN 0643 */
 #endif
 
+#if LUMINARY099
+/* THROTTLE_CONTROL_ROUTINES (LM), and LUNAR_LANDING_GUIDANCE_EQUATIONS'
+ * FASTCHNG. Their erasable words (ABDELV, RTNHOLD, PIFPSET, FWEIGHT, PIF,
+ * PSEUDO55, FC, TTHROT, FCOLD, /AFC/, FCODD, FP, LOWCRIT, L*WCR*T,
+ * H*GHCR*T, THISTPIP, PIPTIME, MASS, THRUST, PHSNAME3) are named by
+ * ADDRESS_OF. */
+#define AFDUMP        ((word)K_AFDUMP)
+#define DOPIF         ((word)K_DOPIF)
+#define FASTCHNG      ((word)K_FASTCHNG)
+#define FLATOUT       ((word)K_FLATOUT)
+#define MASSMULT      ((word)K_MASSMULT)
+#define THROTTLE      ((word)K_THROTTLE)
+#define WHATOUT       ((word)K_WHATOUT)
+#define DEC66         ((word)KW_DEC66)     /* DEC 66 */
+#define FEXTRA        ((word)KW_FEXTRA)    /* = BIT13 (FEXT) */
+#define FMAXODD       ((word)KW_FMAXODD)   /* DEC +3841 (FSAT) */
+#define FMAXPOS       ((word)KW_FMAXPOS)   /* DEC +3467 (FMAX) */
+#define SLASH_AF_CNST ((word)KW__AF_CNST)  /* /AF/CNST: DEC .13107 */
+#define THREE_SECS    ((word)KW_3SECS)     /* 3SECS: DEC 300 */
+#define THROTLAG      ((word)KW_THROTLAG)  /* DEC +20 (TAU (TH)) */
+#endif
+
 #if COMANCHE055
 /* P40-P47 (CM): P40 and P41, the SPS and RCS burns; P47, the thrust
  * monitor; the burn's countdown and the steering. Its erasable words
