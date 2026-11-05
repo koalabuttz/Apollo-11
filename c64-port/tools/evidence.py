@@ -29,6 +29,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import urllib.error
 import urllib.request
 
@@ -175,8 +176,26 @@ def cmd_push(args):
     return 0
 
 
+# GitHub's release CDN sometimes answers 5xx or stalls; a CI job that fetches
+# dozens of assets hit this about once a day, and a re-run always passed.
+DOWNLOAD_ATTEMPTS = 4
+
+
 def download(url, target, record):
     target.parent.mkdir(parents=True, exist_ok=True)
+    for attempt in range(1, DOWNLOAD_ATTEMPTS + 1):
+        try:
+            download_once(url, target, record)
+            return
+        except (urllib.error.URLError, OSError) as error:
+            transient = not isinstance(error, urllib.error.HTTPError) or error.code >= 500 or error.code == 429
+            if not transient or attempt == DOWNLOAD_ATTEMPTS:
+                raise
+            print(f'{url}: {error}; retrying ({attempt}/{DOWNLOAD_ATTEMPTS - 1})', file=sys.stderr)
+            time.sleep(5 * 2 ** (attempt - 1))
+
+
+def download_once(url, target, record):
     fd, tmp = tempfile.mkstemp(dir=target.parent, prefix='.download-')
     try:
         with os.fdopen(fd, 'wb') as out, urllib.request.urlopen(url, timeout=120) as response:
