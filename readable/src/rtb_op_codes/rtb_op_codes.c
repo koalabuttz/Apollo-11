@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* RTB_OP_CODES.agc (Luminary099) and RT8_OP_CODES.agc (Comanche055), the
  * same code in both: the routines an interpretive RTB runs. So far
- * LOADTIME, CDULOGIC, 1STO2S, V1STO2S, TPMODE, DPMODE and 2V1STO2S with
+ * LOADTIME, SGNAGREE, CDULOGIC, 1STO2S, V1STO2S, TPMODE, DPMODE and 2V1STO2S with
  * their 1TO2SUB, and the CM's TRANSP1 and TRANSP2. */
 #include "rtb_op_codes.h"
 #include "../agc/names.h"
@@ -18,6 +18,15 @@ void loadtime(void)
 {
     dca(ADDRESS_OF(TIME2)); /* EXTEND; DCA TIME2 */
     sload2();               /* TCF SLOAD2 */
+}
+
+/* SGNAGREE -- LM p. 1397, CM p. 1508.
+ * "FORCE TP SIGN AGREEMENT IN MPAC" (TPAGREE), back to DANZIG. */
+void sgnagree(void)
+{
+    tc_at(SGNAGREE);
+    tpagree();
+    continue_at(DANZIG); /* TCF DANZIG */
 }
 
 /* CDULOGIC -- LM p. 1397, CM p. 1508.

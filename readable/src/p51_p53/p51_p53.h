@@ -115,6 +115,28 @@ void gycoars_torqued(void);        /* GYCOARS +020 (CURTAINS's return) */
 void gycoars_restart(void);        /* GYCOARS +022 */
 extern const struct interpretive_code R51_CODE, R51C_CODE, R51_3_CODE, R51_MARK_CODE,
     R51_SECOND_CODE, R51_TORQUE_CODE, R51P63_CODE, R51_4_CODE, GYCOARS_CODE, GYCOARS_DONE_CODE;
+
+/* Part 4, R55, R54 (CHKSDATA), CAL53A, MATMOVE and RDCDUS -- r55.c */
+void r55_1(void);               /* R55.1 (after EXIT) */
+void r55_terminate(void);       /* R55.1 +3 (GOFLASH's return) */
+void r55_proceed(void);         /* R55.1 +4 */
+void r55_enter(void);           /* R55.1 +5 */
+void r55_2(void);               /* R55.2 */
+void r55_torque(void);          /* R55.2 +2 (PHASCHNG's return) */
+void r55_after_imupulse(void);  /* R55.2 +5 */
+void r55_failed(void);          /* R55.2 +7 */
+void r55_torqued(void);         /* R55.2 +010 (CURTAINS's return) */
+void r55ret(void);              /* R55RET */
+void chksdata_after_exit(void); /* CHKSDATA +034 */
+void chksdata_terminate(void);  /* CHKSDATA +037 (GOFLASH's return) */
+void chksdata_proceed(void);    /* CHKSDATA +040 */
+void chksdata_enter(void);      /* CHKSDATA +041 */
+void chksda(void);              /* CHKSDA */
+void cal53a_after_exit(void);   /* CAL53A +026 */
+void coarfine(void);            /* CAL53A +030 (PHASCHNG's return) */
+void rdcdus(void);              /* RDCDUS, an RTB's routine */
+extern const struct interpretive_code R55_CODE, R55RET_CODE, CHKSDATA_CODE, CHKSDATA_ENTER_CODE,
+    CHKSDA_CODE, CAL53A_CODE, COARFINE_CODE, MATMOVE_CODE;
 #endif
 
 #endif
