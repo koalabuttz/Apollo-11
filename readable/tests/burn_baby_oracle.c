@@ -14,8 +14,13 @@
  * Not counted: a case the readable routines refuse where a computed
  * transfer (a TC Q, DEAD's DTCB) took the run to a word of the file no
  * readable function starts at, which the faithful port runs on from. The
- * case states draw Q and ITEMP1 at random, so the original program goes on
- * from the middle of a routine there; the flight program never does. */
+ * case states draw Q and ITEMP1 at random, so the faithful port goes on
+ * from the middle of a routine there; the flight program never does. The
+ * stop is recognised by its address, the case's own Q, Q +1 or ITEMP1:
+ * the binding records it (lm_burn_baby_unentered) only at a word of the
+ * file no readable function starts at, which a readable routine's own
+ * transfers never reach (burn-baby-cases checks each such run again with
+ * the return made one a readable function starts at). */
 #include <stdio.h>
 #include <string.h>
 #include "rope_image.h"

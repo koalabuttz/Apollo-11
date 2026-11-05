@@ -177,7 +177,9 @@ static void doit(void)
 {
     ca(ADDRESS_OF(PIF));
     ad_at(ADDRESS_OF(PIFPSET));
-    if (ts(ADDRESS_OF(PSEUDO55)) || !ts(ADDRESS_OF(THRUST))) set_A(BIT4);
+    if (!ts(ADDRESS_OF(PSEUDO55))) /* (an overflow skips TS THRUST) */
+        ts(ADDRESS_OF(THRUST));
+    set_A(BIT4);
     wor_channel(CHAN14);
     ca(ADDRESS_OF(TIME1));
     ts(ADDRESS_OF(TTHROT));

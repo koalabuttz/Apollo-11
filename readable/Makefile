@@ -1596,7 +1596,7 @@ p20-p25-cases: $(BUILD)/p20-oracle $(BUILD)/p20-cases
 	./$(BUILD)/p20-oracle $(ROPES)
 	./$(BUILD)/p20-cases $(ROPES)
 
-# The CM's P20-P25, readable part by part: the port's test
+# The CM's P20-P25: the port's test
 # (tests/test_cm_p20_p25.c, its frozen cases run to their stops through the
 # program of tests/cm_p20_p25_target.c, against the original program's
 # yaAGC digests) through the readable tables, with tests/with_ropes.c
@@ -2224,13 +2224,13 @@ p40-cases: $(BUILD)/p40-oracle $(BUILD)/p40-cases
 	./$(BUILD)/p40-oracle $(ROPES)
 	./$(BUILD)/p40-cases $(ROPES)
 
-# P40-P47.agc, the CM's burn programs, readable part by part: the port's
-# test (tests/test_cm_p40_p47.c, its frozen cases run to their stops
-# through the program of tests/cm_p40_p47_target.c, against the original
-# program's yaAGC digests) through the readable tables, which hand the
-# keys not yet written to the faithful routines (renamed faithful_), with
+# P40-P47.agc, the CM's burn programs: the port's test
+# (tests/test_cm_p40_p47.c, its frozen cases run to their stops through
+# the program of tests/cm_p40_p47_target.c, against the original
+# program's yaAGC digests) through the readable tables, with
 # tests/with_ropes.c loading the rope the readable interpreter reads; then
-# tests/cm_p40_cases.c side by side.
+# tests/cm_p40_cases.c side by side with the faithful routines (renamed
+# faithful_).
 CP40_NAMES := cm_p40_p47_basic cm_p40_p47_interpretive
 
 $(BUILD)/cp40-faithful.o: $(PORT)/src/cm_p40_p47.c
@@ -2239,8 +2239,8 @@ $(BUILD)/cp40-faithful.o: $(PORT)/src/cm_p40_p47.c
 $(BUILD)/cp40-test.o: $(PORT)/tests/test_cm_p40_p47.c
 	@mkdir -p $(dir $@)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
-$(BUILD)/cp40-oracle: $(CP40_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/cp40-faithful.o \
-		$(BUILD)/cp40-test.o tests/with_ropes.c
+$(BUILD)/cp40-oracle: $(CP40_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/cp40-test.o \
+		tests/with_ropes.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(R63_COMMON) $(PORT)/tests/cm_p40_p47_target.c \
 		tests/with_ropes.c $(filter %.o,$^) -o $@
 $(BUILD)/cp40-cases: $(CP40_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/cp40-faithful.o \

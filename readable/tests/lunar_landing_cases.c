@@ -22,15 +22,18 @@
  * key until control leaves the file. Where the faithful routine runs, the
  * readable one must too, with the same memory and io record, word for
  * word; where the readable one refuses, it must leave everything as it
- * found it.
+ * found it; and each key's faithful routine must run in at least 1 in 16
+ * of the states entered at it (key_floor.h).
  *
  * Not counted: NEWJOB negative, which the readable interpreter refuses at
  * any pair where the faithful one refuses it only at DANZIG, as in make
- * stateup-cases. */
+ * stateup-cases; and only if the same state with NEWJOB +0 runs on both
+ * sides alike, so the run is checked all the same. */
 #include <stdio.h>
 #include <string.h>
 #include "rope_image.h"
 #include "lm_lunar_landing_cases.h"
+#include "key_floor.h"
 
 #ifdef AGC_FLIGHT_INTERPRETER
 #define MODE_NAME "flight"
@@ -130,6 +133,9 @@ banks:
     s->words[6] = (uint16_t)((s->words[4] & 076000u) | (s->words[3] >> 8)); /* BBANK */
 }
 
+static uint16_t resolved_point; /* the last run's entry point */
+static agc_routine resolved;
+
 static enum exec_status run(const agc_routine_table *basic, const agc_routine_table *interp,
                             apollo_overlay_state *s, lm_lld_io *io)
 {
@@ -146,7 +152,9 @@ static enum exec_status run(const agc_routine_table *basic, const agc_routine_ta
     program.interpreter_fetch = (uint16_t)(2048u + 06070u - 04000u);
     program.loc = 0164;
     program.bankset = 0165;
-    call = agc_transfer_resolve(&program, s, io->control.superbank);
+    resolved_point =
+        agc_transfer_next(&program, s, io->control.superbank, AGC_TRANSFER_NONE, &call);
+    resolved = call;
     return call ? call(&program, s, io) : EXEC_OUT_OF_SCOPE;
 }
 
@@ -196,11 +204,31 @@ int main(int argc, char **argv)
         sr = run(&lm_lunar_landing_routines, &lm_lunar_landing_interpretive, &ra, &rio);
         ++checks;
         if (sf == EXEC_OK) ++ran;
+#ifdef AGC_FLIGHT_INTERPRETER
+        if (!key_in(&lm_lunar_landing_interpretive, resolved_point, resolved))
+#endif
+            key_tally(resolved_point, resolved, sf == EXEC_OK);
         if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || io_differs(&rio, &io_start)))
             why = "readable refusal changed the state";
-        else if (sf == EXEC_OK && sr != EXEC_OK && start.words[067] > 037777u)
-            ++newjob;
-        else if (sf != sr)
+        else if (sf == EXEC_OK && sr != EXEC_OK && start.words[067] > 037777u) {
+            /* Not counted only if the same state with NEWJOB +0 runs alike
+             * on both sides: the faithful run never reached a DANZIG, so
+             * NEWJOB was all the readable one refused. */
+            apollo_overlay_state start2 = start;
+            start2.words[067] = 0u;
+            fa = ra = start2;
+            fio = rio = io_start;
+            fio.undo = undo ? &faithful_undo : 0;
+            rio.undo = undo ? &readable_undo : 0;
+            sf = run(&faithful_lm_lunar_landing_routines, &faithful_lm_lunar_landing_interpretive,
+                     &fa, &fio);
+            sr = run(&lm_lunar_landing_routines, &lm_lunar_landing_interpretive, &ra, &rio);
+            if (sf != EXEC_OK || sr != EXEC_OK || memcmp(&fa, &ra, sizeof fa) ||
+                io_differs(&fio, &rio))
+                why = "NEWJOB negative, and wrong with NEWJOB +0";
+            else
+                ++newjob;
+        } else if (sf != sr)
             why =
                 sf == EXEC_OK ? "readable refused, faithful ran" : "readable ran, faithful refused";
         else if (sf == EXEC_OK && memcmp(&fa, &ra, sizeof fa))
@@ -217,6 +245,7 @@ int main(int argc, char **argv)
                            fa.words[w], start.words[w]);
         }
     }
+    failures += keys_under_floor("lunar-landing-cases " MODE_NAME);
     printf("lunar-landing-cases %s: %u words as the rope's, %u checks (%u run by the faithful "
            "routines; not counted: %u NEWJOB negative), %u failures\n",
            MODE_NAME,

@@ -14,11 +14,14 @@
  * only Q, a register, takes all 16.) Each case runs one call on each side. Where the
  * faithful routine runs, the readable one must too, with the same memory
  * and io record, word for word; where the faithful one refuses, so must
- * the readable one, leaving everything as it found it. */
+ * the readable one, leaving everything as it found it; and each key's
+ * faithful routine must run in at least 1 in 16 of the states entered at
+ * it (key_floor.h). */
 #include <stdio.h>
 #include <string.h>
 #include "rope_image.h"
 #include "lm_throttle_cases.h"
+#include "key_floor.h"
 
 extern const agc_routine_table faithful_lm_throttle_routines;
 
@@ -95,6 +98,9 @@ static void state(apollo_overlay_state *s, lm_flight_io *io, uint16_t n)
     W[6] = (agc_word)((W[4] & 076000u) | (W[3] >> 8));                      /* BBANK */
 }
 
+static uint16_t resolved_point; /* the last run's entry point */
+static agc_routine resolved;
+
 static enum exec_status run(const agc_routine_table *table, apollo_overlay_state *s,
                             lm_flight_io *io)
 {
@@ -106,7 +112,8 @@ static enum exec_status run(const agc_routine_table *table, apollo_overlay_state
     program.basic = t;
     program.basic_count = 1;
     program.hardware = &io->hw;
-    call = agc_transfer_resolve(&program, s, io->bias.superbank);
+    resolved_point = agc_transfer_next(&program, s, io->bias.superbank, AGC_TRANSFER_NONE, &call);
+    resolved = call;
     return call ? call(&program, s, io) : EXEC_OUT_OF_SCOPE;
 }
 
@@ -131,6 +138,7 @@ int main(int argc, char **argv)
         sf = run(&faithful_lm_throttle_routines, &fa, &fio);
         sr = run(&lm_throttle_routines, &ra, &rio);
         if (sf == EXEC_OK) ++ran;
+        key_tally(resolved_point, resolved, sf == EXEC_OK);
         if (sr != EXEC_OK &&
             (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io_start, sizeof rio)))
             why = "readable refusal changed the state";
@@ -150,6 +158,7 @@ int main(int argc, char **argv)
                            fa.words[w], start.words[w]);
         }
     }
+    failures += keys_under_floor("throttle-cases");
     printf("throttle-cases: %u keys, %u checks (%u run by the faithful routines), %u failures\n",
            lm_throttle_routines.count, CASES, ran, failures);
     return failures != 0;
