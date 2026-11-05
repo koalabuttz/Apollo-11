@@ -52,7 +52,9 @@ extern const struct interpretive_code P52E_CODE, P52V_CODE, P52W_CODE, P52H_CODE
     P51C_CODE, P51D_CODE, P51E_CODE, P51G_CODE, COARSE_CODE, COARSE_RETURN_CODE, NCOARSE_CODE,
     NCOARSE_GCOMP_CODE, S52_2_CODE, S52_3_CODE, R52_CODE, AZEL_CODE, R52_RETURN_CODE, R59A_CODE,
     INCAZ_CODE, ZSPCR_CODE, NXAX_CODE, PLANET_CODE, PLANET_VECTOR_CODE, NOTPLAN_CODE, CALSAM_CODE,
-    GVDETER_CODE, PROGRAV_CODE, LUNG_CODE, GREED_CODE, ADDGRAV_CODE, QMINEXIT_CODE;
+    GVDETER_CODE, PROGRAV_CODE, LUNG_CODE, GREED_CODE, ADDGRAV_CODE, QMINEXIT_CODE, GYROTRIM_CODE,
+    R59RET_CODE, ASTAR_CODE, SURFLINE_CODE, FIVE_DEG_TEST_CODE, SURFDISP_CODE, B2F8_CODE,
+    P57POST_SITE_CODE, COATRIM_CODE, CORSIT_CODE;
 extern const agc_routine_table lm_p51_p53_basic, lm_p51_p53_interpretive;
 extern const agc_routine_table faithful_lm_p51_p53_basic, faithful_lm_p51_p53_interpretive;
 bool p51_readable(uint16_t key, bool order_pair);
@@ -134,9 +136,7 @@ static bool in_written_part(uint16_t key)
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     return (bank == 015u && z >= 02050u && z <= 02243u) ||
-           (bank == 015u && z >= 02245u && z <= 02461u) ||
-           (bank == 015u && z >= 02472u && z <= 02662u) ||
-           (bank == 015u && z >= 02664u && z <= 02771u) ||
+           (bank == 015u && z >= 02245u && z <= 03313u) ||
            (bank == 014u && z >= 02446u && z <= 03773u);
 }
 
@@ -397,6 +397,23 @@ static void state(apollo_overlay_state *s, p66_bias_io *io, uint16_t key, int in
                              : (uint16_t)(~index_to(02730u + 6u, 6u) & 077777u);
         if (z == 02606u) /* STORE XNB +18D,1 (XNB is 02664) */
             *x1 = rnd() % 2u ? (uint16_t)(6u * (1u + rnd() % 3u)) : index_to(02664u + 18u, 6u);
+        /* SURFLINE's two stars: X2 12 and 6 (WRTDESIR's VLOAD* VEC1 +12D,2,
+         * STORE STARAD +12D,2, VLOAD* STARSAV1 +12D,2; VEC1 is 02722,
+         * STARSAV1 02760), and its STORE 18D,2 in the work area. */
+        if (z == 03105u)
+            *x2 = rnd() % 2u ? (uint16_t)(6u * (1u + rnd() % 2u)) : index_to(02722u + 12u, 6u);
+        if (z == 03111u)
+            *x2 = rnd() % 2u ? (uint16_t)(6u * (1u + rnd() % 2u)) : index_to(02706u + 12u, 6u);
+        if (z == 03112u)
+            *x2 = rnd() % 2u ? (uint16_t)(6u * (1u + rnd() % 2u)) : index_to(02760u + 12u, 6u);
+        if (z == 03114u) *x2 = (uint16_t)(rnd() % 2u ? 6u * (1u + rnd() % 2u) : rnd() % 19u);
+        /* SURFDISP's CCS OPTION2 (03174): often +0 or -0, the two ways CCS
+         * alone tells apart, with B2F8's INITABIT (FLAGWRD8 bit 2) either way. */
+        if (z == 03174u) {
+            k = rnd() % 4u;
+            w[OPTION2_AT] = k == 0u ? 0u : k == 1u ? 077777u : (uint16_t)(1u + rnd() % 4u);
+            w[FLAGWRD0_AT + 8u] ^= rnd() % 2u ? 02u : 0u;
+        }
         if (z == 02621u) /* STORE XSM +18D,1 (XSM is 02642) */
             *x1 = rnd() % 2u ? (uint16_t)(6u * (1u + rnd() % 3u)) : index_to(02642u + 18u, 6u);
     }
@@ -507,6 +524,9 @@ static const struct interpretive_code *const codes[] = {
     &ZSPCR_CODE,         &NXAX_CODE,       &PLANET_CODE,         &PLANET_VECTOR_CODE,
     &NOTPLAN_CODE,       &CALSAM_CODE,     &GVDETER_CODE,        &PROGRAV_CODE,
     &LUNG_CODE,          &GREED_CODE,      &ADDGRAV_CODE,        &QMINEXIT_CODE,
+    &GYROTRIM_CODE,      &R59RET_CODE,     &ASTAR_CODE,          &SURFLINE_CODE,
+    &FIVE_DEG_TEST_CODE, &SURFDISP_CODE,   &B2F8_CODE,           &P57POST_SITE_CODE,
+    &COATRIM_CODE,       &CORSIT_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

@@ -24,6 +24,10 @@
  *     lunar surface star acquisition (pp. 955-960).
  *   part 7, planet_gvdeter.c: PLANET, the sighted body's direction, and
  *     GVDETER, the gravity vector determination (pp. 961-966).
+ *   part 8, gyrotrim_surfline.c: GYROTRIM, the gyro torque, P57's star
+ *     sightings and the lunar surface alignment (pp. 968-974).
+ *   part 9, p57.c: P57, the lunar surface alignment program (pp.
+ *     975-983); so far ATTCHK and P57JUMP.
  * The binding (src/binding/p51_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -247,8 +251,48 @@ void addgrav(void);                 /* ADDGRAV, the job */
 void addgrav_after_pipa(void);      /* ADDGRAV +2 (BANKCALL's return) */
 void addgrav_after_exit(void);      /* ADDGRAV +023 */
 void qminexit(void);                /* QMINEXIT (PHASCHNG's return) */
+void prograv_after_exit(void);      /* PROGRAV +7 */
 extern const struct interpretive_code PLANET_CODE, PLANET_VECTOR_CODE, NOTPLAN_CODE, CALSAM_CODE,
     GVDETER_CODE, PROGRAV_CODE, LUNG_CODE, GREED_CODE, ADDGRAV_CODE, QMINEXIT_CODE;
+
+/* Part 8, GYROTRIM, the star sightings and the surface alignment --
+ * gyrotrim_surfline.c */
+void justtrim_after_exit(void);     /* JUSTTRIM +1 */
+void justtrim_after_imufine(void);  /* JUSTTRIM +3 (BANKCALL's return) */
+void justtrim_fine_failed(void);    /* JUSTTRIM +5 */
+void justtrim_torque(void);         /* JUSTTRIM +6 (CURTAINS's return) */
+void justtrim_after_imupulse(void); /* JUSTTRIM +011 (BANKCALL's return) */
+void justtrim_torque_failed(void);  /* JUSTTRIM +013 */
+void justtrim_return(void);         /* JUSTTRIM +014 (CURTAINS's return) */
+void one_star_r59(void);            /* 1STAR +4 (PHASCHNG's return) */
+void r59ret(void);                  /* R59RET (R59OUT +5's TCF) */
+void r59ret_second_star(void);      /* R59RET +5 (PHASCHNG's return) */
+void astar_after_exit(void);        /* ASTAR +011 */
+void initby_after_exit(void);       /* INITBY +5 */
+void initby_terminate(void);        /* INITBY +014 (GOFLASH's return) */
+void initby_proceed(void);          /* INITBY +015 */
+void initby_recycle(void);          /* INITBY +016 */
+void surfdisp_after_exit(void);     /* SURFDISP +1 */
+void surfdisp_after_phaschng(void); /* SURFDISP +3 */
+void surfdisp_option(void);         /* SURFDISP +013 (after EXIT) */
+void p57post_plus1(void);           /* P57POST +1 */
+void p57post_terminate(void);       /* P57POST +4 (GOPERF1's return) */
+void p57post_proceed(void);         /* P57POST +5 */
+void p57post_enter(void);           /* P57POST +6 */
+void p57post_site(void);            /* P57POST +015 (PHASCHNG's return) */
+void p57post_exit(void);            /* P57POST +045 (after EXIT) */
+void coatrim_after_exit(void);      /* COATRIM +016 */
+void coatrim_terminate(void);       /* COATRIM +021 (GOFLASH's return) */
+void coatrim_proceed(void);         /* COATRIM +022 */
+void coatrim_enter(void);           /* COATRIM +023 */
+void coatrim_after_phaschng(void);  /* COATRIM +026 */
+extern const struct interpretive_code GYROTRIM_CODE, R59RET_CODE, ASTAR_CODE, SURFLINE_CODE,
+    FIVE_DEG_TEST_CODE, SURFDISP_CODE, B2F8_CODE, P57POST_SITE_CODE, COATRIM_CODE, CORSIT_CODE;
+
+/* Part 9, P57 -- p57.c (so far ATTCHK and P57JUMP, where parts 7 and 8
+ * go on to) */
+void attchk(void);  /* ATTCHK */
+void p57jump(void); /* P57JUMP */
 
 /* INDEX before CA, TS and DXCH (R52, R59 and PLANET) -- indexed.c: the
  * address the indexed instruction works on. */

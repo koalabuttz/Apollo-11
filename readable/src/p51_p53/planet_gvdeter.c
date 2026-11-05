@@ -18,8 +18,7 @@
  * The faithful port keys a routine at each such return, at each TC's
  * return in the file, and at each TC INTPRET's NEWOPS.
  *
- * PROGRAV's end, TCF ATTCHK, goes on into P57's code: that key is written
- * with P57 (part 9). */
+ * PROGRAV's end goes on into P57's code (ATTCHK, p57.c). */
 #include "p51_p53.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
@@ -292,6 +291,20 @@ static const word prograv_words[] = {
 
 const struct interpretive_code PROGRAV_CODE = {015u, PROGRAV + 3u, COUNT(prograv_words),
                                                prograv_words};
+
+/* After the EXIT: "IF FREEFLAG SET, RE-COMPUTE GRAVITY" (GVDETER); else
+ * "EXIT FROM GVDETER" (ATTCHK). (After the MASK, A is +0 or the bit: CCS
+ * takes its first two ways only.) */
+void prograv_after_exit(void)
+{
+    set_A(FREEFBIT);
+    mask_at(ADDRESS_OF(FLAGWRD0));
+    switch (ccs_register(A_ADDRESS)) {  /* CCS A */
+    case POSITIVE: gvdeter(); break;    /* TCF GVDETER */
+    case IS_PLUS_ZERO: attchk(); break; /* TCF ATTCHK */
+    default: not_modelled();
+    }
+}
 
 /* ---- LUNG and ADDGRAV -- pp. 965-966 ---- */
 

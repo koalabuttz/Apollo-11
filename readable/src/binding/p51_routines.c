@@ -224,7 +224,7 @@ static const struct basic_entry {
     {KEY(014u, COARSE + 012u), coarse_fine_failed, false},
     {KEY(014u, COARSE + 013u), coarse_return, true},
     {KEY(014u, NCOARSE + 1u), ncoarse_plus1, true},
-    /* Part 6: R52 and R59 (R59OUT +5, TCF R59RET, goes with P57) */
+    /* Part 6: R52 and R59 */
     {KEY(014u, R52 + 2u), r52_starcode, false},
     {KEY(014u, R52A + 3u), r52_terminate, false},
     {KEY(014u, R52A + 4u), r52_proceed, false},
@@ -252,7 +252,7 @@ static const struct basic_entry {
     {KEY(015u, SEVENTY_NINE_DISP + 5u), seventy_nine_disp_recycle, false},
     {KEY(015u, R59OUT + 2u), r59out_after_aotmark, false},
     {KEY(015u, R59OUT + 4u), r59out_badend, false},
-    /* Part 7: PLANET and GVDETER (PROGRAV +7, TCF ATTCHK, goes with P57) */
+    /* Part 7: PLANET and GVDETER */
     {KEY(015u, PLANET + 5u), planet_after_exit, true},
     {KEY(015u, PLANET + 021u), planet_terminate, true},
     {KEY(015u, PLANET + 022u), planet_proceed, true},
@@ -286,6 +286,37 @@ static const struct basic_entry {
     {KEY(015u, ADDGRAV + 2u), addgrav_after_pipa, true},
     {KEY(015u, ADDGRAV + 023u), addgrav_after_exit, false},
     {KEY(015u, QMINEXIT), qminexit, true},
+    {KEY(015u, PROGRAV + 7u), prograv_after_exit, true},
+    /* Part 8: GYROTRIM, the star sightings and the surface alignment */
+    {KEY(015u, R59OUT + 5u), r59ret, true},
+    {KEY(015u, JUSTTRIM + 1u), justtrim_after_exit, false},
+    {KEY(015u, JUSTTRIM + 3u), justtrim_after_imufine, false},
+    {KEY(015u, JUSTTRIM + 5u), justtrim_fine_failed, false},
+    {KEY(015u, JUSTTRIM + 6u), justtrim_torque, false},
+    {KEY(015u, JUSTTRIM + 011u), justtrim_after_imupulse, false},
+    {KEY(015u, JUSTTRIM + 013u), justtrim_torque_failed, false},
+    {KEY(015u, JUSTTRIM + 014u), justtrim_return, true},
+    {KEY(015u, ONE_STAR + 4u), one_star_r59, false},
+    {KEY(015u, R59RET + 5u), r59ret_second_star, true},
+    {KEY(015u, ASTAR + 011u), astar_after_exit, false},
+    {KEY(015u, INITBY + 5u), initby_after_exit, true},
+    {KEY(015u, INITBY + 014u), initby_terminate, false},
+    {KEY(015u, INITBY + 015u), initby_proceed, true},
+    {KEY(015u, INITBY + 016u), initby_recycle, false},
+    {KEY(015u, SURFDISP + 1u), surfdisp_after_exit, false},
+    {KEY(015u, SURFDISP + 3u), surfdisp_after_phaschng, true},
+    {KEY(015u, SURFDISP + 013u), surfdisp_option, true},
+    {KEY(015u, P57POST + 1u), p57post_plus1, false},
+    {KEY(015u, P57POST + 4u), p57post_terminate, false},
+    {KEY(015u, P57POST + 5u), p57post_proceed, false},
+    {KEY(015u, P57POST + 6u), p57post_enter, false},
+    {KEY(015u, P57POST + 015u), p57post_site, true},
+    {KEY(015u, P57POST + 045u), p57post_exit, false},
+    {KEY(015u, COATRIM + 016u), coatrim_after_exit, false},
+    {KEY(015u, COATRIM + 021u), coatrim_terminate, false},
+    {KEY(015u, COATRIM + 022u), coatrim_proceed, false},
+    {KEY(015u, COATRIM + 023u), coatrim_enter, false},
+    {KEY(015u, COATRIM + 026u), coatrim_after_phaschng, true},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -367,6 +398,17 @@ static const struct interpretive_code *const codes[] = {
     &GREED_CODE,
     &ADDGRAV_CODE,
     &QMINEXIT_CODE,
+    /* Part 8: GYROTRIM, the star sightings and the surface alignment */
+    &GYROTRIM_CODE,
+    &R59RET_CODE,
+    &ASTAR_CODE,
+    &SURFLINE_CODE,
+    &FIVE_DEG_TEST_CODE,
+    &SURFDISP_CODE,
+    &B2F8_CODE,
+    &P57POST_SITE_CODE,
+    &COATRIM_CODE,
+    &CORSIT_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
