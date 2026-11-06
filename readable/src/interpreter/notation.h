@@ -166,6 +166,7 @@
 #define ORDER_DMP_STAR   0173u /* DMP* */
 #define ORDER_BOVB       0172u
 #define ORDER_SR4        0174u
+#define ORDER_VSR8       0174u /* (SR4's code too) */
 #define ORDER_SETPD      0175u
 #define ORDER_BOV        0176u
 

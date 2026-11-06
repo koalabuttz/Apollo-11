@@ -12,6 +12,8 @@
  *   part 2, p52.c: P52LS and LSDISP, the landing site's orientation (pp.
  *     742-743, bank 16); r52.c: R52, the automatic optics positioning,
  *     and ADVORB (pp. 743-747, bank 14).
+ *   part 3, s50_r56.c: S50 (LOCSAM) and PICAPAR (R56), the stars to sight
+ *     (pp. 748-755, bank 14).
  * The binding (src/binding/cm_p51_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -128,6 +130,13 @@ void term52_after_mkreleas(void); /* TERM52 +3 (BANKCALL's return) */
 void term52_after_kleenex(void);  /* TERM52 +7 (BANKCALL's return) */
 extern const struct interpretive_code R52_CODE, R52VRB_CODE, R52A_CODE, R52Q_CODE, R53JOB_CODE,
     ADVORB_CODE;
+
+/* Part 3, S50 and R56 -- s50_r56.c (bank 14) */
+void picapar(void);                /* PICAPAR */
+void picapar_after_makecadr(void); /* PICAPAR +1 */
+void picend_after_exit(void);      /* PICEND +3 */
+void picgxt_after_exit(void);      /* PICGXT +1 */
+extern const struct interpretive_code S50_CODE, PICAPAR_CODE, PICEND_CODE, PICGXT_CODE;
 
 /* P51 -- p51.c (so far SET1/PDT) */
 void set1_pdt(void); /* SET1/PDT (by RTB) */

@@ -4467,6 +4467,14 @@
 #define I_R53FLAG 000011u
 #define I_ADVTRK 000175u
 #define I_OPTIND 001303u
+#define I_STRATGY 030442u
+#define I_VEL_C 003473u
+#define I_1_C 032253u
+#define I_ECLIPOL 032255u
+#define I_SIN33 030510u
+#define I_COS33 030512u
+#define I_CSS66 030514u
+#define I_CSS6640 030516u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u
