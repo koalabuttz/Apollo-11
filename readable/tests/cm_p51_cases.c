@@ -9,13 +9,12 @@
  * First the words: the readable interpretive code (src/p51_p53_cm/),
  * written in the listing's notation, must be the original program's rope,
  * word for word. Then the keys, which must be the faithful tables', and
- * every key of the parts written so far must run readable code. Then the
- * runs: each readable key from 4,096 states (each other key, which runs
- * the faithful routine through the readable table, from 16), each one of
- * the port's frozen test states (c64-port/tests/p51_p53_vectors.h, the
- * CM's) entered at the key, most stirred further: MPAC and its mode, the
- * push-down list and its pointer, the index registers, A, Q (a return
- * address, or any), MODREG, STARCODE, OPTION2 (P52's option, often 1 to 4), DSPTEM1
+ * every key must run readable code (the file is whole). Then the runs:
+ * each key from 4,096 states, each one of the port's frozen test states
+ * (c64-port/tests/p51_p53_vectors.h, the CM's) entered at the key, most
+ * stirred further: MPAC and its mode, the push-down list and its pointer,
+ * the index registers, A, Q (a return address, or any), MODREG, STARCODE,
+ * OPTION2 (P52's option, often 1 to 4), DSPTEM1
  * (often +0 or -0, the crew's time of alignment not loaded), TIME2 and
  * TIME1, the flag words (often one bit changed), the vectors and times
  * (any erasable bank's words), NEWJOB (+0 or a core set, now and then
@@ -26,7 +25,7 @@
  * Where either port runs, the other must too, with the same memory and io
  * record, word for word; where the readable one refuses, it must leave
  * everything as it found it; and the faithful routine must run in at
- * least 1 of 16 of each readable key's states. */
+ * least 1 of 16 of each key's states. */
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -74,8 +73,7 @@ bool cm_p51_readable(uint16_t key, bool order_pair);
  * (cm_p51_p53_cadr_words). */
 static const uint16_t cadr_words[] = {00052u, 00300u, 02576u, 02777u, 03501u};
 
-#define CASES       4096u
-#define OTHER_CASES 16u
+#define CASES 4096u
 
 static uint32_t seed = 5152u;
 static uint16_t rnd(void)
@@ -118,33 +116,16 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The parts written so far: part 1, bank 15's P52 (PROG52 to GYCRS's GOTO
- * R51K); part 2, bank 16's P52LS and LSDISP, and bank 14's R52 to ADVORB;
- * part 3, bank 14's S50 and PICAPAR; part 4, bank 14's R51 and bank 15's
- * R55; part 5, bank 14's CHKSDATA to MATMOVE and bank 16's CALCSMSC. */
-static bool in_written_part(uint16_t key)
-{
-    unsigned bank = key / 1024u, z = 02000u + key % 1024u;
-
-    return (bank == 015u && z >= 02000u && z <= 02243u) ||
-           (bank == 015u && z >= 02271u && z <= 02321u) ||
-           (bank == 016u && z >= 02531u && z <= 02610u) ||
-           (bank == 016u && z >= 02612u && z <= 02660u) ||
-           (bank == 017u && z >= 02022u && z <= 02052u) ||
-           (bank == 011u && z >= 02331u && z <= 02361u) ||
-           (bank == 013u && z >= 02244u && z <= 02356u) ||
-           (bank == 014u && z >= 02011u && z <= 03362u);
-}
-
-static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
+/* The file is whole: every key runs a readable routine (the binding no
+ * longer hands any to the faithful tables). */
+static unsigned keys_unwritten(const agc_routine_table *table, bool order_pair)
 {
     unsigned i, failures = 0;
 
     for (i = 0; i < table->count; ++i) {
         uint16_t key = table->entries[i].physical;
-        if (in_written_part(key) != cm_p51_readable(key, order_pair)) {
-            printf("FAIL: %02o,%04o %s readable\n", key / 1024u, 02000u + key % 1024u,
-                   in_written_part(key) ? "is not" : "is");
+        if (!cm_p51_readable(key, order_pair)) {
+            printf("FAIL: %02o,%04o has no readable routine\n", key / 1024u, 02000u + key % 1024u);
             ++failures;
         }
     }
@@ -394,6 +375,25 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
                          : rnd() % 2u ? (uint16_t)(077776u - rnd() % 040u)
                                       : (uint16_t)(040000u + rnd() % 037777u);
     }
+    /* In PLANET (bank 15 from 02340): STARIND 0 or 1, or a place past
+     * BESTI (0302) in its 256 words, where NOSAM stores the code times 6
+     * and CALSAM1 loads it again (a DP word across the 256 words' end the
+     * program never reads); at NOTPLAN +011's VLOAD* CATLOG,1, X1 a
+     * star's index (index_or_star); at CALSAM1 +4's LXC,1 MPAC and VLOAD*
+     * STARAD -228D,1 (STARAD is 02734), MPAC the sun's, the earth's or the
+     * moon's code times 6 (228, 234, 240), or another that keeps the
+     * vector in STARAD's E-bank. */
+    if (key / 1024u == 015u && z >= 02340u) {
+        w[STARIND_AT] = rnd() % 2u ? (uint16_t)(rnd() % 2u) : (uint16_t)(rnd() % 074u);
+        if (z == 02412u) w[(fixloc + X1_AT) & 03777u] = index_or_star();
+        if (z == 02421u)
+            w[MPAC_AT] = (uint16_t)(rnd() % 4u ? 228u + 6u * (rnd() % 3u) : 228u + rnd() % 024u);
+    }
+    /* R56A1's STODL SAC and STORE PAC (bank 17, 02103 and 02105; PAC is
+     * three words before an E-bank's end): MPAC is DP after the DLOAD, and
+     * a vector would run past the bank. */
+    if (key / 1024u == 017u && (z == 02103u || z == 02105u) && w[MODE_AT] == 077776u)
+        w[MODE_AT] = 0u;
     w[6] = (uint16_t)((w[4] & 076000u) | eb);
     /* Now and then a state no program has: BBANK not the two banks, or a
      * word of 16 bits. */
@@ -415,10 +415,9 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 
     for (i = 0; i < faithful->count; ++i) {
         uint16_t key = faithful->entries[i].physical, z = key_z(key);
-        bool written = cm_p51_readable(key, interpretive != 0);
-        unsigned ran = 0, bad = 0, cases = written ? CASES : OTHER_CASES;
+        unsigned ran = 0, bad = 0, cases = CASES;
 
-        *readable_keys += written;
+        *readable_keys += cm_p51_readable(key, interpretive != 0);
         for (n = 0; n < cases; ++n) {
             apollo_overlay_state start, fa, ra;
             cm_native_io io, fio, rio;
@@ -439,11 +438,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             sf = faithful->entries[i].call(&fp, &fa, &fio);
             sr = readable->entries[i].call(&rp, &ra, &rio);
             ran += sf == EXEC_OK;
-            if (!written) { /* the faithful routine on both sides, refusals and all */
-                if (sf != sr || memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio))
-                    why = "the table does not run the faithful routine";
-            } else if (sr != EXEC_OK &&
-                       (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
+            if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
                 why = "readable refusal changed the state";
             else if (sf == EXEC_OK && sr != EXEC_OK)
                 why = "readable refused, faithful ran";
@@ -463,7 +458,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                                fa.words[w], start.words[w]);
             }
         }
-        if (written && ran < cases / 16u && bad == 0u) {
+        if (ran < cases / 16u && bad == 0u) {
             printf("FAIL %02o,%04o: the faithful routine ran in %u of %u states\n", key / 1024u, z,
                    ran, cases);
             ++bad;
@@ -493,8 +488,8 @@ int main(int argc, char **argv)
     failures += tables_differ(&cm_p51_p53_basic, &faithful_cm_p51_p53_basic, "basic");
     failures +=
         tables_differ(&cm_p51_p53_interpretive, &faithful_cm_p51_p53_interpretive, "interpretive");
-    failures += parts_unwritten(&faithful_cm_p51_p53_basic, false);
-    failures += parts_unwritten(&faithful_cm_p51_p53_interpretive, true);
+    failures += keys_unwritten(&faithful_cm_p51_p53_basic, false);
+    failures += keys_unwritten(&faithful_cm_p51_p53_interpretive, true);
     if (failures) {
         printf("cm-p51-p53-cases: %u failures\n", failures);
         return 1;
@@ -503,10 +498,9 @@ int main(int argc, char **argv)
     failures += keys(&cm_p51_p53_interpretive, &faithful_cm_p51_p53_interpretive, 1, &runs,
                      &readable_pairs);
     printf("cm-p51-p53-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
-           "pairs) from %u states each (the others from %u), %u run by the faithful routines, "
-           "%u failures\n",
+           "pairs) from %u states each, %u run by the faithful routines, %u failures\n",
            words, readable_basic + readable_pairs,
            cm_p51_p53_basic.count + cm_p51_p53_interpretive.count, readable_basic, readable_pairs,
-           CASES, OTHER_CASES, runs, failures);
+           CASES, runs, failures);
     return failures != 0;
 }

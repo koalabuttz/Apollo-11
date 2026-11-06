@@ -5,11 +5,10 @@
  * and cm_p51_p53_interpretive (the order pairs).
  *
  * The tables carry every key of the faithful ones, in their order
- * (cm_p51_keys.inc, which tools/p20_p25_keys.py writes from them). The
- * file is written part by part: a key a part has written runs the
- * readable routine; any other runs the faithful port's, built into the
- * program as faithful_cm_p51_p53_basic and faithful_cm_p51_p53_interpretive
- * (tests/x86_readable.py, the Makefile's tests).
+ * (cm_p51_keys.inc, which tools/p20_p25_keys.py writes from them), and
+ * every key runs a readable routine: the file was written part by part,
+ * and is whole. The side-by-side test (tests/cm_p51_cases.c) checks that
+ * no key is left without one.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
  * the file (BANKCALL, PHASCHNG, DOWNFLAG, ENDOFJOB, GOTOPOOH, ...) or
@@ -290,6 +289,28 @@ static const struct basic_entry {
     {KEY(013u, SR52_1 + 075u), sr52_1_cult},
     {KEY(013u, SR52E22 + 1u), sr52e22_after_exit},
     {KEY(013u, SR52E3 + 1u), sr52e3_after_exit},
+    /* Part 8: ADVTRACK (bank 26), R56 (bank 17), PLANET (bank 15) */
+    {KEY(026u, ADVTRACK + 026u), advtrack_periods},
+    {KEY(017u, R56 + 2u), r56_after_exit},
+    {KEY(017u, R56 + 5u), r56_terminate},
+    {KEY(017u, R56 + 6u), r56_proceed},
+    {KEY(017u, R56 + 7u), r56_enter},
+    {KEY(017u, R56A), r56a},
+    {KEY(017u, R56A + 2u), r56a_after_sxtmark},
+    {KEY(017u, R56A1), r56a1},
+    {KEY(017u, R56A1 + 3u), r56a1_terminate},
+    {KEY(017u, R56A1 + 4u), r56a1_again},
+    {KEY(017u, R56A1 + 5u), r56a1_mark},
+    {KEY(017u, R56A1 + 014u), r56a1_store_mark},
+    {KEY(017u, R56A1 + 042u), r56a1_after_clearmrk},
+    {KEY(017u, R56A1 + 045u), r56a1_marked_terminate},
+    {KEY(017u, R56A1 + 046u), r56a1_marked_proceed},
+    {KEY(017u, R56A1 + 047u), r56a1_marked_enter},
+    {KEY(015u, NOSAM + 1u), nosam_after_exit},
+    {KEY(015u, NOSAM + 015u), nosam_terminate},
+    {KEY(015u, NOSAM + 016u), nosam_proceed},
+    {KEY(015u, NOSAM + 017u), nosam_enter},
+    {KEY(015u, NOSAM + 020u), nosam_planet},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -360,6 +381,15 @@ static const struct interpretive_code *const codes[] = {
     &SR52_1_CODE,
     &TRUN38_CODE,
     &SR52E3_CODE,
+    &ADVTRACK_CODE,
+    &ADVTRACK_ROTA_CODE,
+    &S52_3_CODE,
+    &R56_CODE,
+    &R56A1_CODE,
+    &PLANET_CODE,
+    &NOSAM_CODE,
+    &NOTPLAN_CODE,
+    &CALSAM1_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
@@ -375,7 +405,8 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
 }
 
 /* PICAPAR loads stars from the catalog in fixed memory, bank 14, by X1
- * and X2 (VLOAD* CATLOG,1, DOT* CATLOG,2). The faithful port carries only
+ * and X2 (VLOAD* CATLOG,1, DOT* CATLOG,2), and NOTPLAN (bank 15) by X1
+ * (VLOAD* CATLOG,1). The faithful port carries only
  * the words a load of CATLOG less 0 to 228 reads (14,3414 to 14,3765)
  * and refuses a load from fixed memory outside them. (At PIC4 +3, BON
  * VLOAD*, the load comes only when CULTFLAG is clear.) */
@@ -386,7 +417,7 @@ static const struct catalog_load {
     {KEY(014u, PIC2), true, false, false},        {KEY(014u, PIC4), false, true, false},
     {KEY(014u, PIC4 + 3u), true, false, true},    {KEY(014u, PIC4 + 7u), false, true, false},
     {KEY(014u, PIC4 + 017u), true, false, false}, {KEY(014u, PIC4 + 025u), false, true, false},
-    {KEY(014u, STRAT), true, true, false},
+    {KEY(014u, STRAT), true, true, false},        {KEY(015u, NOTPLAN + 011u), true, false, false},
 };
 
 /* CULTFLAG: flag word 065 / 15, bit 065 % 15 counted from bit 15 down. */
@@ -461,19 +492,15 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
 
 /* ---- The keys, in the faithful tables' order ---- */
 
-/* The faithful tables, renamed. */
-extern const agc_routine_table faithful_cm_p51_p53_basic, faithful_cm_p51_p53_interpretive;
-
-/* Each key's routine: the readable one, or the faithful port's. */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each key's routine. */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct basic_entry *entry = basic_entry(key);
     cm_native_io *io = device, kept;
     apollo_overlay_state before;
 
-    if (!entry) return faithful_cm_p51_p53_basic.entries[index].call(program, state, device);
-    if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
+    if (!entry || !program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     if (FBANK != (word)((key / 1024u) << 10) || !sane()) return EXEC_OUT_OF_SCOPE;
 
@@ -488,7 +515,7 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     return EXEC_OK;
 }
 
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
@@ -497,8 +524,6 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     const struct interpretive_code *code;
     enum exec_status status;
 
-    if (!code_at(bank, (word)(02000u + key % 1024u)))
-        return faithful_cm_p51_p53_interpretive.entries[index].call(program, state, device);
     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     code = code_at(bank, LOC);
@@ -536,13 +561,13 @@ bool cm_p51_readable(uint16_t key, bool order_pair)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #include "cm_p51_keys.inc"
 #undef BASIC

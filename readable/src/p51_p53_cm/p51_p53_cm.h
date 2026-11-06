@@ -5,7 +5,7 @@
  * R51 to R56 and S50 to S52 serve them. The faithful C is
  * c64-port/src/cm_p51_p53.c.
  *
- * Written part by part:
+ * Written part by part, in the listing's order (README.md):
  *   part 1, p52.c: P52, the IMU realignment, through COARSTYP and GYCRS,
  *     the gyro torque coarse alignment (pp. 737-742); p51.c starts with
  *     SET1/PDT, which GYCRS runs.
@@ -25,8 +25,14 @@
  *   part 7, r53_sr52_1.c: R53, the sighting mark routine (pp. 772-773,
  *     bank 14); S52.2, the gimbal angles (p. 774, bank 11); SR52.1, the
  *     optics angles to a target (pp. 775-777, bank 13).
- * The binding (src/binding/cm_p51_routines.c) runs the keys these parts
- * write, and the faithful port's routines at the others.
+ *   part 8, advtrack_r56_planet.c: ADVTRACK, the line of sight to a
+ *     point ahead on the ground track (pp. 778-779, bank 26); S52.3, the
+ *     preferred orientation (p. 780, bank 16); R56, the alternate line of
+ *     sight mark (pp. 781-782, bank 17); PLANET, a star's or a planet's
+ *     direction (pp. 783-784, bank 15). indexed.c: INDEX before CA, TS
+ *     and DXCH (parts 4, 7 and 8).
+ * The binding (src/binding/cm_p51_routines.c) runs every key on these
+ * parts' routines.
  *
  * Basic code round stretches of interpretive code, which are in the
  * listing's notation (src/interpreter/notation.h). The entries below are
@@ -46,6 +52,12 @@ static inline void tc_to(word at, word routine)
     tc_at(at);
     continue_at(routine);
 }
+
+/* INDEX before CA, TS and DXCH (R51, R53, R56 and PLANET) -- indexed.c:
+ * the address the indexed instruction works on. */
+unsigned indexed_ca(unsigned address, word index);
+unsigned indexed_ts(unsigned address, word index);
+unsigned indexed_dxch(unsigned address, word index);
 
 /* Part 1, P52 -- p52.c */
 void prog52(void);                /* PROG52 */
@@ -263,6 +275,32 @@ void sr52e22_after_exit(void);    /* SR52E22 +1 (after EXIT) */
 void sr52e3_after_exit(void);     /* SR52E3 +1 (after EXIT) */
 extern const struct interpretive_code R53_CODE, R53OUT_CODE, S52_2_CODE, SR52_1_CODE, TRUN38_CODE,
     SR52E3_CODE;
+
+/* Part 8, ADVTRACK, S52.3, R56, PLANET -- advtrack_r56_planet.c (banks 26,
+ * 16, 17, 15) */
+void advtrack_periods(void);       /* ADVTRACK +026 (after EXIT) */
+void r56_after_exit(void);         /* R56 +2 (after EXIT) */
+void r56_terminate(void);          /* R56 +5 (GOFLASH's +0) */
+void r56_proceed(void);            /* R56 +6 (+1) */
+void r56_enter(void);              /* R56 +7 (+2) */
+void r56a(void);                   /* R56A */
+void r56a_after_sxtmark(void);     /* R56A +2 (BANKCALL's return) */
+void r56a1(void);                  /* R56A1 (BANKCALL's return) */
+void r56a1_terminate(void);        /* R56A1 +3 (GOMARK2's +0, V34) */
+void r56a1_again(void);            /* R56A1 +4 (+1, V33) */
+void r56a1_mark(void);             /* R56A1 +5 (+2, enter) */
+void r56a1_store_mark(void);       /* R56A1 +014 (after EXIT) */
+void r56a1_after_clearmrk(void);   /* R56A1 +042 (CLEARMRK's return) */
+void r56a1_marked_terminate(void); /* R56A1 +045 (GOPERF1's +0) */
+void r56a1_marked_proceed(void);   /* R56A1 +046 (+1) */
+void r56a1_marked_enter(void);     /* R56A1 +047 (+2) */
+void nosam_after_exit(void);       /* NOSAM +1 (after EXIT) */
+void nosam_terminate(void);        /* NOSAM +015 (GOFLASH's +0) */
+void nosam_proceed(void);          /* NOSAM +016 (+1) */
+void nosam_enter(void);            /* NOSAM +017 (+2) */
+void nosam_planet(void);           /* NOSAM +020 */
+extern const struct interpretive_code ADVTRACK_CODE, ADVTRACK_ROTA_CODE, S52_3_CODE, R56_CODE,
+    R56A1_CODE, PLANET_CODE, NOSAM_CODE, NOTPLAN_CODE, CALSAM1_CODE;
 
 #endif
 

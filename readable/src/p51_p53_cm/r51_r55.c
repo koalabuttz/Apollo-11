@@ -34,17 +34,6 @@ static void r51dsp(void);
 static void r51_4(void);
 static void r51b(void);
 
-/* INDEX k; CA address: the index added to the whole instruction word
- * (indexed_instruction). Not modelled: an index that turns the CA into
- * another instruction, which R51's never does. */
-static unsigned indexed_ca(unsigned address, word index)
-{
-    word instruction = indexed_instruction((word)(030000u | address), index);
-
-    if (OPERATION_CODE(instruction) != 3u) not_modelled();
-    return ADDRESS_FIELD(instruction);
-}
-
 /* ---- R51 -- pp. 756-758 (bank 14) ---- */
 
 static const word r51_words[] = {

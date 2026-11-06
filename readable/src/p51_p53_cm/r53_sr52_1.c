@@ -22,19 +22,6 @@ static void r53b(void);
 static void r53c(void);
 static void sr52e1(void);
 
-/* INDEX k; TS address: the index added to the whole instruction word
- * (indexed_instruction). Not modelled: an index that turns the TS into
- * another instruction, or one that stores to EBANK, FBANK, Z or BBANK. */
-static unsigned indexed_ts(unsigned address, word index)
-{
-    word instruction = indexed_instruction((word)(054000u | address), index);
-
-    if ((instruction & 076000u) != 054000u) not_modelled();
-    address = instruction & 01777u;
-    if (address >= 3u && address <= 6u) not_modelled();
-    return address;
-}
-
 /* ---- R53 -- pp. 772-773 (bank 14) ---- */
 
 /* R53, "SIGHTING MARK ROUTINE": the caller's return to R53EXIT, and
