@@ -131,7 +131,9 @@ static bool in_written_part(uint16_t key)
            (bank == 016u && z >= 02531u && z <= 02610u) ||
            (bank == 016u && z >= 02612u && z <= 02660u) ||
            (bank == 017u && z >= 02022u && z <= 02052u) ||
-           (bank == 014u && z >= 02011u && z <= 03270u);
+           (bank == 011u && z >= 02331u && z <= 02361u) ||
+           (bank == 013u && z >= 02244u && z <= 02356u) ||
+           (bank == 014u && z >= 02011u && z <= 03362u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -357,8 +359,11 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
     if (key / 1024u == 014u && z >= 02225u && z <= 02531u) {
         w[(fixloc + X1_AT) & 03777u] = index_or_star();
         w[(fixloc + X1_AT + 1u) & 03777u] = index_or_star();
-    } else if ((key / 1024u == 014u && z >= 02714u && z <= 03064u) || key / 1024u == 017u) {
-        unsigned step = z == 03001u || z == 03003u ? 1u : 0u;
+    } else if ((key / 1024u == 014u && z >= 02714u && z <= 03064u) || key / 1024u == 017u ||
+               key / 1024u == 011u) {
+        unsigned step = (key / 1024u == 014u && (z == 03001u || z == 03003u)) ? 1u
+                        : key / 1024u == 011u && z >= 02343u && z <= 02350u   ? 6u
+                                                                              : 0u;
         w[(fixloc + X1_AT) & 03777u] = index_erasable(step);
         w[(fixloc + X1_AT + 1u) & 03777u] = index_erasable(step);
     } else {
@@ -371,10 +376,23 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
      * port copies only those two words of); MARKSTAT, the address of the
      * mark's words, which SXTSM indexes by: a place in erasable memory (as
      * index_erasable's), or in P51 any. */
-    if ((key / 1024u == 014u && z >= 03067u) || key / 1024u == 017u) {
+    if ((key / 1024u == 014u && z >= 03067u && z < 03300u) || key / 1024u == 017u) {
         bool sxtsm = key / 1024u == 017u;
         w[STARIND_AT] = rnd() % 2u || sxtsm ? (uint16_t)(rnd() % 2u) : any_word();
         w[MARKSTAT_AT] = rnd() % 4u || sxtsm ? erasable_place() : any_word();
+    }
+    /* In R53, STARIND 0 or 1 (or any), and MARKSTAT as SXTMARK leaves it:
+     * a mark area's address in unswitched erasable memory (its QPRET,
+     * 052 on, still there), +0 or -0, a small negative one (the indexed
+     * CCS QPRET then tests a word below it), or a negative one that turns
+     * it into another instruction. */
+    if (key / 1024u == 014u && z >= 03300u) {
+        k = rnd() % 4u;
+        w[STARIND_AT] = rnd() % 2u ? (uint16_t)(rnd() % 2u) : any_word();
+        w[MARKSTAT_AT] = k < 2u       ? (uint16_t)(0400u + rnd() % (01400u - 0400u - 052u))
+                         : k == 2u    ? (rnd() % 2u ? 0u : 077777u)
+                         : rnd() % 2u ? (uint16_t)(077776u - rnd() % 040u)
+                                      : (uint16_t)(040000u + rnd() % 037777u);
     }
     w[6] = (uint16_t)((w[4] & 076000u) | eb);
     /* Now and then a state no program has: BBANK not the two banks, or a
