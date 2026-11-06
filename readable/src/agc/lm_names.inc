@@ -5552,6 +5552,10 @@
 #define I_POSITB 033703u
 #define I_POSITD 033722u
 #define I_POSITE 033770u
+#define I_1_RTMU 056030u
+#define I_TFFCONIC 057360u
+#define I_RTERM 000022u
+#define I_DP2_M4 057764u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u

@@ -11,6 +11,8 @@
  *     to P67 (pp. 795-802, bank 26); s61_1.c: S61.1, the state vector and
  *     IMU check (pp. 803-805, bank 26). All the file's basic code is in
  *     this part: its programs run into each other's.
+ *   part 2, s61_2.c: S61.2, the entry prediction for N60 and N63 (pp.
+ *     806-811, bank 26), all interpretive.
  * The binding (src/binding/cm_p61_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -123,6 +125,9 @@ void retrn2_after_godspr(void);   /* RETRN2 +5 (BANKCALL's return) */
 void retrn1(void);                /* RETRN1 (BANKCALL's return, or by BOVB) */
 void s61_1_return(void);          /* E6,1773: 60GENRET, run as TC */
 extern const struct interpretive_code S61_1_CODE, S61_1A_CODE;
+
+/* Part 2, S61.2 -- s61_2.c */
+extern const struct interpretive_code S61_2_CODE;
 
 /* S61.1, as P61 and P62 call it (TC S61.1, from at). */
 void s61_1(word at);

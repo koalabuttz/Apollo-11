@@ -4454,6 +4454,7 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define S61_1C    ((word)K_S61_1C) /* S61.1C */
 #define RETRN1    ((word)K_RETRN1)
 #define RETRN2    ((word)K_RETRN2)
+#define S61_2     ((word)K_S61_2) /* S61.2 */
 #define RETRN3    ((word)K_RETRN3)
 #define GOFLASHR  ((word)K_GOFLASHR)
 #define GOPERF1R  ((word)K_GOPERF1R)

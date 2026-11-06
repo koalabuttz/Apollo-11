@@ -213,8 +213,16 @@ static bool an_s61_1_return(word instruction)
 
 static const struct interpretive_code *const codes[] = {
     /* Part 1 */
-    &NEWRNVN_CODE, &P61_2_CODE, &P62_CODE,   &P62_3_CODE,
-    &P65_CODE,     &P67_2_CODE, &S61_1_CODE, &S61_1A_CODE,
+    &NEWRNVN_CODE,
+    &P61_2_CODE,
+    &P62_CODE,
+    &P62_3_CODE,
+    &P65_CODE,
+    &P67_2_CODE,
+    &S61_1_CODE,
+    &S61_1A_CODE,
+    /* Part 2 */
+    &S61_2_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
