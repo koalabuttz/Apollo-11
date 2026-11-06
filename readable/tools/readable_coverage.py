@@ -8,16 +8,37 @@ c64-port/tools/port_coverage.py weighs the faithful port.
   readable_coverage.py          print the measure
   readable_coverage.py --check  also fail if COVERAGE names a missing file
                                 or directory, a directory the Makefile does
-                                not build (so no gate runs it), or a file
+                                not build (so no gate runs it), a file
                                 README.md's table of subsystems does not
-                                name
+                                name, or a whole file whose binding still
+                                hands keys to the faithful tables
 """
+import re
 import sys
 from pathlib import Path
 
 READABLE = Path(__file__).resolve().parents[1]
 ROOT = READABLE.parent
 TREES = ('Luminary099', 'Comanche055')
+MISSIONS = {'lm': 'Luminary099', 'cm': 'Comanche055'}
+# A binding that runs the faithful port's routine at a key no part has
+# written yet: faithful_<mission>_<file>_basic or _interpretive, the
+# faithful table renamed, called by index (<file> the listing's file name
+# in lower case, - as _).
+FALLBACK = re.compile(r'\bfaithful_(lm|cm)_(\w+?)_(?:basic|interpretive)\.entries\s*\[')
+
+
+def fallbacks(done):
+    """The bindings that still hand keys of a whole file to the faithful
+    tables: (binding, listing file)."""
+    found = []
+    for binding in sorted((READABLE / 'src/binding').glob('*.c')):
+        for mission, name in sorted(set(FALLBACK.findall(binding.read_text()))):
+            for path in done:
+                if (path.startswith(MISSIONS[mission] + '/') and
+                        Path(path).stem.lower().replace('-', '_') == name):
+                    found.append((binding.relative_to(READABLE), path))
+    return found
 
 
 def main(argv):
@@ -41,6 +62,10 @@ def main(argv):
             print(f'FAIL: COVERAGE names {path}, which README.md does not')
             bad = 1
         done[path] = files.get(path, 0)
+    for binding, path in fallbacks(done):
+        print(f'FAIL: COVERAGE names {path} whole, but {binding} still hands keys to the '
+              'faithful tables')
+        bad = 1
     total = sum(files.values())
     print(f'Readable C: {len(done)} of {len(files)} files, '
           f'{sum(done.values()):,} of {total:,} source lines '

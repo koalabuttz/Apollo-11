@@ -7,7 +7,7 @@
  * and R59. The faithful C is c64-port/src/lm_p51_p53.c, which the listing
  * compiles to: its routine tables have 696 keys.
  *
- * The file is written part by part, in the listing's order (README.md):
+ * The file was written part by part, in the listing's order (README.md):
  *   part 1, p52.c: P52, PROG52 to P52OUT, the gyro torque coarse
  *     alignment option COARSTYP, the landing site's orientation (P52LS)
  *     and N89DISP, which displays the landing site (pp. 926-933).
@@ -28,8 +28,8 @@
  *     sightings and the lunar surface alignment (pp. 968-974).
  *   part 9, p57.c: P57, the lunar surface alignment program (pp.
  *     975-983), with MFREF, REFMF, IMUCHK and LSORIENT.
- * The binding (src/binding/p51_routines.c) runs the keys these parts
- * write, and the faithful port's routines at the others.
+ * The binding (src/binding/p51_routines.c) runs every key on these
+ * parts' routines.
  *
  * Basic code round stretches of interpretive code, which are in the
  * listing's notation (src/interpreter/notation.h). The entries below are
