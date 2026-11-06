@@ -2153,6 +2153,9 @@
 #define K_PULSEM 03230u
 #define K_CALCSMSC 02030u
 #define K_R56 02611u
+#define K_LSPOS 03664u
+#define K_LUNPOS 03664u
+#define K_LUNVEL 03775u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -5531,6 +5534,7 @@
 #define I_XSMD 003606u
 #define I_XSM 002642u
 #define I_STAR 002730u
+#define I_TEPHEM 001706u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u

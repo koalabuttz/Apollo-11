@@ -97,3 +97,4 @@ Luminary099/LANDING_ANALOG_DISPLAYS.agc        src/landing_displays
 Luminary099/FINDCDUW--GUIDAP_INTERFACE.agc     src/findcduw
 Luminary099/P51-P53.agc                        src/p51_p53
 Comanche055/P51-P53.agc                        src/p51_p53_cm
+Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc src/ephemerides
