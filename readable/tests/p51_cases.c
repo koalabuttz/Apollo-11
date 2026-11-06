@@ -54,7 +54,9 @@ extern const struct interpretive_code P52E_CODE, P52V_CODE, P52W_CODE, P52H_CODE
     INCAZ_CODE, ZSPCR_CODE, NXAX_CODE, PLANET_CODE, PLANET_VECTOR_CODE, NOTPLAN_CODE, CALSAM_CODE,
     GVDETER_CODE, PROGRAV_CODE, LUNG_CODE, GREED_CODE, ADDGRAV_CODE, QMINEXIT_CODE, GYROTRIM_CODE,
     R59RET_CODE, ASTAR_CODE, SURFLINE_CODE, FIVE_DEG_TEST_CODE, SURFDISP_CODE, B2F8_CODE,
-    P57POST_SITE_CODE, COATRIM_CODE, CORSIT_CODE;
+    P57POST_SITE_CODE, COATRIM_CODE, CORSIT_CODE, ALIGNOPT_REFSMMAT_CODE, TDISP_CODE,
+    P57AA_TIME_CODE, MFREF_CODE, REFMF_CODE, GETLMATT_CODE, P57OPT0_CODE, P57OPT1_CODE,
+    P57OPT3_CODE, LSORIENT_CODE;
 extern const agc_routine_table lm_p51_p53_basic, lm_p51_p53_interpretive;
 extern const agc_routine_table faithful_lm_p51_p53_basic, faithful_lm_p51_p53_interpretive;
 bool p51_readable(uint16_t key, bool order_pair);
@@ -136,8 +138,9 @@ static bool in_written_part(uint16_t key)
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     return (bank == 015u && z >= 02050u && z <= 02243u) ||
-           (bank == 015u && z >= 02245u && z <= 03313u) ||
-           (bank == 014u && z >= 02446u && z <= 03773u);
+           (bank == 015u && z >= 02245u && z <= 03663u) ||
+           (bank == 014u && z >= 02446u && z <= 03773u) ||
+           (bank == 04u && z >= 03013u && z <= 03026u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -407,6 +410,11 @@ static void state(apollo_overlay_state *s, p66_bias_io *io, uint16_t key, int in
         if (z == 03112u)
             *x2 = rnd() % 2u ? (uint16_t)(6u * (1u + rnd() % 2u)) : index_to(02760u + 12u, 6u);
         if (z == 03114u) *x2 = (uint16_t)(rnd() % 2u ? 6u * (1u + rnd() % 2u) : rnd() % 19u);
+        /* P57's STCALL TALIGN (03376; TALIGN is 02774, four words before
+         * an E-bank's end): MPAC is DP after the DLOAD, and a vector would
+         * reach fixed memory, where the faithful port has no copy of the
+         * rope. */
+        if (z == 03376u && w[MODE_AT] == 077776u) w[MODE_AT] = 0u;
         /* SURFDISP's CCS OPTION2 (03174): often +0 or -0, the two ways CCS
          * alone tells apart, with B2F8's INITABIT (FLAGWRD8 bit 2) either way. */
         if (z == 03174u) {
@@ -509,24 +517,86 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 }
 
 static const struct interpretive_code *const codes[] = {
-    &P52E_CODE,          &P52V_CODE,       &P52W_CODE,           &P52H_CODE,
-    &REGCOARS_CODE,      &COARSTYP_CODE,   &P52LS_CODE,          &N89DISP_CODE,
-    &LSDISP_CODE,        &LOCSAM_CODE,     &PICAPAR_CODE,        &PICEND_CODE,
-    &PICGXT_CODE,        &R51_CODE,        &R51C_CODE,           &R51_3_CODE,
-    &R51_MARK_CODE,      &R51_SECOND_CODE, &R51_TORQUE_CODE,     &R51P63_CODE,
-    &R51_4_CODE,         &GYCOARS_CODE,    &GYCOARS_DONE_CODE,   &R55_CODE,
-    &R55RET_CODE,        &CHKSDATA_CODE,   &CHKSDATA_ENTER_CODE, &CHKSDA_CODE,
-    &CAL53A_CODE,        &COARFINE_CODE,   &MATMOVE_CODE,        &P51_CODE,
-    &P51B_CODE,          &P51C_CODE,       &P51D_CODE,           &P51E_CODE,
-    &P51G_CODE,          &COARSE_CODE,     &COARSE_RETURN_CODE,  &NCOARSE_CODE,
-    &NCOARSE_GCOMP_CODE, &S52_2_CODE,      &S52_3_CODE,          &R52_CODE,
-    &AZEL_CODE,          &R52_RETURN_CODE, &R59A_CODE,           &INCAZ_CODE,
-    &ZSPCR_CODE,         &NXAX_CODE,       &PLANET_CODE,         &PLANET_VECTOR_CODE,
-    &NOTPLAN_CODE,       &CALSAM_CODE,     &GVDETER_CODE,        &PROGRAV_CODE,
-    &LUNG_CODE,          &GREED_CODE,      &ADDGRAV_CODE,        &QMINEXIT_CODE,
-    &GYROTRIM_CODE,      &R59RET_CODE,     &ASTAR_CODE,          &SURFLINE_CODE,
-    &FIVE_DEG_TEST_CODE, &SURFDISP_CODE,   &B2F8_CODE,           &P57POST_SITE_CODE,
-    &COATRIM_CODE,       &CORSIT_CODE,
+    &P52E_CODE,
+    &P52V_CODE,
+    &P52W_CODE,
+    &P52H_CODE,
+    &REGCOARS_CODE,
+    &COARSTYP_CODE,
+    &P52LS_CODE,
+    &N89DISP_CODE,
+    &LSDISP_CODE,
+    &LOCSAM_CODE,
+    &PICAPAR_CODE,
+    &PICEND_CODE,
+    &PICGXT_CODE,
+    &R51_CODE,
+    &R51C_CODE,
+    &R51_3_CODE,
+    &R51_MARK_CODE,
+    &R51_SECOND_CODE,
+    &R51_TORQUE_CODE,
+    &R51P63_CODE,
+    &R51_4_CODE,
+    &GYCOARS_CODE,
+    &GYCOARS_DONE_CODE,
+    &R55_CODE,
+    &R55RET_CODE,
+    &CHKSDATA_CODE,
+    &CHKSDATA_ENTER_CODE,
+    &CHKSDA_CODE,
+    &CAL53A_CODE,
+    &COARFINE_CODE,
+    &MATMOVE_CODE,
+    &P51_CODE,
+    &P51B_CODE,
+    &P51C_CODE,
+    &P51D_CODE,
+    &P51E_CODE,
+    &P51G_CODE,
+    &COARSE_CODE,
+    &COARSE_RETURN_CODE,
+    &NCOARSE_CODE,
+    &NCOARSE_GCOMP_CODE,
+    &S52_2_CODE,
+    &S52_3_CODE,
+    &R52_CODE,
+    &AZEL_CODE,
+    &R52_RETURN_CODE,
+    &R59A_CODE,
+    &INCAZ_CODE,
+    &ZSPCR_CODE,
+    &NXAX_CODE,
+    &PLANET_CODE,
+    &PLANET_VECTOR_CODE,
+    &NOTPLAN_CODE,
+    &CALSAM_CODE,
+    &GVDETER_CODE,
+    &PROGRAV_CODE,
+    &LUNG_CODE,
+    &GREED_CODE,
+    &ADDGRAV_CODE,
+    &QMINEXIT_CODE,
+    &GYROTRIM_CODE,
+    &R59RET_CODE,
+    &ASTAR_CODE,
+    &SURFLINE_CODE,
+    &FIVE_DEG_TEST_CODE,
+    &SURFDISP_CODE,
+    &B2F8_CODE,
+    &P57POST_SITE_CODE,
+    &COATRIM_CODE,
+    &CORSIT_CODE,
+    &ALIGNOPT_REFSMMAT_CODE,
+    &TDISP_CODE,
+    &P57AA_TIME_CODE,
+    &MFREF_CODE,
+    &REFMF_CODE,
+    &GETLMATT_CODE,
+    &P57OPT0_CODE,
+    &P57OPT1_CODE,
+    &P57OPT3_CODE,
+    &LSORIENT_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

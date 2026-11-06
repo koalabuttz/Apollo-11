@@ -27,6 +27,7 @@
 #define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 static void astar(void);
+static void one_star_plus1(void);
 static void five_deg_test(void);
 static void b2f8(void);
 static void b2f8_plus1(void);
@@ -114,12 +115,24 @@ void justtrim_return(void)
 
 /* ---- The star sightings -- p. 970 ---- */
 
-/* 1STAR: STARIND 1, the second star; a restart point (PHASCHNG, 04024),
- * then R59, "GO DO STAR ACQUIRE AND AOTMARK". (A is a constant: TS does
- * not skip.) */
-static void one_star(void)
+/* 2STARS: "INITIALIZE STARIND", "ZERO FOR 1ST STAR, ONE FOR 2ND STAR";
+ * 1STAR: STARIND 1, the second star. Then a restart point (PHASCHNG,
+ * 04024), and R59, "GO DO STAR ACQUIRE AND AOTMARK". (A is a constant:
+ * TS does not skip.) */
+void two_stars(void)
+{
+    set_A(ZERO);
+    one_star_plus1(); /* TCF +2 */
+}
+
+void one_star(void)
 {
     set_A(BIT1);
+    one_star_plus1();
+}
+
+static void one_star_plus1(void)
+{
     ts(ADDRESS_OF(STARIND));
     tc_to(ONE_STAR + 2u, PHASCHNG); /* OCT 04024 */
 }
