@@ -4320,6 +4320,33 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define OCT13       ((word)KW_OCT13)
 #define V16N20      ((word)KW_V16N20)
 #define R55CDR      ((word)KW_R55CDR)
+#define P52LS       ((word)K_P52LS)
+#define LSDISP      ((word)K_LSDISP)
+#define V06N89_STAR ((word)KW_V06N89_STAR) /* V06N89* */
+#define R52         ((word)K_R52)
+#define R52VRB      ((word)K_R52VRB)
+#define R52A        ((word)K_R52A)
+#define R52C        ((word)K_R52C)
+#define R52D        ((word)K_R52D)
+#define R52JA       ((word)K_R52JA)
+#define R52E        ((word)K_R52E)
+#define R52F        ((word)K_R52F)
+#define R52Q        ((word)K_R52Q)
+#define R52HA       ((word)K_R52HA)
+#define R52I        ((word)K_R52I)
+#define R52SYNC     ((word)K_R52SYNC)
+#define R52J        ((word)K_R52J)
+#define R52M        ((word)K_R52M)
+#define R53JOB      ((word)K_R53JOB)
+#define ENDPLAC     ((word)K_ENDPLAC)
+#define R52L        ((word)K_R52L)
+#define TERM52      ((word)K_TERM52)
+#define ADVORB      ((word)K_ADVORB)
+#define R61CSM      ((word)K_R61CSM)
+#define V06N92      ((word)KW_V06N92)
+#define OCT404      ((word)KW_OCT404)
+#define ONE_8SEC    ((word)KW_1_8SEC) /* 1.8SEC */
+#define PRIO24      ((word)KW_PRIO24)
 #endif
 
 /* NO.CORES + 1 core sets. */

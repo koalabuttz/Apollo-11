@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P51-P53.agc of the CM, part 1 (Comanche055 pp. 737-742, bank 15): P52,
- * and P54 (P54 = PROG52).
+/* P51-P53.agc of the CM, parts 1 and 2 (Comanche055 pp. 737-743, banks
+ * 15 and 16): P52, and P54 (P54 = PROG52); P52LS, the landing site's
+ * orientation.
  *
  * PROG52 "ALIGNS THE IMU TO ONE OF THREE ORIENTATIONS SELECTED BY THE
  * ASTRONAUT." The options (OPTION2, flashed with V04N06): 1, the preferred
@@ -522,5 +523,101 @@ static const word gycrs_done_words[] = {
 
 const struct interpretive_code GYCRS_DONE_CODE = {015u, GYCRS + 036u, COUNT(gycrs_done_words),
                                                   gycrs_done_words};
+
+/* ---- P52LS -- pp. 742-743 ---- */
+
+/* P52LS: "TO DISPLAY THE LANDING SITE LATITUDE, LONGITUDE AND ALTITUDE.
+ * TO ACCEPT NEW DATA VIA THE KEYBOARD. TO COMPUTE THE LANDING SITE
+ * ORIENTATION FOR P52 OR P54" (bank 16). The caller's return to QMAJ;
+ * LUNAFLAG and ERADFLAG set; the align time (DSPTEM1) to TSIGHT; RLS, the
+ * landing site in moon fixed axes, to the reference frame (RP-TO-R, to
+ * ALPHAV); its latitude, longitude and altitude (LAT-LONG, LLASRD). */
+static const word p52ls_words[] = {
+    /* P52LS */ ORDERS(STQ, SET),
+    ADDRESS(QMAJ),
+    SWITCH(SET, LUNAFLAG),
+    ORDER(DLOAD),
+    ADDRESS_PLUS_ONE(DSPTEM1),
+    STORE(TSIGHT),
+    ORDERS(VLOAD, SET),
+    ADDRESS_PLUS_ONE(RLS),
+    SWITCH(SET, ERADFLAG),
+    STODL_D(0),
+    ADDRESS_PLUS_ONE(TSIGHT),
+    STCALL_D(6),
+    ADDRESS(RP_TO_R),
+    ORDER(VSR2),
+    STODL(ALPHAV),
+    ADDRESS_PLUS_ONE(TSIGHT),
+    ORDER(CALL),
+    ADDRESS(LAT_LONG),
+    ORDER(CALL),
+    ADDRESS(LLASRD),
+    ORDER(EXIT),
+};
+
+const struct interpretive_code P52LS_CODE = {016u, P52LS, COUNT(p52ls_words), p52ls_words};
+
+/* LSDISP: the site flashed (V06N89*, GOFLASH): terminate (GOTOPOOH),
+ * proceed (TC +2), or a new site loaded (TC LSDISP). */
+void lsdisp(void)
+{
+    set_A(V06N89_STAR);
+    tc_to(LSDISP + 1u, BANKCALL); /* CADR GOFLASH */
+}
+
+void lsdisp_terminate(void)
+{
+    tc_to(LSDISP + 3u, GOTOPOOH);
+}
+
+void lsdisp_proceed(void)
+{
+    tc_at(LSDISP + 4u); /* TC +2 */
+    lsdisp_accept();
+}
+
+void lsdisp_enter(void)
+{
+    tc_at(LSDISP + 5u); /* TC LSDISP */
+    lsdisp();
+}
+
+void lsdisp_accept(void)
+{
+    tc_at(LSDISP + 6u);
+    intpret();
+}
+
+/* The site as shown or loaded back to RLS (LLASRDA, LALOTORV, at TSIGHT);
+ * then the orientation: XSMD the site's direction (ALPHAV); the CSM's
+ * state at TSIGHT (CSMPREC: RATT, VATT); ZSMD the unit of (R*V)*XSMD, the
+ * orbit's normal crossed with the site; YSMD the unit of ZSMD*XSMD; back to
+ * the caller (QMAJ). */
+static const word lsdisp_words[] = {
+    /* LSDISP +7 */ ORDER(CALL),
+    ADDRESS(LLASRDA),
+    ORDERS(DLOAD, CALL),
+    ADDRESS_PLUS_ONE(TSIGHT),
+    ADDRESS(LALOTORV),
+    ORDERS(VLOAD, UNIT),
+    ADDRESS_PLUS_ONE(ALPHAV),
+    STODL(XSMD),
+    ADDRESS_PLUS_ONE(TSIGHT),
+    STCALL(TDEC1),
+    ADDRESS(CSMPREC),
+    ORDERS(VLOAD, VXV),
+    ADDRESS_PLUS_ONE(RATT),
+    ADDRESS_PLUS_ONE(VATT),
+    ORDERS(VXV, UNIT),
+    ADDRESS_PLUS_ONE(XSMD),
+    STORE(ZSMD),
+    ORDERS(VXV, UNIT),
+    ADDRESS_PLUS_ONE(XSMD),
+    STCALL(YSMD),
+    ADDRESS(QMAJ),
+};
+
+const struct interpretive_code LSDISP_CODE = {016u, LSDISP + 7u, COUNT(lsdisp_words), lsdisp_words};
 
 #endif
