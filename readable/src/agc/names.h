@@ -4425,6 +4425,56 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define VNPLANV     ((word)KW_VNPLANV)
 #endif
 
+#if COMANCHE055
+/* P61-P67.agc (CM), the entry programs. The erasable words (HEADSUP,
+ * ROLLC, ALFAPAD, ALFACOM, P63FLAG, ENTRYVN, POSEXIT, S61DT, 60GENRET,
+ * CM/FLAGS, CMDAPMOD, EXTVBACT, DNLSTCOD, AVEGEXIT) are named by
+ * ADDRESS_OF. */
+#define P61       ((word)K_P61)
+#define P61_1     ((word)K_P61_1) /* P61.1 */
+#define P61_2     ((word)K_P61_2) /* P61.2 */
+#define P61_3     ((word)K_P61_3) /* P61.3 */
+#define P61_4     ((word)K_P61_4) /* P61.4 */
+#define P62       ((word)K_P62)
+#define P62_1     ((word)K_P62_1) /* P62.1 */
+#define P62_2     ((word)K_P62_2) /* P62.2 */
+#define WAKEP62   ((word)K_WAKEP62)
+#define P63       ((word)K_P63)
+#define P63_1     ((word)K_P63_1) /* P63.1 */
+#define P64       ((word)K_P64)
+#define P65       ((word)K_P65)
+#define P65_1     ((word)K_P65_1) /* P65.1 */
+#define P66       ((word)K_P66)
+#define P67       ((word)K_P67)
+#define P66END    ((word)K_P66END)
+#define KILLGRP4  ((word)K_KILLGRP4)
+#define P67_1     ((word)K_P67_1) /* P67.1 */
+#define P67_2     ((word)K_P67_2) /* P67.2 */
+#define S61_1     ((word)K_S61_1)  /* S61.1 */
+#define S61_1C    ((word)K_S61_1C) /* S61.1C */
+#define RETRN1    ((word)K_RETRN1)
+#define RETRN2    ((word)K_RETRN2)
+#define RETRN3    ((word)K_RETRN3)
+#define GOFLASHR  ((word)K_GOFLASHR)
+#define GOPERF1R  ((word)K_GOPERF1R)
+#define CLEANDSP  ((word)K_CLEANDSP)
+#define R02BOTH   ((word)K_R02BOTH)
+#define V06N60    ((word)KW_V06N60) /* VN 0660 */
+#define V06N61    ((word)KW_V06N61) /* VN 0661 */
+#define V06N63    ((word)KW_V06N63) /* VN 0663 */
+#define V06N64    ((word)KW_V06N64) /* VN 0664 */
+#define V06N66    ((word)KW_V06N66) /* VN 0666 */
+#define V06N74    ((word)KW_V06N74) /* VN 0674 */
+#define V16N67    ((word)KW_V16N67) /* VN 1667 */
+#define V16N69    ((word)KW_V16N69) /* VN 1669 */
+#define ENTCADR   ((word)KW_ENTCADR) /* CADR STARTENT */
+#define EBENTRY   ((word)KW_EBENTRY) /* EBENTRY = EBANK7 */
+#define TEN_SECS  ((word)KW_10SECS)  /* 10SECS: DEC 1000 */
+#define OCT41     ((word)KW_OCT41)   /* OCT41 = 33DEC */
+static const word POSECADR[2] = KW_POSECADR; /* 2CADR CM/POSE */
+static const word SERVCAD1[2] = KW_SERVCAD1; /* 2CADR SERVEXIT (SERVCAD2 = SERVCAD1) */
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

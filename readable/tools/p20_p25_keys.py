@@ -22,14 +22,15 @@ src/binding/ascent_keys.inc; and the LM's SERVICER
 LM's FINDCDUW--GUIDAP_INTERFACE (c64-port/src/lm_findcduw.c) as
 src/binding/findcduw_keys.inc; and each mission's P51-P53
 (c64-port/src/<m>_p51_p53.c) as src/binding/p51_keys.inc and
-cm_p51_keys.inc. For the
+cm_p51_keys.inc; and the CM's P61-P67 (c64-port/src/cm_p61_p67.c) as
+src/binding/cm_p61_keys.inc. For the
 readable bindings
 (src/binding/p20_p25_routines.c, cm_p20_p25_routines.c,
 cm_p30_routines.c, p32_routines.c, cm_p32_routines.c, p34_routines.c,
 cm_p34_routines.c, p40_routines.c, cm_p40_routines.c, llge_routines.c,
 p70_routines.c, p12_routines.c, ascent_routines.c,
-servicer_routines.c, findcduw_routines.c, p51_routines.c and
-cm_p51_routines.c).
+servicer_routines.c, findcduw_routines.c, p51_routines.c,
+cm_p51_routines.c and cm_p61_routines.c).
 
 A binding must define the faithful tables' names with the same keys in the
 same order, so it takes them from here: one line per key, BASIC(index,
@@ -60,7 +61,8 @@ FILES = (('lm_p20_p25', READABLE / 'src/binding/p20_p25_keys.inc'),
          ('lm_ascent', READABLE / 'src/binding/ascent_keys.inc'),
          ('lm_findcduw', READABLE / 'src/binding/findcduw_keys.inc'),
          ('lm_p51_p53', READABLE / 'src/binding/p51_keys.inc'),
-         ('cm_p51_p53', READABLE / 'src/binding/cm_p51_keys.inc'))
+         ('cm_p51_p53', READABLE / 'src/binding/cm_p51_keys.inc'),
+         ('cm_p61_p67', READABLE / 'src/binding/cm_p61_keys.inc'))
 
 
 def generate(m):
@@ -80,13 +82,22 @@ def generate(m):
         body = re.search(r'static const agc_routine_entry %s_entries\[\]=\{(.*?)\n\};' % table,
                          text, re.S).group(1)
         # (the CM's routines are called through wrappers, <routine>_abi)
-        entries = re.findall(r'\{(\d+),(r\d+)(?:_abi)?\}', body)
+        entries = re.findall(r'\{(\d+),([re]\d+)(?:_abi)?\}', body)
         last = -1
         for i, (physical, name) in enumerate(entries):
             physical = int(physical)
             if physical <= last:
                 raise SystemExit('p20_p25_keys: %s keys out of order' % table)
             last = physical
+            if name.startswith('e'):
+                # A key in erasable memory (the CM's P61-P67: E6,1773, the
+                # word S61.1 keeps its return in): BASIC_ERASABLE(index, physical
+                # address), the key AGC_TRANSFER_ERASABLE_BASE + the address.
+                out.append('/* A basic key in erasable memory, by its physical address: */')
+                comment = re.search(r'/\* (E\d,\d{4}[^\n]*?)\*/\nstatic enum exec_status %s_abi'
+                                    % name, text).group(1).strip()
+                out.append('BASIC_ERASABLE(%d, 0%o) /* %s */' % (i, physical - 40960, comment))
+                continue
             bank, offset = divmod(physical, 1024)
             address = (0o4000 + 0o2000 * (bank - 2) if bank in (2, 3) else 0o2000) + offset
             out.append('%s(%d, 0%o, 0%o) /* %s */' % (macro, i, bank, address, comments[name]))
