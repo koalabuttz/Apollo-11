@@ -202,8 +202,11 @@ REPLACED = (
     # LANDING_ANALOG_DISPLAYS.agc, the LM's landing analog displays
     # (src/landing_displays): the port's compiled file.
     'lm_landing_displays.o',
-    # LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc, the CM's (src/ephemerides):
-    # the port's compiled file.
+    # LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc (src/ephemerides): the
+    # LM's routine table (its steps, lm_ephemeris.o and
+    # lm_ephemeris_routines.o, are no longer called) and the CM's compiled
+    # file.
+    'lm_ephemeris_routine_table.o',
     'cm_ephemeris.o',
 )
 # The faithful objects the readable objects take part of the place of:
@@ -278,13 +281,13 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # (rodcomp, LUNAR_LANDING_GUIDANCE_EQUATIONS); the CM's P40-P47
 # starts at P40CSM (p40csm). LANDING_ANALOG_DISPLAYS is the LM's alone
 # (landisp), as is FINDCDUW--GUIDAP_INTERFACE (fltrsub). The LM's P52 is
-# readable so far (prog52), the CM's not yet. LUNAR_AND_SOLAR_EPHEMERIDES_
-# SUBROUTINES is readable for the CM so far (EPHEMERIDES_CODE).
+# readable so far (prog52), the CM's not yet. Each mission's
+# LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES is its own (EPHEMERIDES_CODE).
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
                           'radsamp', 'prog20a', 'p30n33', 'p32strt',
                           'p31_after_p20flgon', 'prog21', 'rev83', 'P76_CODE', 'killtsk2',
                           'nsteer', 'ddumcalc', 'massmult', 'rodcomp', 'abrtjask', 'p12lm',
-                          'atmag', 'rereadac', 'landisp', 'fltrsub', 'prog52'),
+                          'atmag', 'rereadac', 'landisp', 'fltrsub', 'prog52', 'EPHEMERIDES_CODE'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
                           'pikup20', 'p30phsi', 'P32STRT_CODE', 'prog21', 'r34los_after_exit', 'candel',
                           'rtrn', 'p40csm', 'EPHEMERIDES_CODE')}
