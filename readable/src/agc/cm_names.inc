@@ -1702,6 +1702,13 @@
 #define K_SR52E22 02353u
 #define K_SR52E3 02355u
 #define K_TRUN38 02342u
+#define K_ADVTRACK 02000u
+#define K_ROTA 02057u
+#define K_R56 02056u
+#define K_R56A 02066u
+#define K_R56A1 02073u
+#define K_R56B 02143u
+#define K_NOSAM 02353u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -2786,6 +2793,10 @@
 #define KW_V01N70 000306u
 #define KW_DEC227 000343u
 #define KW_VNPLANV 001530u
+#define KW_SIGHTSIX 000006u
+#define KW_OCT16 000016u
+#define KW_VB53 015200u
+#define KW_V06N94B 001536u
 #define KW_FREEFBIT 000004u
 #define KW_V06N34 001442u
 #define KW_VB06N22 001426u
@@ -4549,6 +4560,11 @@
 #define I_XSMD 000306u
 #define I_XSM 002671u
 #define I_STAR 002765u
+#define I_MPERIOD 054106u
+#define I_DP1_6 054104u
+#define I_ROTA 054057u
+#define I_MRKBUF1 003725u
+#define I_CORPLAN 032424u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u
