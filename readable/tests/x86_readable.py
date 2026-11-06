@@ -230,7 +230,8 @@ REPLACED = (
 # called (--gc-sections drops them). FINDCDUW--GUIDAP_INTERFACE
 # (src/findcduw): the LM's routine tables, all readable; the faithful ones,
 # renamed, are no longer called (--gc-sections drops them). P51-P53
-# (src/p51_p53): the LM's routine tables, all readable. P51-P53 of the CM
+# (src/p51_p53): the LM's routine tables, all readable; the faithful ones,
+# renamed, are no longer called (--gc-sections drops them). P51-P53 of the CM
 # (src/p51_p53_cm): the CM's routine tables, readable part by part; the
 # faithful ones, renamed, run the keys no part has written yet.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],

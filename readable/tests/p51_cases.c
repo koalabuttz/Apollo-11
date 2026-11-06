@@ -8,10 +8,9 @@
  *
  * First the words: the readable interpretive code (src/p51_p53/), written
  * in the listing's notation, must be the original program's rope, word for
- * word. Then the keys, which must be the faithful tables', and every key of
- * the parts written so far must run readable code. Then the runs: each
- * readable key from 4,096 states (each other key, which runs the faithful
- * routine through the readable table, from 16), each one of the port's
+ * word. Then the keys, which must be the faithful tables', and every key
+ * must run readable code (the file is whole). Then the runs: each key
+ * from 4,096 states, each one of the port's
  * frozen test states (c64-port/tests/p51_p53_vectors.h, the LM's) entered
  * at the key, most stirred further: MPAC and its mode, the push-down list
  * and its pointer, the index registers (X1 and X2 as the program sets
@@ -84,8 +83,7 @@ bool p51_readable(uint16_t key, bool order_pair);
  * (lm_p51_p53_cadr_words). */
 static const uint16_t cadr_words[] = {00052u, 02736u, 02745u, 02746u, 03665u};
 
-#define CASES       4096u
-#define OTHER_CASES 16u
+#define CASES 4096u
 
 static uint32_t seed = 5152u;
 static uint16_t rnd(void)
@@ -128,30 +126,16 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The parts written so far: part 1, bank 15's P52 (PROG52 to P52LS) and
- * bank 14's N89DISP and LSDISP; part 2, bank 14's S50 and R56 (LOCSAM to
- * PICNSWP +1); part 3, R51 and GYCOARS (to its GOTO R51K); part 4, R55 to
- * RDCDUS; part 5, P51 to S52.3; part 6, R52 (bank 14) and R59 to R59OUT
- * +4 (bank 15: R59OUT +5's TCF R59RET goes with P57). */
-static bool in_written_part(uint16_t key)
-{
-    unsigned bank = key / 1024u, z = 02000u + key % 1024u;
-
-    return (bank == 015u && z >= 02050u && z <= 02243u) ||
-           (bank == 015u && z >= 02245u && z <= 03663u) ||
-           (bank == 014u && z >= 02446u && z <= 03773u) ||
-           (bank == 04u && z >= 03013u && z <= 03026u);
-}
-
-static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
+/* The file is whole: every key runs a readable routine (the binding no
+ * longer hands any to the faithful tables). */
+static unsigned keys_unwritten(const agc_routine_table *table, bool order_pair)
 {
     unsigned i, failures = 0;
 
     for (i = 0; i < table->count; ++i) {
         uint16_t key = table->entries[i].physical;
-        if (in_written_part(key) != p51_readable(key, order_pair)) {
-            printf("FAIL: %02o,%04o %s readable\n", key / 1024u, 02000u + key % 1024u,
-                   in_written_part(key) ? "is not" : "is");
+        if (!p51_readable(key, order_pair)) {
+            printf("FAIL: %02o,%04o has no readable routine\n", key / 1024u, 02000u + key % 1024u);
             ++failures;
         }
     }
@@ -457,10 +441,9 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 
     for (i = 0; i < faithful->count; ++i) {
         uint16_t key = faithful->entries[i].physical, z = key_z(key);
-        bool written = p51_readable(key, interpretive != 0);
-        unsigned ran = 0, bad = 0, cases = written ? CASES : OTHER_CASES;
+        unsigned ran = 0, bad = 0, cases = CASES;
 
-        *readable_keys += written;
+        *readable_keys += p51_readable(key, interpretive != 0);
         for (n = 0; n < cases; ++n) {
             apollo_overlay_state start, fa, ra;
             p66_bias_io io, fio, rio;
@@ -481,11 +464,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             sf = faithful->entries[i].call(&fp, &fa, &fio);
             sr = readable->entries[i].call(&rp, &ra, &rio);
             ran += sf == EXEC_OK;
-            if (!written) { /* the faithful routine on both sides, refusals and all */
-                if (sf != sr || memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio))
-                    why = "the table does not run the faithful routine";
-            } else if (sr != EXEC_OK &&
-                       (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
+            if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
                 why = "readable refusal changed the state";
             else if (sf == EXEC_OK && sr != EXEC_OK)
                 why = "readable refused, faithful ran";
@@ -505,7 +484,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                                fa.words[w], start.words[w]);
             }
         }
-        if (written && ran < cases / 16u && bad == 0u) {
+        if (ran < cases / 16u && bad == 0u) {
             printf("FAIL %02o,%04o: the faithful routine ran in %u of %u states\n", key / 1024u, z,
                    ran, cases);
             ++bad;
@@ -617,8 +596,8 @@ int main(int argc, char **argv)
     failures += tables_differ(&lm_p51_p53_basic, &faithful_lm_p51_p53_basic, "basic");
     failures +=
         tables_differ(&lm_p51_p53_interpretive, &faithful_lm_p51_p53_interpretive, "interpretive");
-    failures += parts_unwritten(&faithful_lm_p51_p53_basic, false);
-    failures += parts_unwritten(&faithful_lm_p51_p53_interpretive, true);
+    failures += keys_unwritten(&faithful_lm_p51_p53_basic, false);
+    failures += keys_unwritten(&faithful_lm_p51_p53_interpretive, true);
     if (failures) {
         printf("p51-p53-cases: %u failures\n", failures);
         return 1;
@@ -627,10 +606,9 @@ int main(int argc, char **argv)
     failures += keys(&lm_p51_p53_interpretive, &faithful_lm_p51_p53_interpretive, 1, &runs,
                      &readable_pairs);
     printf("p51-p53-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
-           "pairs) from %u states each (the others from %u), %u run by the faithful routines, "
-           "%u failures\n",
+           "pairs) from %u states each, %u run by the faithful routines, %u failures\n",
            words, readable_basic + readable_pairs,
            lm_p51_p53_basic.count + lm_p51_p53_interpretive.count, readable_basic, readable_pairs,
-           CASES, OTHER_CASES, runs, failures);
+           CASES, runs, failures);
     return failures != 0;
 }

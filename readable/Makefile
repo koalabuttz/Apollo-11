@@ -1586,8 +1586,7 @@ radar-leadin-cases: $(BUILD)/rlr-oracle $(BUILD)/rlr-cases
 # SERVICER's (lld-, svc-oracle) their case keys (and SERVICER's flag
 # sites), FINDCDUW's, P51-P53's and LUNAR_LANDING_GUIDANCE_EQUATIONS'
 # (fcw-, p51-, llge-oracle) their points, external routines and CADR
-# words. (P51-P53's readable tables also run the renamed faithful routines
-# at the keys no part has written yet.)
+# words.
 
 # P20-P25, the LM's rendezvous programs and radar routines, readable part
 # by part: the port's test (tests/test_lm_p20_p25.c, its frozen cases run
@@ -2246,7 +2245,7 @@ findcduw-cases: $(BUILD)/fcw-oracle $(BUILD)/fcw-cases
 	./$(BUILD)/fcw-oracle $(ROPES)
 	./$(BUILD)/fcw-cases $(ROPES)
 
-# P51-P53, the IMU alignment programs, readable part by part: the port's
+# P51-P53, the IMU alignment programs: the port's
 # test (tests/test_p51_p53.c, its frozen cases of both missions run to their
 # stops through the programs of tests/p51_p53_target.c, against the original
 # programs' yaAGC digests) through the readable LM tables and the faithful

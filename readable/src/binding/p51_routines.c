@@ -5,11 +5,10 @@
  * lm_p51_p53_interpretive (the order pairs).
  *
  * The tables carry every key of the faithful ones, in their order
- * (p51_keys.inc, which tools/p20_p25_keys.py writes from them). The file
- * is written part by part: a key a part has written runs the readable
- * routine; any other runs the faithful port's, built into the program as
- * faithful_lm_p51_p53_basic and faithful_lm_p51_p53_interpretive
- * (tests/x86_readable.py, the Makefile's tests).
+ * (p51_keys.inc, which tools/p20_p25_keys.py writes from them), and every
+ * key runs a readable routine: the file was written part by part, and is
+ * whole. The side-by-side test (tests/p51_cases.c) checks that no key is
+ * left without one.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
  * the file (BANKCALL, PHASCHNG, ENDOFJOB, GOTOPOOH, ...) or reaches NEWOPS
@@ -543,19 +542,15 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
 
 /* ---- The keys, in the faithful tables' order ---- */
 
-/* The faithful tables, renamed. */
-extern const agc_routine_table faithful_lm_p51_p53_basic, faithful_lm_p51_p53_interpretive;
-
-/* Each key's routine: the readable one, or the faithful port's. */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each key's routine. */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct basic_entry *entry = basic_entry(key);
     p66_bias_io *io = device, kept;
     apollo_overlay_state before;
 
-    if (!entry) return faithful_lm_p51_p53_basic.entries[index].call(program, state, device);
-    if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
+    if (!entry || !program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     if (FBANK != (word)((key / 1024u) << 10) || !sane(entry->with_work_area))
         return EXEC_OUT_OF_SCOPE;
@@ -571,7 +566,7 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     return EXEC_OK;
 }
 
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
@@ -580,8 +575,6 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     const struct interpretive_code *code;
     enum exec_status status;
 
-    if (!code_at(bank, (word)(02000u + key % 1024u)))
-        return faithful_lm_p51_p53_interpretive.entries[index].call(program, state, device);
     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     code = code_at(bank, LOC);
@@ -612,13 +605,13 @@ bool p51_readable(uint16_t key, bool order_pair)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #include "p51_keys.inc"
 #undef BASIC
