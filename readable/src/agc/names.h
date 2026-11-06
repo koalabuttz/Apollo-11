@@ -4296,6 +4296,32 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define T5IDLDAP     ((word)K_T5IDLDAP)  /* 2CADR T5IDLOC */
 #endif
 
+#if COMANCHE055
+/* P51-P53.agc (CM). STATE +n is flag word n; OPTION2, DSPTEM1 and TIME1
+ * are named by ADDRESS_OF. */
+#define PROG52      ((word)K_PROG52)
+#define P52A        ((word)K_P52A)
+#define P52B        ((word)K_P52B)
+#define P52T        ((word)K_P52T)
+#define P52D        ((word)K_P52D)
+#define P52J        ((word)K_P52J)
+#define CAL53RET    ((word)K_CAL53RET)
+#define P52C        ((word)K_P52C)
+#define P52E        ((word)K_P52E)
+#define P52F        ((word)K_P52F)
+#define ENDP50S     ((word)K_ENDP50S)
+#define P52I        ((word)K_P52I)
+#define COARSTYP    ((word)K_COARSTYP)
+#define GYCRS       ((word)K_GYCRS)
+#define SET1_PDT    ((word)K_SET1_PDT) /* SET1/PDT */
+#define V06N34      ((word)KW_V06N34)
+#define VB06N22     ((word)KW_VB06N22)
+#define ALRM15      ((word)KW_ALRM15) /* ALRM15 EQUALS OCT15 */
+#define OCT13       ((word)KW_OCT13)
+#define V16N20      ((word)KW_V16N20)
+#define R55CDR      ((word)KW_R55CDR)
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
