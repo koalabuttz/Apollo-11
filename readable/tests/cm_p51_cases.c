@@ -15,7 +15,7 @@
  * the port's frozen test states (c64-port/tests/p51_p53_vectors.h, the
  * CM's) entered at the key, most stirred further: MPAC and its mode, the
  * push-down list and its pointer, the index registers, A, Q (a return
- * address, or any), MODREG, OPTION2 (P52's option, often 1 to 4), DSPTEM1
+ * address, or any), MODREG, STARCODE, OPTION2 (P52's option, often 1 to 4), DSPTEM1
  * (often +0 or -0, the crew's time of alignment not loaded), TIME2 and
  * TIME1, the flag words (often one bit changed), the vectors and times
  * (any erasable bank's words), NEWJOB (+0 or a core set, now and then
@@ -42,10 +42,8 @@ struct interpretive_code {
     unsigned count;
     const uint16_t *words;
 };
-extern const struct interpretive_code P52T_LANDING_SITE_CODE, P52T_NOMINAL_CODE, P52J_CODE,
-    P52J_COARSE_CODE, P52C_STARS_CODE, P52F_CODE, GYCRS_CODE, GYCRS_DONE_CODE, P52LS_CODE,
-    LSDISP_CODE, R52_CODE, R52VRB_CODE, R52A_CODE, R52Q_CODE, R53JOB_CODE, ADVORB_CODE, S50_CODE,
-    PICAPAR_CODE, PICEND_CODE, PICGXT_CODE;
+/* The binding's tables of the readable words, every one the keys run. */
+const struct interpretive_code *cm_p51_code(unsigned i);
 extern const agc_routine_table cm_p51_p53_basic, cm_p51_p53_interpretive;
 extern const agc_routine_table faithful_cm_p51_p53_basic, faithful_cm_p51_p53_interpretive;
 bool cm_p51_readable(uint16_t key, bool order_pair);
@@ -66,6 +64,7 @@ bool cm_p51_readable(uint16_t key, bool order_pair);
 #define BANKSET_AT  0165u
 #define PUSHLOC_AT  0166u
 #define MODREG_AT   01011u
+#define STARCODE_AT 00735u
 #define OPTION2_AT  01132u
 #define DSPTEM1_AT  01045u
 #define TIME2_AT    024u
@@ -119,14 +118,16 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 
 /* The parts written so far: part 1, bank 15's P52 (PROG52 to GYCRS's GOTO
  * R51K); part 2, bank 16's P52LS and LSDISP, and bank 14's R52 to ADVORB;
- * part 3, bank 14's S50 and PICAPAR. */
+ * part 3, bank 14's S50 and PICAPAR; part 4, bank 14's R51 and bank 15's
+ * R55. */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     return (bank == 015u && z >= 02000u && z <= 02243u) ||
+           (bank == 015u && z >= 02271u && z <= 02321u) ||
            (bank == 016u && z >= 02531u && z <= 02610u) ||
-           (bank == 014u && z >= 02011u && z <= 02531u);
+           (bank == 014u && z >= 02011u && z <= 02710u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -268,9 +269,18 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
         /* A, Q. */
         w[0] = rnd() % 2u ? any_word() : rnd();
         if (rnd() % 2u) w[2] = return_word();
-        /* MODREG: P52, P57, P00, or any. */
+        /* MODREG: P52 or P54, P57, P00, or any. */
         k = rnd() % 4u;
-        w[MODREG_AT] = k == 0u ? 064u : k == 1u ? 071u : k == 2u ? 0u : any_word();
+        w[MODREG_AT] = k == 0u   ? (rnd() % 2u ? 064u : 066u)
+                       : k == 1u ? 071u
+                       : k == 2u ? 0u
+                                 : any_word();
+        /* STARCODE: a star's code (0 to 50), one past it, -0, or any. */
+        k = rnd() % 4u;
+        w[STARCODE_AT] = k == 0u   ? (uint16_t)(rnd() % 051u)
+                         : k == 1u ? (uint16_t)(051u + rnd() % 4u)
+                         : k == 2u ? 077777u
+                                   : any_word();
         /* OPTION2: P52's option (1 to 4, the low two bits), or any. */
         if (rnd() % 2u) w[OPTION2_AT] = rnd() % 2u ? (uint16_t)(1u + rnd() % 4u) : any_word();
         /* DSPTEM1: the crew's time of alignment, often not loaded. */
@@ -405,28 +415,6 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
     return failures;
 }
 
-static const struct interpretive_code *const codes[] = {
-    &P52T_LANDING_SITE_CODE,
-    &P52T_NOMINAL_CODE,
-    &P52J_CODE,
-    &P52J_COARSE_CODE,
-    &P52C_STARS_CODE,
-    &P52F_CODE,
-    &GYCRS_CODE,
-    &GYCRS_DONE_CODE,
-    &P52LS_CODE,
-    &LSDISP_CODE,
-    &R52_CODE,
-    &R52VRB_CODE,
-    &R52A_CODE,
-    &R52Q_CODE,
-    &R53JOB_CODE,
-    &ADVORB_CODE,
-    &S50_CODE,
-    &PICAPAR_CODE,
-    &PICEND_CODE,
-    &PICGXT_CODE,
-};
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
 int main(int argc, char **argv)
@@ -439,9 +427,9 @@ int main(int argc, char **argv)
     }
     for (i = 0; i < P51_P53_VECTORS; ++i)
         if (p51_p53_cases[i].cm == 1u) mission_cases[mission_count++] = i;
-    for (i = 0; i < COUNT(codes); ++i) {
-        failures += words_differ(codes[i]);
-        words += codes[i]->count;
+    for (i = 0; cm_p51_code(i); ++i) {
+        failures += words_differ(cm_p51_code(i));
+        words += cm_p51_code(i)->count;
     }
     failures += tables_differ(&cm_p51_p53_basic, &faithful_cm_p51_p53_basic, "basic");
     failures +=

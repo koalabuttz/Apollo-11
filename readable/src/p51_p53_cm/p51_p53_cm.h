@@ -14,6 +14,8 @@
  *     and ADVORB (pp. 743-747, bank 14).
  *   part 3, s50_r56.c: S50 (LOCSAM) and PICAPAR (R56), the stars to sight
  *     (pp. 748-755, bank 14).
+ *   part 4, r51_r55.c: R51, the fine alignment (pp. 756-758, bank 14),
+ *     with CHKSCODE (p. 773), and R55, the gyro torque (p. 759, bank 15).
  * The binding (src/binding/cm_p51_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -137,6 +139,43 @@ void picapar_after_makecadr(void); /* PICAPAR +1 */
 void picend_after_exit(void);      /* PICEND +3 */
 void picgxt_after_exit(void);      /* PICGXT +1 */
 extern const struct interpretive_code S50_CODE, PICAPAR_CODE, PICEND_CODE, PICGXT_CODE;
+
+/* Part 4, R51 and R55 -- r51_r55.c (banks 14 and 15) */
+void r51_after_exit(void);       /* R51 +1 */
+void r51_3_after_exit(void);     /* R51.3 +4 */
+void r51_3_restart(void);        /* R51.3 +7 (PHASCHNG's return) */
+void r51dsp_terminate(void);     /* R51DSP +3 (GOFLASHR's return) */
+void r51dsp_proceed(void);       /* R51DSP +4 */
+void r51dsp_enter(void);         /* R51DSP +5 */
+void r51dsp_displayed(void);     /* R51DSP +6 */
+void r51dsp_after_blanket(void); /* R51DSP +010 */
+void r51dsp_bad_code(void);      /* R51DSP +012 (CHKSCODE's return) */
+void r51dsp_after_falton(void);  /* R51DSP +013 */
+void r51dsp_code_good(void);     /* R51DSP +014 (R51DSP's return) */
+void r51st_after_exit(void);     /* R51ST +2 */
+void r51a_after_exit(void);      /* R51A +4 */
+void r51a_after_mkreleas(void);  /* R51A +6 (BANKCALL's return) */
+void r51a_sighted(void);         /* R51A +013 */
+void r51a_both_sighted(void);    /* R51A +015 (R51.4's return) */
+void r51k_after_exit(void);      /* R51K +1 */
+void r51k_terminate(void);       /* R51K +4 (GOPERF1's return) */
+void r51k_proceed(void);         /* R51K +5 */
+void r51k_enter(void);           /* R51K +6 */
+void r51k_again(void);           /* R51K +7 */
+void r51k_done(void);            /* R51K +011 (BANKCALL's return) */
+bool chkscode(void);             /* CHKSCODE: false at the caller's +0 */
+void r55_1(void);                /* R55.1 (after PULSEM's EXIT) */
+void r55_terminate(void);        /* R55.1 +3 (GOFLASH's return) */
+void r55_proceed(void);          /* R55.1 +4 */
+void r55_enter(void);            /* R55.1 +5 */
+void r55_2(void);                /* R55.2 */
+void r55_torque(void);           /* R55.2 +2 (PHASCHNG's return) */
+void r55_after_imupulse(void);   /* R55.2 +5 (BANKCALL's return) */
+void r55_failed(void);           /* R55.2 +7 (BANKCALL's return) */
+void r55_torqued(void);          /* R55.2 +010 (CURTAINS's return) */
+void r55ret(void);               /* R55RET */
+extern const struct interpretive_code R51_CODE, R51_3_CODE, R51_STAR_CODE, R51_MARK_CODE,
+    R51A_PLANET_CODE, R51_TORQUE_CODE, R51K_DONE_CODE, R51_4_CODE, R51B_CODE, R55_CODE, R55RET_CODE;
 
 /* P51 -- p51.c (so far SET1/PDT) */
 void set1_pdt(void); /* SET1/PDT (by RTB) */
