@@ -45,7 +45,7 @@ struct interpretive_code {
     const uint16_t *words;
 };
 extern const struct interpretive_code NEWRNVN_CODE, P61_2_CODE, P62_CODE, P62_3_CODE, P65_CODE,
-    P67_2_CODE, S61_1_CODE, S61_1A_CODE;
+    P67_2_CODE, S61_1_CODE, S61_1A_CODE, S61_2_CODE;
 extern const agc_routine_table cm_p61_p67_basic, cm_p61_p67_interpretive;
 extern const agc_routine_table faithful_cm_p61_p67_basic, faithful_cm_p61_p67_interpretive;
 bool cm_p61_readable(uint16_t key, bool order_pair);
@@ -125,7 +125,7 @@ static bool in_written_part(uint16_t key)
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     if (key >= AGC_TRANSFER_ERASABLE_BASE) return true;
-    return bank == 026u && z >= 02217u && z <= 02650u;
+    return bank == 026u && z >= 02217u && z <= 02777u;
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -373,8 +373,16 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 }
 
 static const struct interpretive_code *const codes[] = {
-    &NEWRNVN_CODE, &P61_2_CODE, &P62_CODE,   &P62_3_CODE,
-    &P65_CODE,     &P67_2_CODE, &S61_1_CODE, &S61_1A_CODE,
+    &NEWRNVN_CODE,
+    &P61_2_CODE,
+    &P62_CODE,
+    &P62_3_CODE,
+    &P65_CODE,
+    &P67_2_CODE,
+    &S61_1_CODE,
+    &S61_1A_CODE,
+    /* Part 2 */
+    &S61_2_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
