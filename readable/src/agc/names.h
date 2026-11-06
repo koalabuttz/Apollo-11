@@ -4347,6 +4347,14 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define OCT404      ((word)KW_OCT404)
 #define ONE_8SEC    ((word)KW_1_8SEC) /* 1.8SEC */
 #define PRIO24      ((word)KW_PRIO24)
+#define LOCSAM      ((word)K_LOCSAM) /* LOCSAM = S50 */
+#define PICAPAR     ((word)K_PICAPAR)
+#define PICEND      ((word)K_PICEND)
+#define PICGXT      ((word)K_PICGXT)
+#define PICBXT      ((word)K_PICBXT)
+#define PIC2        ((word)K_PIC2)
+#define PIC4        ((word)K_PIC4)
+#define STRAT       ((word)K_STRAT)
 #endif
 
 /* NO.CORES + 1 core sets. */

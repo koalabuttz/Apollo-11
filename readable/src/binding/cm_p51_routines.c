@@ -186,6 +186,11 @@ static const struct basic_entry {
     {KEY(014u, TERM52 + 1u), term52_after_clearmrk},
     {KEY(014u, TERM52 + 3u), term52_after_mkreleas},
     {KEY(014u, TERM52 + 7u), term52_after_kleenex},
+    /* Part 3: S50 and R56 */
+    {KEY(014u, PICAPAR), picapar},
+    {KEY(014u, PICAPAR + 1u), picapar_after_makecadr},
+    {KEY(014u, PICEND + 3u), picend_after_exit},
+    {KEY(014u, PICGXT + 1u), picgxt_after_exit},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -218,6 +223,11 @@ static const struct interpretive_code *const codes[] = {
     &R52Q_CODE,
     &R53JOB_CODE,
     &ADVORB_CODE,
+    /* Part 3: S50 and R56 */
+    &S50_CODE,
+    &PICAPAR_CODE,
+    &PICEND_CODE,
+    &PICGXT_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
@@ -230,6 +240,60 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
             address < codes[i]->first + codes[i]->count)
             return codes[i];
     return NULL;
+}
+
+/* PICAPAR loads stars from the catalog in fixed memory, bank 14, by X1
+ * and X2 (VLOAD* CATLOG,1, DOT* CATLOG,2). The faithful port carries only
+ * the words a load of CATLOG less 0 to 228 reads (14,3414 to 14,3765)
+ * and refuses a load from fixed memory outside them. (At PIC4 +3, BON
+ * VLOAD*, the load comes only when CULTFLAG is clear.) */
+static const struct catalog_load {
+    uint16_t key;
+    bool by_x1, by_x2, after_bon;
+} catalog_loads[] = {
+    {KEY(014u, PIC2), true, false, false},        {KEY(014u, PIC4), false, true, false},
+    {KEY(014u, PIC4 + 3u), true, false, true},    {KEY(014u, PIC4 + 7u), false, true, false},
+    {KEY(014u, PIC4 + 017u), true, false, false}, {KEY(014u, PIC4 + 025u), false, true, false},
+    {KEY(014u, STRAT), true, true, false},
+};
+
+/* CULTFLAG: flag word 065 / 15, bit 065 % 15 counted from bit 15 down. */
+static bool cultflag(void)
+{
+    return (agc.memory[ADDRESS_OF(STATE) + I_CULTFLAG / 15u] & (040000u >> (I_CULTFLAG % 15u))) !=
+           0u;
+}
+
+/* Whether CATLOG less x is a fixed word outside the faithful port's copy:
+ * the address word, less one, less x (ones' complement: end around, or
+ * where x is negative, overflow corrected as ADS leaves ADDRWD), in fixed
+ * memory where any of its top four bits is set (INDEX2's MASK HIGH4); its
+ * top five bits are the bank (TS FBANK), so a load past bank 14's words
+ * is outside too. */
+static bool outside_star_catalog(word x)
+{
+    unsigned first = (I_CATLOG & 037777u) - 38u * 6u, sum;
+
+    sum = (I_CATLOG & 037777u) + (~x & 077777u);
+    if (sum > 077777u)
+        sum = (sum + 1u) & 077777u; /* end around */
+    else if ((x & 040000u) && (sum & 040000u))
+        sum &= 037777u; /* overflow corrected */
+    if (!(sum & 074000u)) return false;
+    return sum < first || sum + 6u > first + 234u;
+}
+
+static bool loads_outside_star_catalog(uint16_t key)
+{
+    word x1 = agc.memory[(FIXLOC + ADDRESS_OF(X1)) & 03777u];
+    word x2 = agc.memory[(FIXLOC + ADDRESS_OF(X2)) & 03777u];
+    unsigned i;
+
+    for (i = 0; i < COUNT(catalog_loads); ++i)
+        if (catalog_loads[i].key == key && !(catalog_loads[i].after_bon && cultflag()))
+            return (catalog_loads[i].by_x1 && outside_star_catalog(x1)) ||
+                   (catalog_loads[i].by_x2 && outside_star_catalog(x2));
+    return false;
 }
 
 /* The RTB routines the pairs run, at their addresses under their banks
@@ -307,6 +371,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
         LOC != (word)(02000u + key % 1024u) || BANKSET != BBANK || INTBIT15 != (FBANK & 040000u) ||
         !sane())
         return EXEC_OUT_OF_SCOPE;
+    if (loads_outside_star_catalog(key)) return EXEC_OUT_OF_SCOPE;
 
     before = *state;
     kept = *io;

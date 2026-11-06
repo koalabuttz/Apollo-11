@@ -44,7 +44,8 @@ struct interpretive_code {
 };
 extern const struct interpretive_code P52T_LANDING_SITE_CODE, P52T_NOMINAL_CODE, P52J_CODE,
     P52J_COARSE_CODE, P52C_STARS_CODE, P52F_CODE, GYCRS_CODE, GYCRS_DONE_CODE, P52LS_CODE,
-    LSDISP_CODE, R52_CODE, R52VRB_CODE, R52A_CODE, R52Q_CODE, R53JOB_CODE, ADVORB_CODE;
+    LSDISP_CODE, R52_CODE, R52VRB_CODE, R52A_CODE, R52Q_CODE, R53JOB_CODE, ADVORB_CODE, S50_CODE,
+    PICAPAR_CODE, PICEND_CODE, PICGXT_CODE;
 extern const agc_routine_table cm_p51_p53_basic, cm_p51_p53_interpretive;
 extern const agc_routine_table faithful_cm_p51_p53_basic, faithful_cm_p51_p53_interpretive;
 bool cm_p51_readable(uint16_t key, bool order_pair);
@@ -117,14 +118,15 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 }
 
 /* The parts written so far: part 1, bank 15's P52 (PROG52 to GYCRS's GOTO
- * R51K); part 2, bank 16's P52LS and LSDISP, and bank 14's R52 to ADVORB. */
+ * R51K); part 2, bank 16's P52LS and LSDISP, and bank 14's R52 to ADVORB;
+ * part 3, bank 14's S50 and PICAPAR. */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     return (bank == 015u && z >= 02000u && z <= 02243u) ||
            (bank == 016u && z >= 02531u && z <= 02610u) ||
-           (bank == 014u && z >= 02011u && z <= 02223u);
+           (bank == 014u && z >= 02011u && z <= 02531u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -169,6 +171,31 @@ static uint16_t return_word(void)
 static uint16_t index_word(void)
 {
     return (uint16_t)(077777u - (0400u + rnd() % 0340u));
+}
+
+/* An index register for S50 and PICAPAR: as the program sets it
+ * (index_word), a star's index in the catalog (its number, 1 to 38, times
+ * 6), -5 to 243, one that takes CATLOG's address (031760, the address
+ * word less one) into erasable memory (the work area below 0100, or a
+ * bank's words, not so near the bank's end that a vector would run past
+ * it; as a positive index, or a negative one whose sum overflows), or into
+ * another fixed bank (2 to 13). */
+static uint16_t index_or_star(void)
+{
+    unsigned k = rnd() % 5u;
+
+    if (k == 0u) return index_word();
+    if (k == 1u) return (uint16_t)(6u * (1u + rnd() % 38u));
+    if (k == 2u) {
+        k = rnd() % 249u;
+        return (uint16_t)(k < 5u ? 077777u - (k + 1u) : k - 5u);
+    }
+    if (k == 3u) {
+        k = rnd() % 04000u;
+        if ((k & 0377u) > 0371u) k -= 6u;
+        return (uint16_t)(rnd() % 2u ? 031760u - k : ~(06020u + k) & 077777u);
+    }
+    return (uint16_t)(031760u - (04000u + rnd() % 024000u));
 }
 
 /* A fixed CADR (as STQ leaves one): a chain of erasable CADRs that never
@@ -288,9 +315,15 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
     if (w[PUSHLOC_AT] < fixloc || w[PUSHLOC_AT] > fixloc + 037u || n % 4u != 0u)
         w[PUSHLOC_AT] = (uint16_t)(fixloc + rnd() % 040u);
     /* X1 and X2 (the work area's 046 and 047), each as the program sets
-     * it; S1 (050) any. */
-    w[(fixloc + X1_AT) & 03777u] = index_word();
-    w[(fixloc + X1_AT + 1u) & 03777u] = index_word();
+     * it, or in S50 and PICAPAR a star's index (index_or_star); S1 (050)
+     * any. */
+    if (key / 1024u == 014u && z >= 02225u && z <= 02531u) {
+        w[(fixloc + X1_AT) & 03777u] = index_or_star();
+        w[(fixloc + X1_AT + 1u) & 03777u] = index_or_star();
+    } else {
+        w[(fixloc + X1_AT) & 03777u] = index_word();
+        w[(fixloc + X1_AT + 1u) & 03777u] = index_word();
+    }
     if (n % 4u != 0u && rnd() % 2u) w[(fixloc + S1_AT) & 03777u] = any_word();
     w[6] = (uint16_t)((w[4] & 076000u) | eb);
     /* Now and then a state no program has: BBANK not the two banks, or a
@@ -301,6 +334,9 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
     w[BANKSET_AT] = rnd() % 32u ? w[6] : any_word();
     for (k = 0; k < sizeof cadr_words / sizeof cadr_words[0]; ++k)
         w[cadr_words[k]] = fixed_cadr(w[cadr_words[k]]);
+    /* QPRET as a GOTO reads it, in the work area (OCCULT's CLRGO and
+     * CULTED's SETGO). */
+    w[(fixloc + 052u) & 03777u] = fixed_cadr(w[(fixloc + 052u) & 03777u]);
 }
 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
@@ -386,6 +422,10 @@ static const struct interpretive_code *const codes[] = {
     &R52Q_CODE,
     &R53JOB_CODE,
     &ADVORB_CODE,
+    &S50_CODE,
+    &PICAPAR_CODE,
+    &PICEND_CODE,
+    &PICGXT_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
