@@ -2151,6 +2151,7 @@
 #define K_REFMF 03506u
 #define K_LSORIENT 03013u
 #define K_PULSEM 03230u
+#define K_CALCSMSC 02030u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u

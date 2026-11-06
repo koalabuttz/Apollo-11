@@ -4375,6 +4375,13 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define OCT14       ((word)KW_OCT14)
 #define OCT66       ((word)KW_OCT66)
 #define NEG47       ((word)KW_NEG47)
+#define CHKSDATA    ((word)K_CHKSDATA)
+#define CHKSDA      ((word)K_CHKSDA)
+#define CAL53A      ((word)K_CAL53A)
+#define COARFINE    ((word)K_COARFINE)
+#define RDCDUS      ((word)K_RDCDUS)
+#define CALCSMSC    ((word)K_CALCSMSC)
+#define VB6N5       ((word)KW_VB6N5)
 #endif
 
 /* NO.CORES + 1 core sets. */

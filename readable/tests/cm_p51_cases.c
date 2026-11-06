@@ -119,7 +119,7 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 /* The parts written so far: part 1, bank 15's P52 (PROG52 to GYCRS's GOTO
  * R51K); part 2, bank 16's P52LS and LSDISP, and bank 14's R52 to ADVORB;
  * part 3, bank 14's S50 and PICAPAR; part 4, bank 14's R51 and bank 15's
- * R55. */
+ * R55; part 5, bank 14's CHKSDATA to MATMOVE and bank 16's CALCSMSC. */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
@@ -127,7 +127,8 @@ static bool in_written_part(uint16_t key)
     return (bank == 015u && z >= 02000u && z <= 02243u) ||
            (bank == 015u && z >= 02271u && z <= 02321u) ||
            (bank == 016u && z >= 02531u && z <= 02610u) ||
-           (bank == 014u && z >= 02011u && z <= 02710u);
+           (bank == 016u && z >= 02612u && z <= 02660u) ||
+           (bank == 014u && z >= 02011u && z <= 03066u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -172,6 +173,25 @@ static uint16_t return_word(void)
 static uint16_t index_word(void)
 {
     return (uint16_t)(077777u - (0400u + rnd() % 0340u));
+}
+
+/* An index register for part 5's indexed operands (CHKSB's star vectors,
+ * CALOOP's angles, MATMOVE's matrices), which the program only ever points
+ * into erasable memory: in CALOOP the count, 1 to 3 (its AXT,1 3, by 1);
+ * elsewhere as the program sets it (index_word), or the complement of any
+ * place from 0400 to 03377 not so near the end of its 256 words that a
+ * matrix would run past them. (An index that takes such an operand into
+ * fixed memory reads the rope on the readable side, where the faithful
+ * port has no copy of it.) */
+static uint16_t index_erasable(unsigned step)
+{
+    unsigned place;
+
+    if (step) return (uint16_t)(step * (1u + rnd() % 3u));
+    if (rnd() % 2u) return index_word();
+    place = 0400u + rnd() % (03400u - 0400u);
+    if ((place & 0377u) > 0355u) place -= 022u;
+    return (uint16_t)(~place & 077777u);
 }
 
 /* An index register for S50 and PICAPAR: as the program sets it
@@ -325,11 +345,15 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
     if (w[PUSHLOC_AT] < fixloc || w[PUSHLOC_AT] > fixloc + 037u || n % 4u != 0u)
         w[PUSHLOC_AT] = (uint16_t)(fixloc + rnd() % 040u);
     /* X1 and X2 (the work area's 046 and 047), each as the program sets
-     * it, or in S50 and PICAPAR a star's index (index_or_star); S1 (050)
-     * any. */
+     * it, in S50 and PICAPAR a star's index (index_or_star), or in part 5
+     * into erasable memory (index_erasable); S1 (050) any. */
     if (key / 1024u == 014u && z >= 02225u && z <= 02531u) {
         w[(fixloc + X1_AT) & 03777u] = index_or_star();
         w[(fixloc + X1_AT + 1u) & 03777u] = index_or_star();
+    } else if (key / 1024u == 014u && z >= 02714u && z <= 03064u) {
+        unsigned step = z == 03001u || z == 03003u ? 1u : 0u;
+        w[(fixloc + X1_AT) & 03777u] = index_erasable(step);
+        w[(fixloc + X1_AT + 1u) & 03777u] = index_erasable(step);
     } else {
         w[(fixloc + X1_AT) & 03777u] = index_word();
         w[(fixloc + X1_AT + 1u) & 03777u] = index_word();
