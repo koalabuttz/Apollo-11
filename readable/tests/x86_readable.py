@@ -230,7 +230,8 @@ REPLACED = (
 # called (--gc-sections drops them). FINDCDUW--GUIDAP_INTERFACE
 # (src/findcduw): the LM's routine tables, all readable; the faithful ones,
 # renamed, are no longer called (--gc-sections drops them). P51-P53
-# (src/p51_p53): the LM's routine tables, readable part by part; the
+# (src/p51_p53): the LM's routine tables, all readable. P51-P53 of the CM
+# (src/p51_p53_cm): the CM's routine tables, readable part by part; the
 # faithful ones, renamed, run the keys no part has written yet.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
@@ -244,7 +245,8 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_llge.o': lambda m: ['lm_llge_basic', 'lm_llge_interpretive'] if m == 'lm' else [],
            'lm_servicer.o': lambda m: ['lm_servicer_routines', 'lm_servicer_interpretive'] if m == 'lm' else [],
            'lm_findcduw.o': lambda m: ['lm_findcduw_basic', 'lm_findcduw_interpretive'] if m == 'lm' else [],
-           'lm_p51_p53.o': lambda m: ['lm_p51_p53_basic', 'lm_p51_p53_interpretive'] if m == 'lm' else []}
+           'lm_p51_p53.o': lambda m: ['lm_p51_p53_basic', 'lm_p51_p53_interpretive'] if m == 'lm' else [],
+           'cm_p51_p53.o': lambda m: ['cm_p51_p53_basic', 'cm_p51_p53_interpretive'] if m == 'cm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
