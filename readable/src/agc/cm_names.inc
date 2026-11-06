@@ -1684,6 +1684,7 @@
 #define K_R51B 02704u
 #define K_PULSEM 02275u
 #define K_CHKSCODE 03366u
+#define K_CALCSMSC 02612u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -4488,6 +4489,7 @@
 #define I_ENDP50S 032145u
 #define I_R56 036056u
 #define I_R51A 030614u
+#define I_CAL53RET 032116u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u

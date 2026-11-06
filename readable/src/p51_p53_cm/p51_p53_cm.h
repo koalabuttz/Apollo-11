@@ -16,6 +16,9 @@
  *     (pp. 748-755, bank 14).
  *   part 4, r51_r55.c: R51, the fine alignment (pp. 756-758, bank 14),
  *     with CHKSCODE (p. 773), and R55, the gyro torque (p. 759, bank 15).
+ *   part 5, r54_cal53a.c: R54 (CHKSDATA), the star data test, CAL53A,
+ *     the coarse alignment if one is needed, and MATMOVE (pp. 759-762,
+ *     bank 14); RDCDUS (bank 15); CALCSMSC (p. 763, bank 16).
  * The binding (src/binding/cm_p51_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -176,6 +179,24 @@ void r55_torqued(void);          /* R55.2 +010 (CURTAINS's return) */
 void r55ret(void);               /* R55RET */
 extern const struct interpretive_code R51_CODE, R51_3_CODE, R51_STAR_CODE, R51_MARK_CODE,
     R51A_PLANET_CODE, R51_TORQUE_CODE, R51K_DONE_CODE, R51_4_CODE, R51B_CODE, R55_CODE, R55RET_CODE;
+
+/* Part 5, R54, CAL53A, RDCDUS, CALCSMSC -- r54_cal53a.c (banks 14-16) */
+void chksdata_after_exit(void);     /* CHKSDATA +034 */
+void chksdata_after_cleandsp(void); /* CHKSDATA +037 (BANKCALL's return) */
+void chksdata_terminate(void);      /* CHKSDATA +042 (GOFLASH's return) */
+void chksdata_proceed(void);        /* CHKSDATA +043 */
+void chksdata_enter(void);          /* CHKSDATA +044 */
+void coarfine_after_exit(void);     /* COARFINE +1 */
+void coarfine_after_phaschng(void); /* COARFINE +3 */
+void coarfine_after_imucoars(void); /* COARFINE +5 (BANKCALL's return) */
+void coarfine_coarse_failed(void);  /* COARFINE +7 (BANKCALL's return) */
+void coarfine_coarse_aligned(void); /* COARFINE +010 (CURTAINS's return) */
+void coarfine_after_imufin20(void); /* COARFINE +012 (BANKCALL's return) */
+void coarfine_fine_failed(void);    /* COARFINE +014 (BANKCALL's return) */
+void coarfine_fine(void);           /* COARFINE +015 (CURTAINS's return) */
+void rdcdus(void);                  /* RDCDUS (by RTB) */
+extern const struct interpretive_code CHKSDATA_CODE, CHKSDATA_ENTER_CODE, CHKSDA_CODE, CAL53A_CODE,
+    COARFINE_CODE, CALCSMSC_CODE;
 
 /* P51 -- p51.c (so far SET1/PDT) */
 void set1_pdt(void); /* SET1/PDT (by RTB) */

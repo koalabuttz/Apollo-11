@@ -224,6 +224,20 @@ static const struct basic_entry {
     {KEY(015u, R55_2 + 7u), r55_failed},
     {KEY(015u, R55_2 + 010u), r55_torqued},
     {KEY(015u, R55RET), r55ret},
+    /* Part 5: R54, CAL53A, RDCDUS, CALCSMSC */
+    {KEY(014u, CHKSDATA + 034u), chksdata_after_exit},
+    {KEY(014u, CHKSDATA + 037u), chksdata_after_cleandsp},
+    {KEY(014u, CHKSDATA + 042u), chksdata_terminate},
+    {KEY(014u, CHKSDATA + 043u), chksdata_proceed},
+    {KEY(014u, CHKSDATA + 044u), chksdata_enter},
+    {KEY(014u, COARFINE + 1u), coarfine_after_exit},
+    {KEY(014u, COARFINE + 3u), coarfine_after_phaschng},
+    {KEY(014u, COARFINE + 5u), coarfine_after_imucoars},
+    {KEY(014u, COARFINE + 7u), coarfine_coarse_failed},
+    {KEY(014u, COARFINE + 010u), coarfine_coarse_aligned},
+    {KEY(014u, COARFINE + 012u), coarfine_after_imufin20},
+    {KEY(014u, COARFINE + 014u), coarfine_fine_failed},
+    {KEY(014u, COARFINE + 015u), coarfine_fine},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -273,6 +287,13 @@ static const struct interpretive_code *const codes[] = {
     &R51B_CODE,
     &R55_CODE,
     &R55RET_CODE,
+    /* Part 5: R54, CAL53A, RDCDUS, CALCSMSC */
+    &CHKSDATA_CODE,
+    &CHKSDATA_ENTER_CODE,
+    &CHKSDA_CODE,
+    &CAL53A_CODE,
+    &COARFINE_CODE,
+    &CALCSMSC_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
@@ -348,11 +369,14 @@ static const struct {
     void (*routine)(void);
 } rtb_routines[] = {
     {LOADTIME, I_LOADTIME & 076000u, loadtime}, /* P52C, R51DSP */
+    {SGNAGREE, I_SGNAGREE & 076000u, sgnagree}, /* CHKSD */
+    {RDCDUS, I_RDCDUS & 076000u, rdcdus},       /* CAL53A (r54_cal53a.c) */
     {SET1_PDT, I_SET1_PDT & 076000u, set1_pdt}, /* GYCRS (p51.c) */
 };
 
-/* One pass; after an RTB, the routine (src/rtb_op_codes/, or SET1/PDT in
- * p51.c) and the pass on from its DANZIG, as the faithful pair runs them. */
+/* One pass; after an RTB, the routine (src/rtb_op_codes/, SET1/PDT in
+ * p51.c or RDCDUS in r54_cal53a.c) and the pass on from its DANZIG, as
+ * the faithful pair runs them. */
 static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
                                  cm_native_io *io, const struct interpretive_code *code)
 {
