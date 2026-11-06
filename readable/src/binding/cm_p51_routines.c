@@ -238,6 +238,35 @@ static const struct basic_entry {
     {KEY(014u, COARFINE + 012u), coarfine_after_imufin20},
     {KEY(014u, COARFINE + 014u), coarfine_fine_failed},
     {KEY(014u, COARFINE + 015u), coarfine_fine},
+    /* Part 6: P51, P53, SXTSM */
+    {KEY(014u, P51), p51},
+    {KEY(014u, P51 + 4u), p51_alarm},
+    {KEY(014u, P51 + 6u), p51_pooh},
+    {KEY(014u, P51AA), p51aa},
+    {KEY(014u, P51AA + 3u), p51aa_terminate},
+    {KEY(014u, P51AA + 4u), p51aa_proceed},
+    {KEY(014u, P51AA + 5u), p51aa_enter},
+    {KEY(014u, P51AA + 010u), p51aa_zero_gimbals},
+    {KEY(014u, P51AA + 017u), p51aa_display_v41},
+    {KEY(014u, P51AA + 022u), p51aa_imucoars},
+    {KEY(014u, P51AA + 024u), p51aa_after_imucoars},
+    {KEY(014u, P51AA + 026u), p51aa_coarse_failed},
+    {KEY(014u, P51AA + 027u), p51aa_imufin20},
+    {KEY(014u, P51AA + 031u), p51aa_after_imufin20},
+    {KEY(014u, P51AA + 033u), p51aa_fine_failed},
+    {KEY(014u, P51AA + 034u), p51aa_coarse_done},
+    {KEY(014u, P51AA + 037u), p51aa_again},
+    {KEY(014u, P51B + 2u), p51b_plus2},
+    {KEY(014u, P51B + 017u), p51b_one_mark},
+    {KEY(014u, P51C + 3u), p51c_checkmm},
+    {KEY(014u, P51C + 5u), p51c_not_p53},
+    {KEY(014u, P51C + 6u), p51c_p53},
+    {KEY(014u, P51E + 1u), p51e_plus1},
+    {KEY(014u, P51E + 4u), p51e_mkreleas},
+    {KEY(014u, P51E + 6u), p51e_star},
+    {KEY(014u, P51E + 013u), p51e_second_star},
+    {KEY(014u, P51F + 3u), p51f_plus3},
+    {KEY(014u, P51F + 022u), p51f_again},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -294,6 +323,13 @@ static const struct interpretive_code *const codes[] = {
     &CAL53A_CODE,
     &COARFINE_CODE,
     &CALCSMSC_CODE,
+    /* Part 6: P51, P53, SXTSM */
+    &P51B_CODE,
+    &P53_CODE,
+    &P51C_1_CODE,
+    &P51F_CODE,
+    &P51G_CODE,
+    &SXTSM_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
