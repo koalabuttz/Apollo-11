@@ -191,6 +191,39 @@ static const struct basic_entry {
     {KEY(014u, PICAPAR + 1u), picapar_after_makecadr},
     {KEY(014u, PICEND + 3u), picend_after_exit},
     {KEY(014u, PICGXT + 1u), picgxt_after_exit},
+    /* Part 4: R51 and R55 */
+    {KEY(014u, R51 + 1u), r51_after_exit},
+    {KEY(014u, R51_3 + 4u), r51_3_after_exit},
+    {KEY(014u, R51_3 + 7u), r51_3_restart},
+    {KEY(014u, R51DSP + 3u), r51dsp_terminate},
+    {KEY(014u, R51DSP + 4u), r51dsp_proceed},
+    {KEY(014u, R51DSP + 5u), r51dsp_enter},
+    {KEY(014u, R51DSP + 6u), r51dsp_displayed},
+    {KEY(014u, R51DSP + 010u), r51dsp_after_blanket},
+    {KEY(014u, R51DSP + 012u), r51dsp_bad_code},
+    {KEY(014u, R51DSP + 013u), r51dsp_after_falton},
+    {KEY(014u, R51DSP + 014u), r51dsp_code_good},
+    {KEY(014u, R51ST + 2u), r51st_after_exit},
+    {KEY(014u, R51A + 4u), r51a_after_exit},
+    {KEY(014u, R51A + 6u), r51a_after_mkreleas},
+    {KEY(014u, R51A + 013u), r51a_sighted},
+    {KEY(014u, R51A + 015u), r51a_both_sighted},
+    {KEY(014u, R51K + 1u), r51k_after_exit},
+    {KEY(014u, R51K + 4u), r51k_terminate},
+    {KEY(014u, R51K + 5u), r51k_proceed},
+    {KEY(014u, R51K + 6u), r51k_enter},
+    {KEY(014u, R51K + 7u), r51k_again},
+    {KEY(014u, R51K + 011u), r51k_done},
+    {KEY(015u, R55_1), r55_1},
+    {KEY(015u, R55_1 + 3u), r55_terminate},
+    {KEY(015u, R55_1 + 4u), r55_proceed},
+    {KEY(015u, R55_1 + 5u), r55_enter},
+    {KEY(015u, R55_2), r55_2},
+    {KEY(015u, R55_2 + 2u), r55_torque},
+    {KEY(015u, R55_2 + 5u), r55_after_imupulse},
+    {KEY(015u, R55_2 + 7u), r55_failed},
+    {KEY(015u, R55_2 + 010u), r55_torqued},
+    {KEY(015u, R55RET), r55ret},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -228,6 +261,18 @@ static const struct interpretive_code *const codes[] = {
     &PICAPAR_CODE,
     &PICEND_CODE,
     &PICGXT_CODE,
+    /* Part 4: R51 and R55 */
+    &R51_CODE,
+    &R51_3_CODE,
+    &R51_STAR_CODE,
+    &R51_MARK_CODE,
+    &R51A_PLANET_CODE,
+    &R51_TORQUE_CODE,
+    &R51K_DONE_CODE,
+    &R51_4_CODE,
+    &R51B_CODE,
+    &R55_CODE,
+    &R55RET_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
@@ -302,7 +347,7 @@ static const struct {
     word at, bank;
     void (*routine)(void);
 } rtb_routines[] = {
-    {LOADTIME, I_LOADTIME & 076000u, loadtime}, /* P52C */
+    {LOADTIME, I_LOADTIME & 076000u, loadtime}, /* P52C, R51DSP */
     {SET1_PDT, I_SET1_PDT & 076000u, set1_pdt}, /* GYCRS (p51.c) */
 };
 
@@ -381,6 +426,13 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
         *io = kept;
     }
     return status;
+}
+
+/* For the side-by-side test: the tables of readable words, by index (none
+ * past the last), which it checks against the rope. */
+const struct interpretive_code *cm_p51_code(unsigned i)
+{
+    return i < COUNT(codes) ? codes[i] : NULL;
 }
 
 /* For the side-by-side test: whether a key runs readable code. */

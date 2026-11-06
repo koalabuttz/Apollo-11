@@ -4355,6 +4355,26 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define PIC2        ((word)K_PIC2)
 #define PIC4        ((word)K_PIC4)
 #define STRAT       ((word)K_STRAT)
+#define R51         ((word)K_R51)
+#define R51_2       ((word)K_R51_2) /* R51.2 */
+#define R51_3       ((word)K_R51_3) /* R51.3 */
+#define R51_4       ((word)K_R51_4) /* R51.4 */
+#define R51DSP      ((word)K_R51DSP)
+#define R51ST       ((word)K_R51ST)
+#define R51A        ((word)K_R51A)
+#define R51K        ((word)K_R51K)
+#define R51B        ((word)K_R51B)
+#define CHKSCODE    ((word)K_CHKSCODE)
+#define R55         ((word)K_R55)
+#define R55_1       ((word)K_R55_1) /* R55.1 */
+#define R55_2       ((word)K_R55_2) /* R55.2 */
+#define R55RET      ((word)K_R55RET)
+#define ONE_6TH     ((word)KW_1_6TH) /* 1/6TH */
+#define V01N70      ((word)KW_V01N70)
+#define V06N93      ((word)KW_V06N93)
+#define OCT14       ((word)KW_OCT14)
+#define OCT66       ((word)KW_OCT66)
+#define NEG47       ((word)KW_NEG47)
 #endif
 
 /* NO.CORES + 1 core sets. */
