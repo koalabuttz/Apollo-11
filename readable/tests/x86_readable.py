@@ -239,7 +239,9 @@ REPLACED = (
 # (src/p51_p53): the LM's routine tables, all readable; the faithful ones,
 # renamed, are no longer called (--gc-sections drops them). P51-P53 of the CM
 # (src/p51_p53_cm): the CM's routine tables, all readable; the faithful
-# ones, renamed, are no longer called (--gc-sections drops them).
+# ones, renamed, are no longer called (--gc-sections drops them). P61-P67
+# (src/p61_p67): the CM's routine tables, readable part by part; the
+# faithful ones, renamed, run the keys no part has written yet.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],
@@ -253,7 +255,8 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_servicer.o': lambda m: ['lm_servicer_routines', 'lm_servicer_interpretive'] if m == 'lm' else [],
            'lm_findcduw.o': lambda m: ['lm_findcduw_basic', 'lm_findcduw_interpretive'] if m == 'lm' else [],
            'lm_p51_p53.o': lambda m: ['lm_p51_p53_basic', 'lm_p51_p53_interpretive'] if m == 'lm' else [],
-           'cm_p51_p53.o': lambda m: ['cm_p51_p53_basic', 'cm_p51_p53_interpretive'] if m == 'cm' else []}
+           'cm_p51_p53.o': lambda m: ['cm_p51_p53_basic', 'cm_p51_p53_interpretive'] if m == 'cm' else [],
+           'cm_p61_p67.o': lambda m: ['cm_p61_p67_basic', 'cm_p61_p67_interpretive'] if m == 'cm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
@@ -290,7 +293,7 @@ MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'g
                           'atmag', 'rereadac', 'landisp', 'fltrsub', 'prog52', 'EPHEMERIDES_CODE'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
                           'pikup20', 'p30phsi', 'P32STRT_CODE', 'prog21', 'r34los_after_exit', 'candel',
-                          'rtrn', 'p40csm', 'EPHEMERIDES_CODE')}
+                          'rtrn', 'p40csm', 'EPHEMERIDES_CODE', 'p61')}
 xb.OUT = READABLE / 'build/x86-flight'
 
 
