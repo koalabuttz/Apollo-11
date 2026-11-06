@@ -2300,15 +2300,40 @@ cm-p51-p53-cases: $(BUILD)/cp51-oracle $(BUILD)/cp51-cases
 	./$(BUILD)/cp51-oracle $(ROPES)
 	./$(BUILD)/cp51-cases $(ROPES)
 
-# LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc, the CM's sun and moon: the
-# port's test (tests/test_cm_ephemeris.c, its frozen cases run to their
-# stops through the program of tests/cm_ephemeris_target.c, against the
-# original program's yaAGC digests) through the readable tables, with
-# tests/with_ropes.c loading the ropes the readable interpreter reads; then
-# tests/ephemerides_cases.c side by side with the faithful routines
-# (renamed faithful_).
+# LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc. The LM's: the port's test
+# of its routine table through the transfer trampoline
+# (tests/test_lm_ephemeris_routines.c: every sampled entry, step by step,
+# must leave the image of the faithful composition, lm_ephemeris(), which
+# the port's frozen original words check) with the readable table, then
+# tests/lm_ephemerides_cases.c side by side with the faithful table
+# (renamed faithful_). The CM's: the port's test (tests/test_cm_ephemeris.c,
+# its frozen cases run to their stops through the program of
+# tests/cm_ephemeris_target.c, against the original program's yaAGC
+# digests) through the readable table, then tests/ephemerides_cases.c side
+# by side with the faithful routines (renamed faithful_). tests/with_ropes.c
+# loads the ropes the readable interpreter reads.
 EPH_NAMES_CM := cm_ephemeris_basic cm_ephemeris_interpretive
 EPH_COMMON := $(R63_COMMON)
+EPH_LM_PORT := $(addprefix $(PORT)/src/,lm_ephemeris.c ephemeris_time_scale.c ephemeris_add.c \
+	ephemeris_day.c ephemeris_shift.c sband_scalar.c sband_trig.c matrix_native.c rtb_unit.c \
+	fixed_data.c guidance_dp_divide.c guidance_trig.c guidance_product.c \
+	guidance_length_phased.c guidance_unit_phased.c rtb_vector.c guidance_norm.c \
+	guidance_shift.c lm_ephemeris_routines.c) $(PORT)/tests/lm_ephemeris_cases.c
+
+$(BUILD)/eph-faithful-lm.o: $(PORT)/src/lm_ephemeris_routine_table.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dlm_ephemeris_routines=faithful_lm_ephemeris_routines -c $< -o $@
+$(BUILD)/eph-test-lm.o: $(PORT)/tests/test_lm_ephemeris_routines.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/eph-oracle-lm: $(EPH_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/eph-test-lm.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(EPH_COMMON) $(EPH_LM_PORT) tests/with_ropes.c \
+		$(filter %.o,$^) -o $@
+$(BUILD)/eph-cases-lm: $(EPH_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/eph-faithful-lm.o \
+		tests/lm_ephemerides_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(EPH_COMMON) $(EPH_LM_PORT) $(filter %.o,$^) \
+		tests/lm_ephemerides_cases.c -o $@
 
 $(BUILD)/eph-faithful-cm.o: $(PORT)/src/cm_ephemeris.c
 	@mkdir -p $(dir $@)
@@ -2325,8 +2350,11 @@ $(BUILD)/eph-cases-cm: $(EPH_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/eph
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(EPH_COMMON) $(filter %.o,$^) \
 		tests/ephemerides_cases.c -o $@
 
-ephemerides-cases: $(BUILD)/eph-oracle-cm $(BUILD)/eph-cases-cm
+ephemerides-cases: $(BUILD)/eph-oracle-lm $(BUILD)/eph-cases-lm $(BUILD)/eph-oracle-cm \
+		$(BUILD)/eph-cases-cm
 	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/eph-oracle-lm $(ROPES)
+	./$(BUILD)/eph-cases-lm $(ROPES)
 	./$(BUILD)/eph-oracle-cm $(ROPES)
 	./$(BUILD)/eph-cases-cm $(ROPES)
 

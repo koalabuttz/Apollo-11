@@ -1,16 +1,127 @@
 /* SPDX-License-Identifier: MIT */
-/* LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc (Comanche055 pages
- * 785-788): its interpretive code in the listing's notation
- * (src/interpreter/notation.h), which the readable interpreter runs
- * (src/binding/ephemerides_routines.c). The faithful C is
- * c64-port/src/cm_ephemeris.c. */
+/* LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc (Luminary099 pages 984-987,
+ * Comanche055 pages 785-788): its interpretive code in the listing's
+ * notation (src/interpreter/notation.h), which the readable interpreter
+ * runs (src/binding/ephemerides_routines.c). The faithful C is
+ * c64-port/src/lm_ephemeris.c and cm_ephemeris.c. */
 #include "ephemerides.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
 #define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
-#if COMANCHE055
+#if LUMINARY099
+
+/* LSPOS -- LM pp. 984-987.
+ * "COMPUTES UNIT POSITION VECTOR OF THE SUN AND MOON IN THE BASIC
+ * REFERENCE SYSTEM", from angles that grow at a mean rate through the
+ * year, each less a periodic correction ("FUDGE FACTORS TO MINIMIZE THE
+ * DEVIATION"). The constants are in fixed memory, "UPDATED BY YEAR": the
+ * mean angles at midnight June 30th and their rates (RATESP), the
+ * corrections' amplitudes, phases and periods (VAL67) and the matrix of the
+ * obliquity and the moon's inclination (KONMAT, whose third word is a
+ * double precision zero). LUNPOS is LSPOS. The work area's 16D to 24D
+ * hold the angles (STMP), the correction (GTMP) and the time (TIMEP).
+ *
+ * LSPOS: the time, as the AGC clock's (TIME2 and TIME1) plus TEPHEM,
+ * "TIME FROM MIGNIGHT 1 JULY PRECEDING THE LAUNCH", divided by CSTODAY
+ * into days, to TIMEP; X1 and X2 zero; FREEFLAG clear. Then three angles,
+ * X2 stepping by -2 through STMP, X1 by -6 through VAL67:
+ *
+ *   POSITA  GTMP the sum of the corrections: at POSITB one amplitude
+ *           times the sine of the time over a period plus a phase, for
+ *           the moon's longitude twice over (BOFSET: once with FREEFLAG
+ *           clear, which sets it, once more), for the sun's once.
+ *   POSITD  the angle: its value at midnight June 30th, plus its rate
+ *           times the time, less GTMP, to STMP,2 (LOM, LOS, LON). With
+ *           X2 as it was plus 2, BZE goes to POSITE (no correction, for
+ *           the moon's node) after the sun's, BPL back to POSITA for the
+ *           sun's after the moon's, and on to POSITF after the third.
+ *   POSITF  the moon: COS(LOM), SIN(LOM) and SIN(LOM-LON) into a vector
+ *           (VDEF), through KONMAT, unit, to VMOON; the sun: COS(LOS),
+ *           SIN(LOS) and zero, through KONMAT, unit, to VSUN. RVQ.
+ *
+ * LUNVEL is an RVQ alone, "TO FOOL INTEGRATION". */
+static const word lspos[] = {
+    /* LSPOS */ ORDERS(SETPD, SR),
+    ADDRESS_PLUS_ONE_D(0),
+    SR_COUNT(14), /* "TP" */
+    ORDERS(TAD, DDV),
+    ADDRESS_PLUS_ONE(TEPHEM),  /* "TIME OF LAUNCH" */
+    ADDRESS_PLUS_ONE(CSTODAY), /* "24 HOURS-8640000 CENTI-SECS/DAY B-33" */
+    STORE_D(24),               /* TIMEP: "T IN DAYS" */
+    ORDERS(AXT_1, AXT_2),
+    NUMBER(0),
+    NUMBER(0),
+    ORDER(CLEAR),
+    SWITCH(CLEAR, FREEFLAG),
+    /* POSITA */ ORDER(DLOAD),
+    ADDRESS_PLUS_ONE_AT(KONMAT, 2), /* "ZEROS" */
+    STORE_D(22),                    /* GTMP */
+    /* POSITB */ ORDERS(DLOAD, DMP_STAR),
+    ADDRESS_PLUS_ONE_D(24),           /* "T" */
+    ADDRESS_PLUS_ONE_AT_X1(VAL67, 4), /* "1/27 OR 1/32 OR 1/365" */
+    ORDERS(SL, DAD_STAR),
+    SL_COUNT(8),
+    ADDRESS_PLUS_ONE_AT_X1(VAL67, 2), /* "AARG" */
+    ORDERS(SIN, DMP_STAR),            /* "SIN(T/27+PHI) OR T/32 OR T/365" */
+    ADDRESS_PLUS_ONE_AT_X1(VAL67, 0),
+    ORDERS(DAD, INCR_1), /* "PLUS" */
+    ADDRESS_PLUS_ONE_D(22),
+    MINUS_NUMBER(6),
+    STORE_D(22),
+    ORDER(BOFSET),
+    SWITCH(BOFSET, FREEFLAG),
+    ADDRESS(POSITB),
+    /* POSITD */ ORDERS(DLOAD, DMP_STAR),
+    ADDRESS_PLUS_ONE_D(24),            /* "T" */
+    ADDRESS_PLUS_ONE_AT_X2(RATESP, 0), /* "LOMR,LOSR,LONR" */
+    ORDERS(SL, DAD_STAR),
+    SL_COUNT(5),
+    ADDRESS_PLUS_ONE_AT_X2(RATESP, 6), /* "LOMO,LOSO,LONO" */
+    ORDER(DSU),
+    ADDRESS_PLUS_ONE_D(22),
+    STORE_X2_D(16), /* STMP,2: "LOM,LOS,LON" */
+    ORDERS(SLOAD, INCR_2),
+    ADDRESS_PLUS_ONE(X2),
+    MINUS_NUMBER(2),
+    ORDERS(DAD, BZE),
+    ADDRESS_PLUS_ONE(RCB_13), /* "PLUS 2" */
+    ADDRESS(POSITE),          /* "2ND" */
+    ORDER(BPL),
+    ADDRESS(POSITA),                 /* "1ST" */
+    /* POSITF */ ORDERS(DLOAD, DSU), /* "3RD" */
+    ADDRESS_PLUS_ONE_D(16),          /* "LOM" */
+    ADDRESS_PLUS_ONE_D(20),          /* "LON" */
+    ORDERS(SIN, PDDL),               /* "SIN(LOM-LON)" */
+    ADDRESS_PLUS_ONE_D(16),
+    ORDERS(SIN, PDDL), /* "SIN LOM" */
+    ADDRESS_PLUS_ONE_D(16),
+    ORDERS(COS, VDEF), /* "COS LOM" */
+    ORDERS(MXV, UNIT),
+    ADDRESS_PLUS_ONE(KONMAT), /* "K1,K2,K3,K4," */
+    STORE(VMOON),
+    ORDERS(DLOAD, PDDL),
+    ADDRESS_PLUS_ONE_AT(KONMAT, 2), /* "ZERO" */
+    ADDRESS_PLUS_ONE_D(18),
+    ORDERS(SIN, PDDL), /* "SIN LOS" */
+    ADDRESS_PLUS_ONE_D(18),
+    ORDERS(COS, VDEF), /* "COS LOS" */
+    ORDERS(MXV, UNIT),
+    ADDRESS_PLUS_ONE(KONMAT),
+    STORE(VSUN),
+    ORDER(RVQ),
+    /* POSITE */ ORDER(DLOAD),
+    ADDRESS_PLUS_ONE_AT(KONMAT, 2), /* "ZEROS" */
+    STORE_D(22),
+    ORDER(GOTO),
+    ADDRESS(POSITD),
+    /* LUNVEL */ ORDER(RVQ), /* "TO FOOL INTEGRATION" */
+};
+
+const struct interpretive_code EPHEMERIDES_CODE = {015u, K_LSPOS, COUNT(lspos), lspos};
+
+#else
 
 /* LUNAR AND SOLAR EPHEMERIDES SUBROUTINES -- CM pp. 785-788.
  *
