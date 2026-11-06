@@ -5556,6 +5556,14 @@
 #define I_TFFCONIC 057360u
 #define I_RTERM 000022u
 #define I_DP2_M4 057764u
+#define I_NRTERM 000020u
+#define I_NRMAG 000040u
+#define I_TFFVSQ 000024u
+#define I_TFFNP 000034u
+#define I_TFFX 000042u
+#define I_TFFTEM 000044u
+#define I_YSM 002650u
+#define I_ZSM 002656u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u

@@ -5,10 +5,10 @@
  * cm_p61_p67_interpretive (the order pairs).
  *
  * The tables carry every key of the faithful ones, in their order
- * (cm_p61_keys.inc, which tools/p20_p25_keys.py writes from them). The
- * file is written part by part: a key a part has written runs the
- * readable routine, any other the faithful port's (renamed faithful_).
- * The side-by-side test (tests/cm_p61_cases.c) checks which.
+ * (cm_p61_keys.inc, which tools/p20_p25_keys.py writes from them), and
+ * every key runs a readable routine: the file was written part by part,
+ * and is whole. The side-by-side test (tests/cm_p61_cases.c) checks that
+ * no key is left without one.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
  * the file (BANKCALL, PHASCHNG, NEWMODEX, ENDOFJOB, GOTOPOOH, ...) or
@@ -223,6 +223,10 @@ static const struct interpretive_code *const codes[] = {
     &S61_1A_CODE,
     /* Part 2 */
     &S61_2_CODE,
+    /* Part 3 */
+    &FISHCALC_CODE,
+    &TFF_TRIG_CODE,
+    &S62_3_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
@@ -275,9 +279,6 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
 
 /* ---- The keys, in the faithful tables' order ---- */
 
-/* The faithful tables, renamed. */
-extern const agc_routine_table faithful_cm_p61_p67_basic, faithful_cm_p61_p67_interpretive;
-
 /* A readable basic routine, from a state the faithful one takes. */
 static enum exec_status run_basic(void (*routine)(void), apollo_overlay_state *state,
                                   cm_native_io *io)
@@ -294,15 +295,14 @@ static enum exec_status run_basic(void (*routine)(void), apollo_overlay_state *s
     return EXEC_OK;
 }
 
-/* Each key's routine: the readable one, or the faithful port's. */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each key's routine. */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct basic_entry *entry = basic_entry(key);
     cm_native_io *io = device;
 
-    if (!entry) return faithful_cm_p61_p67_basic.entries[index].call(program, state, device);
-    if (!program || !program->hardware || !state || !io) return EXEC_OUT_OF_SCOPE;
+    if (!entry || !program || !program->hardware || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     if (FBANK != (word)((key / 1024u) << 10) || !basic_sane()) return EXEC_OUT_OF_SCOPE;
     return run_basic(entry->routine, state, io);
@@ -322,7 +322,7 @@ static enum exec_status basic_genret(const agc_native_program *program, apollo_o
     return run_basic(s61_1_return, state, io);
 }
 
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
@@ -331,8 +331,6 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     const struct interpretive_code *code;
     enum exec_status status;
 
-    if (!code_at(bank, (word)(02000u + key % 1024u)))
-        return faithful_cm_p61_p67_interpretive.entries[index].call(program, state, device);
     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     code = code_at(bank, LOC);
@@ -362,13 +360,13 @@ bool cm_p61_readable(uint16_t key, bool order_pair)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #define BASIC_ERASABLE(i, address)
 #include "cm_p61_keys.inc"

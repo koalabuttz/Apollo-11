@@ -13,8 +13,12 @@
  *     this part: its programs run into each other's.
  *   part 2, s61_2.c: S61.2, the entry prediction for N60 and N63 (pp.
  *     806-811, bank 26), all interpretive.
+ *   part 3, s61_2_subroutines.c: FISHCALC, VGAMCALC, TFF/TRIG, DISPTARG
+ *     and VRCALC (pp. 812-816, banks 26 and 27); s62_3.c: S62.3, the
+ *     entry attitude's gimbal angles (pp. 817-818, bank 10). All
+ *     interpretive; with them the file is whole.
  * The binding (src/binding/cm_p61_routines.c) runs the keys these parts
- * write, and the faithful port's routines at the others.
+ * write: all of the faithful port's.
  *
  * Basic code round stretches of interpretive code, which are in the
  * listing's notation (src/interpreter/notation.h). The entries below are
@@ -128,6 +132,9 @@ extern const struct interpretive_code S61_1_CODE, S61_1A_CODE;
 
 /* Part 2, S61.2 -- s61_2.c */
 extern const struct interpretive_code S61_2_CODE;
+
+/* Part 3, S61.2's subroutines -- s61_2_subroutines.c; S62.3 -- s62_3.c */
+extern const struct interpretive_code FISHCALC_CODE, TFF_TRIG_CODE, S62_3_CODE;
 
 /* S61.1, as P61 and P62 call it (TC S61.1, from at). */
 void s61_1(word at);
