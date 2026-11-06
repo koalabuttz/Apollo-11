@@ -317,6 +317,35 @@ static const struct basic_entry {
     {KEY(015u, COATRIM + 022u), coatrim_proceed, false},
     {KEY(015u, COATRIM + 023u), coatrim_enter, false},
     {KEY(015u, COATRIM + 026u), coatrim_after_phaschng, true},
+    /* Part 9: P57 */
+    {KEY(015u, P57), p57, false},
+    {KEY(015u, P57 + 2u), p57_after_imuchk, false},
+    {KEY(015u, P57OPT + 3u), p57opt_terminate, false},
+    {KEY(015u, P57OPT + 4u), p57opt_proceed, true},
+    {KEY(015u, P57OPT + 5u), p57opt_recycle, false},
+    {KEY(015u, P57OPT + 6u), p57opt_immediate_return, false},
+    {KEY(015u, P57OPT + 010u), p57opt_after_phaschng, false},
+    {KEY(015u, P57AA), p57aa, false},
+    {KEY(015u, P57AA + 3u), p57aa_terminate, false},
+    {KEY(015u, P57AA + 4u), p57aa_proceed, true},
+    {KEY(015u, P57AA + 5u), p57aa_recycle, false},
+    {KEY(015u, PACKOPTN), packoptn_after_exit, false},
+    {KEY(015u, DSPOPTN + 3u), dspoptn_terminate, false},
+    {KEY(015u, DSPOPTN + 4u), dspoptn_proceed, true},
+    {KEY(015u, DSPOPTN + 5u), dspoptn_recycle, false},
+    {KEY(015u, DSPOPTN + 024u), dspoptn_after_alarm, false},
+    {KEY(015u, DSPOPTN + 027u), dspoptn_alarm_terminate, false},
+    {KEY(015u, DSPOPTN + 030u), dspoptn_alarm_proceed, false},
+    {KEY(015u, DSPOPTN + 031u), dspoptn_alarm_recycle, false},
+    {KEY(015u, BYLMATT), bylmatt, false},
+    {KEY(015u, BYLMATT + 2u), bylmatt_after_upflag, true},
+    {KEY(015u, ATTCHK + 2u), attchk_after_phaschng, true},
+    {KEY(015u, P57JUMP + 2u), p57jump_after_phaschng, false},
+    {KEY(015u, P57JUMP + 4u), p57jump_after_downflag, true},
+    {KEY(015u, P57OPT3 + 013u), p57opt3_after_exit, false},
+    {KEY(015u, IMUCHK), imuchk, false},
+    {KEY(015u, IMUCHK + 6u), imuchk_after_alarm, false},
+    {KEY(015u, IMUCHK + 011u), imuchk_after_upflag, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -409,6 +438,17 @@ static const struct interpretive_code *const codes[] = {
     &P57POST_SITE_CODE,
     &COATRIM_CODE,
     &CORSIT_CODE,
+    /* Part 9: P57 */
+    &ALIGNOPT_REFSMMAT_CODE,
+    &TDISP_CODE,
+    &P57AA_TIME_CODE,
+    &MFREF_CODE,
+    &REFMF_CODE,
+    &GETLMATT_CODE,
+    &P57OPT0_CODE,
+    &P57OPT1_CODE,
+    &P57OPT3_CODE,
+    &LSORIENT_CODE,
 };
 
 /* The table an address of a bank is in, or none. */

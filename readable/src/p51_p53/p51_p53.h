@@ -27,7 +27,7 @@
  *   part 8, gyrotrim_surfline.c: GYROTRIM, the gyro torque, P57's star
  *     sightings and the lunar surface alignment (pp. 968-974).
  *   part 9, p57.c: P57, the lunar surface alignment program (pp.
- *     975-983); so far ATTCHK and P57JUMP.
+ *     975-983), with MFREF, REFMF, IMUCHK and LSORIENT.
  * The binding (src/binding/p51_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -264,6 +264,8 @@ void justtrim_torque(void);         /* JUSTTRIM +6 (CURTAINS's return) */
 void justtrim_after_imupulse(void); /* JUSTTRIM +011 (BANKCALL's return) */
 void justtrim_torque_failed(void);  /* JUSTTRIM +013 */
 void justtrim_return(void);         /* JUSTTRIM +014 (CURTAINS's return) */
+void two_stars(void);               /* 2STARS */
+void one_star(void);                /* 1STAR */
 void one_star_r59(void);            /* 1STAR +4 (PHASCHNG's return) */
 void r59ret(void);                  /* R59RET (R59OUT +5's TCF) */
 void r59ret_second_star(void);      /* R59RET +5 (PHASCHNG's return) */
@@ -289,10 +291,39 @@ void coatrim_after_phaschng(void);  /* COATRIM +026 */
 extern const struct interpretive_code GYROTRIM_CODE, R59RET_CODE, ASTAR_CODE, SURFLINE_CODE,
     FIVE_DEG_TEST_CODE, SURFDISP_CODE, B2F8_CODE, P57POST_SITE_CODE, COATRIM_CODE, CORSIT_CODE;
 
-/* Part 9, P57 -- p57.c (so far ATTCHK and P57JUMP, where parts 7 and 8
- * go on to) */
-void attchk(void);  /* ATTCHK */
-void p57jump(void); /* P57JUMP */
+/* Part 9, P57 -- p57.c */
+void p57(void);                     /* P57 */
+void p57_after_imuchk(void);        /* P57 +2 (BANKCALL's return) */
+void p57opt_terminate(void);        /* P57OPT +3 (GOPERF4R's return) */
+void p57opt_proceed(void);          /* P57OPT +4 */
+void p57opt_recycle(void);          /* P57OPT +5 */
+void p57opt_immediate_return(void); /* P57OPT +6 */
+void p57opt_after_phaschng(void);   /* P57OPT +010 */
+void p57aa(void);                   /* P57AA (after EXIT) */
+void p57aa_terminate(void);         /* P57AA +3 (GOFLASH's return) */
+void p57aa_proceed(void);           /* P57AA +4 */
+void p57aa_recycle(void);           /* P57AA +5 */
+void packoptn_after_exit(void);     /* PACKOPTN */
+void dspoptn_terminate(void);       /* DSPOPTN +3 (GOFLASH's return) */
+void dspoptn_proceed(void);         /* DSPOPTN +4 */
+void dspoptn_recycle(void);         /* DSPOPTN +5 */
+void dspoptn_after_alarm(void);     /* DSPOPTN +024 (ALARM's return) */
+void dspoptn_alarm_terminate(void); /* DSPOPTN +027 (GOFLASH's return) */
+void dspoptn_alarm_proceed(void);   /* DSPOPTN +030 */
+void dspoptn_alarm_recycle(void);   /* DSPOPTN +031 */
+void bylmatt(void);                 /* BYLMATT (after GETLMATT's EXIT) */
+void bylmatt_after_upflag(void);    /* BYLMATT +2 */
+void attchk(void);                  /* ATTCHK */
+void attchk_after_phaschng(void);   /* ATTCHK +2 */
+void p57jump(void);                 /* P57JUMP */
+void p57jump_after_phaschng(void);  /* P57JUMP +2 */
+void p57jump_after_downflag(void);  /* P57JUMP +4 */
+void p57opt3_after_exit(void);      /* P57OPT3 +013 */
+void imuchk(void);                  /* IMUCHK (by BANKCALL) */
+void imuchk_after_alarm(void);      /* IMUCHK +6 */
+void imuchk_after_upflag(void);     /* IMUCHK +011 */
+extern const struct interpretive_code ALIGNOPT_REFSMMAT_CODE, TDISP_CODE, P57AA_TIME_CODE,
+    MFREF_CODE, REFMF_CODE, GETLMATT_CODE, P57OPT0_CODE, P57OPT1_CODE, P57OPT3_CODE, LSORIENT_CODE;
 
 /* INDEX before CA, TS and DXCH (R52, R59 and PLANET) -- indexed.c: the
  * address the indexed instruction works on. */
