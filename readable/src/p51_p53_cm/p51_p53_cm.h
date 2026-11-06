@@ -22,6 +22,9 @@
  *   part 6, p51.c: P51, the IMU orientation determination, and P53, its
  *     backup (pp. 766-769, bank 14); SXTSM, a mark's line of sight in
  *     stable member axes (p. 771, bank 17).
+ *   part 7, r53_sr52_1.c: R53, the sighting mark routine (pp. 772-773,
+ *     bank 14); S52.2, the gimbal angles (p. 774, bank 11); SR52.1, the
+ *     optics angles to a target (pp. 775-777, bank 13).
  * The binding (src/binding/cm_p51_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -233,6 +236,33 @@ void p51f_again(void);           /* P51F +022 (after EXIT) */
 void set1_pdt(void);             /* SET1/PDT (by RTB) */
 extern const struct interpretive_code P51B_CODE, P53_CODE, P51C_1_CODE, P51F_CODE, P51G_CODE,
     SXTSM_CODE;
+
+/* Part 7, R53, S52.2, SR52.1 -- r53_sr52_1.c (banks 14, 11, 13) */
+void r53_after_exit(void);        /* R53A (after EXIT) */
+void r53a_after_sxtmark(void);    /* R53A +4 (BANKCALL's return) */
+void r53a_failed(void);           /* R53A +6 (BANKCALL's return) */
+void r53a_marked(void);           /* R53A +7 (CURTAINS's return) */
+void r53b_not_p22(void);          /* R53B +2 (CHECKMM's return) */
+void r53b_p22(void);              /* R53B +3 (CHECKMM's +1) */
+void r53b_not_p23(void);          /* R53B +6 (CHECKMM's return) */
+void r53b_p23(void);              /* R53B +7 (CHECKMM's +1) */
+void r53c1(void);                 /* R53C1 */
+void r53c_after_cleandsp(void);   /* R53C (BANKCALL's return) */
+void r53c_terminate(void);        /* R53C +3 (GOFLASH's +0) */
+void r53c_proceed(void);          /* R53C +4 (+1) */
+void r53c_enter(void);            /* R53C +5 (+2) */
+void r53z(void);                  /* R53Z (TC R53C's return) */
+void r53z_bad_code(void);         /* R53Z +1 (CHKSCODE's return) */
+void r53z_after_falton(void);     /* R53Z +2 (FALTON's return) */
+void r53z_code_good(void);        /* R53Z +3 (CHKSCODE's +2) */
+void r53d(void);                  /* R53D */
+void sr52_1(void);                /* SR52.1 */
+void sr52_1_after_makecadr(void); /* SR52.1 +1 (MAKECADR's return) */
+void sr52_1_cult(void);           /* SR52.1 +075 (after EXIT) */
+void sr52e22_after_exit(void);    /* SR52E22 +1 (after EXIT) */
+void sr52e3_after_exit(void);     /* SR52E3 +1 (after EXIT) */
+extern const struct interpretive_code R53_CODE, R53OUT_CODE, S52_2_CODE, SR52_1_CODE, TRUN38_CODE,
+    SR52E3_CODE;
 
 #endif
 

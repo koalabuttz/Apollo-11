@@ -267,6 +267,29 @@ static const struct basic_entry {
     {KEY(014u, P51E + 013u), p51e_second_star},
     {KEY(014u, P51F + 3u), p51f_plus3},
     {KEY(014u, P51F + 022u), p51f_again},
+    /* Part 7: R53, S52.2, SR52.1 */
+    {KEY(014u, R53A), r53_after_exit},
+    {KEY(014u, R53A + 4u), r53a_after_sxtmark},
+    {KEY(014u, R53A + 6u), r53a_failed},
+    {KEY(014u, R53A + 7u), r53a_marked},
+    {KEY(014u, R53B + 2u), r53b_not_p22},
+    {KEY(014u, R53B + 3u), r53b_p22},
+    {KEY(014u, R53B + 6u), r53b_not_p23},
+    {KEY(014u, R53B + 7u), r53b_p23},
+    {KEY(014u, R53C1), r53c1},
+    {KEY(014u, R53C), r53c_after_cleandsp},
+    {KEY(014u, R53C + 3u), r53c_terminate},
+    {KEY(014u, R53C + 4u), r53c_proceed},
+    {KEY(014u, R53C + 5u), r53c_enter},
+    {KEY(014u, R53Z), r53z},
+    {KEY(014u, R53Z + 1u), r53z_bad_code},
+    {KEY(014u, R53Z + 2u), r53z_after_falton},
+    {KEY(014u, R53Z + 3u), r53z_code_good},
+    {KEY(013u, SR52_1), sr52_1},
+    {KEY(013u, SR52_1 + 1u), sr52_1_after_makecadr},
+    {KEY(013u, SR52_1 + 075u), sr52_1_cult},
+    {KEY(013u, SR52E22 + 1u), sr52e22_after_exit},
+    {KEY(013u, SR52E3 + 1u), sr52e3_after_exit},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -330,6 +353,13 @@ static const struct interpretive_code *const codes[] = {
     &P51F_CODE,
     &P51G_CODE,
     &SXTSM_CODE,
+    /* Part 7: R53, S52.2, SR52.1 */
+    &R53_CODE,
+    &R53OUT_CODE,
+    &S52_2_CODE,
+    &SR52_1_CODE,
+    &TRUN38_CODE,
+    &SR52E3_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
