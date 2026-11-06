@@ -1685,6 +1685,11 @@
 #define K_PULSEM 02275u
 #define K_CHKSCODE 03366u
 #define K_CALCSMSC 02612u
+#define K_P51A 03076u
+#define K_P51AA 03100u
+#define K_P51C_1 03174u
+#define K_P51F 03235u
+#define K_SXTSM 02022u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -4490,6 +4495,14 @@
 #define I_R56 036056u
 #define I_R51A 030614u
 #define I_CAL53RET 032116u
+#define I_P51C_2 031177u
+#define I_P51D 031211u
+#define I_P51E 031217u
+#define I_P51G 031260u
+#define I_MKDNCDR 036054u
+#define I_R53 031300u
+#define I_SXTNB 046000u
+#define I_NBSM 047606u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u

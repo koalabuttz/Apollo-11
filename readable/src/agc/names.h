@@ -4382,6 +4382,17 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define RDCDUS      ((word)K_RDCDUS)
 #define CALCSMSC    ((word)K_CALCSMSC)
 #define VB6N5       ((word)KW_VB6N5)
+#define P51         ((word)K_P51)
+#define P51A        ((word)K_P51A)
+#define P51AA       ((word)K_P51AA)
+#define P51B        ((word)K_P51B)
+#define P51C        ((word)K_P51C)
+#define P51C_1      ((word)K_P51C_1) /* P51C.1 */
+#define P51E        ((word)K_P51E)
+#define P51F        ((word)K_P51F)
+#define P51G        ((word)K_P51G)
+#define V41K        ((word)KW_V41K)
+#define SXTSM       ((word)K_SXTSM)
 #endif
 
 /* NO.CORES + 1 core sets. */

@@ -5513,6 +5513,9 @@
 #define I_VRECTCSM 001562u
 #define I_STRATGY 030714u
 #define I_R56 030611u
+#define I_P51D 031510u
+#define I_P51E 031530u
+#define I_P51G 031552u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u

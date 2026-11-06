@@ -19,6 +19,9 @@
  *   part 5, r54_cal53a.c: R54 (CHKSDATA), the star data test, CAL53A,
  *     the coarse alignment if one is needed, and MATMOVE (pp. 759-762,
  *     bank 14); RDCDUS (bank 15); CALCSMSC (p. 763, bank 16).
+ *   part 6, p51.c: P51, the IMU orientation determination, and P53, its
+ *     backup (pp. 766-769, bank 14); SXTSM, a mark's line of sight in
+ *     stable member axes (p. 771, bank 17).
  * The binding (src/binding/cm_p51_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -198,8 +201,38 @@ void rdcdus(void);                  /* RDCDUS (by RTB) */
 extern const struct interpretive_code CHKSDATA_CODE, CHKSDATA_ENTER_CODE, CHKSDA_CODE, CAL53A_CODE,
     COARFINE_CODE, CALCSMSC_CODE;
 
-/* P51 -- p51.c (so far SET1/PDT) */
-void set1_pdt(void); /* SET1/PDT (by RTB) */
+/* Part 6, P51, P53, SXTSM -- p51.c (banks 14, 15, 17) */
+void p51(void);                  /* P51, alias P53 */
+void p51_alarm(void);            /* P51 +4 (P51A's return) */
+void p51_pooh(void);             /* P51 +6 (ALARM's return) */
+void p51aa(void);                /* P51AA (BANKCALL's return) */
+void p51aa_terminate(void);      /* P51AA +3 (GOPERF1's +0) */
+void p51aa_proceed(void);        /* P51AA +4 (+1, V33) */
+void p51aa_enter(void);          /* P51AA +5 (+2) */
+void p51aa_zero_gimbals(void);   /* P51AA +010 (PHASCHNG's return) */
+void p51aa_display_v41(void);    /* P51AA +017 (BANKCALL's return) */
+void p51aa_imucoars(void);       /* P51AA +022 (BANKCALL's return) */
+void p51aa_after_imucoars(void); /* P51AA +024 (BANKCALL's return) */
+void p51aa_coarse_failed(void);  /* P51AA +026 (BANKCALL's return) */
+void p51aa_imufin20(void);       /* P51AA +027 (CURTAINS's return) */
+void p51aa_after_imufin20(void); /* P51AA +031 (BANKCALL's return) */
+void p51aa_fine_failed(void);    /* P51AA +033 (BANKCALL's return) */
+void p51aa_coarse_done(void);    /* P51AA +034 (CURTAINS's return) */
+void p51aa_again(void);          /* P51AA +037 (PHASCHNG's return) */
+void p51b_plus2(void);           /* P51B +2 (PHASCHNG's return) */
+void p51b_one_mark(void);        /* P51B +017 (after EXIT) */
+void p51c_checkmm(void);         /* P51C +3 (PHASCHNG's return) */
+void p51c_not_p53(void);         /* P51C +5 (CHECKMM's return) */
+void p51c_p53(void);             /* P51C +6 (CHECKMM's +1) */
+void p51e_plus1(void);           /* P51E +1 (after EXIT) */
+void p51e_mkreleas(void);        /* P51E +4 (PHASCHNG's return) */
+void p51e_star(void);            /* P51E +6 (BANKCALL's return) */
+void p51e_second_star(void);     /* P51E +013 (PHASCHNG's return) */
+void p51f_plus3(void);           /* P51F +3 (PHASCHNG's return) */
+void p51f_again(void);           /* P51F +022 (after EXIT) */
+void set1_pdt(void);             /* SET1/PDT (by RTB) */
+extern const struct interpretive_code P51B_CODE, P53_CODE, P51C_1_CODE, P51F_CODE, P51G_CODE,
+    SXTSM_CODE;
 
 #endif
 

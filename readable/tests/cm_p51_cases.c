@@ -65,6 +65,8 @@ bool cm_p51_readable(uint16_t key, bool order_pair);
 #define PUSHLOC_AT  0166u
 #define MODREG_AT   01011u
 #define STARCODE_AT 00735u
+#define STARIND_AT  00304u
+#define MARKSTAT_AT 01330u
 #define OPTION2_AT  01132u
 #define DSPTEM1_AT  01045u
 #define TIME2_AT    024u
@@ -128,7 +130,8 @@ static bool in_written_part(uint16_t key)
            (bank == 015u && z >= 02271u && z <= 02321u) ||
            (bank == 016u && z >= 02531u && z <= 02610u) ||
            (bank == 016u && z >= 02612u && z <= 02660u) ||
-           (bank == 014u && z >= 02011u && z <= 03066u);
+           (bank == 017u && z >= 02022u && z <= 02052u) ||
+           (bank == 014u && z >= 02011u && z <= 03270u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -183,15 +186,19 @@ static uint16_t index_word(void)
  * matrix would run past them. (An index that takes such an operand into
  * fixed memory reads the rope on the readable side, where the faithful
  * port has no copy of it.) */
+static uint16_t erasable_place(void)
+{
+    unsigned place = 0400u + rnd() % (03400u - 0400u);
+
+    if ((place & 0377u) > 0355u) place -= 022u;
+    return (uint16_t)place;
+}
+
 static uint16_t index_erasable(unsigned step)
 {
-    unsigned place;
-
     if (step) return (uint16_t)(step * (1u + rnd() % 3u));
     if (rnd() % 2u) return index_word();
-    place = 0400u + rnd() % (03400u - 0400u);
-    if ((place & 0377u) > 0355u) place -= 022u;
-    return (uint16_t)(~place & 077777u);
+    return (uint16_t)(~erasable_place() & 077777u);
 }
 
 /* An index register for S50 and PICAPAR: as the program sets it
@@ -350,7 +357,7 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
     if (key / 1024u == 014u && z >= 02225u && z <= 02531u) {
         w[(fixloc + X1_AT) & 03777u] = index_or_star();
         w[(fixloc + X1_AT + 1u) & 03777u] = index_or_star();
-    } else if (key / 1024u == 014u && z >= 02714u && z <= 03064u) {
+    } else if ((key / 1024u == 014u && z >= 02714u && z <= 03064u) || key / 1024u == 017u) {
         unsigned step = z == 03001u || z == 03003u ? 1u : 0u;
         w[(fixloc + X1_AT) & 03777u] = index_erasable(step);
         w[(fixloc + X1_AT + 1u) & 03777u] = index_erasable(step);
@@ -359,6 +366,16 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
         w[(fixloc + X1_AT + 1u) & 03777u] = index_word();
     }
     if (n % 4u != 0u && rnd() % 2u) w[(fixloc + S1_AT) & 03777u] = any_word();
+    /* In P51 and SXTSM, STARIND, "STAR 1 OR 2": 0 or 1, or in P51 any (in
+     * SXTSM it picks MKDNCDR's ECADR, in fixed memory, which the faithful
+     * port copies only those two words of); MARKSTAT, the address of the
+     * mark's words, which SXTSM indexes by: a place in erasable memory (as
+     * index_erasable's), or in P51 any. */
+    if ((key / 1024u == 014u && z >= 03067u) || key / 1024u == 017u) {
+        bool sxtsm = key / 1024u == 017u;
+        w[STARIND_AT] = rnd() % 2u || sxtsm ? (uint16_t)(rnd() % 2u) : any_word();
+        w[MARKSTAT_AT] = rnd() % 4u || sxtsm ? erasable_place() : any_word();
+    }
     w[6] = (uint16_t)((w[4] & 076000u) | eb);
     /* Now and then a state no program has: BBANK not the two banks, or a
      * word of 16 bits. */
