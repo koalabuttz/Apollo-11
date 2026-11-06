@@ -43,7 +43,8 @@ struct interpretive_code {
     const uint16_t *words;
 };
 extern const struct interpretive_code P52T_LANDING_SITE_CODE, P52T_NOMINAL_CODE, P52J_CODE,
-    P52J_COARSE_CODE, P52C_STARS_CODE, P52F_CODE, GYCRS_CODE, GYCRS_DONE_CODE;
+    P52J_COARSE_CODE, P52C_STARS_CODE, P52F_CODE, GYCRS_CODE, GYCRS_DONE_CODE, P52LS_CODE,
+    LSDISP_CODE, R52_CODE, R52VRB_CODE, R52A_CODE, R52Q_CODE, R53JOB_CODE, ADVORB_CODE;
 extern const agc_routine_table cm_p51_p53_basic, cm_p51_p53_interpretive;
 extern const agc_routine_table faithful_cm_p51_p53_basic, faithful_cm_p51_p53_interpretive;
 bool cm_p51_readable(uint16_t key, bool order_pair);
@@ -116,12 +117,14 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 }
 
 /* The parts written so far: part 1, bank 15's P52 (PROG52 to GYCRS's GOTO
- * R51K). */
+ * R51K); part 2, bank 16's P52LS and LSDISP, and bank 14's R52 to ADVORB. */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
-    return bank == 015u && z >= 02000u && z <= 02243u;
+    return (bank == 015u && z >= 02000u && z <= 02243u) ||
+           (bank == 016u && z >= 02531u && z <= 02610u) ||
+           (bank == 014u && z >= 02011u && z <= 02223u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -367,8 +370,22 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 }
 
 static const struct interpretive_code *const codes[] = {
-    &P52T_LANDING_SITE_CODE, &P52T_NOMINAL_CODE, &P52J_CODE,  &P52J_COARSE_CODE,
-    &P52C_STARS_CODE,        &P52F_CODE,         &GYCRS_CODE, &GYCRS_DONE_CODE,
+    &P52T_LANDING_SITE_CODE,
+    &P52T_NOMINAL_CODE,
+    &P52J_CODE,
+    &P52J_COARSE_CODE,
+    &P52C_STARS_CODE,
+    &P52F_CODE,
+    &GYCRS_CODE,
+    &GYCRS_DONE_CODE,
+    &P52LS_CODE,
+    &LSDISP_CODE,
+    &R52_CODE,
+    &R52VRB_CODE,
+    &R52A_CODE,
+    &R52Q_CODE,
+    &R53JOB_CODE,
+    &ADVORB_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

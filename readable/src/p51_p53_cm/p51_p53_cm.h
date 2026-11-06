@@ -9,6 +9,9 @@
  *   part 1, p52.c: P52, the IMU realignment, through COARSTYP and GYCRS,
  *     the gyro torque coarse alignment (pp. 737-742); p51.c starts with
  *     SET1/PDT, which GYCRS runs.
+ *   part 2, p52.c: P52LS and LSDISP, the landing site's orientation (pp.
+ *     742-743, bank 16); r52.c: R52, the automatic optics positioning,
+ *     and ADVORB (pp. 743-747, bank 14).
  * The binding (src/binding/cm_p51_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -82,6 +85,49 @@ void gycrs_torqued(void);         /* GYCRS +033 (CURTAINS's return) */
 void gycrs_after_phaschng(void);  /* GYCRS +035 */
 extern const struct interpretive_code P52T_LANDING_SITE_CODE, P52T_NOMINAL_CODE, P52J_CODE,
     P52J_COARSE_CODE, P52C_STARS_CODE, P52F_CODE, GYCRS_CODE, GYCRS_DONE_CODE;
+
+/* Part 2, P52LS -- p52.c (bank 16) */
+void lsdisp(void);           /* LSDISP (after EXIT) */
+void lsdisp_terminate(void); /* LSDISP +3 (GOFLASH's return) */
+void lsdisp_proceed(void);   /* LSDISP +4 */
+void lsdisp_enter(void);     /* LSDISP +5 */
+void lsdisp_accept(void);    /* LSDISP +6 */
+extern const struct interpretive_code P52LS_CODE, LSDISP_CODE;
+
+/* Part 2, R52 -- r52.c (bank 14) */
+void r52vrb_after_exit(void);     /* R52VRB +1 */
+void r52a(void);                  /* R52A */
+void r52c(void);                  /* R52C */
+void r52d_over_90(void);          /* R52D +2 (SR52.1's return) */
+void r52d_over_50(void);          /* R52D +3 */
+void r52d_under_50(void);         /* R52D +4 */
+void r52ja(void);                 /* R52JA (UPFLAG's return) */
+void r52ja_not_lem(void);         /* R52JA +4 (R52E's return) */
+void r52e(void);                  /* R52E (GODSPR's return) */
+void r52e_trunnion(void);         /* R52E +7 (TC +3's return) */
+void r52f_after_delayjob(void);   /* R52F +3 */
+void r52ha(void);                 /* R52HA (after EXIT) */
+void r52ha_after_r61csm(void);    /* R52HA +2 */
+void r52sync(void);               /* R52SYNC (R52D's return) */
+void r52j(void);                  /* R52J */
+void r52j_after_downflag(void);   /* R52J +2 */
+void r52j_after_alarm(void);      /* R52J +4 */
+void r52m(void);                  /* R52M (R52JA's return) */
+void r52m_no_r53(void);           /* R52M +4 (R52F's return) */
+void r52m_after_findvac(void);    /* R52M +011 */
+void r53job(void);                /* R53JOB */
+void endplac_after_exit(void);    /* ENDPLAC +1 */
+void r52l_not_lem(void);          /* R52L +4 (R52J's return) */
+void r52l_terminate(void);        /* R52L +7 (PRIOLARM's return) */
+void r52l_proceed(void);          /* R52L +010 */
+void r52l_enter(void);            /* R52L +011 */
+void r52l_immediate_return(void); /* R52L +012 */
+void term52(void);                /* TERM52 */
+void term52_after_clearmrk(void); /* TERM52 +1 */
+void term52_after_mkreleas(void); /* TERM52 +3 (BANKCALL's return) */
+void term52_after_kleenex(void);  /* TERM52 +7 (BANKCALL's return) */
+extern const struct interpretive_code R52_CODE, R52VRB_CODE, R52A_CODE, R52Q_CODE, R53JOB_CODE,
+    ADVORB_CODE;
 
 /* P51 -- p51.c (so far SET1/PDT) */
 void set1_pdt(void); /* SET1/PDT (by RTB) */

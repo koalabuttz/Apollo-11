@@ -150,6 +150,42 @@ static const struct basic_entry {
     {KEY(015u, GYCRS + 032u), gycrs_torque_failed},
     {KEY(015u, GYCRS + 033u), gycrs_torqued},
     {KEY(015u, GYCRS + 035u), gycrs_after_phaschng},
+    /* Part 2: P52LS and R52 */
+    {KEY(016u, LSDISP), lsdisp},
+    {KEY(016u, LSDISP + 3u), lsdisp_terminate},
+    {KEY(016u, LSDISP + 4u), lsdisp_proceed},
+    {KEY(016u, LSDISP + 5u), lsdisp_enter},
+    {KEY(016u, LSDISP + 6u), lsdisp_accept},
+    {KEY(014u, R52VRB + 1u), r52vrb_after_exit},
+    {KEY(014u, R52A), r52a},
+    {KEY(014u, R52C), r52c},
+    {KEY(014u, R52D + 2u), r52d_over_90},
+    {KEY(014u, R52D + 3u), r52d_over_50},
+    {KEY(014u, R52D + 4u), r52d_under_50},
+    {KEY(014u, R52JA), r52ja},
+    {KEY(014u, R52JA + 4u), r52ja_not_lem},
+    {KEY(014u, R52E), r52e},
+    {KEY(014u, R52E + 7u), r52e_trunnion},
+    {KEY(014u, R52F + 3u), r52f_after_delayjob},
+    {KEY(014u, R52HA), r52ha},
+    {KEY(014u, R52HA + 2u), r52ha_after_r61csm},
+    {KEY(014u, R52SYNC), r52sync},
+    {KEY(014u, R52J + 2u), r52j_after_downflag},
+    {KEY(014u, R52J + 4u), r52j_after_alarm},
+    {KEY(014u, R52M), r52m},
+    {KEY(014u, R52M + 4u), r52m_no_r53},
+    {KEY(014u, R52M + 011u), r52m_after_findvac},
+    {KEY(014u, R53JOB), r53job},
+    {KEY(014u, ENDPLAC + 1u), endplac_after_exit},
+    {KEY(014u, R52L + 4u), r52l_not_lem},
+    {KEY(014u, R52L + 7u), r52l_terminate},
+    {KEY(014u, R52L + 010u), r52l_proceed},
+    {KEY(014u, R52L + 011u), r52l_enter},
+    {KEY(014u, R52L + 012u), r52l_immediate_return},
+    {KEY(014u, TERM52), term52},
+    {KEY(014u, TERM52 + 1u), term52_after_clearmrk},
+    {KEY(014u, TERM52 + 3u), term52_after_mkreleas},
+    {KEY(014u, TERM52 + 7u), term52_after_kleenex},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -165,8 +201,23 @@ static const struct basic_entry *basic_entry(uint16_t key)
 
 static const struct interpretive_code *const codes[] = {
     /* Part 1: P52 */
-    &P52T_LANDING_SITE_CODE, &P52T_NOMINAL_CODE, &P52J_CODE,  &P52J_COARSE_CODE,
-    &P52C_STARS_CODE,        &P52F_CODE,         &GYCRS_CODE, &GYCRS_DONE_CODE,
+    &P52T_LANDING_SITE_CODE,
+    &P52T_NOMINAL_CODE,
+    &P52J_CODE,
+    &P52J_COARSE_CODE,
+    &P52C_STARS_CODE,
+    &P52F_CODE,
+    &GYCRS_CODE,
+    &GYCRS_DONE_CODE,
+    /* Part 2: P52LS and R52 */
+    &P52LS_CODE,
+    &LSDISP_CODE,
+    &R52_CODE,
+    &R52VRB_CODE,
+    &R52A_CODE,
+    &R52Q_CODE,
+    &R53JOB_CODE,
+    &ADVORB_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
