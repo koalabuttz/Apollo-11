@@ -184,7 +184,7 @@ CRENT_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/reentry/*.c)) \
 CBAT_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/body_attitude/*.c)) \
 	src/rtb_op_codes/rtb_op_codes.c src/binding/cm_body_attitude_routines.c
 CP37_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p37_p70/*.c)) \
-	src/binding/cm_p37_p70_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/cm_p37_p70_routines.c
 LAD_SOURCES := src/agc/agc.c src/binding/machine.c src/landing_displays/landing_displays.c \
 	src/binding/landing_displays_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
