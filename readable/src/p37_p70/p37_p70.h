@@ -7,7 +7,7 @@
  * TARGET PARAMETERS FOR RETURN TO EARTH FOR USE BY SPS PROGRAM (P40) OR
  * RCS PROGRAM (P41)." The faithful C is c64-port/src/cm_p37_p70.c.
  *
- * The files, in the listing's order (written part by part, README.md):
+ * The files, in the listing's order (README.md):
  *   part 1, p37.c: P37's main line, the conic trajectory (pp. 890-895,
  *     bank 36); p37_displays.c: RTEVN, the precision display, the
  *     targeting and the end (P37G to P37W), and the display subroutines
@@ -17,10 +17,11 @@
  *   part 3, prec100.c: the state at ignition and the precision
  *     trajectory (pp. 905-913, banks 32 and 16);
  *   part 4, v2t100.c: the integration calls and the velocity after the
- *     burn (pp. 914-923, banks 31 and 32).
+ *     burn (pp. 914-923, banks 31 and 32);
+ *   part 5, gamdv.c: the search for X(T1), the change in speed for it and
+ *     the bounds on it (pp. 924-930, bank 32).
  * The binding (src/binding/cm_p37_p70_routines.c) runs every key of the
- * faithful port's: a key a part has written on these routines, any other
- * on the faithful port's.
+ * faithful port's on these routines.
  *
  * Basic code round stretches of interpretive code, which are in the
  * listing's notation (src/interpreter/notation.h). The entries below are
@@ -107,6 +108,9 @@ extern const struct interpretive_code INVC100_CODE, PREC100_CODE, PREC130_CODE, 
 /* Part 4, RTENCK1 to RTENCK3 and V2T100 -- v2t100.c */
 void v2terror_after_exit(void); /* V2TERROR +1 */
 extern const struct interpretive_code RTENCK_CODE, V2T100_CODE, V2T101_CODE, V2T102_CODE;
+
+/* Part 5, GAMDV10, DVCALC and XT1LIM -- gamdv.c (order pairs only) */
+extern const struct interpretive_code GAMDV10_CODE, DVCALC_CODE, XT1LIM_CODE;
 
 #endif
 

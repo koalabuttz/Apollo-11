@@ -4564,6 +4564,9 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define RTENCK1  ((word)K_RTENCK1)
 #define V2T100   ((word)K_V2T100)
 #define V2TERROR ((word)K_V2TERROR)
+#define GAMDV10  ((word)K_GAMDV10)
+#define DVCALC   ((word)K_DVCALC)
+#define XT1LIM   ((word)K_XT1LIM)
 #define V6N33RTE ((word)KW_V6N33RTE) /* VN 0633 */
 #define V4N06RTE ((word)KW_V4N06RTE) /* VN 0406 */
 #define V6N61RTE ((word)KW_V6N61RTE) /* VN 0661 */
