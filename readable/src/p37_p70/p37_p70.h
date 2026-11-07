@@ -15,7 +15,9 @@
  *   part 2, rtedisp.c: the alarm display, the time to a radius and the
  *     display calculation with the landing site (pp. 900-904, bank 32);
  *   part 3, prec100.c: the state at ignition and the precision
- *     trajectory (pp. 905-913, banks 32 and 16).
+ *     trajectory (pp. 905-913, banks 32 and 16);
+ *   part 4, v2t100.c: the integration calls and the velocity after the
+ *     burn (pp. 914-923, banks 31 and 32).
  * The binding (src/binding/cm_p37_p70_routines.c) runs every key of the
  * faithful port's: a key a part has written on these routines, any other
  * on the faithful port's.
@@ -101,6 +103,10 @@ extern const struct interpretive_code P370ALRM_CODE, P370ALRM_GOTO_CODE, TMRAD10
 /* Part 3, INVC100 and PREC100 -- prec100.c (order pairs only) */
 extern const struct interpretive_code INVC100_CODE, PREC100_CODE, PREC130_CODE, PREC175_CODE,
     PREC220_CODE;
+
+/* Part 4, RTENCK1 to RTENCK3 and V2T100 -- v2t100.c */
+void v2terror_after_exit(void); /* V2TERROR +1 */
+extern const struct interpretive_code RTENCK_CODE, V2T100_CODE, V2T101_CODE, V2T102_CODE;
 
 #endif
 

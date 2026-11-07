@@ -48,6 +48,7 @@ extern const struct interpretive_code P37_CODE, RTE299_CODE, RTE317_POLY_CODE, R
 extern const struct interpretive_code P370ALRM_CODE, P370ALRM_GOTO_CODE, TMRAD100_CODE, RTD18_CODE;
 extern const struct interpretive_code INVC100_CODE, PREC100_CODE, PREC130_CODE, PREC175_CODE,
     PREC220_CODE;
+extern const struct interpretive_code RTENCK_CODE, V2T100_CODE, V2T101_CODE, V2T102_CODE;
 extern const agc_routine_table cm_p37_p70_basic, cm_p37_p70_interpretive;
 extern const agc_routine_table faithful_cm_p37_p70_basic, faithful_cm_p37_p70_interpretive;
 bool cm_p37_p70_readable(uint16_t key, bool order_pair);
@@ -128,7 +129,8 @@ static bool in_written_part(uint16_t key)
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     return (bank == 036u && z >= 02466u && z <= 03253u) ||
-           (bank == 032u && z >= 02262u && z <= 03074u) ||
+           (bank == 032u && z >= 02262u && z <= 03456u) ||
+           (bank == 031u && z >= 03700u && z <= 03760u) ||
            (bank == 016u && z >= 02703u && z <= 02714u);
 }
 
@@ -408,6 +410,11 @@ static const struct interpretive_code *const codes[] = {
     &PREC130_CODE,
     &PREC175_CODE,
     &PREC220_CODE,
+    /* Part 4 */
+    &RTENCK_CODE,
+    &V2T100_CODE,
+    &V2T101_CODE,
+    &V2T102_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

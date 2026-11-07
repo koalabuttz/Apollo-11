@@ -14,7 +14,9 @@
  * the file (PHASCHNG, BANKCALL, POLY, BLANKET, ENDOFJOB, GOTOPOOH), comes
  * back to a word it is keyed at (TC SPRTEX, INDEX SPRTEX; TCF ...) or
  * reaches NEWOPS through a TC INTPRET. An order pair is one pass of the
- * readable interpreter over the listing's words (interpret_listing()).
+ * readable interpreter over the listing's words (interpret_listing()),
+ * and after an RTB TPMODE or DPMODE the routine and the rest of the
+ * pair.
  *
  * The device is the CM's io record (cm_native_io); the file reads and
  * writes no channel. The states the faithful routines take: FB the key's
@@ -32,6 +34,7 @@
 #include "cm_p37_p70.h"
 #include "../p37_p70/p37_p70.h"
 #include "../interpreter/interpreter.h"
+#include "../rtb_op_codes/rtb_op_codes.h"
 #include "../agc/names.h"
 
 #if COMANCHE055
@@ -155,6 +158,8 @@ static const struct basic_entry {
     {KEY(032u, P370ALRM + 7u), p370alrm_terminate},
     {KEY(032u, P370ALRM + 010u), p370alrm_after_varalarm}, /* GOFLASH's proceed: TCF -4 */
     {KEY(032u, P370ALRM + 011u), p370alrm_recycle},
+    /* Part 4: V2TERROR (v2t100.c) */
+    {KEY(032u, V2TERROR + 1u), v2terror_after_exit},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -190,6 +195,11 @@ static const struct interpretive_code *const codes[] = {
     &PREC130_CODE,
     &PREC175_CODE,
     &PREC220_CODE,
+    /* Part 4 */
+    &RTENCK_CODE,
+    &V2T100_CODE,
+    &V2T101_CODE,
+    &V2T102_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
@@ -202,6 +212,30 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
             address < codes[i]->first + codes[i]->count)
             return codes[i];
     return NULL;
+}
+
+/* TPMODE's and DPMODE's banks (FB), from their FCADRs. */
+#define TPMODE_BANK ((word)(I_TPMODE & 076000u))
+#define DPMODE_BANK ((word)(I_DPMODE & 076000u))
+
+/* One pass; after RTB TPMODE or RTB DPMODE (V2T100's), the routine and
+ * its DANZIG, which goes on with the pair's other order. */
+static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
+                                 cm_native_io *io, const struct interpretive_code *code)
+{
+    void (*routine)(void);
+
+    if (interpret_listing(program, state, io, code) != EXEC_OK) return EXEC_OUT_OF_SCOPE;
+    bind(program, state, io);
+    if (Z == TPMODE && FBANK == TPMODE_BANK)
+        routine = tpmode;
+    else if (Z == DPMODE && FBANK == DPMODE_BANK)
+        routine = dpmode;
+    else
+        return EXEC_OK;
+    if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
+    routine();
+    return interpret_listing(program, state, io, code);
 }
 
 /* ---- The keys, in the faithful tables' order ---- */
@@ -260,7 +294,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
 
     before = *state;
     kept = *io;
-    status = interpret_listing(program, state, io, code);
+    status = one_pass(program, state, io, code);
     if (status != EXEC_OK) {
         *state = before;
         *io = kept;
