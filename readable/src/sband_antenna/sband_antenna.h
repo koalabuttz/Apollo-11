@@ -11,7 +11,13 @@
  * word BANKCALL comes back to after R02BOTH, the word after the EXIT, the
  * words PRIOCHNG, BLANKET and (the CM's) DELAYJOB come back to, and
  * GOMARKFR's four returns. The binding is
- * src/binding/sband_antenna_routines.c. */
+ * src/binding/sband_antenna_routines.c.
+ *
+ * LUNAR_LANDMARK_SELECTION_FOR_CM.agc, the CM's next file (Comanche055
+ * p. 936), holds no code: its one page carries only the comment
+ * "*** END OF TROUBLE .043 ***", with no instructions, constants or entry
+ * points. It has nothing to translate, so it is listed here, with the
+ * pages before it. */
 #ifndef READABLE_SBAND_ANTENNA_H
 #define READABLE_SBAND_ANTENNA_H
 
