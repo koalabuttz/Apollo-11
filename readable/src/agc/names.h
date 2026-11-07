@@ -4510,6 +4510,17 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define MINUS_MAXDELV ((word)KW_MMAXDELV) /* -MAXDELV: DEC -6398 */
 #endif
 
+#if COMANCHE055
+/* REENTRY_CONTROL.agc */
+#define STARTENT ((word)K_STARTENT)
+#define REFAZE10 ((word)K_REFAZE10)
+#define SCALEPOP ((word)K_SCALEPOP)
+#define TARGETNG ((word)K_TARGETNG)
+#define GETETA   ((word)K_GETETA)
+#define ENTMASK  ((word)KW_ENTMASK) /* OCT 11774 */
+#define ENTRYSW  ((word)KW_ENTRYSW) /* OCT 11010 */
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
