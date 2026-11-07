@@ -42,6 +42,10 @@
  *           SIN(LOS) and zero, through KONMAT, unit, to VSUN. RVQ.
  *
  * LUNVEL is an RVQ alone, "TO FOOL INTEGRATION". */
+#define STMP  16 /* "STMP EQUALS 16D" (p. 987) */
+#define GTMP  22 /* "GTMP EQUALS 22D" */
+#define TIMEP 24 /* "TIMEP EQUALS 24D" */
+
 static const word lspos[] = {
     /* LSPOS */ ORDERS(SETPD, SR),
     ADDRESS_PLUS_ONE_D(0),
@@ -49,7 +53,7 @@ static const word lspos[] = {
     ORDERS(TAD, DDV),
     ADDRESS_PLUS_ONE(TEPHEM),  /* "TIME OF LAUNCH" */
     ADDRESS_PLUS_ONE(CSTODAY), /* "24 HOURS-8640000 CENTI-SECS/DAY B-33" */
-    STORE_D(24),               /* TIMEP: "T IN DAYS" */
+    STORE_D(TIMEP),            /* "T IN DAYS" */
     ORDERS(AXT_1, AXT_2),
     NUMBER(0),
     NUMBER(0),
@@ -57,9 +61,9 @@ static const word lspos[] = {
     SWITCH(CLEAR, FREEFLAG),
     /* POSITA */ ORDER(DLOAD),
     ADDRESS_PLUS_ONE_AT(KONMAT, 2), /* "ZEROS" */
-    STORE_D(22),                    /* GTMP */
+    STORE_D(GTMP),
     /* POSITB */ ORDERS(DLOAD, DMP_STAR),
-    ADDRESS_PLUS_ONE_D(24),           /* "T" */
+    ADDRESS_PLUS_ONE_D(TIMEP),        /* "T" */
     ADDRESS_PLUS_ONE_AT_X1(VAL67, 4), /* "1/27 OR 1/32 OR 1/365" */
     ORDERS(SL, DAD_STAR),
     SL_COUNT(8),
@@ -67,21 +71,21 @@ static const word lspos[] = {
     ORDERS(SIN, DMP_STAR),            /* "SIN(T/27+PHI) OR T/32 OR T/365" */
     ADDRESS_PLUS_ONE_AT_X1(VAL67, 0),
     ORDERS(DAD, INCR_1), /* "PLUS" */
-    ADDRESS_PLUS_ONE_D(22),
+    ADDRESS_PLUS_ONE_D(GTMP),
     MINUS_NUMBER(6),
-    STORE_D(22),
+    STORE_D(GTMP),
     ORDER(BOFSET),
     SWITCH(BOFSET, FREEFLAG),
     ADDRESS(POSITB),
     /* POSITD */ ORDERS(DLOAD, DMP_STAR),
-    ADDRESS_PLUS_ONE_D(24),            /* "T" */
+    ADDRESS_PLUS_ONE_D(TIMEP),         /* "T" */
     ADDRESS_PLUS_ONE_AT_X2(RATESP, 0), /* "LOMR,LOSR,LONR" */
     ORDERS(SL, DAD_STAR),
     SL_COUNT(5),
     ADDRESS_PLUS_ONE_AT_X2(RATESP, 6), /* "LOMO,LOSO,LONO" */
     ORDER(DSU),
-    ADDRESS_PLUS_ONE_D(22),
-    STORE_X2_D(16), /* STMP,2: "LOM,LOS,LON" */
+    ADDRESS_PLUS_ONE_D(GTMP),
+    STORE_X2_D(STMP), /* "LOM,LOS,LON" */
     ORDERS(SLOAD, INCR_2),
     ADDRESS_PLUS_ONE(X2),
     MINUS_NUMBER(2),
@@ -91,21 +95,21 @@ static const word lspos[] = {
     ORDER(BPL),
     ADDRESS(POSITA),                 /* "1ST" */
     /* POSITF */ ORDERS(DLOAD, DSU), /* "3RD" */
-    ADDRESS_PLUS_ONE_D(16),          /* "LOM" */
-    ADDRESS_PLUS_ONE_D(20),          /* "LON" */
+    ADDRESS_PLUS_ONE_D(STMP),        /* "LOM" */
+    ADDRESS_PLUS_ONE_D(STMP + 4),    /* "LON" */
     ORDERS(SIN, PDDL),               /* "SIN(LOM-LON)" */
-    ADDRESS_PLUS_ONE_D(16),
+    ADDRESS_PLUS_ONE_D(STMP),
     ORDERS(SIN, PDDL), /* "SIN LOM" */
-    ADDRESS_PLUS_ONE_D(16),
+    ADDRESS_PLUS_ONE_D(STMP),
     ORDERS(COS, VDEF), /* "COS LOM" */
     ORDERS(MXV, UNIT),
     ADDRESS_PLUS_ONE(KONMAT), /* "K1,K2,K3,K4," */
     STORE(VMOON),
     ORDERS(DLOAD, PDDL),
     ADDRESS_PLUS_ONE_AT(KONMAT, 2), /* "ZERO" */
-    ADDRESS_PLUS_ONE_D(18),
+    ADDRESS_PLUS_ONE_D(STMP + 2),
     ORDERS(SIN, PDDL), /* "SIN LOS" */
-    ADDRESS_PLUS_ONE_D(18),
+    ADDRESS_PLUS_ONE_D(STMP + 2),
     ORDERS(COS, VDEF), /* "COS LOS" */
     ORDERS(MXV, UNIT),
     ADDRESS_PLUS_ONE(KONMAT),
@@ -113,7 +117,7 @@ static const word lspos[] = {
     ORDER(RVQ),
     /* POSITE */ ORDER(DLOAD),
     ADDRESS_PLUS_ONE_AT(KONMAT, 2), /* "ZEROS" */
-    STORE_D(22),
+    STORE_D(GTMP),
     ORDER(GOTO),
     ADDRESS(POSITD),
     /* LUNVEL */ ORDER(RVQ), /* "TO FOOL INTEGRATION" */

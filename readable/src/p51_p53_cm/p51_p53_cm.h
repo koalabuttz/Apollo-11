@@ -34,6 +34,10 @@
  * The binding (src/binding/cm_p51_routines.c) runs every key on these
  * parts' routines.
  *
+ * Words of the listing no instruction names, so no C name either: the
+ * verb-noun code V06N89A (VN 0689) and the constant SHAXIS (2DEC
+ * .5376381241 B-1), after V06N92 (p. 746).
+ *
  * Basic code round stretches of interpretive code, which are in the
  * listing's notation (src/interpreter/notation.h). The entries below are
  * the faithful port's keys, by the listing's labels. */

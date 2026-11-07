@@ -39,6 +39,9 @@ extern const agc_routine_table lm_ephemeris_routines, faithful_lm_ephemeris_rout
 
 #define CHAINS   65536u
 #define REFUSALS 16384u
+/* The fewest chains that must enter each key. LUNVEL, entered only from a
+ * caller's LUNVEL entry, is the rarest: about 1,024 of the 65,536. */
+#define ENTERED_FLOOR (CHAINS / 128u)
 
 static uint32_t seed = 314159u;
 static uint16_t rnd(void)
@@ -142,13 +145,13 @@ static void entry(apollo_overlay_state *s, p66_bias_io *io, unsigned n)
 
 static unsigned chains(unsigned *steps)
 {
-    unsigned n, failures = 0;
+    unsigned n, failures = 0, entered[32] = {0}, i;
 
     for (n = 0; n < CHAINS && failures < 10u; ++n) {
         apollo_overlay_state fa, ra, start;
         p66_bias_io fio, rio;
         agc_native_program p;
-        unsigned k;
+        unsigned k, seen = 0;
         int key;
 
         entry(&fa, &fio, n);
@@ -163,6 +166,10 @@ static unsigned chains(unsigned *steps)
             sr = lm_ephemeris_routines.entries[key].call(&p, &ra, &rio);
             if (sf != EXEC_OK && sr != EXEC_OK) break;
             ++*steps;
+            if (key < 32 && !(seen & 1u << key)) { /* a chain counts once a key */
+                seen |= 1u << key;
+                ++entered[key];
+            }
             if (sf != sr) {
                 show(sf == EXEC_OK ? "readable refused, faithful ran"
                                    : "readable ran, faithful refused",
@@ -177,6 +184,14 @@ static unsigned chains(unsigned *steps)
             }
         }
     }
+    for (i = 0; i < lm_ephemeris_routines.count && !failures; ++i)
+        if (i >= 32u || entered[i] < ENTERED_FLOOR) {
+            printf("FAIL: key %u (%02o,%04o) entered by %u of %u chains\n", i,
+                   faithful_lm_ephemeris_routines.entries[i].physical / 1024u,
+                   02000u + faithful_lm_ephemeris_routines.entries[i].physical % 1024u,
+                   i < 32u ? entered[i] : 0u, CHAINS);
+            ++failures;
+        }
     return failures;
 }
 

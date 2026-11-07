@@ -8,10 +8,9 @@
  *
  * First the words: the readable interpretive code (src/p32_p35/), written
  * in the listing's notation, must be the original program's rope, word for
- * word. Then the keys, which must be the faithful tables', and the keys the
- * parts written so far hold must run readable code, the others the
- * faithful port's. Then the runs: each readable key from 4,096 states
- * (each other key from 16), each one of the port's frozen test states
+ * word. Then the keys, which must be the faithful tables', every one with
+ * a readable routine (the file is whole). Then the runs: each key from
+ * 4,096 states, each one of the port's frozen test states
  * (c64-port/tests/lm_p32_p35_vectors.h) entered at the key, most stirred
  * further: MPAC and its mode, the push-down list and its pointer, the
  * index registers (X1 at ALMXIT's indexed load often round the seven
@@ -26,8 +25,7 @@
  * too, with the same memory and io record, word for word; where the
  * readable one refuses, it must leave everything as it found it; and the
  * faithful routine must run from at least 1 in 16 of the states of every
- * readable key. A key the binding hands to the faithful port must give
- * the faithful routine's result, refusals and all. */
+ * key. */
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -79,8 +77,7 @@ bool lm_p32_p35_readable(uint16_t key, bool order_pair);
 #define PMINE_X1_A  (034u * 1024u + 0744u) /* 34,2744 and 34,2752: CSI/SOL's DSU* PMINE -2,1 */
 #define PMINE_X1_B  (034u * 1024u + 0752u)
 
-#define CASES       4096u
-#define OTHER_CASES 16u
+#define CASES 4096u
 
 static uint32_t seed = 3237u;
 static uint16_t rnd(void)
@@ -123,24 +120,15 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The file's keys, all written: bank 35, and bank 34 from CSI/A to
- * CDHMVR. */
-static bool in_written_part(uint16_t key)
-{
-    unsigned bank = key / 1024u, z = 02000u + key % 1024u;
-
-    return bank == 035u || (bank == 034u && z >= 02113u && z < 03271u);
-}
-
-static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
+/* Every key of the file has a readable routine. */
+static unsigned keys_unwritten(const agc_routine_table *table, bool order_pair)
 {
     unsigned i, failures = 0;
 
     for (i = 0; i < table->count; ++i) {
         uint16_t key = table->entries[i].physical;
-        if (in_written_part(key) != lm_p32_p35_readable(key, order_pair)) {
-            printf("FAIL: %02o,%04o %s readable\n", key / 1024u, 02000u + key % 1024u,
-                   in_written_part(key) ? "is not" : "is");
+        if (!lm_p32_p35_readable(key, order_pair)) {
+            printf("FAIL: %02o,%04o has no readable routine\n", key / 1024u, 02000u + key % 1024u);
             ++failures;
         }
     }
@@ -338,11 +326,10 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 
     for (i = 0; i < faithful->count; ++i) {
         uint16_t key = faithful->entries[i].physical, z = (uint16_t)(02000u + key % 1024u);
-        bool written = lm_p32_p35_readable(key, interpretive != 0);
-        unsigned ran = 0, bad = 0, cases = written ? CASES : OTHER_CASES;
+        unsigned ran = 0, bad = 0;
 
-        *readable_keys += written;
-        for (n = 0; n < cases; ++n) {
+        *readable_keys += lm_p32_p35_readable(key, interpretive != 0);
+        for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;
             p66_bias_io io, fio, rio;
             agc_native_program p;
@@ -356,11 +343,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             sf = faithful->entries[i].call(&p, &fa, &fio);
             sr = readable->entries[i].call(&p, &ra, &rio);
             ran += sf == EXEC_OK;
-            if (!written) { /* the faithful routine on both sides, refusals and all */
-                if (sf != sr || memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio))
-                    why = "the table does not run the faithful routine";
-            } else if (sr != EXEC_OK &&
-                       (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
+            if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
                 why = "readable refusal changed the state";
             else if (sf == EXEC_OK && sr != EXEC_OK)
                 why = faithful_spills(key, &start) ? 0 : "readable refused, faithful ran";
@@ -379,14 +362,13 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                                fa.words[w], start.words[w]);
             }
         }
-        /* Each readable key's faithful routine must run in at least 1 of
-         * 16 states, so that a change to the states cannot quietly leave a
-         * key with a handful of live ones. (The states are tuned to a
-         * part's keys when it is written.) */
-        if (written && ran < cases / 16u && bad == 0u) {
+        /* Each key's faithful routine must run in at least 1 of 16
+         * states, so that a change to the states cannot quietly leave a
+         * key with a handful of live ones. */
+        if (ran < CASES / 16u && bad == 0u) {
             printf("FAIL %02o,%04o: the faithful routine ran in %u of %u states (fewer than 1 in "
                    "16)\n",
-                   key / 1024u, z, ran, cases);
+                   key / 1024u, z, ran, CASES);
             ++bad;
         }
         *runs += ran;
@@ -412,8 +394,8 @@ int main(int argc, char **argv)
     failures += tables_differ(&lm_p32_p35_basic, &faithful_lm_p32_p35_basic, "basic");
     failures +=
         tables_differ(&lm_p32_p35_interpretive, &faithful_lm_p32_p35_interpretive, "interpretive");
-    failures += parts_unwritten(&faithful_lm_p32_p35_basic, false);
-    failures += parts_unwritten(&faithful_lm_p32_p35_interpretive, true);
+    failures += keys_unwritten(&faithful_lm_p32_p35_basic, false);
+    failures += keys_unwritten(&faithful_lm_p32_p35_interpretive, true);
     if (failures || !mission_count) {
         printf("p32-cases: %u failures\n", failures + !mission_count);
         return 1;

@@ -6,7 +6,7 @@
  * S61.2, the TFF routines and S62.3 serve them. The faithful C is
  * c64-port/src/cm_p61_p67.c.
  *
- * Written part by part, in the listing's order (README.md):
+ * The files, in the listing's order (written in three parts, README.md):
  *   part 1, p61_p62.c: P61 and P62 (pp. 789-794, bank 26); p63_p67.c: P63
  *     to P67 (pp. 795-802, bank 26); s61_1.c: S61.1, the state vector and
  *     IMU check (pp. 803-805, bank 26). All the file's basic code is in
@@ -17,8 +17,8 @@
  *     and VRCALC (pp. 812-816, banks 26 and 27); s62_3.c: S62.3, the
  *     entry attitude's gimbal angles (pp. 817-818, bank 10). All
  *     interpretive; with them the file is whole.
- * The binding (src/binding/cm_p61_routines.c) runs the keys these parts
- * write: all of the faithful port's.
+ * The binding (src/binding/cm_p61_routines.c) runs every key of the
+ * faithful port's on these routines.
  *
  * Basic code round stretches of interpretive code, which are in the
  * listing's notation (src/interpreter/notation.h). The entries below are
