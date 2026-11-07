@@ -4556,12 +4556,15 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define P37T     ((word)K_P37T)
 #define P370GOFR ((word)K_P370GOFR)
 #define P370GOF  ((word)K_P370GOF)
+#define P370ALRM ((word)K_P370ALRM)
+#define TMRAD100 ((word)K_TMRAD100)
 #define V6N33RTE ((word)KW_V6N33RTE) /* VN 0633 */
 #define V4N06RTE ((word)KW_V4N06RTE) /* VN 0406 */
 #define V6N61RTE ((word)KW_V6N61RTE) /* VN 0661 */
 #define V6N39RTE ((word)KW_V6N39RTE) /* VN 0639 */
 #define V6N60RTE ((word)KW_V6N60RTE) /* VN 0660 */
 #define V6N81RTE ((word)KW_V6N81RTE) /* VN 0681 */
+#define V5N09RTE ((word)KW_V5N09RTE) /* VN 0509 */
 #endif
 
 /* NO.CORES + 1 core sets. */

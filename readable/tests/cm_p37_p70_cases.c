@@ -45,6 +45,7 @@ struct interpretive_code {
 };
 extern const struct interpretive_code P37_CODE, RTE299_CODE, RTE317_POLY_CODE, RTE369_POLY_CODE,
     RTEVN_CODE, RTEVN_RETURN_CODE, P37N_CODE, P37T_POLY_CODE, P37T_TIG_CODE;
+extern const struct interpretive_code P370ALRM_CODE, P370ALRM_GOTO_CODE, TMRAD100_CODE, RTD18_CODE;
 extern const agc_routine_table cm_p37_p70_basic, cm_p37_p70_interpretive;
 extern const agc_routine_table faithful_cm_p37_p70_basic, faithful_cm_p37_p70_interpretive;
 bool cm_p37_p70_readable(uint16_t key, bool order_pair);
@@ -124,7 +125,8 @@ static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
-    return bank == 036u && z >= 02466u && z <= 03253u;
+    return (bank == 036u && z >= 02466u && z <= 03253u) ||
+           (bank == 032u && z >= 02262u && z <= 02447u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -301,8 +303,10 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
             *at = (uint16_t)(rnd() % 010u);
         else if (r == 6u)
             *at = any_word();
-        /* (An order pair may go on through it, GOTO: see VNSTORE.) */
-        if (interpretive && (*at & 077777u) < 02000u) *at = fixed_place();
+        /* (An order pair may go on through it, GOTO or STCALL: see
+         * VNSTORE. To the interpreter any address below 04000 is an
+         * erasable one, the display returns too.) */
+        if (interpretive && (*at & 077777u) < 04000u) *at = fixed_place();
     }
     /* VNSTORE, where RTEVN's GOTO goes back, a place in fixed memory: an
      * erasable one may name a cycle of erasable addresses, which the
@@ -381,8 +385,20 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 
 static const struct interpretive_code *const codes[] = {
     /* Part 1 */
-    &P37_CODE,          &RTE299_CODE, &RTE317_POLY_CODE, &RTE369_POLY_CODE, &RTEVN_CODE,
-    &RTEVN_RETURN_CODE, &P37N_CODE,   &P37T_POLY_CODE,   &P37T_TIG_CODE,
+    &P37_CODE,
+    &RTE299_CODE,
+    &RTE317_POLY_CODE,
+    &RTE369_POLY_CODE,
+    &RTEVN_CODE,
+    &RTEVN_RETURN_CODE,
+    &P37N_CODE,
+    &P37T_POLY_CODE,
+    &P37T_TIG_CODE,
+    /* Part 2 */
+    &P370ALRM_CODE,
+    &P370ALRM_GOTO_CODE,
+    &TMRAD100_CODE,
+    &RTD18_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
