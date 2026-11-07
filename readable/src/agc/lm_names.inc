@@ -2458,6 +2458,7 @@
 #define K_DELVLVC 01433u
 #define K_BESTI 01755u
 #define K_SAVQR52 01665u
+#define K_PHSPRDT5 01064u
 #define K_WHICH 01455u
 #define K_SAVET_30 01477u
 #define K_GOBLTIME 01511u
@@ -2514,6 +2515,7 @@
 #define K_SAMPLIM 01100u
 #define K_TRKMKCNT 01462u
 #define K_RASFLAG 00106u
+#define K_RDOT 01473u
 #define K_OUTROUTE 01260u
 #define K_FLGWRD11 00107u
 #define K_CSMMASS 01332u
@@ -5564,6 +5566,9 @@
 #define I_TFFTEM 000044u
 #define I_YSM 002650u
 #define I_ZSM 002656u
+#define I_V1 000014u
+#define I_NEARONE 057770u
+#define I_TCDANZIG 057753u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u
