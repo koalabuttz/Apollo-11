@@ -22,21 +22,31 @@ ROOT = READABLE.parent
 TREES = ('Luminary099', 'Comanche055')
 MISSIONS = {'lm': 'Luminary099', 'cm': 'Comanche055'}
 # A binding that runs the faithful port's routine at a key no part has
-# written yet: faithful_<mission>_<file>_basic or _interpretive, the
-# faithful table renamed, called by index (<file> the listing's file name
-# in lower case, - as _).
-FALLBACK = re.compile(r'\bfaithful_(lm|cm)_(\w+?)_(?:basic|interpretive)\.entries\s*\[')
+# written yet names a faithful table, renamed for the readable build
+# (tests/x86_readable.py): faithful_<mission>_..._basic, _interpretive or
+# _routines. Any such name in the code (not in a comment), however it is
+# spelt or used, counts. (Pinball's faithful trampoline,
+# faithful_lanec_pin_run_<m>, is not a table and not counted: it runs only
+# a step the readable code does not model, src/binding/pinball_routines.c.)
+FALLBACK = re.compile(r'\bfaithful_(lm|cm)_\w*?_(?:basic|interpretive|routines)\b')
+COMMENT = re.compile(r'/\*.*?\*/|//[^\n]*', re.S)
+# The binding's own directories: the src/<dir>/ its header (the comments
+# before its first #include) names.
+OWN = re.compile(r'\bsrc/(\w+)/')
 
 
 def fallbacks(done):
     """The bindings that still hand keys of a whole file to the faithful
-    tables: (binding, listing file)."""
+    tables: (binding, listing file), done mapping each whole file to its
+    directory."""
     found = []
     for binding in sorted((READABLE / 'src/binding').glob('*.c')):
-        for mission, name in sorted(set(FALLBACK.findall(binding.read_text()))):
-            for path in done:
+        text = binding.read_text()
+        dirs = set(OWN.findall(text.split('#include')[0]))
+        for mission in sorted(set(FALLBACK.findall(COMMENT.sub(' ', text)))):
+            for path, where in sorted(done.items()):
                 if (path.startswith(MISSIONS[mission] + '/') and
-                        Path(path).stem.lower().replace('-', '_') == name):
+                        where.rstrip('/').removeprefix('src/') in dirs):
                     found.append((binding.relative_to(READABLE), path))
     return found
 
@@ -44,7 +54,7 @@ def fallbacks(done):
 def main(argv):
     files = {str(p.relative_to(ROOT)): len(p.read_bytes().splitlines())
              for tree in TREES for p in sorted((ROOT / tree).glob('*.agc'))}
-    done, bad = {}, 0
+    done, where_of, bad = {}, {}, 0
     makefile = (READABLE / 'Makefile').read_text()
     readme = (READABLE / 'README.md').read_text()
     for line in (READABLE / 'COVERAGE').read_text().splitlines():
@@ -62,7 +72,8 @@ def main(argv):
             print(f'FAIL: COVERAGE names {path}, which README.md does not')
             bad = 1
         done[path] = files.get(path, 0)
-    for binding, path in fallbacks(done):
+        where_of[path] = where
+    for binding, path in fallbacks(where_of):
         print(f'FAIL: COVERAGE names {path} whole, but {binding} still hands keys to the '
               'faithful tables')
         bad = 1

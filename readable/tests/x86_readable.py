@@ -289,8 +289,8 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # (ddumcalc) and THROTTLE_CONTROL_ROUTINES (massmult) and P66's RODCOMP
 # (rodcomp, LUNAR_LANDING_GUIDANCE_EQUATIONS); the CM's P40-P47
 # starts at P40CSM (p40csm). LANDING_ANALOG_DISPLAYS is the LM's alone
-# (landisp), as is FINDCDUW--GUIDAP_INTERFACE (fltrsub). The LM's P52 is
-# readable so far (prog52), the CM's not yet. Each mission's
+# (landisp), as is FINDCDUW--GUIDAP_INTERFACE (fltrsub). Each mission's
+# P52 is readable (prog52). Each mission's
 # LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES is its own (EPHEMERIDES_CODE).
 # The CM's SERVICER207 has the entry's half-second PIPA reading (quikread).
 # The CM's REENTRY_CONTROL starts entry (startent_after_exit).
@@ -301,7 +301,7 @@ MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'g
                           'atmag', 'rereadac', 'landisp', 'fltrsub', 'prog52', 'EPHEMERIDES_CODE'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
                           'pikup20', 'p30phsi', 'P32STRT_CODE', 'prog21', 'r34los_after_exit', 'candel',
-                          'rtrn', 'p40csm', 'EPHEMERIDES_CODE', 'p61', 'quikread',
+                          'rtrn', 'p40csm', 'EPHEMERIDES_CODE', 'prog52', 'p61', 'quikread',
                           'startent_after_exit')}
 xb.OUT = READABLE / 'build/x86-flight'
 

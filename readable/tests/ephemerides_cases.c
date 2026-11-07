@@ -297,8 +297,9 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                                fa.words[w], start.words[w]);
             }
         }
-        if (ran == 0u && bad == 0u) {
-            printf("FAIL %02o,%04o: the faithful routine never ran\n", key / 1024u, z);
+        if (ran < CASES / 16u && bad == 0u) { /* the floor of the other cases tests */
+            printf("FAIL %02o,%04o: the faithful routine ran %u of %u times\n", key / 1024u, z, ran,
+                   CASES);
             ++bad;
         }
         *runs += ran;

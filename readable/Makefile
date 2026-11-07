@@ -1196,12 +1196,13 @@ geometry-cases: $(BUILD)/geometry-oracle-lm $(BUILD)/geometry-oracle-cm $(BUILD)
 	./$(BUILD)/geometry-cases-lm $(ROPES)
 	./$(BUILD)/geometry-cases-cm $(ROPES)
 
-# ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part by part ----
+# ---- PINBALL_GAME_BUTTONS_AND_LIGHTS ----
 # The readable parts take the place of the port's Pinball trampoline
 # (c64-port/src/lanec_pin_trampoline.c) under its names, lanec_pin_run_lm
-# and lanec_pin_run_cm, and hand the entries not yet readable to it
-# (renamed faithful_lanec_pin_run_<m>). Each mission's readable objects are
-# built into one object that keeps only its trampoline name. The gate is
+# and lanec_pin_run_cm, and hand it (renamed faithful_lanec_pin_run_<m>)
+# only a step the readable code does not model (src/binding/
+# pinball_routines.c). Each mission's readable objects are built into one
+# object that keeps only its trampoline name. The gate is
 # the port's own Pinball tests, run live against the original program in
 # Virtual AGC with the readable parts in place (tests/pinball_transfer.py).
 # Pinball's NOVAC (DSPMM) and JOBWAKE (RECAL1) run the readable Executive,
@@ -2364,7 +2365,7 @@ ephemerides-cases: $(BUILD)/eph-oracle-lm $(BUILD)/eph-cases-lm $(BUILD)/eph-ora
 	./$(BUILD)/eph-oracle-cm $(ROPES)
 	./$(BUILD)/eph-cases-cm $(ROPES)
 
-# P61-P67.agc, the CM's entry programs, part by part: the port's test
+# P61-P67.agc, the CM's entry programs: the port's test
 # (tests/test_cm_p61_p67.c, its frozen cases run to their stops through
 # the program of tests/cm_p61_p67_target.c, against the original program's
 # yaAGC digests) through the readable tables, with tests/with_ropes.c
@@ -2393,7 +2394,7 @@ cm-p61-p67-cases: $(BUILD)/cp61-oracle $(BUILD)/cp61-cases
 	./$(BUILD)/cp61-oracle $(ROPES)
 	./$(BUILD)/cp61-cases $(ROPES)
 
-# SERVICER207.agc, the CM's average-G loop, part by part: the port's test
+# SERVICER207.agc, the CM's average-G loop: the port's test
 # (tests/test_cm_servicer.c, its frozen cases run to their stops through
 # the program of tests/cm_servicer_target.c, against the original
 # program's yaAGC digests) through the readable tables, with
@@ -2422,7 +2423,7 @@ cm-servicer-cases: $(BUILD)/csvc-oracle $(BUILD)/csvc-cases
 	./$(BUILD)/csvc-oracle $(ROPES)
 	./$(BUILD)/csvc-cases $(ROPES)
 
-# REENTRY_CONTROL.agc, the CM's entry guidance, part by part: the port's test
+# REENTRY_CONTROL.agc, the CM's entry guidance: the port's test
 # (tests/test_cm_reentry.c, its frozen cases run to their stops through
 # the program of tests/cm_reentry_target.c, against the original
 # program's yaAGC digests) through the readable tables, with
