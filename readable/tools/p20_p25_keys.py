@@ -65,7 +65,8 @@ FILES = (('lm_p20_p25', READABLE / 'src/binding/p20_p25_keys.inc'),
          ('cm_p61_p67', READABLE / 'src/binding/cm_p61_keys.inc'),
          ('cm_servicer', READABLE / 'src/binding/cm_servicer_keys.inc'),
          ('cm_reentry', READABLE / 'src/binding/cm_reentry_keys.inc'),
-         ('cm_body_attitude', READABLE / 'src/binding/cm_body_attitude_keys.inc'))
+         ('cm_body_attitude', READABLE / 'src/binding/cm_body_attitude_keys.inc'),
+         ('cm_p37_p70', READABLE / 'src/binding/cm_p37_p70_keys.inc'))
 
 
 def generate(m):
