@@ -5,18 +5,18 @@
  * cm_p37_p70_interpretive (the order pairs).
  *
  * The tables carry every key of the faithful ones, in their order
- * (cm_p37_p70_keys.inc, which tools/p20_p25_keys.py writes from them). The
- * file is written part by part: a key a part has written runs the
- * readable routine, any other the faithful port's (renamed faithful_).
- * The side-by-side test (tests/cm_p37_p70_cases.c) checks which.
+ * (cm_p37_p70_keys.inc, which tools/p20_p25_keys.py writes from them), and
+ * every key runs a readable routine: the file was written part by part,
+ * and is whole. The side-by-side test (tests/cm_p37_p70_cases.c) checks
+ * that no key is left without one.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
  * the file (PHASCHNG, BANKCALL, POLY, BLANKET, ENDOFJOB, GOTOPOOH), comes
  * back to a word it is keyed at (TC SPRTEX, INDEX SPRTEX; TCF ...) or
  * reaches NEWOPS through a TC INTPRET. An order pair is one pass of the
  * readable interpreter over the listing's words (interpret_listing()),
- * and after an RTB TPMODE or DPMODE the routine and the rest of the
- * pair.
+ * and after an RTB TPMODE or DPMODE, or a BOVB to TCDANZIG, the routine
+ * and the rest of the pair.
  *
  * The device is the CM's io record (cm_native_io); the file reads and
  * writes no channel. The states the faithful routines take: FB the key's
@@ -200,6 +200,10 @@ static const struct interpretive_code *const codes[] = {
     &V2T100_CODE,
     &V2T101_CODE,
     &V2T102_CODE,
+    /* Part 5 */
+    &GAMDV10_CODE,
+    &DVCALC_CODE,
+    &XT1LIM_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
@@ -214,12 +218,23 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
     return NULL;
 }
 
-/* TPMODE's and DPMODE's banks (FB), from their FCADRs. */
-#define TPMODE_BANK ((word)(I_TPMODE & 076000u))
-#define DPMODE_BANK ((word)(I_DPMODE & 076000u))
+/* TPMODE's, DPMODE's and TCDANZIG's banks (FB), from their FCADRs. */
+#define TPMODE_BANK   ((word)(I_TPMODE & 076000u))
+#define DPMODE_BANK   ((word)(I_DPMODE & 076000u))
+#define TCDANZIG_BANK ((word)(I_TCDANZIG & 076000u))
 
-/* One pass; after RTB TPMODE or RTB DPMODE (V2T100's), the routine and
- * its DANZIG, which goes on with the pair's other order. */
+/* TCDANZIG, where GAMDV45's BOVB goes ("ASSURE OVFIND IS 0"): ENDT(X) of
+ * TIME_OF_FREE_FALL.agc, a TC DANZIG. The BOVB has already reset OVFIND;
+ * the pair goes on with its other order. */
+static void tcdanzig(void)
+{
+    tc_at(TCDANZIG);
+    continue_at(DANZIG);
+}
+
+/* One pass; after RTB TPMODE or RTB DPMODE (V2T100's, DVCALC's), or a
+ * BOVB to TCDANZIG, the routine and its DANZIG, which goes on with the
+ * pair's other order. */
 static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
                                  cm_native_io *io, const struct interpretive_code *code)
 {
@@ -231,6 +246,8 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
         routine = tpmode;
     else if (Z == DPMODE && FBANK == DPMODE_BANK)
         routine = dpmode;
+    else if (Z == TCDANZIG && FBANK == TCDANZIG_BANK)
+        routine = tcdanzig;
     else
         return EXEC_OK;
     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
@@ -239,9 +256,6 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
 }
 
 /* ---- The keys, in the faithful tables' order ---- */
-
-/* The faithful tables, renamed. */
-extern const agc_routine_table faithful_cm_p37_p70_basic, faithful_cm_p37_p70_interpretive;
 
 /* A readable basic routine, from a state the faithful one takes. */
 static enum exec_status run_basic(void (*routine)(void), apollo_overlay_state *state,
@@ -259,21 +273,20 @@ static enum exec_status run_basic(void (*routine)(void), apollo_overlay_state *s
     return EXEC_OK;
 }
 
-/* Each key's routine: the readable one, or the faithful port's. */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each key's routine. */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct basic_entry *entry = basic_entry(key);
     cm_native_io *io = device;
 
-    if (!entry) return faithful_cm_p37_p70_basic.entries[index].call(program, state, device);
-    if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
+    if (!entry || !program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     if (FBANK != (word)((key / 1024u) << 10) || !sane()) return EXEC_OUT_OF_SCOPE;
     return run_basic(entry->routine, state, io);
 }
 
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
@@ -282,8 +295,6 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     const struct interpretive_code *code;
     enum exec_status status;
 
-    if (!code_at(bank, (word)(02000u + key % 1024u)))
-        return faithful_cm_p37_p70_interpretive.entries[index].call(program, state, device);
     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     code = code_at(bank, LOC);
@@ -314,13 +325,13 @@ bool cm_p37_p70_readable(uint16_t key, bool order_pair)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #include "cm_p37_p70_keys.inc"
 #undef BASIC

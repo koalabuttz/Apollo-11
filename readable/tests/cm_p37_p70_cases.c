@@ -9,11 +9,10 @@
  * First the words: the readable interpretive code (src/p37_p70/), written
  * in the listing's notation, must be the original program's rope, word
  * for word. Then the keys, which must be the faithful tables', and every
- * key of the parts written so far must run readable code. Then the runs:
- * each readable key from 4,096 states (each other key, which runs the
- * faithful routine through the readable table, from 16), each one of the
- * port's frozen test states (c64-port/tests/cm_p37_p70_vectors.h) entered
- * at the key, most stirred further: MPAC and its mode, the push-down list
+ * key must run readable code. Then the runs: each key from 4,096 states,
+ * each one of the port's frozen test states
+ * (c64-port/tests/cm_p37_p70_vectors.h) entered at the key, most stirred
+ * further: MPAC and its mode, the push-down list
  * and its pointer, the index registers, A and Q, SPRTEX and RTENCKEX
  * (often one of the file's display returns, or a word no TC would leave),
  * EBANK (often E7, the file's), the flag words (often one bit changed),
@@ -49,6 +48,7 @@ extern const struct interpretive_code P370ALRM_CODE, P370ALRM_GOTO_CODE, TMRAD10
 extern const struct interpretive_code INVC100_CODE, PREC100_CODE, PREC130_CODE, PREC175_CODE,
     PREC220_CODE;
 extern const struct interpretive_code RTENCK_CODE, V2T100_CODE, V2T101_CODE, V2T102_CODE;
+extern const struct interpretive_code GAMDV10_CODE, DVCALC_CODE, XT1LIM_CODE;
 extern const agc_routine_table cm_p37_p70_basic, cm_p37_p70_interpretive;
 extern const agc_routine_table faithful_cm_p37_p70_basic, faithful_cm_p37_p70_interpretive;
 bool cm_p37_p70_readable(uint16_t key, bool order_pair);
@@ -79,8 +79,7 @@ bool cm_p37_p70_readable(uint16_t key, bool order_pair);
 static const uint16_t display_returns[] = {02503u, 02506u, 03010u, 03016u, 03021u,
                                            03024u, 03041u, 03120u, 03214u};
 
-#define CASES       4096u
-#define OTHER_CASES 16u
+#define CASES 4096u
 
 static uint32_t seed = 890u;
 static uint16_t rnd(void)
@@ -123,26 +122,16 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The parts written so far: part 1, bank 36's P37 to V6N81RTE. */
-static bool in_written_part(uint16_t key)
-{
-    unsigned bank = key / 1024u, z = 02000u + key % 1024u;
-
-    return (bank == 036u && z >= 02466u && z <= 03253u) ||
-           (bank == 032u && z >= 02262u && z <= 03456u) ||
-           (bank == 031u && z >= 03700u && z <= 03760u) ||
-           (bank == 016u && z >= 02703u && z <= 02714u);
-}
-
-static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
+/* The file is whole: every key runs a readable routine (the binding no
+ * longer hands any to the faithful tables). */
+static unsigned keys_unwritten(const agc_routine_table *table, bool order_pair)
 {
     unsigned i, failures = 0;
 
     for (i = 0; i < table->count; ++i) {
         uint16_t key = table->entries[i].physical;
-        if (in_written_part(key) != cm_p37_p70_readable(key, order_pair)) {
-            printf("FAIL: %02o,%04o %s readable\n", key / 1024u, 02000u + key % 1024u,
-                   in_written_part(key) ? "is not" : "is");
+        if (!cm_p37_p70_readable(key, order_pair)) {
+            printf("FAIL: %02o,%04o has no readable routine\n", key / 1024u, 02000u + key % 1024u);
             ++failures;
         }
     }
@@ -327,10 +316,9 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 
     for (i = 0; i < faithful->count; ++i) {
         uint16_t key = faithful->entries[i].physical, z = key_z(key);
-        bool written = cm_p37_p70_readable(key, interpretive != 0);
-        unsigned ran = 0, bad = 0, cases = written ? CASES : OTHER_CASES;
+        unsigned ran = 0, bad = 0, cases = CASES;
 
-        *readable_keys += written;
+        *readable_keys += cm_p37_p70_readable(key, interpretive != 0);
         for (n = 0; n < cases; ++n) {
             apollo_overlay_state start, fa, ra;
             cm_native_io io, fio, rio;
@@ -353,11 +341,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             sf = faithful->entries[i].call(&fp, &fa, &fio);
             sr = readable->entries[i].call(&rp, &ra, &rio);
             ran += sf == EXEC_OK;
-            if (!written) { /* the faithful routine on both sides, refusals and all */
-                if (sf != sr || memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio))
-                    why = "the table does not run the faithful routine";
-            } else if (sr != EXEC_OK &&
-                       (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
+            if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
                 why = "readable refusal changed the state";
             else if (sf == EXEC_OK && sr != EXEC_OK)
                 why = "readable refused, faithful ran";
@@ -377,7 +361,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                                fa.words[w], start.words[w]);
             }
         }
-        if (written && ran < cases / 16u && bad == 0u) {
+        if (ran < cases / 16u && bad == 0u) {
             printf("FAIL %02o,%04o: the faithful routine ran in %u of %u states\n",
                    key / 1024u % 64u, z, ran, cases);
             ++bad;
@@ -415,6 +399,10 @@ static const struct interpretive_code *const codes[] = {
     &V2T100_CODE,
     &V2T101_CODE,
     &V2T102_CODE,
+    /* Part 5 */
+    &GAMDV10_CODE,
+    &DVCALC_CODE,
+    &XT1LIM_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
@@ -435,8 +423,8 @@ int main(int argc, char **argv)
     failures += tables_differ(&cm_p37_p70_basic, &faithful_cm_p37_p70_basic, "basic");
     failures +=
         tables_differ(&cm_p37_p70_interpretive, &faithful_cm_p37_p70_interpretive, "interpretive");
-    failures += parts_unwritten(&faithful_cm_p37_p70_basic, false);
-    failures += parts_unwritten(&faithful_cm_p37_p70_interpretive, true);
+    failures += keys_unwritten(&faithful_cm_p37_p70_basic, false);
+    failures += keys_unwritten(&faithful_cm_p37_p70_interpretive, true);
     if (failures) {
         printf("cm-p37-p70-cases: %u failures\n", failures);
         return 1;
@@ -445,10 +433,9 @@ int main(int argc, char **argv)
     failures += keys(&cm_p37_p70_interpretive, &faithful_cm_p37_p70_interpretive, 1, &runs,
                      &readable_pairs);
     printf("cm-p37-p70-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
-           "pairs) from %u states each, the others from %u, %u run by the faithful routines, "
-           "%u failures\n",
+           "pairs) from %u states each, %u run by the faithful routines, %u failures\n",
            words, readable_basic + readable_pairs,
            cm_p37_p70_basic.count + cm_p37_p70_interpretive.count, readable_basic, readable_pairs,
-           CASES, OTHER_CASES, runs, failures);
+           CASES, runs, failures);
     return failures != 0;
 }
