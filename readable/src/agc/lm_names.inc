@@ -2163,6 +2163,7 @@
 #define K_POSITF 03743u
 #define K_GOPERF1R 02703u
 #define K_CLEANDSP 02456u
+#define K_BIT2 04752u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
