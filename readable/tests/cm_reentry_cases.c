@@ -8,9 +8,9 @@
  *
  * First the words: the readable interpretive code (src/reentry/), written
  * in the listing's notation, must be the original program's rope, word
- * for word. Then the keys, which must be the faithful tables'. Then the
- * runs: each key the readable code has written (the file is written part
- * by part) from 4,096 states, each one of the port's frozen test
+ * for word. Then the keys, which must be the faithful tables', and every
+ * key must run readable code (the file is whole). Then the runs: each key
+ * from 4,096 states, each one of the port's frozen test
  * states (c64-port/tests/cm_reentry_vectors.h) entered at the key, most
  * stirred further: MPAC and its mode, the push-down list and its
  * pointer, the index registers, A and Q, GOTOADDR and 60GENRET (where the
@@ -43,7 +43,9 @@ struct interpretive_code {
     const uint16_t *words;
 };
 extern const struct interpretive_code STARTENT_CODE, STARTENT_INTERPRETIVE_CODE, SCALEPOP_CODE,
-    REFAZE10_CODE, TARGETNG_CODE, GETETA_CODE;
+    REFAZE10_CODE, TARGETNG_CODE, GETETA_CODE, INITROLL_CODE, HUNTEST_CODE, RANGER_CODE,
+    SIDETRAK_CODE, PRE_HUNT_CODE, GOTOUPSY_CODE, UPCONTRL_CODE, DCONSTD_CODE, KEP_CODE,
+    PREDICT3_CODE, HAVDNRNG_CODE, STEEROFF_CODE, STEEROFF_INTERPRETIVE_CODE;
 extern const agc_routine_table cm_reentry_basic, cm_reentry_interpretive;
 extern const agc_routine_table faithful_cm_reentry_basic, faithful_cm_reentry_interpretive;
 bool cm_reentry_readable(uint16_t key, bool order_pair);
@@ -63,6 +65,18 @@ bool cm_reentry_readable(uint16_t key, bool order_pair);
 #define LOC_AT      0164u
 #define BANKSET_AT  0165u
 #define PUSHLOC_AT  0166u
+/* DANZIG, where an RTB's routine ends; and the keys a pair's right-hand
+ * order waits at in EDOP (its code plus one) while the RTB on its left
+ * runs: KEP's RTB SSP (P66), and the RTB DMP after SIGNMPAC. */
+#define DANZIG_AT 06030u
+/* PREDICT3's basic code, the VREFER table, and V in E7. */
+#define PREDICT3_AFTER_EXIT_KEY (025u * 1024u + 01350u)
+#define VREFER_Z                03637u
+#define V_E7_AT                 03673u
+static const struct {
+    uint16_t key, edop;
+} pending[] = {{025u * 1024u + 01314u, 0046u}, {025u * 1024u + 01473u, 0172u}};
+
 /* GOTOADDR and 60GENRET, in E6 and E7 (the code runs under either). */
 static const uint16_t gone_on[] = {03245u, 03645u, 03373u, 03773u};
 
@@ -106,6 +120,22 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
                    faithful->entries[i].physical);
             ++failures;
         }
+    return failures;
+}
+
+/* Every key runs a readable routine. */
+static unsigned keys_unwritten(const agc_routine_table *table, bool order_pair)
+{
+    unsigned i, failures = 0;
+
+    for (i = 0; i < table->count; ++i) {
+        uint16_t key = table->entries[i].physical;
+        if (!cm_reentry_readable(key, order_pair)) {
+            printf("FAIL: %02o,%04o has no readable routine\n", key / 1024u % 64u,
+                   02000u + key % 1024u);
+            ++failures;
+        }
+    }
     return failures;
 }
 
@@ -255,6 +285,23 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
     if (n % 4u != 0u && rnd() % 64u == 0u) w[3u + rnd() % 03775u] |= 0100000u;
     if (n % 4u != 0u && rnd() % 64u == 0u) w[2] |= 0100000u; /* Q, which may hold 16 bits */
     w[BANKSET_AT] = rnd() % 32u ? w[6] : any_word();
+    /* At a pending key, mostly at DANZIG with the order in EDOP and
+     * BANKSET the bank alone. */
+    for (k = 0; interpretive && k < sizeof pending / sizeof pending[0]; ++k)
+        if (key == pending[k].key && rnd() % 8u) {
+            w[5] = DANZIG_AT;
+            w[EDOP_AT] = rnd() % 8u ? pending[k].edop : (uint16_t)(rnd() % 0200u);
+            if (rnd() % 8u)
+                w[BANKSET_AT] = (uint16_t)(bank << 10 | (rnd() % 4u ? 0u : rnd() & 01777u));
+        }
+    /* At PREDICT3 +5, now and then V (in E7) a VREF of the table exactly:
+     * BACK's CCS on VREF - V at -0. */
+    if (key == PREDICT3_AFTER_EXIT_KEY && rnd() % 4u == 0u) {
+        agc_word vref = 0;
+
+        if (apollo_rope_read(1u, (uint16_t)(025u * 1024u + VREFER_Z - 02000u + rnd() % 13u), &vref))
+            w[V_E7_AT] = (uint16_t)(vref & 077777u);
+    }
     /* GOTOADDR and 60GENRET, where the code goes on through (GOTO, CALL),
      * a place in fixed memory: an erasable one may name a cycle of
      * erasable addresses, which the faithful interpreter stops the test
@@ -272,8 +319,6 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
         uint16_t key = faithful->entries[i].physical, z = key_z(key);
         unsigned ran = 0, bad = 0, cases = CASES;
 
-        /* A key not yet written runs the faithful routine on both sides. */
-        if (!cm_reentry_readable(key, interpretive != 0)) continue;
         ++*readable_keys;
         for (n = 0; n < cases; ++n) {
             apollo_overlay_state start, fa, ra;
@@ -329,16 +374,27 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 }
 
 static const struct interpretive_code *const codes[] = {
-    /* Part 1 */
-    &STARTENT_CODE, &STARTENT_INTERPRETIVE_CODE, &SCALEPOP_CODE, &REFAZE10_CODE, &TARGETNG_CODE,
+    &STARTENT_CODE,
+    &STARTENT_INTERPRETIVE_CODE,
+    &SCALEPOP_CODE,
+    &REFAZE10_CODE,
+    &TARGETNG_CODE,
     &GETETA_CODE,
+    &INITROLL_CODE,
+    &HUNTEST_CODE,
+    &RANGER_CODE,
+    &SIDETRAK_CODE,
+    &PRE_HUNT_CODE,
+    &GOTOUPSY_CODE,
+    &UPCONTRL_CODE,
+    &DCONSTD_CODE,
+    &KEP_CODE,
+    &PREDICT3_CODE,
+    &HAVDNRNG_CODE,
+    &STEEROFF_CODE,
+    &STEEROFF_INTERPRETIVE_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
-
-/* The keys the readable code has written so far: a code left out of the
- * binding would run the faithful routine, so the count must be these. */
-#define WRITTEN_BASIC 3u
-#define WRITTEN_PAIRS 93u
 
 int main(int argc, char **argv)
 {
@@ -357,6 +413,8 @@ int main(int argc, char **argv)
     failures += tables_differ(&cm_reentry_basic, &faithful_cm_reentry_basic, "basic");
     failures +=
         tables_differ(&cm_reentry_interpretive, &faithful_cm_reentry_interpretive, "interpretive");
+    failures += keys_unwritten(&faithful_cm_reentry_basic, false);
+    failures += keys_unwritten(&faithful_cm_reentry_interpretive, true);
     if (failures) {
         printf("cm-reentry-cases: %u failures\n", failures);
         return 1;
@@ -364,11 +422,6 @@ int main(int argc, char **argv)
     failures += keys(&cm_reentry_basic, &faithful_cm_reentry_basic, 0, &runs, &readable_basic);
     failures += keys(&cm_reentry_interpretive, &faithful_cm_reentry_interpretive, 1, &runs,
                      &readable_pairs);
-    if (readable_basic != WRITTEN_BASIC || readable_pairs != WRITTEN_PAIRS) {
-        printf("FAIL: %u basic keys and %u order pairs readable, written %u and %u\n",
-               readable_basic, readable_pairs, WRITTEN_BASIC, WRITTEN_PAIRS);
-        ++failures;
-    }
     printf("cm-reentry-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
            "pairs) from %u states each, %u run by the faithful routines, "
            "%u failures\n",

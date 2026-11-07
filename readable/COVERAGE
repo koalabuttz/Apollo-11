@@ -101,3 +101,5 @@ Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc src/ephemerides
 Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc src/ephemerides
 Comanche055/P61-P67.agc                        src/p61_p67
 Comanche055/SERVICER207.agc                    src/servicer_cm
+Comanche055/ENTRY_LEXICON.agc                  src/reentry
+Comanche055/REENTRY_CONTROL.agc                src/reentry

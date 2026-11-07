@@ -5,23 +5,26 @@
  * and cm_reentry_interpretive (the order pairs).
  *
  * The tables carry every key of the faithful ones, in their order
- * (cm_reentry_keys.inc, which tools/p20_p25_keys.py writes from them). A
- * key the readable code has written runs the readable routine, any other
- * the faithful port's (renamed faithful_): the file is written part by
- * part (README.md).
+ * (cm_reentry_keys.inc, which tools/p20_p25_keys.py writes from them), and
+ * every key runs a readable routine: the file was written part by part,
+ * and is whole. The side-by-side test (tests/cm_reentry_cases.c) checks
+ * that no key is left without one.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
- * the file (PHASCHNG, ...) or reaches NEWOPS through a TC INTPRET. An
- * order pair is one pass of the readable interpreter over the listing's
- * words (interpret_listing()).
+ * the file (PHASCHNG, PRIOCHNG, NOVAC, 2PHSCHNG, BANKCALL, CHANG1,
+ * POSTJUMP) or reaches NEWOPS through a TC INTPRET. An order pair is one
+ * pass of the readable interpreter over the listing's words
+ * (interpret_listing()), on through TCDANZIG after a BOVB.
  *
  * The device is the CM's io record (cm_native_io); the file's basic
  * routines run only in a program with its hardware record, as the
  * faithful ones. The states the faithful routines take: at a basic key,
  * FB the key's bank, ZERO +0, the bank registers agreeing, the interrupt
- * and superbank latches in range and every erasable word an ordinary one;
- * at an order pair also NEWJOB +0 or a core set, FIXLOC one of the VAC
- * areas, Z at NEWOPS, BANKSET the BBANK and INTBIT15 the bank's bit 15. A
+ * and superbank latches in range and every erasable word an ordinary one,
+ * and in banks 30-37 the superbank bit off; at an order pair the same but
+ * the superbank bit, NEWJOB +0 or a core set, FIXLOC one of the VAC areas,
+ * Z at NEWOPS, BANKSET the BBANK and INTBIT15 the bank's bit 15 (or, at
+ * the two keys after an RTB, Z at DANZIG: see pending_orders). A
  * run the readable code refuses part way leaves the state and io record
  * as they were. */
 #include <setjmp.h>
@@ -79,8 +82,9 @@ static void bind(const agc_native_program *program, apollo_overlay_state *state,
     agc.leave = leave;
 }
 
-/* The states the faithful basic routines take (its basic_sane()). */
-static bool basic_sane(void)
+/* The states the faithful routines take: the bank registers, the latches,
+ * and every erasable word an ordinary one; ... */
+static bool machine_sane(void)
 {
     unsigned i;
 
@@ -88,18 +92,24 @@ static bool basic_sane(void)
         BBANK != (word)((FBANK & 076000u) | (EBANK >> 8)))
         return false;
     if (*agc.interrupts > 1u || (*agc.superbank & ~0160u)) return false;
-    if (FBANK >= 060000u && (*agc.superbank & 0100u)) return false;
     for (i = 3u; i < 2048u; ++i)
         if (agc.memory[i] > 077777u) return false;
     return true;
 }
 
-/* And the order pairs (its sane()): NEWJOB and FIXLOC too. */
+/* ... at a basic key also the superbank bit off in banks 30-37 (its
+ * basic_sane()); ... */
+static bool basic_sane(void)
+{
+    return machine_sane() && !(FBANK >= 060000u && (*agc.superbank & 0100u));
+}
+
+/* ... and at an order pair NEWJOB and FIXLOC (its sane()). */
 static bool sane(void)
 {
     if (agc.memory[ADDRESS_OF(NEWJOB)] > 037777u) return false;
     if (FIXLOC < 0401u || FIXLOC > 0661u || (FIXLOC - 0401u) % 054u) return false;
-    return basic_sane();
+    return machine_sane();
 }
 
 /* ---- The basic code ---- */
@@ -113,6 +123,20 @@ static const struct basic_entry {
     {KEY(025u, STARTENT + 1u), startent_after_exit},
     {KEY(025u, REFAZE10), refaze10},
     {KEY(025u, REFAZE10 + 2u), refaze10_after_phaschng},
+    /* SIDETRAK and PRE-HUNT (ranger.c) */
+    {KEY(025u, SIDETRAK + 1u), sidetrak_after_exit},
+    {KEY(025u, SIDETRAK + 7u), sidetrak_after_phaschng},
+    {KEY(025u, SIDETRAK + 011u), sidetrak_after_priochng},
+    {KEY(025u, PRE_HUNT), pre_hunt},
+    /* PREDICT3 (kep.c) */
+    {KEY(025u, PREDICT3 + 5u), predict3_after_exit},
+    /* OVERNOUT to STEEROFF (overnout.c) */
+    {KEY(025u, OVERNOUT), overnout},
+    {KEY(025u, NODISKY), nodisky},
+    {KEY(025u, SERVNOUT), servnout},
+    {KEY(025u, STEEROFF + 1u), steeroff_after_exit},
+    {KEY(025u, STEEROFF + 7u), steeroff_after_novac},
+    {KEY(025u, STEEROFF + 012u), steeroff_after_2phschng},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -127,9 +151,25 @@ static const struct basic_entry *basic_entry(uint16_t key)
 /* ---- The order pairs ---- */
 
 static const struct interpretive_code *const codes[] = {
-    /* Part 1 */
-    &STARTENT_CODE, &STARTENT_INTERPRETIVE_CODE, &SCALEPOP_CODE, &REFAZE10_CODE, &TARGETNG_CODE,
+    &STARTENT_CODE,
+    &STARTENT_INTERPRETIVE_CODE,
+    &SCALEPOP_CODE,
+    &REFAZE10_CODE,
+    &TARGETNG_CODE,
     &GETETA_CODE,
+    &INITROLL_CODE,
+    &HUNTEST_CODE,
+    &RANGER_CODE,
+    &SIDETRAK_CODE,
+    &PRE_HUNT_CODE,
+    &GOTOUPSY_CODE,
+    &UPCONTRL_CODE,
+    &DCONSTD_CODE,
+    &KEP_CODE,
+    &PREDICT3_CODE,
+    &HAVDNRNG_CODE,
+    &STEEROFF_CODE,
+    &STEEROFF_INTERPRETIVE_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
@@ -145,9 +185,6 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
 }
 
 /* ---- The keys, in the faithful tables' order ---- */
-
-/* The faithful tables, renamed. */
-extern const agc_routine_table faithful_cm_reentry_basic, faithful_cm_reentry_interpretive;
 
 /* A readable basic routine, from a state the faithful one takes. */
 static enum exec_status run_basic(void (*routine)(void), apollo_overlay_state *state,
@@ -165,42 +202,89 @@ static enum exec_status run_basic(void (*routine)(void), apollo_overlay_state *s
     return EXEC_OK;
 }
 
-/* Each key's routine: the readable one, or the faithful port's. */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each key's routine. */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct basic_entry *entry = basic_entry(key);
     cm_native_io *io = device;
 
-    if (!entry) return faithful_cm_reentry_basic.entries[index].call(program, state, device);
-    if (!program || !program->hardware || !state || !io) return EXEC_OUT_OF_SCOPE;
+    if (!entry || !program || !program->hardware || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     if (FBANK != (word)((key / 1024u) << 10) || !basic_sane()) return EXEC_OUT_OF_SCOPE;
     return run_basic(entry->routine, state, io);
 }
 
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+/* The keys a pair's right-hand order waits at in EDOP while its left, an
+ * RTB, runs a routine: KEP's RTB SSP (P66, then SSP GOTOADDR) and the RTB
+ * DMP after SIGNMPAC. The routine ends at DANZIG, which finds the order in
+ * EDOP and resumes the pass at LOC: EDOP holds the order's code plus
+ * one. */
+static const struct pending_order {
+    uint16_t key;
+    word edop;
+} pending_orders[] = {
+    {KEY(025u, KEP + 1u), ORDER_SSP + 1u},
+    {KEY(025u, HAVDNRNG + 020u), ORDER_DMP + 1u}, /* GOMAXL/D +1 */
+};
+
+static const struct pending_order *pending_order(uint16_t key)
+{
+    unsigned i;
+
+    for (i = 0; i < COUNT(pending_orders); ++i)
+        if (pending_orders[i].key == key) return &pending_orders[i];
+    return NULL;
+}
+
+/* The states the faithful port resumes such a pair from: Z at DANZIG, the
+ * order in EDOP, BANKSET the pair's bank (FB may be any) with no E-bank
+ * bits, and INTBIT15 the bank's bit 15. */
+static bool at_danzig(unsigned bank, const struct pending_order *pending)
+{
+    return Z == DANZIG && EDOP == pending->edop && ((BANKSET >> 10) & 037u) == bank &&
+           !(BANKSET & 01770u) && INTBIT15 == ((bank << 10) & 040000u) && sane();
+}
+
+/* One pass of the interpreter; after RANGER's BOVB to TCDANZIG, its TC
+ * DANZIG (ENDT(X), TIME_OF_FREE_FALL.agc), which only resets OVFIND: the
+ * pass goes on with the next order. */
+static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
+                                 cm_native_io *io, const struct interpretive_code *code)
+{
+    if (interpret_listing(program, state, io, code) != EXEC_OK) return EXEC_OUT_OF_SCOPE;
+    bind(program, state, io);
+    if (Z != TCDANZIG || FBANK != (word)(I_TCDANZIG & 076000u)) return EXEC_OK;
+    if (!sane()) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
+    if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
+    tc_at(TCDANZIG);
+    continue_at(DANZIG);
+    return interpret_listing(program, state, io, code) == EXEC_OK ? EXEC_OK : EXEC_OUT_OF_SCOPE;
+}
+
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
     cm_native_io *io = device, kept;
     apollo_overlay_state before;
     const struct interpretive_code *code;
+    const struct pending_order *pending;
     enum exec_status status;
 
-    if (!code_at(bank, (word)(02000u + key % 1024u)))
-        return faithful_cm_reentry_interpretive.entries[index].call(program, state, device);
     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     code = code_at(bank, LOC);
-    if (Z != NEWOPS || FBANK != (word)(bank << 10) || !code ||
-        LOC != (word)(02000u + key % 1024u) || BANKSET != BBANK || INTBIT15 != (FBANK & 040000u) ||
-        !sane())
+    pending = pending_order(key);
+    if (!code || LOC != (word)(02000u + key % 1024u) ||
+        (pending ? !at_danzig(bank, pending)
+                 : Z != NEWOPS || FBANK != (word)(bank << 10) || BANKSET != BBANK ||
+                       INTBIT15 != (FBANK & 040000u) || !sane()))
         return EXEC_OUT_OF_SCOPE;
 
     before = *state;
     kept = *io;
-    status = interpret_listing(program, state, io, code) == EXEC_OK ? EXEC_OK : EXEC_OUT_OF_SCOPE;
+    status = one_pass(program, state, io, code);
     if (status != EXEC_OK) {
         *state = before;
         *io = kept;
@@ -219,13 +303,13 @@ bool cm_reentry_readable(uint16_t key, bool order_pair)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #include "cm_reentry_keys.inc"
 #undef BASIC

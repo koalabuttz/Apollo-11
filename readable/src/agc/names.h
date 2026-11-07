@@ -4517,6 +4517,23 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define SCALEPOP ((word)K_SCALEPOP)
 #define TARGETNG ((word)K_TARGETNG)
 #define GETETA   ((word)K_GETETA)
+#define INITROLL ((word)K_INITROLL)
+#define HUNTEST  ((word)K_HUNTEST)
+#define RANGER   ((word)K_RANGER)
+#define SIDETRAK ((word)K_SIDETRAK)
+#define PRE_HUNT ((word)K_PRE_HUNT)
+#define GOTOUPSY ((word)K_GOTOUPSY)
+#define UPCONTRL ((word)K_UPCONTRL)
+#define KEP      ((word)K_KEP)
+#define PREDICT3 ((word)K_PREDICT3)
+#define DCONSTD  ((word)K_DCONSTD)
+#define HAVDNRNG ((word)K_HAVDNRNG)
+#define OVERNOUT ((word)K_OVERNOUT)
+#define NODISKY  ((word)K_NODISKY)
+#define SERVNOUT ((word)K_SERVNOUT)
+#define STEEROFF ((word)K_STEEROFF)
+#define P67_2CAD ((word)KW_P67_2CAD) /* P67.2CAD: the GOTO's address P67.2 */
+#define ADENDEXT ((word)KW_ADENDEXT) /* CADR ENDEXIT */
 #define ENTMASK  ((word)KW_ENTMASK) /* OCT 11774 */
 #define ENTRYSW  ((word)KW_ENTRYSW) /* OCT 11010 */
 #endif

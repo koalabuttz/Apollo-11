@@ -1,0 +1,236 @@
+/* SPDX-License-Identifier: MIT */
+/* REENTRY_CONTROL.agc, pp. 864-868 (Comanche055, bank 25): "START UP
+ * CONTROL" (UPCONTRL, MM 65), the steering up and out of the atmosphere
+ * along the trajectory the hunt test found, and the constant drag control
+ * (DCONSTD, CONSTD) and the down control (DOWNCNTL) it shares. The
+ * faithful C is c64-port/src/cm_reentry.c. */
+#include "reentry.h"
+#include "../agc/names.h"
+#include "../interpreter/interpreter.h"
+
+#if COMANCHE055
+
+#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
+
+/* ---- UPCONTRL -- pp. 864-866 ---- */
+
+/* UPCONTRL: "IF D-140 POS, NOSWITCH =1" "(SUPPRESS LATERAL SWITCH)" (C21).
+ * "IF V-V1 POS, GO TO DOWN CONTROL." (DOWNCNTL); "IF D- Q7 NEG, GO TO KEP",
+ * out of the atmosphere; climbing (RDOT positive), CONT1; else VLTEST, "IF
+ * V-VL-C18 NEG,EGSW=1,MODE=PREDICT3" (PREFINAL). CONT1: "IF D-A0 POS, L/D =
+ * LAD, GO TO LIMITL/D" (STOREL/D).
+ *
+ * CONT3, the reference trajectory at this drag: "VREF=FACT1(1-SQRT(FACT2 D
+ * + ALP))" and "RDOTREF = LEWD(V1-VREF)", and below VSAT (VS1) less the
+ * hook, "RDHOOK=CHI(1+DV AHOOKDV/DVL) DV DV" "/DHOOK VREF", "WHERE  DV =
+ * (VS1-VREF)": "RDOTREF = RDOTREF - RDHOOK". CONTINU2: above Q7MIN,
+ * FACTOR, the gain, from the drag between A1 and Q7: (A1 - Q7) / (D -
+ * Q7).
+ *
+ * UPCNTRL3, the "SKIPPER": "DELTA L/D=-((RDOT-RDOTREF)F1 KB1+V-VREF)F1
+ * KB2", "WHERE F1 = FACTOR"; then the "NONLINEAR CIRCUIT FOR REDUCING HIGH
+ * GAIN" (beyond PT1/16, POINT1 of the rest), and L/D = LEWD + DELTA L/D.
+ * NEGTESTS, on an overflow GOMAXL/D; then "IF D-C20 POS, LATSW =0" "AND IF
+ * L/D NEG, L/D = 0." */
+static const word upcontrl_words[] = {
+    /* UPCONTRL */ ORDERS(DLOAD, DSU), /* "IF D-140 POS, NOSWITCH =1" */
+    ADDRESS_PLUS_ONE(D),               /* "(SUPPRESS LATERAL SWITCH)" */
+    ADDRESS_PLUS_ONE(C21),
+    ORDERS(BMN, SET),
+    ADDRESS_AT(UPCONTRL, 6), /* "+2" */
+    SWITCH(SET, NOSWITCH),
+    ORDERS(DLOAD, DSU), /* "IF V-V1 POS, GO TO DOWN CONTROL." */
+    ADDRESS_PLUS_ONE(V),
+    ADDRESS_PLUS_ONE(V1),
+    ORDERS(BPL, DLOAD),
+    ADDRESS(DOWNCNTL),
+    ADDRESS_PLUS_ONE(D),
+    ORDERS(DSU, BMN), /* "IF D- Q7 NEG, GO TO KEP" */
+    ADDRESS_PLUS_ONE(Q7),
+    ADDRESS(KEP),
+    ORDERS(DLOAD, BPL), /* "IF RDOT NEG, DO VLTEST" */
+    ADDRESS_PLUS_ONE(RDOT),
+    ADDRESS(CONT1),
+    /* VLTEST */ ORDERS(DLOAD, DSU), /* "IF V-VL-C18 NEG,EGSW=1,MODE=PREDICT3" */
+    ADDRESS_PLUS_ONE(V),
+    ADDRESS_PLUS_ONE(VL),
+    ORDERS(DSU, BMN),
+    ADDRESS_PLUS_ONE(C18),
+    ADDRESS(PREFINAL),
+    /* CONT1 */ ORDER(DLOAD), /* "IF D-A0 POS, L/D = LAD, GO TO LIMITL/D" */
+    ADDRESS_PLUS_ONE(D),
+    ORDERS(DSU, BMN),
+    ADDRESS_PLUS_ONE(A0),
+    ADDRESS(CONT3),
+    ORDERS(DLOAD, GOTO),
+    ADDRESS_PLUS_ONE(LAD),
+    ADDRESS(STOREL_D),
+    /* CONT3 */ ORDERS(DLOAD, DMP), /* "VREF=FACT1(1-SQRT(FACT2 D + ALP))" */
+    ADDRESS_PLUS_ONE(D),
+    ADDRESS_PLUS_ONE(FACT2),
+    ORDERS(DAD, SQRT),
+    ADDRESS_PLUS_ONE(ALP),
+    ORDERS(BDSU, DMP),
+    ADDRESS_PLUS_ONE(BARELY1),
+    ADDRESS_PLUS_ONE(FACT1),
+    STORE(VREF),       /* "VREF / 2VS" */
+    ORDERS(BDSU, DMP), /* "RDOTREF = LEWD(V1-VREF)" */
+    ADDRESS_PLUS_ONE(V1),
+    ADDRESS_PLUS_ONE(LEWD),
+    STODL(RDOTREF), /* "RDOTREF / 2VS" */
+    ADDRESS_PLUS_ONE(VS1),
+    ORDERS(DSU, BMN), /* "IF VSAT-VREF NEG, GO TO CONTINU2" */
+    ADDRESS_PLUS_ONE(VREF),
+    ADDRESS(CONTINU2),
+    ORDERS(PUSH, PUSH),        /* "VS1-VREF  TO PDL TWICE" */
+    ORDERS(DMP, DDV),          /* "RDHOOK=CHI(1+DV AHOOKDV/DVL) DV DV" */
+    ADDRESS_PLUS_ONE(AHOOKDV), /* "/DHOOK VREF" */
+    ADDRESS_PLUS_ONE(DVL),     /* "WHERE  DV = (VS1-VREF)" */
+    ORDERS(DAD, DMP),
+    ADDRESS_PLUS_ONE(1_16TH),
+    ADDRESS_PLUS_ONE(CH1),
+    ORDERS(DMP, DMP), /* "VS1-VREF  FROM PDL TWICE." */
+    ORDER(DDV),
+    ADDRESS_PLUS_ONE(DHOOK),
+    ORDERS(DDV, BDSU),
+    ADDRESS_PLUS_ONE(VREF),
+    ADDRESS_PLUS_ONE(RDOTREF), /* "C(RDOTREF)= LEWD (V1-VREF)" */
+    STORE(RDOTREF),            /* "RDOTREF = RDOTREF - RDHOOK" */
+    /* CONTINU2 */ ORDERS(DLOAD, DSU),
+    ADDRESS_PLUS_ONE(D),
+    ADDRESS_PLUS_ONE(Q7MIN),
+    ORDERS(BOVB, BMN),
+    ADDRESS(TCDANZIG), /* "CLEAR OVFL IND, IF ON." */
+    ADDRESS(UPCNTRL3),
+    ORDERS(DLOAD, DSU),
+    ADDRESS_PLUS_ONE(A1),
+    ADDRESS_PLUS_ONE(Q7),
+    ORDERS(PDDL, DSU),
+    ADDRESS_PLUS_ONE(D),
+    ADDRESS_PLUS_ONE(Q7),
+    ORDERS(DDV, STADR),
+    AFTER_STADR(STORE(FACTOR)), /* "FACTOR / 25G" */
+    /* UPCNTRL3 */ ORDER(DLOAD),
+    ADDRESS_PLUS_ONE(RDOT),
+    ORDERS(DSU, DMP),          /* "L/D = LEWD" */
+    ADDRESS_PLUS_ONE(RDOTREF), /* "-((RDOT-RDOTREF)F1/KB1+V-VREF)F1/KB2" */
+    ADDRESS_PLUS_ONE(FACTOR),
+    ORDERS(DDV, DAD),
+    ADDRESS_PLUS_ONE(1_KB1),
+    ADDRESS_PLUS_ONE(V),
+    ORDERS(DSU, DMP),
+    ADDRESS_PLUS_ONE(VREF),
+    ADDRESS_PLUS_ONE(FACTOR),
+    ORDERS(DDV, PUSH),
+    ADDRESS_PLUS_ONE(M1_KB2), /* "DELTA L/D INTO PDL" */
+    ORDERS(BOV, ABS),         /* "NONLINEAR CIRCUIT FOR REDUCING HIGH GAIN" */
+    ADDRESS(GOMAXL_D),
+    ORDERS(DSU, BMN),
+    ADDRESS_PLUS_ONE(PT1_16),
+    ADDRESS(NEXT1),
+    ORDERS(DMP, DAD),
+    ADDRESS_PLUS_ONE(POINT1),
+    ADDRESS_PLUS_ONE(PT1_16),
+    ORDERS(SIGN, PUSH),             /* "ATTACH SIGN OF PUSH TO MPAC THEN PUSH" */
+    /* NEXT1 */ ORDERS(DLOAD, SL4), /* "DELTA L/D FROM PDL." */
+    ORDER(DAD),
+    ADDRESS_PLUS_ONE(LEWD),
+    /* NEGTESTS */ ORDERS(BOV, PUSH), /* "L/D TO PDL FOR USE IN NEGTESTS." */
+    ADDRESS(GOMAXL_D),
+    STODL(L_D), /* "IF D-C20 POS, LATSW =0" "AND IF L/D NEG, L/D = 0." */
+    ADDRESS_PLUS_ONE(D),
+    ORDERS(DSU, BMN),
+    ADDRESS_PLUS_ONE(C20),
+    ADDRESS(LIMITL_D),
+    ORDERS(CLEAR, DLOAD),
+    SWITCH(CLEAR, LATSW), /* "=21D.  ROLL OVER TOP, REGARDLESS." */
+    ORDERS(BPL, DLOAD),   /* "L/D FROM PDL." */
+    ADDRESS(LIMITL_D),
+    ADDRESS_PLUS_ONE(3ZEROS),
+    STCALL(L_D),
+    ADDRESS(LIMITL_D), /* "(GO TO)" */
+};
+
+const struct interpretive_code UPCONTRL_CODE = {025u, UPCONTRL, COUNT(upcontrl_words),
+                                                upcontrl_words};
+
+/* ---- DCONSTD, CONSTD, DOWNCNTL -- pp. 867-868 ---- */
+
+/* DCONSTD, the "TWO RANGER ENTRIES TO CONSTD HERE": "SAVE OLD VALUE OF
+ * DIFF FOR NEXT PASS.", Q7 Q7F again. BECONSTD, "A HUNTEST ENTRY INTO
+ * CONSTD.": "RESET MODE TO HUNTEST", and KILLGRP4, "DEACTIVATE GRP4 FROM
+ * HUNTEST."
+ *
+ * CONSTD, the constant drag control, holding D0: "RDOTREF = -2 HS D0/V",
+ * "C/D0 LEQ + K2D(RDOT-RDOTREF) INTO PD"; CONSTD1, "ENTER WITH DREF IN
+ * MPAC": the L/D for the drag error, K1D (D - DREF), with the "K2D TERM
+ * FROM PUSH", on to NEGTESTS.
+ *
+ * DOWNCNTL, the "INITIAL PART OF UPCONTROL.", while V is above V1: "RDTR =
+ * LAD(V1-V)", "LAD + K2D(RDOT-RDTR) INTO PD", and the drag to steer to,
+ * "DREF = (V/V1)SQ A0 - PD", the PD "(V1-V)SQ LAD/(2 C1 HS)"; to CONSTD1
+ * with DREF ("C(MPAC) = DREF"). */
+static const word dconstd_words[] = {
+    /* DCONSTD */ ORDER(DLOAD), /* "TWO RANGER ENTRIES TO CONSTD HERE" */
+    ADDRESS_PLUS_ONE(DIFF),     /* "SAVE OLD VALUE OF DIFF FOR NEXT PASS." */
+    STODL(DIFFOLD),             /* "DIFFOLD / 2 PI" */
+    ADDRESS_PLUS_ONE(Q7F),
+    STORE(Q7),
+    /* BECONSTD */ ORDERS(SSP, RTB), /* "A HUNTEST ENTRY INTO CONSTD." */
+    ADDRESS_PLUS_ONE(GOTOADDR),      /* "RESET MODE TO HUNTEST" */
+    ADDRESS(HUNTEST),
+    ADDRESS(KILLGRP4), /* "DEACTIVATE GRP4 FROM HUNTEST." */
+    /* CONSTD */ ORDER(BOVB),
+    ADDRESS(TCDANZIG), /* "CLEAR OVF IND IF ON." */
+    ORDERS(DLOAD, DMP),
+    ADDRESS_PLUS_ONE(LEQ),
+    ADDRESS_PLUS_ONE(C_D0), /* "C/D0 = -4/D0 B-8" */
+    ORDERS(PDDL, DMP),      /* "LEQ C/D0 INTO PDL" */
+    ADDRESS_PLUS_ONE(2HS),  /* "2HS / 4 VS VS" */
+    ADDRESS_PLUS_ONE(D0),
+    ORDERS(DDV, DAD), /* "RDOTREF = -2 HS D0/V" */
+    ADDRESS_PLUS_ONE(V),
+    ADDRESS_PLUS_ONE(RDOT),
+    ORDERS(DMP, DAD),
+    ADDRESS_PLUS_ONE(K2D), /* "C/D0 LEQ + K2D(RDOT-RDOTREF) INTO PD" */
+    ORDER(PDDL),
+    ADDRESS_PLUS_ONE(D0),      /* "D0 /805" */
+    /* CONSTD1 */ ORDER(BDSU), /* "ENTER WITH DREF IN MPAC" */
+    ADDRESS_PLUS_ONE(D),
+    ORDERS(DMP, DAD),
+    ADDRESS_PLUS_ONE(K1D), /* "K2D TERM FROM PUSH" */
+    ORDERS(SL, GOTO),
+    SL_COUNT(8),
+    ADDRESS(NEGTESTS),          /* "(GO TO)" */
+    /* DOWNCNTL */ ORDER(BOVB), /* "INITIAL PART OF UPCONTROL." */
+    ADDRESS(TCDANZIG),          /* "CLEAR OVFIND, IF ON." */
+    ORDERS(DLOAD, SR),
+    ADDRESS_PLUS_ONE(LAD),
+    SR_COUNT(8),
+    ORDERS(PDDL, DSU), /* "RDTR = LAD(V1-V)" */
+    ADDRESS_PLUS_ONE(V),
+    ADDRESS_PLUS_ONE(V1),
+    ORDERS(DMP, DAD),
+    ADDRESS_PLUS_ONE(LAD),
+    ADDRESS_PLUS_ONE(RDOT),
+    ORDERS(DMP, DAD),
+    ADDRESS_PLUS_ONE(K2D), /* "PUSH UP LAD." */
+    ORDERS(PDDL, DSU),     /* "LAD + K2D(RDOT-RDTR) INTO PD" */
+    ADDRESS_PLUS_ONE(V1),
+    ADDRESS_PLUS_ONE(V),
+    ORDERS(DSQ, DMP),
+    ADDRESS_PLUS_ONE(LAD),
+    ORDERS(DDV, PDDL), /* "(V1-V)SQ LAD/(2 C1 HS) INTO PD" */
+    ADDRESS_PLUS_ONE(2C1HS),
+    ADDRESS_PLUS_ONE(V1),
+    ORDERS(DSQ, DDV),
+    ADDRESS_PLUS_ONE(VSQUARE),
+    ORDERS(BDDV, DSU),    /* "DREF = (V/V1)SQ A0 - PD" */
+    ADDRESS_PLUS_ONE(A0), /* "PUSH UP HERE" */
+    ORDER(GOTO),          /* "C(MPAC) = DREF" */
+    ADDRESS(CONSTD1),
+};
+
+const struct interpretive_code DCONSTD_CODE = {025u, DCONSTD, COUNT(dconstd_words), dconstd_words};
+
+#endif
