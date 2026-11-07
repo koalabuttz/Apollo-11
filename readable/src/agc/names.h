@@ -4477,6 +4477,35 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define OCT41     ((word)KW_OCT41)   /* OCT41 = 33DEC */
 static const word POSECADR[2] = KW_POSECADR; /* 2CADR CM/POSE */
 static const word SERVCAD1[2] = KW_SERVCAD1; /* 2CADR SERVEXIT (SERVCAD2 = SERVCAD1) */
+
+/* SERVICER207.agc (the CM's) */
+#define PREREAD       ((word)K_PREREAD)
+#define READACCS      ((word)K_READACCS)
+#define PIPSDONE      ((word)K_PIPSDONE)
+#define REDO5_5       ((word)K_REDO5_5) /* REDO5.5 */
+#define SERVICER      ((word)K_SERVICER)
+#define AVERAGEG      ((word)K_AVERAGEG)
+#define AVGEND        ((word)K_AVGEND)
+#define SERVEXIT      ((word)K_SERVEXIT)
+#define NORMLIZE      ((word)K_NORMLIZE)
+#define REREADAC      ((word)K_REREADAC)
+#define DONEADR       ((word)KW_DONEADR) /* GENADR PIPSDONE */
+static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
+#define REDO5_31      ((word)K_REDO5_31) /* REDO5.31 */
+#define PREREAD1      ((word)K_PREREAD1)
+#define NOSAVPIP      ((word)K_NOSAVPIP)
+#define CHEKAVEG      ((word)K_CHEKAVEG)
+#define MAKESERV      ((word)K_MAKESERV)
+#define ONMNITOR      ((word)K_ONMNITOR)
+#define QUIKREAD      ((word)K_QUIKREAD)
+#define CHKCTR        ((word)K_CHKCTR)
+#define PIPCHECK      ((word)K_PIPCHECK)
+#define PIPLOOP       ((word)K_PIPLOOP)
+#define DVTOTUP       ((word)K_DVTOTUP)
+#define SETJTAG       ((word)K_SETJTAG)
+#define JTAGTIME      ((word)KW_JTAGTIME) /* DEC 120 */
+#define POINT5_SEC    ((word)KW_0_5SEC)   /* 0.5SEC: DEC 50 */
+#define MINUS_MAXDELV ((word)KW_MMAXDELV) /* -MAXDELV: DEC -6398 */
 #endif
 
 /* NO.CORES + 1 core sets. */
