@@ -4545,6 +4545,23 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define CM_POSE3 ((word)K_CM_POSE3) /* CM/POSE3 */
 #define EBAOG    ((word)KW_EBAOG)   /* EBAOG EQUALS EBANK6 */
 #define TCDU     ((word)KW_TCDU)    /* DEC .1 */
+
+/* P37_P70.agc */
+#define P37      ((word)K_P37)
+#define RTE299   ((word)K_RTE299)
+#define RTE317   ((word)K_RTE317)
+#define RTE369   ((word)K_RTE369)
+#define RTEVN    ((word)K_RTEVN)
+#define P37N     ((word)K_P37N)
+#define P37T     ((word)K_P37T)
+#define P370GOFR ((word)K_P370GOFR)
+#define P370GOF  ((word)K_P370GOF)
+#define V6N33RTE ((word)KW_V6N33RTE) /* VN 0633 */
+#define V4N06RTE ((word)KW_V4N06RTE) /* VN 0406 */
+#define V6N61RTE ((word)KW_V6N61RTE) /* VN 0661 */
+#define V6N39RTE ((word)KW_V6N39RTE) /* VN 0639 */
+#define V6N60RTE ((word)KW_V6N60RTE) /* VN 0660 */
+#define V6N81RTE ((word)KW_V6N81RTE) /* VN 0681 */
 #endif
 
 /* NO.CORES + 1 core sets. */

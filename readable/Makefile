@@ -183,6 +183,8 @@ CRENT_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/reentry/*.c)) \
 	src/binding/cm_reentry_routines.c
 CBAT_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/body_attitude/*.c)) \
 	src/rtb_op_codes/rtb_op_codes.c src/binding/cm_body_attitude_routines.c
+CP37_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p37_p70/*.c)) \
+	src/binding/cm_p37_p70_routines.c
 LAD_SOURCES := src/agc/agc.c src/binding/machine.c src/landing_displays/landing_displays.c \
 	src/binding/landing_displays_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
@@ -199,11 +201,11 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) $(R60_SOURCES) \
-	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(P40_SOURCES) $(CP40_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SO_SOURCES) $(BB_SOURCES) $(LLD_SOURCES) $(THR_SOURCES) $(LLGE_SOURCES) $(P70_SOURCES) $(P12_SOURCES) $(ASC_SOURCES) $(SVC_SOURCES) $(LAD_SOURCES) $(FCW_SOURCES) $(P51_SOURCES) $(CP51_SOURCES) $(EPH_SOURCES) $(CP61_SOURCES) $(CSVC_SOURCES) $(CRENT_SOURCES) $(CBAT_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
+	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(P40_SOURCES) $(CP40_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SO_SOURCES) $(BB_SOURCES) $(LLD_SOURCES) $(THR_SOURCES) $(LLGE_SOURCES) $(P70_SOURCES) $(P12_SOURCES) $(ASC_SOURCES) $(SVC_SOURCES) $(LAD_SOURCES) $(FCW_SOURCES) $(P51_SOURCES) $(CP51_SOURCES) $(EPH_SOURCES) $(CP61_SOURCES) $(CSVC_SOURCES) $(CRENT_SOURCES) $(CBAT_SOURCES) $(CP37_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
 HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases throttle-cases llge-cases p70-cases p12-cases ascent-cases servicer-cases landing-displays-cases findcduw-cases p51-p53-cases cm-p51-p53-cases ephemerides-cases cm-p61-p67-cases cm-servicer-cases cm-reentry-cases cm-body-attitude-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases throttle-cases llge-cases p70-cases p12-cases ascent-cases servicer-cases landing-displays-cases findcduw-cases p51-p53-cases cm-p51-p53-cases ephemerides-cases cm-p61-p67-cases cm-servicer-cases cm-reentry-cases cm-body-attitude-cases cm-p37-p70-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
@@ -214,7 +216,7 @@ all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases
 	p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases \
 	r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases \
 	lunar-landing-cases throttle-cases llge-cases p70-cases p12-cases ascent-cases servicer-cases landing-displays-cases findcduw-cases p51-p53-cases cm-p51-p53-cases ephemerides-cases cm-p61-p67-cases cm-servicer-cases cm-reentry-cases \
-	cm-body-attitude-cases
+	cm-body-attitude-cases cm-p37-p70-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -2483,6 +2485,36 @@ cm-body-attitude-cases: $(BUILD)/cbat-oracle $(BUILD)/cbat-cases
 	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
 	./$(BUILD)/cbat-oracle $(ROPES)
 	./$(BUILD)/cbat-cases $(ROPES)
+
+# P37_P70.agc, the CM's return to earth (written part by part): the port's
+# test (tests/test_cm_p37_p70.c, its frozen cases run to their stops
+# through the program of tests/cm_p37_p70_target.c, against the original
+# program's yaAGC digests) through the readable tables, with
+# tests/with_ropes.c loading the ropes the readable interpreter reads; then
+# tests/cm_p37_p70_cases.c side by side with the faithful routines
+# (renamed faithful_, which also run the keys no part has written yet).
+CP37_NAMES := cm_p37_p70_basic cm_p37_p70_interpretive
+CP37_COMMON := $(CP61_COMMON) $(PORT)/src/rtb_modes.c
+
+$(BUILD)/cp37-faithful.o: $(PORT)/src/cm_p37_p70.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(CP37_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/cp37-test.o: $(PORT)/tests/test_cm_p37_p70.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/cp37-oracle: $(CP37_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/cp37-faithful.o \
+		$(BUILD)/cp37-test.o tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CP37_COMMON) $(PORT)/tests/cm_p37_p70_target.c \
+		tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/cp37-cases: $(CP37_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/cp37-faithful.o \
+		tests/cm_p37_p70_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(CP37_COMMON) $(filter %.o,$^) \
+		tests/cm_p37_p70_cases.c -o $@
+
+cm-p37-p70-cases: $(BUILD)/cp37-oracle $(BUILD)/cp37-cases
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/cp37-oracle $(ROPES)
+	./$(BUILD)/cp37-cases $(ROPES)
 
 # LUNAR_LANDING_GUIDANCE_EQUATIONS.agc, the LM's landing guidance: the
 # port's test (tests/test_lm_llge.c, its frozen cases run to their stops
