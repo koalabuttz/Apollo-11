@@ -242,8 +242,8 @@ REPLACED = (
 # ones, renamed, are no longer called (--gc-sections drops them). P61-P67
 # (src/p61_p67): the CM's routine tables, all readable; the faithful ones,
 # renamed, are no longer called (--gc-sections drops them). SERVICER207
-# (src/servicer_cm): the CM's routine tables, readable part by part; the
-# faithful ones, renamed, run the keys not yet written.
+# (src/servicer_cm): the CM's routine tables, all readable; the faithful
+# ones, renamed, are no longer called (--gc-sections drops them).
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],

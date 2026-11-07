@@ -9,10 +9,10 @@
  * First the words: the readable interpretive code (src/servicer_cm/),
  * written in the listing's notation, must be the original program's rope,
  * word for word. Then the keys, which must be the faithful tables', and
- * every basic key must run readable code (all the file's basic code is
- * written). Then the runs: each key from 4,096 states, each one of the
- * port's frozen test states (c64-port/tests/cm_servicer_vectors.h) entered
- * at the key, most stirred further: MPAC and its mode, the push-down list
+ * every key must run readable code (the file is whole). Then the runs:
+ * each key from 4,096 states, each one of the port's frozen test states
+ * (c64-port/tests/cm_servicer_vectors.h) entered at the key, most stirred
+ * further: MPAC and its mode, the push-down list
  * and its pointer, the index registers, A, Q and RUPTREG1 (often one of
  * the words a function starts at, which a TC Q or TC RUPTREG1 goes on
  * at), AVGEXIT (often one of them, in bank 37), the words the file counts
@@ -44,7 +44,8 @@ struct interpretive_code {
     unsigned count;
     const uint16_t *words;
 };
-extern const struct interpretive_code DVTOTUP_CODE, AVERAGEG_CODE, AVGEND_CODE, NORMLIZE_CODE;
+extern const struct interpretive_code DVTOTUP_CODE, AVERAGEG_CODE, AVGEND_CODE, NORMLIZE_CODE,
+    CALCGRAV_CODE, CALCRVG_CODE;
 extern const agc_routine_table cm_servicer_basic, cm_servicer_interpretive;
 extern const agc_routine_table faithful_cm_servicer_basic, faithful_cm_servicer_interpretive;
 bool cm_servicer_readable(uint16_t key, bool order_pair);
@@ -124,8 +125,7 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* Every basic key runs a readable routine (the binding hands none of
- * them to the faithful table). */
+/* Every key runs a readable routine. */
 static unsigned keys_unwritten(const agc_routine_table *table, bool order_pair)
 {
     unsigned i, failures = 0;
@@ -164,11 +164,23 @@ static uint16_t return_word(void)
     return rnd() % 4u ? (uint16_t)(010u + rnd() % 07770u) : rnd() % 2u ? any_word() : rnd();
 }
 
-/* X1 or X2 as the program sets it: the complement of a place in erasable
- * memory, which an indexed operand adds. */
-static uint16_t index_word(void)
+/* X1 and X2 as the program sets them, for the file's one indexed pair,
+ * ITISMOON's BDDV* -MUDT(E),1 and SLR* 0 -21D,2: X1 the complement of
+ * RTX2 (LXC,1), +0 or -2 (-0 now and then), and X2 NORM's count, the
+ * complement of the shifts it took (a few more or less now and then).
+ * (Not a word that indexes -MUDT(E) past the end of memory, as an X1 of
+ * the complement of an erasable place does: from there yaAGC, the
+ * faithful port and the readable interpreter each end with another
+ * quotient.) */
+static uint16_t x1_word(void)
 {
-    return (uint16_t)(077777u - (0400u + rnd() % 0340u));
+    static const uint16_t x1[] = {0u, 077775u, 0u, 077775u, 077777u};
+    return x1[rnd() % (sizeof x1 / sizeof x1[0])];
+}
+
+static uint16_t x2_word(void)
+{
+    return rnd() % 8u ? (uint16_t)(077777u - rnd() % 064u) : (uint16_t)(rnd() % 010u);
 }
 
 /* A word for CCS's four ways: +1, -1, +0 or -0, or any. */
@@ -286,8 +298,8 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
         w[PUSHLOC_AT] = (uint16_t)(fixloc + rnd() % 040u);
     /* X1 and X2 (the work area's 046 and 047), each as the program sets
      * it; S1 (050) any. */
-    w[(fixloc + X1_AT) & 03777u] = index_word();
-    w[(fixloc + X1_AT + 1u) & 03777u] = index_word();
+    w[(fixloc + X1_AT) & 03777u] = x1_word();
+    w[(fixloc + X1_AT + 1u) & 03777u] = x2_word();
     if (n % 4u != 0u && rnd() % 2u) w[(fixloc + S1_AT) & 03777u] = any_word();
     /* 31D, where CALCRVG keeps its return (STQ 31D), a fixed CADR: an
      * erasable one may name a cycle of erasable CADRs, which the faithful
@@ -374,11 +386,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 }
 
 static const struct interpretive_code *const codes[] = {
-    /* Part 1 */
-    &DVTOTUP_CODE,
-    &AVERAGEG_CODE,
-    &AVGEND_CODE,
-    &NORMLIZE_CODE,
+    &DVTOTUP_CODE, &AVERAGEG_CODE, &AVGEND_CODE, &NORMLIZE_CODE, &CALCGRAV_CODE, &CALCRVG_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
@@ -400,6 +408,7 @@ int main(int argc, char **argv)
     failures += tables_differ(&cm_servicer_interpretive, &faithful_cm_servicer_interpretive,
                               "interpretive");
     failures += keys_unwritten(&faithful_cm_servicer_basic, false);
+    failures += keys_unwritten(&faithful_cm_servicer_interpretive, true);
     if (failures) {
         printf("cm-servicer-cases: %u failures\n", failures);
         return 1;

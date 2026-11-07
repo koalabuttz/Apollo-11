@@ -15,7 +15,7 @@
  *     828-831): the job, the last pass and the first.
  *   PIPASR, REREADAC (pipasr.c, pp. 832-834): the PIPA reader and its
  *     restart.
- *   CALCGRAV, CALCRVG (calcgrav.c, pp. 835-836, part 2): the average G
+ *   CALCGRAV, CALCRVG (calcgrav.c, pp. 835-836): the average G
  *     integration, all interpretive.
  *
  * The faithful C is c64-port/src/cm_servicer.c.
@@ -113,7 +113,8 @@ void servexit_after_phaschng(void); /* SERVEXIT +2 */
 void normlize(void);                /* NORMLIZE */
 void normlize_after_gentran(void);  /* NORMLIZE +4 */
 void normlize_after_exit(void);     /* NORMLIZE +015 */
-extern const struct interpretive_code DVTOTUP_CODE, AVERAGEG_CODE, AVGEND_CODE, NORMLIZE_CODE;
+extern const struct interpretive_code DVTOTUP_CODE, AVERAGEG_CODE, AVGEND_CODE, NORMLIZE_CODE,
+    CALCGRAV_CODE, CALCRVG_CODE;
 
 /* PIPASR and REREADAC -- pipasr.c */
 void pipasr(void);   /* PIPASR (a subroutine: back by TC Q) */
