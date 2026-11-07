@@ -4536,6 +4536,15 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define ADENDEXT ((word)KW_ADENDEXT) /* CADR ENDEXIT */
 #define ENTMASK  ((word)KW_ENTMASK) /* OCT 11774 */
 #define ENTRYSW  ((word)KW_ENTRYSW) /* OCT 11010 */
+
+/* CM_BODY_ATTITUDE.agc */
+#define CM_POSE  ((word)K_CM_POSE)  /* CM/POSE */
+#define CM_ATUP  ((word)K_CM_ATUP)  /* CM/ATUP */
+#define CMTR1    ((word)K_CMTR1)
+#define REDOPOSE ((word)K_REDOPOSE)
+#define CM_POSE3 ((word)K_CM_POSE3) /* CM/POSE3 */
+#define EBAOG    ((word)KW_EBAOG)   /* EBAOG EQUALS EBANK6 */
+#define TCDU     ((word)KW_TCDU)    /* DEC .1 */
 #endif
 
 /* NO.CORES + 1 core sets. */
