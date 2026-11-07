@@ -149,6 +149,12 @@ static const struct basic_entry {
     {KEY(036u, P370GOF + 4u), p370gof_terminate},
     {KEY(036u, P370GOF + 5u), p370gof_proceed},
     {KEY(036u, P370GOF + 6u), p370gof_recycle},
+    /* Part 2: P370ALRM (rtedisp.c) */
+    {KEY(032u, P370ALRM + 2u), p370alrm_after_exit},
+    {KEY(032u, P370ALRM + 4u), p370alrm_after_varalarm},
+    {KEY(032u, P370ALRM + 7u), p370alrm_terminate},
+    {KEY(032u, P370ALRM + 010u), p370alrm_after_varalarm}, /* GOFLASH's proceed: TCF -4 */
+    {KEY(032u, P370ALRM + 011u), p370alrm_recycle},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -164,8 +170,20 @@ static const struct basic_entry *basic_entry(uint16_t key)
 
 static const struct interpretive_code *const codes[] = {
     /* Part 1 */
-    &P37_CODE,          &RTE299_CODE, &RTE317_POLY_CODE, &RTE369_POLY_CODE, &RTEVN_CODE,
-    &RTEVN_RETURN_CODE, &P37N_CODE,   &P37T_POLY_CODE,   &P37T_TIG_CODE,
+    &P37_CODE,
+    &RTE299_CODE,
+    &RTE317_POLY_CODE,
+    &RTE369_POLY_CODE,
+    &RTEVN_CODE,
+    &RTEVN_RETURN_CODE,
+    &P37N_CODE,
+    &P37T_POLY_CODE,
+    &P37T_TIG_CODE,
+    /* Part 2 */
+    &P370ALRM_CODE,
+    &P370ALRM_GOTO_CODE,
+    &TMRAD100_CODE,
+    &RTD18_CODE,
 };
 
 /* The table an address of a bank is in, or none. */

@@ -11,7 +11,9 @@
  *   part 1, p37.c: P37's main line, the conic trajectory (pp. 890-895,
  *     bank 36); p37_displays.c: RTEVN, the precision display, the
  *     targeting and the end (P37G to P37W), and the display subroutines
- *     (pp. 895-899, bank 36).
+ *     (pp. 895-899, bank 36);
+ *   part 2, rtedisp.c: the alarm display, the time to a radius and the
+ *     display calculation with the landing site (pp. 900-904, bank 32).
  * The binding (src/binding/cm_p37_p70_routines.c) runs every key of the
  * faithful port's: a key a part has written on these routines, any other
  * on the faithful port's.
@@ -86,6 +88,13 @@ extern const struct interpretive_code RTEVN_CODE, RTEVN_RETURN_CODE, P37N_CODE, 
 void p37gfrb1(word at); /* P37GFRB1 */
 void p370gofr(word at); /* P370GOFR */
 void p370gof(word at);  /* P370GOF */
+
+/* Part 2, P370ALRM, TMRAD100 and RTEDISP -- rtedisp.c */
+void p370alrm_after_exit(void);     /* P370ALRM +2 */
+void p370alrm_after_varalarm(void); /* P370ALRM +4 (and proceed, +010) */
+void p370alrm_terminate(void);      /* P370ALRM +7 (GOFLASH's returns) */
+void p370alrm_recycle(void);        /* P370ALRM +011 */
+extern const struct interpretive_code P370ALRM_CODE, P370ALRM_GOTO_CODE, TMRAD100_CODE, RTD18_CODE;
 
 #endif
 
