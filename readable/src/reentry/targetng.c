@@ -1,0 +1,184 @@
+/* SPDX-License-Identifier: MIT */
+/* REENTRY_CONTROL.agc, pp. 848-852 (Comanche055, banks 25 and 26):
+ * "PROCESS AVERAGE G OUTPUT...SCALE IT AND GET INPUT DATA" (TARGETNG), and
+ * the "SUBROUTINES CALLED BY SCALEPOP (TARGETING):" GETETA, SUBETA,
+ * SETMIND, TINYTHET. The faithful C is c64-port/src/cm_reentry.c. */
+#include "reentry.h"
+#include "../agc/names.h"
+#include "../interpreter/interpreter.h"
+
+#if COMANCHE055
+
+#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
+
+/* ---- TARGETNG -- pp. 848-850 ---- */
+
+/* TARGETNG ("TARGETNG IS CALLED BY P61, FROM GROUP 4.", "BY ENTRY, FROM
+ * GROUP 5."): the velocity, relative with RELVELSW ("- VREL WAS LEFT BY
+ * CM/POSE"), else inertial (GETVEL: VN times KVSCALE, "V/2 VS"); its unit
+ * vector UNITV, VSQUARE ("VSQ/4") and "LEQ = VSQUARE - 1", V, and "RDOT=
+ * V.UNITR". D, the "ACCELERATION USED TO APPROX DRAG", from the PIPA
+ * counts (DELV times KASCALE; for none, the least, SETMIND), and "UNI =
+ * UNIT(V*R)". Then the target vector RT at the time: EARROT2 over the
+ * "ELAPSED TIME SINCE RTINIT WAS ESTABLISHED." (UPDATERT; with the
+ * relative velocity, from GETETA first). "LATANG = RT.UNI"; GONEBY "IF
+ * RT*UNITR.UNI NEG"; the range THETAH, "THETA = ARCCOS(RT.UNITR)" (by
+ * TINYTHET near the target, "TO IMPROVE ACCURACY"); RTGON67 the "RANGE
+ * ERROR:  NEG IF WILL FALL SHORT.". Past .05G of drag (.05GSW set; else
+ * NO.05G, cleared), L/DCALC from the drag and the lift (the velocity
+ * change along UXA/2, the body's axis). Back through 60GENRET, "KEEP
+ * SINGLE EXIT FOR TARGETNG". */
+static const word targetng_words[] = {
+    /* TARGETNG */ ORDERS(BOFF, VLOAD), /* "ENTER WITH PROPER EB FROM CM/POSE(TEST)" */
+    SWITCH(BOFF, RELVELSW),
+    ADDRESS(GETVEL), /* "WANT INERTIAL VEL.  GO GET IT." */
+    ADDRESS_PLUS_ONE(MVREL),
+    ORDERS(VCOMP, GOTO), /* "(VREL) = (V) + KWE UNITR*UNITW" */
+    ADDRESS_AT(GETUNITV, -1),
+    /* GETVEL */ ORDERS(VLOAD, VXSC), /* "INERTIAL V WANTED" */
+    ADDRESS_PLUS_ONE(VN),
+    ADDRESS_PLUS_ONE(KVSCALE),
+    STORE(VEL), /* "V/2 VS" */
+    /* GETUNITV */ ORDERS(UNIT, STQ),
+    ADDRESS(60GENRET),
+    STODL(UNITV),
+    ADDRESS_PLUS_ONE_D(34),
+    STORE(VSQUARE), /* "VSQ/4" */
+    ORDER(DSU),     /* "LEQ = VSQUARE - 1" */
+    ADDRESS_PLUS_ONE(FOURTH),
+    STODL(LEQ), /* "LEQ/4" */
+    ADDRESS_PLUS_ONE_D(36),
+    STOVL(V), /* "V/2 VS = VEL/2 VS" */
+    ADDRESS_PLUS_ONE(VEL),
+    ORDERS(DOT, SL1), /* "RDOT= V.UNITR" */
+    ADDRESS_PLUS_ONE(UNITR),
+    STOVL(RDOT), /* "RDOT /2 VS" */
+    ADDRESS_PLUS_ONE(DELV),
+    ORDERS(ABVAL, DMP),
+    ADDRESS_PLUS_ONE(KASCALE),
+    ORDERS(SL1, BZE),
+    ADDRESS(SETMIND),
+    /* DSTORE */ STOVL(D), /* "ACCELERATION USED TO APPROX DRAG" */
+    ADDRESS_PLUS_ONE(VEL),
+    ORDERS(VXV, UNIT), /* "UNI = UNIT(V*R)" */
+    ADDRESS_PLUS_ONE(UNITR),
+    STORE(UNI),
+    ORDERS(BOFF, DLOAD),
+    SWITCH(BOFF, RELVELSW),
+    ADDRESS(GETETA),
+    ADDRESS_PLUS_ONE(3ZEROS),
+    /* UPDATERT */ ORDERS(DSU, DAD),
+    ADDRESS_PLUS_ONE(TIME_RTO),
+    ADDRESS_PLUS_ONE(PIPTIME),
+    STCALL(DTEAROT), /* "GET PREDICTED TARGET VECTOR RT" */
+    ADDRESS(EARROT2),
+    ORDERS(DOT, SETPD),
+    ADDRESS_PLUS_ONE(UNI), /* "LATANG = RT.UNI" */
+    ADDRESS_PLUS_ONE_D(0),
+    STOVL(LATANG),
+    ADDRESS_PLUS_ONE(RT),
+    ORDER(CLEAR),
+    SWITCH(CLEAR, GONEBY), /* "SHOW HAVE NOT GONE PAST TARGET." */
+    ORDERS(VXV, DOT),      /* "IF RT*UNITR.UNI NEG, GONEBY=1" */
+    ADDRESS_PLUS_ONE(UNITR),
+    ADDRESS_PLUS_ONE(UNI),
+    ORDERS(BPL, SET),
+    ADDRESS_AT(GETANGLE, -2),
+    SWITCH(SET, GONEBY), /* "SHOW HAVE GONE PAST TARGET." */
+    ORDER(VLOAD),
+    ADDRESS_PLUS_ONE(RT),
+    /* GETANGLE */ ORDERS(DOT, DSU), /* "THETA = ARCCOS(RT.UNITR)" */
+    ADDRESS_PLUS_ONE(UNITR),
+    ADDRESS_PLUS_ONE(NEAR1_4),
+    ORDERS(BPL, DAD),
+    ADDRESS(TINYTHET),
+    ADDRESS_PLUS_ONE(NEAR1_4),
+    ORDERS(SL1, ACOS),
+    /* THETDONE */ STORE(THETAH), /* "THETAH/360" */
+    ORDERS(BON, DCOMP),
+    SWITCH(BON, GONEBY), /* "=1 IF HAVE GONE PAST TARGET." */
+    ADDRESS_AT(THETDONE, 4),
+    STODL(RTGON67), /* "RANGE ERROR:  NEG IF WILL FALL SHORT." */
+    ADDRESS_PLUS_ONE(D),
+    ORDERS(DSU, BMN),
+    ADDRESS_PLUS_ONE(_05G),
+    ADDRESS(NO_05G),
+    ORDERS(SET, VLOAD),
+    SWITCH(SET, _05GSW),
+    ADDRESS_PLUS_ONE(DELVREF),
+    ORDERS(PUSH, DOT),
+    ADDRESS_PLUS_ONE(UXA_2),
+    ORDERS(SL1, DSQ),
+    ORDERS(PDVL, VSQ), /* "EXCHANGE WITH PDL." */
+    ORDERS(DSU, DDV),
+    ADDRESS_PLUS_ONE_D(0),
+    ORDERS(BOV, SQRT),
+    ADDRESS(NOLDCALC), /* "OVFL LAST CLEARED IN EARROT2 ABOVE." */
+    STORE(L_DCALC),
+    /* NOLDCALC */ ORDER(GOTO),
+    ADDRESS(60GENRET),
+    /* NO.05G */ ORDERS(CLEAR, GOTO), /* "THIS WAY FOR DAP. (MAY INTERRUPT)" */
+    SWITCH(CLEAR, _05GSW),
+    ADDRESS(NOLDCALC), /* "KEEP SINGLE EXIT FOR TARGETNG" */
+};
+
+const struct interpretive_code TARGETNG_CODE = {025u, TARGETNG, COUNT(targetng_words),
+                                                targetng_words};
+
+/* ---- GETETA, SUBETA, SETMIND, TINYTHET -- pp. 851-852 ---- */
+
+/* GETETA, with the relative velocity: the drag on two seconds, "D = D
+ * +D(-RDOT/HS -2D/V)  DT/2"; then the earth's turn since RTINIT, from the
+ * range: "EGSW INDICATES FINAL PHASE." (SUBETA) or THETAH times KTETA, and
+ * UPDATERT. SUBETA: "SWITCH FROM INERTIAL TO RELATIVE VEL." below VMIN
+ * (RELVELSW set), and the time by the range and the velocity (SUBETA2,
+ * KT1). SETMIND: D the least (1BITDP). TINYTHET: the range "BY TINYTHET IF
+ * HIGH ORDER PART OF ARCCOS ARGUMENT IS ZERO": "GET 1/4 - MPAC", "SCALE UP
+ * BEFORE SQRT", times KACOS. */
+static const word geteta_words[] = {
+    /* GETETA */ ORDERS(DLOAD, DDV), /* "D = D +D(-RDOT/HS -2D/V)  DT/2" */
+    ADDRESS_PLUS_ONE(RDOT),
+    ADDRESS_PLUS_ONE(MHSCALED),
+    ORDERS(PDDL, DMP),
+    ADDRESS_PLUS_ONE(D),
+    ADDRESS_PLUS_ONE(MKSCALE),
+    ORDERS(DDV, DAD),
+    ADDRESS_PLUS_ONE(V), /* "-RDOT/HS FROM PDL." */
+    ORDERS(DMP, DAD),
+    ADDRESS_PLUS_ONE(D),
+    ADDRESS_PLUS_ONE(D),
+    STORE(D),
+    ORDERS(BON, DLOAD), /* "EGSW INDICATES FINAL PHASE." */
+    SWITCH(BON, EGSW),
+    ADDRESS(SUBETA),
+    ADDRESS_PLUS_ONE(THETAH),
+    ORDERS(DMP, GOTO),
+    ADDRESS_PLUS_ONE(KTETA),
+    ADDRESS(UPDATERT),
+    /* SUBETA */ ORDERS(DLOAD, DSU), /* "SWITCH FROM INERTIAL TO RELATIVE VEL." */
+    ADDRESS_PLUS_ONE(V),
+    ADDRESS_PLUS_ONE(VMIN),
+    ORDERS(BPL, SET),
+    ADDRESS(SUBETA2),
+    SWITCH(SET, RELVELSW),
+    /* SUBETA2 */ ORDERS(DLOAD, DMP),
+    ADDRESS_PLUS_ONE(THETAH),
+    ADDRESS_PLUS_ONE(KT1), /* "KT1 = KT" */
+    ORDERS(DDV, GOTO),
+    ADDRESS_PLUS_ONE(V),
+    ADDRESS(UPDATERT),
+    /* SETMIND */ ORDERS(DLOAD, GOTO),
+    ADDRESS_PLUS_ONE(1BITDP),
+    ADDRESS(DSTORE),
+    /* TINYTHET */ ORDERS(DSU, ABS), /* "ENTER WITH X-.249" */
+    ADDRESS_PLUS_ONE_AT(1BITDP, 1),  /* "GET 1/4 - MPAC" */
+    ORDERS(SL, SQRT),                /* "SCALE UP BEFORE SQRT" */
+    SL_COUNT(13),                    /* "HAS FACTOR FOR UP SCALING" */
+    ORDERS(DMP, GOTO),
+    ADDRESS_PLUS_ONE(KACOS),
+    ADDRESS(THETDONE),
+};
+
+const struct interpretive_code GETETA_CODE = {026u, GETETA, COUNT(geteta_words), geteta_words};
+
+#endif
