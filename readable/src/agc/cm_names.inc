@@ -4385,6 +4385,10 @@
 #define I_RN 001170u
 #define I_GOBL_2 001214u
 #define I_GOBL1_2 001255u
+#define I_UNITR 001757u
+#define I_ITISMOON 077407u
+#define I_MMUDT_E 077452u
+#define I_2SEC_22 077456u
 #define I_NJETSFLG 000017u
 #define I_EMDOT 000110u
 #define I_FANG 001774u

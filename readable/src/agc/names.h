@@ -4503,6 +4503,8 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define PIPLOOP       ((word)K_PIPLOOP)
 #define DVTOTUP       ((word)K_DVTOTUP)
 #define SETJTAG       ((word)K_SETJTAG)
+#define CALCGRAV      ((word)K_CALCGRAV)
+#define CALCRVG       ((word)K_CALCRVG)
 #define JTAGTIME      ((word)KW_JTAGTIME) /* DEC 120 */
 #define POINT5_SEC    ((word)KW_0_5SEC)   /* 0.5SEC: DEC 50 */
 #define MINUS_MAXDELV ((word)KW_MMAXDELV) /* -MAXDELV: DEC -6398 */
