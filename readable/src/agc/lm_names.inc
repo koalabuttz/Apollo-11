@@ -5571,6 +5571,8 @@
 #define I_TCDANZIG 057753u
 #define I_OVFIND 000121u
 #define I_SGNRDOT 002754u
+#define I_PARAM 011064u
+#define I_COGA 002765u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u

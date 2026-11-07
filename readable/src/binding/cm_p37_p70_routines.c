@@ -184,6 +184,12 @@ static const struct interpretive_code *const codes[] = {
     &P370ALRM_GOTO_CODE,
     &TMRAD100_CODE,
     &RTD18_CODE,
+    /* Part 3 */
+    &INVC100_CODE,
+    &PREC100_CODE,
+    &PREC130_CODE,
+    &PREC175_CODE,
+    &PREC220_CODE,
 };
 
 /* The table an address of a bank is in, or none. */

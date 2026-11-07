@@ -46,6 +46,8 @@ struct interpretive_code {
 extern const struct interpretive_code P37_CODE, RTE299_CODE, RTE317_POLY_CODE, RTE369_POLY_CODE,
     RTEVN_CODE, RTEVN_RETURN_CODE, P37N_CODE, P37T_POLY_CODE, P37T_TIG_CODE;
 extern const struct interpretive_code P370ALRM_CODE, P370ALRM_GOTO_CODE, TMRAD100_CODE, RTD18_CODE;
+extern const struct interpretive_code INVC100_CODE, PREC100_CODE, PREC130_CODE, PREC175_CODE,
+    PREC220_CODE;
 extern const agc_routine_table cm_p37_p70_basic, cm_p37_p70_interpretive;
 extern const agc_routine_table faithful_cm_p37_p70_basic, faithful_cm_p37_p70_interpretive;
 bool cm_p37_p70_readable(uint16_t key, bool order_pair);
@@ -126,7 +128,8 @@ static bool in_written_part(uint16_t key)
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     return (bank == 036u && z >= 02466u && z <= 03253u) ||
-           (bank == 032u && z >= 02262u && z <= 02447u);
+           (bank == 032u && z >= 02262u && z <= 03074u) ||
+           (bank == 016u && z >= 02703u && z <= 02714u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -399,6 +402,12 @@ static const struct interpretive_code *const codes[] = {
     &P370ALRM_GOTO_CODE,
     &TMRAD100_CODE,
     &RTD18_CODE,
+    /* Part 3 */
+    &INVC100_CODE,
+    &PREC100_CODE,
+    &PREC130_CODE,
+    &PREC175_CODE,
+    &PREC220_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

@@ -13,7 +13,9 @@
  *     targeting and the end (P37G to P37W), and the display subroutines
  *     (pp. 895-899, bank 36);
  *   part 2, rtedisp.c: the alarm display, the time to a radius and the
- *     display calculation with the landing site (pp. 900-904, bank 32).
+ *     display calculation with the landing site (pp. 900-904, bank 32);
+ *   part 3, prec100.c: the state at ignition and the precision
+ *     trajectory (pp. 905-913, banks 32 and 16).
  * The binding (src/binding/cm_p37_p70_routines.c) runs every key of the
  * faithful port's: a key a part has written on these routines, any other
  * on the faithful port's.
@@ -95,6 +97,10 @@ void p370alrm_after_varalarm(void); /* P370ALRM +4 (and proceed, +010) */
 void p370alrm_terminate(void);      /* P370ALRM +7 (GOFLASH's returns) */
 void p370alrm_recycle(void);        /* P370ALRM +011 */
 extern const struct interpretive_code P370ALRM_CODE, P370ALRM_GOTO_CODE, TMRAD100_CODE, RTD18_CODE;
+
+/* Part 3, INVC100 and PREC100 -- prec100.c (order pairs only) */
+extern const struct interpretive_code INVC100_CODE, PREC100_CODE, PREC130_CODE, PREC175_CODE,
+    PREC220_CODE;
 
 #endif
 

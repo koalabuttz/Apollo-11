@@ -286,6 +286,8 @@
 #define SR_X2(n)  ((word)(~SR_COUNT(n) & 077777u))
 #define SRR_X2(n) ((word)(~(020000u + 01000u + 0600u + (unsigned)(n) + 1u) & 077777u))
 #define SLR_X2(n) ((word)(~SLR_COUNT(n) & 077777u))
+/* SL*'s by X2, "0 -2,2": a left shift's, complemented, as VSL*'s. */
+#define SL_X2(n) VSL_X2(n)
 /* The store code after STADR, complemented: STADR stores what it finds on
  * the push-down list, and the code word after it reads negative, so the
  * interpreter takes it as STADR's (not as a new pair). */
