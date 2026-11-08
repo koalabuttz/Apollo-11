@@ -15,13 +15,6 @@ static void tvcexfin(void);
 static void repchek(void);
 static void oneshotok(void);
 
-/* TC (or TCR) to routine at fixed address at. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* ---- TVCEXEC and ROLLPREP -- p. 946 ---- */
 
 /* TVCEXEC, every half second from TVCINIT4: "CHECK FOR TERMINATION" (bits
