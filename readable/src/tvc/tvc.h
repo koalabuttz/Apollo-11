@@ -23,6 +23,12 @@
  *     gains and mass (VARGAINS, GAINCHNG, EXECCOPY), and the one-shot and
  *     repetitive trim corrections (1SHOTCHK to CNTRCOPY).
  *
+ * TVCMASSPROP.agc (pp. 951-955, bank 5), c64-port/src/cm_tvc_massprop.c:
+ *
+ *   MASSPROP, FIXCW (tvcmassprop.c): the CSM's (or the docked CSM/LM's)
+ *     moments of inertia IXX, IAVG and IAVG/TLX as straight lines in the
+ *     CSM's mass, and WEIGHT/G.
+ *
  * All basic code. Each function runs from a word the program can come
  * back to (an entry, the word after a call out of the file) until control
  * leaves the file's code (RESUME, IBNKCALL, WAITLIST, POSTJUMP,
@@ -34,6 +40,37 @@
 #include "../agc/agc.h"
 
 #if COMANCHE055
+
+/* ---- Shared by the files' code ---- */
+
+/* A word's value as a signed number (-0 is 0). */
+static inline int value_of(word value)
+{
+    return (value & SIGN_BIT) ? -(int)negate(value) : (int)value;
+}
+
+/* TC Q, the end of LOADCOEF, S40.15 and MASSPROP: the word in Q runs as
+ * the instruction TC <Q>, so Z gets the address and Q becomes 3. Q 3
+ * itself (Q after a TC Q) names the word at 3, EBANK: the word in Q, 3,
+ * runs as RELINT, and then EBANK's word, an address in fixed memory, as
+ * TC <EBANK>, which leaves Q 4. Not modelled (the faithful port refuses
+ * them too): any other Q below 010 (taken overflow-corrected, as the AGC
+ * reads a register's word), or above 07777. The bindings go on at a word
+ * of the file that is a key, as the faithful port does. */
+static inline void tc_q(void)
+{
+    word at = overflow_corrected(Q);
+
+    if (at == Q_ADDRESS + 1u && EBANK >= 02000u) {
+        relint();
+        tc_at(Q_ADDRESS + 1u);
+        Z = EBANK;
+        return;
+    }
+    if (at < 010u || at > 07777u) not_modelled();
+    tc_at(Q_ADDRESS);
+    Z = at;
+}
 
 /* TVCINITIALIZE.agc -- tvcinitialize.c */
 void tvcdapon(void);                /* TVCDAPON */
@@ -73,6 +110,10 @@ void tempset(void);               /* TEMPSET */
 void corsetup(void);              /* CORSETUP */
 void corcopy_copycycle(void);     /* CORCOPY +1 */
 void cntrcopy(void);              /* CNTRCOPY */
+
+/* TVCMASSPROP.agc -- tvcmassprop.c */
+void massprop(void); /* MASSPROP */
+void fixcw(void);    /* FIXCW */
 
 #endif
 

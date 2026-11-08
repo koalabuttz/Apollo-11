@@ -4609,6 +4609,13 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define CORCOPY  ((word)K_CORCOPY)
 #define CNTRCOPY ((word)K_CNTRCOPY)
 #define FCORFRAC ((word)KW_FCORFRAC) /* OCT 10000 */
+
+/* TVCMASSPROP.agc */
+#define MASSPROP ((word)K_MASSPROP)
+#define FIXCW    ((word)K_FIXCW)
+#define NINE     ((word)KW_NINE)
+#define NEGBPW   ((word)KW_NEGBPW)  /* DEC -15402.17 B-16 */
+#define DXITFIX  ((word)KW_DXITFIX) /* DEC* -1.88275 E-5 B+12* */
 #endif
 
 /* NO.CORES + 1 core sets. */

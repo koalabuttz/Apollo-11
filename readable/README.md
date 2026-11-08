@@ -240,6 +240,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | P37_P70 of the CM, part 5: GAMDV10, DVCALC and XT1LIM | `P37_P70.agc` (CM pp. 924-930) | [`src/p37_p70/gamdv.c`](src/p37_p70/gamdv.c) | The rest of the file's code, all interpretive (bank 32). GAMDV10 searches X(T1), the cotangent of the flight path angle after the burn, between its bounds: for the least change in speed it steps on while the change falls and turns back at half the step when it rises; for the change the crew asked for it takes secant steps; after 144 tries it gives alarm 605. DVCALC works out the velocity after the burn for an X(T1) and the change in speed it needs; XT1LIM sets a bound on X(T1) from a limit on the major axis. Its BOVB TCDANZIG step runs in the same pair. The constants after them (pp. 931-933) are data. With this part the file is whole: every key runs a readable routine |
 | TVCINITIALIZE of the CM | `TVCINITIALIZE.agc` (CM pp. 937-944) | [`src/tvc/`](src/tvc/) | The start of the thrust vector control autopilot of an SPS burn, all basic code (bank 17). TVCDAPON and MRCLEAN, in a T5 interrupt from P40, zero the DAP's erasables and set up the next T5 interrupt at TVCINIT1, which brings the mass properties up to date (MASSPROP), loads the filter coefficients for the CSM alone or docked to the LM (LOADCOEF), works out the gains (S40.15), the filter period and the steering gain, limits the RCS attitude errors to 1.5 degrees (ATTINIT), starts the needles (NEEDLER), and calls TVCEXEC by WAITLIST and the DAP itself by T5 (TVCINIT4). PRESWTCH and SWICHOVR, from verb 46 or a restart, switch the docked CSM/LM to its low bandwidth gains and coefficients. Each function runs to where the faithful port's run stops, so a few stop at a word that is a key of its own; the return SWICHOVR keeps in RTRNLOC is a key too |
 | TVCEXECUTIVE of the CM | `TVCEXECUTIVE.agc` (CM pp. 945-950) | [`src/tvc/`](src/tvc/) | The TVC DAP's half-second task, all basic code (bank 16). TVCEXEC ends itself once FLAGWRD6 no longer shows the TVC DAP on, and otherwise calls itself again by WAITLIST; it works out the roll errors for the needle and the roll DAP and calls the roll DAP by WAITLIST (ROLLPREP), updates the needles (NEEDLEUP), and with the engine on counts down to the next update of the gains and mass every ten seconds (VARGAINS, GAINCHNG, through MASSPROP's FIXCW and S40.15). Then the trim corrections: a one-shot correction once CNTR runs out (1SHOTCHK, 1SHOTOK, TEMPSET), and repeated ones after it while REPFRAC is positive (REPCHEK), each moving the pitch and yaw offset updates toward the offset-tracker filters, DELPBAR and DELYBAR (CORSETUP, CG.CORR, CORCOPY). Each copy into the DAP's words follows a step of TVCEXPHS, so the words where TVCRESTARTS comes back in are keys |
+| TVCMASSPROP of the CM | `TVCMASSPROP.agc` (CM pp. 951-955) | [`src/tvc/`](src/tvc/) | The CSM's mass properties for the TVC DAP's gains, all basic code (bank 5). MASSPROP works out ten breakpoint values and slopes, from fixed tables for the CSM alone or from the LM's mass for the CSM/LM (with a correction when the LM's descent stage is gone); FIXCW then works out IXX, IAVG and IAVG/TLX as straight lines in the CSM's mass, with one slope below the breakpoint mass and another above, and WEIGHT/G, the whole vehicle's mass, and returns by TC Q. Where an output overflows, the TS's skip sends FIXCW round its loop again, which with some masses never ends, on the AGC as in both ports |
 
 Beside them:
 
@@ -834,6 +835,15 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    engine bit and the counters VCNTR, CNTR and REPFRAC often at their
    edges, the masses, fraction and offsets often where they overflow);
    each key must run a readable routine.
+   `make cm-tvc-massprop-cases` runs the CM's TVCMASSPROP: the port's test
+   (its frozen cases, each run to its stop against yaAGC digests) through
+   the readable table, then tests/cm_tvc_massprop_cases.c: readable and
+   faithful side by side at every key from 4,096 states (DAPDATR1 often one
+   of the configurations, the masses often where they overflow, Q often
+   MASSPROP or FIXCW, which the faithful port runs on at after the TC Q);
+   the faithful routine runs in a child process with 20 ms to finish, and
+   the states where the AGC's loop never ends are left out; each key must
+   run a readable routine.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
