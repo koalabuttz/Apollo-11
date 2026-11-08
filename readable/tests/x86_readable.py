@@ -268,6 +268,8 @@ REPLACED = (
 # JET_SELECTION_LOGIC (src/cm_dap): the CM's routine tables (and the table
 # of the keys one pass reaches), all readable; the faithful ones, renamed,
 # are no longer called.
+# IMU_CALIBRATION_AND_ALIGNMENT (src/imu_calibration): the CM's routine
+# tables, all readable; the faithful ones, renamed, are no longer called.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],

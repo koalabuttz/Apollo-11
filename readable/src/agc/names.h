@@ -2087,6 +2087,7 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define TARGDRVE    ((word)K_TARGDRVE)
 #define RETARG      ((word)K_RETARG)
 #define RETARG1     ((word)K_RETARG1)
+#define LITTLSUB    ((word)K_LITTLSUB)
 #define AZMTHCG1    ((word)K_AZMTHCG1)
 /* LAT(SPL): the erasable program (EBANK 7) PERFERAS runs. */
 #define LAT_SPL ((word)K_LAT_SPL)

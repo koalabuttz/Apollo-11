@@ -278,26 +278,36 @@ void azmthcg1_after_phaschng(void); /* AZMTHCG1 +031 */
 /* ---- The interpretive code, in the listing's notation ---- */
 
 struct interpretive_code;
-extern const struct interpretive_code GUESS_CODE;       /* imu_test.c, p. 423 */
-extern const struct interpretive_code AXES_CODE;        /* NBPOSPL +7, p. 424 */
-extern const struct interpretive_code CALCGA_CODE;      /* NBPOSPL +026, p. 424 */
-extern const struct interpretive_code AINGOTN_CODE;     /* p. 426 */
-extern const struct interpretive_code OVERFFIX_CODE;    /* p. 428 */
-extern const struct interpretive_code ERTHRVSE_CODE;    /* drift_loop.c, p. 430 (bank 32) */
-extern const struct interpretive_code EARTHR_CODE;      /* p. 430 */
-extern const struct interpretive_code EARTHR_STAR_CODE; /* p. 430 */
-extern const struct interpretive_code RSTGTS1_CODE;     /* p. 434 */
-extern const struct interpretive_code ESTIMS_CODE;      /* ESTIMS +035, p. 434 */
-extern const struct interpretive_code NORMLOP_CODE;     /* pp. 438-441 */
-extern const struct interpretive_code SETUPER1_CODE;    /* p. 441 */
-extern const struct interpretive_code TORQINCH_CODE;    /* TORQINCH +011, p. 441 */
-extern const struct interpretive_code POSN17C_CODE;     /* p. 443 */
-extern const struct interpretive_code ALWAYSG_CODE;     /* pp. 443-444 */
-extern const struct interpretive_code LASTGTS_CODE;     /* p. 445 */
-extern const struct interpretive_code RESTAIER_CODE;    /* p. 445 */
-extern const struct interpretive_code RESTEST1_CODE;    /* p. 445 */
-extern const struct interpretive_code RESTEST3_CODE;    /* pp. 445-446 */
-extern const struct interpretive_code NOAZCHGE_CODE;    /* p. 446 */
+extern const struct interpretive_code GUESS_CODE;         /* imu_test.c, p. 423 */
+extern const struct interpretive_code AXES_CODE;          /* NBPOSPL +7, p. 424 */
+extern const struct interpretive_code CALCGA_CODE;        /* NBPOSPL +026, p. 424 */
+extern const struct interpretive_code AINGOTN_CODE;       /* p. 426 */
+extern const struct interpretive_code OVERFFIX_CODE;      /* p. 428 */
+extern const struct interpretive_code ERTHRVSE_CODE;      /* drift_loop.c, p. 430 (bank 32) */
+extern const struct interpretive_code EARTHR_CODE;        /* p. 430 */
+extern const struct interpretive_code EARTHR_STAR_CODE;   /* p. 430 */
+extern const struct interpretive_code RSTGTS1_CODE;       /* p. 434 */
+extern const struct interpretive_code ESTIMS_CODE;        /* ESTIMS +035, p. 434 */
+extern const struct interpretive_code NORMLOP_CODE;       /* pp. 438-441 */
+extern const struct interpretive_code SETUPER1_CODE;      /* p. 441 */
+extern const struct interpretive_code TORQINCH_CODE;      /* TORQINCH +011, p. 441 */
+extern const struct interpretive_code POSN17C_CODE;       /* p. 443 */
+extern const struct interpretive_code ALWAYSG_CODE;       /* pp. 443-444 */
+extern const struct interpretive_code LASTGTS_CODE;       /* p. 445 */
+extern const struct interpretive_code RESTAIER_CODE;      /* p. 445 */
+extern const struct interpretive_code RESTEST1_CODE;      /* p. 445 */
+extern const struct interpretive_code RESTEST3_CODE;      /* pp. 445-446 */
+extern const struct interpretive_code NOAZCHGE_CODE;      /* p. 446 */
+extern const struct interpretive_code TAR_EREF_CODE;      /* p. 449 */
+extern const struct interpretive_code NEXTBNKS_CODE;      /* CONTIN33 +5, p. 450 */
+extern const struct interpretive_code NEXBNKSS_CODE;      /* NEXBNKSS +5, p. 451 */
+extern const struct interpretive_code GCOMP4_CODE;        /* GCOMP4 +7, p. 451 */
+extern const struct interpretive_code LATAZCHK_CODE;      /* bank 4, p. 452 */
+extern const struct interpretive_code LATAZCHK_LOAD_CODE; /* LATAZCHK +021, p. 452 */
+extern const struct interpretive_code TARGDRVE_CODE;      /* TARGDRVE +4, p. 452 */
+extern const struct interpretive_code LITTLSUB_CODE;      /* p. 454 */
+extern const struct interpretive_code AZMTHCG1_CODE;      /* AZMTHCG1 +1, p. 454 */
+extern const struct interpretive_code AZMTHCG1_LOAD_CODE; /* AZMTHCG1 +020, p. 454 */
 
 #endif
 #endif

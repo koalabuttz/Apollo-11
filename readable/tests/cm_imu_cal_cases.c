@@ -6,13 +6,10 @@
  * the faithful port's under the same names with faithful_ in front (the
  * Makefile renames them).
  *
- * First the keys, which must be the faithful tables', and every basic key
- * must run readable code (the order pairs not yet written, the faithful
- * port's). Then the runs: each
- * readable key from 4,096 states (each other key, which runs the faithful
- * routine through the readable table, from 16), each one of the port's
- * frozen test states (c64-port/tests/cm_imu_calibration_vectors.h) entered
- * at the key, most stirred further: the returns the file keeps (QPLACE,
+ * First the keys, which must be the faithful tables', and every key must
+ * run readable code. Then the runs: each key from 4,096 states, each one
+ * of the port's frozen test states (c64-port/tests/
+ * cm_imu_calibration_vectors.h) entered at the key, most stirred further: the returns the file keeps (QPLACE,
  * QPLACES, MPAC and Q: mostly a word the file's callers return to, now and
  * then 3, a word below 010 or any), NDXCTR (mostly 0, 1, -0 or -1, now and
  * then one that sends INDEX NDXCTR; TC +1 out of memory), PIPINDEX,
@@ -75,8 +72,7 @@ bool cm_imu_cal_readable(uint16_t key, bool order_pair);
 #define S2_OFF      0051u
 #define QPRET_OFF   0052u
 
-#define CASES       4096u
-#define OTHER_CASES 16u
+#define CASES 4096u
 
 static uint32_t seed = 1471u;
 static uint16_t rnd(void)
@@ -251,9 +247,23 @@ static void pair_state(uint16_t *w, uint16_t key, unsigned n)
         if (key % 1024u == 0760u && pick(4u)) w[fixloc + X1_OFF] = pick(2u) ? 1u : 077776u;
         w[fixloc + S2_OFF] = cadr_word();
         w[fixloc + QPRET_OFF] = cadr_word();
-        /* Now and then a work area the routines do not take. */
-        if (pick(64u) == 0u) fixloc = w[FIXLOC_AT] = (uint16_t)pick(02000u);
+        /* Now and then a work area the routines do not take (none of the
+         * VAC areas, whose X1 and X2 would be left as they were). */
+        if (pick(64u) == 0u) {
+            fixloc = (uint16_t)pick(02000u);
+            if (fixloc >= 0401u && fixloc <= 0661u && (fixloc - 0401u) % 054u == 0u) ++fixloc;
+            w[FIXLOC_AT] = (uint16_t)fixloc;
+        }
     }
+    /* TARGDRVE +4 (LXC,1 TARG1/2) and LITTLSUB +2 (LXC,1 MARKSTAT): the
+     * index as the program sets it, TARG1/2 the target's (0 or 6) and
+     * MARKSTAT the marks' VAC area. */
+    if (key % 1024u == 01643u) w[AT(TARG1_2)] = pick(2u) ? 0u : 6u;
+    if (key % 1024u == 01730u) w[K_MARKSTAT] = (uint16_t)(0401u + 054u * pick(5u));
+    /* LITTLSUB's GOTO QPLAC: QPLAC as its STQ left it, the caller's return
+     * in fixed memory (the faithful port stops the whole program on a
+     * chain of erasable addresses). */
+    if (key % 1024u == 01737u) w[AT(QPLAC)] = (uint16_t)(04000u + pick(074000u));
     if (w[PUSHLOC_AT] < fixloc || w[PUSHLOC_AT] > fixloc + 037u || n % 4u != 0u)
         w[PUSHLOC_AT] = (uint16_t)(fixloc + pick(040u));
     w[INTBIT15_AT] = (uint16_t)(w[4] & 040000u);
@@ -361,7 +371,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
     for (i = 0; i < faithful->count; ++i) {
         uint16_t key = faithful->entries[i].physical;
         bool readable_key = cm_imu_cal_readable(key, order_pairs);
-        unsigned ran = 0, bad = 0, cases = readable_key ? CASES : OTHER_CASES;
+        unsigned ran = 0, bad = 0, cases = CASES;
 
         *written += readable_key;
         for (n = 0; n < cases; ++n) {
@@ -387,11 +397,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             sr = run(&readable->entries[i], &rp, &ra, &rio);
             ran += sf == EXEC_OK || sf == EXEC_IDLE;
             *loops += sf == LOOPS;
-            if (!readable_key) { /* the faithful routine on both sides */
-                if (sf != sr || (sf != LOOPS &&
-                                 (memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio))))
-                    why = "the table does not run the faithful routine";
-            } else if (sr == LOOPS) {
+            if (sr == LOOPS) {
                 why = "readable loops";
             } else if (sr != EXEC_OK && sr != EXEC_IDLE &&
                        (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio))) {
@@ -451,11 +457,19 @@ int main(int argc, char **argv)
                faithful_cm_imu_calibration_basic.count);
         ++failures;
     }
+    for (i = 0; i < faithful_cm_imu_calibration_interpretive.count; ++i)
+        pairs +=
+            cm_imu_cal_readable(faithful_cm_imu_calibration_interpretive.entries[i].physical, true);
+    if (pairs != faithful_cm_imu_calibration_interpretive.count) { /* (and every order pair) */
+        printf("FAIL: %u order pairs readable of %u\n", pairs,
+               faithful_cm_imu_calibration_interpretive.count);
+        ++failures;
+    }
     if (failures) {
         printf("cm-imu-cal-cases: %u failures\n", failures);
         return 1;
     }
-    basic = 0;
+    basic = pairs = 0;
     memset(&on_alarm, 0, sizeof on_alarm);
     on_alarm.sa_handler = stop;
     sigaction(SIGALRM, &on_alarm, NULL);
@@ -464,8 +478,8 @@ int main(int argc, char **argv)
     failures += keys(&cm_imu_calibration_interpretive, &faithful_cm_imu_calibration_interpretive,
                      true, &runs, &pairs, &loops);
     printf("cm-imu-cal-cases: %u of %u keys readable (%u basic, %u order pairs) from %u states "
-           "each, the others from %u, %u run by the faithful routines, %u looping, %u failures\n",
+           "each, %u run by the faithful routines, %u looping, %u failures\n",
            basic + pairs, cm_imu_calibration_basic.count + cm_imu_calibration_interpretive.count,
-           basic, pairs, CASES, OTHER_CASES, runs, loops, failures);
+           basic, pairs, CASES, runs, loops, failures);
     return failures != 0;
 }
