@@ -2759,13 +2759,12 @@ cm-mysubs-cases: $(BUILD)/cmys-oracle $(BUILD)/cmys-cases
 	./$(BUILD)/cmys-oracle
 	./$(BUILD)/cmys-cases
 
-# RCS-CSM_DIGITAL_AUTOPILOT.agc, the CM's RCS autopilot, part by part: the
-# port's test (tests/test_cm_rcs_dap.c, its frozen cases run to their
-# stops through the program of tests/cm_rcs_dap_target.c, against the
-# original program's yaAGC digests) through the readable tables, with
-# tests/with_ropes.c loading the ropes the readable code reads; then
-# tests/cm_rcs_dap_cases.c side by side with the faithful routines (renamed
-# faithful_), which also run the keys not yet readable.
+# RCS-CSM_DIGITAL_AUTOPILOT.agc, the CM's RCS autopilot: the port's test
+# (tests/test_cm_rcs_dap.c, its frozen cases run to their stops through the
+# program of tests/cm_rcs_dap_target.c, against the original program's
+# yaAGC digests) through the readable tables, with tests/with_ropes.c
+# loading the ropes the readable code reads; then tests/cm_rcs_dap_cases.c
+# side by side with the faithful routines (renamed faithful_).
 CRCS_NAMES := cm_rcs_dap_basic cm_rcs_dap_interpretive cm_rcs_dap_hot_routines
 CRCS_FAST := $(PORT)/src/agc_fast_ops.c $(PORT)/src/agc_fast_window.c
 
