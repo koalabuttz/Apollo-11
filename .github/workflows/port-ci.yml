@@ -221,6 +221,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}  # evidence.py's API fallback
         run: |
+          python3 tools/evidence_download_test.py
           python3 tools/evidence.py fetch --coverage
           python3 tools/port_coverage.py
 
