@@ -205,7 +205,8 @@ CRCS_SOURCES := src/agc/agc.c src/binding/machine.c src/cm_dap/indexing.c \
 	src/cm_dap/rcsatt.c src/cm_dap/needles.c src/cm_dap/initialize.c src/cm_dap/manual.c \
 	src/binding/cm_rcs_dap_routines.c
 CAM_SOURCES := src/agc/agc.c src/binding/machine.c src/cm_dap/indexing.c \
-	src/cm_dap/attitude_hold.c src/cm_dap/switching.c src/binding/cm_auto_man_routines.c
+	src/cm_dap/attitude_hold.c src/cm_dap/switching.c src/cm_dap/jet_time.c \
+	src/binding/cm_auto_man_routines.c
 LAD_SOURCES := src/agc/agc.c src/binding/machine.c src/landing_displays/landing_displays.c \
 	src/binding/landing_displays_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
@@ -2790,14 +2791,13 @@ cm-rcs-dap-cases: $(BUILD)/crcs-oracle $(BUILD)/crcs-cases
 	./$(BUILD)/crcs-oracle $(ROPES)
 	./$(BUILD)/crcs-cases $(ROPES)
 
-# AUTOMATIC_MANEUVERS.agc, the CM's attitude hold and jet switching logic,
-# part by part: the port's test (tests/test_cm_auto_man.c, its frozen
-# cases run to their stops through the program of
-# tests/cm_auto_man_target.c, against the original program's yaAGC
-# digests) through the readable tables, with tests/with_ropes.c loading
-# the ropes the readable code reads; then tests/cm_auto_man_cases.c side
-# by side with the faithful routines (renamed faithful_), which also run
-# the keys not yet readable.
+# AUTOMATIC_MANEUVERS.agc, the CM's attitude hold and jet switching logic:
+# the port's test (tests/test_cm_auto_man.c, its frozen cases run to their
+# stops through the program of tests/cm_auto_man_target.c, against the
+# original program's yaAGC digests) through the readable tables, with
+# tests/with_ropes.c loading the ropes the readable code reads; then
+# tests/cm_auto_man_cases.c side by side with the faithful routines
+# (renamed faithful_).
 CAM_NAMES := cm_auto_man_basic cm_auto_man_interpretive cm_auto_man_hot_routines
 
 $(BUILD)/cam-faithful.o: $(PORT)/src/cm_auto_man.c

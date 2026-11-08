@@ -7,13 +7,13 @@
  * store packs together (the same routines).
  *
  * The table carries every key of the faithful one, in its order
- * (cm_auto_man_keys.inc, which tools/p20_p25_keys.py writes from it). A key
- * with a readable routine runs it; any other runs the faithful port's,
- * built into the program as faithful_cm_auto_man_basic. The side-by-side
- * test (tests/cm_auto_man_cases.c) checks the readable ones against it.
+ * (cm_auto_man_keys.inc, which tools/p20_p25_keys.py writes from it), and
+ * each runs its readable routine. The side-by-side test
+ * (tests/cm_auto_man_cases.c) checks them against the faithful port's.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
- * the file's code (REINIT, STICKCHK, T6PROGM) or reaches a key of another
+ * the file's code (REINIT, STICKCHK, T6PROGM, SMALLMP, RESUME) or reaches a
+ * key of another
  * part of the faithful port's code, where its run stops. The file has no
  * TC Q, so a run never goes on at a key of its own part.
  *
@@ -105,7 +105,7 @@ static bool basic_sane(void)
 
 /* ---- The basic code ---- */
 
-/* The words a function starts at: the keys written so far. */
+/* The words a function starts at: every key of the faithful table. */
 static const struct basic_entry {
     word at;
     void (*routine)(void);
@@ -123,6 +123,32 @@ static const struct basic_entry {
     {SIGNCK1, signck1},
     {POSVEL, posvel},
     {NEGVEL, negvel},
+    {NJ22 + 2u, nj22_slope},
+    {SIGNCK3 - 1u, tcf_nj23},
+    {SIGNCK3, signck3},
+    {J18, j18},
+    {J20, j20},
+    {J21, j21},
+    {JN, jn},
+    {JP, jp},
+    {J22, j22},
+    {J22 + 1u, tcf_jn},
+    {J22 + 2u, tcf_signck5},
+    {J22 + 3u, tcf_jp},
+    {SIGNCK5, signck5},
+    {SIGNCK5 + 1u, tcf_jn},
+    {SIGNCK5 + 2u, tcf_jn},
+    {SIGNCK5 + 3u, tcf_jp},
+    {SIGNCK5 + 4u, tcf_jp},
+    {J23, j23},
+    {J24, j24},
+    {J24 + 5u, j24_kmpac},
+    {JTIME, jtime},
+    {JTIME + 3u, jtime_bit11},
+    {JTIME + 5u, jtime_ccs},
+    {DOJET + 2u, dojet_next},
+    {T6PROG, t6prog},
+    {T6PROG + 2u, t6prog_t5loc},
 };
 
 static const struct basic_entry *basic_entry(word at)
@@ -134,20 +160,16 @@ static const struct basic_entry *basic_entry(word at)
     return NULL;
 }
 
-/* The faithful tables, renamed. */
-extern const agc_routine_table faithful_cm_auto_man_basic;
-
 /* ---- The keys, in the faithful table's order ---- */
 
-/* Each key's routine: the readable one, from a state the faithful one
- * takes, or the faithful port's. */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each key's routine, from a state the faithful one takes. */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct basic_entry *entry = basic_entry((word)(02000u + key % 1024u));
     apollo_overlay_state before;
 
-    if (!entry) return faithful_cm_auto_man_basic.entries[index].call(program, state, device);
+    if (!entry) return EXEC_OUT_OF_SCOPE;
     if (!program || !program->hardware || !state || !device) return EXEC_OUT_OF_SCOPE;
     bind(program, state, device);
     if (FBANK != (word)(AUTO_MAN_BANK << 10) || !basic_sane()) return EXEC_OUT_OF_SCOPE;
@@ -171,7 +193,7 @@ bool cm_auto_man_readable(uint16_t key)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)
 #include "cm_auto_man_keys.inc"

@@ -8,7 +8,8 @@
  *
  * First the keys, which must be the faithful table's, and the hot table's,
  * which must be the faithful one's with the same routines as the basic
- * table. Then the runs: each readable key from 4,096 states, each one of
+ * table; every key must have a readable routine (the file is readable
+ * whole). Then the runs: each key from 4,096 states, each one of
  * the port's frozen test states (c64-port/tests/cm_auto_man_vectors.h)
  * entered at the key, most stirred further: channel 31's free and hold
  * bits, channel 32's minimum impulse bits and CHANTEMP (often the same),
@@ -20,9 +21,11 @@
  * overflow, or one that makes a read's address Z or lands it about the
  * fixed tables INDEX may read), the body and commanded rates, the rate
  * error EDOT and the phase plane's words (often +0 or -0, EDOT often near
- * +-WLH), SLOPE, any erasable bank's words and EBANK, L and Q, the
- * latches, or a state the routines refuse (BBANK not the two banks, ZERO
- * not +0, a word of 16 bits). Each runs once on each
+ * +-WLH or +-WLMH), SLOPE, KMPAC (its upper word often +0 or -0), the
+ * inertia to torque ratios J/M, T5LOC, RCSFLAGS' forced firing bits, any
+ * erasable bank's words and EBANK, L and Q, the latches, or a state the
+ * routines refuse (BBANK not the two banks, ZERO not +0, a word of 16
+ * bits). Each runs once on each
  * side, as the program's trampoline would call the key's routine, with a
  * hardware record or (now and then) none. Where either port runs, the
  * other must too, with the same memory, io and hardware records, word for
@@ -231,8 +234,11 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hw, u
         hw->channel32 = pick(4u) ? (uint16_t)((any_word() & ~077u) | (rnd() & 077u)) : any_word();
         if (pick(4u) == 0u)
             hw->channel32 = (uint16_t)((hw->channel32 & ~077u) | (w[AT(CHANTEMP)] & 077u));
-        w[AT(RCSFLAGS)] =
-            pick(2u) ? (uint16_t)(rnd() & (pick(2u) ? 020000u : 036000u)) : any_word();
+        k = pick(4u); /* bit 14, the damping flags (13-11), the forced firing bits (10-5) */
+        w[AT(RCSFLAGS)] = k == 0u   ? (uint16_t)(rnd() & 020000u)
+                          : k == 1u ? (uint16_t)(rnd() & 036000u)
+                          : k == 2u ? (uint16_t)(rnd() & 017760u)
+                                    : any_word();
         w[AT(HOLDFLAG)] = sign_word();
         /* The axes' minimum impulse indexes: mostly 0-3 (MINTAU's), now
          * and then any, or one that makes the read's address Z. */
@@ -273,10 +279,13 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hw, u
             w[AT(ADOT) + k] = value_word();
             w[AT(WBODY) + k] = value_word();
         }
-        /* EDOT often +-WLH {022, 06426} or near it (J8's WTEMP +0 or -0). */
+        /* EDOT often +-WLH {022, 06426} or +-WLMH, or near them (WTEMP's
+         * +0 or -0). */
         if (pick(4u) == 0u) {
-            uint16_t upper = (uint16_t)(021u + pick(3u));
-            uint16_t lower = pick(2u) ? (uint16_t)(06425u + pick(3u)) : any_word();
+            bool wlmh = pick(2u); /* or WLMH, {012, 035415} */
+            uint16_t upper = (uint16_t)((wlmh ? 011u : 021u) + pick(3u));
+            uint16_t lower =
+                pick(2u) ? (uint16_t)((wlmh ? 035414u : 06425u) + pick(3u)) : any_word();
             bool negative = pick(2u);
 
             w[AT(EDOT)] = negative ? (uint16_t)(077777u - upper) : upper;
@@ -291,6 +300,13 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hw, u
         w[AT(AERRVEL)] = pick(2u) ? signed_below(0400u) : value_word();
         w[AT(ADBVEL)] = value_word();
         w[AT(T5TEMP)] = pick(2u) ? (uint16_t)pick(0400u) : value_word();
+        /* The rotation command, KMPAC (often an upper word +0 or -0), the
+         * inertia to torque ratios, and T5LOC. */
+        w[AT(KMPAC)] = sign_word();
+        w[AT(KMPAC) + 1u] = value_word();
+        for (axis = 0; axis < 3u; ++axis) w[AT(J_M) + axis] = value_word();
+        w[AT(T5LOC)] = any_word();
+        w[AT(T5LOC) + 1u] = any_word();
         w[AT(WTEMP)] = sign_word();
         w[AT(WTEMP) + 1u] = sign_word();
         k = pick(4u);
@@ -309,6 +325,23 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hw, u
                              : k == 6u ? (uint16_t)((K_MINTAU - K_ADOT) / 2u - 1u + pick(4u))
                                        : value_word());
         w[1] = register_word(value_word());
+        /* Now and then the words NJ22 +2 and NJ23 sum to -0 (or, all +0, to
+         * +0), and EDOTVEL near +-WLMH, for NJ22 +2's WTEMP. */
+        k = pick(16u);
+        if (k == 0u) {
+            w[0] = w[1] = 0u;
+            w[AT(EDOTVEL)] = w[AT(EDOTVEL) + 1u] = w[AT(T5TEMP)] = w[AT(AERRVEL)] = 0u;
+        } else if (k == 1u) {
+            w[AT(AERRVEL)] = (uint16_t)(077777u - ((w[AT(T5TEMP)] + KW_WL_H_SLP) & 077777u));
+        } else if (k == 2u) {
+            bool negative = pick(2u);
+            w[AT(EDOTVEL)] = (uint16_t)(011u + pick(3u));
+            w[AT(EDOTVEL) + 1u] = pick(2u) ? (uint16_t)(035414u + pick(3u)) : any_word();
+            if (negative) {
+                w[AT(EDOTVEL)] = (uint16_t)(077777u - w[AT(EDOTVEL)]);
+                w[AT(EDOTVEL) + 1u] = (uint16_t)(077777u - w[AT(EDOTVEL) + 1u]);
+            }
+        }
         w[2] = return_word();
         if (pick(16u) == 0u) io->superbank = (uint16_t)(rnd() & (pick(2u) ? 0160u : 0177u));
         if (pick(32u) == 0u) io->interrupt_enabled = (uint16_t)pick(3u);
@@ -335,7 +368,11 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
         uint16_t key = faithful->entries[i].physical;
         unsigned ran = 0, bad = 0;
 
-        if (!cm_auto_man_readable(key)) continue; /* the faithful routine, on both sides */
+        if (!cm_auto_man_readable(key)) { /* the file is readable whole */
+            printf("FAIL: key %u (%04o) has no readable routine\n", key, 02000u + key % 1024u);
+            ++failures;
+            continue;
+        }
         ++*written;
         for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;
