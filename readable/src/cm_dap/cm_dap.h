@@ -46,12 +46,17 @@
  *   JTIME, DOJET, T6PROG (jet_time.c): the change as a jet-on time for each
  *     axis, and phase 3 set for the next T5 interrupt.
  *
+ * RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc (pp. 1037-1038, bank 22), AMBGUPDT
+ * (dap_executive.c), c64-port/src/cm_rcs_dap_exec.c: the job that
+ * updates the gimbal-to-body matrix AMGB once a second.
+ *
  * All basic code. Each function runs from a word the program can come
  * back to (an entry, the word after a call out of the file) until control
  * leaves its file's code (the RCS DAP's to RESUME, NOVAC, IBNKCALL,
  * SMALLMP, DPADD, TC Q, AHFNOROT, JETS; AUTOMATIC_MANEUVERS's to REINIT,
- * STICKCHK, T6PROGM, SMALLMP, RESUME), or reaches a word where the faithful port's run
- * stops: a key of its own, run by the function named for it. */
+ * STICKCHK, T6PROGM, SMALLMP, RESUME; AMBGUPDT's to SPSIN, SPCOS,
+ * ENDOFJOB), or reaches a word where the faithful port's run stops: a key
+ * of its own, run by the function named for it. */
 #ifndef READABLE_CM_DAP_H
 #define READABLE_CM_DAP_H
 
@@ -258,6 +263,14 @@ void jtime_ccs(void);    /* JTIME +5: CCS KMPAC */
 void dojet_next(void);   /* DOJET +2: CCS SPNDX */
 void t6prog(void);       /* T6PROG */
 void t6prog_t5loc(void); /* T6PROG +2: DXCH T5LOC */
+
+/* ---- RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc -- dap_executive.c ---- */
+
+void ambgupdt(void);         /* AMBGUPDT: the job, SIN(PSI) */
+void ambgupdt_sin_psi(void); /* AMBGUPDT +010, after SPSIN: AMGB1 */
+void ambgupdt_cos_psi(void); /* AMBGUPDT +013, after SPCOS: CAPSI */
+void ambgupdt_cos_phi(void); /* AMBGUPDT +021, after SPCOS: AMGB8, AMGB4 */
+void ambgupdt_sin_phi(void); /* AMBGUPDT +032, after SPSIN: AMGB5, AMGB7 */
 
 #endif
 
