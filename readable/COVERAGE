@@ -119,3 +119,4 @@ Comanche055/MYSUBS.agc                         src/cm_dap
 Comanche055/RCS-CSM_DIGITAL_AUTOPILOT.agc      src/cm_dap
 Comanche055/AUTOMATIC_MANEUVERS.agc            src/cm_dap
 Comanche055/RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc src/cm_dap
+Comanche055/JET_SELECTION_LOGIC.agc            src/cm_dap

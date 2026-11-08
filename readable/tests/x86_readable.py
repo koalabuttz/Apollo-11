@@ -265,9 +265,9 @@ REPLACED = (
 # are no longer called (--gc-sections drops them).
 # RCS-CSM_DAP_EXECUTIVE_PROGRAMS (src/cm_dap): the CM's routine tables, all
 # readable; the faithful ones, renamed, are no longer called.
-# JET_SELECTION_LOGIC (src/cm_dap), part by part: the CM's routine tables
-# (and the table of the keys one pass reaches), readable where a key is
-# written; the faithful ones, renamed, run the rest.
+# JET_SELECTION_LOGIC (src/cm_dap): the CM's routine tables (and the table
+# of the keys one pass reaches), all readable; the faithful ones, renamed,
+# are no longer called.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],

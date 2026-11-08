@@ -8,16 +8,20 @@
  *
  * First the keys, which must be the faithful table's, and the hot table's,
  * which must be the faithful one's with the same routines as the basic
- * table. Then the runs: each readable key from 4,096 states, each one of
- * the port's frozen test states (c64-port/tests/cm_jet_select_vectors.h)
- * entered at the key, most stirred further: channel 13 (now and then
- * with its trap bits set), channel 31's translation bits
- * (often none commanded), DAPDATR1's LEM bit, XTRANS, the rotation
+ * table. Then the runs: every key (each must be readable) from 4,096
+ * states, each one of the port's frozen test states
+ * (c64-port/tests/cm_jet_select_vectors.h) entered at the key, most
+ * stirred further: channel 13 (now and then with its trap bits set),
+ * channel 31's translation bits (often none commanded), DAPDATR1's LEM
+ * bit, XTRANS, the rotation
  * commands TAU, TAU1 and TAU2 (often +0, -0, 1 or -1, or short of 14 ms
  * or .1 s on the jets) and the quad flags RACFAIL, RBDFAIL and ACORBD
  * (often +0, -0, 1 or -1), the numbers of jets NPJETS, NYJETS and NRJETS
- * (mostly -3 to 3) and the on-times BLAST, BLAST1 and BLAST2, the
- * translation and rotation indexes
+ * (mostly -3 to 3), the on-times BLAST, BLAST1 and BLAST2 (often +0, -0,
+ * 1 or -1) and their branch indexes (mostly 0, 4 or 11), the channel
+ * words and DFT, RCSFLAGS's bit 1, TIME6 and the jets' channels 5 and 6,
+ * a Q often returning to the T6 program's REPLACE words, the translation
+ * and rotation indexes
  * (mostly within their tables, now and then one that lands a read at Z or
  * just past a table), the roll word RWORD1, T5TIME and T5TEMP, A at a key
  * (mostly a table index or a word a table holds, now and then an overflow
@@ -178,7 +182,15 @@ static uint16_t tau_word(void)
 /* An on-time: mostly short of 14 ms or about it, or any. */
 static uint16_t blast_word(void)
 {
-    return pick(2u) ? number((int)pick(60u) - 10) : value_word();
+    return pick(2u) ? number((int)pick(60u) - 10) : sign_word();
+}
+
+/* A branch index for the T6 program: mostly roll's, pitch's or yaw's (0,
+ * 4, 11), now and then any. */
+static uint16_t branch_word(void)
+{
+    static const uint16_t axes[] = {0u, 4u, 11u};
+    return pick(8u) ? axes[pick(3u)] : value_word();
 }
 
 /* The frozen cases. */
@@ -277,6 +289,22 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hw, u
         w[AT(BLAST)] = blast_word();
         w[AT(BLAST1)] = blast_word();
         w[AT(BLAST2)] = blast_word();
+        /* The channel words and the rate filter's changes. */
+        w[AT(PWORD1)] = pick(2u) ? (uint16_t)(rnd() & 01417u) : value_word();
+        w[AT(YWORD1)] = pick(2u) ? (uint16_t)(rnd() & 06360u) : value_word();
+        w[AT(RWORD2)] = pick(2u) ? (uint16_t)(rnd() & 037777u) : value_word();
+        w[AT(DFT)] = value_word();
+        w[AT(PWORD2)] = pick(2u) ? (uint16_t)(rnd() & 01417u) : value_word();
+        w[AT(YWORD2)] = pick(2u) ? (uint16_t)(rnd() & 06360u) : value_word();
+        /* The T6 program: the branch indexes, its flag, TIME6 and the
+         * jets' channels. */
+        w[AT(BLAST) + 1u] = branch_word();
+        w[AT(BLAST1) + 1u] = branch_word();
+        w[AT(BLAST2) + 1u] = branch_word();
+        w[AT(RCSFLAGS)] = pick(2u) ? (uint16_t)(rnd() & 1u) : value_word();
+        w[AT(TIME6)] = sign_word();
+        hw->channel5 = any_word();
+        hw->channel6 = any_word();
         /* Any of the erasable banks' words. */
         for (k = 01000u; k < 04000u; ++k)
             if (pick(32u) == 0u) w[k] = value_word();
@@ -294,6 +322,10 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hw, u
         w[0] = register_word(w[0]);
         w[1] = register_word(value_word());
         w[2] = return_word();
+        if (pick(4u) == 0u) { /* a return to the T6 program's REPLACE words */
+            static const uint16_t returns[] = {03663u, 03670u, 03675u, 03712u};
+            w[2] = register_word(returns[pick(4u)]);
+        }
         if (pick(16u) == 0u) io->superbank = (uint16_t)(rnd() & (pick(2u) ? 0160u : 0177u));
         if (pick(32u) == 0u) io->interrupt_enabled = (uint16_t)pick(3u);
         if (pick(32u) == 0u) w[4] = (uint16_t)(rnd() & 076000u);
@@ -323,7 +355,11 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
         uint16_t key = faithful->entries[i].physical;
         unsigned ran = 0, bad = 0;
 
-        if (!cm_jet_select_readable(key)) continue; /* the faithful routine, on both sides */
+        if (!cm_jet_select_readable(key)) { /* the file is readable whole */
+            printf("FAIL: key %u (%04o) has no readable routine\n", key, 02000u + key % 1024u);
+            ++failures;
+            continue;
+        }
         ++*written;
         for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;
