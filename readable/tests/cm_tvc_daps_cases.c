@@ -12,7 +12,8 @@
  * entered at the key, most stirred further: STROKER, DAPDATR1's LM bits,
  * T5TVCDT, the CDUs near their past values or not, the errors, filter
  * nodes, coefficients and gain (often small, so that the limiters both
- * take and pass), channel 14, A, L and Q (often a key of the file, a word
+ * take and pass; now and then none, with the offsets one under the
+ * actuator limit and a low word that rounds them up to it), channel 14, A, L and Q (often a key of the file, a word
  * one of its subroutines returns to, or 3, for a copycycle's TC Q),
  * EBANK (often E6, the file's), any erasable bank's words, the latches,
  * or a state the routines refuse (BBANK not the two banks, a word of 16
@@ -45,6 +46,7 @@ bool cm_tvc_daps_readable(uint16_t key);
 #define DAP_LAST    03321u
 #define N10_AT      03323u /* 01723: N10 to D32, 15 words */
 #define VARK_AT     03241u /* 01641 */
+#define PDELOFF_AT  03205u /* 01605, YDELOFF after it */
 #define CDUY        033u   /* CDUZ after it */
 /* Words a copycycle's TC Q may name: the file's keys, the words its
  * subroutines return to, a word in another bank's range, fixed-fixed
@@ -81,7 +83,7 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 }
 
 /* Every key runs a readable routine. */
-static unsigned keys_unwritten(const agc_routine_table *table)
+static unsigned keys_unwritten(const agc_routine_table *table, unsigned *readable)
 {
     unsigned i, failures = 0;
 
@@ -90,6 +92,8 @@ static unsigned keys_unwritten(const agc_routine_table *table)
         if (!cm_tvc_daps_readable(key)) {
             printf("FAIL: key %u has no readable routine\n", key);
             ++failures;
+        } else {
+            ++*readable;
         }
     }
     return failures;
@@ -167,6 +171,19 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, unsig
         /* Any of the erasable banks' words. */
         for (k = 01000u; k < 04000u; ++k)
             if (rnd() % 16u == 0u) w[k] = value_word();
+        /* Now and then no gain, so each command is its offset alone,
+         * one under the actuator limit ACTSAT (253) with a low word whose
+         * DOUBLE overflows: ACTLIM's round up takes it to the limit. */
+        if (rnd() % 8u == 0u) {
+            bool minus = rnd() % 2u;
+
+            w[VARK_AT] = 0u;
+            for (k = 0; k < 4u; k += 2u) {
+                uint16_t low = (uint16_t)(020000u + rnd() % 020000u);
+                w[PDELOFF_AT + k] = minus ? 077777u - 0374u : 0374u; /* 252 */
+                w[PDELOFF_AT + k + 1u] = minus ? (uint16_t)(077777u - low) : low;
+            }
+        }
         /* A, L and Q. */
         w[0] = rnd() % 2u ? any_word() : rnd();
         w[1] = rnd() % 2u ? any_word() : rnd();
@@ -256,6 +273,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 
 int main(int argc, char **argv)
 {
+    unsigned readable_keys = 0;
     unsigned i, failures = 0, runs = 0;
 
     if (argc < 3 || !apollo_rope_load(0, argv[1]) || !apollo_rope_load(1, argv[2])) {
@@ -267,7 +285,7 @@ int main(int argc, char **argv)
     failures += tables_differ(&cm_tvc_daps_basic, &faithful_cm_tvc_daps_basic, "basic");
     failures += tables_differ(&cm_tvc_daps_interpretive, &faithful_cm_tvc_daps_interpretive,
                               "interpretive");
-    failures += keys_unwritten(&faithful_cm_tvc_daps_basic);
+    failures += keys_unwritten(&faithful_cm_tvc_daps_basic, &readable_keys);
     if (failures) {
         printf("cm-tvc-daps-cases: %u failures\n", failures);
         return 1;
@@ -275,6 +293,6 @@ int main(int argc, char **argv)
     failures += keys(&cm_tvc_daps_basic, &faithful_cm_tvc_daps_basic, &runs);
     printf("cm-tvc-daps-cases: %u of %u keys readable (all basic) from %u states each, %u run by "
            "the faithful routines, %u failures\n",
-           cm_tvc_daps_basic.count, faithful_cm_tvc_daps_basic.count, CASES, runs, failures);
+           readable_keys, faithful_cm_tvc_daps_basic.count, CASES, runs, failures);
     return failures != 0;
 }

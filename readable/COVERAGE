@@ -3,6 +3,10 @@
 # (STYLE.md, Gates). One line per file: path, then the readable directory,
 # then no-code for a file of comments only, which counts by its lines and
 # whose words the directory's header carries (the check holds the mark).
+# A binding that still runs the faithful port's routines at keys no part has
+# written names its listing in a comment, "Partial file: <path>", and the
+# check fails if that file is listed here, or if a binding uses a faithful_
+# table and names no partial file.
 Luminary099/EXECUTIVE.agc                  src/executive
 Comanche055/EXECUTIVE.agc                  src/executive
 Luminary099/WAITLIST.agc                   src/waitlist

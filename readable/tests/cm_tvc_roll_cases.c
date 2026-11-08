@@ -17,7 +17,9 @@
  * with the jets off often +0),
  * ROLLWORD's pair bits, TIME6, channels 6 and 13, A, L and Q, EBANK (often E6,
  * the file's; now and then any of the eight), any erasable bank's words,
- * the latches, or a state the routines refuse (BBANK not the two banks, a word of 16 bits). Each runs
+ * the latches, or a state the routines refuse (BBANK not the two banks, a
+ * word of 16 bits); and at ROLLDAP 1 of 32, where a try lands, a new
+ * firing exactly one over TMINFIRE, of either sign. Each runs
  * once on each side, as the program's trampoline would call the key's
  * routine, with a hardware record or (now and then) none. Where either
  * port runs, the other must too, with the same memory and io record, word
@@ -76,7 +78,7 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 }
 
 /* Every key runs a readable routine. */
-static unsigned keys_unwritten(const agc_routine_table *table)
+static unsigned keys_unwritten(const agc_routine_table *table, unsigned *readable)
 {
     unsigned i, failures = 0;
 
@@ -85,6 +87,8 @@ static unsigned keys_unwritten(const agc_routine_table *table)
         if (!cm_tvc_roll_readable(key)) {
             printf("FAIL: key %u has no readable routine\n", key);
             ++failures;
+        } else {
+            ++*readable;
         }
     }
     return failures;
@@ -215,6 +219,47 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, unsig
     if (n % 4u != 0u && rnd() % 64u == 0u) w[2] |= 0100000u; /* Q, which may hold 16 bits */
 }
 
+/* The firing time NEWROLL checks against TMINFIRE (030, 1.5 cs at 16
+ * bits a centisecond): one over it, the smallest that fires, where
+ * NEWROLL's AD ONE (the magnitude CCS leaves one short) decides. */
+#define T6FIRE_EDGE 031u
+
+/* Now and then a state at ROLLDAP whose new firing (the jets off before,
+ * ROLLFIRE +0) is exactly T6FIRE_EDGE long, of either sign: tries of the
+ * error, 1/CONACC and the rate, kept by what the faithful routine leaves
+ * (TIME6 the firing time, ROLLFIRE its sign). Where no try lands, the
+ * state stays as it was. */
+static unsigned edges_found;
+static void t6fire_edge(apollo_overlay_state *s, const cm_native_io *io,
+                        const agc_routine_entry *faithful, bool negative)
+{
+    apollo_overlay_state try = *s;
+    unsigned t;
+
+    for (t = 0; t < 4096u; ++t) {
+        apollo_overlay_state ran;
+        cm_native_io rio = *io;
+        agc_hardware hardware;
+        agc_native_program p;
+
+        try.words[ROLLFIRE_AT] = 0u;
+        try.words[TEMREG_AT] = 0u;
+        try.words[CONACC_AT] = (uint16_t)(rnd() % 010000u);
+        try.words[OGA_AT] = signed_below(02000u);
+        try.words[OGAPAST_AT] = (uint16_t)((try.words[OGANOW_AT] + signed_below(0400u)) & 077777u);
+        ran = try;
+        memset(&hardware, 0, sizeof hardware);
+        memset(&p, 0, sizeof p);
+        p.hardware = &hardware;
+        if (faithful->call(&p, &ran, &rio) == EXEC_OK && ran.words[TIME6_AT] == T6FIRE_EDGE &&
+            ran.words[ROLLFIRE_AT] == (negative ? 040000u : 037777u)) {
+            *s = try;
+            ++edges_found;
+            return;
+        }
+    }
+}
+
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
                      unsigned *runs)
 {
@@ -233,6 +278,8 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             const char *why = 0;
 
             state(&start, &io, key, n);
+            if (i == 0u && n % 32u == 5u) /* ROLLDAP, the first key */
+                t6fire_edge(&start, &io, &faithful->entries[i], n % 64u == 37u);
             fa = ra = start;
             fio = rio = io;
             memset(&hardware, 0, sizeof hardware);
@@ -279,6 +326,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 
 int main(int argc, char **argv)
 {
+    unsigned readable_keys = 0;
     unsigned i, failures = 0, runs = 0;
 
     if (argc < 3 || !apollo_rope_load(0, argv[1]) || !apollo_rope_load(1, argv[2])) {
@@ -290,14 +338,14 @@ int main(int argc, char **argv)
     failures += tables_differ(&cm_tvc_roll_basic, &faithful_cm_tvc_roll_basic, "basic");
     failures += tables_differ(&cm_tvc_roll_interpretive, &faithful_cm_tvc_roll_interpretive,
                               "interpretive");
-    failures += keys_unwritten(&faithful_cm_tvc_roll_basic);
+    failures += keys_unwritten(&faithful_cm_tvc_roll_basic, &readable_keys);
     if (failures) {
         printf("cm-tvc-roll-cases: %u failures\n", failures);
         return 1;
     }
     failures += keys(&cm_tvc_roll_basic, &faithful_cm_tvc_roll_basic, &runs);
-    printf("cm-tvc-roll-cases: %u of %u keys readable (all basic) from %u states each, %u run by "
-           "the faithful routines, %u failures\n",
-           cm_tvc_roll_basic.count, faithful_cm_tvc_roll_basic.count, CASES, runs, failures);
+    printf("cm-tvc-roll-cases: %u of %u keys readable (all basic) from %u states each (%u new "
+           "firings at the edge), %u run by the faithful routines, %u failures\n",
+           readable_keys, faithful_cm_tvc_roll_basic.count, CASES, edges_found, runs, failures);
     return failures != 0;
 }
