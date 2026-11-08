@@ -1884,6 +1884,11 @@
 #define K_YOUT 03012u
 #define K_DELBARY 03032u
 #define K_YDAPEND 03047u
+#define K_STRKTSTI 03501u
+#define K_HACKWLST 03542u
+#define K_FCADDY 03522u
+#define K_FREVS 03523u
+#define K_FCARD 03524u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -2530,6 +2535,12 @@
 #define K_DAP1 01615u
 #define K_DAP2 01617u
 #define K_DAP3 01621u
+#define K_ESTROKER 01413u
+#define K_CADDY 01655u
+#define K_N 01656u
+#define K_BUNKER 01657u
+#define K_REVS 01660u
+#define K_CARD 01661u
 #define KW_EXECBANK 002626u
 #define KW_FAKEPRET 000110u
 #define KW_NO_CORES 000006u
