@@ -216,7 +216,7 @@ LAD_SOURCES := src/agc/agc.c src/binding/machine.c src/landing_displays/landing_
 	src/binding/landing_displays_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
 	src/binding/imu_performance_routines.c
-CIC_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/imu_calibration/*.c)) \
+CIC_SOURCES := $(INTERPRETER_SOURCES) src/rtb_op_codes/rtb_op_codes.c $(sort $(wildcard src/imu_calibration/*.c)) \
 	src/binding/cm_imu_cal_routines.c
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
 	src/binding/standard_lead_routines.c)

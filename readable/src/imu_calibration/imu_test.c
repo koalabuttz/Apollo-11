@@ -25,13 +25,16 @@
  *
  * Every word is in bank 33. The erasable words are EBANK 5's. The
  * interpretive code among the basic (GUESS, the axes, AINGOTN, OVERFFIX)
- * the faithful port runs; this file starts and ends where it leaves the
- * basic code (TC INTPRET, EXIT). */
+ * is written in the listing's notation: tables the readable interpreter
+ * runs (src/interpreter/notation.h). */
 #include "imu_calibration.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
+#include "../interpreter/notation.h"
 
 #if COMANCHE055
+
+#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* ---- IMUTEST and the positioning -- pp. 423-424 ---- */
 
@@ -62,6 +65,18 @@ void imutest_after_coaalign(void)
     tc_at(GUESS);
     intpret();
 }
+
+/* GUESS +1 -- p. 423. LATAZCHK (bank 4, optical_verification.c) lets the
+ * crew check the latitude and azimuth. Then the earth rate's parts at the
+ * site, each doubled (SL1): WANGI = -cos LAT, WANGO = sin LAT. The EXIT
+ * goes on to GEOIMUTT. */
+static const word guess_words[] = {
+    ORDER(CALL),      ADDRESS(LATAZCHK), ORDERS(COS, DCOMP),
+    ORDER(SL1),       STODL(WANGI),      ADDRESS_PLUS_ONE(LATITUDE),
+    ORDERS(SIN, SL1), STORE(WANGO),      ORDER(EXIT),
+};
+
+const struct interpretive_code GUESS_CODE = {033u, GUESS + 1u, COUNT(guess_words), guess_words};
 
 /* GEOIMUTT -- p. 423, GUESS's EXIT: "GYROCOMPASS COMES IN HERE". Zero the
  * IMU (IMUZERO). */
@@ -113,6 +128,18 @@ void nbpospl_after_zeroing(void)
     intpret();
 }
 
+/* NBPOSPL +7 -- p. 424. The azimuth's sine into YNB +2 and ZNB +4, its
+ * cosine into YNB +4, negated into ZNB +2. */
+static const word axes_words[] = {
+    ORDERS(DLOAD, SIN),        ADDRESS_PLUS_ONE(AZIMUTH),
+    STORE_AT(YNB, 2),          STODL_AT(ZNB, 4),
+    ADDRESS_PLUS_ONE(AZIMUTH), ORDER(COS),
+    STORE_AT(YNB, 4),          ORDER(DCOMP),
+    STORE_AT(ZNB, 2),          ORDER(EXIT),
+};
+
+const struct interpretive_code AXES_CODE = {033u, NBPOSPL + 7u, COUNT(axes_words), axes_words};
+
 /* NBPOSPL +021 -- p. 424, the EXIT: "SEE IF IN OPTICAL VERIFICATION"
  * (major mode 03, P03). */
 void nbpospl_after_exit(void)
@@ -128,6 +155,16 @@ void nbpospl_not_verifying(void)
     tc_at(NBPOSPL + 025u);
     intpret();
 }
+
+/* NBPOSPL +026 -- p. 424. */
+static const word calcga_words[] = {
+    ORDER(CALL),
+    ADDRESS(CALCGA),
+    ORDER(EXIT),
+};
+
+const struct interpretive_code CALCGA_CODE = {033u, NBPOSPL + 026u, COUNT(calcga_words),
+                                              calcga_words};
 
 /* NBPOSPL +024: in P03, on to the optical verification (SETNBPOS +1). */
 void nbpospl_verifying(void)
@@ -371,6 +408,32 @@ void pipjobb_after_checkg(void)
     intpret();
 }
 
+/* PIPJOBB +016 -- p. 426. The time between the pulses, DATAPL +6 less
+ * DATAPL +2 (scaler times, double precision); negative, the scaler went
+ * round, and OVERFFIX adds a full count back. AINGOTN: the pulses (DATAPL
+ * +4) over the time (PDDL keeps it on the push-down list, and DDV divides
+ * by it), scaled by DEC585, the PIPA's rate (SGNAGREE makes its words'
+ * signs agree), into DSPTEM2 for display. */
+static const word aingotn_words[] = {
+    ORDERS(DLOAD, DSU),
+    ADDRESS_PLUS_ONE_AT(DATAPL, 6),
+    ADDRESS_PLUS_ONE_AT(DATAPL, 2),
+    ORDERS(BPL, CALL),
+    ADDRESS(AINGOTN),
+    ADDRESS(OVERFFIX),
+    /* AINGOTN */ ORDERS(PDDL, DDV), /* (the time, from the push-down list) */
+    ADDRESS_PLUS_ONE_AT(DATAPL, 4),
+    ORDERS(SL4, DMPR),
+    ADDRESS_PLUS_ONE(DEC585), /* "DEC585 HAS BEEN REDEFINED FOR LEM" */
+    ORDER(RTB),
+    ADDRESS(SGNAGREE),
+    STORE(DSPTEM2),
+    ORDER(EXIT),
+};
+
+const struct interpretive_code AINGOTN_CODE = {033u, PIPJOBB + 016u, COUNT(aingotn_words),
+                                               aingotn_words};
+
 /* AINGOTN +010 -- p. 426, the EXIT: in gimbal lock (NDXCTR positive)
  * "TAKE PLATFORM OUT OF GIMBAL LOCK" (COAALIGN, back to AINGOTN +012);
  * otherwise show the result. (Negative the faithful port runs VERTDRFT,
@@ -491,6 +554,18 @@ void endtest1_after_mkreleas(void)
 }
 
 /* ---- The subroutines -- pp. 428-429 ---- */
+
+/* OVERFFIX -- p. 428. The scaler went round between the two times: add a
+ * full count, DPPOSMAX and ONEDPP (one in the low word), and RVQ. */
+static const word overffix_words[] = {
+    ORDERS(DAD, DAD),
+    ADDRESS_PLUS_ONE(DPPOSMAX),
+    ADDRESS_PLUS_ONE(ONEDPP),
+    ORDER(RVQ),
+};
+
+const struct interpretive_code OVERFFIX_CODE = {033u, OVERFFIX, COUNT(overffix_words),
+                                                overffix_words};
 
 /* COAALIGN -- p. 428. "COARSE ALIGN SUBROUTINE": the return into QPLACE,
  * THETAD (the gimbal angles wanted) all +0, and IMUCOARS. */

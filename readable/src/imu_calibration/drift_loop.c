@@ -11,12 +11,78 @@
  *
  * Every word is in bank 33 but FINETIME's, in fixed-fixed. The erasable
  * words are EBANK 5's. The interpretive code among the basic (EARTHR,
- * ERTHRVSE, the filter) the faithful port runs. */
+ * ERTHRVSE, the filter) is written in the listing's notation: tables the
+ * readable interpreter runs (src/interpreter/notation.h). ERTHRVSE is in
+ * bank 32. */
 #include "imu_calibration.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
+#include "../interpreter/notation.h"
 
 #if COMANCHE055
+
+#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
+
+/* ---- ERTHRVSE and EARTHR -- p. 430 ---- */
+
+/* ERTHRVSE -- p. 430, in bank 32. The earth rate vector in stable member
+ * axes, "PD24 = (SIN -COS 0)(OMEG/MS)": with X up and Z north (at the
+ * site, azimuth aside) the earth turns about (sin LAT, -cos LAT, 0), at
+ * OMEG/MS. Into ERVECTOR; TMARK the time now (RTB LOADTIME), ERCOMP1
+ * cleared. */
+static const word erthrvse_words[] = {
+    ORDERS(DLOAD, PDDL),
+    ADDRESS_PLUS_ONE(SCHZEROS),
+    ADDRESS_PLUS_ONE(LATITUDE),
+    ORDERS(COS, DCOMP),
+    ORDERS(PDDL, SIN),
+    ADDRESS_PLUS_ONE(LATITUDE),
+    ORDERS(VDEF, VXSC),
+    ADDRESS_PLUS_ONE(OMEG_MS),
+    STORE(ERVECTOR),
+    ORDER(RTB),
+    ADDRESS(LOADTIME),
+    STOVL(TMARK),
+    ADDRESS_PLUS_ONE(SCHZEROS),
+    STORE(ERCOMP1),
+    ORDER(RVQ),
+};
+
+const struct interpretive_code ERTHRVSE_CODE = {032u, ERTHRVSE, COUNT(erthrvse_words),
+                                                erthrvse_words};
+
+/* EARTHR -- p. 430. "CALCULATES AND COMPENSATES EARTH RATE" since TMARK:
+ * the time since (TEMPTIME less TMARK, OVERFFIX if the clock went round),
+ * times ERVECTOR, through XSM (the stable member's matrix), added into
+ * ERCOMP1; then PULSEIMU torques the gyros by it (AXT,1 its ECADR). ITA
+ * S2 keeps the return, GOTO S2 goes back. */
+static const word earthr_words[] = {
+    ORDERS(ITA, RTB),
+    ADDRESS(S2),
+    ADDRESS(LOADTIME),
+    STORE(TEMPTIME),
+    ORDERS(DSU, BPL),
+    ADDRESS_PLUS_ONE(TMARK),
+    ADDRESS(ERTHR),
+    ORDER(CALL),
+    ADDRESS(OVERFFIX),
+    /* ERTHR */ ORDERS(SL, VXSC),
+    SL_COUNT(9),
+    ADDRESS_PLUS_ONE(ERVECTOR),
+    ORDERS(MXV, VAD),
+    ADDRESS_PLUS_ONE(XSM),
+    ADDRESS_PLUS_ONE(ERCOMP1),
+    STODL(ERCOMP1),
+    ADDRESS_PLUS_ONE(TEMPTIME),
+    STORE(TMARK),
+    ORDERS(AXT_1, RTB),
+    ADDRESS(ERCOMP1), /* ECADR ERCOMP1 */
+    ADDRESS(PULSEIMU),
+    ORDER(GOTO),
+    ADDRESS(S2),
+};
+
+const struct interpretive_code EARTHR_CODE = {033u, EARTHR, COUNT(earthr_words), earthr_words};
 
 /* ---- EARTHR* and SHOW -- pp. 430-431 ---- */
 
@@ -29,6 +95,16 @@ void earthr_star(void)
     tc_at(EARTHR_STAR + 2u);
     intpret();
 }
+
+/* EARTHR* +3 -- p. 430. */
+static const word earthr_star_words[] = {
+    ORDER(CALL),
+    ADDRESS(EARTHR),
+    /* PROUT */ ORDER(EXIT),
+};
+
+const struct interpretive_code EARTHR_STAR_CODE = {033u, EARTHR_STAR + 3u, COUNT(earthr_star_words),
+                                                   earthr_star_words};
 
 /* PROUT +1 -- p. 430, EARTHR's EXIT: wait for the gyros (IMUSTLLG). */
 void prout_after_exit(void)
