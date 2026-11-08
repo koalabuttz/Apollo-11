@@ -4679,6 +4679,10 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define PLUS_ROLL2       OCT120              /* +ROLL2 = OCT120 */
 #define MINUS_ROLL1      TEN                 /* -ROLL1 = TEN */
 #define MINUS_ROLL2      ((word)KW_MROLL2)   /* -ROLL2: OCT 240 */
+
+/* MYSUBS.agc */
+#define SMALLMP          ((word)K_SMALLMP)
+#define DPADD            ((word)K_DPADD)
 #endif
 
 /* NO.CORES + 1 core sets. */

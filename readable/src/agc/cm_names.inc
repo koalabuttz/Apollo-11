@@ -1893,6 +1893,8 @@
 #define K_NOROLL1 03676u
 #define K_NOROL1T6 03704u
 #define K_DB 03706u
+#define K_SMALLMP 02042u
+#define K_DPADD 02054u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -2555,6 +2557,8 @@
 #define K_DELOGA 01667u
 #define K_I 01670u
 #define K_IOGARATE 01671u
+#define K_KMPAC 01510u
+#define K_KMPTEMP 01512u
 #define KW_EXECBANK 002626u
 #define KW_FAKEPRET 000110u
 #define KW_NO_CORES 000006u

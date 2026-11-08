@@ -208,6 +208,10 @@ REPLACED = (
     # file.
     'lm_ephemeris_routine_table.o',
     'cm_ephemeris.o',
+    # MYSUBS.agc, the CM DAP's SMALLMP and DPADD (src/cm_dap): the routine
+    # table. cm_mysubs.o, which nothing else calls, is no longer called
+    # (--gc-sections drops it).
+    'cm_mysubs_routines.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
@@ -314,7 +318,7 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # is its own (rtevn_after_exit), as is its TVC DAP (tvcdapon, its
 # half-second task, tvcexec, its mass properties, massprop, its
 # restarts, redotvc, its pitch and yaw DAPs, pitchdap, its stroke test,
-# strktsti, and its roll DAP, rolldap).
+# strktsti, and its roll DAP, rolldap), and its RCS DAP's MYSUBS (smallmp).
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
                           'radsamp', 'prog20a', 'p30n33', 'p32strt',
                           'p31_after_p20flgon', 'prog21', 'rev83', 'P76_CODE', 'killtsk2',
@@ -324,7 +328,8 @@ MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'g
                           'pikup20', 'p30phsi', 'P32STRT_CODE', 'prog21', 'r34los_after_exit', 'candel',
                           'rtrn', 'p40csm', 'EPHEMERIDES_CODE', 'prog52', 'p61', 'quikread',
                           'startent_after_exit', 'cm_atup', 'rtevn_after_exit', 'tvcdapon',
-                          'tvcexec', 'massprop', 'redotvc', 'pitchdap', 'strktsti', 'rolldap')}
+                          'tvcexec', 'massprop', 'redotvc', 'pitchdap', 'strktsti', 'rolldap',
+                          'smallmp')}
 xb.OUT = READABLE / 'build/x86-flight'
 
 

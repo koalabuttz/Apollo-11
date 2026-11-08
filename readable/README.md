@@ -245,6 +245,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | TVCDAPS of the CM | `TVCDAPS.agc` (CM pp. 961-978) | [`src/tvc/`](src/tvc/) | The pitch and yaw TVC DAPs of an SPS burn, all basic code (bank 20): two T5 tasks that call each other every half sample time (PITCHDAP, YAWDAP), started by DAPINIT. Each pass takes the body-axis rate from the CDU rates, integrates its error and limits it (ERRORLIM), runs the CSM or CSM/LM filter for its present output with the variable gain (FWDFLTR), adds the CG offset, rounds and limits the actuator command (ACTLIM) and sends its increment to the outcounter, works out the filter's next pass ahead (PRECOMP) and the offset tracker filter, and stores it all in a copycycle restart-protected by TVCPHASE (PCOPY, YCOPY), which TVCRESTARTS re-enters. The two loops are built the same, so one set of steps runs both on each loop's own words |
 | TVCSTROKETEST of the CM | `TVCSTROKETEST.agc` (CM pp. 979-983) | [`src/tvc/`](src/tvc/) | The stroke test, all basic code (bank 20), which verb 68 starts (STRKTSTI): it adds pulse bursts of a pad-loaded size to the pitch outcounter every 20 ms, from each DAP pass (HACK) and from a WAITLIST task between them (HACKWLST), to excite bending. The waveform is a run of stroke sets, each a number of reversals of a slope a number of bursts long, from a small table of constants (FCARD on) read by INDEX CARD |
 | TVCROLLDAP of the CM | `TVCROLLDAP.agc` (CM pp. 984-998) | [`src/tvc/`](src/tvc/) | The TVC roll autopilot, all basic code (bank 16): a half-second WAITLIST task (ROLLDAP) that estimates the outer gimbal rate, finds the operating point's region of the phase plane (error against rate) by a test for each region, and, out of the coast region, works out the desired rate where the control parabola meets the straight switch line and the jet firing time from it; it fires the roll jet pairs in turn and sets a T6 task (NOROLL1) to shut them off |
+| MYSUBS of the CM | `MYSUBS.agc` (CM pp. 999-1001) | [`src/cm_dap/`](src/cm_dap/) | Two arithmetic subroutines of the RCS DAP (bank 21) on the double word KMPAC: SMALLMP multiplies it by a single word (the lower word's product, then the upper word's added in as a double word), and DPADD adds A,L into it, an overflowing sum taken round (the upper word, or with it zero the lower word, gets NEGMAX or POSMAX added the other way). The file also gives SPCOS and SPSIN the DAP's names (SPCOS1, SPSIN1, SPCOS2, SPSIN2) |
 
 Beside them:
 
@@ -880,6 +881,12 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    angle, error and rate often small, 1/CONACC often small and positive,
    ROLLFIRE +0, -0, POSMAX or NEGMAX, TEMREG often +0, -0 or small); each
    key must run a readable routine.
+   `make cm-mysubs-cases` runs the CM's MYSUBS: the port's frozen states
+   of the original program (128, half at the routine's TC Q, half after
+   it) on the readable SMALLMP and DPADD, then tests/cm_mysubs_cases.c:
+   readable and faithful side by side on every value of A's 16 bits, four
+   times each (L often an overflow, KMPAC often the word that makes
+   DPADD's sum exactly an overflow, Q now and then outside fixed memory).
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
