@@ -246,6 +246,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | TVCSTROKETEST of the CM | `TVCSTROKETEST.agc` (CM pp. 979-983) | [`src/tvc/`](src/tvc/) | The stroke test, all basic code (bank 20), which verb 68 starts (STRKTSTI): it adds pulse bursts of a pad-loaded size to the pitch outcounter every 20 ms, from each DAP pass (HACK) and from a WAITLIST task between them (HACKWLST), to excite bending. The waveform is a run of stroke sets, each a number of reversals of a slope a number of bursts long, from a small table of constants (FCARD on) read by INDEX CARD |
 | TVCROLLDAP of the CM | `TVCROLLDAP.agc` (CM pp. 984-998) | [`src/tvc/`](src/tvc/) | The TVC roll autopilot, all basic code (bank 16): a half-second WAITLIST task (ROLLDAP) that estimates the outer gimbal rate, finds the operating point's region of the phase plane (error against rate) by a test for each region, and, out of the coast region, works out the desired rate where the control parabola meets the straight switch line and the jet firing time from it; it fires the roll jet pairs in turn and sets a T6 task (NOROLL1) to shut them off |
 | MYSUBS of the CM | `MYSUBS.agc` (CM pp. 999-1001) | [`src/cm_dap/`](src/cm_dap/) | Two arithmetic subroutines of the RCS DAP (bank 21) on the double word KMPAC: SMALLMP multiplies it by a single word (the lower word's product, then the upper word's added in as a double word), and DPADD adds A,L into it, an overflowing sum taken round (the upper word, or with it zero the lower word, gets NEGMAX or POSMAX added the other way). The file also gives SPCOS and SPSIN the DAP's names (SPCOS1, SPSIN1, SPCOS2, SPSIN2) |
+| RCS-CSM_DIGITAL_AUTOPILOT of the CM, part 1: phase 1 and the needles | `RCS-CSM_DIGITAL_AUTOPILOT.agc` (CM pp. 1002-1013) | [`src/cm_dap/`](src/cm_dap/) | The start of the RCS autopilot's T5 interrupt program, all basic code (bank 21): REDORCS and RCSATT check the autopilot's switches (channel 31) and branch on T5PHASE; phase 1 (`rcsatt.c`) checks the IMU, filters the body rates from the CDU angles (DRHOLOOP, ADOTLOOP: DRHO and ADOT for each axis, with SMALLMP), calls the one-second update of the gimbal-to-body matrix (KMATRIX, by NOVAC) and, in an automatic maneuver, steps the desired angles on by their increments (DELOOP, with DPADD). The attitude error display (`needles.c`) ends it: NEEDLER sequences the IMU error counters' relays over its first passes (channel 12) and DACLOOP meters each axis' error, held to 384 pulses, out to the CDU command counters, setting the DAC activity bits (channel 14). `indexing.c` holds the INDEX rules the faithful port keeps. The rest of the file still runs the faithful routines |
 
 Beside them:
 
@@ -887,6 +888,15 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    readable and faithful side by side on every value of A's 16 bits, four
    times each (L often an overflow, KMPAC often the word that makes
    DPADD's sum exactly an overflow, Q now and then outside fixed memory).
+   `make cm-rcs-dap-cases` runs the CM's RCS-CSM_DIGITAL_AUTOPILOT, part
+   by part: the port's test (its frozen cases, each run to its stop
+   against yaAGC digests) through the readable tables, then
+   tests/cm_rcs_dap_cases.c: readable and faithful side by side at every
+   readable key from 4,096 states (T5PHASE and HOLDFLAG often +0, -0, 1
+   or -1, the loop indexes and A often an axis', ATTKALMN a gain's index,
+   the CDU angles often near their past values, AK often within or past
+   the DACs' limit, Q often a key of the same part); a state that loops
+   for ever (DACLOOP's index run into SPNDX) must loop on both sides.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

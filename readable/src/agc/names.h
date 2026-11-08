@@ -4683,6 +4683,38 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 /* MYSUBS.agc */
 #define SMALLMP          ((word)K_SMALLMP)
 #define DPADD            ((word)K_DPADD)
+
+/* RCS-CSM_DIGITAL_AUTOPILOT.agc */
+#define REDORCS          ((word)K_REDORCS)
+#define RCSATT           ((word)K_RCSATT)
+#define SETT5            ((word)K_SETT5)
+#define FREECHK          ((word)K_FREECHK)
+#define RATEFILT         ((word)K_RATEFILT)
+#define DRHOLOOP         ((word)K_DRHOLOOP)
+#define ADOTLOOP         ((word)K_ADOTLOOP)
+#define KMATRIX          ((word)K_KMATRIX)
+#define TENTHSEK         ((word)K_TENTHSEK)
+#define DCDUINCR         ((word)K_DCDUINCR)
+#define DELOOP           ((word)K_DELOOP)
+#define DACNDLS          ((word)K_DACNDLS)
+#define FDAIDSP1         ((word)K_FDAIDSP1)
+#define FDAIDSP2         ((word)K_FDAIDSP2)
+#define KRESUME1         ((word)K_KRESUME1)
+#define NEEDLER          ((word)K_NEEDLER)
+#define NEEDLER1         ((word)K_NEEDLER1)
+#define NEEDLE11         ((word)K_NEEDLE11)
+#define NEEDLER2         ((word)K_NEEDLER2)
+#define NEEDLES3         ((word)K_NEEDLES3)
+#define NEEDLES          ((word)K_NEEDLES)
+#define DACLOOP          ((word)K_DACLOOP)
+#define REINIT           ((word)K_REINIT)
+#define FRESHDAP         ((word)K_FRESHDAP)
+#define REDAP            ((word)K_REDAP)
+#define ZEROJET          ((word)K_ZEROJET)
+#define T5PHASE2         ((word)K_T5PHASE2)
+#define AMBGUPDT         ((word)K_AMBGUPDT)
+#define OCT37766         ((word)KW_OCT37766) /* 100 ms (TIME5) */
+#define DELTATT2         ((word)KW_DELTATT2) /* OCT 37776: "20MS (TIME5)" */
 #endif
 
 /* NO.CORES + 1 core sets. */
