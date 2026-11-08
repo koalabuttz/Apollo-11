@@ -2065,6 +2065,7 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define TORQINCH    ((word)K_TORQINCH)
 #define SETUPGC     ((word)K_SETUPGC)
 #define POSN17C     ((word)K_POSN17C)
+#define ALWAYSG     ((word)K_ALWAYSG)
 #define ENDGTSAL    ((word)K_ENDGTSAL)
 #define LASTGTS     ((word)K_LASTGTS)
 #define RESTAIER    ((word)K_RESTAIER)

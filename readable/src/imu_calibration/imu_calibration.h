@@ -289,6 +289,15 @@ extern const struct interpretive_code EARTHR_STAR_CODE; /* p. 430 */
 extern const struct interpretive_code RSTGTS1_CODE;     /* p. 434 */
 extern const struct interpretive_code ESTIMS_CODE;      /* ESTIMS +035, p. 434 */
 extern const struct interpretive_code NORMLOP_CODE;     /* pp. 438-441 */
+extern const struct interpretive_code SETUPER1_CODE;    /* p. 441 */
+extern const struct interpretive_code TORQINCH_CODE;    /* TORQINCH +011, p. 441 */
+extern const struct interpretive_code POSN17C_CODE;     /* p. 443 */
+extern const struct interpretive_code ALWAYSG_CODE;     /* pp. 443-444 */
+extern const struct interpretive_code LASTGTS_CODE;     /* p. 445 */
+extern const struct interpretive_code RESTAIER_CODE;    /* p. 445 */
+extern const struct interpretive_code RESTEST1_CODE;    /* p. 445 */
+extern const struct interpretive_code RESTEST3_CODE;    /* pp. 445-446 */
+extern const struct interpretive_code NOAZCHGE_CODE;    /* p. 446 */
 
 #endif
 #endif
