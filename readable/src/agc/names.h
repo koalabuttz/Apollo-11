@@ -4625,6 +4625,38 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define CHKSTRK  ((word)K_CHKSTRK)
 #define FINCOPY  ((word)K_FINCOPY)
 #define EXRSTRT  ((word)K_EXRSTRT)
+
+/* TVCDAPS.agc */
+#define PITCHDAP        ((word)K_PITCHDAP)
+#define PSTROKER        ((word)K_PSTROKER)
+#define PCDUDOTS        ((word)K_PCDUDOTS)
+#define PFORWARD        ((word)K_PFORWARD)
+#define PCOPY           ((word)K_PCOPY)
+#define YAWDAP          ((word)K_YAWDAP)
+#define YSTROKER        ((word)K_YSTROKER)
+#define YINTEGRL        ((word)K_YINTEGRL)
+#define YFORWARD        ((word)K_YFORWARD)
+#define YCOPY           ((word)K_YCOPY)
+#define DAPINIT         ((word)K_DAPINIT)
+#define POFFSET         ((word)K_POFFSET)
+#define POUT            ((word)K_POUT)
+#define DELBARP         ((word)K_DELBARP)
+#define PDAPEND         ((word)K_PDAPEND)
+#define YOFFSET         ((word)K_YOFFSET)
+#define YOUT            ((word)K_YOUT)
+#define DELBARY         ((word)K_DELBARY)
+#define YDAPEND         ((word)K_YDAPEND)
+#define HACK            ((word)K_HACK) /* TVCSTROKETEST.agc */
+#define ACTSAT          ((word)KW_ACTSAT)   /* DEC 253 B-14 */
+#define ONE_OVER_ACTSAT ((word)KW_1_ACTSAT) /* 1/ACTSAT: DEC .0039525692 */
+#define ERRLIM          BIT13               /* ERRLIM EQUALS BIT13 */
+#define ONE_OVER_ERRLIM BIT3                /* 1/ERRLIM EQUALS BIT3 */
+#define PITCHT5         ((word)KW_PITCHT5)  /* GENADR PITCHDAP */
+#define YAWT5           ((word)KW_YAWT5)    /* GENADR YAWDAP */
+#define ONE_OVER_RTLIM  ((word)KW_1_RTLIM)  /* 1/RTLIM: DEC 0.004715 */
+/* The filter's constants, read where they are (MP). */
+#define K_E_MINUS_AT           K_E_MAT   /* E(-AT): OCT 37535 */
+#define K_ONE_MINUS_E_MINUS_AT K_1_E_MAT /* 1-E(-AT): OCT 00243 */
 #endif
 
 /* NO.CORES + 1 core sets. */

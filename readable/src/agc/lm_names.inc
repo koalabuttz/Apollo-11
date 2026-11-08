@@ -2872,6 +2872,8 @@
 #define K_POSCODE 01242u
 #define K_GCTR 01736u
 #define K_WEIGHT_G 01244u
+#define K_AK1 01762u
+#define K_AK2 01763u
 #define KW_EXECBANK 002601u
 #define KW_FAKEPRET 000110u
 #define KW_NO_CORES 000007u

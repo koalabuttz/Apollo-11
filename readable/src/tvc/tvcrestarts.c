@@ -16,13 +16,6 @@ static void enabl1(void);
 static void fincopy(void);
 static void trim_cmd(void);
 
-/* TC (or TCR) to routine at fixed address at. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* The words in fixed memory the file reads under INDEX: TVCCADR, "TABLE
  * OF CADRS" (+0 to +3), and TVCEXADR's "TVCEXECUTIVE RESTART POINTS"
  * (+1 to +6). */

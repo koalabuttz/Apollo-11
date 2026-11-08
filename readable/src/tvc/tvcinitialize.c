@@ -66,13 +66,6 @@ static word index_at(unsigned address)
     return fetch(address);
 }
 
-/* TC (or TCR) to routine at fixed address at. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* ---- TVCDAPON and MRCLEAN -- pp. 937-938 ---- */
 
 /* TVCDAPON, the "T5 RUPT ARRIVAL (CALL BY DOTVCON - P40)": BANKRUPT and

@@ -36,6 +36,14 @@
  *     copycycle or repeats the initialization or the switch-over, and
  *     brings up the outcounters again (ENABL1, ENABL2, CMDSOUT).
  *
+ * TVCDAPS.agc (pp. 961-978, bank 20), c64-port/src/cm_tvc_daps.c:
+ *
+ *   PITCHDAP, YAWDAP, DAPINIT and the copycycles (tvcdaps.c): the pitch
+ *     and yaw DAPs, "SELF-PERPETUATING T5 TASKS WHICH GENERATE THE COMMAND
+ *     SIGNALS" of the SPS gimbal actuators: the body-axis rate error, the
+ *     filter and its limiters, the actuator commands, the offset tracker
+ *     filter, and the restart-protected copycycles (PCOPY, YCOPY).
+ *
  * All basic code. Each function runs from a word the program can come
  * back to (an entry, the word after a call out of the file) until control
  * leaves the file's code (RESUME, NOQRSM, IBNKCALL, ISWCALL, WAITLIST,
@@ -55,6 +63,13 @@
 static inline int value_of(word value)
 {
     return (value & SIGN_BIT) ? -(int)negate(value) : (int)value;
+}
+
+/* TC (or TCR) to routine at fixed address at. */
+static inline void tc_to(word at, word routine)
+{
+    tc_at(at);
+    continue_at(routine);
 }
 
 /* TC Q, the end of LOADCOEF, S40.15 and MASSPROP: the word in Q runs as
@@ -132,6 +147,28 @@ void phschk2_mrclean(void);         /* PHSCHK2 +5, where EXRSTRT can go on */
 void chkstrk(void);                 /* CHKSTRK */
 void fincopy_after_copycycle(void); /* FINCOPY +3 */
 void exrstrt(void);                 /* EXRSTRT */
+
+/* TVCDAPS.agc -- tvcdaps.c */
+void pitchdap(void);            /* PITCHDAP */
+void pitchdap_after_hack(void); /* PITCHDAP +011 */
+void pcdudots(void);            /* PCDUDOTS */
+void pcdudots_ydot(void);       /* PCDUDOTS +5 */
+void pcdudots_zdot(void);       /* PCDUDOTS +013 */
+void pforward(void);            /* PFORWARD */
+void poffset(void);             /* POFFSET */
+void pout(void);                /* POUT */
+void delbarp(void);             /* DELBARP */
+void dapend(void);              /* PDAPEND, YDAPEND */
+void pcopy_reentry(void);       /* PCOPY +1 */
+void yawdap(void);              /* YAWDAP */
+void yawdap_after_hack(void);   /* YAWDAP +011 */
+void yintegrl(void);            /* YINTEGRL */
+void yforward(void);            /* YFORWARD */
+void yoffset(void);             /* YOFFSET */
+void yout(void);                /* YOUT */
+void delbary(void);             /* DELBARY */
+void ycopy_reentry(void);       /* YCOPY +1 */
+void dapinit(void);             /* DAPINIT */
 
 #endif
 
