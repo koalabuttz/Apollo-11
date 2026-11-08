@@ -2052,6 +2052,36 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define PRELTERM    ((word)K_PRELTERM)
 #define SETNBPOS    ((word)K_SETNBPOS)
 #define CHANG1      ((word)K_CHANG1)
+#define PERFERAS    ((word)K_PERFERAS)
+#define SETUPER1    ((word)K_SETUPER1)
+#define ONCEMORE    ((word)K_ONCEMORE)
+#define TORQINCH    ((word)K_TORQINCH)
+#define SETUPGC     ((word)K_SETUPGC)
+#define POSN17C     ((word)K_POSN17C)
+#define ENDGTSAL    ((word)K_ENDGTSAL)
+#define LASTGTS     ((word)K_LASTGTS)
+#define RESTAIER    ((word)K_RESTAIER)
+#define RESTEST1    ((word)K_RESTEST1)
+#define RESTEST3    ((word)K_RESTEST3)
+#define RESCHNG     ((word)K_RESCHNG)
+#define SPITGYRO    ((word)K_SPITGYRO)
+#define NOAZCHGE    ((word)K_NOAZCHGE)
+#define NOCHORLD    ((word)K_NOCHORLD)
+#define LATAZCHK    ((word)K_LATAZCHK)
+#define OPTDATA     ((word)K_OPTDATA)
+#define TAR_EREF    ((word)K_TAR_EREF)
+#define CONTIN33    ((word)K_CONTIN33)
+#define NEXTBNKS    ((word)K_NEXTBNKS)
+#define NEXBNKSS    ((word)K_NEXBNKSS)
+#define GCOMP4      ((word)K_GCOMP4)
+#define GCOMP5      ((word)K_GCOMP5)
+#define GTSOPTCS    ((word)K_GTSOPTCS)
+#define TARGDRVE    ((word)K_TARGDRVE)
+#define RETARG      ((word)K_RETARG)
+#define RETARG1     ((word)K_RETARG1)
+#define AZMTHCG1    ((word)K_AZMTHCG1)
+/* LAT(SPL): the erasable program (EBANK 7) PERFERAS runs. */
+#define LAT_SPL ((word)K_LAT_SPL)
 /* The scaler channels FINETIME reads. */
 #define LOSCALAR ((unsigned)K_LOSCALAR)
 #define HISCALAR ((unsigned)K_HISCALAR)
@@ -2070,6 +2100,17 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define ALXXXZ   ((word)KW_ALXXXZ)
 #define VB06N98  ((word)KW_VB06N98) /* VN 0698 */
 #define GLOKFBIT ((word)KW_GLOKFBIT)
+#define EBANK7     ((word)KW_EBANK7)
+#define OGCPL      ((word)KW_OGCPL) /* ECADR OGC */
+#define XSMADR     ((word)KW_XSMADR) /* GENADR XSM */
+#define ERCOMPPL   ((word)KW_ERCOMPPL) /* ECADR ERCOMP */
+#define ONE_PIPAGT ((word)KW_1_PIPAGT) /* 1/PIPAGT */
+#define TRM03BIT   ((word)KW_TRM03BIT) /* = BIT4 */
+#define V05N30E    ((word)KW_V05N30E) /* VN 0530 */
+#define VN0641     ((word)KW_VN0641) /* VN 0641 */
+#define VNG0641    ((word)KW_VNG0641) /* VN 0641 */
+#define V06N93S    ((word)KW_V06N93S) /* VN 0693 */
+#define VN0629     ((word)KW_VN0629) /* VN 0629 */
 #endif
 
 /* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 1: the keys ---- */
