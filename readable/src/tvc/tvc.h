@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* The CM's thrust vector control (TVC), the autopilot of an SPS burn:
+/* The CM's thrust vector control (TVC), the autopilot of an SPS burn.
+ *
  * TVCINITIALIZE.agc (Comanche055 pp. 937-944, bank 17), "TVC DAP
- * INITIALIZATION AND STARTUP CALL". The faithful C is
- * c64-port/src/cm_tvc_init.c.
+ * INITIALIZATION AND STARTUP CALL", c64-port/src/cm_tvc_init.c:
  *
  *   TVCDAPON, MRCLEAN, TVCINIT1 to TVCINIT4 (tvcinitialize.c): the start
  *     of the TVC DAP, in T5 interrupts ("T5LOC=2CADR(TVCDAPON,EBANK=BZERO),
@@ -15,10 +15,18 @@
  *   LOADCOEF, S40.15 (tvcinitialize.c): the filter coefficients loaded
  *     into N10 on, and the gains 1/CONACC and VARK.
  *
+ * TVCEXECUTIVE.agc (pp. 945-950, bank 16), c64-port/src/cm_tvc_exec.c:
+ *
+ *   TVCEXEC to TVCEXFIN (tvcexecutive.c): the half-second task TVCINIT4
+ *     starts, "CALL TVCEXECUTIVE (ROLLDAP CALL, ETC)": the roll DAP's
+ *     errors and task (ROLLPREP), the needles (NEEDLEUP), the variable
+ *     gains and mass (VARGAINS, GAINCHNG, EXECCOPY), and the one-shot and
+ *     repetitive trim corrections (1SHOTCHK to CNTRCOPY).
+ *
  * All basic code. Each function runs from a word the program can come
  * back to (an entry, the word after a call out of the file) until control
- * leaves the file's code (RESUME, IBNKCALL, WAITLIST, POSTJUMP, TC Q,
- * TC RTRNLOC), or reaches a word where the faithful port's run stops: a
+ * leaves the file's code (RESUME, IBNKCALL, WAITLIST, POSTJUMP,
+ * TASKOVER, TC Q, TC RTRNLOC), or reaches a word where the faithful port's run stops: a
  * key of its own, run by the function named for it. */
 #ifndef READABLE_TVC_H
 #define READABLE_TVC_H
@@ -50,6 +58,21 @@ void loadcoef_n10_6(void);          /* LOADCOEF +017 */
 void loadcoef_n10_8(void);          /* LOADCOEF +023 */
 void s40_15(void);                  /* S40.15 */
 void s40_15_switchover(void);       /* S40.15 +7 */
+
+/* TVCEXECUTIVE.agc -- tvcexecutive.c */
+void tvcexec(void);               /* TVCEXEC */
+void rollprep(void);              /* ROLLPREP */
+void needleup(void);              /* NEEDLEUP */
+void vargains(void);              /* VARGAINS */
+void gainchng(void);              /* GAINCHNG */
+void gainchng_after_fixcw(void);  /* GAINCHNG +2 */
+void gainchng_after_s40_15(void); /* GAINCHNG +4 */
+void execcopy_copycycle(void);    /* EXECCOPY +1 */
+void oneshotchk(void);            /* 1SHOTCHK */
+void tempset(void);               /* TEMPSET */
+void corsetup(void);              /* CORSETUP */
+void corcopy_copycycle(void);     /* CORCOPY +1 */
+void cntrcopy(void);              /* CNTRCOPY */
 
 #endif
 

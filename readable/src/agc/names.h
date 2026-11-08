@@ -4595,6 +4595,20 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define TWO_PI_OVER_M   ((word)KW_2PI_M)       /* 2PI/M: DEC .00331017 B+8 */
 #define LBCFADR         ((word)KW_LBCFADR)     /* GENADR LBN10 */
 #define NINETEEN        ((word)KW_NINETEEN)    /* NINETEEN = VD1 */
+
+/* TVCEXECUTIVE.agc */
+#define TVCEXEC  ((word)K_TVCEXEC)
+#define ROLLPREP ((word)K_ROLLPREP)
+#define NEEDLEUP ((word)K_NEEDLEUP)
+#define VARGAINS ((word)K_VARGAINS)
+#define GAINCHNG ((word)K_GAINCHNG)
+#define EXECCOPY ((word)K_EXECCOPY)
+#define ONESHOTCHK ((word)K_1SHOTCHK) /* 1SHOTCHK */
+#define TEMPSET  ((word)K_TEMPSET)
+#define CORSETUP ((word)K_CORSETUP)
+#define CORCOPY  ((word)K_CORCOPY)
+#define CNTRCOPY ((word)K_CNTRCOPY)
+#define FCORFRAC ((word)KW_FCORFRAC) /* OCT 10000 */
 #endif
 
 /* NO.CORES + 1 core sets. */

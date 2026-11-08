@@ -67,7 +67,8 @@ FILES = (('lm_p20_p25', READABLE / 'src/binding/p20_p25_keys.inc'),
          ('cm_reentry', READABLE / 'src/binding/cm_reentry_keys.inc'),
          ('cm_body_attitude', READABLE / 'src/binding/cm_body_attitude_keys.inc'),
          ('cm_p37_p70', READABLE / 'src/binding/cm_p37_p70_keys.inc'),
-         ('cm_tvc_init', READABLE / 'src/binding/cm_tvc_init_keys.inc'))
+         ('cm_tvc_init', READABLE / 'src/binding/cm_tvc_init_keys.inc'),
+         ('cm_tvc_exec', READABLE / 'src/binding/cm_tvc_exec_keys.inc'))
 
 
 def generate(m):
