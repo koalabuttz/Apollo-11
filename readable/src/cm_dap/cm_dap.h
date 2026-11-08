@@ -25,12 +25,18 @@
  *     on by their increments (DELOOP).
  *   DACNDLS, NEEDLER, NEEDLES (needles.c): the attitude errors on the FDAI
  *     needles, through the IMU error counters and their DACs.
+ *   REINIT, FRESHDAP, REDAP, ZEROJET (initialize.c): the autopilot started
+ *     again: the crew's DAP data decoded, its words and the jets zeroed,
+ *     the rate filter primed, and the T5 program begun.
+ *   T5PHASE2 to SPNDXCHK (manual.c): the start of phase 2, the RHC's
+ *     manual rotation commands, as commanded rates in WBODY and the
+ *     attitude errors they build up, for the jet selection logic.
  *
  * All basic code. Each function runs from a word the program can come
  * back to (an entry, the word after a call out of the file) until control
- * leaves the file's code (RESUME, NOVAC, SMALLMP, DPADD, TC Q), or reaches
- * a word where the faithful port's run stops: a key of its own, run by the
- * function named for it. */
+ * leaves the file's code (RESUME, NOVAC, IBNKCALL, SMALLMP, DPADD, TC Q,
+ * AHFNOROT, JETS), or reaches a word where the faithful port's run stops:
+ * a key of its own, run by the function named for it. */
 #ifndef READABLE_CM_DAP_H
 #define READABLE_CM_DAP_H
 
@@ -119,6 +125,37 @@ void needles(void);                /* NEEDLES */
 void dacloop(void);                /* DACLOOP */
 void dacloop_limit(void);          /* DACLOOP +6: CCS A */
 void dacloop_return(void);         /* DACLOOP +034: TC Q */
+
+/* ---- RCS-CSM_DIGITAL_AUTOPILOT.agc, starting the DAP -- initialize.c ---- */
+void reinit(void);              /* REINIT */
+void freshdap(void);            /* FRESHDAP */
+void redap(void);               /* REDAP: TC IBNKCALL (S41.2) */
+void redap_s40_14(void);        /* REDAP +2: TC IBNKCALL (S40.14) */
+void redap_zerot5(void);        /* REDAP +4 */
+void redap_after_zerojet(void); /* REDAP +014, after TCR ZEROJET */
+void redap_chantemp(void);      /* REDAP +015: TS CHANTEMP */
+void redap_imu(void);           /* REDAP +035: CS IMODES33 */
+void imuaok_after_novac(void);  /* IMUAOK +4 */
+void zerojet(void);             /* ZEROJET */
+void zerojet_return(void);      /* ZEROJET +026: TC Q */
+
+/* ---- RCS-CSM_DIGITAL_AUTOPILOT.agc, manual rotation -- manual.c ---- */
+void t5phase2(void);                   /* T5PHASE2 */
+void t5phase2_hiauto(void);            /* NOHIAUTO -1: CS ONE */
+void nohiauto(void);                   /* NOHIAUTO */
+void nohiauto_damping(void);           /* NOHIAUTO +025: MASK OCT16000 */
+void nochange(void);                   /* NOCHANGE */
+void nochange_after_stickchk(void);    /* NOCHANGE +6 */
+void setwbody(void);                   /* SETWBODY */
+void setwbody_dpndx(void);             /* SETWBODY +2: TS DPNDX */
+void setwbody_rmanndx(void);           /* SETWBODY +3: INDEX SPNDX; CA RMANNDX */
+void setwbody_rmanndx_unindexed(void); /* SETWBODY +4: CA RMANNDX */
+void setwbody_wbody(void);             /* SETWBODY +015: INDEX DPNDX; DXCH WBODY */
+void zeroer(void);                     /* ZEROER */
+void norate(void);                     /* NORATE */
+void merupdat(void);                   /* MERUPDAT */
+void spndxchk(void);                   /* SPNDXCHK */
+void spndxchk_errorx(void);            /* SPNDXCHK +2: INDEX SPNDX; TS ERRORX */
 
 #endif
 

@@ -55,12 +55,14 @@ static void leave(void)
 }
 
 /* The channels the file reads and writes, where the faithful port keeps
- * them: 12 (IMU control) and 14 (the DAC activity bits) in the io record,
- * 31 (the autopilot's switches, read only) in the hardware record. */
+ * them: 12 (IMU control), 13 (T6's enable) and 14 (the DAC activity bits)
+ * in the io record, 31 (the autopilot's switches and the RHC, read only)
+ * in the hardware record. */
 static agc_word *channel(unsigned number)
 {
     switch (number) {
     case 012u: return &io_now->channel12;
+    case 013u: return &io_now->channel13;
     case 014u: return &io_now->channel14;
     case 031u: return &hardware_now->channel31;
     default: not_modelled(); return NULL;
@@ -72,9 +74,17 @@ static word channel_in(unsigned number)
     return (word)*channel(number);
 }
 
+/* Channel 13's bits 12-14, as the faithful port's io record keeps them,
+ * set the HANDRUPT traps and are not kept. */
 static void channel_out(unsigned number, word value)
 {
     if (number == 031u) not_modelled(); /* the file writes no input channel */
+    if (number == 013u) {
+        if (value & 004000u) io_now->trap31a = 1u;
+        if (value & 010000u) io_now->trap31b = 1u;
+        if (value & 020000u) io_now->trap32 = 1u;
+        value &= 043777u;
+    }
     *channel(number) = (agc_word)value;
 }
 
@@ -152,6 +162,33 @@ static const struct basic_entry {
     {DACLOOP, dacloop},
     {DACLOOP + 6u, dacloop_limit},
     {DACLOOP + 034u, dacloop_return},
+    {REINIT, reinit},
+    {FRESHDAP, freshdap},
+    {REDAP, redap},
+    {REDAP + 2u, redap_s40_14},
+    {REDAP + 4u, redap_zerot5},
+    {REDAP + 014u, redap_after_zerojet},
+    {REDAP + 015u, redap_chantemp},
+    {REDAP + 035u, redap_imu},
+    {IMUAOK + 4u, imuaok_after_novac},
+    {ZEROJET, zerojet},
+    {ZEROJET + 026u, zerojet_return},
+    {T5PHASE2, t5phase2},
+    {NOHIAUTO - 1u, t5phase2_hiauto},
+    {NOHIAUTO, nohiauto},
+    {NOHIAUTO + 025u, nohiauto_damping},
+    {NOCHANGE, nochange},
+    {NOCHANGE + 6u, nochange_after_stickchk},
+    {SETWBODY, setwbody},
+    {SETWBODY + 2u, setwbody_dpndx},
+    {SETWBODY + 3u, setwbody_rmanndx},
+    {SETWBODY + 4u, setwbody_rmanndx_unindexed},
+    {SETWBODY + 015u, setwbody_wbody},
+    {ZEROER, zeroer},
+    {NORATE, norate},
+    {MERUPDAT, merupdat},
+    {SPNDXCHK, spndxchk},
+    {SPNDXCHK + 2u, spndxchk_errorx},
 };
 
 static const struct basic_entry *basic_entry(word at)
