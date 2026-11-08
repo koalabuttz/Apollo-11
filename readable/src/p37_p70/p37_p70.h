@@ -32,7 +32,11 @@
  * back to the word after its TCR on recycle and to the next on proceed;
  * one through P370GOFR (GOFLASHR) to the word after its TCR on its
  * immediate return, three words on from it on recycle and four on
- * proceed. */
+ * proceed.
+ *
+ * Words of the listing no instruction names, so no C name either: the
+ * constants 1RTEB10 (2DEC 1. B-10), 1RTEB12 (2DEC 1. B-12) and M6RTEB28
+ * (2DEC -6) (p. 931), and EPC5RTE (2DEC .01 B-6) (p. 932). */
 #ifndef READABLE_P37_P70_H
 #define READABLE_P37_P70_H
 

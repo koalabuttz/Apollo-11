@@ -58,7 +58,10 @@
  * entry, a return from a routine out of the file, or the word after an
  * EXIT) until its code leaves it: at a TC out of the file (Z the routine,
  * Q the return) or at a TC INTPRET (run on to NEWOPS). The interpretive
- * code is the listing's words, run by the readable interpreter. */
+ * code is the listing's words, run by the readable interpreter.
+ *
+ * Words of the listing no instruction names, so no C name either: the
+ * constant POINT2 (2DEC .2), after POINT1 (p. 879). */
 #ifndef READABLE_REENTRY_H
 #define READABLE_REENTRY_H
 
