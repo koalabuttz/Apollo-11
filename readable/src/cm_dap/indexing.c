@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* INDEX in the RCS DAP (cm_dap.h): the address an indexed order names,
- * and the sums the faithful port refuses, which are not modelled here
- * either. The faithful C reads fixed memory under INDEX only from copies
- * of the file's tables; so does this code. */
+/* INDEX in the CM's RCS autopilot (cm_dap.h): the address an indexed order
+ * names, and the sums the faithful port refuses, which are not modelled
+ * here either. The faithful C reads fixed memory under INDEX only from
+ * copies of each file's tables; so does this code. */
 #include "cm_dap.h"
 #include "../agc/names.h"
 
@@ -14,10 +14,10 @@ static int index_sum(unsigned field, word index)
     return (int)field + value_of(index);
 }
 
-/* The words of the file's tables that INDEX reads: GAIN1 and GAIN2 with
- * the three words before each, DACLIMIT with the words either side,
- * FREETAU's four and MANTABLE's nine. */
-static bool a_table_word(unsigned address)
+/* RCS-CSM_DIGITAL_AUTOPILOT's tables: GAIN1 and GAIN2 with the three words
+ * before each, DACLIMIT with the words either side, FREETAU's four and
+ * MANTABLE's nine. */
+bool rcs_dap_tables(unsigned address)
 {
     return (address >= ADDRESS_OF(GAIN1) - 3u && address <= ADDRESS_OF(GAIN2) + 013u) ||
            (address >= ADDRESS_OF(DACLIMIT) - 1u && address <= ADDRESS_OF(DACLIMIT) + 1u) ||
@@ -25,12 +25,21 @@ static bool a_table_word(unsigned address)
            (address >= ADDRESS_OF(MANTABLE) && address <= ADDRESS_OF(MANTABLE) + 010u);
 }
 
-unsigned index_read(unsigned field, word index)
+/* AUTOMATIC_MANEUVERS's: MINTAU's four, BIT13 and the two bits after it,
+ * and the forced firing masks OCT01400, OCT00060 and OCT00300. */
+bool maneuver_tables(unsigned address)
+{
+    return (address >= ADDRESS_OF(MINTAU) && address <= ADDRESS_OF(MINTAU) + 3u) ||
+           (address >= ADDRESS_OF(BIT13) && address <= ADDRESS_OF(BIT13) + 2u) ||
+           (address >= ADDRESS_OF(OCT01400) && address <= ADDRESS_OF(OCT01400) + 2u);
+}
+
+unsigned index_read_in(fixed_tables *tables, unsigned field, word index)
 {
     int sum = index_sum(field, index);
 
     if (sum < 0 || sum > 07777 || sum == (int)Z_ADDRESS) not_modelled();
-    if (sum >= 02000 && !a_table_word((unsigned)sum)) not_modelled();
+    if (sum >= 02000 && !tables((unsigned)sum)) not_modelled();
     return (unsigned)sum;
 }
 
@@ -38,17 +47,17 @@ unsigned index_read(unsigned field, word index)
  * memory both words must be table words. A field of 0 names the low word
  * at 0, A itself, and the high word one before it, which wraps to 01777 of
  * the erasable bank (as the faithful port reads it). */
-static unsigned double_field(unsigned address, word index)
+static unsigned double_field(fixed_tables *tables, unsigned address, word index)
 {
-    unsigned field = index_read(address + 1u, index);
+    unsigned field = index_read_in(tables, address + 1u, index);
 
-    if (field >= 02000u && !a_table_word(field - 1u)) not_modelled();
+    if (field >= 02000u && !tables(field - 1u)) not_modelled();
     return field;
 }
 
-void dca_indexed(unsigned address, word index)
+void dca_indexed_in(fixed_tables *tables, unsigned address, word index)
 {
-    unsigned field = double_field(address, index);
+    unsigned field = double_field(tables, address, index);
 
     if (field == 0u) {
         set_L(overflow_corrected(A));
@@ -58,9 +67,9 @@ void dca_indexed(unsigned address, word index)
     dca(field - 1u);
 }
 
-void dcs_indexed(unsigned address, word index)
+void dcs_indexed_in(fixed_tables *tables, unsigned address, word index)
 {
-    unsigned field = double_field(address, index);
+    unsigned field = double_field(tables, address, index);
 
     if (field == 0u) {
         set_L(negate(overflow_corrected(A)));

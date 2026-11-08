@@ -4748,6 +4748,24 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define GETAKS           ((word)K_GETAKS)
 #define WRTN17           ((word)K_WRTN17)
 #define DELTATT          ((word)KW_DELTATT) /* OCT 37770: "80MS (TIME5)" */
+/* AUTOMATIC_MANEUVERS.agc. */
+#define FREECONT         ((word)K_FREECONT)
+#define ATTHOLD          ((word)K_ATTHOLD)
+#define HOLDFUNC         ((word)K_HOLDFUNC)
+#define GRABANG          ((word)K_GRABANG)
+#define JLOOP            ((word)K_JLOOP)
+#define INHOLD           ((word)K_INHOLD)
+#define SIGNCK1          ((word)K_SIGNCK1)
+#define POSVEL           ((word)K_POSVEL)
+#define NEGVEL           ((word)K_NEGVEL)
+#define J18              ((word)K_J18)
+#define J20              ((word)K_J20)
+#define J21              ((word)K_J21)
+#define J22              ((word)K_J22)
+#define J23              ((word)K_J23)
+#define NJ22             ((word)K_NJ22)
+#define WLH_SLOP         ((word)KW_WLH_SLOP) /* WLH/SLOP, DEC .00463: "= WL+H/SLOPE" */
+#define WL_H_SLP         ((word)KW_WL_H_SLP) /* WL-H/SLP, DEC .00277: "= WL-H/SLOPE" */
 #endif
 
 /* NO.CORES + 1 core sets. */
