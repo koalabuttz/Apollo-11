@@ -6,13 +6,9 @@
  * cm_imu_calibration_interpretive (the order pairs).
  *
  * The tables carry every key of the faithful ones, in their order
- * (cm_imu_cal_keys.inc, which tools/p20_p25_keys.py writes from them). The
- * file is written part by part: every basic key runs the readable code,
- * and so do the order pairs of pp. 423-430; the others run the faithful
- * port's routines (renamed faithful_) until their parts are written. The
- * side-by-side test (tests/cm_imu_cal_cases.c) checks which.
- * Partial file: Comanche055/IMU_CALIBRATION_AND_ALIGNMENT.agc (COVERAGE
- * counts it when the last part is written).
+ * (cm_imu_cal_keys.inc, which tools/p20_p25_keys.py writes from them).
+ * Every key runs the readable code; the side-by-side test
+ * (tests/cm_imu_cal_cases.c) checks it against the faithful port's.
  *
  * Plumbing only. A basic routine runs the file's functions one after
  * another from its key, as the faithful port's routine runs the file's
@@ -34,8 +30,8 @@
  * An order pair is one pass of the readable interpreter over the listing's
  * words (interpret_listing()), from NEWOPS with LOC the key, BANKSET the
  * BBANK, INTBIT15 the bank's bit 15, NEWJOB +0 or a core set and FIXLOC
- * one of the VAC areas; after RTB LOADTIME the pass goes on, as the
- * faithful pair's does. A run the readable code refuses part way leaves
+ * one of the VAC areas; after RTB LOADTIME, 1STO2S or CDULOGIC the pass
+ * goes on, as the faithful pair's does. A run the readable code refuses part way leaves
  * the state and io record as they were. One difference, outside any state
  * the program reaches: an index (X1, X2) that takes an operand out of its
  * E-bank or into fixed memory. There the faithful port reads a fixed
@@ -392,6 +388,17 @@ static const struct interpretive_code *const codes[] = {
     &RESTEST1_CODE,
     &RESTEST3_CODE,
     &NOAZCHGE_CODE,
+    /* Part 6: LATAZCHK (bank 4) and pp. 449-454 */
+    &LATAZCHK_CODE,
+    &LATAZCHK_LOAD_CODE,
+    &TAR_EREF_CODE,
+    &NEXTBNKS_CODE,
+    &NEXBNKSS_CODE,
+    &GCOMP4_CODE,
+    &TARGDRVE_CODE,
+    &LITTLSUB_CODE,
+    &AZMTHCG1_CODE,
+    &AZMTHCG1_LOAD_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
@@ -426,24 +433,36 @@ static bool pair_takes(void)
     return LOC != ALKLP + 021u || x1 == 1u || x1 == 077776u;
 }
 
-/* One pass; after RTB LOADTIME (ERTHRVSE's and EARTHR's), the routine
- * (src/rtb_op_codes/) and the pass on from its DANZIG, as the faithful
- * pair runs them. The other RTBs (SGNAGREE, PULSEIMU) end the pass. */
+/* The RTB routines a pass runs on through: each one's address and bank
+ * (FB, from its FCADR) and the routine (src/rtb_op_codes/). */
+static const struct {
+    word address;
+    word bank;
+    void (*routine)(void);
+} run_through[] = {
+    {LOADTIME, I_LOADTIME & 076000u, loadtime}, /* ERTHRVSE's and EARTHR's */
+    {ONE_STO2S, I_1STO2S & 076000u, one_sto2s}, /* LATAZCHK's and AZMTHCG1's */
+    {CDULOGIC, I_CDULOGIC & 076000u, cdulogic}, /* TAR/EREF's, LATAZCHK's, AZMTHCG1's */
+};
+
+/* One pass; after RTB LOADTIME, 1STO2S or CDULOGIC, the routine and the
+ * pass on from its DANZIG, as the faithful pair runs them. The other RTBs
+ * (SGNAGREE, PULSEIMU) end the pass. */
 static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
                                  cm_channel_io *io, const struct interpretive_code *code)
 {
     if (interpret_listing(program, state, &io->io, code) != EXEC_OK) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
-    if (Z != LOADTIME || FBANK != (I_LOADTIME & 076000u)) return EXEC_OK;
-    if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
-    loadtime();
-    return interpret_listing(program, state, &io->io, code);
+    for (size_t i = 0; i < sizeof run_through / sizeof run_through[0]; i++) {
+        if (Z != run_through[i].address || FBANK != run_through[i].bank) continue;
+        if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
+        run_through[i].routine();
+        return interpret_listing(program, state, &io->io, code);
+    }
+    return EXEC_OK;
 }
 
 /* ---- The keys, in the faithful tables' order ---- */
-
-/* The faithful order pairs, renamed. */
-extern const agc_routine_table faithful_cm_imu_calibration_interpretive;
 
 /* Each basic key's routine. */
 static enum exec_status basic(uint16_t key, const agc_native_program *program,
@@ -470,9 +489,8 @@ static enum exec_status basic(uint16_t key, const agc_native_program *program,
     return EXEC_OUT_OF_SCOPE;
 }
 
-/* Each order pair's routine: the readable one, or the faithful port's
- * until a part writes it. */
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each order pair's routine. */
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     static const agc_native_program none;
@@ -482,8 +500,6 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     const struct interpretive_code *code;
     enum exec_status status;
 
-    if (!code_at(bank, (word)(02000u + key % 1024u)))
-        return faithful_cm_imu_calibration_interpretive.entries[index].call(program, state, device);
     if (!state || !io) return EXEC_OUT_OF_SCOPE;
     if (!program) program = &none;
     bind(program, state, io);
@@ -520,7 +536,7 @@ bool cm_imu_cal_readable(uint16_t key, bool order_pair)
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #include "cm_imu_cal_keys.inc"
 #undef BASIC

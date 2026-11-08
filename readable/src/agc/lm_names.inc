@@ -4120,6 +4120,7 @@
 #define I_BOOP 076755u
 #define I_OGC 002737u
 #define I_ONEDPP 077063u
+#define I_LOSVEC 002413u
 #define I_VECQTEMP 003325u
 #define I_FDAIX 002344u
 #define I_SINCDUX 000742u

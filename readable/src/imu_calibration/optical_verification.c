@@ -15,12 +15,16 @@
  * Every word is in bank 33 but LATAZCHK's, in bank 4. The erasable words
  * are EBANK 5's but those of the unswitched banks (DSPTEM1, MARKSTAT,
  * QPRET, STARCODE ...). The interpretive code among the basic (TAR/EREF,
- * NEXTBNKS, the sextant angles ...) the faithful port runs. */
+ * NEXTBNKS, LITTLSUB ...) is written in the listing's notation: tables the
+ * readable interpreter runs (src/interpreter/notation.h). */
 #include "imu_calibration.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
+#include "../interpreter/notation.h"
 
 #if COMANCHE055
+
+#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* A data word the run has reached (a VN constant): the faithful port does
  * not run it. */
@@ -159,6 +163,50 @@ void tar_eref_minus1(void)
     intpret();
 }
 
+/* TAR/EREF -- p. 449, the "TARGET VECTOR" of each target: "SIN(EL)
+ * -COS(AZ)COS(EL) SIN(AZ)COS(EL" from its elevation and azimuth in TAZEL1,
+ * stored by X2 in the push-down list (18D-22D for the first target, 12D-16D
+ * for the second). The pass of TAR1 runs twice: "X1=2 X2=12 S2=6 X1=0
+ * X2=6 S2=6". */
+/* clang-format off */
+static const word tar_eref_words[] = {
+    ORDERS(AXT_1, AXT_2), /* "TARGET VECTOR" */
+    NUMBER(2),
+    NUMBER(12),
+    ORDERS(SSP, SETPD),
+    ADDRESS_PLUS_ONE(S2),
+    NUMBER(6),
+    ADDRESS_PLUS_ONE_D(0),
+    /* TAR1 */ ORDERS(SLOAD_STAR, SR2), /* "X1=2 X2=12 S2=6 X1=0 X2=6 S2=6" */
+    ADDRESS_PLUS_ONE_AT_X1(TAZEL1, 3),
+    STORE_D(0), /* "PD00 ELEVATION PD00" */
+    ORDER(SIN),
+    STORE_X2_D(18), /* "PD06 *** SIN(EL) ***PD12" */
+    ORDER(DLOAD),
+    ADDRESS_PLUS_ONE_D(0),
+    ORDERS(COS, PUSH), /* "PD00 COS(EL) PD00" */
+    ORDERS(SLOAD_STAR, RTB),
+    ADDRESS_PLUS_ONE_AT_X1(TAZEL1, 2),
+    ADDRESS(CDULOGIC),
+    STORE_D(2), /* "PD02 AZIMUTH PD02" */
+    ORDERS(SIN, DMP),
+    ADDRESS_PLUS_ONE_D(0),
+    ORDER(SL1),
+    STORE_X2_D(22), /* "PD10 *** SIN(AZ)COS(EL) ***PD16" */
+    ORDERS(DLOAD, COS),
+    ADDRESS_PLUS_ONE_D(2),
+    ORDERS(DMP, SL1),
+    ORDERS(DCOMP, AXT_1),
+    NUMBER(0),
+    STORE_X2_D(20), /* "PD08 *** -COS(AZ)COS(EL) ***PD14" */
+    ORDERS(TIX_2, RVQ),
+    ADDRESS(TAR1),
+};
+/* clang-format on */
+
+const struct interpretive_code TAR_EREF_CODE = {033u, TAR_EREF, COUNT(tar_eref_words),
+                                                tar_eref_words};
+
 /* ---- The targets: CONTIN33 to GTSOPTCS -- pp. 450-451 ---- */
 
 /* CONTIN33 -- p. 450. The first target (STARCODE 1, TARGDRVE's index +0). */
@@ -178,6 +226,32 @@ void contin33_after_targdrve(void)
     tc_at(CONTIN33 + 4u);
     intpret();
 }
+
+/* CONTIN33 +5 -- p. 450. The targets' vectors (TAR/EREF) again; NEXTBNKS:
+ * the first target's in stable member axes (XSM) into STARAD, the second's
+ * into STARAD +6, and the line of sight of the mark (LITTLSUB) into
+ * LOSVEC. */
+/* clang-format off */
+static const word nextbnks_words[] = {
+    ORDER(CALL), /* the targets' vectors */
+    ADDRESS(TAR_EREF),
+    /* NEXTBNKS */ ORDERS(VLOAD, MXV),
+    ADDRESS_PLUS_ONE_D(6),
+    ADDRESS_PLUS_ONE(XSM),
+    ORDER(VSL1),
+    STOVL(STARAD),
+    ADDRESS_PLUS_ONE_D(12),
+    ORDERS(MXV, VSL1),
+    ADDRESS_PLUS_ONE(XSM),
+    STCALL_AT(STARAD, 6),
+    ADDRESS(LITTLSUB),
+    STORE(LOSVEC),
+    ORDER(EXIT),
+};
+/* clang-format on */
+
+const struct interpretive_code NEXTBNKS_CODE = {033u, CONTIN33 + 5u, COUNT(nextbnks_words),
+                                                nextbnks_words};
 
 /* NEXTBNKS +014 -- p. 451, after the EXIT: release the display
  * (MKRELEAS). */
@@ -205,6 +279,25 @@ void nexbnkss_after_targdrve(void)
     intpret();
 }
 
+/* NEXBNKSS +5 -- p. 451. The second mark's line of sight (LITTLSUB) to
+ * 12D, the first's (LOSVEC) to 06D; AXISGEN, and CALCGTA the error. */
+/* clang-format off */
+static const word nexbnkss_words[] = {
+    ORDER(CALL), /* the second mark's line of sight */
+    ADDRESS(LITTLSUB),
+    STOVL_D(12),
+    ADDRESS_PLUS_ONE(LOSVEC),
+    STCALL_D(6),
+    ADDRESS(AXISGEN),
+    ORDER(CALL),
+    ADDRESS(CALCGTA),
+    ORDER(EXIT),
+};
+/* clang-format on */
+
+const struct interpretive_code NEXBNKSS_CODE = {033u, NEXBNKSS + 5u, COUNT(nexbnkss_words),
+                                                nexbnkss_words};
+
 /* GCOMP4 -- p. 451. Flash the error (V06 N93, GOFLASH). */
 void gcomp4(void)
 {
@@ -227,6 +320,19 @@ void gcomp4_proceed(void)
     tc_at(GCOMP4 + 6u);
     intpret();
 }
+
+/* GCOMP4 +7 -- p. 451. ERCOMP1 gains OGC. */
+/* clang-format off */
+static const word gcomp4_words[] = {
+    ORDERS(VLOAD, VAD), /* the error, into the earth rate */
+    ADDRESS_PLUS_ONE(OGC),
+    ADDRESS_PLUS_ONE(ERCOMP1),
+    STORE(ERCOMP1),
+    ORDER(EXIT),
+};
+/* clang-format on */
+
+const struct interpretive_code GCOMP4_CODE = {033u, GCOMP4 + 7u, COUNT(gcomp4_words), gcomp4_words};
 
 /* GCOMP4 +5: enter, show it again (TCF GCOMP4). */
 void gcomp4_enter(void)
@@ -286,6 +392,23 @@ void gtsoptcs_after_alarm(void)
 
 /* ---- LATAZCHK, in bank 4 -- p. 452 ---- */
 
+/* LATAZCHK -- p. 452, interpretive from its first word: "CALLS FOR
+ * AZIMUTH AND LATITUDE". The latitude (shifted left two) to DSPTEM1 +1,
+ * and the azimuth in MPAC as a single-precision angle (1STO2S). */
+/* clang-format off */
+static const word latazchk_words[] = {
+    ORDERS(DLOAD, SL2), /* "CALLS FOR AZIMUTH AND LATITUDE" */
+    ADDRESS_PLUS_ONE(LATITUDE),
+    STODL_AT(DSPTEM1, 1),
+    ADDRESS_PLUS_ONE(AZIMUTH),
+    ORDERS(RTB, EXIT),
+    ADDRESS(1STO2S),
+};
+/* clang-format on */
+
+const struct interpretive_code LATAZCHK_CODE = {04u, LATAZCHK, COUNT(latazchk_words),
+                                                latazchk_words};
+
 /* LATAZCHK +6 -- p. 452, after the EXIT: "CALLS FOR AZIMUTH AND
  * LATITUDE". DSPTEM1 the azimuth in degrees (MPAC), DSPTEM1 +1 the
  * latitude; clear the display (CLEANDSP). */
@@ -328,6 +451,24 @@ void latazchk_load(void)
     intpret();
 }
 
+/* LATAZCHK +021 -- p. 452. AZIMUTH the azimuth loaded (CDULOGIC), LATITUDE
+ * the latitude (shifted right two); back to the caller. */
+/* clang-format off */
+static const word latazchk_load_words[] = {
+    ORDERS(SLOAD, RTB), /* the azimuth loaded */
+    ADDRESS_PLUS_ONE(DSPTEM1),
+    ADDRESS(CDULOGIC),
+    STORE(AZIMUTH),
+    ORDERS(SLOAD, SR2),
+    ADDRESS_PLUS_ONE_AT(DSPTEM1, 1),
+    STORE(LATITUDE),
+    ORDER(RVQ),
+};
+/* clang-format on */
+
+const struct interpretive_code LATAZCHK_LOAD_CODE = {
+    04u, LATAZCHK + 021u, COUNT(latazchk_load_words), latazchk_load_words};
+
 /* LATAZCHK +016: proceed (TC +2). */
 void latazchk_proceed(void)
 {
@@ -358,6 +499,25 @@ void targdrve(void)
     tc_at(TARGDRVE + 3u);
     intpret();
 }
+
+/* TARGDRVE +4 -- p. 452. The targets' vectors (TAR/EREF); X1 minus the
+ * target's index (TARG1/2), its vector (6D,1) into STAR, and the sextant
+ * angles to it (SXTANG). */
+/* clang-format off */
+static const word targdrve_words[] = {
+    ORDER(CALL), /* the targets' vectors */
+    ADDRESS(TAR_EREF),
+    ORDERS(LXC_1, VLOAD_STAR),
+    ADDRESS(TARG1_2),
+    ADDRESS_PLUS_ONE_X1(6),
+    STCALL(STAR),
+    ADDRESS(SXTANG),
+    ORDER(EXIT),
+};
+/* clang-format on */
+
+const struct interpretive_code TARGDRVE_CODE = {033u, TARGDRVE + 4u, COUNT(targdrve_words),
+                                                targdrve_words};
 
 /* TARGDRVE +014, after the EXIT: drive the sextant to them (DESOPTS,
  * DESOPTT), and RETARG. */
@@ -435,7 +595,32 @@ void retarg_after_optstall(void)
     retarg_mark_taken();
 }
 
-/* ---- AZMTHCG1 -- p. 454 ---- */
+/* ---- LITTLSUB and AZMTHCG1 -- p. 454 ---- */
+
+/* LITTLSUB -- p. 454. The line of sight of the mark: the return in QPLAC;
+ * X1 minus the mark's VAC area (MARKSTAT), its CDU angles (2,1) to CDUSPOT;
+ * the sextant's line of sight in navigation base axes (SXTNB), then in
+ * stable member axes (TRG*NBSM); back through QPLAC. The EXIT after it
+ * nothing reaches but a QPLAC that points there. */
+/* clang-format off */
+static const word littlsub_words[] = {
+    ORDER(STQ), /* the return */
+    ADDRESS(QPLAC),
+    ORDERS(LXC_1, VLOAD_STAR),
+    ADDRESS(MARKSTAT),
+    ADDRESS_PLUS_ONE_X1(2),
+    STCALL(CDUSPOT),
+    ADDRESS(SXTNB),
+    ORDER(CALL),
+    ADDRESS(TRG_STARNBSM),
+    ORDER(GOTO),
+    ADDRESS(QPLAC),
+    ORDER(EXIT),
+};
+/* clang-format on */
+
+const struct interpretive_code LITTLSUB_CODE = {033u, LITTLSUB, COUNT(littlsub_words),
+                                                littlsub_words};
 
 /* AZMTHCG1 -- p. 454. The interpreter: the new azimuth NEWAZMTH in
  * degrees. */
@@ -444,6 +629,19 @@ void azmthcg1(void)
     tc_at(AZMTHCG1);
     intpret();
 }
+
+/* AZMTHCG1 +1 -- p. 454. */
+/* clang-format off */
+static const word azmthcg1_words[] = {
+    ORDERS(DLOAD, RTB), /* the azimuth, as a single-precision angle */
+    ADDRESS_PLUS_ONE(NEWAZMTH),
+    ADDRESS(1STO2S),
+    ORDER(EXIT),
+};
+/* clang-format on */
+
+const struct interpretive_code AZMTHCG1_CODE = {033u, AZMTHCG1 + 1u, COUNT(azmthcg1_words),
+                                                azmthcg1_words};
 
 /* AZMTHCG1 +5, after the EXIT: DSPTEM1 it; clear the display
  * (CLEANDSP). */
@@ -470,6 +668,20 @@ static void azmthcg1_load(void)
     tc_at(AZMTHCG1 + 017u);
     intpret();
 }
+
+/* AZMTHCG1 +020 -- p. 454. */
+/* clang-format off */
+static const word azmthcg1_load_words[] = {
+    ORDERS(SLOAD, RTB), /* the azimuth loaded */
+    ADDRESS_PLUS_ONE(DSPTEM1),
+    ADDRESS(CDULOGIC),
+    STORE(LAUNCHAZ),
+    ORDER(EXIT),
+};
+/* clang-format on */
+
+const struct interpretive_code AZMTHCG1_LOAD_CODE = {
+    033u, AZMTHCG1 + 020u, COUNT(azmthcg1_load_words), azmthcg1_load_words};
 
 /* AZMTHCG1 +014: terminate (TCF +2; TCF -5): flash again. */
 void azmthcg1_terminate(void)
