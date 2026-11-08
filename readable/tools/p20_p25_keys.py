@@ -78,7 +78,8 @@ FILES = (('lm_p20_p25', READABLE / 'src/binding/p20_p25_keys.inc'),
          ('cm_auto_man', READABLE / 'src/binding/cm_auto_man_keys.inc'),
          ('cm_rcs_dap_exec', READABLE / 'src/binding/cm_rcs_dap_exec_keys.inc'),
          ('cm_jet_select', READABLE / 'src/binding/cm_jet_select_keys.inc'),
-         ('cm_imu_calibration', READABLE / 'src/binding/cm_imu_cal_keys.inc'))
+         ('cm_imu_calibration', READABLE / 'src/binding/cm_imu_cal_keys.inc'),
+         ('cm_p11', READABLE / 'src/binding/cm_p11_keys.inc'))
 
 
 def generate(m):

@@ -270,6 +270,8 @@ REPLACED = (
 # are no longer called.
 # IMU_CALIBRATION_AND_ALIGNMENT (src/imu_calibration): the CM's routine
 # tables, all readable; the faithful ones, renamed, are no longer called.
+# P11 (src/p11): the CM's routine tables, the basic keys readable; the
+# faithful tables, renamed, run the order pairs no part has written yet.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],
@@ -305,7 +307,8 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'cm_jet_select.o': lambda m: ['cm_jet_select_basic', 'cm_jet_select_interpretive',
                                          'cm_jet_select_hot_routines'] if m == 'cm' else [],
            'cm_imu_calibration.o': lambda m: ['cm_imu_calibration_basic',
-                                              'cm_imu_calibration_interpretive'] if m == 'cm' else []}
+                                              'cm_imu_calibration_interpretive'] if m == 'cm' else [],
+           'cm_p11.o': lambda m: ['cm_p11_basic', 'cm_p11_interpretive'] if m == 'cm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
@@ -342,7 +345,8 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # half-second task, tvcexec, its mass properties, massprop, its
 # restarts, redotvc, its pitch and yaw DAPs, pitchdap, its stroke test,
 # strktsti, and its roll DAP, rolldap), and its RCS DAP's MYSUBS (smallmp).
-# The CM's IMU calibration and alignment starts at IMUTEST (imutest).
+# The CM's IMU calibration and alignment starts at IMUTEST (imutest), and
+# its P11 has the Saturn takeover (satstick).
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
                           'radsamp', 'prog20a', 'p30n33', 'p32strt',
                           'p31_after_p20flgon', 'prog21', 'rev83', 'P76_CODE', 'killtsk2',
@@ -353,7 +357,7 @@ MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'g
                           'rtrn', 'p40csm', 'EPHEMERIDES_CODE', 'prog52', 'p61', 'quikread',
                           'startent_after_exit', 'cm_atup', 'rtevn_after_exit', 'tvcdapon',
                           'tvcexec', 'massprop', 'redotvc', 'pitchdap', 'strktsti', 'rolldap',
-                          'smallmp', 'imutest')}
+                          'smallmp', 'imutest', 'satstick')}
 xb.OUT = READABLE / 'build/x86-flight'
 
 
