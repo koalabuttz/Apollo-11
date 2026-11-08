@@ -4616,6 +4616,15 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define NINE     ((word)KW_NINE)
 #define NEGBPW   ((word)KW_NEGBPW)  /* DEC -15402.17 B-16 */
 #define DXITFIX  ((word)KW_DXITFIX) /* DEC* -1.88275 E-5 B+12* */
+
+/* TVCRESTARTS.agc */
+#define REDOTVC  ((word)K_REDOTVC)
+#define TVCDAPHS ((word)K_TVCDAPHS)
+#define ENABL2   ((word)K_ENABL2)
+#define CMDSOUT  ((word)K_CMDSOUT)
+#define CHKSTRK  ((word)K_CHKSTRK)
+#define FINCOPY  ((word)K_FINCOPY)
+#define EXRSTRT  ((word)K_EXRSTRT)
 #endif
 
 /* NO.CORES + 1 core sets. */
