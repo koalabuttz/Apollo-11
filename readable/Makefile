@@ -202,7 +202,8 @@ CTVCL_SOURCES := src/agc/agc.c src/binding/machine.c $(sort $(wildcard src/tvc/*
 CMYS_SOURCES := src/agc/agc.c src/binding/machine.c src/cm_dap/mysubs.c \
 	src/binding/cm_mysubs_routines.c
 CRCS_SOURCES := src/agc/agc.c src/binding/machine.c src/cm_dap/indexing.c \
-	src/cm_dap/rcsatt.c src/cm_dap/needles.c src/binding/cm_rcs_dap_routines.c
+	src/cm_dap/rcsatt.c src/cm_dap/needles.c src/cm_dap/initialize.c src/cm_dap/manual.c \
+	src/binding/cm_rcs_dap_routines.c
 LAD_SOURCES := src/agc/agc.c src/binding/machine.c src/landing_displays/landing_displays.c \
 	src/binding/landing_displays_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \

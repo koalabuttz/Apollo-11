@@ -4715,6 +4715,33 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define AMBGUPDT         ((word)K_AMBGUPDT)
 #define OCT37766         ((word)KW_OCT37766) /* 100 ms (TIME5) */
 #define DELTATT2         ((word)KW_DELTATT2) /* OCT 37776: "20MS (TIME5)" */
+#define ZEROT5           ((word)K_ZEROT5)
+#define IMUAOK           ((word)K_IMUAOK)
+#define RCSSWIT          ((word)K_RCSSWIT)
+#define NOHIAUTO         ((word)K_NOHIAUTO)
+#define NOCHANGE         ((word)K_NOCHANGE)
+#define SETWBODY         ((word)K_SETWBODY)
+#define ZEROER           ((word)K_ZEROER)
+#define NORATE           ((word)K_NORATE)
+#define MERUPDAT         ((word)K_MERUPDAT)
+#define SPNDXCHK         ((word)K_SPNDXCHK)
+#define AHFNOROT         ((word)K_AHFNOROT) /* AUTOMATIC_MANEUVERS.agc */
+#define JETS             ((word)K_JETS)     /* JET_SELECTION_LOGIC.agc */
+#define STICKCHK         ((word)K_STICKCHK)
+#define KALUPDT          ((word)K_KALUPDT)
+#define FREEFUNC         ((word)K_FREEFUNC)
+#define T6PROGM          ((word)K_T6PROGM)
+#define T6PROG           ((word)K_T6PROG) /* JET_SELECTION_LOGIC.agc */
+#define DELAY200         ((word)KW_DELAY200) /* DEC 16364: "200MS" */
+#define NO_T5VAR         ((word)KW_NO_T5VAR) /* NO.T5VAR, DEC 36 */
+#define SLOPE_24         ((word)KW__EQ__24)  /* =.24, DEC .24 */
+#define RCSINIT          ((word)KW_RCSINIT)  /* OCT 00004 */
+#define RCSINITB         ((word)KW_RCSINITB) /* OCT 20004 */
+#define T5WAIT60         ((word)KW_T5WAIT60) /* DEC 16378: "= 6 CS" */
+#define MANROT           ((word)KW_MANROT)   /* OCT 77 */
+#define OCT16000         ((word)KW_OCT16000)
+#define OCT01760         ((word)KW_OCT01760)
+#define PLUS_14MS        ((word)KW__EQ_P14MS) /* =+14MS, DEC 23 */
 #endif
 
 /* NO.CORES + 1 core sets. */

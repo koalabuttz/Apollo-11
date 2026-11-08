@@ -185,17 +185,25 @@ static uint16_t register_word(uint16_t v)
 /* The frozen cases. */
 static unsigned mission_cases[CM_RCS_DAP_VECTORS], mission_count;
 
-/* A Q to return to: often a key of the part the key is in, or 3, or a
- * word of fixed memory. */
+/* A Q to return to: often a key of the part the key is in (in SETWBODY's
+ * part, often a MANTABLE index instead), or 3, or a word of fixed
+ * memory. */
 static uint16_t return_word(uint16_t key)
 {
     static const uint16_t part3[] = {02374u, 02400u, 02401u, 02407u, 02411u,
                                      02417u, 02420u, 02425u, 02443u, 02462u};
     static const uint16_t part4[] = {02465u, 02466u, 02471u, 02474u, 02476u,
                                      02477u, 02505u, 02533u, 02534u, 02544u};
+    static const uint16_t part5[] = {02546u, 02550u, 02552u, 02562u, 02563u, 02603u, 02616u};
+    static const uint16_t part6[] = {02660u, 02661u, 02674u, 02675u, 02722u, 02724u, 02732u};
     unsigned at = 02000u + key % 1024u, k = pick(8u);
 
-    if (k < 4u) return at < 02465u ? part3[pick(10u)] : part4[pick(10u)];
+    if (k < 2u && at >= 02660u) return (uint16_t)pick(12u);
+    if (k < 4u)
+        return at < 02465u   ? part3[pick(10u)]
+               : at < 02546u ? part4[pick(10u)]
+               : at < 02660u ? part5[pick(7u)]
+                             : part6[pick(7u)];
     if (k == 4u) return 3u;
     if (k == 5u) return (uint16_t)(02000u + pick(06000u));
     return pick(2u) ? any_word() : rnd();
@@ -226,11 +234,24 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hw, u
         /* The autopilot's switches and state. */
         w[AT(T5PHASE)] = sign_word();
         w[AT(HOLDFLAG)] = sign_word();
-        w[AT(RCSFLAGS)] = pick(2u) ? (uint16_t)(rnd() & 040036u) : any_word();
+        w[AT(RCSFLAGS)] =
+            pick(2u) ? (uint16_t)(rnd() & (pick(2u) ? 040036u : 076036u)) : any_word();
         w[AT(IMODES33)] = any_word();
         w[AT(ATTSEC)] = pick(2u) ? (uint16_t)pick(16u) : any_word();
-        hw->channel31 = (uint16_t)(pick(2u) ? rnd() & 060000u : any_word());
+        /* Channel 31: bit 14 (free mode), the RHC's six rotation bits
+         * (MANROT), often as CH31TEMP last saw them, and the rest. */
+        k = pick(4u);
+        w[AT(CH31TEMP)] = k == 0u   ? (uint16_t)(077u | (rnd() & 077700u))
+                          : k == 1u ? (uint16_t)(rnd() & 077u)
+                                    : any_word();
+        k = pick(3u);
+        hw->channel31 = (uint16_t)(k == 0u   ? rnd() & 060000u
+                                   : k == 1u ? rnd() & 020077u
+                                             : any_word());
+        if (pick(4u) == 0u)
+            hw->channel31 = (uint16_t)((hw->channel31 & ~077u) | (w[AT(CH31TEMP)] & 077u));
         io->channel12 = (uint16_t)(pick(2u) ? rnd() & 000050u : any_word());
+        io->channel13 = (uint16_t)(pick(2u) ? 0u : any_word()); /* ZEROJET's WOR */
         /* The loops' indexes and the filter's gains. */
         w[AT(SPNDX)] = index_word(2u);
         w[AT(DPNDX)] = pick(4u) ? (uint16_t)(2u * pick(3u)) : index_word(4u);
@@ -248,12 +269,25 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hw, u
             static const unsigned dual[] = {K_DRHO, K_ADOT + 1u, K_DELTEMPX + 1u, K_DELCDUX + 1u};
             w[AT(DPNDX)] = number(5 - (int)dual[pick(4u)]);
         }
+        /* The manual rotation's commands, its rate and the words it sets. */
+        for (axis = 0; axis < 3u; ++axis) {
+            w[AT(RMANNDX) + axis] = pick(4u) ? (uint16_t)pick(3u) : sign_word();
+            w[AT(ERRORX) + axis] = value_word();
+        }
+        k = pick(8u);
+        w[AT(RATEINDX)] = k < 6u    ? (uint16_t)(2u * pick(4u))
+                          : k == 6u ? (uint16_t)(3u + pick(4u)) /* about FIVE */
+                                    : value_word();
+        w[AT(FLAGWRD1)] = any_word();
+        w[AT(TIME5)] = value_word();
+        w[AT(T5TIME)] = value_word();
         /* The rate filter's words, the CDU angles and their past values. */
         for (k = 0; k < 6u; ++k) {
             w[AT(DRHO) + k] = value_word();
             w[AT(ADOT) + k] = value_word();
             w[AT(DELTEMPX) + k] = value_word();
             w[AT(MERRORX) + k] = value_word();
+            w[AT(WBODY) + k] = value_word();
         }
         for (axis = 0; axis < 3u; ++axis) {
             w[AT(KMJ) + axis] = value_word();
