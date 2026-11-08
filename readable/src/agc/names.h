@@ -1999,6 +1999,79 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define EBANK5   ((word)KW_EBANK5)
 #endif
 
+/* ---- IMU_CALIBRATION_AND_ALIGNMENT (the CM's) ---- */
+
+#if COMANCHE055
+/* Its labels in bank 33, FINETIME in fixed-fixed, and the routines of
+ * other files they call. Its erasable words (EBANK 5: POSITON, NDXCTR,
+ * QPLACE, ZERONDX1 and the rest) are named by ADDRESS_OF. */
+#define IMUTEST     ((word)K_IMUTEST)
+#define GEOIMUTT    ((word)K_GEOIMUTT)
+#define IMUBACK     ((word)K_IMUBACK)
+#define NBPOSPL     ((word)K_NBPOSPL)
+#define GUESS       ((word)K_GUESS)
+#define GOESTIMS    ((word)K_GOESTIMS)
+#define TORQUE      ((word)K_TORQUE)
+#define PIPACHK     ((word)K_PIPACHK)
+#define PIPATASK    ((word)K_PIPATASK)
+#define STARTPIP    ((word)K_STARTPIP)
+#define PIPJOBB     ((word)K_PIPJOBB)
+#define AINGOTN     ((word)K_AINGOTN)
+#define VERTDRFT    ((word)K_VERTDRFT)
+#define PONG        ((word)K_PONG)
+#define GUESS1      ((word)K_GUESS1)
+#define VALMIS      ((word)K_VALMIS)
+#define ENDTEST1    ((word)K_ENDTEST1)
+#define COAALIGN    ((word)K_COAALIGN)
+#define IMUSTLLG    ((word)K_IMUSTLLG)
+#define CHECKG      ((word)K_CHECKG)
+#define CHECKG1     ((word)K_CHECKG1)
+#define ZEROING     ((word)K_ZEROING)
+#define EARTHR_STAR ((word)K_EARTHR_STAR) /* EARTHR* */
+#define PROUT       ((word)K_PROUT)
+#define SHOW1       ((word)K_SHOW1)
+#define P11OUT      ((word)K_P11OUT)
+#define FINETIME    ((word)K_FINETIME)
+#define ESTIMS      ((word)K_ESTIMS)
+#define RSTGTS1     ((word)K_RSTGTS1)
+#define SLEEPIE     ((word)K_SLEEPIE)
+#define WTLISTNT    ((word)K_WTLISTNT)
+#define WTGTSMPL    ((word)K_WTGTSMPL)
+#define RIGHTGTS    ((word)K_RIGHTGTS)
+#define ALLOOP      ((word)K_ALLOOP)
+#define ALLOOP1     ((word)K_ALLOOP1)
+#define SPECSTS     ((word)K_SPECSTS)
+#define ALFLT       ((word)K_ALFLT)
+#define ALFLT1      ((word)K_ALFLT1)
+#define NORMLOP     ((word)K_NORMLOP)
+#define SOMEERRR    ((word)K_SOMEERRR)
+#define SOMERR2     ((word)K_SOMERR2)
+#define STOREDTA    ((word)K_STOREDTA)
+#define ANNNNNN     ((word)K_ANNNNNN)
+#define CHKCOMED    ((word)K_CHKCOMED)
+#define PRELTERM    ((word)K_PRELTERM)
+#define SETNBPOS    ((word)K_SETNBPOS)
+#define CHANG1      ((word)K_CHANG1)
+/* The scaler channels FINETIME reads. */
+#define LOSCALAR ((unsigned)K_LOSCALAR)
+#define HISCALAR ((unsigned)K_HISCALAR)
+/* Their constants. */
+#define TESTTIME ((word)KW_TESTTIME)
+#define ONE_SECX ((word)KW_1SEC)    /* 1SECX = 1SEC */
+#define OC14400  ((word)KW_OC14400)
+#define DEC17    ((word)KW_DEC17)   /* = ND1 */
+#define DEC57    ((word)KW_VD1)     /* DEC57 = VD1 */
+#define DEC19    ((word)KW_VD1)     /* 19DECML = VD1 */
+#define DEC25    ((word)KW_OCT31)   /* 25DECML EQUALS OCT31 */
+#define DEC77    ((word)KW_77DECML) /* 77DECML */
+#define DEC3990  ((word)KW_3990DEC) /* 3990DEC = OMEG/MS */
+#define XNBADR   ((word)KW_XNBADR)  /* GENADR XNB */
+#define ESTICADR ((word)KW_ESTICADR) /* CADR ESTIMS */
+#define ALXXXZ   ((word)KW_ALXXXZ)
+#define VB06N98  ((word)KW_VB06N98) /* VN 0698 */
+#define GLOKFBIT ((word)KW_GLOKFBIT)
+#endif
+
 /* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 1: the keys ---- */
 
 /* Its labels in bank 40 and fixed-fixed, both missions, and the routines

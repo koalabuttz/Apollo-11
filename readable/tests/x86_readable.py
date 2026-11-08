@@ -301,7 +301,9 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'cm_rcs_dap_exec.o': lambda m: ['cm_rcs_dap_exec_basic', 'cm_rcs_dap_exec_interpretive']
                                 if m == 'cm' else [],
            'cm_jet_select.o': lambda m: ['cm_jet_select_basic', 'cm_jet_select_interpretive',
-                                         'cm_jet_select_hot_routines'] if m == 'cm' else []}
+                                         'cm_jet_select_hot_routines'] if m == 'cm' else [],
+           'cm_imu_calibration.o': lambda m: ['cm_imu_calibration_basic',
+                                              'cm_imu_calibration_interpretive'] if m == 'cm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
@@ -338,6 +340,7 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # half-second task, tvcexec, its mass properties, massprop, its
 # restarts, redotvc, its pitch and yaw DAPs, pitchdap, its stroke test,
 # strktsti, and its roll DAP, rolldap), and its RCS DAP's MYSUBS (smallmp).
+# The CM's IMU calibration and alignment starts at IMUTEST (imutest).
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
                           'radsamp', 'prog20a', 'p30n33', 'p32strt',
                           'p31_after_p20flgon', 'prog21', 'rev83', 'P76_CODE', 'killtsk2',
@@ -348,7 +351,7 @@ MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'g
                           'rtrn', 'p40csm', 'EPHEMERIDES_CODE', 'prog52', 'p61', 'quikread',
                           'startent_after_exit', 'cm_atup', 'rtevn_after_exit', 'tvcdapon',
                           'tvcexec', 'massprop', 'redotvc', 'pitchdap', 'strktsti', 'rolldap',
-                          'smallmp')}
+                          'smallmp', 'imutest')}
 xb.OUT = READABLE / 'build/x86-flight'
 
 
