@@ -4726,12 +4726,12 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define MERUPDAT         ((word)K_MERUPDAT)
 #define SPNDXCHK         ((word)K_SPNDXCHK)
 #define AHFNOROT         ((word)K_AHFNOROT) /* AUTOMATIC_MANEUVERS.agc */
-#define JETS             ((word)K_JETS)     /* JET_SELECTION_LOGIC.agc */
+#define JETS             ((word)K_JETS)     /* AUTOMATIC_MANEUVERS.agc */
 #define STICKCHK         ((word)K_STICKCHK)
 #define KALUPDT          ((word)K_KALUPDT)
 #define FREEFUNC         ((word)K_FREEFUNC)
 #define T6PROGM          ((word)K_T6PROGM)
-#define T6PROG           ((word)K_T6PROG) /* JET_SELECTION_LOGIC.agc */
+#define T6PROG           ((word)K_T6PROG) /* AUTOMATIC_MANEUVERS.agc */
 #define DELAY200         ((word)KW_DELAY200) /* DEC 16364: "200MS" */
 #define NO_T5VAR         ((word)KW_NO_T5VAR) /* NO.T5VAR, DEC 36 */
 #define SLOPE_24         ((word)KW__EQ__24)  /* =.24, DEC .24 */

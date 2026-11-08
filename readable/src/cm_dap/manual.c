@@ -301,7 +301,7 @@ void freefunc(void)
 }
 
 /* T6PROGM: the attitude errors zeroed "FOR MANUAL ROTATIONS", and T6PROG
- * (JET_SELECTION_LOGIC.agc) to fire the jets for TAU, TAU1 and TAU2. */
+ * (AUTOMATIC_MANEUVERS.agc) to fire the jets for TAU, TAU1 and TAU2. */
 void t6progm(void)
 {
     set_A(ZERO);
