@@ -859,9 +859,9 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    faithful side by side at every key from 4,096 states (DAPDATR1 often one
    of the configurations, the masses often where they overflow, Q often
    MASSPROP or FIXCW, which the faithful port runs on at after the TC Q);
-   the faithful routine runs in a child process with 20 ms to finish, and
-   the states where the AGC's loop never ends are left out; each key must
-   run a readable routine.
+   each side runs in a child process with 20 ms of its own processor time
+   to finish, and a state where the AGC's loop never ends must loop on
+   both sides; each key must run a readable routine.
    `make cm-tvc-restarts-cases` runs the CM's TVCRESTARTS: the port's test
    (its frozen cases, each run to its stop against yaAGC digests) through
    the readable table, then tests/cm_tvc_restarts_cases.c: readable and
@@ -875,8 +875,10 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    side by side at every key from 4,096 states (STROKER often +0 or -0,
    DAPDATR1's LM bits each way, the CDUs often near their past values,
    the errors, nodes and coefficients often small so the limiters both
-   take and pass, and Q often a key or a word a subroutine returns to);
-   each key must run a readable routine.
+   take and pass, now and then no gain with the offsets one under the
+   actuator limit and a low word ACTLIM rounds up to it, and Q often a
+   key or a word a subroutine returns to); each key must run a readable
+   routine.
    `make cm-tvc-stroke-cases` runs the CM's TVCSTROKETEST: the port's
    test (its frozen cases, each run to its stop against yaAGC digests)
    through the readable table, then tests/cm_tvc_stroke_cases.c: readable
@@ -889,8 +891,9 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    the readable table, then tests/cm_tvc_roll_cases.c: readable and
    faithful side by side at every key from 4,096 states (the gimbal
    angle, error and rate often small, 1/CONACC often small and positive,
-   ROLLFIRE +0, -0, POSMAX or NEGMAX, TEMREG often +0, -0 or small); each
-   key must run a readable routine.
+   ROLLFIRE +0, -0, POSMAX or NEGMAX, TEMREG often +0, -0 or small, and
+   at ROLLDAP 1 of 32 a new firing one over TMINFIRE, of either sign);
+   each key must run a readable routine.
    `make cm-mysubs-cases` runs the CM's MYSUBS: the port's frozen states
    of the original program (128, half at the routine's TC Q, half after
    it) on the readable SMALLMP and DPADD, then tests/cm_mysubs_cases.c:

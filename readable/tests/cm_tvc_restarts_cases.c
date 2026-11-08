@@ -80,7 +80,7 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 }
 
 /* Every key runs a readable routine. */
-static unsigned keys_unwritten(const agc_routine_table *table)
+static unsigned keys_unwritten(const agc_routine_table *table, unsigned *readable)
 {
     unsigned i, failures = 0;
 
@@ -89,6 +89,8 @@ static unsigned keys_unwritten(const agc_routine_table *table)
         if (!cm_tvc_restarts_readable(key)) {
             printf("FAIL: key %u has no readable routine\n", key);
             ++failures;
+        } else {
+            ++*readable;
         }
     }
     return failures;
@@ -250,6 +252,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 
 int main(int argc, char **argv)
 {
+    unsigned readable_keys = 0;
     unsigned i, failures = 0, runs = 0;
 
     if (argc < 3 || !apollo_rope_load(0, argv[1]) || !apollo_rope_load(1, argv[2])) {
@@ -261,7 +264,7 @@ int main(int argc, char **argv)
     failures += tables_differ(&cm_tvc_restarts_basic, &faithful_cm_tvc_restarts_basic, "basic");
     failures += tables_differ(&cm_tvc_restarts_interpretive, &faithful_cm_tvc_restarts_interpretive,
                               "interpretive");
-    failures += keys_unwritten(&faithful_cm_tvc_restarts_basic);
+    failures += keys_unwritten(&faithful_cm_tvc_restarts_basic, &readable_keys);
     if (failures) {
         printf("cm-tvc-restarts-cases: %u failures\n", failures);
         return 1;
@@ -270,6 +273,6 @@ int main(int argc, char **argv)
     printf(
         "cm-tvc-restarts-cases: %u of %u keys readable (all basic) from %u states each, %u run by "
         "the faithful routines, %u failures\n",
-        cm_tvc_restarts_basic.count, faithful_cm_tvc_restarts_basic.count, CASES, runs, failures);
+        readable_keys, faithful_cm_tvc_restarts_basic.count, CASES, runs, failures);
     return failures != 0;
 }

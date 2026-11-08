@@ -10,9 +10,10 @@ c64-port/tools/port_coverage.py weighs the faithful port.
                                 or directory, a directory the Makefile does
                                 not build (so no gate runs it), a file
                                 README.md's table of subsystems does not
-                                name, a whole file whose binding still
-                                hands keys to the faithful tables, or a
-                                file whose no-code mark does not hold
+                                name, a binding that hands keys to the
+                                faithful tables without naming the partial
+                                file it writes (or naming a whole one), or
+                                a file whose no-code mark does not hold
 
 A listing file of comments only (no line of code: every line blank or a
 comment) has no routine to write; COVERAGE lists it with the directory
@@ -29,31 +30,40 @@ TREES = ('Luminary099', 'Comanche055')
 MISSIONS = {'lm': 'Luminary099', 'cm': 'Comanche055'}
 # A binding that runs the faithful port's routine at a key no part has
 # written yet names a faithful table, renamed for the readable build
-# (tests/x86_readable.py): faithful_<mission>_..._basic, _interpretive or
-# _routines. Any such name in the code (not in a comment), however it is
-# spelt or used, counts. (Pinball's faithful trampoline,
-# faithful_lanec_pin_run_<m>, is not a table and not counted: it runs only
-# a step the readable code does not model, src/binding/pinball_routines.c.)
-FALLBACK = re.compile(r'\bfaithful_(lm|cm)_\w*?_(?:basic|interpretive|routines)\b')
+# (tests/x86_readable.py): faithful_<table>. Any faithful_ name in the
+# code (not in a comment), whatever it is called and however it is used,
+# counts. (Pinball's faithful trampoline, faithful_lanec_pin_run_<m>, is
+# not a table and not counted: it runs only a step the readable code does
+# not model, src/binding/pinball_routines.c.)
+FALLBACK = re.compile(r'\bfaithful_\w+')
+TRAMPOLINE = 'faithful_lanec_pin_run_'
 COMMENT = re.compile(r'/\*.*?\*/|//[^\n]*', re.S)
-# The binding's own directories: the src/<dir>/ its header (the comments
-# before its first #include) names.
-OWN = re.compile(r'\bsrc/(\w+)/')
+# Such a binding names the listing file it writes part by part, in a
+# comment: "Partial file: Comanche055/AUTOMATIC_MANEUVERS.agc". That file
+# cannot be whole; a binding with a fallback and no such line fails.
+PARTIAL = re.compile(r'Partial file: ((?:Luminary099|Comanche055)/[\w.-]+\.agc)')
 
 
 def fallbacks(done):
-    """The bindings that still hand keys of a whole file to the faithful
-    tables: (binding, listing file), done mapping each whole file to its
-    directory."""
+    """The bindings that hand keys to the faithful tables and name no
+    partial file, or name one COVERAGE counts whole: (binding, message)."""
     found = []
     for binding in sorted((READABLE / 'src/binding').glob('*.c')):
         text = binding.read_text()
-        dirs = set(OWN.findall(text.split('#include')[0]))
-        for mission in sorted(set(FALLBACK.findall(COMMENT.sub(' ', text)))):
-            for path, where in sorted(done.items()):
-                if (path.startswith(MISSIONS[mission] + '/') and
-                        where.rstrip('/').removeprefix('src/') in dirs):
-                    found.append((binding.relative_to(READABLE), path))
+        names = sorted({n for n in FALLBACK.findall(COMMENT.sub(' ', text))
+                        if not n.startswith(TRAMPOLINE)})
+        if not names:
+            continue
+        partial = PARTIAL.findall(text)
+        if not partial:
+            found.append((binding.relative_to(READABLE),
+                          f'hands keys to the faithful tables ({", ".join(names)}) '
+                          'but names no partial file'))
+        for path in partial:
+            if path in done:
+                found.append((binding.relative_to(READABLE),
+                              f'still hands keys to the faithful tables ({", ".join(names)}), '
+                              f'but COVERAGE names {path} whole'))
     return found
 
 
@@ -99,9 +109,8 @@ def main(argv):
             bad = 1
         done[path] = files.get(path, 0)
         where_of[path] = where
-    for binding, path in fallbacks(where_of):
-        print(f'FAIL: COVERAGE names {path} whole, but {binding} still hands keys to the '
-              'faithful tables')
+    for binding, message in fallbacks(where_of):
+        print(f'FAIL: {binding} {message}')
         bad = 1
     total = sum(files.values())
     print(f'Readable C: {len(done)} of {len(files)} files, '

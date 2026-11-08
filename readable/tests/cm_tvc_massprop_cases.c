@@ -18,10 +18,11 @@
  * the file's), any erasable bank's words, the latches, or a state the
  * routines refuse (BBANK not the two banks, a word of 16 bits). Each runs
  * once on each side, as the program's trampoline would call the key's
- * routine, with a hardware record or (now and then) none. The faithful
- * routine runs in a child process with 20 ms to finish: an output that
- * overflows on every pass sends FIXCW's PEGGY loop round for ever, on the
- * AGC as in both ports, and such a state is left out. Where either port
+ * routine, with a hardware record or (now and then) none. Each side runs
+ * in a child process with a fiftieth of a second of its own processor time
+ * to finish (a run takes microseconds): an output that overflows on every
+ * pass sends FIXCW's PEGGY loop round for ever, on the AGC as in both
+ * ports, and such a state must loop on both sides. Where either port
  * runs, the other must too, with the same memory and io record, word for
  * word; where the readable one refuses, it must leave everything as it
  * found it; and the faithful routine must run in at least 1 of 16 of each
@@ -83,7 +84,7 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 }
 
 /* Every key runs a readable routine. */
-static unsigned keys_unwritten(const agc_routine_table *table)
+static unsigned keys_unwritten(const agc_routine_table *table, unsigned *readable)
 {
     unsigned i, failures = 0;
 
@@ -92,6 +93,8 @@ static unsigned keys_unwritten(const agc_routine_table *table)
         if (!cm_tvc_massprop_readable(key)) {
             printf("FAIL: key %u has no readable routine\n", key);
             ++failures;
+        } else {
+            ++*readable;
         }
     }
     return failures;
@@ -184,47 +187,67 @@ struct faithful_run {
     agc_hardware hardware;
 };
 
-/* The faithful routine of entry from run's records (with the hardware
- * record or none), in a child process with 20 ms to finish (a run takes
- * microseconds), and what it leaves back in run: false where it does not
- * finish. */
-static bool faithful_runs(const agc_routine_entry *entry, bool with_hardware,
-                          struct faithful_run *run)
+/* A child process running the routine of entry (either side's) from
+ * run's records (with the hardware record or none), with a fiftieth of a
+ * second of its own processor time to finish (a run takes microseconds;
+ * the timer counts no other process's time, so the machine's load does
+ * not move the cut). Both sides run at once, each in its own child. */
+struct child {
+    pid_t pid;
+    int from; /* the read end of the pipe the child's records come back on */
+};
+
+static struct child start_child(const agc_routine_entry *entry, bool with_hardware,
+                                struct faithful_run *run)
 {
+    struct child c = {-1, -1};
     int ends[2];
-    pid_t child;
-    size_t got = 0;
-    ssize_t n;
-    int status;
 
     fflush(stdout);
-    if (pipe(ends)) return false;
-    child = fork();
-    if (child < 0) return false;
-    if (child == 0) {
+    if (pipe(ends)) return c;
+    c.pid = fork();
+    if (c.pid < 0) {
+        close(ends[0]);
+        close(ends[1]);
+        return c;
+    }
+    if (c.pid == 0) {
         struct itimerval limit = {{0, 0}, {0, 20000}};
         agc_native_program program;
         const char *out = (const char *)run;
         size_t put = 0;
+        ssize_t n;
 
         close(ends[0]);
         memset(&program, 0, sizeof program);
         if (with_hardware) program.hardware = &run->hardware;
-        setitimer(ITIMER_REAL, &limit, NULL);
+        setitimer(ITIMER_VIRTUAL, &limit, NULL);
         run->status = entry->call(&program, &run->state, &run->io);
         while (put < sizeof *run && (n = write(ends[1], out + put, sizeof *run - put)) > 0)
             put += (size_t)n;
         _exit(0);
     }
     close(ends[1]);
-    while (got < sizeof *run && (n = read(ends[0], (char *)run + got, sizeof *run - got)) > 0)
+    c.from = ends[0];
+    return c;
+}
+
+/* What the child leaves back in run: false where it does not finish. */
+static bool child_finished(struct child c, struct faithful_run *run)
+{
+    size_t got = 0;
+    ssize_t n;
+    int status;
+
+    if (c.pid < 0) return false;
+    while (got < sizeof *run && (n = read(c.from, (char *)run + got, sizeof *run - got)) > 0)
         got += (size_t)n;
-    close(ends[0]);
-    waitpid(child, &status, 0);
+    close(c.from);
+    waitpid(c.pid, &status, 0);
     return got == sizeof *run;
 }
 
-/* States the AGC never finishes in, left out. */
+/* States the AGC never finishes in, on both sides. */
 static unsigned unfinished;
 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
@@ -237,47 +260,58 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
         unsigned ran = 0, bad = 0;
 
         for (n = 0; n < CASES; ++n) {
-            static struct faithful_run f;
-            apollo_overlay_state start, ra;
-            cm_native_io io, rio;
-            agc_hardware rhw;
-            agc_native_program rp;
+            static struct faithful_run f, r;
+            apollo_overlay_state start;
+            cm_native_io io;
             enum exec_status sf, sr;
             const char *why = 0;
             bool with_hardware = n % 64u != 63u; /* now and then none */
+            bool f_ends, r_ends;
 
             state(&start, &io, key, n);
-            f.state = ra = start;
-            f.io = rio = io;
+            f.state = r.state = start;
+            f.io = r.io = io;
             memset(&f.hardware, 0, sizeof f.hardware);
-            rhw = f.hardware;
-            memset(&rp, 0, sizeof rp);
-            if (with_hardware) rp.hardware = &rhw;
-            if (!faithful_runs(&faithful->entries[i], with_hardware, &f)) {
+            r.hardware = f.hardware;
+            {
+                struct child fc = start_child(&faithful->entries[i], with_hardware, &f);
+                struct child rc = start_child(&readable->entries[i], with_hardware, &r);
+                f_ends = child_finished(fc, &f);
+                r_ends = child_finished(rc, &r);
+            }
+            if (!f_ends && !r_ends) {
                 ++unfinished;
                 continue;
             }
+            if (f_ends != r_ends) {
+                if (++bad <= 3)
+                    printf("FAIL key %u case %u: %s\n", key, n,
+                           f_ends ? "readable never finishes, faithful does"
+                                  : "faithful never finishes, readable does");
+                continue;
+            }
             sf = f.status;
-            sr = readable->entries[i].call(&rp, &ra, &rio);
+            sr = r.status;
             ran += sf == EXEC_OK;
-            if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
+            if (sr != EXEC_OK &&
+                (memcmp(&r.state, &start, sizeof start) || memcmp(&r.io, &io, sizeof io)))
                 why = "readable refusal changed the state";
             else if (sf == EXEC_OK && sr != EXEC_OK)
                 why = "readable refused, faithful ran";
             else if (sf != EXEC_OK && sr == EXEC_OK)
                 why = "readable ran, faithful refused";
-            else if (sf == EXEC_OK && memcmp(&f.state, &ra, sizeof ra))
+            else if (sf == EXEC_OK && memcmp(&f.state, &r.state, sizeof r.state))
                 why = "different memory";
-            else if (sf == EXEC_OK &&
-                     (memcmp(&f.io, &rio, sizeof rio) || memcmp(&f.hardware, &rhw, sizeof rhw)))
+            else if (sf == EXEC_OK && (memcmp(&f.io, &r.io, sizeof r.io) ||
+                                       memcmp(&f.hardware, &r.hardware, sizeof r.hardware)))
                 why = "different io record";
             if (why && ++bad <= 3) {
                 unsigned w;
                 printf("FAIL key %u case %u: %s\n", key, n, why);
                 for (w = 0; w < APOLLO_SHARED_WORDS; ++w)
-                    if (f.state.words[w] != ra.words[w])
-                        printf("  word %04o: %06o, faithful %06o (start %06o)\n", w, ra.words[w],
-                               f.state.words[w], start.words[w]);
+                    if (f.state.words[w] != r.state.words[w])
+                        printf("  word %04o: %06o, faithful %06o (start %06o)\n", w,
+                               r.state.words[w], f.state.words[w], start.words[w]);
             }
         }
         if (ran < CASES / 16u && bad == 0u) {
@@ -292,6 +326,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 
 int main(int argc, char **argv)
 {
+    unsigned readable_keys = 0;
     unsigned i, failures = 0, runs = 0;
 
     if (argc < 3 || !apollo_rope_load(0, argv[1]) || !apollo_rope_load(1, argv[2])) {
@@ -303,16 +338,15 @@ int main(int argc, char **argv)
     failures += tables_differ(&cm_tvc_massprop_basic, &faithful_cm_tvc_massprop_basic, "basic");
     failures += tables_differ(&cm_tvc_massprop_interpretive, &faithful_cm_tvc_massprop_interpretive,
                               "interpretive");
-    failures += keys_unwritten(&faithful_cm_tvc_massprop_basic);
+    failures += keys_unwritten(&faithful_cm_tvc_massprop_basic, &readable_keys);
     if (failures) {
         printf("cm-tvc-massprop-cases: %u failures\n", failures);
         return 1;
     }
     failures += keys(&cm_tvc_massprop_basic, &faithful_cm_tvc_massprop_basic, &runs);
     printf(
-        "cm-tvc-massprop-cases: %u of %u keys readable (all basic) from %u states each (%u never "
-        "finished, left out), %u run by the faithful routines, %u failures\n",
-        cm_tvc_massprop_basic.count, faithful_cm_tvc_massprop_basic.count, CASES, unfinished, runs,
-        failures);
+        "cm-tvc-massprop-cases: %u of %u keys readable (all basic) from %u states each, %u looping "
+        "on both sides, %u run by the faithful routines, %u failures\n",
+        readable_keys, faithful_cm_tvc_massprop_basic.count, CASES, unfinished, runs, failures);
     return failures != 0;
 }
