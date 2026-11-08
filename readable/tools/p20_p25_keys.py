@@ -72,7 +72,8 @@ FILES = (('lm_p20_p25', READABLE / 'src/binding/p20_p25_keys.inc'),
          ('cm_tvc_massprop', READABLE / 'src/binding/cm_tvc_massprop_keys.inc'),
          ('cm_tvc_restarts', READABLE / 'src/binding/cm_tvc_restarts_keys.inc'),
          ('cm_tvc_daps', READABLE / 'src/binding/cm_tvc_daps_keys.inc'),
-         ('cm_tvc_stroke', READABLE / 'src/binding/cm_tvc_stroke_keys.inc'))
+         ('cm_tvc_stroke', READABLE / 'src/binding/cm_tvc_stroke_keys.inc'),
+         ('cm_tvc_roll', READABLE / 'src/binding/cm_tvc_roll_keys.inc'))
 
 
 def generate(m):

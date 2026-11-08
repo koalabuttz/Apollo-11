@@ -4662,6 +4662,23 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define HACKWLST  ((word)K_HACKWLST)
 #define TWENTY_MS BIT2 /* 20MS = BIT2 */
 #define TCTSKOVR  ((word)KW_TCTSKOVR) /* TC TASKOVER */
+/* TVCROLLDAP.agc */
+#define ROLLDAP          ((word)K_ROLLDAP)
+#define NOROLL1          ((word)K_NOROLL1)
+#define DB               ((word)KW_DB)       /* DEC .01388889: "DEAD BAND (5 DEG)" */
+#define MINUS_SLOPE      ((word)KW_MSLOPE)   /* -SLOPE: DEC 0.2 */
+#define LMCRATE          ((word)KW_LMCRATE)  /* DEC .00027778 B+4 */
+#define INTERCEP         ((word)KW_INTERCEP) /* DEC .0025 B+3 */
+#define MINLIM           ((word)KW_MINLIM)   /* DEC .00277778 B+4 */
+#define MAXLIM           ((word)KW_MAXLIM)   /* DEC .01388889 B+4 */
+#define TMINFIRE         ((word)KW_TMINFIRE) /* DEC 1.5 B+4 */
+#define TMAXFIRE         ((word)KW_TMAXFIRE) /* DEC 250 B+4 */
+#define ONE_OVER_TMXFIR  BIT3                /* 1/TMXFIR = BIT3 */
+#define T6SCALE          PRIO31              /* T6SCALE = PRIO31 */
+#define PLUS_ROLL1       FIVE                /* +ROLL1 = FIVE */
+#define PLUS_ROLL2       OCT120              /* +ROLL2 = OCT120 */
+#define MINUS_ROLL1      TEN                 /* -ROLL1 = TEN */
+#define MINUS_ROLL2      ((word)KW_MROLL2)   /* -ROLL2: OCT 240 */
 #endif
 
 /* NO.CORES + 1 core sets. */
