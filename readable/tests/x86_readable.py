@@ -250,9 +250,9 @@ REPLACED = (
 # readable; the faithful ones, renamed, are no longer called
 # (--gc-sections drops them). P37_P70 (src/p37_p70): the CM's routine
 # tables, all readable; the faithful ones, renamed, are no longer called
-# (--gc-sections drops them). TVCINITIALIZE, TVCEXECUTIVE and TVCMASSPROP
-# (src/tvc): the CM's routine tables, all readable; the faithful ones,
-# renamed, are no longer called (--gc-sections drops them).
+# (--gc-sections drops them). TVCINITIALIZE, TVCEXECUTIVE, TVCMASSPROP and
+# TVCRESTARTS (src/tvc): the CM's routine tables, all readable; the
+# faithful ones, renamed, are no longer called (--gc-sections drops them).
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],
@@ -274,7 +274,8 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'cm_p37_p70.o': lambda m: ['cm_p37_p70_basic', 'cm_p37_p70_interpretive'] if m == 'cm' else [],
            'cm_tvc_init.o': lambda m: ['cm_tvc_init_basic', 'cm_tvc_init_interpretive'] if m == 'cm' else [],
            'cm_tvc_exec.o': lambda m: ['cm_tvc_exec_basic', 'cm_tvc_exec_interpretive'] if m == 'cm' else [],
-           'cm_tvc_massprop.o': lambda m: ['cm_tvc_massprop_basic', 'cm_tvc_massprop_interpretive'] if m == 'cm' else []}
+           'cm_tvc_massprop.o': lambda m: ['cm_tvc_massprop_basic', 'cm_tvc_massprop_interpretive'] if m == 'cm' else [],
+           'cm_tvc_restarts.o': lambda m: ['cm_tvc_restarts_basic', 'cm_tvc_restarts_interpretive'] if m == 'cm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
@@ -308,7 +309,8 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # The CM's REENTRY_CONTROL starts entry (startent_after_exit), and its
 # CM_BODY_ATTITUDE updates the attitude angles (cm_atup). The CM's P37
 # is its own (rtevn_after_exit), as is its TVC DAP (tvcdapon, its
-# half-second task, tvcexec, and its mass properties, massprop).
+# half-second task, tvcexec, its mass properties, massprop, and its
+# restarts, redotvc).
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
                           'radsamp', 'prog20a', 'p30n33', 'p32strt',
                           'p31_after_p20flgon', 'prog21', 'rev83', 'P76_CODE', 'killtsk2',
@@ -318,7 +320,7 @@ MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'g
                           'pikup20', 'p30phsi', 'P32STRT_CODE', 'prog21', 'r34los_after_exit', 'candel',
                           'rtrn', 'p40csm', 'EPHEMERIDES_CODE', 'prog52', 'p61', 'quikread',
                           'startent_after_exit', 'cm_atup', 'rtevn_after_exit', 'tvcdapon',
-                          'tvcexec', 'massprop')}
+                          'tvcexec', 'massprop', 'redotvc')}
 xb.OUT = READABLE / 'build/x86-flight'
 
 

@@ -29,11 +29,19 @@
  *     moments of inertia IXX, IAVG and IAVG/TLX as straight lines in the
  *     CSM's mass, and WEIGHT/G.
  *
+ * TVCRESTARTS.agc (pp. 956-960, bank 16), c64-port/src/cm_tvc_restarts.c:
+ *
+ *   REDOTVC to EXRSTRT (tvcrestarts.c): the "TVC RESTART PACKAGE", which
+ *     restarts TVCEXECUTIVE at its phase (EXRSTRT), finishes a DAP
+ *     copycycle or repeats the initialization or the switch-over, and
+ *     brings up the outcounters again (ENABL1, ENABL2, CMDSOUT).
+ *
  * All basic code. Each function runs from a word the program can come
  * back to (an entry, the word after a call out of the file) until control
- * leaves the file's code (RESUME, IBNKCALL, WAITLIST, POSTJUMP,
- * TASKOVER, TC Q, TC RTRNLOC), or reaches a word where the faithful port's run stops: a
- * key of its own, run by the function named for it. */
+ * leaves the file's code (RESUME, NOQRSM, IBNKCALL, ISWCALL, WAITLIST,
+ * POSTJUMP, TASKOVER, TC Q, TC RTRNLOC, EXRSTRT's TCF), or reaches a word
+ * where the faithful port's run stops: a key of its own, run by the
+ * function named for it. */
 #ifndef READABLE_TVC_H
 #define READABLE_TVC_H
 
@@ -114,6 +122,16 @@ void cntrcopy(void);              /* CNTRCOPY */
 /* TVCMASSPROP.agc -- tvcmassprop.c */
 void massprop(void); /* MASSPROP */
 void fixcw(void);    /* FIXCW */
+
+/* TVCRESTARTS.agc -- tvcrestarts.c */
+void redotvc(void);                 /* REDOTVC */
+void tvcdaphs(void);                /* TVCDAPHS */
+void enabl2(void);                  /* ENABL2 */
+void cmdsout(void);                 /* CMDSOUT */
+void phschk2_mrclean(void);         /* PHSCHK2 +5, where EXRSTRT can go on */
+void chkstrk(void);                 /* CHKSTRK */
+void fincopy_after_copycycle(void); /* FINCOPY +3 */
+void exrstrt(void);                 /* EXRSTRT */
 
 #endif
 
