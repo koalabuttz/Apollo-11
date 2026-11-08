@@ -175,7 +175,7 @@ void estims_after_exit(void)
 }
 
 /* SLEEPIE +1 -- p. 436. "CHANGE PHASE" (PHASCHNG, OCT 00135). */
-static void sleepie_plus1(void)
+void sleepie_plus1(void)
 {
     tc_at(SLEEPIE + 1u);
     continue_at(PHASCHNG); /* OCT 00135 */
@@ -214,7 +214,7 @@ void estims_after_newmodex(void)
 }
 
 /* ANNNNNN -- p. 446. LENGTHOT nine, and SLEEPIE +1. */
-static void annnnnn(void)
+void annnnnn(void)
 {
     set_A(NINE);
     ts(E(LENGTHOT));

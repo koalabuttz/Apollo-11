@@ -80,16 +80,22 @@ void geoimutt_after_imuzero(void)
 }
 
 /* IMUBACK -- p. 423. NDXCTR (the gimbal lock count) and TORQNDX (the
- * vertical drift test's) +0; then NBPOSPL clears the 18 words XNB to
- * ZNB +5 (ZERONDX1, the count less one: DEC17) with ZEROING, which comes
- * back below. */
+ * vertical drift test's) +0, and NBPOSPL. */
 void imuback(void)
 {
     set_A(ZERO);
     ts(E(NDXCTR));
     ts(E(TORQNDX));
     ts(E(TORQNDX) + 1u);
-    set_A(DEC17); /* NBPOSPL */
+    nbpospl();
+}
+
+/* NBPOSPL -- p. 423 (also the optical verification's, SETNBPOS). Clear
+ * the 18 words XNB to ZNB +5 (ZERONDX1, the count less one: DEC17) with
+ * ZEROING, which comes back below. */
+void nbpospl(void)
+{
+    set_A(DEC17);
     ts(E(ZERONDX1));
     set_A(XNBADR);
     tc_at(NBPOSPL + 3u);

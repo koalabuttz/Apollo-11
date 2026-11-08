@@ -6,8 +6,9 @@
  * the faithful port's under the same names with faithful_ in front (the
  * Makefile renames them).
  *
- * First the keys, which must be the faithful tables', and every key of
- * the parts written so far must run readable code. Then the runs: each
+ * First the keys, which must be the faithful tables', and every basic key
+ * must run readable code (the order pairs, the faithful port's, until
+ * their parts are written). Then the runs: each
  * readable key from 4,096 states (each other key, which runs the faithful
  * routine through the readable table, from 16), each one of the port's
  * frozen test states (c64-port/tests/cm_imu_calibration_vectors.h) entered
@@ -61,8 +62,6 @@ bool cm_imu_cal_readable(uint16_t key, bool order_pair);
 
 #define CASES       4096u
 #define OTHER_CASES 16u
-/* The keys the first part writes. */
-#define PART1_KEYS 56u
 
 static uint32_t seed = 1471u;
 static uint16_t rnd(void)
@@ -160,6 +159,7 @@ static const uint16_t returns[] = {
     02012u, 02033u, 02043u, 02102u, 02107u, 02134u, 02146u, 02173u, 02202u, 02226u, 02251u,
     02262u, 02267u, 02350u, 02472u, 02527u, 02530u, 02531u, 02633u, 02637u, 02643u, 02314u,
     02436u, 02440u, 03067u, 03375u, 03107u, 02063u, 02324u, 02522u, 02552u, 03406u, 04554u,
+    03070u, 03166u, 03167u, 03320u, 03356u, 03443u, 03545u, 03572u, 03272u, 03466u, 03635u,
 };
 
 /* A return: one of the above, 3, a word below 010, or any. */
@@ -238,6 +238,15 @@ static void state(apollo_overlay_state *s, cm_channel_io *io, uint16_t key, unsi
         w[AT(GTSWTLT1)] = value_word();
         w[K_NEWJOB] = pick(2u) ? 0u : pick(2u) ? (uint16_t)(rnd() & 037777u) : value_word();
         w[K_MODREG] = pick(2u) ? 7u : sign_word();
+        w[AT(PREMTRXC)] = sign_word();
+        w[AT(GEOSAVE1)] = sign_word();
+        w[K_LGYRO] = sign_word();
+        w[K_FLAGWRD1] = value_word();
+        w[AT(RUN)] = pick(2u)   ? (uint16_t)(pick(2u) ? 0u : 2u)
+                     : pick(8u) ? table_index(K_TAZEL1 + 1u, 4u)
+                                : number(-(int)K_TAZEL1 - 1); /* (a DCA of words -1 and 0) */
+        w[AT(QPLAC)] = return_word();
+        w[K_MARKSTAT] = pick(4u) ? table_index(K_QPRET, 0400u) : value_word();
         w[K_FLAGWRD3] = value_word();
         w[K_FLAGWRD5] = value_word();
         /* The PIPAs, often as they were a moment ago. */
@@ -306,12 +315,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             } else if (sr == LOOPS) {
                 why = "readable loops";
             } else if (sr != EXEC_OK && sr != EXEC_IDLE &&
-                       (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)) &&
-                       (sr != sf || memcmp(&ra, &fa, sizeof ra) ||
-                        memcmp(&rio, &fio, sizeof rio))) {
-                /* (A refusal leaves the state as it was, unless it is the
-                 * faithful routine's own: a run handed on to it at a word
-                 * no part has written yet can refuse with Q and Z moved.) */
+                       (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio))) {
                 why = "readable refusal changed the state";
             } else if (sf == LOOPS)
                 why = sr == EXEC_OUT_OF_SCOPE ? NULL : "faithful loops, readable does not refuse";
@@ -363,8 +367,9 @@ int main(int argc, char **argv)
                               &faithful_cm_imu_calibration_interpretive, "interpretive");
     for (i = 0; i < faithful_cm_imu_calibration_basic.count; ++i)
         basic += cm_imu_cal_readable(faithful_cm_imu_calibration_basic.entries[i].physical, false);
-    if (basic != PART1_KEYS) {
-        printf("FAIL: %u basic keys readable, the parts written have %u\n", basic, PART1_KEYS);
+    if (basic != faithful_cm_imu_calibration_basic.count) { /* (every basic key) */
+        printf("FAIL: %u basic keys readable of %u\n", basic,
+               faithful_cm_imu_calibration_basic.count);
         ++failures;
     }
     if (failures) {

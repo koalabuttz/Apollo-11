@@ -89,6 +89,7 @@ void imutest_after_coaalign(void);  /* IMUTEST +6 */
 void geoimutt(void);                /* GEOIMUTT */
 void geoimutt_after_imuzero(void);  /* GEOIMUTT +2 */
 void imuback(void);                 /* IMUBACK */
+void nbpospl(void);                 /* NBPOSPL */
 void nbpospl_after_zeroing(void);   /* NBPOSPL +4 */
 void nbpospl_after_exit(void);      /* NBPOSPL +021 */
 void nbpospl_not_verifying(void);   /* NBPOSPL +023 */
@@ -159,6 +160,7 @@ void estims_after_erthrvse(void);   /* ESTIMS +040 */
 void estims_after_newmodex(void);   /* ESTIMS +044 */
 void estims_after_pipuse(void);     /* ESTIMS +046 */
 void sleepie(void);                 /* SLEEPIE */
+void sleepie_plus1(void);           /* SLEEPIE +1 */
 void sleepie_after_phaschng(void);  /* SLEEPIE +3 */
 void wtlistnt(void);                /* WTLISTNT */
 void wtlistnt_after_chkcomed(void); /* WTLISTNT +1 */
@@ -183,8 +185,95 @@ void someerrr_after_alarm(void);    /* SOMEERRR +2 */
 void somerr2(void);                 /* SOMERR2 */
 void somerr2_after_alarm(void);     /* SOMERR2 +2 */
 void somerr2_after_phaschng(void);  /* SOMERR2 +4 */
+void annnnnn(void);                 /* ANNNNNN */
 void chkcomed(void);                /* CHKCOMED */
 void prelterm_after_priochng(void); /* PRELTERM +2 */
+
+/* ---- gyrocompass.c: PERFERAS to NOCHORLD -- pp. 441-446 ---- */
+void perferas_after_exit(void);     /* PERFERAS +1 */
+void oncemore(void);                /* ONCEMORE */
+void oncemore_torqndx(void);        /* ONCEMORE +2 */
+void oncemore_cdux(void);           /* ONCEMORE +5 */
+void torqinch(void);                /* TORQINCH */
+void torqinch_after_phaschng(void); /* TORQINCH +2 */
+void torqinch_after_imupulse(void); /* TORQINCH +5 */
+void torqinch_after_imustllg(void); /* TORQINCH +6 */
+void torqinch_erate(void);          /* TORQINCH +010 */
+void torqinch_after_exit(void);     /* TORQINCH +014 */
+void gtscpss(void);                 /* GTSCPSS */
+void setupgc_after_zeroing(void);   /* SETUPGC +4 */
+void setupgc_after_posn17c(void);   /* SETUPGC +5 */
+void posn17c(void);                 /* POSN17C */
+void posn17c_after_exit(void);      /* POSN17C +017 */
+void endgtsal(void);                /* ENDGTSAL */
+void endgtsal_chkcomed(void);       /* ENDGTSAL +2 */
+void endgtsal_after_chkcomed(void); /* ENDGTSAL +3 */
+void restaier(void);                /* RESTAIER */
+void restaier_after_phaschng(void); /* RESTAIER +2 */
+void restaier_after_exit(void);     /* RESTAIER +014 */
+void restaier_after_earthr(void);   /* RESTAIER +015 */
+void restest1(void);                /* RESTEST1 */
+void restest1_after_exit(void);     /* RESTEST1 +5 */
+void restest1_phaschng(void);       /* RESTEST1 +7 */
+void restest3(void);                /* RESTEST3 */
+void restest3_after_exit(void);     /* RESTEST3 +020 */
+void restest3_after_posn17c(void);  /* RESTEST3 +021 */
+void reschng(void);                 /* RESCHNG */
+void spitgyro(void);                /* SPITGYRO */
+void spitgyro_after_imupulse(void); /* SPITGYRO +3 */
+void spitgyro_bad_stall(void);      /* SPITGYRO +5 */
+void spitgyro_after_imustall(void); /* SPITGYRO +6 */
+void noazchge_after_exit(void);     /* NOAZCHGE +1 */
+void nochorld(void);                /* NOCHORLD */
+
+/* ---- optical_verification.c: GCOMPVER to AZMTHCG1 -- pp. 449-454 ---- */
+void data_word(void);               /* (a data word) */
+void gcompver(void);                /* GCOMPVER */
+void gcompver_after_phaschng(void); /* GCOMPVER +2 */
+void setnbpos(void);                /* SETNBPOS */
+void setnbpos_after_nbpospl(void);  /* SETNBPOS +1 */
+void optdata(void);                 /* OPTDATA */
+void optdata_display(void);         /* OPTDATA +010 */
+void optdata_after_godspret(void);  /* OPTDATA +013 */
+void optdata_terminate(void);       /* OPTDATA +016 */
+void optdata_proceed(void);         /* OPTDATA +017 */
+void optdata_enter(void);           /* OPTDATA +020 */
+void tar_eref_minus1(void);         /* TAR/EREF -1 */
+void contin33(void);                /* CONTIN33 */
+void contin33_after_targdrve(void); /* CONTIN33 +4 */
+void nextbnks_after_exit(void);     /* NEXTBNKS +014 */
+void nexbnkss(void);                /* NEXBNKSS */
+void nexbnkss_after_targdrve(void); /* NEXBNKSS +4 */
+void gcomp4(void);                  /* GCOMP4 */
+void gcomp4_terminate(void);        /* GCOMP4 +3 */
+void gcomp4_proceed(void);          /* GCOMP4 +4 */
+void gcomp4_enter(void);            /* GCOMP4 +5 */
+void gcomp5(void);                  /* GCOMP5 */
+void gcomp5_after_mkreleas(void);   /* GCOMP5 +2 */
+void gcomp5_after_downflag(void);   /* GCOMP5 +4 */
+void gcomp5_after_newmodex(void);   /* GCOMP5 +6 */
+void gcomp5_after_phaschng(void);   /* GCOMP5 +010 */
+void gtsoptcs_after_alarm(void);    /* GTSOPTCS +2 */
+void latazchk_after_exit(void);     /* LATAZCHK +6 */
+void latazchk_flash(void);          /* LATAZCHK +012 */
+void latazchk_terminate(void);      /* LATAZCHK +015 */
+void latazchk_proceed(void);        /* LATAZCHK +016 */
+void latazchk_enter(void);          /* LATAZCHK +017 */
+void latazchk_load(void);           /* LATAZCHK +020 */
+void targdrve(void);                /* TARGDRVE */
+void targdrve_after_exit(void);     /* TARGDRVE +014 */
+void retarg_after_sxtmark(void);    /* RETARG +5 */
+void retarg_bad_stall(void);        /* RETARG +7 */
+void retarg_after_optstall(void);   /* RETARG +010 */
+void retarg_mark(void);             /* RETARG +014 */
+void azmthcg1(void);                /* AZMTHCG1 */
+void azmthcg1_after_exit(void);     /* AZMTHCG1 +5 */
+void azmthcg1_flash(void);          /* AZMTHCG1 +011 */
+void azmthcg1_terminate(void);      /* AZMTHCG1 +014 */
+void azmthcg1_proceed(void);        /* AZMTHCG1 +015 */
+void azmthcg1_enter(void);          /* AZMTHCG1 +016 */
+void azmthcg1_after_load(void);     /* AZMTHCG1 +025 */
+void azmthcg1_after_phaschng(void); /* AZMTHCG1 +031 */
 
 #endif
 #endif

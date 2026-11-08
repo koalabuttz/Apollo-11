@@ -7,10 +7,10 @@
  *
  * The tables carry every key of the faithful ones, in their order
  * (cm_imu_cal_keys.inc, which tools/p20_p25_keys.py writes from them). The
- * file is written part by part: a key a part has written runs the
- * readable code, any other the faithful port's routine (renamed
- * faithful_). The side-by-side test (tests/cm_imu_cal_cases.c) checks
- * which.
+ * file is written part by part: every basic key runs the readable code;
+ * the order pairs run the faithful port's routines (renamed faithful_)
+ * until their parts are written. The side-by-side test
+ * (tests/cm_imu_cal_cases.c) checks which.
  * Partial file: Comanche055/IMU_CALIBRATION_AND_ALIGNMENT.agc (COVERAGE
  * counts it when the last part is written).
  *
@@ -22,8 +22,6 @@
  * INTPRET into NEWOPS ...) or reaches a word that is no point. It stops
  * where the AGC waits for the hardware: CHECKG1, the PIPA not yet moved,
  * and FINETIME +1, the scaler at 37777 (the faithful port's idle points).
- * A run that reaches a point no part has written yet runs the faithful
- * routine from the key instead, from the state as it was.
  *
  * The device is the CM's io record with the input channels after it
  * (cm_channel_io): the scalers FINETIME reads (channels 3 and 4) and
@@ -32,7 +30,7 @@
  * EBANK 5 (the bank the faithful port reads the file's switched words
  * in), ZERO +0, the bank registers agreeing, the latches in range and
  * every erasable word an ordinary one; FINETIME's two keys take any FB
- * and EBANK. A run the readable code refuses part way leaves the state
+ * and EBANK, and PERFERAS +1 (which sets EBANK 7) any EBANK. A run the readable code refuses part way leaves the state
  * and io record as they were. */
 #include <setjmp.h>
 #include <stddef.h>
@@ -97,8 +95,8 @@ static void bind(const agc_native_program *program, apollo_overlay_state *state,
 
 /* The states the faithful routines take (its basic_sane()): fb the key's
  * FB, or any for a fixed-fixed key (FINETIME's), which also takes any
- * EBANK. */
-static bool sane(word fb, bool fixed_fixed)
+ * EBANK, as PERFERAS +1 does. */
+static bool sane(word fb, bool fixed_fixed, bool any_eb)
 {
     unsigned i;
 
@@ -108,7 +106,7 @@ static bool sane(word fb, bool fixed_fixed)
         return false;
     if (*agc.interrupts > 1u || (*agc.superbank & ~0160u)) return false;
     if (!fixed_fixed && (fb & 060000u) == 060000u && (*agc.superbank & 0100u)) return false;
-    if (!fixed_fixed && EBANK != 02400u) return false;
+    if (!any_eb && EBANK != 02400u) return false;
     for (i = 3u; i < 2048u; ++i)
         if (agc.memory[i] > 077777u) return false;
     return true;
@@ -116,16 +114,8 @@ static bool sane(word fb, bool fixed_fixed)
 
 /* ---- The points ---- */
 
-/* SOMERR2's TC ENDTEST1 returns to the word after it, DEC585: a data
- * word, which the faithful port does not run. */
-static void dec585(void)
-{
-    not_modelled();
-}
-
 /* Every word a dynamic return can land on (the faithful port's dispatch),
- * with the function that starts there; NULL where no part has written it
- * yet. A key starts at one of them too. */
+ * with the function that starts there. Every key is one of them too. */
 static const struct point {
     uint16_t at;
     void (*routine)(void);
@@ -133,13 +123,13 @@ static const struct point {
     /* FINETIME, in fixed-fixed (drift_loop.c) */
     {KEY(02u, FINETIME), finetime},
     {KEY(02u, FINETIME + 1u), finetime_plus1},
-    /* LATAZCHK, in bank 4 (part 2) */
-    {KEY(04u, 02621u), NULL},
-    {KEY(04u, 02625u), NULL},
-    {KEY(04u, 02630u), NULL},
-    {KEY(04u, 02631u), NULL},
-    {KEY(04u, 02632u), NULL},
-    {KEY(04u, 02633u), NULL},
+    /* LATAZCHK, in bank 4 (optical_verification.c) */
+    {KEY(04u, LATAZCHK + 6u), latazchk_after_exit},
+    {KEY(04u, LATAZCHK + 012u), latazchk_flash},
+    {KEY(04u, LATAZCHK + 015u), latazchk_terminate},
+    {KEY(04u, LATAZCHK + 016u), latazchk_proceed},
+    {KEY(04u, LATAZCHK + 017u), latazchk_enter},
+    {KEY(04u, LATAZCHK + 020u), latazchk_load},
     /* IMUTEST to ZEROING, pp. 423-429 (imu_test.c) */
     {KEY(BANK33, IMUTEST), imutest},
     {KEY(BANK33, IMUTEST + 6u), imutest_after_coaalign},
@@ -224,94 +214,94 @@ static const struct point {
     {KEY(BANK33, ALFLT1 + 4u), alflt1_compass},
     {KEY(BANK33, ALFLT1 + 5u), alflt1_after_chkcomed},
     {KEY(BANK33, NORMLOP), normlop},
-    /* The drift test's end and the gyrocompassing, pp. 439-445 (part 2) */
-    {KEY(BANK33, 03034u), NULL},
-    {KEY(BANK33, 03037u), NULL},
-    {KEY(BANK33, 03041u), NULL},
-    {KEY(BANK33, 03044u), NULL},
-    {KEY(BANK33, 03062u), NULL},
-    {KEY(BANK33, 03064u), NULL},
-    {KEY(BANK33, 03067u), NULL},
-    {KEY(BANK33, 03070u), NULL},
-    {KEY(BANK33, 03072u), NULL},
-    {KEY(BANK33, 03076u), NULL},
+    /* The drift test's end, pp. 441-442 (gyrocompass.c) */
+    {KEY(BANK33, PERFERAS + 1u), perferas_after_exit},
+    {KEY(BANK33, ONCEMORE), oncemore},
+    {KEY(BANK33, ONCEMORE + 2u), oncemore_torqndx},
+    {KEY(BANK33, ONCEMORE + 5u), oncemore_cdux},
+    {KEY(BANK33, TORQINCH), torqinch},
+    {KEY(BANK33, TORQINCH + 2u), torqinch_after_phaschng},
+    {KEY(BANK33, TORQINCH + 5u), torqinch_after_imupulse},
+    {KEY(BANK33, TORQINCH + 6u), torqinch_after_imustllg},
+    {KEY(BANK33, TORQINCH + 010u), torqinch_erate},
+    {KEY(BANK33, TORQINCH + 014u), torqinch_after_exit},
     /* SOMEERRR and SOMERR2, p. 442 (drift_loop.c) */
     {KEY(BANK33, SOMEERRR), someerrr},
     {KEY(BANK33, SOMEERRR + 2u), someerrr_after_alarm},
     {KEY(BANK33, SOMERR2), somerr2},
     {KEY(BANK33, SOMERR2 + 2u), somerr2_after_alarm},
     {KEY(BANK33, SOMERR2 + 4u), somerr2_after_phaschng},
-    {KEY(BANK33, SOMERR2 + 5u), dec585},
-    /* Part 2 */
-    {KEY(BANK33, 03131u), NULL},
-    {KEY(BANK33, 03166u), NULL},
-    {KEY(BANK33, 03167u), NULL},
-    {KEY(BANK33, 03170u), NULL},
-    {KEY(BANK33, 03207u), NULL},
-    {KEY(BANK33, 03267u), NULL},
-    {KEY(BANK33, 03271u), NULL},
-    {KEY(BANK33, 03272u), NULL},
-    {KEY(BANK33, 03303u), NULL},
-    {KEY(BANK33, 03305u), NULL},
-    {KEY(BANK33, 03317u), NULL},
-    {KEY(BANK33, 03320u), NULL},
-    {KEY(BANK33, 03324u), NULL},
-    {KEY(BANK33, 03331u), NULL},
-    {KEY(BANK33, 03333u), NULL},
-    {KEY(BANK33, 03335u), NULL},
-    {KEY(BANK33, 03355u), NULL},
-    {KEY(BANK33, 03356u), NULL},
-    {KEY(BANK33, 03360u), NULL},
-    {KEY(BANK33, 03367u), NULL},
-    {KEY(BANK33, 03372u), NULL},
-    {KEY(BANK33, 03374u), NULL},
-    {KEY(BANK33, 03375u), NULL},
-    {KEY(BANK33, 03376u), NULL},
-    {KEY(BANK33, 03377u), NULL},
+    {KEY(BANK33, SOMERR2 + 5u), data_word}, /* DEC585 */
+    /* The gyrocompassing, pp. 442-446 (gyrocompass.c) */
+    {KEY(BANK33, GTSCPSS), gtscpss},
+    {KEY(BANK33, SETUPGC + 4u), setupgc_after_zeroing},
+    {KEY(BANK33, SETUPGC + 5u), setupgc_after_posn17c},
+    {KEY(BANK33, POSN17C), posn17c},
+    {KEY(BANK33, POSN17C + 017u), posn17c_after_exit},
+    {KEY(BANK33, ENDGTSAL), endgtsal},
+    {KEY(BANK33, ENDGTSAL + 2u), endgtsal_chkcomed},
+    {KEY(BANK33, ENDGTSAL + 3u), endgtsal_after_chkcomed},
+    {KEY(BANK33, RESTAIER), restaier},
+    {KEY(BANK33, RESTAIER + 2u), restaier_after_phaschng},
+    {KEY(BANK33, RESTAIER + 014u), restaier_after_exit},
+    {KEY(BANK33, RESTAIER + 015u), restaier_after_earthr},
+    {KEY(BANK33, RESTEST1), restest1},
+    {KEY(BANK33, RESTEST1 + 5u), restest1_after_exit},
+    {KEY(BANK33, RESTEST1 + 7u), restest1_phaschng},
+    {KEY(BANK33, RESTEST3), restest3},
+    {KEY(BANK33, RESTEST3 + 020u), restest3_after_exit},
+    {KEY(BANK33, RESTEST3 + 021u), restest3_after_posn17c},
+    {KEY(BANK33, RESCHNG), reschng},
+    {KEY(BANK33, SPITGYRO), spitgyro},
+    {KEY(BANK33, SPITGYRO + 3u), spitgyro_after_imupulse},
+    {KEY(BANK33, SPITGYRO + 5u), spitgyro_bad_stall},
+    {KEY(BANK33, SPITGYRO + 6u), spitgyro_after_imustall},
+    {KEY(BANK33, NOAZCHGE), data_word},
+    {KEY(BANK33, NOAZCHGE + 1u), noazchge_after_exit},
     /* CHKCOMED, pp. 446-447 (drift_loop.c) */
     {KEY(BANK33, CHKCOMED), chkcomed},
     {KEY(BANK33, PRELTERM + 2u), prelterm_after_priochng},
-    /* The optical verification, pp. 448-454 (part 2) */
-    {KEY(BANK33, 03436u), NULL},
-    {KEY(BANK33, 03440u), NULL},
-    {KEY(BANK33, 03442u), NULL},
-    {KEY(BANK33, 03443u), NULL},
-    {KEY(BANK33, 03445u), NULL},
-    {KEY(BANK33, 03460u), NULL},
-    {KEY(BANK33, 03463u), NULL},
-    {KEY(BANK33, 03464u), NULL},
-    {KEY(BANK33, 03465u), NULL},
-    {KEY(BANK33, 03466u), NULL},
-    {KEY(BANK33, 03500u), NULL},
-    {KEY(BANK33, 03501u), NULL},
-    {KEY(BANK33, 03545u), NULL},
-    {KEY(BANK33, 03564u), NULL},
-    {KEY(BANK33, 03566u), NULL},
-    {KEY(BANK33, 03572u), NULL},
-    {KEY(BANK33, 03604u), NULL},
-    {KEY(BANK33, 03607u), NULL},
-    {KEY(BANK33, 03610u), NULL},
-    {KEY(BANK33, 03611u), NULL},
-    {KEY(BANK33, 03620u), NULL},
-    {KEY(BANK33, 03622u), NULL},
-    {KEY(BANK33, 03624u), NULL},
-    {KEY(BANK33, 03626u), NULL},
-    {KEY(BANK33, 03630u), NULL},
-    {KEY(BANK33, 03634u), NULL},
-    {KEY(BANK33, 03635u), NULL},
-    {KEY(BANK33, 03651u), NULL},
-    {KEY(BANK33, 03662u), NULL},
-    {KEY(BANK33, 03664u), NULL},
-    {KEY(BANK33, 03665u), NULL},
-    {KEY(BANK33, 03671u), NULL},
-    {KEY(BANK33, 03742u), NULL},
-    {KEY(BANK33, 03747u), NULL},
-    {KEY(BANK33, 03753u), NULL},
-    {KEY(BANK33, 03756u), NULL},
-    {KEY(BANK33, 03757u), NULL},
-    {KEY(BANK33, 03760u), NULL},
-    {KEY(BANK33, 03767u), NULL},
-    {KEY(BANK33, 03773u), NULL},
+    /* The optical verification, pp. 449-454 (optical_verification.c) */
+    {KEY(BANK33, GCOMPVER), gcompver},
+    {KEY(BANK33, GCOMPVER + 2u), gcompver_after_phaschng},
+    {KEY(BANK33, SETNBPOS), setnbpos},
+    {KEY(BANK33, SETNBPOS + 1u), setnbpos_after_nbpospl},
+    {KEY(BANK33, OPTDATA), optdata},
+    {KEY(BANK33, OPTDATA + 013u), optdata_after_godspret},
+    {KEY(BANK33, OPTDATA + 016u), optdata_terminate},
+    {KEY(BANK33, OPTDATA + 017u), optdata_proceed},
+    {KEY(BANK33, OPTDATA + 020u), optdata_enter},
+    {KEY(BANK33, OPTDATA + 021u), data_word},
+    {KEY(BANK33, TAR_EREF - 2u), data_word},
+    {KEY(BANK33, TAR_EREF - 1u), tar_eref_minus1},
+    {KEY(BANK33, CONTIN33 + 4u), contin33_after_targdrve},
+    {KEY(BANK33, NEXTBNKS + 014u), nextbnks_after_exit},
+    {KEY(BANK33, NEXBNKSS), nexbnkss},
+    {KEY(BANK33, NEXBNKSS + 4u), nexbnkss_after_targdrve},
+    {KEY(BANK33, GCOMP4), gcomp4},
+    {KEY(BANK33, GCOMP4 + 3u), gcomp4_terminate},
+    {KEY(BANK33, GCOMP4 + 4u), gcomp4_proceed},
+    {KEY(BANK33, GCOMP4 + 5u), gcomp4_enter},
+    {KEY(BANK33, GCOMP5), gcomp5},
+    {KEY(BANK33, GCOMP5 + 2u), gcomp5_after_mkreleas},
+    {KEY(BANK33, GCOMP5 + 4u), gcomp5_after_downflag},
+    {KEY(BANK33, GCOMP5 + 6u), gcomp5_after_newmodex},
+    {KEY(BANK33, GCOMP5 + 010u), gcomp5_after_phaschng},
+    {KEY(BANK33, GTSOPTCS + 2u), gtsoptcs_after_alarm},
+    {KEY(BANK33, TARGDRVE), targdrve},
+    {KEY(BANK33, TARGDRVE + 014u), targdrve_after_exit},
+    {KEY(BANK33, RETARG + 5u), retarg_after_sxtmark},
+    {KEY(BANK33, RETARG + 7u), retarg_bad_stall},
+    {KEY(BANK33, RETARG + 010u), retarg_after_optstall},
+    {KEY(BANK33, RETARG + 014u), retarg_mark},
+    {KEY(BANK33, AZMTHCG1), azmthcg1},
+    {KEY(BANK33, AZMTHCG1 + 5u), azmthcg1_after_exit},
+    {KEY(BANK33, AZMTHCG1 + 011u), azmthcg1_flash},
+    {KEY(BANK33, AZMTHCG1 + 014u), azmthcg1_terminate},
+    {KEY(BANK33, AZMTHCG1 + 015u), azmthcg1_proceed},
+    {KEY(BANK33, AZMTHCG1 + 016u), azmthcg1_enter},
+    {KEY(BANK33, AZMTHCG1 + 025u), azmthcg1_after_load},
+    {KEY(BANK33, AZMTHCG1 + 031u), azmthcg1_after_phaschng},
 };
 
 static const struct point *point_at(uint16_t at)
@@ -331,14 +321,13 @@ static uint16_t z_physical(void)
 
 /* ---- The run ---- */
 
-enum step { GO_ON, LEFT, IDLE, UNWRITTEN };
+enum step { GO_ON, LEFT, IDLE };
 
 static enum step step(bool fixed_fixed_key)
 {
     const struct point *point = point_at(z_physical());
 
     if (!point) return LEFT;
-    if (!point->routine) return UNWRITTEN;
     /* (From FINETIME's keys, under any EBANK: the faithful port reads the
      * file's switched words in EBANK 5 whatever EBANK holds, which the
      * readable code does not model.) */
@@ -360,7 +349,6 @@ static enum exec_status steps(bool fixed_fixed_key)
         case GO_ON: continue;
         case LEFT: return EXEC_OK;
         case IDLE: return EXEC_IDLE;
-        case UNWRITTEN: return EXEC_INVALID_ACTION; /* (run() hands it on) */
         }
     }
     return EXEC_OUT_OF_SCOPE;
@@ -368,12 +356,11 @@ static enum exec_status steps(bool fixed_fixed_key)
 
 /* ---- The keys, in the faithful tables' order ---- */
 
-/* The faithful tables, renamed. */
-extern const agc_routine_table faithful_cm_imu_calibration_basic,
-    faithful_cm_imu_calibration_interpretive;
+/* The faithful order pairs, renamed. */
+extern const agc_routine_table faithful_cm_imu_calibration_interpretive;
 
-/* Each basic key's routine: the readable one, or the faithful port's. */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each basic key's routine. */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     static const agc_native_program none;
@@ -383,19 +370,17 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     apollo_overlay_state before;
     enum exec_status status;
 
-    if (!point || !point->routine)
-        return faithful_cm_imu_calibration_basic.entries[index].call(program, state, device);
-    if (!state || !io) return EXEC_OUT_OF_SCOPE;
+    if (!point || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program ? program : &none, state, io);
-    if (!sane((word)((key / 1024u) << 10), fixed_fixed)) return EXEC_OUT_OF_SCOPE;
+    if (!sane((word)((key / 1024u) << 10), fixed_fixed,
+              fixed_fixed || key == KEY(BANK33, PERFERAS + 1u)))
+        return EXEC_OUT_OF_SCOPE;
     before = *state;
     kept = *io;
     status = steps(fixed_fixed);
     if (status == EXEC_OK || status == EXEC_IDLE) return status;
     *state = before;
     *io = kept;
-    if (status == EXEC_INVALID_ACTION) /* a point no part has written yet */
-        return faithful_cm_imu_calibration_basic.entries[index].call(program, state, device);
     return EXEC_OUT_OF_SCOPE;
 }
 
@@ -411,14 +396,14 @@ bool cm_imu_cal_readable(uint16_t key, bool order_pair)
 {
     const struct point *point = point_at(key);
 
-    return !order_pair && point && point->routine;
+    return !order_pair && point;
 }
 
 #define BASIC(i, bank, address)                                                                    \
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
