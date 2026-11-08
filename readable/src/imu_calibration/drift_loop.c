@@ -236,6 +236,25 @@ void rstgts1_after_zeroing(void)
     intpret();
 }
 
+/* RSTGTS1 +015 -- p. 434. GCOMPSW (the word before it too, from the SLOAD:
+ * STOVL GCOMPSW -1) cleared; from INTVAL +2, ALX1S and CMPX1 and the
+ * first gains ("LOAD SOME INITIAL DRIFT GAINS"); GCOMP and DELVX cleared
+ * ("GCOMPZER SUBROUTINE NO LONGER NEEDED"). */
+static const word rstgts1_words[] = {
+    ORDER(SLOAD),
+    ADDRESS_PLUS_ONE(SCHZEROS),
+    (word)(STOVL(GCOMPSW) - 1u), /* STOVL GCOMPSW -1 */
+    ADDRESS_PLUS_ONE_AT(INTVAL, 2),
+    STOVL(ALX1S),
+    ADDRESS_PLUS_ONE(SCHZEROS),
+    STORE(GCOMP),
+    STORE(DELVX),
+    ORDER(EXIT),
+};
+
+const struct interpretive_code RSTGTS1_CODE = {033u, RSTGTS1 + 015u, COUNT(rstgts1_words),
+                                               rstgts1_words};
+
 /* ESTIMS +031 -- p. 434, the EXIT. GEOCOMP1: "NON ZERO IF COMPASS" (the
  * prelaunch alignment): then the earth rate vector first (ERTHRVSE, in the
  * interpreter); +0 (the drift test) to SLEEPIE +1. (-0 would run the CALL
@@ -270,6 +289,16 @@ void estims_compass(void)
     tc_at(ESTIMS + 034u);
     intpret();
 }
+
+/* ESTIMS +035 -- p. 434. */
+static const word estims_words[] = {
+    ORDER(CALL),
+    ADDRESS(ERTHRVSE),
+    ORDER(EXIT),
+};
+
+const struct interpretive_code ESTIMS_CODE = {033u, ESTIMS + 035u, COUNT(estims_words),
+                                              estims_words};
 
 /* ESTIMS +040 -- p. 435, ERTHRVSE's EXIT. ERECTIME the time to erect the
  * platform ("TIMES FIVE IS THE NUM OF SEC ERECTING"); the major mode P02. */
@@ -591,6 +620,155 @@ void normlop(void)
     tc_at(NORMLOP);
     intpret();
 }
+
+/* NORMLOP +1 -- pp. 438-441. The filter, one pass a second:
+ *   - S1 (the index step) from INTVAL; DELVX, the PIPA counts, through
+ *     XSM (to stable member axes), doubled (VSL1); its Y and Z
+ *     components, Y negated, into DPIPAY and DPIPAZ.
+ *   - GEOCOMP1 positive (-GEOCOMP1 negative): gyrocompassing, ALWAYSG ("DO
+ *     A QUICK COMPASS").
+ *   - ALCGKK: when the gains are due (ALTIMS +0 or positive), ALKCG loads
+ *     the next set: ALDK's words from ALFDK +144D (by X1 from ALX1S, which
+ *     steps by -2 each word and is kept back in ALX1S), "LOADS SLOPES AND
+ *     TIME CONSTANTS AT RQST".
+ *   - ALFLT3, DELMLP: for each axis (X1 8, then 4: Y and Z), the
+ *     measurement DELM: the PIPA count, scaled by PIPASC, less the
+ *     integral INTY (shifted right 9: SLR BDSU), which takes its place;
+ *     less the velocity VLAUN scaled (VELSC); stored twice, DELM and
+ *     DELM +2.
+ *   - ALILP: each gain ALK times its rate of change ALDK (X2 8, 4).
+ *   - ALKLP: for each axis, the filter's update: INTY, ALK +12D and INTY
+ *     +16D gain by gain, and VLAUN by the sway gain ALSK (X1 from CMPX1,
+ *     +-1, the axis's sign).
+ *   - LOOSE: "EXTRAPOLATE SWAY VARIABLES": ACCWD, VLAUN and POSNV (each
+ *     axis's) through TRANSM1, and back.
+ *   - BOOP: "EVALUATE SINES AND COSINES" of the angles ANGX.. (X1 2, X2 6:
+ *     by GEORGEJ, 2/pi), into the push-down list: sines at 16D, cosines
+ *     at 22D, by X2.
+ *   - PERFERAS: EXIT. */
+static const word normlop_words[] = {
+    ORDER(DLOAD),
+    ADDRESS_PLUS_ONE(INTVAL),
+    STOVL(S1),
+    ADDRESS_PLUS_ONE(DELVX),
+    ORDERS(VXM, VSL1),
+    ADDRESS_PLUS_ONE(XSM),
+    ORDERS(DLOAD, DCOMP),
+    ADDRESS_PLUS_ONE_AT(MPAC, 3),
+    STODL(DPIPAY),
+    ADDRESS_PLUS_ONE_AT(MPAC, 5),
+    STORE(DPIPAZ),
+    ORDERS(SETPD, AXT_1),
+    ADDRESS_PLUS_ONE_D(0),
+    NUMBER(8),
+    ORDERS(SLOAD, DCOMP),
+    ADDRESS_PLUS_ONE(GEOCOMP1),
+    ORDER(BMN),
+    ADDRESS(ALWAYSG), /* "DO A QUICK COMPASS" */
+    /* ALCGKK */ ORDERS(SLOAD, BMN),
+    ADDRESS_PLUS_ONE(ALTIMS),
+    ADDRESS(ALFLT3),                  /* "NO NEW GAINS NEEDED" */
+    /* ALKCG */ ORDERS(AXT_2, LXA_1), /* "LOADS SLOPES AND TIME CONSTANTS AT RQST" */
+    NUMBER(12),
+    ADDRESS(ALX1S),
+    /* ALKCG2 */ ORDERS(DLOAD_STAR, INCR_1),
+    ADDRESS_PLUS_ONE_AT_X1(ALFDK, 144),
+    MINUS_NUMBER(2), /* DEC -2 */
+    STORE_AT_X2(ALDK, 10),
+    ORDERS(TIX_2, SXA_1),
+    ADDRESS(ALKCG2),
+    ADDRESS(ALX1S),
+    /* ALFLT3 */ ORDER(AXT_1), /* "MEASUREMENT INCORPORATION ROUTINES" */
+    NUMBER(8),
+    /* DELMLP */ ORDERS(DLOAD_STAR, DMP),
+    ADDRESS_PLUS_ONE_AT_X1(DPIPAY, 8),
+    ADDRESS_PLUS_ONE(PIPASC),
+    ORDERS(SLR, BDSU_STAR),
+    SLR_COUNT(9),
+    ADDRESS_PLUS_ONE_AT_X1(INTY, 8),
+    STORE_AT_X1(INTY, 8),
+    ORDERS(PDDL, DMP_STAR),
+    ADDRESS_PLUS_ONE(VELSC),
+    ADDRESS_PLUS_ONE_AT_X1(VLAUN, 8),
+    ORDER(SL2R),
+    ORDERS(DSU, STADR),
+    AFTER_STADR(STORE_AT_X1(DELM, 8)),
+    STORE_AT_X1(DELM, 10),
+    ORDERS(TIX_1, AXT_2),
+    ADDRESS(DELMLP),
+    NUMBER(4),
+    /* ALILP */ ORDERS(DLOAD_STAR, DMPR_STAR),
+    ADDRESS_PLUS_ONE_AT_X2(ALK, 4),
+    ADDRESS_PLUS_ONE_AT_X2(ALDK, 4),
+    STORE_AT_X2(ALK, 4),
+    ORDERS(TIX_2, AXT_2),
+    ADDRESS(ALILP),
+    NUMBER(8),
+    /* ALKLP */ ORDERS(LXC_1, SXA_1),
+    ADDRESS(CMPX1),
+    ADDRESS(CMPX1),
+    ORDERS(DLOAD_STAR, DMPR_STAR),
+    ADDRESS_PLUS_ONE_AT_X1(ALK, 1),
+    ADDRESS_PLUS_ONE_AT_X2(DELM, 8),
+    ORDER(DAD_STAR),
+    ADDRESS_PLUS_ONE_AT_X2(INTY, 8),
+    STORE_AT_X2(INTY, 8),
+    ORDERS(DLOAD_STAR, DAD_STAR),
+    ADDRESS_PLUS_ONE_AT_X2(ALK, 12),
+    ADDRESS_PLUS_ONE_AT_X2(ALDK, 12),
+    STORE_AT_X2(ALK, 12),
+    ORDERS(DMPR_STAR, DAD_STAR),
+    ADDRESS_PLUS_ONE_AT_X2(DELM, 8),
+    ADDRESS_PLUS_ONE_AT_X2(INTY, 16),
+    STORE_AT_X2(INTY, 16),
+    ORDERS(DLOAD_STAR, DMP_STAR),
+    ADDRESS_PLUS_ONE_AT_X1(ALSK, 1),
+    ADDRESS_PLUS_ONE_AT_X2(DELM, 8),
+    ORDERS(SL1R, DAD_STAR),
+    ADDRESS_PLUS_ONE_AT_X2(VLAUN, 8),
+    STORE_AT_X2(VLAUN, 8),
+    ORDERS(TIX_2, AXT_1),
+    ADDRESS(ALKLP),
+    NUMBER(8),
+    /* LOOSE */ ORDERS(DLOAD_STAR, PDDL_STAR), /* "EXTRAPOLATE SWAY VARIABLES" */
+    ADDRESS_PLUS_ONE_AT_X1(ACCWD, 8),
+    ADDRESS_PLUS_ONE_AT_X1(VLAUN, 8),
+    ORDERS(PDDL_STAR, VDEF),
+    ADDRESS_PLUS_ONE_AT_X1(POSNV, 8),
+    ORDERS(MXV, VSL1),
+    ADDRESS_PLUS_ONE(TRANSM1),
+    ORDER(DLOAD),
+    ADDRESS_PLUS_ONE(MPAC),
+    STORE_AT_X1(POSNV, 8),
+    ORDER(DLOAD),
+    ADDRESS_PLUS_ONE_AT(MPAC, 3),
+    STORE_AT_X1(VLAUN, 8),
+    ORDER(DLOAD),
+    ADDRESS_PLUS_ONE_AT(MPAC, 5),
+    STORE_AT_X1(ACCWD, 8),
+    ORDER(TIX_1),
+    ADDRESS(LOOSE),
+    ORDERS(AXT_2, AXT_1), /* "EVALUATE SINES AND COSINES" */
+    NUMBER(6),
+    NUMBER(2),
+    /* BOOP */ ORDERS(DLOAD_STAR, DMPR),
+    ADDRESS_PLUS_ONE_AT_X1(ANGX, 2),
+    ADDRESS_PLUS_ONE(GEORGEJ),
+    ORDER(SR2R),
+    ORDERS(PUSH, SIN),
+    ORDERS(SL3R, XAD_1),
+    ADDRESS(X1),
+    STORE_X2_D(16),
+    ORDER(DLOAD), /* (the angle back from the push-down list) */
+    ORDER(COS),
+    STORE_X2_D(22), /* "COSINES" */
+    ORDER(TIX_2),
+    ADDRESS(BOOP),
+    /* PERFERAS */ ORDER(EXIT),
+};
+
+const struct interpretive_code NORMLOP_CODE = {033u, NORMLOP + 1u, COUNT(normlop_words),
+                                               normlop_words};
 
 /* ---- SOMEERRR and SOMERR2 -- p. 442 ---- */
 
