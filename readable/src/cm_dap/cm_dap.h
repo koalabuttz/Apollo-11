@@ -35,19 +35,22 @@
  *     selection logic, or in free mode as jet firing times.
  *
  * AUTOMATIC_MANEUVERS.agc (pp. 1025-1036, bank 21), the rest of phase 2,
- * c64-port/src/cm_auto_man.c, written part by part:
+ * c64-port/src/cm_auto_man.c:
  *
  *   AHFNOROT, FREECONT, ATTHOLD, HOLDFUNC, GRABANG (attitude_hold.c): with
  *     no manual rotation, free mode's minimum impulses, or the attitude
  *     held and its errors.
- *   JETS to NJ22 (switching.c): the start of the jet switching logic, each
- *     axis' rate and attitude errors placed in the phase plane.
+ *   JETS to J24 (switching.c): the jet switching logic, each axis' rate
+ *     and attitude errors placed in the phase plane, and the change in
+ *     rate its region calls for.
+ *   JTIME, DOJET, T6PROG (jet_time.c): the change as a jet-on time for each
+ *     axis, and phase 3 set for the next T5 interrupt.
  *
  * All basic code. Each function runs from a word the program can come
  * back to (an entry, the word after a call out of the file) until control
  * leaves its file's code (the RCS DAP's to RESUME, NOVAC, IBNKCALL,
  * SMALLMP, DPADD, TC Q, AHFNOROT, JETS; AUTOMATIC_MANEUVERS's to REINIT,
- * STICKCHK, T6PROGM), or reaches a word where the faithful port's run
+ * STICKCHK, T6PROGM, SMALLMP, RESUME), or reaches a word where the faithful port's run
  * stops: a key of its own, run by the function named for it. */
 #ifndef READABLE_CM_DAP_H
 #define READABLE_CM_DAP_H
@@ -225,12 +228,36 @@ void holdfunc(void);                /* HOLDFUNC */
 void grabang(void);                 /* GRABANG */
 
 /* ---- AUTOMATIC_MANEUVERS.agc, jet switching logic -- switching.c ---- */
-void jets(void);    /* JETS */
-void jloop(void);   /* JLOOP */
-void inhold(void);  /* INHOLD */
-void signck1(void); /* SIGNCK1 */
-void posvel(void);  /* POSVEL */
-void negvel(void);  /* NEGVEL */
+void jets(void);        /* JETS */
+void jloop(void);       /* JLOOP */
+void inhold(void);      /* INHOLD */
+void signck1(void);     /* SIGNCK1 */
+void posvel(void);      /* POSVEL */
+void negvel(void);      /* NEGVEL */
+void nj22_slope(void);  /* NJ22 +2: EXTEND; DV SLOPE */
+void tcf_nj23(void);    /* SIGNCK3 -1: TCF NJ23 */
+void signck3(void);     /* SIGNCK3 */
+void j18(void);         /* J18 */
+void j20(void);         /* J20 */
+void j21(void);         /* J21 */
+void jn(void);          /* JN */
+void jp(void);          /* JP */
+void j22(void);         /* J22 */
+void tcf_jn(void);      /* J22 +1, SIGNCK5 +1, +2: TCF JN */
+void tcf_signck5(void); /* J22 +2: TCF SIGNCK5 */
+void tcf_jp(void);      /* J22 +3, SIGNCK5 +3, +4: TCF JP */
+void signck5(void);     /* SIGNCK5 */
+void j23(void);         /* J23 */
+void j24(void);         /* J24 */
+void j24_kmpac(void);   /* J24 +5: DXCH KMPAC */
+
+/* ---- AUTOMATIC_MANEUVERS.agc, the jet-on times -- jet_time.c ---- */
+void jtime(void);        /* JTIME */
+void jtime_bit11(void);  /* JTIME +3: CA BIT11 */
+void jtime_ccs(void);    /* JTIME +5: CCS KMPAC */
+void dojet_next(void);   /* DOJET +2: CCS SPNDX */
+void t6prog(void);       /* T6PROG */
+void t6prog_t5loc(void); /* T6PROG +2: DXCH T5LOC */
 
 #endif
 

@@ -4766,6 +4766,16 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define NJ22             ((word)K_NJ22)
 #define WLH_SLOP         ((word)KW_WLH_SLOP) /* WLH/SLOP, DEC .00463: "= WL+H/SLOPE" */
 #define WL_H_SLP         ((word)KW_WL_H_SLP) /* WL-H/SLP, DEC .00277: "= WL-H/SLOPE" */
+#define NJ23             ((word)K_NJ23)
+#define SIGNCK3          ((word)K_SIGNCK3)
+#define SIGNCK4          ((word)K_SIGNCK4)
+#define SIGNCK5          ((word)K_SIGNCK5)
+#define JN               ((word)K_JN)
+#define JP               ((word)K_JP)
+#define J24              ((word)K_J24)
+#define JTIME            ((word)K_JTIME)
+#define DOJET            ((word)K_DOJET)
+#define SLOPE2           ((word)KW_SLOPE2) /* DEC .32: "= 0.8 DEG/SEC/DEG" */
 #endif
 
 /* NO.CORES + 1 core sets. */
