@@ -51,6 +51,12 @@
  *     by "DUMPING PULSE BURSTS" into the pitch outcounter every 20 ms,
  *     from each DAP pass and from a WAITLIST task between them.
  *
+ * TVCROLLDAP.agc (pp. 984-998, bank 16), c64-port/src/cm_tvc_roll.c:
+ *
+ *   ROLLDAP, NOROLL1 (tvcrolldap.c): the "TVC ROLL AUTOPILOT", a
+ *     half-second WAITLIST task that fires roll jet pairs, timed by T6,
+ *     to hold the outer gimbal angle within its dead band.
+ *
  * All basic code. Each function runs from a word the program can come
  * back to (an entry, the word after a call out of the file) until control
  * leaves the file's code (RESUME, NOQRSM, IBNKCALL, ISWCALL, WAITLIST,
@@ -183,6 +189,10 @@ void hack(void);                /* HACK */
 void hack_after_waitlist(void); /* HACK +6 */
 void hackwlst(void);            /* HACKWLST */
 void bunker_return(void);       /* TC BUNKER, run as TC <its word> */
+
+/* TVCROLLDAP.agc -- tvcrolldap.c */
+void rolldap(void); /* ROLLDAP */
+void noroll1(void); /* NOROLL1 */
 
 #endif
 
