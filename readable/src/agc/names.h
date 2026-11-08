@@ -4776,6 +4776,7 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define JTIME            ((word)K_JTIME)
 #define DOJET            ((word)K_DOJET)
 #define SLOPE2           ((word)KW_SLOPE2) /* DEC .32: "= 0.8 DEG/SEC/DEG" */
+#define QUADANGL         ((word)KW_QUADANGL) /* DEC 660: "= 7.25 DEGREES" */
 #endif
 
 /* NO.CORES + 1 core sets. */

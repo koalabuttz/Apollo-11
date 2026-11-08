@@ -292,7 +292,9 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'cm_rcs_dap.o': lambda m: ['cm_rcs_dap_basic', 'cm_rcs_dap_interpretive',
                                       'cm_rcs_dap_hot_routines'] if m == 'cm' else [],
            'cm_auto_man.o': lambda m: ['cm_auto_man_basic', 'cm_auto_man_interpretive',
-                                       'cm_auto_man_hot_routines'] if m == 'cm' else []}
+                                       'cm_auto_man_hot_routines'] if m == 'cm' else [],
+           'cm_rcs_dap_exec.o': lambda m: ['cm_rcs_dap_exec_basic', 'cm_rcs_dap_exec_interpretive']
+                                if m == 'cm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
