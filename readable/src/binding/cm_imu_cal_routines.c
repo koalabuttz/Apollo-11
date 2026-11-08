@@ -382,6 +382,16 @@ static const struct interpretive_code *const codes[] = {
     &RSTGTS1_CODE,
     &ESTIMS_CODE,
     &NORMLOP_CODE,
+    /* Part 5: pp. 441-446 */
+    &SETUPER1_CODE,
+    &TORQINCH_CODE,
+    &POSN17C_CODE,
+    &ALWAYSG_CODE,
+    &LASTGTS_CODE,
+    &RESTAIER_CODE,
+    &RESTEST1_CODE,
+    &RESTEST3_CODE,
+    &NOAZCHGE_CODE,
 };
 
 /* The table an address of a bank is in, or none. */

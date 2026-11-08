@@ -16,12 +16,17 @@
  *
  * Every word is in bank 33. The erasable words are EBANK 5's but those of
  * the unswitched banks (CDUX, 1/PIPADT, LGYRO). The interpretive code
- * among the basic (SETUPER1, POSN17C, LASTGTS ...) the faithful port runs. */
+ * among the basic (SETUPER1, POSN17C, ALWAYSG, LASTGTS ...) is written in
+ * the listing's notation: tables the readable interpreter runs
+ * (src/interpreter/notation.h). */
 #include "imu_calibration.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
+#include "../interpreter/notation.h"
 
 #if COMANCHE055
+
+#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* ---- The drift test's end: PERFERAS to TORQINCH -- pp. 441-442 ---- */
 
@@ -43,6 +48,25 @@ static void setuper1(void)
     tc_at(SETUPER1);
     intpret();
 }
+
+/* SETUPER1 +1 -- p. 441. "ANGLES FROM DRIFT TEST ONLY": OGC is minus the
+ * vector (ANGX, ANGY, ANGZ), times GEORGEJ, times the matrix XSM, halved. */
+static const word setuper1_words[] = {
+    ORDERS(DLOAD, PDDL), /* "ANGLES FROM DRIFT TEST ONLY" */
+    ADDRESS_PLUS_ONE(ANGZ),
+    ADDRESS_PLUS_ONE(ANGY),
+    ORDERS(PDDL, VDEF),
+    ADDRESS_PLUS_ONE(ANGX),
+    ORDERS(VCOMP, VXSC),
+    ADDRESS_PLUS_ONE(GEORGEJ),
+    ORDERS(MXV, VSR1),
+    ADDRESS_PLUS_ONE(XSM),
+    STORE(OGC),
+    ORDER(EXIT),
+};
+
+const struct interpretive_code SETUPER1_CODE = {033u, SETUPER1 + 1u, COUNT(setuper1_words),
+                                                setuper1_words};
 
 /* ONCEMORE +5: "FOR TROUBLESHOOTING POSNS 2$4 VD", CDUX into LOSVEC +1. */
 void oncemore_cdux(void)
@@ -132,6 +156,16 @@ void torqinch_erate(void)
     tc_at(TORQINCH + 010u);
     intpret();
 }
+
+/* TORQINCH +011 -- p. 441. "SET UP ERATE FOR PIP TEST OR COMPASS". */
+static const word torqinch_words[] = {
+    ORDER(CALL), /* "SET UP ERATE FOR PIP TEST OR COMPASS" */
+    ADDRESS(ERTHRVSE),
+    ORDER(EXIT),
+};
+
+const struct interpretive_code TORQINCH_CODE = {033u, TORQINCH + 011u, COUNT(torqinch_words),
+                                                torqinch_words};
 
 /* TORQINCH +014 -- p. 442. "GO TO IMU2 FOR A PIPA TEST AND DISPLAY". */
 void torqinch_after_exit(void)
@@ -226,6 +260,89 @@ void posn17c_after_exit(void)
     tc_return(E(QPLACE));
 }
 
+/* POSN17C +5 -- p. 443. "ALL THIS TO INITIALIZE MATRIX": with the azimuth
+ * A (NEWAZ1), XSM +2 = -cos A, XSM +4 = sin A, YSM +2 = sin A and
+ * YSM +4 = cos A. */
+/* clang-format off */
+static const word posn17c_words[] = {
+    ORDERS(DLOAD, PUSH), /* the azimuth A, kept on the list */
+    ADDRESS_PLUS_ONE(NEWAZ1),
+    ORDER(SIN),
+    STORE_AT(XSM, 4),
+    STODL_AT(YSM, 2),
+    ORDER(COS),
+    STORE_AT(YSM, 4),
+    ORDER(DCOMP),
+    STORE_AT(XSM, 2),
+    ORDER(EXIT),
+};
+/* clang-format on */
+
+const struct interpretive_code POSN17C_CODE = {033u, POSN17C + 5u, COUNT(posn17c_words),
+                                               posn17c_words};
+
+/* ---- The gyrocompassing's filter: ALWAYSG -- pp. 443-444 ---- */
+
+/* ALWAYSG -- p. 443, the "JOB DONE EVERY ITERATION THROUGH COMPASS
+ * PROGRAM.SET BY TASK ALLOOP": "COMPASS AND ERECT". For each axis (TIX,1
+ * steps X1 down), FILDELV1 follows the PIPA counts DPIPAY by the gain
+ * GEOCONS1, INTVEC1 sums FILDELV1, and (FILDELV1 + GEOCONS2 INTVEC1)
+ * GEOCONS5 goes on the push-down list. While ERECTIM1 is not zero,
+ * "ERECTION ONLY": THETAN1 +2 and THETAN1 +4 from the list. Once it is,
+ * COMPGS, "COMPASS": THETAN1 gains FILDELV1, and the GEOCONS3 and
+ * GEOCONS4 terms. */
+static const word alwaysg_words[] = {
+    ORDERS(DLOAD_STAR, DSU_STAR), /* "COMPASS AND ERECT" */
+    ADDRESS_PLUS_ONE_AT_X1(DPIPAY, 8),
+    ADDRESS_PLUS_ONE_AT_X1(FILDELV1, 8),
+    ORDERS(DMPR, DAD_STAR),
+    ADDRESS_PLUS_ONE(GEOCONS1),
+    ADDRESS_PLUS_ONE_AT_X1(FILDELV1, 8),
+    STORE_AT_X1(FILDELV1, 8),
+    ORDER(DAD_STAR),
+    ADDRESS_PLUS_ONE_AT_X1(INTVEC1, 8),
+    STORE_AT_X1(INTVEC1, 8),
+    ORDERS(DMPR, DAD_STAR),
+    ADDRESS_PLUS_ONE(GEOCONS2),
+    ADDRESS_PLUS_ONE_AT_X1(FILDELV1, 8),
+    ORDERS(DMPR, PUSH),
+    ADDRESS_PLUS_ONE(GEOCONS5),
+    ORDERS(TIX_1, SLOAD),
+    ADDRESS(ALWAYSG),
+    ADDRESS_PLUS_ONE(ERECTIM1),
+    ORDERS(BZE, DLOAD),
+    ADDRESS(COMPGS),
+    ADDRESS_PLUS_ONE_AT(THETAN1, 2),
+    ORDERS(DSU, STADR),
+    AFTER_STADR(STODL_AT(THETAN1, 2)), /* "ERECTION ONLY." */
+    ORDER(BDSU),
+    ADDRESS_PLUS_ONE_AT(THETAN1, 4),
+    STORE_AT(THETAN1, 4),
+    ORDER(GOTO),
+    ADDRESS(ADDINDRF),
+    /* COMPGS */ ORDERS(DLOAD, DAD), /* "COMPASS" */
+    ADDRESS_PLUS_ONE(THETAN1),
+    ADDRESS_PLUS_ONE(FILDELV1),
+    STODL(THETAN1),
+    ADDRESS_PLUS_ONE(FILDELV1),
+    ORDERS(DMPR, BDSU),
+    ADDRESS_PLUS_ONE(GEOCONS3),
+    ADDRESS_PLUS_ONE_AT(THETAN1, 4),
+    STODL_AT(THETAN1, 4),
+    ADDRESS_PLUS_ONE_AT(FILDELV1, 4),
+    ORDERS(DMPR, BDSU),
+    ADDRESS_PLUS_ONE(GEOCONS3),
+    ADDRESS_PLUS_ONE_AT(THETAN1, 2),
+    ORDERS(PDDL, DMPR),
+    ADDRESS_PLUS_ONE_AT(INTVEC1, 4),
+    ADDRESS_PLUS_ONE(GEOCONS4),
+    ORDERS(BDSU, STADR),
+    AFTER_STADR(STORE_AT(THETAN1, 2)),
+    /* ADDINDRF */ ORDER(EXIT),
+};
+
+const struct interpretive_code ALWAYSG_CODE = {033u, ALWAYSG, COUNT(alwaysg_words), alwaysg_words};
+
 /* ---- The gyrocompassing's torquing: ENDGTSAL to NOCHORLD --
  * pp. 445-446 ---- */
 
@@ -236,6 +353,19 @@ static void lastgts(void)
     tc_at(LASTGTS);
     intpret();
 }
+
+/* LASTGTS +1 -- p. 445. */
+static const word lastgts_words[] = {
+    ORDER(VLOAD), /* the earth rate */
+    ADDRESS_PLUS_ONE(ERCOMP1),
+    STODL(THETAX1),
+    ADDRESS_PLUS_ONE(TMARK),
+    STORE(ALK),
+    ORDER(EXIT), /* "PREVIOUS SECTION WAS FOR RESTARTS" */
+};
+
+const struct interpretive_code LASTGTS_CODE = {033u, LASTGTS + 1u, COUNT(lastgts_words),
+                                               lastgts_words};
 
 /* ENDGTSAL +3 -- p. 445. "YES BUT ARE GYROS BUSY" (LGYRO): "BUSY-GET THEM
  * .5 SECONDS FROM NOW". */
@@ -286,6 +416,23 @@ void restaier_after_phaschng(void)
     intpret();
 }
 
+/* RESTAIER +3 -- p. 445. ERCOMP1 = XSM THETAN1, shifted left one (VSL1),
+ * plus THETAX1; TMARK the time ALK. */
+static const word restaier_words[] = {
+    ORDERS(VLOAD, MXV),
+    ADDRESS_PLUS_ONE(THETAN1),
+    ADDRESS_PLUS_ONE(XSM),
+    ORDERS(VSL1, VAD),
+    ADDRESS_PLUS_ONE(THETAX1),
+    STODL(ERCOMP1),
+    ADDRESS_PLUS_ONE(ALK),
+    STORE(TMARK),
+    ORDER(EXIT),
+};
+
+const struct interpretive_code RESTAIER_CODE = {033u, RESTAIER + 3u, COUNT(restaier_words),
+                                                restaier_words};
+
 /* RESTAIER +014: "TORQUE IT ALL IN" (EARTHR*). */
 void restaier_after_exit(void)
 {
@@ -309,6 +456,17 @@ void restest1(void)
     tc_at(RESTEST1);
     intpret();
 }
+
+/* RESTEST1 +1 -- p. 445. */
+static const word restest1_words[] = {
+    ORDER(VLOAD),
+    ADDRESS_PLUS_ONE(SCHZEROS),
+    STORE(THETAN1),
+    ORDER(EXIT),
+};
+
+const struct interpretive_code RESTEST1_CODE = {033u, RESTEST1 + 1u, COUNT(restest1_words),
+                                                restest1_words};
 
 /* RESTEST1 +7: the phase (PHASCHNG, OCT 00255), then RESTEST3. */
 void restest1_phaschng(void)
@@ -339,6 +497,30 @@ void restest3(void)
     tc_at(RESTEST3);
     intpret();
 }
+
+/* RESTEST3 +1 -- p. 445. The change LAUNCHAZ - OLDAZMTH in 0D; zero,
+ * NOAZCHGE. PREMTRXC gains one ("DOES NOT CHANGE LAUNCHAZ"), NEWAZMTH is
+ * LAUNCHAZ, and ADERCOMP: ERCOMP +4 the change. */
+static const word restest3_words[] = {
+    ORDER(DLOAD),
+    ADDRESS_PLUS_ONE(LAUNCHAZ),
+    ORDERS(DSU, BZE),
+    ADDRESS_PLUS_ONE(OLDAZMTH),
+    ADDRESS(NOAZCHGE),
+    STORE_D(0),
+    ORDERS(SLOAD, DAD),
+    ADDRESS_PLUS_ONE_AT(ONEDPP, 1),
+    ADDRESS_PLUS_ONE(PREMTRXC), /* "DOES NOT CHANGE LAUNCHAZ" */
+    STODL(PREMTRXC),
+    ADDRESS_PLUS_ONE(LAUNCHAZ),
+    STODL(NEWAZMTH),
+    ADDRESS_PLUS_ONE_D(0),
+    /* ADERCOMP */ STORE_AT(ERCOMP, 4),
+    ORDER(EXIT),
+};
+
+const struct interpretive_code RESTEST3_CODE = {033u, RESTEST3 + 1u, COUNT(restest3_words),
+                                                restest3_words};
 
 /* RESTEST3 +020 -- p. 446. The matrix for the new azimuth (POSN17C). */
 void restest3_after_exit(void)
@@ -411,6 +593,15 @@ void nochorld(void)
     tc_at(ANNNNNN + 2u);
     sleepie_plus1();
 }
+
+/* NOAZCHGE -- p. 446, RESTEST3's way out when the azimuth has not
+ * changed. */
+static const word noazchge_words[] = {
+    ORDER(EXIT),
+};
+
+const struct interpretive_code NOAZCHGE_CODE = {033u, NOAZCHGE, COUNT(noazchge_words),
+                                                noazchge_words};
 
 /* NOAZCHGE +1 -- p. 446, after the EXIT: no new azimuth. PREMTRXC one,
  * and NOCHORLD. */
