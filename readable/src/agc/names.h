@@ -4742,6 +4742,12 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define OCT16000         ((word)KW_OCT16000)
 #define OCT01760         ((word)KW_OCT01760)
 #define PLUS_14MS        ((word)KW__EQ_P14MS) /* =+14MS, DEC 23 */
+#define KRESUME2         ((word)K_KRESUME2)
+#define FDAITOTL         ((word)K_FDAITOTL)
+#define WRTN22           ((word)K_WRTN22)
+#define GETAKS           ((word)K_GETAKS)
+#define WRTN17           ((word)K_WRTN17)
+#define DELTATT          ((word)KW_DELTATT) /* OCT 37770: "80MS (TIME5)" */
 #endif
 
 /* NO.CORES + 1 core sets. */

@@ -23,14 +23,16 @@
  *     angles), the one-second call of the gimbal-to-body matrix update
  *     (KMATRIX) and, in an automatic maneuver, the desired angles stepped
  *     on by their increments (DELOOP).
- *   DACNDLS, NEEDLER, NEEDLES (needles.c): the attitude errors on the FDAI
- *     needles, through the IMU error counters and their DACs.
+ *   DACNDLS, NEEDLER, NEEDLES, FDAIDSP2 (needles.c): the attitude errors
+ *     on the FDAI needles, through the IMU error counters and their DACs,
+ *     and the errors they show.
  *   REINIT, FRESHDAP, REDAP, ZEROJET (initialize.c): the autopilot started
  *     again: the crew's DAP data decoded, its words and the jets zeroed,
  *     the rate filter primed, and the T5 program begun.
- *   T5PHASE2 to SPNDXCHK (manual.c): the start of phase 2, the RHC's
- *     manual rotation commands, as commanded rates in WBODY and the
- *     attitude errors they build up, for the jet selection logic.
+ *   T5PHASE2 to SPNDXCHK, FREEFUNC, STICKCHK, KALUPDT (manual.c): the
+ *     start of phase 2, the RHC's manual rotation commands, as commanded
+ *     rates in WBODY and the attitude errors they build up, for the jet
+ *     selection logic, or in free mode as jet firing times.
  *
  * All basic code. Each function runs from a word the program can come
  * back to (an entry, the word after a call out of the file) until control
@@ -125,6 +127,14 @@ void needles(void);                /* NEEDLES */
 void dacloop(void);                /* DACLOOP */
 void dacloop_limit(void);          /* DACLOOP +6: CCS A */
 void dacloop_return(void);         /* DACLOOP +034: TC Q */
+void fdaidsp2(void);               /* FDAIDSP2 */
+void fdaidsp2_ak(void);            /* FDAIDSP2 +011: DXCH AK */
+void fdaitotl(void);               /* FDAITOTL */
+void wrtn22(void);                 /* WRTN22 */
+void wrtn22_wtemp(void);           /* WRTN22 +2: DXCH WTEMP */
+void getaks(void);                 /* GETAKS */
+void getaks_amgb5(void);           /* GETAKS +026: MP AMGB5 */
+void wrtn17(void);                 /* WRTN17 */
 
 /* ---- RCS-CSM_DIGITAL_AUTOPILOT.agc, starting the DAP -- initialize.c ---- */
 void reinit(void);              /* REINIT */
@@ -156,6 +166,11 @@ void norate(void);                     /* NORATE */
 void merupdat(void);                   /* MERUPDAT */
 void spndxchk(void);                   /* SPNDXCHK */
 void spndxchk_errorx(void);            /* SPNDXCHK +2: INDEX SPNDX; TS ERRORX */
+void freefunc(void);                   /* FREEFUNC */
+void t6progm(void);                    /* T6PROGM */
+void stickchk(void);                   /* STICKCHK */
+void kalupdt(void);                    /* KALUPDT */
+void kresume2_t5phase(void);           /* KRESUME2 +1: TS T5PHASE */
 
 #endif
 

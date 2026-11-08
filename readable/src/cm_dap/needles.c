@@ -1,12 +1,14 @@
 /* SPDX-License-Identifier: MIT */
-/* RCS-CSM_DIGITAL_AUTOPILOT.agc (Comanche055 pp. 1009-1013, bank 21):
- * "RCS-CSM AUTOPILOT ATTITUDE ERROR DISPLAY", the end of phase 1 of the
- * T5 program, and the "FDAI ATTITUDE ERROR DISPLAY SUBROUTINE", NEEDLER,
- * which puts the attitude errors in AK, AK1 and AK2 on the FDAI's needles
- * "VIA THE DIGITAL TO ANALOG CONVERTERS (DACS) IN THE CDUS". It meters "OUT
- * THE APPROPRIATE NUMBER OF PULSES TO THE IMU ERROR COUNTERS", sequences
- * their relays, and keeps off the DACs while the coarse align loop uses
- * them. The faithful C is c64-port/src/cm_rcs_dap.c. */
+/* RCS-CSM_DIGITAL_AUTOPILOT.agc (Comanche055 pp. 1009-1013 and 1022-1023,
+ * bank 21): "RCS-CSM AUTOPILOT ATTITUDE ERROR DISPLAY", the end of phase 1
+ * of the T5 program, and the "FDAI ATTITUDE ERROR DISPLAY SUBROUTINE",
+ * NEEDLER, which puts the attitude errors in AK, AK1 and AK2 on the FDAI's
+ * needles "VIA THE DIGITAL TO ANALOG CONVERTERS (DACS) IN THE CDUS". It
+ * meters "OUT THE APPROPRIATE NUMBER OF PULSES TO THE IMU ERROR COUNTERS",
+ * sequences their relays, and keeps off the DACs while the coarse align
+ * loop uses them. On the other passes FDAIDSP2 works out the errors it
+ * shows: the autopilot's own, or the total attitude error from the angles
+ * of noun 22 or noun 17. The faithful C is c64-port/src/cm_rcs_dap.c. */
 #include "cm_dap.h"
 #include "../agc/names.h"
 
@@ -224,6 +226,112 @@ void dacloop_limit(void)
 void dacloop_return(void)
 {
     tc_q();
+}
+
+/* ---- FDAIDSP2, the errors for the needles -- pp. 1022-1023 ---- */
+
+/* FDAIDSP2, the other pass of DACNDLS: "RESET FOR FDAIDSP1" (bit 4 of
+ * RCSFLAGS). With bit 9 of FLAGWRD0 set, "ON - DISPLAY ONE OF THE TOTAL
+ * ATTITUDE ERRORS" (FDAITOTL); with it clear, "OFF -DISPLAY AUTOPILOT
+ * FOLLOWING ERROR": AK, AK1 and AK2 the attitude errors ERRORX, ERRORY and
+ * ERRORZ, negated. */
+void fdaidsp2(void)
+{
+    set_A(negate(BIT4)); /* CS */
+    mask_at(ADDRESS_OF(RCSFLAGS));
+    ts(ADDRESS_OF(RCSFLAGS));
+    cs(ADDRESS_OF(FLAGWRD0));
+    mask(BIT9);
+    if (A_is_zero()) { /* EXTEND; BZF FDAITOTL */
+        fdaitotl();
+        return;
+    }
+    dcs(ADDRESS_OF(ERRORX));
+    fdaidsp2_ak();
+}
+
+/* FDAIDSP2 +011: DXCH AK, then AK2, and "END PHASE 1". */
+void fdaidsp2_ak(void)
+{
+    dxch(ADDRESS_OF(AK));
+    cs(ADDRESS_OF(ERRORZ));
+    ts(ADDRESS_OF(AK2));
+    continue_at(RESUME);
+}
+
+/* FDAITOTL: "IS N22ORN17 (BIT6 OF FLAGWRD9) = 0", "IF SO, GO TO WRTN17";
+ * "OTHERWISE, CONTINUE ON TO WRTN22". */
+void fdaitotl(void)
+{
+    ca(ADDRESS_OF(FLAGWRD9));
+    mask(BIT6);
+    if (A_is_zero()) /* EXTEND; BZF WRTN17 */
+        wrtn17();
+    else
+        wrtn22();
+}
+
+/* WRTN22: "GET SET TO COMPUTE TOTAL ATTITUDE ERROR WRT N22 BY PICKING UP
+ * THE THREE COMPONENTS OF N22": CTHETA and CPHI. */
+void wrtn22(void)
+{
+    dca(ADDRESS_OF(CTHETA));
+    wrtn22_wtemp();
+}
+
+/* WRTN22 +2: DXCH WTEMP; CA CPHI, and GETAKS. */
+void wrtn22_wtemp(void)
+{
+    dxch(ADDRESS_OF(WTEMP));
+    ca(ADDRESS_OF(CPHI));
+    getaks();
+}
+
+/* GETAKS: "COMPUTE TOTAL ATTITUDE ERROR FOR DISPLAY ON FDAI ERROR
+ * NEEDLES": the three desired gimbal angles (A, WTEMP and WTEMP +1) less
+ * the CDU angles, each difference taken from gimbal to body axes by the
+ * AMGB matrix's terms into AK, AK1 and AK2. */
+void getaks(void)
+{
+    msu_at(ADDRESS_OF(CDUX));
+    ts(ADDRESS_OF(AK));
+    ca(ADDRESS_OF(WTEMP));
+    msu_at(ADDRESS_OF(CDUY));
+    ts(ADDRESS_OF(T5TEMP));
+    mp_at(ADDRESS_OF(AMGB1));
+    ads(ADDRESS_OF(AK));
+    ca(ADDRESS_OF(T5TEMP));
+    mp_at(ADDRESS_OF(AMGB4));
+    ts(ADDRESS_OF(AK1));
+    ca(ADDRESS_OF(T5TEMP));
+    mp_at(ADDRESS_OF(AMGB7));
+    ts(ADDRESS_OF(AK2));
+    ca(ADDRESS_OF(WTEMP) + 1u);
+    msu_at(ADDRESS_OF(CDUZ));
+    ts(ADDRESS_OF(T5TEMP));
+    getaks_amgb5();
+}
+
+/* GETAKS +026: the Z difference's terms, and "END PHASE1 OF RCS DAP". */
+void getaks_amgb5(void)
+{
+    mp_at(ADDRESS_OF(AMGB5));
+    ads(ADDRESS_OF(AK1));
+    ca(ADDRESS_OF(T5TEMP));
+    mp_at(ADDRESS_OF(AMGB8));
+    ads(ADDRESS_OF(AK2));
+    continue_at(RESUME);
+}
+
+/* WRTN17: "GET SET TO COMPUTE TOTAL ASTRONAUT ATTITUDE ERROR WRT N17 BY
+ * PICKING UP THE THREE COMPONENTS OF N17": CPHIX and the two words after
+ * it. */
+void wrtn17(void)
+{
+    dca(ADDRESS_OF(CPHIX) + 1u);
+    dxch(ADDRESS_OF(WTEMP));
+    ca(ADDRESS_OF(CPHIX));
+    getaks();
 }
 
 #endif
