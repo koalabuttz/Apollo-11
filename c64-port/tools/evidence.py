@@ -220,24 +220,37 @@ def api_asset_request(url):
         with urllib.request.urlopen(api_request(release, 'application/vnd.github+json'), timeout=60) as response:
             return json.load(response)
 
-    for asset in with_retries(release, lookup).get('assets', []):
+    if release not in RELEASES:
+        RELEASES[release] = with_retries(release, lookup)
+    for asset in RELEASES[release].get('assets', []):
         if asset.get('name') == name:
             return api_request(asset['url'], 'application/octet-stream')
     return None
 
 
+RELEASES = {}  # release API URL -> its JSON, for this run
+USE_API = False  # set once the download URLs have failed in this run
+
+
 def download(url, target, record):
+    global USE_API
     target.parent.mkdir(parents=True, exist_ok=True)
-    try:
+    if not USE_API:
+        try:
+            with_retries(url, lambda: download_once(url, target, record))
+            return
+        except (urllib.error.URLError, OSError) as error:
+            if not transient(error) or api_asset_request(url) is None:
+                raise
+            # When the CDN is sick it is sick for many assets (11-08: 40 min of
+            # retries in one job), so the rest of this run goes to the API.
+            print(f'{url}: still failing; using the API for this and later downloads', file=sys.stderr)
+            USE_API = True
+    request = api_asset_request(url)
+    if request is None:
         with_retries(url, lambda: download_once(url, target, record))
-    except (urllib.error.URLError, OSError) as error:
-        if not transient(error):
-            raise
-        request = api_asset_request(url)
-        if request is None:
-            raise
-        print(f'{url}: still failing; fetching through the API instead', file=sys.stderr)
-        with_retries(request.full_url, lambda: download_once(request, target, record))
+        return
+    with_retries(request.full_url, lambda: download_once(request, target, record))
 
 
 def download_once(url, target, record):
