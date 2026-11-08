@@ -51,20 +51,27 @@
  * updates the gimbal-to-body matrix AMGB once a second.
  *
  * JET_SELECTION_LOGIC.agc (pp. 1039-1062, bank 17), phase 3 of the T5
- * program, c64-port/src/cm_jet_select.c, written part by part:
+ * program, and the T6 interrupt, c64-port/src/cm_jet_select.c:
  *
  *   JETSLECT to NOACY (jet_select.c): the translation commands, and the
  *     jets for each axis' rotation and the translations that go with it.
  *   PITCHTIM to RBLAST (jet_times.c): each axis' jet on-time, and the
  *     change for the rate filter.
+ *   RBLAST +015 to YBYPASS (jet_words.c): the second channel word of each
+ *     axis, for the translations that go on after its rotation.
+ *   T6SETUP to DXCHT23 (jet_sort.c): the on-times sorted, and phase 3's
+ *     end.
+ *   T6START to ENABT6 (jet_t6.c): the T6 interrupt, which switches the
+ *     jets' channel words as the on-times run out.
  *
  * All basic code. Each function runs from a word the program can come
  * back to (an entry, the word after a call out of the file) until control
  * leaves its file's code (the RCS DAP's to RESUME, NOVAC, IBNKCALL,
  * SMALLMP, DPADD, TC Q, AHFNOROT, JETS; AUTOMATIC_MANEUVERS's to REINIT,
  * STICKCHK, T6PROGM, SMALLMP, RESUME; AMBGUPDT's to SPSIN, SPCOS,
- * ENDOFJOB), or reaches a word where the faithful port's run stops: a key
- * of its own, run by the function named for it. */
+ * ENDOFJOB; JET_SELECTION_LOGIC's to RESUME), or reaches a word where
+ * the faithful port's run stops: a key of its own, run by the function
+ * named for it. */
 #ifndef READABLE_CM_DAP_H
 #define READABLE_CM_DAP_H
 
@@ -307,6 +314,70 @@ void ytaupos(void);            /* YTAUPOS */
 void ytaupos_dftmax(void);     /* YTAUPOS +010: over .1 s */
 void ad14msy(void);            /* AD14MSY: at least 14 ms */
 void rolltime(void);           /* ROLLTIME: the roll on-time */
+
+/* ---- JET_SELECTION_LOGIC.agc, the second channel words -- jet_words.c ---- */
+
+void translation_bias(unsigned failure); /* (jet_select.c) 3, 6 or +0 by a failure flag */
+void rblast_limit(void);                 /* RBLAST +015: BLAST .1 s */
+void ad14msr(void);                      /* AD14MSR: at least 14 ms */
+void rblastok(void);                     /* RBLASTOK */
+void asmblwp(void);                      /* ASMBLWP: the second pitch word */
+void fpx2(void);                         /* FPX2 */
+void fpx2_plus1(void);                   /* FPX2 +1: MASK PJETS */
+void pbypass(void);                      /* PBYPASS: no pitch command */
+void asmblwr(void);                      /* ASMBLWR: the second roll word */
+void no2y_plus1(void);                   /* NO2Y +1: TS RWORD2 */
+void no2y_plus2(void);                   /* NO2Y +2: CCS ZNDX */
+void no2z(void);                         /* NO2Z */
+void no2z_plus1(void);                   /* NO2Z +1: ADS RWORD2 */
+void acbd2y_rtable(void);                /* ACBD2Y +012: INDEX A, CA RTABLE */
+void acbd2y_acrjets(void);               /* ACBD2Y +014: MASK ACRJETS */
+void ac2y(void);                         /* AC2Y: Y translation on AC */
+void ac2y_index(void);                   /* AC2Y +4: INDEX YNDX */
+void ac2y_acyjets(void);                 /* AC2Y +010: MASK ACYJETS */
+void acbd2z(void);                       /* ACBD2Z: Z translation */
+void acbd2z_index(void);                 /* ACBD2Z +010: INDEX ZNDX */
+void acbd2z_dft(void);                   /* ACBD2Z +026: CA L, ADS DFT */
+void bdf2z(void);                        /* BDF2Z: Z translation on BD */
+void bdf2z_index(void);                  /* BDF2Z +4: INDEX ZNDX */
+void rbypass(void);                      /* RBYPASS: no roll command */
+void rbypass_blast(void);                /* RBYPASS +2: CAF ZERO */
+void asmblwy(void);                      /* ASMBLWY: the second yaw word */
+void asmblwy_index(void);                /* ASMBLWY +4: INDEX XNDX2 */
+void fyx2(void);                         /* FYX2 */
+void ybypass(void);                      /* YBYPASS: no yaw command */
+
+/* ---- JET_SELECTION_LOGIC.agc, the on-times sorted -- jet_sort.c ---- */
+
+void t6setup(void);       /* T6SETUP: the branch indexes, the first two */
+void checkt23(void);      /* CHECKT23: the second and third */
+void calcdt6(void);       /* CALCDT6: the times between */
+void calcdt6_plus1(void); /* CALCDT6 +1: ADS BLAST2 */
+void calcdt6_plus3(void); /* CALCDT6 +3: ADS BLAST1, ENDJETS */
+void dxcht12(void);       /* DXCHT12: BLAST and BLAST1 swapped */
+void dxcht12_plus1(void); /* DXCHT12 +1: DXCH BLAST1 */
+void dxcht23(void);       /* DXCHT23: BLAST1 and BLAST2 swapped */
+
+/* ---- JET_SELECTION_LOGIC.agc, the T6 program -- jet_t6.c ---- */
+
+void t6start(void);         /* T6START: the T6 interrupt */
+void t6start_plus1(void);   /* T6START +1: QXCH QRUPT */
+void t6start_yword1(void);  /* T6START +020: AD YWORD1 */
+void t6ruptor(void);        /* T6RUPTOR: the axes in turn */
+void t6l2(void);            /* T6L2: the third axis */
+void replace_plus2(void);   /* REPLACE +2: BLAST -1 */
+void replace1(void);        /* REPLACE1 */
+void replace1_plus2(void);  /* REPLACE1 +2: BLAST1 -1 */
+void replace2(void);        /* REPLACE2 */
+void replace2_plus2(void);  /* REPLACE2 +2: BLAST2 -1 */
+void replacer(void);        /* REPLACER: RWORD2 to channel 6 */
+void replacep(void);        /* REPLACEP: PWORD2 to channel 5 */
+void replacep_return(void); /* REPLACEP +6: TC Q */
+void replacey(void);        /* REPLACEY: YWORD2 to channel 5 */
+void zblast(void);          /* ZBLAST: the wait to TIME6 */
+void zblast_plus1(void);    /* ZBLAST +1: XCH BLAST */
+void zblast1(void);         /* ZBLAST1 */
+void zblast2(void);         /* ZBLAST2 */
 
 /* ---- RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc -- dap_executive.c ---- */
 

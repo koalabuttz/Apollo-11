@@ -210,7 +210,8 @@ CAM_SOURCES := src/agc/agc.c src/binding/machine.c src/cm_dap/indexing.c \
 CRDX_SOURCES := src/agc/agc.c src/binding/machine.c src/cm_dap/dap_executive.c \
 	src/binding/cm_rcs_dap_exec_routines.c
 CJS_SOURCES := src/agc/agc.c src/binding/machine.c src/cm_dap/indexing.c src/cm_dap/jet_select.c \
-	src/cm_dap/jet_times.c src/binding/cm_jet_select_routines.c
+	src/cm_dap/jet_times.c src/cm_dap/jet_words.c src/cm_dap/jet_sort.c src/cm_dap/jet_t6.c \
+	src/binding/cm_jet_select_routines.c
 LAD_SOURCES := src/agc/agc.c src/binding/machine.c src/landing_displays/landing_displays.c \
 	src/binding/landing_displays_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \

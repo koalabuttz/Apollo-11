@@ -66,8 +66,9 @@ static void table_bias(unsigned failure, unsigned translation)
 }
 
 /* The other quad pair's translation bias: 3 or 6 for a failed quad, 0
- * for none, before XLN1NDX by the translation's index. */
-static void translation_bias(unsigned failure)
+ * for none, before XLN1NDX by the translation's index (here, and for the
+ * second roll word in jet_words.c). */
+void translation_bias(unsigned failure)
 {
     switch (ccs_at(failure)) {
     case POSITIVE: set_A(THREE); break;
