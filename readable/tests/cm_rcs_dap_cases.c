@@ -8,27 +8,30 @@
  *
  * First the keys, which must be the faithful table's, and the hot table's,
  * which must be the faithful one's with the same routines as the basic
- * table. Then the runs: each readable key from 4,096 states, each one of
+ * table; every key must have a readable routine (the file is readable
+ * whole). Then the runs: each key from 4,096 states, each one of
  * the port's frozen test states (c64-port/tests/cm_rcs_dap_vectors.h)
  * entered at the key, most stirred further: T5PHASE, HOLDFLAG (+0, -0, 1,
- * -1 often), RCSFLAGS's bits, IMODES33, ATTSEC, the loop indexes SPNDX and
+ * -1 often), RCSFLAGS's bits, IMODES33, ATTSEC, the RHC's bits in channel
+ * 31 and CH31TEMP, RMANNDX's words, RATEINDX, the loop indexes SPNDX and
  * DPNDX (mostly an axis' 0-2 and 0-4, now and then one that makes a
  * read's address Z) and A (often an axis' index, now and then an
  * overflow), ATTKALMN (mostly a gain's index the faithful port's tables
  * copy, -3 to 11, now and then just past them or Z's), the rate filter's
  * words, the CDU angles and their past values (often near each other, now
- * and then more than 90 degrees apart), the desired angles and their increments, the needles'
- * inputs AK, AK1 and AK2 (often within the DACs' 384 pulses, often past
- * them), their past drives and the CDU command counters, channels 12, 14
- * and 31, L and Q (often a key of the same part, so a TC Q runs on, or Q
- * 3), any erasable bank's words, the latches, or a state the routines
- * refuse (EBANK not E6, BBANK not the two banks, a word of 16 bits). Each
- * runs once on each side, as the program's trampoline would call the key's
- * routine, with a hardware record or (now and then) none. Where either
- * port runs, the other must too, with the same memory, io and hardware
- * records, word for word; where the readable one refuses, it must leave
- * everything as it found it; and the faithful routine must run in at least
- * 1 of 16 of each key's states.
+ * and then more than 90 degrees apart), the desired angles and their
+ * increments, WBODY, MERRORX and ERRORX, FLAGWRD1, TIME5 and T5TIME, the
+ * needles' inputs AK, AK1 and AK2 (often within the DACs' 384 pulses,
+ * often past them), their past drives and the CDU command counters,
+ * channels 12, 13, 14 and 31, L and Q (often a key of the same part, so a
+ * TC Q runs on, or Q 3, or a MANTABLE index), any erasable bank's words,
+ * the latches, or a state the routines refuse (EBANK not E6, BBANK not
+ * the two banks, a word of 16 bits). Each runs once on each side, as the
+ * program's trampoline would call the key's routine, with a hardware
+ * record or (now and then) none. Where either port runs, the other must
+ * too, with the same memory, io and hardware records, word for word; where
+ * the readable one refuses, it must leave everything as it found it; and
+ * the faithful routine must run in at least 1 of 16 of each key's states.
  *
  * A few states loop for ever, as the AGC would (until an interrupt): in
  * DACLOOP an index of 3 makes LXCH EDRIVEX +3 write SPNDX itself, and the
@@ -349,7 +352,11 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
         uint16_t key = faithful->entries[i].physical;
         unsigned ran = 0, bad = 0;
 
-        if (!cm_rcs_dap_readable(key)) continue;
+        if (!cm_rcs_dap_readable(key)) { /* the file is readable whole */
+            printf("FAIL: key %u (%04o) has no readable routine\n", key, 02000u + key % 1024u);
+            ++failures;
+            continue;
+        }
         ++*written;
         for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;

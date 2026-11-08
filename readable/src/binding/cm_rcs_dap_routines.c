@@ -7,20 +7,19 @@
  * store packs together (the same routines).
  *
  * The table carries every key of the faithful one, in its order
- * (cm_rcs_dap_keys.inc, which tools/p20_p25_keys.py writes from it). A key
- * with a readable routine runs it; any other runs the faithful port's,
- * built into the program as faithful_cm_rcs_dap_basic. The side-by-side
- * test (tests/cm_rcs_dap_cases.c) checks the readable ones against it.
+ * (cm_rcs_dap_keys.inc, which tools/p20_p25_keys.py writes from it), and
+ * each runs its readable routine. The side-by-side test
+ * (tests/cm_rcs_dap_cases.c) checks them against the faithful port's.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
- * the file's code (RESUME, NOVAC, SMALLMP, DPADD) or reaches a key of
- * another part of the faithful port's code, where its run stops. The
- * subroutines' TC Q goes on at the word Q names: the faithful port runs on
- * where that is a key of the same part, and so does the binding (with the
- * faithful routine at a key not yet readable); at any other word it stops.
+ * the file's code (RESUME, NOVAC, IBNKCALL, SMALLMP, DPADD, AHFNOROT,
+ * JETS, T6PROG) or reaches a key of another part of the faithful port's
+ * code, where its run stops. The subroutines' TC Q goes on at the word Q
+ * names: the faithful port runs on where that is a key of the same part,
+ * and so does the binding; at any other word it stops.
  *
- * The device is the CM's io record (cm_native_io), which keeps channels 12
- * and 14; channel 31 is the program's hardware record's. The faithful
+ * The device is the CM's io record (cm_native_io), which keeps channels
+ * 12, 13 and 14; channel 31 is the program's hardware record's. The faithful
  * routines take that record, and without one refuse, so the binding does
  * too. The states they take: FB bank 21, EBANK E6, ZERO +0, the bank
  * registers agreeing, the interrupt and superbank latches in range and
@@ -125,7 +124,7 @@ static bool basic_sane(void)
 
 /* ---- The basic code ---- */
 
-/* The words a function starts at: the keys written so far. */
+/* The words a function starts at: every key of the faithful table. */
 static const struct basic_entry {
     word at;
     void (*routine)(void);
@@ -189,6 +188,18 @@ static const struct basic_entry {
     {MERUPDAT, merupdat},
     {SPNDXCHK, spndxchk},
     {SPNDXCHK + 2u, spndxchk_errorx},
+    {FREEFUNC, freefunc},
+    {T6PROGM, t6progm},
+    {STICKCHK, stickchk},
+    {KALUPDT, kalupdt},
+    {KRESUME2 + 1u, kresume2_t5phase},
+    {FDAIDSP2, fdaidsp2},
+    {FDAIDSP2 + 011u, fdaidsp2_ak},
+    {FDAITOTL, fdaitotl},
+    {WRTN22 + 2u, wrtn22_wtemp},
+    {GETAKS, getaks},
+    {GETAKS + 026u, getaks_amgb5},
+    {WRTN17, wrtn17},
 };
 
 static const struct basic_entry *basic_entry(word at)
@@ -198,28 +209,6 @@ static const struct basic_entry *basic_entry(word at)
     for (i = 0; i < COUNT(basic_entries); ++i)
         if (basic_entries[i].at == at) return &basic_entries[i];
     return NULL;
-}
-
-/* The faithful tables, renamed. */
-extern const agc_routine_table faithful_cm_rcs_dap_basic;
-
-/* Every key's address, in the faithful table's order. */
-#define BASIC(i, bank, address) (address),
-#define PAIR(i, bank, address)
-static const word key_addresses[] = {
-#include "cm_rcs_dap_keys.inc"
-};
-#undef PAIR
-#undef BASIC
-
-/* The key at an address: its index in the table, or -1. */
-static int key_index(word at)
-{
-    unsigned i;
-
-    for (i = 0; i < COUNT(key_addresses); ++i)
-        if (key_addresses[i] == at) return (int)i;
-    return -1;
 }
 
 /* The first word of each part of the faithful port's code: a run that
@@ -236,40 +225,29 @@ static unsigned part_of(word at)
 }
 
 /* After a TC Q, at the word Q named: on at a key of the same part, as the
- * faithful port does (its routine, where that is not yet readable); at any
- * other word (in fixed-fixed or erasable memory, or another part) the run
- * stops there. */
-static enum exec_status run_on(word key, const agc_native_program *program,
-                               apollo_overlay_state *state, cm_native_io *io)
+ * faithful port does; at any other word (in fixed-fixed or erasable
+ * memory, or another part) the run stops there. */
+static void run_on(word key)
 {
     const struct basic_entry *entry;
-    int index;
 
-    for (;;) {
-        if (Z < 02000u || Z > 03777u || part_of(Z) != part_of(key)) return EXEC_OK;
-        index = key_index(Z);
-        if (index < 0) return EXEC_OK;
-        entry = basic_entry(Z);
-        if (!entry) return faithful_cm_rcs_dap_basic.entries[index].call(program, state, io);
+    while (Z >= 02000u && Z <= 03777u && part_of(Z) == part_of(key) &&
+           (entry = basic_entry(Z)) != NULL)
         entry->routine();
-    }
 }
 
 /* ---- The keys, in the faithful table's order ---- */
 
-/* Each key's routine: the readable one, from a state the faithful one
- * takes, or the faithful port's. */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each key's routine, from a state the faithful one takes. */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     word at = (word)(02000u + key % 1024u);
     const struct basic_entry *entry = basic_entry(at);
     cm_native_io *io = device, kept;
     apollo_overlay_state before;
-    enum exec_status status;
 
-    if (!entry) return faithful_cm_rcs_dap_basic.entries[index].call(program, state, device);
-    if (!program || !program->hardware || !state || !io) return EXEC_OUT_OF_SCOPE;
+    if (!entry || !program || !program->hardware || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     if (FBANK != (word)(RCS_DAP_BANK << 10) || !basic_sane()) return EXEC_OUT_OF_SCOPE;
 
@@ -281,12 +259,8 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
         return EXEC_OUT_OF_SCOPE;
     }
     entry->routine();
-    status = run_on(at, program, state, io);
-    if (status != EXEC_OK) {
-        *state = before;
-        *io = kept;
-    }
-    return status;
+    run_on(at);
+    return EXEC_OK;
 }
 
 /* For the side-by-side test: whether a key runs readable code. */
@@ -299,7 +273,7 @@ bool cm_rcs_dap_readable(uint16_t key)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)
 #include "cm_rcs_dap_keys.inc"

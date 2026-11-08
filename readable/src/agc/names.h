@@ -4726,12 +4726,12 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define MERUPDAT         ((word)K_MERUPDAT)
 #define SPNDXCHK         ((word)K_SPNDXCHK)
 #define AHFNOROT         ((word)K_AHFNOROT) /* AUTOMATIC_MANEUVERS.agc */
-#define JETS             ((word)K_JETS)     /* JET_SELECTION_LOGIC.agc */
+#define JETS             ((word)K_JETS)     /* AUTOMATIC_MANEUVERS.agc */
 #define STICKCHK         ((word)K_STICKCHK)
 #define KALUPDT          ((word)K_KALUPDT)
 #define FREEFUNC         ((word)K_FREEFUNC)
 #define T6PROGM          ((word)K_T6PROGM)
-#define T6PROG           ((word)K_T6PROG) /* JET_SELECTION_LOGIC.agc */
+#define T6PROG           ((word)K_T6PROG) /* AUTOMATIC_MANEUVERS.agc */
 #define DELAY200         ((word)KW_DELAY200) /* DEC 16364: "200MS" */
 #define NO_T5VAR         ((word)KW_NO_T5VAR) /* NO.T5VAR, DEC 36 */
 #define SLOPE_24         ((word)KW__EQ__24)  /* =.24, DEC .24 */
@@ -4742,6 +4742,12 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define OCT16000         ((word)KW_OCT16000)
 #define OCT01760         ((word)KW_OCT01760)
 #define PLUS_14MS        ((word)KW__EQ_P14MS) /* =+14MS, DEC 23 */
+#define KRESUME2         ((word)K_KRESUME2)
+#define FDAITOTL         ((word)K_FDAITOTL)
+#define WRTN22           ((word)K_WRTN22)
+#define GETAKS           ((word)K_GETAKS)
+#define WRTN17           ((word)K_WRTN17)
+#define DELTATT          ((word)KW_DELTATT) /* OCT 37770: "80MS (TIME5)" */
 #endif
 
 /* NO.CORES + 1 core sets. */

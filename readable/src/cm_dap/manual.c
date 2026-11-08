@@ -1,11 +1,13 @@
 /* SPDX-License-Identifier: MIT */
-/* RCS-CSM_DIGITAL_AUTOPILOT.agc (Comanche055 pp. 1016-1019, bank 21): the
+/* RCS-CSM_DIGITAL_AUTOPILOT.agc (Comanche055 pp. 1016-1022, bank 21): the
  * start of T5PHASE2, the second phase of the T5 program, and its "MANUAL
  * ROTATION COMMANDS": the RHC's rotation switches in channel 31 read for
  * changes (each change sets the axis' forced firing bits), then, with the
  * RHC "OUT OF DETENT" and the manual rate modes, each axis' commanded rate
  * in WBODY from MANTABLE and the attitude error it builds up in MERRORX,
- * ERRORX for the jet selection logic (JETS). The faithful C is
+ * ERRORX for the jet selection logic (JETS); in free mode, FREEFUNC's jet
+ * firing times instead. STICKCHK decodes the RHC's bits, and KALUPDT
+ * counts the rate filter's first passes. The faithful C is
  * c64-port/src/cm_rcs_dap.c. */
 #include "cm_dap.h"
 #include "../agc/names.h"
@@ -276,6 +278,91 @@ void spndxchk_errorx(void)
         return;
     }
     next_axis();
+}
+
+/* ---- FREEFUNC and STICKCHK -- pp. 1019-1021 ---- */
+
+/* FREEFUNC, with the RHC in free mode (bit 14 of channel 31 clear): the
+ * acceleration commands, each axis' jet firing time from FREETAU by its
+ * index ("0 SEC", "+0.10 SEC", "-0.10 SEC", "(+3) 0 SEC") in TAU, TAU1 and
+ * TAU2, then T6PROGM. (Each CA reads a word with no overflow, but for an
+ * index that has it read A or Q itself, which does not come up in the
+ * program; the faithful port goes on past the TS then too, and so does
+ * this.) */
+void freefunc(void)
+{
+    ca(index_read(ADDRESS_OF(FREETAU), fetch(ADDRESS_OF(RMANNDX))));
+    ts(ADDRESS_OF(TAU));
+    ca(index_read(ADDRESS_OF(FREETAU), fetch(ADDRESS_OF(PMANNDX))));
+    ts(ADDRESS_OF(TAU1));
+    ca(index_read(ADDRESS_OF(FREETAU), fetch(ADDRESS_OF(YMANNDX))));
+    ts(ADDRESS_OF(TAU2));
+    t6progm();
+}
+
+/* T6PROGM: the attitude errors zeroed "FOR MANUAL ROTATIONS", and T6PROG
+ * (AUTOMATIC_MANEUVERS.agc) to fire the jets for TAU, TAU1 and TAU2. */
+void t6progm(void)
+{
+    set_A(ZERO);
+    ts(ADDRESS_OF(ERRORX));
+    ts(ADDRESS_OF(ERRORY));
+    ts(ADDRESS_OF(ERRORZ));
+    continue_at(T6PROG);
+}
+
+/* STICKCHK: the "INDICES FOR MANUAL ROTATION" from the RHC's bits in A
+ * (CH31TEMP's, complemented), two to an axis: "MAN RATE 0 0 RATE (DP)",
+ * "+1 +RATE (DP)", "+2 -RATE (DP)", "(+3) 0 RATE (DP)". Bits 2-1 go to
+ * PMANNDX, and MP QUARTER shifts the rest down two bits for YMANNDX, then
+ * RMANNDX. (TS T5TEMP overflows only for an A that holds an overflow, and
+ * skips the MASK THREE: A is then +1 or -1.) */
+void stickchk(void)
+{
+    if (!ts(ADDRESS_OF(T5TEMP))) mask(THREE);
+    ts(ADDRESS_OF(PMANNDX));
+    ca(ADDRESS_OF(T5TEMP));
+    mp(QUARTER);
+    ts(ADDRESS_OF(T5TEMP));
+    mask(THREE);
+    ts(ADDRESS_OF(YMANNDX));
+    ca(ADDRESS_OF(T5TEMP));
+    mp(QUARTER);
+    ts(ADDRESS_OF(RMANNDX));
+    tc_q();
+}
+
+/* ---- KALUPDT, the rate filter started -- pp. 1021-1022 ---- */
+
+/* KALUPDT: from T5PHASE2's CCS ATTKALMN, A is ATTKALMN less one, kept as
+ * the count of passes: the "INITIALIZATION OF ATTITUDE RATES USING KALMAN
+ * FILTER TAKES 1.1 SEC". The next T5 interrupt comes in DELTATT's "80MS
+ * (TIME5)" (the comment here reads "=1SEC - 80MS") "+ DELAYS" (T5TIME);
+ * if that overflows TIME5, "SAFETY PLAY TO ASSURE A T5RUPT": DELTATT2.
+ * Then KRESUME2. (TS ATTKALMN
+ * overflows only for an A that holds an overflow, and skips the CA
+ * DELTATT: A is then +1 or -1.) */
+void kalupdt(void)
+{
+    if (!ts(ADDRESS_OF(ATTKALMN))) set_A(DELTATT);
+    ad_at(ADDRESS_OF(T5TIME));
+    if (ts(ADDRESS_OF(TIME5))) { /* skips TCF +3 */
+        set_A(DELTATT2);
+        ts(ADDRESS_OF(TIME5));
+    }
+    set_A(negate(ZERO)); /* KRESUME2: CS ZERO */
+    continue_at(KRESUME2 + 1u);
+}
+
+/* KRESUME2 +1: T5PHASE -0, "RESET FOR PHASE1", and "RESUME INTERRUPTED
+ * PROGRAM". (TS T5PHASE overflows only for an A that holds an overflow,
+ * and skips the TCF RESUME: on to FDAIDSP2.) */
+void kresume2_t5phase(void)
+{
+    if (ts(ADDRESS_OF(T5PHASE)))
+        fdaidsp2();
+    else
+        continue_at(RESUME);
 }
 
 #endif
