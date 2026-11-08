@@ -44,6 +44,13 @@
  *     filter and its limiters, the actuator commands, the offset tracker
  *     filter, and the restart-protected copycycles (PCOPY, YCOPY).
  *
+ * TVCSTROKETEST.agc (pp. 979-983, bank 20), c64-port/src/cm_tvc_stroke.c:
+ *
+ *   STRKTSTI, HACK, HACKWLST (tvcstroketest.c): the "STROKE TEST
+ *     PACKAGE", which "GENERATES A WAVEFORM DESIGNED TO EXCITE BENDING"
+ *     by "DUMPING PULSE BURSTS" into the pitch outcounter every 20 ms,
+ *     from each DAP pass and from a WAITLIST task between them.
+ *
  * All basic code. Each function runs from a word the program can come
  * back to (an entry, the word after a call out of the file) until control
  * leaves the file's code (RESUME, NOQRSM, IBNKCALL, ISWCALL, WAITLIST,
@@ -169,6 +176,13 @@ void yout(void);                /* YOUT */
 void delbary(void);             /* DELBARY */
 void ycopy_reentry(void);       /* YCOPY +1 */
 void dapinit(void);             /* DAPINIT */
+
+/* TVCSTROKETEST.agc -- tvcstroketest.c */
+void strktsti(void);            /* STRKTSTI */
+void hack(void);                /* HACK */
+void hack_after_waitlist(void); /* HACK +6 */
+void hackwlst(void);            /* HACKWLST */
+void bunker_return(void);       /* TC BUNKER, run as TC <its word> */
 
 #endif
 

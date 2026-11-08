@@ -4657,6 +4657,11 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 /* The filter's constants, read where they are (MP). */
 #define K_E_MINUS_AT           K_E_MAT   /* E(-AT): OCT 37535 */
 #define K_ONE_MINUS_E_MINUS_AT K_1_E_MAT /* 1-E(-AT): OCT 00243 */
+/* TVCSTROKETEST.agc */
+#define STRKTSTI  ((word)K_STRKTSTI)
+#define HACKWLST  ((word)K_HACKWLST)
+#define TWENTY_MS BIT2 /* 20MS = BIT2 */
+#define TCTSKOVR  ((word)KW_TCTSKOVR) /* TC TASKOVER */
 #endif
 
 /* NO.CORES + 1 core sets. */

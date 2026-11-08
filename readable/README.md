@@ -243,6 +243,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | TVCMASSPROP of the CM | `TVCMASSPROP.agc` (CM pp. 951-955) | [`src/tvc/`](src/tvc/) | The CSM's mass properties for the TVC DAP's gains, all basic code (bank 5). MASSPROP works out ten breakpoint values and slopes, from fixed tables for the CSM alone or from the LM's mass for the CSM/LM (with a correction when the LM's descent stage is gone); FIXCW then works out IXX, IAVG and IAVG/TLX as straight lines in the CSM's mass, with one slope below the breakpoint mass and another above, and WEIGHT/G, the whole vehicle's mass, and returns by TC Q. Where an output overflows, the TS's skip sends FIXCW round its loop again, which with some masses never ends, on the AGC as in both ports |
 | TVCRESTARTS of the CM | `TVCRESTARTS.agc` (CM pp. 956-960) | [`src/tvc/`](src/tvc/) | The TVC restart package, all basic code (bank 16), which a restart during an SPS burn calls in a T5 interrupt (REDOTVC). It restarts TVCEXECUTIVE at the word its phase TVCEXPHS names (EXRSTRT, by WAITLIST), finishes a DAP copycycle a restart cut short (FINCOPY) or sets the commands from the trims (TRIM/CMD); then, a T5 interrupt at a time, it enables the TVC and optics outcounters in channel 12 (ENABL1, ENABL2), loads the latest actuator commands and releases the counters in channel 14 (CMDSOUT). From there it repeats the TVC initialization or the CSM/LM switch-over where the restart came in the middle of one, stops a stroke test (CHKSTRK), and goes on at TVCINIT4. EXRSTRT's INDEX A; TCF 0 goes on at whatever word its table names (or, for a phase outside the table, the word the INDEX reaches), as the faithful port does |
 | TVCDAPS of the CM | `TVCDAPS.agc` (CM pp. 961-978) | [`src/tvc/`](src/tvc/) | The pitch and yaw TVC DAPs of an SPS burn, all basic code (bank 20): two T5 tasks that call each other every half sample time (PITCHDAP, YAWDAP), started by DAPINIT. Each pass takes the body-axis rate from the CDU rates, integrates its error and limits it (ERRORLIM), runs the CSM or CSM/LM filter for its present output with the variable gain (FWDFLTR), adds the CG offset, rounds and limits the actuator command (ACTLIM) and sends its increment to the outcounter, works out the filter's next pass ahead (PRECOMP) and the offset tracker filter, and stores it all in a copycycle restart-protected by TVCPHASE (PCOPY, YCOPY), which TVCRESTARTS re-enters. The two loops are built the same, so one set of steps runs both on each loop's own words |
+| TVCSTROKETEST of the CM | `TVCSTROKETEST.agc` (CM pp. 979-983) | [`src/tvc/`](src/tvc/) | The stroke test, all basic code (bank 20), which verb 68 starts (STRKTSTI): it adds pulse bursts of a pad-loaded size to the pitch outcounter every 20 ms, from each DAP pass (HACK) and from a WAITLIST task between them (HACKWLST), to excite bending. The waveform is a run of stroke sets, each a number of reversals of a slope a number of bursts long, from a small table of constants (FCARD on) read by INDEX CARD |
 
 Beside them:
 
@@ -861,6 +862,13 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    the errors, nodes and coefficients often small so the limiters both
    take and pass, and Q often a key or a word a subroutine returns to);
    each key must run a readable routine.
+   `make cm-tvc-stroke-cases` runs the CM's TVCSTROKETEST: the port's
+   test (its frozen cases, each run to its stop against yaAGC digests)
+   through the readable table, then tests/cm_tvc_stroke_cases.c: readable
+   and faithful side by side at every key from 4,096 states (CARD often a
+   set's -1 to -4, +0 or -0, REVS and CADDY often +0, -0, 1 or -1, and
+   BUNKER often one of the words kept there); each key must run a
+   readable routine.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
