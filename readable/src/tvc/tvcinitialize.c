@@ -13,12 +13,6 @@
 
 /* ---- Words read under INDEX ---- */
 
-/* A word's value as a signed number (-0 is 0). */
-static int value_of(word value)
-{
-    return (value & SIGN_BIT) ? -(int)negate(value) : (int)value;
-}
-
 /* The words in fixed memory the file reads under INDEX: the filter
  * coefficients and their addresses (CSMN10 to HBCFADR, CSMCFADR +1),
  * TCORR and the word after it, and BIT3 and BIT2 (BIT2 -1 and BIT2). */
@@ -70,31 +64,6 @@ static void dca_indexed(unsigned address, word index)
 static word index_at(unsigned address)
 {
     return fetch(address);
-}
-
-/* ---- TC Q, the end of LOADCOEF and S40.15 ---- */
-
-/* TC Q: the word in Q runs as the instruction TC <Q>, so Z gets the
- * address and Q becomes 3. Q 3 itself (Q after a TC Q) names the word at
- * 3, EBANK: the word in Q, 3, runs as RELINT, and then EBANK's word, an
- * address in fixed memory, as TC <EBANK>, which leaves Q 4. Not modelled
- * (the faithful port refuses them too): any other Q below 010 (taken
- * overflow-corrected, as the AGC reads a register's word), or above
- * 07777. The binding goes on at a word of the file that is a key, as the
- * faithful port does. */
-static void tc_q(void)
-{
-    word at = overflow_corrected(Q);
-
-    if (at == Q_ADDRESS + 1u && EBANK >= 02000u) {
-        relint();
-        tc_at(Q_ADDRESS + 1u);
-        Z = EBANK;
-        return;
-    }
-    if (at < 010u || at > 07777u) not_modelled();
-    tc_at(Q_ADDRESS);
-    Z = at;
 }
 
 /* TC (or TCR) to routine at fixed address at. */
