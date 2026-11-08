@@ -218,6 +218,8 @@ jobs:
         run: python3 tools/interp_edges_test.py
       - name: Coverage audit
         working-directory: c64-port
+        env:
+          GITHUB_TOKEN: ${{ github.token }}  # evidence.py's API fallback
         run: |
           python3 tools/evidence.py fetch --coverage
           python3 tools/port_coverage.py
@@ -573,6 +575,8 @@ jobs:
       - *setup
       - name: Re-derive cited C64 branch covers (shard ${{ matrix.shard }} of 2)
         working-directory: c64-port
+        env:
+          GITHUB_TOKEN: ${{ github.token }}  # evidence.py's API fallback
         run: |
           source deps/env.sh
           python3 tools/cover_check.py --shard "${{ matrix.shard }}/2" --name "cover-check${{ matrix.shard }}" \
