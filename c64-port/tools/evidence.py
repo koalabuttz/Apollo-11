@@ -181,18 +181,63 @@ def cmd_push(args):
 DOWNLOAD_ATTEMPTS = 4
 
 
-def download(url, target, record):
-    target.parent.mkdir(parents=True, exist_ok=True)
+def transient(error):
+    return not isinstance(error, urllib.error.HTTPError) or error.code >= 500 or error.code == 429
+
+
+def with_retries(label, fetch):
     for attempt in range(1, DOWNLOAD_ATTEMPTS + 1):
         try:
-            download_once(url, target, record)
-            return
+            return fetch()
         except (urllib.error.URLError, OSError) as error:
-            transient = not isinstance(error, urllib.error.HTTPError) or error.code >= 500 or error.code == 429
-            if not transient or attempt == DOWNLOAD_ATTEMPTS:
+            if not transient(error) or attempt == DOWNLOAD_ATTEMPTS:
                 raise
-            print(f'{url}: {error}; retrying ({attempt}/{DOWNLOAD_ATTEMPTS - 1})', file=sys.stderr)
+            print(f'{label}: {error}; retrying ({attempt}/{DOWNLOAD_ATTEMPTS - 1})', file=sys.stderr)
             time.sleep(5 * 2 ** (attempt - 1))
+
+
+def api_request(url, accept):
+    headers = {'Accept': accept, 'User-Agent': 'apollo-11-evidence'}
+    token = os.environ.get('GITHUB_TOKEN') or os.environ.get('GH_TOKEN')
+    if token:
+        headers['Authorization'] = f'Bearer {token}'
+    return urllib.request.Request(url, headers=headers)
+
+
+def api_asset_request(url):
+    """The REST API route to the release asset behind a releases/download URL.
+
+    The download URL goes through a CDN that can keep answering 504 for one
+    asset for hours (11-08, evidence-attitude-maneuver) while the API serves
+    the same bytes, so a download that keeps failing tries this route."""
+    match = re.match(r'https://github\.com/([^/]+/[^/]+)/releases/download/([^/]+)/([^/]+)$', url)
+    if not match:
+        return None
+    slug, tag, name = match.groups()
+    release = f'https://api.github.com/repos/{slug}/releases/tags/{tag}'
+
+    def lookup():
+        with urllib.request.urlopen(api_request(release, 'application/vnd.github+json'), timeout=60) as response:
+            return json.load(response)
+
+    for asset in with_retries(release, lookup).get('assets', []):
+        if asset.get('name') == name:
+            return api_request(asset['url'], 'application/octet-stream')
+    return None
+
+
+def download(url, target, record):
+    target.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        with_retries(url, lambda: download_once(url, target, record))
+    except (urllib.error.URLError, OSError) as error:
+        if not transient(error):
+            raise
+        request = api_asset_request(url)
+        if request is None:
+            raise
+        print(f'{url}: still failing; fetching through the API instead', file=sys.stderr)
+        with_retries(request.full_url, lambda: download_once(request, target, record))
 
 
 def download_once(url, target, record):
@@ -201,7 +246,7 @@ def download_once(url, target, record):
         with os.fdopen(fd, 'wb') as out, urllib.request.urlopen(url, timeout=120) as response:
             shutil.copyfileobj(response, out, 1 << 20)
         if digest(tmp) != record['sha256']:
-            raise SystemExit(f'{url}: SHA256 mismatch')
+            raise SystemExit(f"{getattr(url, 'full_url', url)}: SHA256 mismatch")
         os.replace(tmp, target)
     finally:
         if os.path.exists(tmp):
