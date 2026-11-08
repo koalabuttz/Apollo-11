@@ -50,6 +50,14 @@
  * (dap_executive.c), c64-port/src/cm_rcs_dap_exec.c: the job that
  * updates the gimbal-to-body matrix AMGB once a second.
  *
+ * JET_SELECTION_LOGIC.agc (pp. 1039-1062, bank 17), phase 3 of the T5
+ * program, c64-port/src/cm_jet_select.c, written part by part:
+ *
+ *   JETSLECT to NOACY (jet_select.c): the translation commands, and the
+ *     jets for each axis' rotation and the translations that go with it.
+ *   PITCHTIM to RBLAST (jet_times.c): each axis' jet on-time, and the
+ *     change for the rate filter.
+ *
  * All basic code. Each function runs from a word the program can come
  * back to (an entry, the word after a call out of the file) until control
  * leaves its file's code (the RCS DAP's to RESUME, NOVAC, IBNKCALL,
@@ -86,8 +94,9 @@ static inline word dpndx(void)
 /* The words of fixed memory a file's code reads under INDEX, as the
  * faithful C copies them: whether an address is one. */
 typedef bool fixed_tables(unsigned address);
-bool rcs_dap_tables(unsigned address);  /* the gains, DACLIMIT, FREETAU, MANTABLE */
-bool maneuver_tables(unsigned address); /* MINTAU, BIT13 on, OCT01400 on */
+bool rcs_dap_tables(unsigned address);    /* the gains, DACLIMIT, FREETAU, MANTABLE */
+bool maneuver_tables(unsigned address);   /* MINTAU, BIT13 on, OCT01400 on */
+bool jet_select_tables(unsigned address); /* XLNNDX on, the jet tables, NJET, DFTMAX */
 
 /* INDEX, then an order that reads the word at its address field plus the
  * index (CA, CS, MP, AD): the address. Not modelled (the faithful port
@@ -126,6 +135,12 @@ static inline void maneuver_dca_indexed(unsigned address, word index)
 static inline void maneuver_dcs_indexed(unsigned address, word index)
 {
     dcs_indexed_in(maneuver_tables, address, index);
+}
+
+/* JET_SELECTION_LOGIC's. */
+static inline unsigned jet_index_read(unsigned field, word index)
+{
+    return index_read_in(jet_select_tables, field, index);
 }
 
 /* INDEX, then ADS or LXCH, which write the word at their address: the
@@ -263,6 +278,35 @@ void jtime_ccs(void);    /* JTIME +5: CCS KMPAC */
 void dojet_next(void);   /* DOJET +2: CCS SPNDX */
 void t6prog(void);       /* T6PROG */
 void t6prog_t5loc(void); /* T6PROG +2: DXCH T5LOC */
+
+/* ---- JET_SELECTION_LOGIC.agc, the jets for each axis -- jet_select.c ---- */
+
+void jetslect(void);         /* JETSLECT: phase 3, the translations, PWORD */
+void tabpcom_pjets(void);    /* TABPCOM +5: MASK PJETS, YWORD, RWORD */
+void tabrcom_rtable(void);   /* TABRCOM +1: the AC roll word, BDZCHECK */
+void bdzcheck_index(void);   /* BDZCHECK +7: INDEX ZNDX */
+void bdzcheck_yztable(void); /* BDZCHECK +011: the BD Z translation */
+void nobdz(void);            /* NOBDZ */
+void bdroll(void);           /* BDROLL: the BD roll word, ACYCHECK */
+void acycheck_rword1(void);  /* ACYCHECK +014: AD RWORD1 */
+void acycheck_net(void);     /* ACYCHECK +020: NRJETS */
+void bdracz(void);           /* BDRACZ */
+void bdracz_rolltime(void);  /* BDRACZ +2: TCF ROLLTIME */
+void tauchck(void);          /* TAUCHCK */
+void noacy(void);            /* NOACY */
+
+/* ---- JET_SELECTION_LOGIC.agc, the jet on-times -- jet_times.c ---- */
+
+void pitchtim(void);           /* PITCHTIM: the pitch on-time */
+void yawtime(void);            /* YAWTIME: the yaw on-time */
+void yawtime_to_ytaupos(void); /* YAWTIME +1: TCF YTAUPOS */
+void yawtime_to_dft2(void);    /* YAWTIME +2: TCF +2 */
+void yawtime_to_ytauneg(void); /* YAWTIME +3: TCF YTAUNEG */
+void yawtime_dft2(void);       /* YAWTIME +4: TS DFT2, no yaw command */
+void ytaupos(void);            /* YTAUPOS */
+void ytaupos_dftmax(void);     /* YTAUPOS +010: over .1 s */
+void ad14msy(void);            /* AD14MSY: at least 14 ms */
+void rolltime(void);           /* ROLLTIME: the roll on-time */
 
 /* ---- RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc -- dap_executive.c ---- */
 

@@ -4777,6 +4777,48 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define DOJET            ((word)K_DOJET)
 #define SLOPE2           ((word)KW_SLOPE2) /* DEC .32: "= 0.8 DEG/SEC/DEG" */
 #define QUADANGL         ((word)KW_QUADANGL) /* DEC 660: "= 7.25 DEGREES" */
+#define JETSLECT         ((word)K_JETSLECT)
+#define TABPCOM          ((word)K_TABPCOM)
+#define TABYCOM          ((word)K_TABYCOM)
+#define TABRCOM          ((word)K_TABRCOM)
+#define BDZCHECK         ((word)K_BDZCHECK)
+#define NOBDZ            ((word)K_NOBDZ)
+#define BDROLL           ((word)K_BDROLL)
+#define ACYCHECK         ((word)K_ACYCHECK)
+#define BDRACZ           ((word)K_BDRACZ)
+#define TAUCHCK          ((word)K_TAUCHCK)
+#define NOACY            ((word)K_NOACY)
+#define ROLLTIME         ((word)K_ROLLTIME)
+#define PITCHTIM         ((word)K_PITCHTIM)
+#define PTAUPOS          ((word)K_PTAUPOS)
+#define AD14MSP          ((word)K_AD14MSP)
+#define PBLASTOK         ((word)K_PBLASTOK)
+#define YAWTIME          ((word)K_YAWTIME)
+#define YTAUNEG          ((word)K_YTAUNEG)
+#define YTAUPOS          ((word)K_YTAUPOS)
+#define AD14MSY          ((word)K_AD14MSY)
+#define YBLASTOK         ((word)K_YBLASTOK)
+#define RBLAST           ((word)K_RBLAST)
+#define AD14MSR          ((word)K_AD14MSR)
+#define RBLASTOK         ((word)K_RBLASTOK)
+#define PBYPASS          ((word)K_PBYPASS)
+#define YBYPASS          ((word)K_YBYPASS)
+#define RBYPASS          ((word)K_RBYPASS)
+#define ASMBLWP          ((word)K_ASMBLWP)
+#define ASMBLWY          ((word)K_ASMBLWY)
+#define ASMBLWR          ((word)K_ASMBLWR)
+#define DELTATT3         ((word)KW_DELTATT3) /* DEC 16378: "= 60 MS" (TIME5) */
+#define DELATT20         ((word)KW_DELATT20) /* DEC 16382: "= 20 MS" (TIME5) */
+#define EQ_14MS          ((word)KW__EQ_14MS) /* =14MS, DEC 23 (TIME6) */
+#define EQ_M_1SEC        ((word)KW__EQ_M_1SEC) /* =-.1SEC, DEC -160 */
+#define EQ_P_1SEC        ((word)KW__EQ_P_1SEC) /* =+.1SEC, DEC 160 */
+#define XLNMASK          ((word)KW_XLNMASK)  /* OCT 7700 */
+#define PJETS            ((word)KW_PJETS)    /* OCT 1417 */
+#define YJETS            ((word)KW_YJETS)    /* OCT 6360 */
+#define ACRJETS          ((word)KW_ACRJETS)  /* OCT 03760 */
+#define BDRJETS          ((word)KW_BDRJETS)  /* OCT 34017 */
+#define BDZJETS          ((word)KW_BDZJETS)  /* OCT 03417 */
+#define ACYJETS          ((word)KW_ACYJETS)  /* OCT 34360 */
 #endif
 
 /* NO.CORES + 1 core sets. */
