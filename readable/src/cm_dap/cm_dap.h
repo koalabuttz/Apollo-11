@@ -34,11 +34,21 @@
  *     rates in WBODY and the attitude errors they build up, for the jet
  *     selection logic, or in free mode as jet firing times.
  *
+ * AUTOMATIC_MANEUVERS.agc (pp. 1025-1036, bank 21), the rest of phase 2,
+ * c64-port/src/cm_auto_man.c, written part by part:
+ *
+ *   AHFNOROT, FREECONT, ATTHOLD, HOLDFUNC, GRABANG (attitude_hold.c): with
+ *     no manual rotation, free mode's minimum impulses, or the attitude
+ *     held and its errors.
+ *   JETS to NJ22 (switching.c): the start of the jet switching logic, each
+ *     axis' rate and attitude errors placed in the phase plane.
+ *
  * All basic code. Each function runs from a word the program can come
  * back to (an entry, the word after a call out of the file) until control
- * leaves the file's code (RESUME, NOVAC, IBNKCALL, SMALLMP, DPADD, TC Q,
- * AHFNOROT, JETS), or reaches a word where the faithful port's run stops:
- * a key of its own, run by the function named for it. */
+ * leaves its file's code (the RCS DAP's to RESUME, NOVAC, IBNKCALL,
+ * SMALLMP, DPADD, TC Q, AHFNOROT, JETS; AUTOMATIC_MANEUVERS's to REINIT,
+ * STICKCHK, T6PROGM), or reaches a word where the faithful port's run
+ * stops: a key of its own, run by the function named for it. */
 #ifndef READABLE_CM_DAP_H
 #define READABLE_CM_DAP_H
 
@@ -63,19 +73,52 @@ static inline word dpndx(void)
     return fetch(ADDRESS_OF(DPNDX));
 }
 
-/* ---- INDEX in the RCS DAP (indexing.c) ---- */
+/* ---- INDEX in the DAP files (indexing.c) ---- */
+
+/* The words of fixed memory a file's code reads under INDEX, as the
+ * faithful C copies them: whether an address is one. */
+typedef bool fixed_tables(unsigned address);
+bool rcs_dap_tables(unsigned address);  /* the gains, DACLIMIT, FREETAU, MANTABLE */
+bool maneuver_tables(unsigned address); /* MINTAU, BIT13 on, OCT01400 on */
 
 /* INDEX, then an order that reads the word at its address field plus the
  * index (CA, CS, MP, AD): the address. Not modelled (the faithful port
  * refuses them too): a sum outside 0-07777 or at Z, or a word of fixed
- * memory other than the file's tables read by INDEX (the gains, DACLIMIT,
- * FREETAU, MANTABLE). */
-unsigned index_read(unsigned field, word index);
+ * memory other than the file's tables. */
+unsigned index_read_in(fixed_tables *tables, unsigned field, word index);
 
 /* INDEX, then DCA or DCS, whose address field is the double word's
  * address +1: A,L the double word (DCS complemented). */
-void dca_indexed(unsigned address, word index);
-void dcs_indexed(unsigned address, word index);
+void dca_indexed_in(fixed_tables *tables, unsigned address, word index);
+void dcs_indexed_in(fixed_tables *tables, unsigned address, word index);
+
+/* RCS-CSM_DIGITAL_AUTOPILOT's reads. */
+static inline unsigned index_read(unsigned field, word index)
+{
+    return index_read_in(rcs_dap_tables, field, index);
+}
+static inline void dca_indexed(unsigned address, word index)
+{
+    dca_indexed_in(rcs_dap_tables, address, index);
+}
+static inline void dcs_indexed(unsigned address, word index)
+{
+    dcs_indexed_in(rcs_dap_tables, address, index);
+}
+
+/* AUTOMATIC_MANEUVERS's. */
+static inline unsigned maneuver_index_read(unsigned field, word index)
+{
+    return index_read_in(maneuver_tables, field, index);
+}
+static inline void maneuver_dca_indexed(unsigned address, word index)
+{
+    dca_indexed_in(maneuver_tables, address, index);
+}
+static inline void maneuver_dcs_indexed(unsigned address, word index)
+{
+    dcs_indexed_in(maneuver_tables, address, index);
+}
 
 /* INDEX, then ADS or LXCH, which write the word at their address: the
  * address. Not modelled (the faithful port refuses them too): one outside
@@ -171,6 +214,23 @@ void t6progm(void);                    /* T6PROGM */
 void stickchk(void);                   /* STICKCHK */
 void kalupdt(void);                    /* KALUPDT */
 void kresume2_t5phase(void);           /* KRESUME2 +1: TS T5PHASE */
+
+/* ---- AUTOMATIC_MANEUVERS.agc, attitude hold -- attitude_hold.c ---- */
+void ahfnorot(void);                /* AHFNOROT */
+void freecont_after_stickchk(void); /* FREECONT +012 */
+void atthold(void);                 /* ATTHOLD */
+void atthold_bias(void);            /* ATTHOLD +041: CA BIAS */
+void atthold_bias_errorx(void);     /* ATTHOLD +042: ADS ERRORX */
+void holdfunc(void);                /* HOLDFUNC */
+void grabang(void);                 /* GRABANG */
+
+/* ---- AUTOMATIC_MANEUVERS.agc, jet switching logic -- switching.c ---- */
+void jets(void);    /* JETS */
+void jloop(void);   /* JLOOP */
+void inhold(void);  /* INHOLD */
+void signck1(void); /* SIGNCK1 */
+void posvel(void);  /* POSVEL */
+void negvel(void);  /* NEGVEL */
 
 #endif
 
