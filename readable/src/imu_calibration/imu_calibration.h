@@ -275,5 +275,17 @@ void azmthcg1_enter(void);          /* AZMTHCG1 +016 */
 void azmthcg1_after_load(void);     /* AZMTHCG1 +025 */
 void azmthcg1_after_phaschng(void); /* AZMTHCG1 +031 */
 
+/* ---- The interpretive code, in the listing's notation ---- */
+
+struct interpretive_code;
+extern const struct interpretive_code GUESS_CODE;       /* imu_test.c, p. 423 */
+extern const struct interpretive_code AXES_CODE;        /* NBPOSPL +7, p. 424 */
+extern const struct interpretive_code CALCGA_CODE;      /* NBPOSPL +026, p. 424 */
+extern const struct interpretive_code AINGOTN_CODE;     /* p. 426 */
+extern const struct interpretive_code OVERFFIX_CODE;    /* p. 428 */
+extern const struct interpretive_code ERTHRVSE_CODE;    /* drift_loop.c, p. 430 (bank 32) */
+extern const struct interpretive_code EARTHR_CODE;      /* p. 430 */
+extern const struct interpretive_code EARTHR_STAR_CODE; /* p. 430 */
+
 #endif
 #endif

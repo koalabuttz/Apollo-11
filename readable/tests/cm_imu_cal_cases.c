@@ -7,8 +7,8 @@
  * Makefile renames them).
  *
  * First the keys, which must be the faithful tables', and every basic key
- * must run readable code (the order pairs, the faithful port's, until
- * their parts are written). Then the runs: each
+ * must run readable code (the order pairs not yet written, the faithful
+ * port's). Then the runs: each
  * readable key from 4,096 states (each other key, which runs the faithful
  * routine through the readable table, from 16), each one of the port's
  * frozen test states (c64-port/tests/cm_imu_calibration_vectors.h) entered
@@ -23,6 +23,7 @@
  * waits) and channel 30, A and L (now and then an overflow), any erasable
  * word, the latches, EBANK, FB, or a state the routines refuse (BBANK not
  * the two banks, ZERO not +0, a word of 16 bits, the superbank bit set).
+ * An order pair's state is at NEWOPS with LOC the key (pair_state()).
  * FINETIME's keys keep EBANK 5 (but now and then EBANK 0 to 3 with Q 3,
  * a return to an erasable word): the faithful port reads the file's
  * switched words in EBANK 5 whatever EBANK holds, which the readable code
@@ -59,6 +60,20 @@ bool cm_imu_cal_readable(uint16_t key, bool order_pair);
 /* A word's place in the state: E5's words at 02400 + (the address -
  * 01400), unswitched ones at their address. */
 #define AT(name) ((unsigned)K_##name >= 01400u ? (unsigned)K_##name + 01000u : (unsigned)K_##name)
+
+/* The interpreter's words, and the work area's (from FIXLOC). */
+#define NEWOPS_AT   06037u
+#define EDOP_AT     0023u
+#define INTBIT15_AT 0115u
+#define FIXLOC_AT   0120u
+#define MPAC_AT     0154u
+#define MODE_AT     0163u
+#define LOC_AT      0164u
+#define BANKSET_AT  0165u
+#define PUSHLOC_AT  0166u
+#define X1_OFF      0046u
+#define S2_OFF      0051u
+#define QPRET_OFF   0052u
 
 #define CASES       4096u
 #define OTHER_CASES 16u
@@ -186,11 +201,52 @@ static uint16_t table_index(unsigned base, unsigned top)
                       : sign_word();
 }
 
+/* A CADR a GOTO or RVQ goes to: mostly one in fixed memory, now and then
+ * any word. */
+static uint16_t cadr_word(void)
+{
+    return pick(8u) ? (uint16_t)(04000u + pick(074000u)) : value_word();
+}
+
+/* An order pair's state: at NEWOPS with LOC the key, EDOP +0 (as DANZIG
+ * leaves it before every NEWOPS), INTBIT15 the bank's bit 15 (now and then
+ * not), a VAC area as the work area (now and then not), PUSHLOC in it, and
+ * for most n MPAC, MODE (double or triple precision, or a vector) and the
+ * work area's words stirred: X1 and X2, S2 (where EARTHR's ITA keeps its
+ * return) and QPRET (RVQ's) mostly a CADR in fixed memory. */
+static void pair_state(uint16_t *w, uint16_t key, unsigned n)
+{
+    unsigned k, fixloc = w[FIXLOC_AT];
+
+    w[5] = NEWOPS_AT;
+    w[LOC_AT] = (uint16_t)(02000u + key % 1024u);
+    w[EDOP_AT] = 0u;
+    if (n % 4u != 0u || fixloc < 0401u || fixloc > 0661u || (fixloc - 0401u) % 054u)
+        fixloc = w[FIXLOC_AT] = (uint16_t)(0401u + 054u * pick(5u));
+    if (n % 4u != 0u) {
+        for (k = 0; k < 7u; ++k) w[MPAC_AT + k] = value_word();
+        k = pick(3u);
+        w[MODE_AT] = k == 0u ? 0u : k == 1u ? 1u : 077776u;
+        for (k = 0; k < 053u; ++k)
+            if (pick(2u)) w[fixloc + k] = value_word();
+        w[fixloc + X1_OFF] = pick(2u) ? (uint16_t)pick(4u) : value_word();
+        w[fixloc + S2_OFF] = cadr_word();
+        w[fixloc + QPRET_OFF] = cadr_word();
+        /* Now and then a work area the routines do not take. */
+        if (pick(64u) == 0u) fixloc = w[FIXLOC_AT] = (uint16_t)pick(02000u);
+    }
+    if (w[PUSHLOC_AT] < fixloc || w[PUSHLOC_AT] > fixloc + 037u || n % 4u != 0u)
+        w[PUSHLOC_AT] = (uint16_t)(fixloc + pick(040u));
+    w[INTBIT15_AT] = (uint16_t)(w[4] & 040000u);
+    if (n % 4u != 0u && pick(32u) == 0u) w[INTBIT15_AT] = any_word();
+}
+
 /* The frozen cases. */
 static unsigned mission_cases[CM_IMU_CALIBRATION_VECTORS], mission_count;
 
 /* One state at the key: a frozen case's, and for most n more. */
-static void state(apollo_overlay_state *s, cm_channel_io *io, uint16_t key, unsigned n)
+static void state(apollo_overlay_state *s, cm_channel_io *io, uint16_t key, bool interpretive,
+                  unsigned n)
 {
     const irc_case *c = &cm_imu_calibration_cases[mission_cases[(n * 7u + rnd()) % mission_count]];
     uint16_t *w = s->words, eb;
@@ -272,6 +328,10 @@ static void state(apollo_overlay_state *s, cm_channel_io *io, uint16_t key, unsi
     if (n % 4u != 0u && pick(64u) == 0u) w[6] = any_word();
     if (n % 4u != 0u && pick(64u) == 0u) w[7] = any_word();
     if (n % 4u != 0u && pick(64u) == 0u) w[3u + pick(03775u)] |= 0100000u;
+    if (interpretive) {
+        pair_state(w, key, n);
+        w[BANKSET_AT] = pick(32u) ? w[6] : any_word();
+    }
 }
 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
@@ -293,7 +353,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             enum exec_status sf, sr;
             const char *why = 0;
 
-            state(&start, &io, key, n);
+            state(&start, &io, key, order_pairs, n);
             fa = ra = start;
             fio = rio = io;
             memset(&fhw, 0, sizeof fhw);

@@ -3897,6 +3897,8 @@
 #define I_ERVECTOR 002404u
 #define I_TMARK 002442u
 #define I_ERCOMP 002647u
+#define I_ERCOMP1 002647u
+#define I_LATAZCHK 010613u
 #define I_TEMPTIME 002440u
 #define I_ERTHR 066401u
 #define I_XSM 002671u
