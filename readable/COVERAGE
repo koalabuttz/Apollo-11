@@ -106,3 +106,4 @@ Comanche055/ENTRY_LEXICON.agc                  src/reentry
 Comanche055/REENTRY_CONTROL.agc                src/reentry
 Comanche055/CM_BODY_ATTITUDE.agc               src/body_attitude
 Comanche055/P37_P70.agc                        src/p37_p70
+Comanche055/TVCINITIALIZE.agc                  src/tvc

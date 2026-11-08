@@ -66,7 +66,8 @@ FILES = (('lm_p20_p25', READABLE / 'src/binding/p20_p25_keys.inc'),
          ('cm_servicer', READABLE / 'src/binding/cm_servicer_keys.inc'),
          ('cm_reentry', READABLE / 'src/binding/cm_reentry_keys.inc'),
          ('cm_body_attitude', READABLE / 'src/binding/cm_body_attitude_keys.inc'),
-         ('cm_p37_p70', READABLE / 'src/binding/cm_p37_p70_keys.inc'))
+         ('cm_p37_p70', READABLE / 'src/binding/cm_p37_p70_keys.inc'),
+         ('cm_tvc_init', READABLE / 'src/binding/cm_tvc_init_keys.inc'))
 
 
 def generate(m):
@@ -83,8 +84,10 @@ def generate(m):
            ' * in the table, its bank and its address (in the bank, or 04000-07777 in',
            ' * fixed-fixed memory, banks 2 and 3). */']
     for table, macro in (('interpretive', 'PAIR'), ('basic', 'BASIC')):
-        body = re.search(r'static const agc_routine_entry %s_entries\[\]=\{(.*?)\n\};' % table,
-                         text, re.S).group(1)
+        found = re.search(r'static const agc_routine_entry %s_entries\[\]=\{(.*?)\n\};' % table,
+                          text, re.S)
+        # (a file of basic code alone has no interpretive entries: TVCINITIALIZE)
+        body = found.group(1) if found else ''
         # (the CM's routines are called through wrappers, <routine>_abi)
         entries = re.findall(r'\{(\d+),([re]\d+)(?:_abi)?\}', body)
         last = -1
@@ -124,8 +127,10 @@ def generate_servicer():
            ' * PAIR for lm_servicer_interpretive; each with its bank and its',
            ' * address in the bank. */']
     for table, macro in (('basic', 'BASIC'), ('interp', 'PAIR')):
-        body = re.search(r'static const agc_routine_entry %s_entries\[\]=\{(.*?)\n\};' % table,
-                         text, re.S).group(1)
+        found = re.search(r'static const agc_routine_entry %s_entries\[\]=\{(.*?)\n\};' % table,
+                          text, re.S)
+        # (a file of basic code alone has no interpretive entries: TVCINITIALIZE)
+        body = found.group(1) if found else ''
         last = -1
         for kind, bank, address in re.findall(r'([RX])(\d\d)\((0[0-7]+)\)', body):
             physical = int(bank, 8) * 1024 + (int(address, 8) & 0o1777)

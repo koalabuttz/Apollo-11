@@ -4574,6 +4574,27 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define V6N60RTE ((word)KW_V6N60RTE) /* VN 0660 */
 #define V6N81RTE ((word)KW_V6N81RTE) /* VN 0681 */
 #define V5N09RTE ((word)KW_V5N09RTE) /* VN 0509 */
+/* TVCINITIALIZE.agc */
+#define TVCDAPON        ((word)K_TVCDAPON)
+#define MRCLEAN         ((word)K_MRCLEAN)
+#define TVCINIT1        ((word)K_TVCINIT1)
+#define TVCINIT2        ((word)K_TVCINIT2)
+#define TVCINIT4        ((word)K_TVCINIT4)
+#define NEEDLEIN        ((word)K_NEEDLEIN)
+#define PRESWTCH        ((word)K_PRESWTCH)
+#define SWICHOVR        ((word)K_SWICHOVR)
+#define LOADCOEF        ((word)K_LOADCOEF)
+#define S40_15          ((word)K_S40_15)       /* S40.15 */
+#define NZERO           ((word)KW_NZERO)       /* DEC 51 */
+#define NZEROJR         ((word)KW_NZEROJR)     /* DEC 23 */
+#define ONETHOU         ((word)KW_ONETHOU)     /* DEC 1000 B-13 */
+#define ATTLIM          ((word)KW_ATTLIM)      /* DEC 0.00833 */
+#define ONE_OVER_ATTLIM ((word)KW_1_ATTLIM)    /* 1/ATTLIM: DEC 0.007325 */
+#define FKPRIMDT        ((word)KW_FKPRIMDT)    /* DEC .0102 */
+#define FREPFRAC        ((word)KW_FREPFRAC)    /* DEC .0375 B-2 */
+#define TWO_PI_OVER_M   ((word)KW_2PI_M)       /* 2PI/M: DEC .00331017 B+8 */
+#define LBCFADR         ((word)KW_LBCFADR)     /* GENADR LBN10 */
+#define NINETEEN        ((word)KW_NINETEEN)    /* NINETEEN = VD1 */
 #endif
 
 /* NO.CORES + 1 core sets. */
