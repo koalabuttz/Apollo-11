@@ -208,6 +208,21 @@ static uint16_t cadr_word(void)
     return pick(8u) ? (uint16_t)(04000u + pick(074000u)) : value_word();
 }
 
+/* An index register as the filter's loops set it: a count (0 to 12) or
+ * its negative, and in ALCGKK to ALKCG2's SXA,1 (the gains' load) X1 also
+ * ALX1S's index into the gains (0 to 144D, even). (An index that takes an
+ * operand out of its E-bank, or into fixed memory, is a state the program
+ * never reaches, where the two ports differ: src/binding/
+ * cm_imu_cal_routines.c.) */
+static uint16_t index_word(bool gains)
+{
+    unsigned k = pick(4u);
+
+    return k < 2u              ? (uint16_t)pick(13u)
+           : k == 2u || !gains ? number(-(int)pick(13u))
+                               : (uint16_t)(2u * pick(0111u));
+}
+
 /* An order pair's state: at NEWOPS with LOC the key, EDOP +0 (as DANZIG
  * leaves it before every NEWOPS), INTBIT15 the bank's bit 15 (now and then
  * not), a VAC area as the work area (now and then not), PUSHLOC in it, and
@@ -229,7 +244,11 @@ static void pair_state(uint16_t *w, uint16_t key, unsigned n)
         w[MODE_AT] = k == 0u ? 0u : k == 1u ? 1u : 077776u;
         for (k = 0; k < 053u; ++k)
             if (pick(2u)) w[fixloc + k] = value_word();
-        w[fixloc + X1_OFF] = pick(2u) ? (uint16_t)pick(4u) : value_word();
+        w[fixloc + X1_OFF] = index_word(key % 1024u >= 0670u && key % 1024u <= 0702u);
+        w[fixloc + X1_OFF + 1u] = index_word(false);
+        /* At ALKLP +021 (DLOAD* ALSK +1,1) X1 mostly as LXC,1 CMPX1 sets
+         * it: +1 or -1. */
+        if (key % 1024u == 0760u && pick(4u)) w[fixloc + X1_OFF] = pick(2u) ? 1u : 077776u;
         w[fixloc + S2_OFF] = cadr_word();
         w[fixloc + QPRET_OFF] = cadr_word();
         /* Now and then a work area the routines do not take. */

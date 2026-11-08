@@ -2033,6 +2033,9 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define ERTHR       ((word)K_ERTHR)
 #define EARTHR_STAR ((word)K_EARTHR_STAR) /* EARTHR* */
 #define PROUT       ((word)K_PROUT)
+#define DELMLP      ((word)K_DELMLP)
+#define ALKLP       ((word)K_ALKLP)
+#define BOOP        ((word)K_BOOP)
 #define SHOW1       ((word)K_SHOW1)
 #define P11OUT      ((word)K_P11OUT)
 #define FINETIME    ((word)K_FINETIME)

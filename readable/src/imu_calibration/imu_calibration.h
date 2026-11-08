@@ -286,6 +286,9 @@ extern const struct interpretive_code OVERFFIX_CODE;    /* p. 428 */
 extern const struct interpretive_code ERTHRVSE_CODE;    /* drift_loop.c, p. 430 (bank 32) */
 extern const struct interpretive_code EARTHR_CODE;      /* p. 430 */
 extern const struct interpretive_code EARTHR_STAR_CODE; /* p. 430 */
+extern const struct interpretive_code RSTGTS1_CODE;     /* p. 434 */
+extern const struct interpretive_code ESTIMS_CODE;      /* ESTIMS +035, p. 434 */
+extern const struct interpretive_code NORMLOP_CODE;     /* pp. 438-441 */
 
 #endif
 #endif

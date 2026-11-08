@@ -36,7 +36,11 @@
  * BBANK, INTBIT15 the bank's bit 15, NEWJOB +0 or a core set and FIXLOC
  * one of the VAC areas; after RTB LOADTIME the pass goes on, as the
  * faithful pair's does. A run the readable code refuses part way leaves
- * the state and io record as they were. */
+ * the state and io record as they were. One difference, outside any state
+ * the program reaches: an index (X1, X2) that takes an operand out of its
+ * E-bank or into fixed memory. There the faithful port reads a fixed
+ * address's word from erasable memory, where the readable interpreter
+ * reads the rope, and a store across E-banks leaves another word in L. */
 #include <setjmp.h>
 #include <stddef.h>
 #include "binding.h"
@@ -366,8 +370,18 @@ static enum exec_status steps(bool fixed_fixed_key)
 
 static const struct interpretive_code *const codes[] = {
     /* Part 3: pp. 423-430 */
-    &GUESS_CODE,    &AXES_CODE,     &CALCGA_CODE, &AINGOTN_CODE,
-    &OVERFFIX_CODE, &ERTHRVSE_CODE, &EARTHR_CODE, &EARTHR_STAR_CODE,
+    &GUESS_CODE,
+    &AXES_CODE,
+    &CALCGA_CODE,
+    &AINGOTN_CODE,
+    &OVERFFIX_CODE,
+    &ERTHRVSE_CODE,
+    &EARTHR_CODE,
+    &EARTHR_STAR_CODE,
+    /* Part 4: pp. 434-441 */
+    &RSTGTS1_CODE,
+    &ESTIMS_CODE,
+    &NORMLOP_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
@@ -390,6 +404,16 @@ static bool pair_sane(word fb)
     if (agc.memory[ADDRESS_OF(NEWJOB)] > 037777u) return false;
     if (FIXLOC < 0401u || FIXLOC > 0661u || (FIXLOC - 0401u) % 054u) return false;
     return sane(fb, false, false);
+}
+
+/* The checks a pair's own words call for, before it runs (the states the
+ * faithful pairs take): at ALKLP +021, DLOAD* ALSK +1,1, X1 one of
+ * CMPX1's two signs (+1 or -1): the sway gain at ALSK or ALSK +2. */
+static bool pair_takes(void)
+{
+    word x1 = agc.memory[(FIXLOC + K_X1) & 03777u];
+
+    return LOC != ALKLP + 021u || x1 == 1u || x1 == 077776u;
 }
 
 /* One pass; after RTB LOADTIME (ERTHRVSE's and EARTHR's), the routine
@@ -456,7 +480,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     code = code_at(bank, LOC);
     if (Z != NEWOPS || FBANK != (word)(bank << 10) || !code ||
         LOC != (word)(02000u + key % 1024u) || BANKSET != BBANK || INTBIT15 != (FBANK & 040000u) ||
-        !pair_sane(FBANK))
+        !pair_sane(FBANK) || !pair_takes())
         return EXEC_OUT_OF_SCOPE;
 
     before = *state;
