@@ -197,11 +197,13 @@ def with_retries(label, fetch):
 
 
 def api_request(url, accept):
-    headers = {'Accept': accept, 'User-Agent': 'apollo-11-evidence'}
+    request = urllib.request.Request(url, headers={'Accept': accept, 'User-Agent': 'apollo-11-evidence'})
     token = os.environ.get('GITHUB_TOKEN') or os.environ.get('GH_TOKEN')
     if token:
-        headers['Authorization'] = f'Bearer {token}'
-    return urllib.request.Request(url, headers=headers)
+        # Unredirected: the asset route answers 302 to a pre-signed CDN URL,
+        # which rejects (or would leak) a forwarded token (#1256).
+        request.add_unredirected_header('Authorization', f'Bearer {token}')
+    return request
 
 
 def api_asset_request(url):
