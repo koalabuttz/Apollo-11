@@ -34,6 +34,20 @@ bool maneuver_tables(unsigned address)
            (address >= ADDRESS_OF(OCT01400) && address <= ADDRESS_OF(OCT01400) + 2u);
 }
 
+/* JET_SELECTION_LOGIC's: the translation biases XLNNDX and XLN1NDX, the
+ * jet tables PYTABLE, RTABLE and YZTABLE, and the words about NJET and
+ * DFTMAX (four either side), which the jet on-times read. */
+bool jet_select_tables(unsigned address)
+{
+    return (address >= ADDRESS_OF(XLNNDX) && address <= ADDRESS_OF(XLNNDX) + 3u) ||
+           (address >= ADDRESS_OF(XLN1NDX) && address <= ADDRESS_OF(XLN1NDX) + 3u) ||
+           (address >= ADDRESS_OF(PYTABLE) && address <= ADDRESS_OF(PYTABLE) + 016u) ||
+           (address >= ADDRESS_OF(RTABLE) && address <= ADDRESS_OF(RTABLE) + 016u) ||
+           (address >= ADDRESS_OF(YZTABLE) && address <= ADDRESS_OF(YZTABLE) + 010u) ||
+           (address + 4u >= ADDRESS_OF(NJET) && address <= ADDRESS_OF(NJET) + 4u) ||
+           (address + 4u >= ADDRESS_OF(DFTMAX) && address <= ADDRESS_OF(DFTMAX) + 4u);
+}
+
 unsigned index_read_in(fixed_tables *tables, unsigned field, word index)
 {
     int sum = index_sum(field, index);

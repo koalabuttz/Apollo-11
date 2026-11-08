@@ -263,6 +263,11 @@ REPLACED = (
 # AUTOMATIC_MANEUVERS (src/cm_dap): the CM's routine tables (and the table
 # of the keys one pass reaches), all readable; the faithful ones, renamed,
 # are no longer called (--gc-sections drops them).
+# RCS-CSM_DAP_EXECUTIVE_PROGRAMS (src/cm_dap): the CM's routine tables, all
+# readable; the faithful ones, renamed, are no longer called.
+# JET_SELECTION_LOGIC (src/cm_dap), part by part: the CM's routine tables
+# (and the table of the keys one pass reaches), readable where a key is
+# written; the faithful ones, renamed, run the rest.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],
@@ -294,7 +299,9 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'cm_auto_man.o': lambda m: ['cm_auto_man_basic', 'cm_auto_man_interpretive',
                                        'cm_auto_man_hot_routines'] if m == 'cm' else [],
            'cm_rcs_dap_exec.o': lambda m: ['cm_rcs_dap_exec_basic', 'cm_rcs_dap_exec_interpretive']
-                                if m == 'cm' else []}
+                                if m == 'cm' else [],
+           'cm_jet_select.o': lambda m: ['cm_jet_select_basic', 'cm_jet_select_interpretive',
+                                         'cm_jet_select_hot_routines'] if m == 'cm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
