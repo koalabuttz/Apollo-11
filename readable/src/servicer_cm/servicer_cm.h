@@ -28,7 +28,11 @@
  * RUPTREG1, AVERAGEG's DXCH Z). The binding,
  * src/binding/cm_servicer_routines.c, runs on from a computed address
  * while it is one of those words. A TC to one of the file's own
- * routines calls its function. */
+ * routines calls its function.
+ *
+ * Words of the listing no instruction names, so no C name either: the
+ * constants 2.5SEC (DEC 250) and MDOTFAIL (DEC 144.0 B-16), after
+ * JTAGTIME (p. 830). */
 #ifndef READABLE_SERVICER_CM_H
 #define READABLE_SERVICER_CM_H
 

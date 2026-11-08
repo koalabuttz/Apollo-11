@@ -265,7 +265,10 @@ Both missions come from the same source, built with `LUMINARY099=1` or
 
 How much of the program is readable C: `make coverage` counts the
 listing files in [`COVERAGE`](COVERAGE), whole files only, weighted by
-their source lines over all 175 files of both missions.
+their source lines over all 175 files of both missions. A file of
+comments only (ENTRY_LEXICON, LUNAR_LANDMARK_SELECTION_FOR_CM) counts by
+its lines too, marked no-code there, with its words in the header of the
+directory listed; `make coverage` checks that it still holds no code.
 
 Next, one subsystem at a time: the rest of the flight program, in study
 order. A Rust edition with the same layout and the same gates

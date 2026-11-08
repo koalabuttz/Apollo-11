@@ -10,8 +10,14 @@ c64-port/tools/port_coverage.py weighs the faithful port.
                                 or directory, a directory the Makefile does
                                 not build (so no gate runs it), a file
                                 README.md's table of subsystems does not
-                                name, or a whole file whose binding still
-                                hands keys to the faithful tables
+                                name, a whole file whose binding still
+                                hands keys to the faithful tables, or a
+                                file whose no-code mark does not hold
+
+A listing file of comments only (no line of code: every line blank or a
+comment) has no routine to write; COVERAGE lists it with the directory
+whose header carries its words, marked no-code, and it counts by its
+lines like any other. The check holds the mark to the listing both ways.
 """
 import re
 import sys
@@ -51,6 +57,15 @@ def fallbacks(done):
     return found
 
 
+def code_line(path):
+    """The first line of code in a listing file (not blank, not a
+    comment), as (number, text), or None."""
+    for number, line in enumerate((ROOT / path).read_text().splitlines(), 1):
+        if line.strip() and not line.lstrip().startswith('#'):
+            return number, line.strip()
+    return None
+
+
 def main(argv):
     files = {str(p.relative_to(ROOT)): len(p.read_bytes().splitlines())
              for tree in TREES for p in sorted((ROOT / tree).glob('*.agc'))}
@@ -62,6 +77,10 @@ def main(argv):
         if not line:
             continue
         path, where = line[0], line[1]
+        no_code = line[2:] == ['no-code']
+        if line[2:] and not no_code:
+            print(f'FAIL: COVERAGE line for {path} ends in {" ".join(line[2:])}, not no-code')
+            bad = 1
         if path not in files or not (READABLE / where).is_dir():
             print(f'FAIL: COVERAGE names {path} ({where}), which does not exist')
             bad = 1
@@ -70,6 +89,13 @@ def main(argv):
             bad = 1
         elif Path(path).name not in readme:
             print(f'FAIL: COVERAGE names {path}, which README.md does not')
+            bad = 1
+        elif no_code and code_line(path):
+            number, text = code_line(path)
+            print(f'FAIL: COVERAGE marks {path} no-code, but its line {number} is code: {text}')
+            bad = 1
+        elif not no_code and not code_line(path):
+            print(f'FAIL: {path} holds no code: COVERAGE must mark it no-code')
             bad = 1
         done[path] = files.get(path, 0)
         where_of[path] = where

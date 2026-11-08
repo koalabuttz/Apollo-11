@@ -2499,13 +2499,13 @@ cm-body-attitude-cases: $(BUILD)/cbat-oracle $(BUILD)/cbat-cases
 	./$(BUILD)/cbat-oracle $(ROPES)
 	./$(BUILD)/cbat-cases $(ROPES)
 
-# P37_P70.agc, the CM's return to earth (written part by part): the port's
-# test (tests/test_cm_p37_p70.c, its frozen cases run to their stops
-# through the program of tests/cm_p37_p70_target.c, against the original
+# P37_P70.agc, the CM's return to earth: the port's test
+# (tests/test_cm_p37_p70.c, its frozen cases run to their stops through
+# the program of tests/cm_p37_p70_target.c, against the original
 # program's yaAGC digests) through the readable tables, with
-# tests/with_ropes.c loading the ropes the readable interpreter reads; then
-# tests/cm_p37_p70_cases.c side by side with the faithful routines
-# (renamed faithful_, which also run the keys no part has written yet).
+# tests/with_ropes.c loading the ropes the readable interpreter reads;
+# then tests/cm_p37_p70_cases.c side by side with the faithful routines
+# (renamed faithful_).
 CP37_NAMES := cm_p37_p70_basic cm_p37_p70_interpretive
 CP37_COMMON := $(CP61_COMMON) $(PORT)/src/rtb_modes.c
 

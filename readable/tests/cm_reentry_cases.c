@@ -319,7 +319,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
         uint16_t key = faithful->entries[i].physical, z = key_z(key);
         unsigned ran = 0, bad = 0, cases = CASES;
 
-        ++*readable_keys;
+        *readable_keys += cm_reentry_readable(key, interpretive != 0);
         for (n = 0; n < cases; ++n) {
             apollo_overlay_state start, fa, ra;
             cm_native_io io, fio, rio;
