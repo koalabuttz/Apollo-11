@@ -146,6 +146,10 @@ static const struct basic_entry *basic_entry(uint16_t key)
 static const struct interpretive_code *const codes[] = {
     &KEPPREP_CODE,
     &ACCOMP_CODE,
+    &OBLATE_CODE,
+#if LUMINARY099
+    &QUALITY1_CODE,
+#endif
 };
 
 /* The part of the code an address of a bank is in, or none. */

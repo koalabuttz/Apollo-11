@@ -48,10 +48,17 @@ struct interpretive_code {
     unsigned count;
     const uint16_t *words;
 };
-extern const struct interpretive_code KEPPREP_CODE, ACCOMP_CODE;
+extern const struct interpretive_code KEPPREP_CODE, ACCOMP_CODE, OBLATE_CODE;
+#if LUMINARY099
+extern const struct interpretive_code QUALITY1_CODE;
+#endif
 static const struct interpretive_code *const codes[] = {
     &KEPPREP_CODE,
     &ACCOMP_CODE,
+    &OBLATE_CODE,
+#if LUMINARY099
+    &QUALITY1_CODE,
+#endif
 };
 bool orbital_integration_readable(uint16_t key, bool order_pair);
 #if LUMINARY099
@@ -98,17 +105,23 @@ typedef cm_native_io mission_io;
 #endif
 /* The keys whose operand an index register picks in a table in fixed
  * memory, which the faithful port's routines read only where the program
- * points them: MUEARTH,2 (KEPPREP's DLOAD* and PDDL*, GAMCOMP's DMP*), X2
+ * points them: MUEARTH,2 (KEPPREP's DLOAD* and PDDL*, GAMCOMP's DMP*),
+ * RDE,2, J4REQ/J3,2, 2J3RE/J2,2 and J2REQSQ,2 (OBLATE and COMTERM), X2
  * the central body, PBODY (0 or 2); ASCALE,1 (GAMCOMP's DLOAD*), X1 the
- * central body's entry and 4 or 8 on, for the other bodies. */
+ * central body's entry and 4 or 8 on, for the other bodies. And
+ * NBRANCH's CGOTO, which picks a DIFEQTAB entry by MPAC: DIFEQCNT (0,
+ * -12 or -24, as SLOAD loads it) times -1/12. */
+#define K11(z) (uint16_t)(011u * 1024u + (z) % 1024u)
 #if LUMINARY099
-static const uint16_t x2_keys[] = {011u * 1024u + 02401u % 1024u, 011u * 1024u + 02426u % 1024u,
-                                   011u * 1024u + 02750u % 1024u};
-static const uint16_t x1_keys[] = {011u * 1024u + 02672u % 1024u};
+static const uint16_t x2_keys[] = {K11(02401u), K11(02426u), K11(02750u), K11(03025u), K11(03102u),
+                                   K11(03107u), K11(03116u), K11(03122u), K11(03140u)};
+static const uint16_t x1_keys[] = {K11(02672u)};
+#define CGOTO_KEY K11(03235u)
 #else
-static const uint16_t x2_keys[] = {011u * 1024u + 02375u % 1024u, 011u * 1024u + 02422u % 1024u,
-                                   011u * 1024u + 02736u % 1024u};
-static const uint16_t x1_keys[] = {011u * 1024u + 02660u % 1024u};
+static const uint16_t x2_keys[] = {K11(02375u), K11(02422u), K11(02736u), K11(03013u), K11(03070u),
+                                   K11(03075u), K11(03104u), K11(03110u), K11(03126u)};
+static const uint16_t x1_keys[] = {K11(02660u)};
+#define CGOTO_KEY K11(03223u)
 #endif
 /* The index registers and the returns, in the work area: X1, X2, S1, S2
  * and QPRET. */
@@ -305,6 +318,12 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
         if (key == x2_keys[k]) w[(fixloc + X2_OFFSET) & 03777u] = rnd() % 2u ? 0u : 2u;
     for (k = 0; interpretive && k < sizeof x1_keys / sizeof x1_keys[0]; ++k)
         if (key == x1_keys[k]) w[(fixloc + X1_OFFSET) & 03777u] = (uint16_t)(rnd() % 6u * 2u);
+    if (interpretive && key == CGOTO_KEY) {
+        static const uint16_t difeqcnt[] = {0u, 077763u, 077747u};
+        w[MPAC_AT] = difeqcnt[rnd() % 3u];
+        w[MPAC_AT + 1u] = 0u;
+        w[MODE_AT] = 0u;
+    }
     /* The push-down list in the work area, below X1 and X2. */
     if (w[PUSHLOC_AT] < fixloc || w[PUSHLOC_AT] > fixloc + 037u || n % 4u != 0u)
         w[PUSHLOC_AT] = (uint16_t)(fixloc + rnd() % 040u);

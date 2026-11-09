@@ -17,7 +17,10 @@
  * Written in parts (README.md):
  *   part 1: KEPPREP and FBR3 (kepprep.c: LM pp. 1227-1229, CM pp.
  *     1334-1336) and ACCOMP to INT-ABRT (accomp.c: LM pp. 1230-1233, CM
- *     pp. 1337-1340).
+ *     pp. 1337-1340);
+ *   part 2: OBLATE to COSPHIE (oblate.c: LM pp. 1234-1237, CM pp.
+ *     1341-1344), and the LM's QUALITY1 and QUALITY2 (quality.c: LM pp.
+ *     1247-1248).
  * The binding (src/binding/orbital_integration_routines.c) gives the keys
  * of the faithful port's tables written so far their readable routines. */
 #ifndef READABLE_ORBITAL_INTEGRATION_H
@@ -40,6 +43,12 @@
 /* Part 1: KEPPREP and FBR3; ACCOMP, GETRPSV, GAMCOMP and GOBAQUE, to
  * INT-ABRT's EXIT. */
 extern const struct interpretive_code KEPPREP_CODE, ACCOMP_CODE;
+
+/* Part 2: OBLATE to COSPHIE; the LM's QUALITY1 and QUALITY2. */
+extern const struct interpretive_code OBLATE_CODE;
+#if LUMINARY099
+extern const struct interpretive_code QUALITY1_CODE;
+#endif
 
 /* Part 1's basic code: after INT-ABRT's EXIT. */
 void int_abrt_after_exit(void); /* INT-ABRT +1: TC POODOO */

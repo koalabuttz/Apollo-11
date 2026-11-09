@@ -38,6 +38,7 @@
 #define ORDER_AXC_1      0016u /* AXC,1 */
 #define ORDER_VXSC_STAR  0017u /* VXSC* */
 #define ORDER_SIN        0020u
+#define ORDER_CGOTO      0021u
 #define ORDER_LXA_2      0022u /* LXA,2 */
 #define ORDER_SL1        0024u /* (VSL2's code too, in yaYUL's table) */
 #define ORDER_VSL2       0024u
