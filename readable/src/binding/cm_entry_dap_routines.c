@@ -161,6 +161,16 @@ static const struct basic_entry {
     {KEY(015u, ATTRATES + 043u), attrates_alfa_done},
     {KEY(015u, ATTRATES + 047u), attrates_ak1},
     {KEY(015u, ATTRATES + 054u), attrates_rolltm},
+    /* Part C: the DAPs in the atmosphere, EXDAPIN, the dead zones */
+    {KEY(015u, ATTRATES + 066u), atm_cmdapmod},
+    {KEY(015u, ATTRATES + 067u), atm_ak1},
+    {KEY(015u, ATTRATES + 076u), atm_yjetcode},
+    {KEY(015u, EXDAPIN), exdapin},
+    {KEY(015u, EXDAPIN + 7u), exdapin_fdai},
+    {KEY(015u, EXDAPIN + 010u), exdapin_fdair},
+    {KEY(015u, THREE_DDZ), three_d_dz},
+    {KEY(015u, BIASEDZ), biasedz},
+    {KEY(015u, BIASEDZ + 010u), biasedz_after_3ddz},
     /* Part A: CM/DAPON and CM/DAPIC (bank 20) */
     {KEY(020u, CM_DAPON), cm_dapon},
     {KEY(020u, CM_DAPON + 4u), cm_dapon_after_dapbit1},

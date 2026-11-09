@@ -24,7 +24,10 @@
  *   B: bodyrate.c, RATEAVG and BODYRATE (pp. 1065 and 1070-1072);
  *     attrates.c, the flight path's turn, NOGAMDUT and ATTRATES (pp.
  *     1071-1074), bank 15.
- *   C to E: the yaw and pitch DAPs to CM/END (pp. 1074-1092, bank 15).
+ *   C: atm_dap.c, the yaw and pitch DAPs in the atmosphere and EXDAPIN
+ *     (pp. 1074-1075); dead_zone.c, the dead zone tests (p. 1076), bank
+ *     15.
+ *   D and E: EXDAP to CM/END (pp. 1077-1092, bank 15).
  * The binding runs the faithful port's routines for the keys no part has
  * written yet. */
 #ifndef READABLE_ENTRY_DAP_H
@@ -94,6 +97,19 @@ void attrates_sb_phidot(void); /* ATTRATES +037 */
 void attrates_alfa_done(void); /* ATTRATES +043 */
 void attrates_ak1(void);       /* ATTRATES +047 */
 void attrates_rolltm(void);    /* ATTRATES +054 */
+
+/* ---- Part C: atm_dap.c and dead_zone.c (bank 15) ---- */
+void atm_cmdapmod(void);       /* ATTRATES +066 */
+void atm_ak1(void);            /* ATTRATES +067 */
+void atm_yjetcode(void);       /* ATTRATES +076 */
+void exdapin(void);            /* EXDAPIN */
+void exdapin_fdai(void);       /* EXDAPIN +7 */
+void exdapin_fdair(void);      /* EXDAPIN +010 */
+void three_d_dz(void);         /* 3DDZ */
+void biasedz(void);            /* BIASEDZ */
+void biasedz_after_3ddz(void); /* BIASEDZ +010 */
+void two_d_sdz(void);          /* 2D/SDZ (no key: only called) */
+void jet_code(word table);     /* INDEX A; CAF table */
 
 #endif
 
