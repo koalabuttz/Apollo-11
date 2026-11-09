@@ -286,6 +286,9 @@ REPLACED = (
 # INTEGRATION_INITIALIZATION (src/integration_init): both missions'
 # routine tables, all readable; the faithful ones, renamed, are no longer
 # called.
+# ORBITAL_INTEGRATION (src/orbital_integration): both missions' routine
+# tables, written part by part; the faithful ones, renamed, run the keys
+# no part has written yet.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],
@@ -351,7 +354,13 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
                                     if m == 'lm' else [],
            'cm_integration_init.o': lambda m: ['cm_integration_init_basic',
                                                'cm_integration_init_interpretive']
-                                    if m == 'cm' else []}
+                                    if m == 'cm' else [],
+           'lm_orbital_integration.o': lambda m: ['lm_orbital_integration_basic',
+                                                  'lm_orbital_integration_interpretive']
+                                       if m == 'lm' else [],
+           'cm_orbital_integration.o': lambda m: ['cm_orbital_integration_basic',
+                                                  'cm_orbital_integration_interpretive']
+                                       if m == 'cm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
