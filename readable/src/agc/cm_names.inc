@@ -302,6 +302,18 @@
 #define K_ATDOTCAD 02663u
 #define K_ATTRATES 02665u
 #define K_EXDAP 03037u
+#define K_EXDAPIN 02770u
+#define K_3DDZ 03001u
+#define K_BIASEDZ 03006u
+#define K_4D_SDZ 03017u
+#define K_2D_SDZ 03027u
+#define K_DZCOM 03033u
+#define K_DZNOCOM 03034u
+#define K_YJETCODE 03202u
+#define K_P_RJCODE 03205u
+#define K_CM_RCS 03216u
+#define K_CM_FDAI 03677u
+#define K_CM_FDAIR 03705u
 #define K_IMUTEST 02004u
 #define K_IMUSTLLG 02316u
 #define K_PONG 02250u
@@ -2481,6 +2493,7 @@
 #define K_QAXERR 01572u
 #define K_ROLLTM 01714u
 #define K_RAXERR 01573u
+#define K_JETEM2 01624u
 #define K_JETEM 01720u
 #define K_MDELAOG 01675u
 #define K_MDELAIG 01676u
@@ -3622,6 +3635,10 @@
 #define KW_MCDUTP1 077766u
 #define KW_SINTRIM 065033u
 #define KW_COSTRIM 036044u
+#define KW_YAWLIM 037267u
+#define KW_CM_BIAS 000067u
+#define KW_4D_SLIM 037734u
+#define KW_YDOTLIM 037756u
 #define KW_ENDTASK {072471u,073714u}
 #define KW_DPBIT14 {000000u,020000u}
 #define KW_LGCL2CDR {003461u,002063u}

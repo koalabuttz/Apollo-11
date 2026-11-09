@@ -2204,7 +2204,7 @@ static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
  * ROLLC, FLAGWRD2, PIPTIME, BETA/180, SW/NDX (SW_NDX), T5LOC, T6LOC;
  * COSM, SINO, SINOCOSM, COSO, COSOCOSM, SINM, the rates PREL, QREL and
  * RREL, CM/SAVE (CM_SAVE), CALFA, SALFA, PHIDOT, BETADOT, BETACOM, AK1,
- * QAXERR, ROLLTM, RAXERR. */
+ * QAXERR, ROLLTM, RAXERR, JETEM2. */
 #define READGYMB    ((word)K_READGYMB)
 #define READGYM1    ((word)K_READGYM1)
 #define DOBRATE_Q   ((word)K_DOBRATE_Q) /* DOBRATE? */
@@ -2225,11 +2225,27 @@ static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
 #define ATDOTCAD    ((word)K_ATDOTCAD) /* 2CADR ATTRATES */
 #define ATTRATES    ((word)K_ATTRATES)
 #define EXDAP       ((word)K_EXDAP)
+#define EXDAPIN     ((word)K_EXDAPIN)
+#define THREE_DDZ   ((word)K_3DDZ) /* 3DDZ */
+#define BIASEDZ     ((word)K_BIASEDZ)
+#define FOUR_D_SDZ  ((word)K_4D_SDZ) /* 4D/SDZ */
+#define TWO_D_SDZ   ((word)K_2D_SDZ) /* 2D/SDZ */
+#define DZCOM       ((word)K_DZCOM)
+#define DZNOCOM     ((word)K_DZNOCOM)
+#define YJETCODE    ((word)K_YJETCODE)
+#define P_RJCODE    ((word)K_P_RJCODE) /* P/RJCODE */
+#define CM_RCS      ((word)K_CM_RCS)   /* CM/RCS */
+#define CM_FDAI     ((word)K_CM_FDAI)  /* CM/FDAI */
+#define CM_FDAIR    ((word)K_CM_FDAIR) /* CM/FDAIR */
 #define CM_SWIC1    ((word)KW_CM_SWIC1) /* OCT 16017 */
 #define CM_SWIC2    ((word)KW_CM_SWIC2) /* = TEN */
 #define MINUS_CDUT1 ((word)KW_MCDUTP1) /* -CDUT+1: OCT 77766 */
 #define SINTRIM     ((word)KW_SINTRIM) /* DEC -.34202, SIN(-20) */
 #define COSTRIM     ((word)KW_COSTRIM) /* DEC .93969, COS(-20) */
+#define YAWLIM      ((word)KW_YAWLIM)  /* DEC 16055 */
+#define CM_BIAS     ((word)KW_CM_BIAS) /* CM/BIAS: DEC 55 */
+#define FOUR_D_SLIM ((word)KW_4D_SLIM) /* 4D/SLIM: DEC 16348 */
+#define YDOTLIM     ((word)KW_YDOTLIM) /* DEC 16366 */
 
 /* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 1: the keys ---- */
 
