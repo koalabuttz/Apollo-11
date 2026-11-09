@@ -133,6 +133,7 @@
 #define ORDER_BMN        0136u
 #define ORDER_VSQ        0140u
 #define ORDER_VXV        0141u
+#define ORDER_VXV_STAR   0143u /* VXV* */
 #define ORDER_RTB        0142u
 #define ORDER_VPROJ      0145u
 #define ORDER_BHIZ       0146u
@@ -229,6 +230,8 @@
 /* STOVL*: a store, and a vector load indexed by the address word after
  * it ("STOVL* COGA" then "MUTABLE,1"): its code is 030000. */
 #define STOVL_STAR(name) ((word)(030000u | (I_##name + 1u)))
+/* STOVL* to a word of the work area ("STOVL* 24D" then "12D,1"). */
+#define STOVL_STAR_D(n) ((word)(030000u | ((n) + 1u)))
 
 /* The job's work area (its VAC area, or a NOVAC job's) word by word, as
  * the listing numbers it: "10D" is word 10 (decimal) from FIXLOC, written
