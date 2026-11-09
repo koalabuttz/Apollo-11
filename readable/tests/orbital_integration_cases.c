@@ -9,9 +9,10 @@
  *
  * First the words: the readable interpretive code
  * (src/orbital_integration/), written in the listing's notation, must be
- * the original program's rope, word for word. Then the keys, which must
- * be the faithful tables'. Then the runs: each key with a readable
- * routine from 2,048 states, each one of the port's frozen test states of
+ * the original program's rope, word for word, and so must its constants.
+ * Then the keys, which must be the faithful tables', each with a readable
+ * routine. Then the runs: each key from 2,048 states, each one of the
+ * port's frozen test states of
  * the mission (c64-port/tests/lm_orbital_integration_vectors.h and
  * cm_orbital_integration_vectors.h) entered at the key, most stirred
  * further: MPAC and its mode, the push-down list and its pointer, the
@@ -49,12 +50,13 @@ struct interpretive_code {
     const uint16_t *words;
 };
 extern const struct interpretive_code KEPPREP_CODE, ACCOMP_CODE, OBLATE_CODE, TIMESTEP_CODE,
-    DOSWITCH_CODE;
+    DOSWITCH_CODE, DIFEQ_CODE, AMOVED_CODE, DOW_CODE, ORBITAL1_CONSTANTS, ORBITAL2_CONSTANTS;
 #if LUMINARY099
 extern const struct interpretive_code QUALITY1_CODE;
 #endif
 static const struct interpretive_code *const codes[] = {
-    &KEPPREP_CODE,  &ACCOMP_CODE, &OBLATE_CODE, &TIMESTEP_CODE, &DOSWITCH_CODE,
+    &KEPPREP_CODE,  &ACCOMP_CODE, &OBLATE_CODE, &TIMESTEP_CODE,      &DOSWITCH_CODE,
+    &DIFEQ_CODE,    &AMOVED_CODE, &DOW_CODE,    &ORBITAL1_CONSTANTS, &ORBITAL2_CONSTANTS,
 #if LUMINARY099
     &QUALITY1_CODE,
 #endif
@@ -117,6 +119,23 @@ typedef cm_native_io mission_io;
 #define ORIGEX_AT 02112u
 #else
 #define ORIGEX_AT 02270u
+#endif
+/* The W-matrix's columns: COLREG holds the column's index (0, -6, ...,
+ * -48), which LXA,2 loads into X2 for W,2 and W +54D,2; at the keys
+ * after that load, X2 too. And DOW.., whose LXA,2 and LXC,2 load X2 from
+ * PBODY (0 or 2) for MUEARTH,2 and MUEARTH -2,2. */
+#if LUMINARY099
+#define COLREG_AT 01117u
+#define PBODY_AT  02030u
+static const uint16_t column_keys[] = {K11(03534u), K11(03535u), K11(03536u), K11(03540u),
+                                       K11(03542u), K11(03567u), K11(03570u), K11(03571u)};
+static const uint16_t pbody_keys[] = {K11(03705u), K11(03717u)};
+#else
+#define COLREG_AT 01102u
+#define PBODY_AT  02150u
+static const uint16_t column_keys[] = {K11(03514u), K11(03515u), K11(03516u), K11(03520u),
+                                       K11(03522u), K11(03547u), K11(03550u), K11(03551u)};
+static const uint16_t pbody_keys[] = {K11(03665u), K11(03677u)};
 #endif
 #if LUMINARY099
 static const uint16_t x2_keys[] = {K11(02401u), K11(02426u), K11(02750u), K11(03025u), K11(03102u),
@@ -324,6 +343,12 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
         if (key == x2_keys[k]) w[(fixloc + X2_OFFSET) & 03777u] = rnd() % 2u ? 0u : 2u;
     for (k = 0; interpretive && k < sizeof x1_keys / sizeof x1_keys[0]; ++k)
         if (key == x1_keys[k]) w[(fixloc + X1_OFFSET) & 03777u] = (uint16_t)(rnd() % 6u * 2u);
+    k = rnd() % 9u;
+    w[COLREG_AT] = (uint16_t)(k ? 077777u - k * 6u : 0u);
+    for (k = 0; interpretive && k < sizeof column_keys / sizeof column_keys[0]; ++k)
+        if (key == column_keys[k]) w[(fixloc + X2_OFFSET) & 03777u] = w[COLREG_AT];
+    for (k = 0; interpretive && k < sizeof pbody_keys / sizeof pbody_keys[0]; ++k)
+        if (key == pbody_keys[k]) w[PBODY_AT] = rnd() % 2u ? 0u : 2u;
     if (interpretive && key == CGOTO_KEY) {
         static const uint16_t difeqcnt[] = {0u, 077763u, 077747u};
         w[MPAC_AT] = difeqcnt[rnd() % 3u];
@@ -360,7 +385,6 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
         uint16_t key = faithful->entries[i].physical, z = (uint16_t)(02000u + key % 1024u);
         unsigned ran = 0, bad = 0;
 
-        if (!orbital_integration_readable(key, interpretive)) continue;
         ++*tested;
         for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;
@@ -429,6 +453,20 @@ int main(int argc, char **argv)
     }
     failures += tables_differ(&readable_basic, &faithful_basic, "basic");
     failures += tables_differ(&readable_interpretive, &faithful_interpretive, "interpretive");
+    for (i = 0; i < faithful_basic.count; ++i) {
+        uint16_t key = faithful_basic.entries[i].physical;
+        if (!orbital_integration_readable(key, false)) {
+            printf("FAIL: basic key %02o,%04o not readable\n", key / 1024u, 02000u + key % 1024u);
+            ++failures;
+        }
+    }
+    for (i = 0; i < faithful_interpretive.count; ++i) {
+        uint16_t key = faithful_interpretive.entries[i].physical;
+        if (!orbital_integration_readable(key, true)) {
+            printf("FAIL: order pair %02o,%04o not readable\n", key / 1024u, 02000u + key % 1024u);
+            ++failures;
+        }
+    }
     if (failures || mission_count == 0u) {
         printf("orbital-integration-cases " MISSION ": %u failures\n",
                failures + (mission_count == 0u));

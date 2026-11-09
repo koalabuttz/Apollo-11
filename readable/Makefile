@@ -3299,9 +3299,9 @@ integration-init-cases: $(BUILD)/ii-oracle-lm $(BUILD)/ii-oracle-cm $(BUILD)/ii-
 # digests) through the readable tables, with tests/with_ropes.c loading
 # the ropes the readable interpreter reads; then
 # tests/orbital_integration_cases.c side by side, for each mission, with
-# the faithful routines (renamed faithful_), which run the keys no part
-# has written yet. The faithful routines run the TC DANZIG of KEPPREP's
-# BOVB (lm_integration_moves.c, cm_integration_moves.c).
+# the faithful routines (renamed faithful_), every key of both tables
+# readable. The faithful routines run the TC DANZIG of KEPPREP's BOVB
+# (lm_integration_moves.c, cm_integration_moves.c).
 OI_NAMES_LM := lm_orbital_integration_basic lm_orbital_integration_interpretive
 OI_NAMES_CM := cm_orbital_integration_basic cm_orbital_integration_interpretive
 OI_COMMON := $(LL_COMMON) $(PORT)/src/lm_integration_moves.c $(PORT)/src/cm_integration_moves.c

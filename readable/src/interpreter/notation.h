@@ -127,6 +127,7 @@
 #define ORDER_BVSU       0131u
 #define ORDER_BPL        0132u
 #define ORDER_SR3        0134u
+#define ORDER_VSR6       0134u /* (SR3's code too) */
 #define ORDER_DOT        0135u
 #define ORDER_DOT_STAR   0137u /* DOT* */
 #define ORDER_BMN        0136u

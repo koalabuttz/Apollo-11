@@ -6,13 +6,11 @@
  * <m>_orbital_integration_interpretive. The keys come from the faithful
  * tables, in their order (orbital_integration_keys.inc and
  * cm_orbital_integration_keys.inc, which tools/p20_p25_keys.py writes from
- * them). The keys no part has written yet run the faithful port's
- * routines (renamed faithful_) until their parts are written.
- * Partial file: Luminary099/ORBITAL_INTEGRATION.agc and
- * Comanche055/ORBITAL_INTEGRATION.agc.
+ * them). Every key runs a readable routine.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
- * the file (POODOO). An order pair is one pass of the readable interpreter
+ * the file (POODOO, PHASCHNG, UPFLAG, ALARM) or reaches NEWOPS through
+ * INTPRET. An order pair is one pass of the readable interpreter
  * over the listing's words (interpret_listing()), in the part of the code
  * LOC is in. KEPPREP's BOVB goes to TCDANZIG only to reset OVFIND: there
  * the TC DANZIG, and the pass goes on with the pair's right-hand order, as
@@ -48,19 +46,6 @@
  * FCADRs. */
 #define ORBITAL_BANK  CODE_BANK(I_KEPPREP)
 #define TCDANZIG_BANK ((word)(I_TCDANZIG & 076000u))
-
-/* The faithful tables, renamed. */
-#if LUMINARY099
-extern const agc_routine_table faithful_lm_orbital_integration_basic,
-    faithful_lm_orbital_integration_interpretive;
-#define faithful_basic        faithful_lm_orbital_integration_basic
-#define faithful_interpretive faithful_lm_orbital_integration_interpretive
-#else
-extern const agc_routine_table faithful_cm_orbital_integration_basic,
-    faithful_cm_orbital_integration_interpretive;
-#define faithful_basic        faithful_cm_orbital_integration_basic
-#define faithful_interpretive faithful_cm_orbital_integration_interpretive
-#endif
 
 static jmp_buf back;
 
@@ -129,6 +114,12 @@ static const struct basic_entry {
 } basic_entries[] = {
     /* Part 1 */
     {KEY(ORBITAL_BANK, INT_ABRT + 1u), int_abrt_after_exit},
+    /* Part 4 */
+    {KEY(ORBITAL_BANK, ENDSTATE + 014u), endstate_after_exit},
+    {KEY(ORBITAL_BANK, ENDSTATE + 016u), endstate_after_phaschng},
+    {KEY(ORBITAL_BANK, ENDSTATE + 020u), endstate_after_upflag},
+    {KEY(ORBITAL_BANK, WMATEND + 7u), wmatend_after_exit},
+    {KEY(ORBITAL_BANK, WMATEND + 011u), wmatend_after_alarm},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -142,9 +133,10 @@ static const struct basic_entry *basic_entry(uint16_t key)
 
 /* ---- The order pairs ---- */
 
-/* The parts of the code written so far. */
+/* The file's interpretive code, in its parts. */
 static const struct interpretive_code *const codes[] = {
-    &KEPPREP_CODE,  &ACCOMP_CODE, &OBLATE_CODE, &TIMESTEP_CODE, &DOSWITCH_CODE,
+    &KEPPREP_CODE,  &ACCOMP_CODE, &OBLATE_CODE, &TIMESTEP_CODE,
+    &DOSWITCH_CODE, &DIFEQ_CODE,  &AMOVED_CODE, &DOW_CODE,
 #if LUMINARY099
     &QUALITY1_CODE,
 #endif
@@ -185,18 +177,16 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
 
 /* ---- The keys, in the faithful tables' order ---- */
 
-/* Each basic key's routine: the readable one, or the faithful port's until
- * its part is written. A run it refuses part way leaves the state as it
- * was. */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each basic key's routine. A run it refuses part way leaves the state as
+ * it was. */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct basic_entry *entry = basic_entry(key);
     mission_io *io = device, kept;
     apollo_overlay_state before;
 
-    if (!entry) return faithful_basic.entries[index].call(program, state, device);
-    if (!program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
+    if (!entry || !program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
     if (FBANK != (word)((key / 1024u) << 10) || !sane(BASIC_WORK_AREA)) return EXEC_OUT_OF_SCOPE;
 
     before = *state;
@@ -210,9 +200,8 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     return EXEC_OK;
 }
 
-/* Each order pair's routine: one pass of the readable interpreter, or the
- * faithful port's until its part is written. */
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each order pair's routine: one pass of the readable interpreter. */
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
@@ -222,8 +211,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     const struct interpretive_code *code = code_at(bank, at);
     enum exec_status status;
 
-    if (!code) return faithful_interpretive.entries[index].call(program, state, device);
-    if (!program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
+    if (!code || !program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
     if (Z != NEWOPS || FBANK != (word)(bank << 10) || LOC != at || BANKSET != BBANK ||
         INTBIT15 != (FBANK & 040000u) || !sane(true))
         return EXEC_OUT_OF_SCOPE;
@@ -249,13 +237,13 @@ bool orbital_integration_readable(uint16_t key, bool order_pair)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #if LUMINARY099
 #include "orbital_integration_keys.inc"
