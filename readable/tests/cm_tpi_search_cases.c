@@ -4,21 +4,19 @@
  *
  * Built with the readable tables (src/binding/cm_tpi_search_routines.c)
  * and the faithful port's under the same names with faithful_ in front
- * (the Makefile renames them), which also run the keys no part has
- * written yet.
+ * (the Makefile renames them).
  *
  * First the words: the readable interpretive code (src/tpi_search/),
  * written in the listing's notation, must be the original program's rope,
  * word for word. Then the keys, which must be the faithful tables', and
- * the ones the parts written so far cover must run readable code (parts 1
- * and 2: the order pairs, those of bank 36 and TRANSANG's). Then the runs: each
- * readable key from 4,096 states (the others from 16), each one of the
- * port's frozen test states (c64-port/tests/cm_tpi_search_vectors.h)
+ * every key must run readable code (the file is whole). Then the runs:
+ * each key from 4,096 states, each one of the port's frozen test states (c64-port/tests/cm_tpi_search_vectors.h)
  * entered at the key, most stirred further: the search's words (TTPI,
  * TF and its bounds, the pericenters HP, HPO and HPERMIN, the velocities
  * DELVEE and DELVEO, the angles, the scale indexes XRS), X1 (for
- * both, mostly MUTABLE's index for the Earth or the Moon), the vehicles'
- * states, the flag words (KFLAG, AVFLAG, ITSWICH, RVSW), the work area
+ * both, mostly MUTABLE's index for the Earth or the Moon), the search
+ * option OPTION2 (mostly 1 or 2), the displays' words (QSAVED, mostly a
+ * return; VERBNOUN; MPAC, often BIT6), the vehicles' states, the flag words (KFLAG, AVFLAG, ITSWICH, RVSW), the work area
  * (FIXLOC, mostly a VAC area) and MPAC, A, L and Q, any erasable word,
  * EBANK (mostly E7, the file's), the latches, FB, or a state the routines
  * refuse (BBANK not the two banks, ZERO not +0, a word of 16 bits). An
@@ -28,8 +26,7 @@
  * would call the key's routine. Where either port runs, the other must
  * too, with the same memory and io record, word for word; where the
  * readable one refuses, it must leave everything as it found it; and the
- * faithful routine must run in at least 1 of 16 of each readable key's
- * states. */
+ * faithful routine must run in at least 1 of 16 of each key's states. */
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -49,7 +46,7 @@ struct interpretive_code {
 };
 extern const struct interpretive_code S17_1_CODE, S17_2_CODE, BIS_CODE, CONCAUL_CODE, JUNCT3_CODE,
     JUNCT1_CODE, INTERP_CODE, HALFSAFE_CODE, LRGRDVO_CODE, RNGETEST_CODE, USEKAY_CODE,
-    TRANSANG_CODE;
+    TRANSANG_CODE, P17_1_CODE, P17_1_OPTION_CODE, ALARUMS_CODE;
 extern const agc_routine_table cm_tpi_search_basic, cm_tpi_search_interpretive;
 extern const agc_routine_table faithful_cm_tpi_search_basic, faithful_cm_tpi_search_interpretive;
 bool cm_tpi_search_readable(uint16_t key, bool order_pair);
@@ -69,11 +66,7 @@ bool cm_tpi_search_readable(uint16_t key, bool order_pair);
 #define PUSHLOC_AT  0166u
 #define X1_OFF      0046u
 
-/* Parts 1 and 2: the order pairs of bank 36 and bank 07 (TRANSANG). */
-#define WRITTEN_PAIRS 165u
-
-#define CASES       4096u
-#define OTHER_CASES 16u
+#define CASES 4096u
 
 static uint32_t seed = 1717u;
 static uint16_t rnd(void)
@@ -241,6 +234,14 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, bool 
         w[K_FLAGWRD2] = any_word();
         w[K_FLAGWRD7] = any_word();
         w[NEWJOB_AT] = pick(2u) ? 0u : (uint16_t)(rnd() & 037777u);
+        /* The search option, and the displays' words: QSAVED (in E bank
+         * EB, as VNCOMP17 finds it) mostly a return (a TC into fixed
+         * memory), VERBNOUN, and MPAC, which a recycle tests against
+         * BIT6. */
+        w[I_OPTION2] = pick(4u) ? (uint16_t)(1u + pick(2u)) : value_word();
+        w[eb * 0400u + K_QSAVED - 01400u] =
+            pick(4u) ? (uint16_t)(02000u + pick(06000u)) : value_word();
+        w[eb * 0400u + K_VERBNOUN - 01400u] = value_word();
         /* Any erasable word. */
         for (k = 010u; k < 04000u; ++k)
             if (pick(64u) == 0u) w[k] = value_word();
@@ -263,6 +264,10 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, bool 
     if (n % 4u != 0u && pick(64u) == 0u) w[6] = any_word();
     if (n % 4u != 0u && pick(64u) == 0u) w[7] = any_word();
     if (n % 4u != 0u && pick(64u) == 0u) w[3u + pick(03775u)] |= 0100000u;
+    if (!interpretive && n % 4u != 0u)
+        w[MPAC_AT] = pick(2u)   ? (uint16_t)BIT6
+                     : pick(2u) ? (uint16_t)(BIT6 ^ (1u << pick(15u)))
+                                : value_word();
     if (interpretive) {
         pair_state(w, key, n);
         if (pick(2u)) w[w[FIXLOC_AT] + X1_OFF] = mutable_index();
@@ -271,17 +276,15 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, bool 
 }
 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
-                     bool order_pairs, unsigned *runs, unsigned *written)
+                     bool order_pairs, unsigned *runs)
 {
     unsigned i, n, failures = 0;
 
     for (i = 0; i < faithful->count; ++i) {
         uint16_t key = faithful->entries[i].physical;
-        bool readable_key = cm_tpi_search_readable(key, order_pairs);
-        unsigned ran = 0, bad = 0, cases = readable_key ? CASES : OTHER_CASES;
+        unsigned ran = 0, bad = 0;
 
-        *written += readable_key;
-        for (n = 0; n < cases; ++n) {
+        for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;
             cm_native_io io, fio, rio;
             agc_hardware fhw, rhw;
@@ -301,11 +304,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             sf = faithful->entries[i].call(&fp, &fa, &fio);
             sr = readable->entries[i].call(&rp, &ra, &rio);
             ran += sf == EXEC_OK;
-            if (!readable_key) { /* the faithful routine on both sides */
-                if (sf != sr || memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio))
-                    why = "the faithful routine twice, two results";
-            } else if (sr != EXEC_OK &&
-                       (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
+            if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
                 why = "readable refusal changed the state";
             else if (sf == EXEC_OK && sr != EXEC_OK)
                 why = "readable refused, faithful ran";
@@ -325,7 +324,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                                fa.words[w], start.words[w]);
             }
         }
-        if (readable_key && ran < CASES / 16u && bad == 0u) {
+        if (ran < CASES / 16u && bad == 0u) {
             printf("FAIL %02o,%04o: the faithful routine ran in %u of %u states\n", key / 1024u,
                    02000u + key % 1024u, ran, CASES);
             ++bad;
@@ -337,32 +336,29 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 }
 
 static const struct interpretive_code *const codes[] = {
-    /* Part 1: bank 36 */
+    /* Bank 35 */
+    &P17_1_CODE,
+    &P17_1_OPTION_CODE,
+    &ALARUMS_CODE,
+    /* Bank 36 */
     &S17_1_CODE,
     &S17_2_CODE,
     &BIS_CODE,
     &CONCAUL_CODE,
     &JUNCT3_CODE,
-    /* Part 2: bank 36 */
     &JUNCT1_CODE,
     &INTERP_CODE,
     &HALFSAFE_CODE,
     &LRGRDVO_CODE,
     &RNGETEST_CODE,
     &USEKAY_CODE,
-    /* Part 2: bank 07 */
+    /* Bank 07 */
     &TRANSANG_CODE,
 };
 
-/* Whether the parts written so far cover an order pair. */
-static bool written(uint16_t key)
-{
-    return key / 1024u == 036u || key / 1024u == 07u;
-}
-
 int main(int argc, char **argv)
 {
-    unsigned i, failures = 0, runs = 0, basic = 0, pairs = 0, words = 0;
+    unsigned i, failures = 0, runs = 0, words = 0;
 
     if (argc < 3 || !apollo_rope_load(0, argv[1]) || !apollo_rope_load(1, argv[2])) {
         printf("usage: %s ROPE_LM ROPE_CM\n", argv[0]);
@@ -377,36 +373,30 @@ int main(int argc, char **argv)
     failures += tables_differ(&cm_tpi_search_basic, &faithful_cm_tpi_search_basic, "basic");
     failures += tables_differ(&cm_tpi_search_interpretive, &faithful_cm_tpi_search_interpretive,
                               "interpretive");
-    for (i = 0; i < faithful_cm_tpi_search_basic.count; ++i)
-        if (cm_tpi_search_readable(faithful_cm_tpi_search_basic.entries[i].physical, false)) {
-            printf("FAIL: a basic key readable before part 3\n");
+    for (i = 0; i < faithful_cm_tpi_search_basic.count; ++i) {
+        uint16_t key = faithful_cm_tpi_search_basic.entries[i].physical;
+        if (!cm_tpi_search_readable(key, false)) {
+            printf("FAIL: basic key %02o,%04o not readable\n", key / 1024u, 02000u + key % 1024u);
             ++failures;
         }
+    }
     for (i = 0; i < faithful_cm_tpi_search_interpretive.count; ++i) {
         uint16_t key = faithful_cm_tpi_search_interpretive.entries[i].physical;
-        if (cm_tpi_search_readable(key, true) != written(key)) {
-            printf("FAIL: order pair %02o,%04o %s\n", key / 1024u, 02000u + key % 1024u,
-                   written(key) ? "not readable" : "readable before its part");
+        if (!cm_tpi_search_readable(key, true)) {
+            printf("FAIL: order pair %02o,%04o not readable\n", key / 1024u, 02000u + key % 1024u);
             ++failures;
         }
-        pairs += written(key);
-    }
-    if (pairs != WRITTEN_PAIRS) {
-        printf("FAIL: %u order pairs in parts 1 and 2, not %u\n", pairs, WRITTEN_PAIRS);
-        ++failures;
     }
     if (failures) {
         printf("cm-tpi-search-cases: %u failures\n", failures);
         return 1;
     }
-    pairs = 0;
-    failures += keys(&cm_tpi_search_basic, &faithful_cm_tpi_search_basic, false, &runs, &basic);
-    failures += keys(&cm_tpi_search_interpretive, &faithful_cm_tpi_search_interpretive, true, &runs,
-                     &pairs);
-    printf("cm-tpi-search-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u "
-           "order pairs) from %u states each, the others from %u, %u run by the faithful "
-           "routines, %u failures\n",
-           words, basic + pairs, cm_tpi_search_basic.count + cm_tpi_search_interpretive.count,
-           basic, pairs, CASES, OTHER_CASES, runs, failures);
+    failures += keys(&cm_tpi_search_basic, &faithful_cm_tpi_search_basic, false, &runs);
+    failures +=
+        keys(&cm_tpi_search_interpretive, &faithful_cm_tpi_search_interpretive, true, &runs);
+    printf("cm-tpi-search-cases: %u words as the rope's, all %u keys readable (%u basic, %u order "
+           "pairs) from %u states each, %u run by the faithful routines, %u failures\n",
+           words, cm_tpi_search_basic.count + cm_tpi_search_interpretive.count,
+           cm_tpi_search_basic.count, cm_tpi_search_interpretive.count, CASES, runs, failures);
     return failures != 0;
 }

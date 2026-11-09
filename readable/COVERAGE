@@ -126,3 +126,4 @@ Comanche055/RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc src/cm_dap
 Comanche055/JET_SELECTION_LOGIC.agc            src/cm_dap
 Comanche055/IMU_CALIBRATION_AND_ALIGNMENT.agc  src/imu_calibration
 Comanche055/P11.agc                            src/p11
+Comanche055/TPI_SEARCH.agc                     src/tpi_search

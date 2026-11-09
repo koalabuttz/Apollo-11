@@ -2185,6 +2185,14 @@ static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
 #define RNGETEST ((word)K_RNGETEST)
 #define USEKAY   ((word)K_USEKAY)
 #define TRANSANG ((word)K_TRANSANG) /* (bank 07) */
+#define P17      ((word)K_P17) /* (bank 35) */
+#define P77      ((word)K_P77)
+#define P17_1    ((word)K_P17_1) /* P17.1 */
+#define P17_2    ((word)K_P17_2) /* P17.2 */
+#define P17_3    ((word)K_P17_3) /* P17.3 */
+#define VNCOMP17 ((word)K_VNCOMP17)
+#define ALARUMS  ((word)K_ALARUMS)
+#define V06N72   ((word)KW_V06N72) /* VN 0672 */
 
 /* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 1: the keys ---- */
 
