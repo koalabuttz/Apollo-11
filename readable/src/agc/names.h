@@ -2194,6 +2194,34 @@ static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
 #define ALARUMS  ((word)K_ALARUMS)
 #define V06N72   ((word)KW_V06N72) /* VN 0672 */
 
+/* ---- CM_ENTRY_DIGITAL_AUTOPILOT (the CM's) ---- */
+
+/* Its labels (bank 15, FLUSHJET in fixed-fixed, CM/DAPON to T5IDLER1 in
+ * bank 20) and constants. Its erasable words are named by ADDRESS_OF:
+ * CM/GYMDT, IMODES33, CM/FLAGS, AOG, AIG, AMG, -DELAOG (MDELAOG) and the
+ * like, JETEM, JETAG, OLDELP, OLDELQ, OLDELR, GAMDOT, DAPDATR1, RCSFLAGS,
+ * P63FLAG, PAXERR1, ALFA/180 (ALFA_180), ALFACOM, ROLL/180, ROLLHOLD,
+ * ROLLC, FLAGWRD2, PIPTIME, BETA/180, SW/NDX (SW_NDX), T5LOC, T6LOC. */
+#define READGYMB    ((word)K_READGYMB)
+#define READGYM1    ((word)K_READGYM1)
+#define DOBRATE_Q   ((word)K_DOBRATE_Q) /* DOBRATE? */
+#define DOBRATE     ((word)K_DOBRATE)
+#define DOBRATE1    ((word)K_DOBRATE1)
+#define CM_GYMIC    ((word)K_CM_GYMIC) /* CM/GYMIC */
+#define ANGOVCOR    ((word)K_ANGOVCOR)
+#define FLUSHJET    ((word)K_FLUSHJET) /* (fixed-fixed) */
+#define RATEAVG     ((word)K_RATEAVG)
+#define BODYRATE    ((word)K_BODYRATE)
+#define LIMITS      ((word)K_LIMITS) /* (fixed-fixed) */
+#define CM_DAPON    ((word)K_CM_DAPON) /* CM/DAPON (bank 20) */
+#define NOTYET      ((word)K_NOTYET)
+#define CM_DAPIC    ((word)K_CM_DAPIC) /* CM/DAPIC */
+#define CM_DAP2C    ((word)K_CM_DAP2C) /* CM/DAP2C */
+#define T5IDLER1    ((word)K_T5IDLER1) /* 2CADR T5IDLOC */
+#define CM_SWIC1    ((word)KW_CM_SWIC1) /* OCT 16017 */
+#define CM_SWIC2    ((word)KW_CM_SWIC2) /* = TEN */
+#define MINUS_CDUT1 ((word)KW_MCDUTP1) /* -CDUT+1: OCT 77766 */
+
 /* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 1: the keys ---- */
 
 /* Its labels in bank 40 and fixed-fixed, both missions, and the routines
