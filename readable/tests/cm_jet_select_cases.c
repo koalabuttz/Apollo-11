@@ -14,8 +14,8 @@
  * stirred further: channel 13 (now and then with its trap bits set),
  * channel 31's translation bits (often none commanded), DAPDATR1's LEM
  * bit, XTRANS, the rotation
- * commands TAU, TAU1 and TAU2 (often +0, -0, 1 or -1, or short of 14 ms
- * or .1 s on the jets) and the quad flags RACFAIL, RBDFAIL and ACORBD
+ * commands TAU, TAU1 and TAU2 (often +0, -0, 1 or -1, short of 14 ms or
+ * .1 s on the jets, or about .1 s on the jets, the BZMF's -0) and the quad flags RACFAIL, RBDFAIL and ACORBD
  * (often +0, -0, 1 or -1), the numbers of jets NPJETS, NYJETS and NRJETS
  * (mostly -3 to 3), the on-times BLAST, BLAST1 and BLAST2 (often +0, -0,
  * 1 or -1) and their branch indexes (mostly 0, 4 or 11), the channel
@@ -169,14 +169,19 @@ static uint16_t register_word(uint16_t v)
     return pick(8u) ? v : (uint16_t)(v ^ 0100000u);
 }
 
-/* A rotation command for the on-times: often +0, -0, 1 or -1, or short
- * of 14 ms or .1 s by the number of jets, or any. */
+/* A rotation command for the on-times: often +0, -0, 1 or -1, short of
+ * 14 ms or .1 s by the number of jets, about .1 s on the jets, or any. */
 static uint16_t tau_word(void)
 {
-    unsigned k = pick(4u);
-    int v = k == 1u ? (int)pick(50u) : (int)pick(1000u);
+    /* The commands whose on-time over the number of jets (the upper word
+     * of TAU times NJET: 1, 1/2 or 1/3, as POSMAX, .5 and .333333) comes
+     * to .1 s (160) or a centisecond either side: the BZMF after AD
+     * =-.1SEC finds -0 at exactly .1 s. */
+    static const int boundary[] = {160, 161, 162, 318, 320, 322, 479, 481, 484};
+    unsigned k = pick(5u);
+    int v = k == 1u ? (int)pick(50u) : k == 4u ? boundary[pick(9u)] : (int)pick(1000u);
 
-    return k == 0u ? sign_word() : k < 3u ? number(pick(2u) ? v : -v) : value_word();
+    return k == 0u ? sign_word() : k != 3u ? number(pick(2u) ? v : -v) : value_word();
 }
 
 /* An on-time: mostly short of 14 ms or about it, or any. */

@@ -50,7 +50,9 @@ void pitchtim(void)
 }
 
 /* PTAUPOS: BLAST1, TAU1 over the number of jets. Over .1 s: DFT1 from
- * DFTMAX, TAU1 less it ("UPDATE TAU1"), and BLAST1 .1 s; else AD14MSP. */
+ * DFTMAX, TAU1 less it ("UPDATE TAU1"), and BLAST1 .1 s; else AD14MSP.
+ * (At exactly .1 s the sum with =-.1SEC is -0, which BZMF takes; a sum
+ * with a word that is not +0 is never +0. So for YTAUPOS and RBLAST.) */
 static void ptaupos(void)
 {
     ca(ADDRESS_OF(TAU1));
