@@ -5171,7 +5171,12 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define SIX_DD        ((word)KW_6DD)  /* 6DD, DEC -6 */
 
 /* INTEGRATION_INITIALIZATION.agc: the state vector moves, and SETBANK's
- * constants. */
+ * constants; STATEINT's task and job, ENDINT, NOINT and 600SECS. */
+#define STATEINT   ((word)K_STATEINT)
+#define STATINT1   ((word)K_STATINT1)
+#define ENDINT     ((word)K_ENDINT)
+#define NOINT      ((word)K_NOINT)
+#define SECS600_AT ((word)K_600SECS) /* 600SECS: 2DEC 60000 */
 #define MOVEACSM ((word)K_MOVEACSM)
 #define MOVEPCSM ((word)K_MOVEPCSM)
 #define MOVEALEM ((word)K_MOVEALEM)

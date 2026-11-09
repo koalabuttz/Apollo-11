@@ -283,6 +283,9 @@ REPLACED = (
 # MEASUREMENT_INCORPORATION (src/measurement_inc): the same.
 # CONIC_SUBROUTINES (src/conics): both missions' routine tables, all
 # readable; the faithful ones, renamed, are no longer called.
+# INTEGRATION_INITIALIZATION (src/integration_init): both missions'
+# routine tables, written part by part; the faithful ones, renamed, run the
+# keys no part has written yet.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],
@@ -342,7 +345,13 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
                                              'lm_conic_compiled_interpretive']
                                   if m == 'lm' else [],
            'cm_conics.o': lambda m: ['cm_conics_basic', 'cm_conics_interpretive']
-                          if m == 'cm' else []}
+                          if m == 'cm' else [],
+           'lm_integration_init.o': lambda m: ['lm_integration_init_basic',
+                                               'lm_integration_init_interpretive']
+                                    if m == 'lm' else [],
+           'cm_integration_init.o': lambda m: ['cm_integration_init_basic',
+                                               'cm_integration_init_interpretive']
+                                    if m == 'cm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
