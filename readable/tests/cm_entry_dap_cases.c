@@ -10,14 +10,17 @@
  * First the keys, which must be the faithful table's, and the hot table's,
  * which must be the faithful one's with the same routines as the basic
  * table; the ones the parts written so far cover must run readable code
- * (part A: READGYMB to ANGOVCOR, FLUSHJET, CM/DAPON and CM/DAPIC). Then
+ * (parts A and B: READGYMB to ATTRATES, FLUSHJET, CM/DAPON and
+ * CM/DAPIC). Then
  * the runs: each readable key from 4,096 states (the others from 16),
  * each one of the port's frozen test states
  * (c64-port/tests/cm_entry_dap_vectors.h) entered at the key, most
  * stirred further: CM/FLAGS (mostly its switches), IMODES33's fine align
  * bit, the CDUs and the last gimbal angles, JETEM (often +0, -0, 1 or
  * -1), CM/GYMDT, PIPTIME and TIME1, ALFA/180 and ROLL/180, FLAGWRD2,
- * DAPDATR1, the jets' channels 5 and 6, any erasable bank's words, A
+ * DAPDATR1, the gimbal angles' changes and their sines and cosines, the
+ * rates and their last changes, GAMDOT (often +0, -0, 1 or -1), the
+ * commanded angles, SR, the jets' channels 5 and 6, any erasable bank's words, A
  * (often an overflow), L, Q (often 3, or a key of the file's to return
  * to), FB (any for FLUSHJET), EBANK (any for CM/DAPON and CM/DAPIC), the
  * latches, or a state the routines refuse (BBANK not the two banks, ZERO
@@ -166,16 +169,18 @@ static uint16_t register_word(uint16_t v)
 /* The frozen cases. */
 static unsigned mission_cases[CM_ENTRY_DAP_VECTORS], mission_count;
 
-/* The keys part A covers: READGYMB to ANGOVCOR and FLUSHJET (indexes 0
- * to 12), CM/DAPON and CM/DAPIC (120 to 137). */
-static bool part_a(unsigned index)
+/* The keys parts A and B cover: READGYMB to ATTRATES and FLUSHJET
+ * (indexes 0 to 35), CM/DAPON and CM/DAPIC (120 to 137). */
+static bool written_part(unsigned index)
 {
-    return index <= 12u || (index >= 120u && index <= 137u);
+    return index <= 35u || (index >= 120u && index <= 137u);
 }
 
 /* The file's words a TC Q returns to: after FLUSHJET at READGYMB +012,
- * DOBRATE? +010 and CM/DAPON +015, and DOBRATE? +4 to +7. */
-static const uint16_t returns[] = {02446u, 02476u, 03627u, 02472u, 02473u, 02474u, 02475u};
+ * DOBRATE? +010 and CM/DAPON +015, DOBRATE? +4 to +7, and after RATEAVG
+ * and ANGOVCOR. */
+static const uint16_t returns[] = {02446u, 02476u, 03627u, 02472u, 02473u, 02474u, 02475u,
+                                   02570u, 02604u, 02623u, 02676u, 02730u, 02734u, 02741u};
 
 /* A Q to return to: 3, one of the file's words, a word of fixed memory,
  * or any. */
@@ -243,6 +248,28 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hw, u
         w[AT(ROLL_180)] = value_word();
         w[AT(FLAGWRD2)] = any_word();
         w[AT(DAPDATR1)] = any_word();
+        /* The gimbal angles' changes and their sines and cosines, the
+         * rates and their last changes, GAMDOT, the commanded angles. */
+        w[AT(MDELAOG)] = value_word();
+        w[AT(MDELAIG)] = value_word();
+        w[AT(MDELAMG)] = value_word();
+        w[AT(OLDELP)] = value_word();
+        w[AT(OLDELQ)] = value_word();
+        w[AT(OLDELR)] = value_word();
+        w[AT(COSM)] = value_word();
+        w[AT(SINO)] = value_word();
+        w[AT(COSO)] = value_word();
+        w[AT(SINOCOSM)] = value_word();
+        w[AT(COSOCOSM)] = value_word();
+        w[AT(PREL)] = value_word();
+        w[AT(QREL)] = value_word();
+        w[AT(RREL)] = value_word();
+        w[AT(PHIDOT)] = value_word();
+        w[AT(SALFA)] = value_word();
+        w[AT(GAMDOT)] = sign_word();
+        w[AT(ALFACOM)] = value_word();
+        w[AT(BETACOM)] = value_word();
+        w[AT(SR)] = any_word();
         hw->channel5 = any_word();
         hw->channel6 = any_word();
         /* Any of the erasable banks' words. */
@@ -283,7 +310,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
         bool readable_key = cm_entry_dap_readable(key);
         unsigned ran = 0, bad = 0, cases = readable_key ? CASES : OTHER_CASES;
 
-        if (readable_key != part_a(i)) {
+        if (readable_key != written_part(i)) {
             printf("FAIL: key %u (%04o) %s\n", key, 02000u + key % 1024u,
                    readable_key ? "runs readable code, no part has it" : "has no readable routine");
             ++failures;
@@ -376,9 +403,10 @@ int main(int argc, char **argv)
     on_alarm.sa_handler = stop;
     sigaction(SIGALRM, &on_alarm, NULL);
     failures += keys(&cm_entry_dap_basic, &faithful_cm_entry_dap_basic, &runs, &written, &loops);
-    printf("cm-entry-dap-cases: %u of %u keys readable (part A, all basic) from %u states each "
-           "(the others %u), %u run by the faithful routines, %u looping on both sides, %u "
-           "failures\n",
-           written, faithful_cm_entry_dap_basic.count, CASES, OTHER_CASES, runs, loops, failures);
+    printf(
+        "cm-entry-dap-cases: %u of %u keys readable (parts A and B, all basic) from %u states each "
+        "(the others %u), %u run by the faithful routines, %u looping on both sides, %u "
+        "failures\n",
+        written, faithful_cm_entry_dap_basic.count, CASES, OTHER_CASES, runs, loops, failures);
     return failures != 0;
 }

@@ -21,7 +21,10 @@
  *   A: readgymb.c, READGYMB to ANGOVCOR and FLUSHJET (pp. 1063-1065, bank
  *     15 and fixed-fixed); dapon.c, CM/DAPON and CM/DAPIC (pp. 1066-1069,
  *     bank 20).
- *   B to E: BODYRATE to CM/END (pp. 1065 and 1070-1092, bank 15).
+ *   B: bodyrate.c, RATEAVG and BODYRATE (pp. 1065 and 1070-1072);
+ *     attrates.c, the flight path's turn, NOGAMDUT and ATTRATES (pp.
+ *     1071-1074), bank 15.
+ *   C to E: the yaw and pitch DAPs to CM/END (pp. 1074-1092, bank 15).
  * The binding runs the faithful port's routines for the keys no part has
  * written yet. */
 #ifndef READABLE_ENTRY_DAP_H
@@ -46,6 +49,7 @@ void dobrate_q_after_phaschng(void); /* DOBRATE? +012 */
 void dobrate1_after_waitlist(void);  /* DOBRATE1 +5 */
 void dobrate1_taskover(void);        /* DOBRATE1 +7 */
 void angovcor(void);                 /* ANGOVCOR */
+void angovcor_return(void);          /* ANGOVCOR +5, part B's key */
 
 /* ---- Part A: dapon.c (bank 20) ---- */
 void cm_dapon(void);                /* CM/DAPON */
@@ -66,6 +70,30 @@ void cm_dap2c_beta(void);           /* CM/DAP2C +025 */
 void cm_dap2c_beta_ts(void);        /* CM/DAP2C +026 */
 void cm_dap2c_2phschng(void);       /* CM/DAP2C +031 */
 void cm_dap2c_after_2phschng(void); /* CM/DAP2C +035 */
+
+/* ---- Part B: bodyrate.c and attrates.c (bank 15) ---- */
+void bodyrate(void);           /* BODYRATE */
+void bodyrate_cosm(void);      /* BODYRATE +2 */
+void bodyrate_sino(void);      /* BODYRATE +5 */
+void bodyrate_coso(void);      /* BODYRATE +013 */
+void bodyrate_qrel(void);      /* BODYRATE +032 */
+void bodyrate_rrel(void);      /* BODYRATE +046 */
+void bodyrate_sinm(void);      /* BODYRATE +051 */
+void bodyrate_prel(void);      /* BODYRATE +065 */
+void bodyrate_nogamdut(void);  /* BODYRATE +070 */
+void bodyrate_gamdot(void);    /* BODYRATE +071 */
+void bodyrate_sr_gamdot(void); /* BODYRATE +073 */
+void bodyrate_trim_prel(void); /* BODYRATE +0100 */
+void bodyrate_trim_qrel(void); /* BODYRATE +0103 */
+void nogamdut(void);           /* NOGAMDUT */
+void attrates(void);           /* ATTRATES */
+void attrates_alfa(void);      /* ATTRATES +011 */
+void attrates_calfa(void);     /* ATTRATES +013 */
+void attrates_salfa(void);     /* ATTRATES +025 */
+void attrates_sb_phidot(void); /* ATTRATES +037 */
+void attrates_alfa_done(void); /* ATTRATES +043 */
+void attrates_ak1(void);       /* ATTRATES +047 */
+void attrates_rolltm(void);    /* ATTRATES +054 */
 
 #endif
 
