@@ -19,7 +19,7 @@
  *     (pp. 535-540, bank 34); aterjob.c: ATERJOB to TAKEON, and DELSTOR,
  *     RLTST, NOPOLY and RESCALES (pp. 542-547, bank 34); satstick.c:
  *     SATSTKON (bank 43), REDOSAT and SATSTICK (bank 23) (pp. 548-550).
- *   part 2: the order pairs of bank 34.
+ *   part 2: the order pairs of bank 34 (in p11.c and aterjob.c).
  *   part 3: the order pairs of bank 37 (ATTDISP1 to NOPOLYM).
  * The binding (src/binding/cm_p11_routines.c) runs every key of the
  * faithful port's on these routines.
@@ -34,6 +34,7 @@
 #define READABLE_P11_H
 
 #include "../agc/agc.h"
+#include "../interpreter/notation.h"
 
 #if COMANCHE055
 
@@ -53,7 +54,7 @@ static inline void dca_constant(const word pair[2])
     set_A(pair[0]);
 }
 
-/* ---- p11.c: P11, REP11, VHHDOT, ATERTASK -- pp. 535-540 ---- */
+/* ---- p11.c: P11, REP11, VHHDOT, ATERTASK, GETDOWN -- pp. 535-541 ---- */
 void p11(void);                     /* P11 */
 void rep11a(void);                  /* REP11A */
 void rep11a_after_phaschng(void);   /* REP11A +015 */
@@ -76,8 +77,11 @@ void vhhdot_after_phaschng(void);   /* VHHDOT +6 */
 void atertask(void);                /* ATERTASK */
 void atertask_after_findvac(void);  /* ATERTASK +4 */
 void atertask_after_needler(void);  /* ATERTASK +011 */
+/* The interpretive code (part 2): at REP11A +056, MATRXJOB +012, VHHDOT
+ * +1 and GETDOWN. */
+extern const struct interpretive_code P11_CODE, MATRXJOB_CODE, VHHDOT_CODE, GETDOWN_CODE;
 
-/* ---- aterjob.c: ATERJOB to TAKEON, DELSTOR to RESCALES -- pp. 542-547 ---- */
+/* ---- aterjob.c: ATERJOB to TAKEON, S11.1, DELSTOR to RESCALES -- pp. 542-547 ---- */
 void aterjob(void);                /* ATERJOB */
 void attdisp_after_powrsers(void); /* ATTDISP +022 */
 void attdisp2_after_exit(void);    /* ATTDISP2 +030 */
@@ -89,6 +93,10 @@ void atreset_after_delayjob(void); /* ATRESET +010 */
 void delstor(void);                /* DELSTOR */
 void rltst(void);                  /* RLTST */
 void nopoly(void);                 /* NOPOLY */
+/* The interpretive code (part 2): at ATTDISP +025, ATTDISP2, STEERSAT +1,
+ * S11.1 and NOPOLY +1. */
+extern const struct interpretive_code ATTDISP_CODE, ATTDISP2_CODE, STEERSAT_CODE, S11_1_CODE,
+    NOPOLY_CODE;
 
 /* ---- satstick.c: SATSTKON, REDOSAT, SATSTICK -- pp. 548-550 ---- */
 void satstkon(void);                /* SATSTKON */

@@ -1,17 +1,18 @@
 /* SPDX-License-Identifier: MIT */
-/* P11.agc of the CM, part 1 (Comanche055 pp. 542-547, bank 34): ATERJOB,
+/* P11.agc of the CM, parts 1 and 2 (Comanche055 pp. 542-547, bank 34): ATERJOB,
  * the job that "PROVIDES ATTITUDE ERROR DISPLAYS TO THE FDAI DURING SONE
  * BOOST", about every half second, and steers the Saturn with them when
- * the crew has the S/C control of Saturn switch on; and the small
- * routines its interpretive code calls (DELSTOR, RLTST, NOPOLY, RESCALES).
+ * the crew has the S/C control of Saturn switch on; the small routines
+ * its interpretive code calls (DELSTOR, RLTST, NOPOLY, RESCALES); and
+ * S11.1, VHHDOT's display of V1, HDOT and H.
  *
  * Until RPSTART after liftoff the desired attitude is the one at liftoff
  * (OGC, IGC and MGC as MATRXJOB stored them: NOPOLY, "ATTITUDE HOLD");
  * then, until POLYSTOP, the pitch polynomial (POLYNUM's coefficients,
  * POWRSERS) and the roll "LAUNCHAZ-AZIMUTH-.5+SATRLRT*T". The
  * interpretive code turns these into "THE ATTITUDE ERRORS ... AK, AK1,
- * AK2 AS INPUT TO NEEDLER, THE FDAI ATTITUDE ERROR DISPLAY ROUTINE"
- * (parts 2 and 3).
+ * AK2 AS INPUT TO NEEDLER, THE FDAI ATTITUDE ERROR DISPLAY ROUTINE": the
+ * code here (part 2), and in bank 37 ATTDISP1 to NOPOLYM (part 3).
  *
  * SATSW is the takeover's state: +1 display only, +0 the needles
  * initialized for steering (the errors at that moment become the bias,
@@ -22,6 +23,8 @@
 #include "../interpreter/interpreter.h"
 
 #if COMANCHE055
+
+#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 static void attdisp(void);
 static void atreset(void);
@@ -36,6 +39,15 @@ void nopoly(void)
     tc_at(NOPOLY);
     intpret();
 }
+
+/* NOPOLY +1: the push-down list emptied, and on in bank 37 at NOPOLYM. */
+static const word nopoly_words[] = {
+    ORDERS(SETPD, GOTO),
+    ADDRESS_PLUS_ONE_D(0),
+    ADDRESS(NOPOLYM),
+};
+
+const struct interpretive_code NOPOLY_CODE = {034u, NOPOLY + 1u, COUNT(nopoly_words), nopoly_words};
 
 /* ATTDISP: the time since RPSTART; until then, or past POLYSTOP, or once
  * TIME1 has overflowed into TIME2 (the display "IS DISABLED UPON OVFLO OF
@@ -79,6 +91,17 @@ void attdisp_after_powrsers(void)
     tc_at(ATTDISP + 024u);
     intpret();
 }
+
+/* ATTDISP +025: the pitch in revolutions, "32(PITCH(32REV))=PITCH(REV)",
+ * pushed, and on in bank 37 (ATTDISP1, "AROUND SETLOC"). */
+static const word attdisp_words[] = {
+    ORDERS(SETPD, SL), ADDRESS_PLUS_ONE_D(0),
+    SL_COUNT(5),       ORDER(PUSH), /* "LET P(RAD)=2*PI*PITCH(REV)" */
+    ORDER(GOTO),       ADDRESS(ATTDISP1),
+};
+
+const struct interpretive_code ATTDISP_CODE = {034u, ATTDISP + 025u, COUNT(attdisp_words),
+                                               attdisp_words};
 
 /* STRSAT, with the S/C control of Saturn switch on: "CHECK IF NEEDLER HAS
  * BEEN INITIALIZED" (SATSW +0 or negative): "YES - CONTINUE"; else
@@ -193,6 +216,15 @@ static void steersat(void)
     intpret();
 }
 
+/* STEERSAT +1: "AKS = AKS - STORED BIAS" (BIASAK holds the bias
+ * complemented: AKLOAD's), the three errors at once as a triple. */
+static const word steersat_words[] = {
+    ORDERS(TLOAD, TAD), ADDRESS_PLUS_ONE(BIASAK), ADDRESS_PLUS_ONE(AK), STORE(AK), ORDER(EXIT),
+};
+
+const struct interpretive_code STEERSAT_CODE = {034u, STEERSAT + 1u, COUNT(steersat_words),
+                                                steersat_words};
+
 /* AKLOAD: "STORE AKS INTO BIAS COMPLEMENTED"; SATSW -1, "SET SW TO
  * STEER"; "GO STEER". */
 static void akload(void)
@@ -208,6 +240,24 @@ static void akload(void)
     tc_at(AKLOAD + 010u);
     steersat();
 }
+
+/* ATTDISP2, from bank 37's code (ATTDISP1 to NOPOLYM), with the gimbal
+ * angle errors at 0, 2 and 4 of the push-down list and the outer one in
+ * MPAC: the errors in body axes, by the gimbal angles' sines and cosines
+ * (COSCDUZ, COSCDUX, SINCDUX), each halved: 16D ".5(DPHI +
+ * DTHETA*SIN(CDUZ))", 17D and 18D from DTHETA and DPSI by the outer
+ * angle. "STORE ATTITUDE ERRORS IN AK,AK1,AK2". */
+static const word attdisp2_words[] = {
+    STODL_D(16),           ADDRESS_PLUS_ONE(COSCDUZ), ORDERS(DMP, PUSH), ADDRESS_PLUS_ONE_D(0),
+    ORDERS(DMP, SL1),      ADDRESS_PLUS_ONE(COSCDUX), ORDERS(PDDL, DMP), ADDRESS_PLUS_ONE(SINCDUX),
+    ADDRESS_PLUS_ONE_D(2), ORDERS(DAD, SL1),          ORDER(STADR),      AFTER_STADR(STODL_D(17)),
+    ORDERS(DMP, SL1),      ADDRESS_PLUS_ONE(SINCDUX), ORDERS(PDDL, DMP), ADDRESS_PLUS_ONE(COSCDUX),
+    ADDRESS_PLUS_ONE_D(2), ORDERS(DSU, SL1),          ORDER(STADR),      AFTER_STADR(STORE_D(18)),
+    ORDER(TLOAD),          ADDRESS_PLUS_ONE_D(16),    STORE(AK),         ORDER(EXIT),
+};
+
+const struct interpretive_code ATTDISP2_CODE = {034u, ATTDISP2, COUNT(attdisp2_words),
+                                                attdisp2_words};
 
 /* ATTDISP2 +030, after the attitude errors' EXIT: "CHK TAKEOVER STATUS":
  * SATSW positive, "DISPLAY ONLY" (SATOUT); +0, "STORE BIAS" (AKLOAD);
@@ -283,6 +333,35 @@ void atreset_after_delayjob(void)
     tc_at(ATRESET + 020u);
     satout();
 }
+
+/* ---- S11.1 -- p. 546 ---- */
+
+/* S11.1, VHHDOT's CALL: VMAGI, "VI SCALED 2(7) IN METERS/CSEC"; HDOT, VN
+ * along the unit RN, doubled; ALTI, RN's length (which UNIT leaves at
+ * 36D) less RPAD, the pad's radius, or with AMOONFLG set less the landing
+ * site's (RLS's length, shifted right two places to RN's scale). */
+static const word s11_1_words[] = {
+    ORDERS(VLOAD, ABVAL),
+    ADDRESS_PLUS_ONE(VN),
+    STOVL(VMAGI),
+    ADDRESS_PLUS_ONE(RN),
+    ORDERS(UNIT, DOT),
+    ADDRESS_PLUS_ONE(VN),
+    ORDER(SL1),
+    STODL(HDOT),
+    ADDRESS_PLUS_ONE(RPAD),
+    ORDERS(BOF, VLOAD),
+    SWITCH(BOF, AMOONFLG),
+    ADDRESS(EARTHALT),
+    ADDRESS_PLUS_ONE(RLS),
+    ORDERS(ABVAL, SR2),
+    /* EARTHALT */ ORDER(BDSU),
+    ADDRESS_PLUS_ONE_D(36),
+    STORE(ALTI),
+    ORDER(RVQ),
+};
+
+const struct interpretive_code S11_1_CODE = {034u, S11_1, COUNT(s11_1_words), s11_1_words};
 
 /* ---- DELSTOR, RLTST, NOPOLY, RESCALES -- pp. 546-547 ---- */
 
