@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P11.agc of the CM, part 1 (Comanche055 pp. 535-540, bank 34): P11, its
- * restart point REP11, VHHDOT (SERVICER's exit during the boost) and
- * ATERTASK.
+/* P11.agc of the CM, parts 1 and 2 (Comanche055 pp. 535-541, bank 34):
+ * P11, its restart point REP11, VHHDOT (SERVICER's exit during the boost),
+ * ATERTASK and GETDOWN.
  *
  * P11 "WILL ... ZERO CMC CLOCK AT LIFTOFF (OR UPON RECEIPT OF BACKUP)",
  * "UPDATE TEPHEM TO TIME CMC CLOCK WAS ZEROED", "INITIATE SERVICER AT
@@ -14,13 +14,16 @@
  * RESTARTS"), and TLIFTOFF, which holds REP11SA (a restart phase) until
  * it holds that clock too.
  *
- * The interpretive code between the basic stretches (the REFSMMAT and the
- * initial vectors, VHHDOT's S11.1) is part 2's. */
+ * The interpretive code between the basic stretches (the earth rate
+ * compensation, the REFSMMAT and the initial vectors, VHHDOT's CALL)
+ * is written out as the listing has it (src/interpreter/notation.h). */
 #include "p11.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
 #if COMANCHE055
+
+#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* ---- P11 and REP11A -- pp. 535-537 ---- */
 
@@ -160,6 +163,21 @@ void rep11a_after_2phschng(void)
     intpret();
 }
 
+/* REP11A +056: ERCOMP, the earth rate compensation, gets THETAN (in
+ * stable member axes by XSM, doubled); then EARTHR +3, the earth rate
+ * loop, from TLIFTOFF, with S2 (EARTHR's return) PROUT, "RETURN FROM
+ * EARTHR", which exits to P11OUT (QPLACES). */
+static const word p11_words[] = {
+    ORDERS(VLOAD, MXV),         ADDRESS_PLUS_ONE(THETAN),
+    ADDRESS_PLUS_ONE(XSM),      ORDERS(VSL1, VAD),
+    ADDRESS_PLUS_ONE(ERCOMP),   STODL(ERCOMP),
+    ADDRESS_PLUS_ONE(TLIFTOFF), ORDERS(SSP, GOTO),
+    ADDRESS_PLUS_ONE(S2),       ADDRESS(PROUT), /* CADR PROUT: "RETURN FROM EARTHR" */
+    ADDRESS_AT(EARTHR, 3),
+};
+
+const struct interpretive_code P11_CODE = {034u, REP11A + 056u, COUNT(p11_words), p11_words};
+
 /* ---- MATRXJOB -- pp. 537-539 ---- */
 
 /* MATRXJOB: "STORE DP GIMBAL ANGLES FOR ATTITUDE ERROR DISPLAY AFTER
@@ -179,6 +197,77 @@ void matrxjob(void)
     tc_at(MATRXJOB + 011u);
     intpret();
 }
+
+/* MATRXJOB +012: OGC scaled B-1, and RTX2 +0 "FOR EARTH"; the pad's
+ * position (PGNCSALT, PADLONG, LATITUDE: "LAT,LONG,ALT ARE CONSECUTIVE",
+ * at "TIME = 0"), by LALOTORV a "POSITION VECTOR IN REF.COORDS" (RN1), and
+ * by GETDOWN the down direction. Then the REFSMMAT: its third row "UNITZ
+ * = UNIT(GRAV)"; VN1, "V = EARTHRATE X R" (scaled to 2(7) m/cs); "(REF3 X
+ * UNITW) = EAST", "(EAST X REF3) =
+ * -SOUTH", and from the launch azimuth "SIN(AZ)*EAST - COS(AZ)*SOUTH =
+ * REF1", its first row; its second "(REF1 X REF3) = -REF3"
+ * complemented. SATRLRT gets the sign of "1/2REV -LAVNCHAZ +AZIMUTH", "FOR
+ * ROLL CALC IN FDAI ATT. ERROR DISPLAY"; "SET REFSMMAT KNOWN FLAG". */
+static const word matrxjob_words[] = {
+    ORDERS(VLOAD, VSR1), /* "SCALE OGC B-1" */
+    ADDRESS_PLUS_ONE(OGC),
+    STORE(OGC),
+    ORDER(SSP), /* "ZERO RTX2 FOR EARTH" */
+    ADDRESS_PLUS_ONE(RTX2),
+    NUMBER(0),
+    ORDERS(DLOAD, PDDL),
+    ADDRESS_PLUS_ONE(PGNCSALT), /* "ALTITUDE OF PGNCS" */
+    ADDRESS_PLUS_ONE(PADLONG),  /* "LONGITUDE" */
+    ORDERS(PDDL, VDEF),
+    ADDRESS_PLUS_ONE(LATITUDE), /* "GEODETIC LATITUDE" */
+    STODL(LAT),
+    ADDRESS_PLUS_ONE(HI6ZEROS),
+    ORDERS(CLEAR, CALL),
+    SWITCH(CLEAR, ERADFLAG),
+    ADDRESS(LALOTORV),
+    STCALL(RN1),
+    ADDRESS(GETDOWN), /* "RETURN WITH VECTOR FOR DOWN DIRECTION" */
+    ORDERS(VCOMP, UNIT),
+    STOVL_AT(REFSMMAT, 12), /* "UNITZ = UNIT(GRAV)" */
+    ADDRESS_PLUS_ONE(RN1),
+    ORDERS(VXV, VXSC),
+    ADDRESS_PLUS_ONE(UNITW),    /* "SCALED AT 1" */
+    ADDRESS_PLUS_ONE(MERTHRAT), /* -ERTHRAT: "V = EARTHRATE X R" */
+    ORDER(VSL4),
+    STOVL(VN1),
+    ADDRESS_PLUS_ONE_AT(REFSMMAT, 12),
+    ORDERS(VXV, UNIT),
+    ADDRESS_PLUS_ONE(UNITW), /* "(REF3 X UNITW) = EAST" */
+    ORDERS(PUSH, VXV),
+    ADDRESS_PLUS_ONE_AT(REFSMMAT, 12), /* "(EAST X REF3) = -SOUTH" */
+    ORDERS(UNIT, PDDL),
+    ADDRESS_PLUS_ONE(LAUNCHAZ), /* "COS(AZ)*SOUTH" */
+    ORDERS(COS, VXSC),
+    ORDER(STADR),
+    AFTER_STADR(STODL(REFSMMAT)), /* "TEMPORARY STORAGE" */
+    ADDRESS_PLUS_ONE(LAUNCHAZ),
+    ORDERS(SIN, VXSC), /* "SIN(AZ)*EAST" */
+    ORDERS(VAD, UNIT),
+    ADDRESS_PLUS_ONE(REFSMMAT),
+    STORE(REFSMMAT),
+    ORDERS(VXV, UNIT), /* "(REF1 X REF3) = -REF3" */
+    ADDRESS_PLUS_ONE_AT(REFSMMAT, 12),
+    ORDER(VCOMP),
+    STORE_AT(REFSMMAT, 6),
+    ORDERS(DLOAD, DSU),
+    ADDRESS_PLUS_ONE(DPHALF), /* "1/2 REV" */
+    ADDRESS_PLUS_ONE(LAUNCHAZ),
+    ORDERS(DAD, PDDL),
+    ADDRESS_PLUS_ONE(AZIMUTH),
+    ADDRESS_PLUS_ONE(SATRLRT),
+    ORDERS(SIGN, STADR),
+    AFTER_STADR(STORE(SATRLRT)),
+    ORDERS(SET, EXIT),
+    SWITCH(SET, REFSMFLG),
+};
+
+const struct interpretive_code MATRXJOB_CODE = {034u, MATRXJOB + 012u, COUNT(matrxjob_words),
+                                                matrxjob_words};
 
 /* MATRXJOB +0101, after the REFSMMAT's EXIT: a restart point. */
 void matrxjob_after_exit(void)
@@ -263,7 +352,7 @@ void rep11(void)
     rep11a_minus2();
 }
 
-/* ---- VHHDOT and ATERTASK -- p. 540 ---- */
+/* ---- VHHDOT, ATERTASK and GETDOWN -- pp. 540-541 ---- */
 
 /* VHHDOT: "EXECUTED EVERY 2 SECONDS TO DISPLAY ON DSKY" V1, HDOT and H:
  * S11.1, in interpretive code, loads them. */
@@ -272,6 +361,15 @@ void vhhdot(void)
     tc_at(VHHDOT);
     intpret();
 }
+
+/* VHHDOT +1: "LOAD VMAGI, ALTI, HDOT FOR DISPLAY" (S11.1, in aterjob.c). */
+static const word vhhdot_words[] = {
+    ORDER(CALL),
+    ADDRESS(S11_1),
+    ORDER(EXIT),
+};
+
+const struct interpretive_code VHHDOT_CODE = {034u, VHHDOT + 1u, COUNT(vhhdot_words), vhhdot_words};
 
 /* VHHDOT +4, after the EXIT: a restart point. */
 void vhhdot_after_exit(void)
@@ -311,5 +409,18 @@ void atertask_after_needler(void)
     ts(ADDRESS_OF(SATSW));
     tc_to(ATERTASK + 013u, TASKOVER);
 }
+
+/* GETDOWN: "RETURN WITH VECTOR FOR DOWN DIRECTION". LALOTORV again from
+ * +5, past its SETGAMMA and its own STQ (the return in INCORPEX here),
+ * with 6D, the time, +0 and 8D, its GAMMA, DPHALF (one, B-1: no
+ * flattening): a vector on the vertical of the geodetic latitude, back
+ * to MATRXJOB's code. */
+static const word getdown_words[] = {
+    ORDERS(STQ, SETPD),         ADDRESS(INCORPEX), ADDRESS_PLUS_ONE_D(0),    ORDER(DLOAD),
+    ADDRESS_PLUS_ONE(HI6ZEROS), STODL_D(6),        ADDRESS_PLUS_ONE(DPHALF), STCALL_D(8),
+    ADDRESS_AT(LALOTORV, 5),
+};
+
+const struct interpretive_code GETDOWN_CODE = {034u, GETDOWN, COUNT(getdown_words), getdown_words};
 
 #endif

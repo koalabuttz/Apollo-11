@@ -2147,6 +2147,7 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define SATSTKON  ((word)K_SATSTKON)
 #define REDOSAT   ((word)K_REDOSAT)
 #define SATSTICK  ((word)K_SATSTICK)
+#define S11_1     ((word)K_S11_1) /* S11.1 */
 #define MBDYTCTL  ((word)K_MBDYTCTL) /* the body to control axes matrix (bank 34) */
 #define POWRSERS  ((word)K_POWRSERS) /* (the LM's are its own) */
 /* Its constants. */
