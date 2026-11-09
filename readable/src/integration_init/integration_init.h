@@ -30,7 +30,10 @@
  *     pp. 1216-1217, CM pp. 1320-1321) and RVCON, TESTLOOP to DT/2MAX
  *     (testloop.c: LM pp. 1217-1219, CM pp. 1321-1324);
  *   part 3: INTSTALL to INTBITAB, and the basic code after INTEXIT's
- *     EXIT (intstall.c: LM pp. 1217, 1219-1220, CM pp. 1321, 1324-1326).
+ *     EXIT (intstall.c: LM pp. 1217, 1219-1220, CM pp. 1321, 1324-1326);
+ *   part 4: AVETOMID (avetomid.c: LM pp. 1221-1222, CM pp. 1327-1328) and
+ *     MIDTOAV1 and MIDTOAV2 to TIMEDELT (midtoav.c: LM pp. 1223-1225, CM
+ *     pp. 1329-1331).
  * The binding (src/binding/integration_init_routines.c) runs the faithful
  * port's routines at the keys no part has written yet. */
 #ifndef READABLE_INTEGRATION_INIT_H
@@ -107,5 +110,15 @@ void erastal2_after_exit(void); /* ERASTAL2 +1 */
 void eraswak1(void);            /* ERASWAK1 */
 void eraswak2(void);            /* ERASWAK2 */
 #endif
+
+/* Part 4: AVETOMID (the CM's in bank 35), MIDTOAV2 to ENTMID1's EXIT,
+ * CKMID2 to NOTIME's EXIT, and the words after NOTIME's TC INTPRET. */
+extern const struct interpretive_code AVETOMID_CODE, MIDTOAV_CODE, CKMID2_CODE, NOTIME_RVQ_CODE;
+
+/* Part 4's basic code, each from a key. */
+void entmid1_after_exit(void);    /* CKMID2 -7: INHINT */
+void entmid1_after_tpagree(void); /* CKMID2 -2: CA IRETURN1 */
+void notime_after_exit(void);     /* NOTIME +2: INCR IRETURN1 */
+void notime_after_alarm(void);    /* NOTIME +5: TC INTPRET */
 
 #endif

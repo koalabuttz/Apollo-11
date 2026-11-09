@@ -52,17 +52,19 @@ struct interpretive_code {
 };
 extern const struct interpretive_code STATINT1_CODE, SETIFLGS_CODE, ATOPCSM_CODE, PTOACSM_CODE,
     ATOPLEM_CODE, PTOALEM_CODE, USEPIOS_CODE, INTEGRV_CODE, ALOADED_CODE, A_PCHK_CODE, PHEXIT_CODE,
-    TESTLOOP_CODE, INTSTALL_CODE, INTWAKE0_CODE, GOBAC_RVQ_CODE;
+    TESTLOOP_CODE, INTSTALL_CODE, INTWAKE0_CODE, GOBAC_RVQ_CODE, AVETOMID_CODE, MIDTOAV_CODE,
+    CKMID2_CODE, NOTIME_RVQ_CODE;
 #if COMANCHE055
 extern const struct interpretive_code ERASTAL1_CODE, ERASTAL2_CODE;
 #endif
 static const struct interpretive_code *const codes[] = {
-    &STATINT1_CODE, &SETIFLGS_CODE, &ATOPCSM_CODE,  &PTOACSM_CODE,  &ATOPLEM_CODE,
-    &PTOALEM_CODE,  &USEPIOS_CODE,  &INTEGRV_CODE,  &ALOADED_CODE,  &A_PCHK_CODE,
-    &PHEXIT_CODE,   &TESTLOOP_CODE, &INTSTALL_CODE, &INTWAKE0_CODE, &GOBAC_RVQ_CODE,
+    &STATINT1_CODE, &SETIFLGS_CODE, &ATOPCSM_CODE,  &PTOACSM_CODE,    &ATOPLEM_CODE,
+    &PTOALEM_CODE,  &USEPIOS_CODE,  &INTEGRV_CODE,  &ALOADED_CODE,    &A_PCHK_CODE,
+    &PHEXIT_CODE,   &TESTLOOP_CODE, &INTSTALL_CODE, &INTWAKE0_CODE,   &GOBAC_RVQ_CODE,
 #if COMANCHE055
     &ERASTAL1_CODE, &ERASTAL2_CODE,
 #endif
+    &AVETOMID_CODE, &MIDTOAV_CODE,  &CKMID2_CODE,   &NOTIME_RVQ_CODE,
 };
 bool integration_init_readable(uint16_t key, bool order_pair);
 #if LUMINARY099
@@ -133,11 +135,16 @@ static const uint16_t x2_keys[] = {013u * 1024u + 03231u % 1024u, 013u * 1024u +
 #define NEWOPS_AT 06037u
 /* DANZIG, where an RTB's routine ends; and the keys a pair's right-hand
  * order waits at in EDOP (its code plus one) while the RTB on its left
- * runs: PTOACSM's RTB BON, and DT/2COMP's RTB SL. */
+ * runs: PTOACSM's RTB BON, DT/2COMP's RTB SL, SETCOAST's RTB SSP, ENTMID2's
+ * and TIMEINC's RTB DAD and MID2's RTB BDSU. */
 #define DANZIG_AT 06030u
 static const struct {
     uint16_t key, edop;
-} pending[] = {{013u * 1024u + 02732u % 1024u, 0163u}, {013u * 1024u + 03352u % 1024u, 0116u}};
+} pending[] = {
+    {013u * 1024u + 02732u % 1024u, 0163u}, {013u * 1024u + 03352u % 1024u, 0116u},
+    {035u * 1024u + 03727u % 1024u, 0046u}, {013u * 1024u + 03570u % 1024u, 0162u},
+    {013u * 1024u + 03646u % 1024u, 0162u}, {013u * 1024u + 03662u % 1024u, 0156u},
+};
 #endif
 /* The index registers and the returns, in the work area: X1, X2, S1, S2
  * and QPRET. */

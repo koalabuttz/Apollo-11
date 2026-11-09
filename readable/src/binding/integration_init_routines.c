@@ -237,6 +237,11 @@ static const struct basic_entry {
     {KEY(INTINIT_BANK, ERASWAK1), eraswak1, false},
     {KEY(INTINIT_BANK, ERASWAK2), eraswak2, false},
 #endif
+    /* Part 4 */
+    {KEY(INTINIT_BANK, CKMID2 - 7u), entmid1_after_exit, false},
+    {KEY(INTINIT_BANK, CKMID2 - 2u), entmid1_after_tpagree, false},
+    {KEY(INTINIT_BANK, NOTIME + 2u), notime_after_exit, false},
+    {KEY(INTINIT_BANK, NOTIME + 5u), notime_after_alarm, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -252,12 +257,13 @@ static const struct basic_entry *basic_entry(uint16_t key)
 
 /* The parts of the code written so far. */
 static const struct interpretive_code *const codes[] = {
-    &STATINT1_CODE, &SETIFLGS_CODE, &ATOPCSM_CODE,  &PTOACSM_CODE,  &ATOPLEM_CODE,
-    &PTOALEM_CODE,  &USEPIOS_CODE,  &INTEGRV_CODE,  &ALOADED_CODE,  &A_PCHK_CODE,
-    &PHEXIT_CODE,   &TESTLOOP_CODE, &INTSTALL_CODE, &INTWAKE0_CODE, &GOBAC_RVQ_CODE,
+    &STATINT1_CODE, &SETIFLGS_CODE, &ATOPCSM_CODE,  &PTOACSM_CODE,    &ATOPLEM_CODE,
+    &PTOALEM_CODE,  &USEPIOS_CODE,  &INTEGRV_CODE,  &ALOADED_CODE,    &A_PCHK_CODE,
+    &PHEXIT_CODE,   &TESTLOOP_CODE, &INTSTALL_CODE, &INTWAKE0_CODE,   &GOBAC_RVQ_CODE,
 #if COMANCHE055
     &ERASTAL1_CODE, &ERASTAL2_CODE,
 #endif
+    &AVETOMID_CODE, &MIDTOAV_CODE,  &CKMID2_CODE,   &NOTIME_RVQ_CODE,
 };
 
 /* The part of the code an address of a bank is in, or none. */
@@ -274,8 +280,9 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
 
 #if COMANCHE055
 /* The CM's keys a pair's right-hand order waits at in EDOP while its
- * left, an RTB, runs a routine: PTOACSM's RTB BON, and DT/2COMP's RTB SL
- * (SGNAGREE). The routine ends at
+ * left, an RTB, runs a routine: PTOACSM's RTB BON, DT/2COMP's RTB SL
+ * (SGNAGREE), SETCOAST's RTB SSP (MOVATHIS), and the RTB DADs of ENTMID2
+ * and TIMEINC and MID2's RTB BDSU (LOADTIME). The routine ends at
  * DANZIG, which finds the order in EDOP and resumes the pass at LOC: EDOP
  * holds the order's code plus one. */
 static const struct pending_order {
@@ -284,6 +291,10 @@ static const struct pending_order {
 } pending_orders[] = {
     {KEY(INTINIT_BANK, CODE_Z(I_PTOACSM) + 1u), ORDER_BON + 1u},
     {KEY(INTINIT_BANK, CODE_Z(I_DT_2COMP) + 4u), ORDER_SL + 1u},
+    {KEY(CODE_BANK(I_AVETOMID), CODE_Z(I_SETCOAST) + 023u), ORDER_SSP + 1u},
+    {KEY(INTINIT_BANK, CODE_Z(I_ENTMID2) + 1u), ORDER_DAD + 1u},
+    {KEY(INTINIT_BANK, CODE_Z(I_TIMEINC) + 1u), ORDER_DAD + 1u},
+    {KEY(INTINIT_BANK, CODE_Z(I_MID2) + 010u), ORDER_BDSU + 1u},
 };
 
 static const struct pending_order *pending_order(uint16_t key)
