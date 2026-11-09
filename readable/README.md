@@ -262,6 +262,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | IMU_CALIBRATION_AND_ALIGNMENT of the CM, part 4: the drift test's filter | `IMU_CALIBRATION_AND_ALIGNMENT.agc` (CM pp. 434-441) | [`src/imu_calibration/`](src/imu_calibration/) | In `drift_loop.c`, RSTGTS1's code loads the first drift gains, ESTIMS calls ERTHRVSE when gyrocompassing, and NORMLOP runs the filter once a second: the PIPA counts through XSM, the gains due (ALKCG), each axis's measurement (DELMLP), the gains' rates (ALILP), the update of the integrals and the sway (ALKLP, LOOSE) and the angles' sines and cosines (BOOP), up to PERFERAS. The order pairs of pp. 442-454 are still the faithful port's |
 | IMU_CALIBRATION_AND_ALIGNMENT of the CM, part 5: the gyrocompassing's interpretive code | `IMU_CALIBRATION_AND_ALIGNMENT.agc` (CM pp. 441-446) | [`src/imu_calibration/`](src/imu_calibration/) | In `gyrocompass.c`, SETUPER1 turns the drift test's angles into the gyro torquing command OGC and TORQINCH calls ERTHRVSE; POSN17C sets the platform's matrix from the azimuth; ALWAYSG, the job each half second, filters the PIPA counts axis by axis, erects the platform (ERECTION ONLY) while ERECTIM1 counts and then gyrocompasses (COMPGS); LASTGTS, RESTAIER, RESTEST1 and RESTEST3 add the compass commands into the earth rate, clear THETAN1 and take a new launch azimuth (NOAZCHGE when it has not changed). The order pairs of LATAZCHK (bank 4) and pp. 449-454 are still the faithful port's |
 | IMU_CALIBRATION_AND_ALIGNMENT of the CM, part 6: the optical verification's interpretive code | `IMU_CALIBRATION_AND_ALIGNMENT.agc` (CM pp. 449-454) | [`src/imu_calibration/`](src/imu_calibration/) | In `optical_verification.c`, TAR/EREF makes each ground target's vector from its azimuth and elevation (TAZEL1); TARGDRVE takes the sextant angles to it (SXTANG); NEXTBNKS and NEXBNKSS turn the targets and the marks' lines of sight (LITTLSUB) into stable member axes and find the platform's error (AXISGEN, CALCGTA), which GCOMP4 adds into the earth rate; LATAZCHK (bank 4) and AZMTHCG1 turn the latitude and azimuths into display units and back (1STO2S, CDULOGIC). With it the CM's file is all readable |
+| P11 of the CM, part 1: the basic code | `P11.agc` (CM pp. 535-550) | [`src/p11/`](src/p11/) | The earth orbit insertion monitor and the Saturn takeover, in basic code. In `p11.c`, P11 (at liftoff, from the gyrocompassing or V75) zeroes the clock while keeping LIFTTEMP and TLIFTOFF for a restart (REP11), moves TEPHEM on to the clock's zero (REP11A), starts SERVICER (PREREAD1), the attitude error display (ATERTASK) and MM 11, and after the REFSMMAT's interpretive code (MATRXJOB) sets SERVICER's exit to VHHDOT, which shows V1, HDOT and H (V06N62), and READACCS two seconds after liftoff. In `aterjob.c`, ATERJOB, about every half second, drives the FDAI needles (NEEDLER) from the attitude at liftoff or the pitch polynomial (ATTDISP, POWRSERS), or with the S/C control of Saturn switch on steers the Saturn with the errors less their bias (AKLOAD, STEERSAT, RESCALES); ATRESET and TAKEON change over; DELSTOR and RLTST are its RTB routines. In `satstick.c`, SATSTKON (V46, bank 43) hands T5 to REDOSAT and SATSTICK, which every 100 ms sends the hand controller's rates (STICKCHK, SATRATE) to the Saturn. The order pairs are still the faithful port's |
 
 Beside them:
 
@@ -955,6 +956,14 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    MPAC, MODE and the work area stirred, S2 and QPRET mostly a CADR, X1
    and X2 as the filter's loops set them, TARG1/2 and MARKSTAT as
    TARGDRVE and SXTMARK set them); every key must run readable code.
+   `make cm-p11-cases` runs the CM's P11: the port's test through the
+   readable tables, then tests/cm_p11_cases.c: readable and faithful side
+   by side at every key, 4,096 states for each basic key (LIFTTEMP,
+   TLIFTOFF, PHASE5, TIME2 and SATSW often +0, -0, 1 or -1, RPSTART near
+   TIME1, the attitude errors, their bias and scale often at an edge, the
+   rate indexes mostly 0 to 2, now and then one that lands the INDEX at
+   Z, on the central registers or out of erasable memory, channel 30's
+   bit 10 often clear); every basic key must run readable code.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

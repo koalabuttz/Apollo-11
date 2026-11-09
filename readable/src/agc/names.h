@@ -2120,6 +2120,51 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define VNG0641    ((word)KW_VNG0641) /* VN 0641 */
 #define V06N93S    ((word)KW_V06N93S) /* VN 0693 */
 #define VN0629     ((word)KW_VN0629) /* VN 0629 */
+
+/* ---- P11 (the CM's) ---- */
+#define P11       ((word)K_P11)
+#define REP11A    ((word)K_REP11A)
+#define REP11     ((word)K_REP11)
+#define ENDREP11  ((word)K_ENDREP11)
+#define MATRXJOB  ((word)K_MATRXJOB)
+#define VHHDOT    ((word)K_VHHDOT)
+#define ATERTASK  ((word)K_ATERTASK)
+#define GETDOWN   ((word)K_GETDOWN)
+#define ATERJOB   ((word)K_ATERJOB)
+#define ATTDISP   ((word)K_ATTDISP)
+#define ATTDISP2  ((word)K_ATTDISP2)
+#define STEERSAT  ((word)K_STEERSAT)
+#define SATOUT    ((word)K_SATOUT)
+#define ATERSET   ((word)K_ATERSET)
+#define AKLOAD    ((word)K_AKLOAD)
+#define STRSAT    ((word)K_STRSAT)
+#define ATRESET   ((word)K_ATRESET)
+#define TAKEON    ((word)K_TAKEON)
+#define DELSTOR   ((word)K_DELSTOR)
+#define RLTST     ((word)K_RLTST)
+#define NOPOLY    ((word)K_NOPOLY)
+#define RESCALES  ((word)K_RESCALES)
+#define SATSTKON  ((word)K_SATSTKON)
+#define REDOSAT   ((word)K_REDOSAT)
+#define SATSTICK  ((word)K_SATSTICK)
+#define MBDYTCTL  ((word)K_MBDYTCTL) /* the body to control axes matrix (bank 34) */
+#define POWRSERS  ((word)K_POWRSERS) /* (the LM's are its own) */
+/* Its constants. */
+#define EBDVCNT      ((word)KW_EBDVCNT)  /* ECADR DVCNTR */
+#define EBQPLACE     ((word)KW_EBQPLACE) /* ECADR QPLACES */
+#define P11XIT       ((word)KW_P11XIT)   /* GENADR P11OUT */
+#define COEFPOLY     ((word)KW_COEFPOLY) /* ADRES POLYLOC */
+#define V06N62       ((word)KW_V06N62)   /* VN 0662 */
+#define PRIO1        ((word)KW_PRIO1)    /* = BIT10 */
+#define STIKBITS     ((word)KW_STIKBITS) /* OCT 00077 */
+#define HUNDRED_MST5 ((word)KW_100MST5)  /* 100MST5: DEC 16374 */
+#define POWDNCOD     THREE               /* POWDNCOD EQUALS THREE */
+#define REVCNT       ((word)KW_REVCNT)   /* OCT 6 */
+static const word REP11S[2] = KW_REP11S;     /* 2OCT 7776600011 */
+static const word REP11SA[2] = KW_REP11SA;   /* 2OCT 7776400013 */
+static const word P11SCADR[2] = KW_P11SCADR; /* 2CADR VHHDOT */
+static const word TWO_REDOSAT[2] = KW_2REDOSAT; /* 2REDOSAT: 2CADR REDOSAT */
+static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
 #endif
 
 /* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 1: the keys ---- */
