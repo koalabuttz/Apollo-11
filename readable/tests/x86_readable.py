@@ -308,7 +308,9 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
                                          'cm_jet_select_hot_routines'] if m == 'cm' else [],
            'cm_imu_calibration.o': lambda m: ['cm_imu_calibration_basic',
                                               'cm_imu_calibration_interpretive'] if m == 'cm' else [],
-           'cm_p11.o': lambda m: ['cm_p11_basic', 'cm_p11_interpretive'] if m == 'cm' else []}
+           'cm_p11.o': lambda m: ['cm_p11_basic', 'cm_p11_interpretive'] if m == 'cm' else [],
+           'cm_tpi_search.o': lambda m: ['cm_tpi_search_basic', 'cm_tpi_search_interpretive']
+                              if m == 'cm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',

@@ -265,6 +265,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | P11 of the CM, part 1: the basic code | `P11.agc` (CM pp. 535-550) | [`src/p11/`](src/p11/) | The earth orbit insertion monitor and the Saturn takeover, in basic code. In `p11.c`, P11 (at liftoff, from the gyrocompassing or V75) zeroes the clock while keeping LIFTTEMP and TLIFTOFF for a restart (REP11), moves TEPHEM on to the clock's zero (REP11A), starts SERVICER (PREREAD1), the attitude error display (ATERTASK) and MM 11, and after the REFSMMAT's interpretive code (MATRXJOB) sets SERVICER's exit to VHHDOT, which shows V1, HDOT and H (V06N62), and READACCS two seconds after liftoff. In `aterjob.c`, ATERJOB, about every half second, drives the FDAI needles (NEEDLER) from the attitude at liftoff or the pitch polynomial (ATTDISP, POWRSERS), or with the S/C control of Saturn switch on steers the Saturn with the errors less their bias (AKLOAD, STEERSAT, RESCALES); ATRESET and TAKEON change over; DELSTOR and RLTST are its RTB routines. In `satstick.c`, SATSTKON (V46, bank 43) hands T5 to REDOSAT and SATSTICK, which every 100 ms sends the hand controller's rates (STICKCHK, SATRATE) to the Saturn. The order pairs are still the faithful port's |
 | P11 of the CM, part 2: the order pairs of bank 34 | `P11.agc` (CM pp. 537-547) | [`src/p11/`](src/p11/) | The interpretive code of bank 34, in the listing's notation. In `p11.c`: at REP11A, the earth rate compensation (ERCOMP from THETAN) and EARTHR, back to P11OUT; in MATRXJOB the pad's position (LALOTORV) and the down direction (GETDOWN), and from them and the launch azimuth the REFSMMAT, VN1 and SATRLRT's sign; VHHDOT's CALL of S11.1. In `aterjob.c`: ATTDISP's pitch on to bank 37, ATTDISP2's attitude errors in body axes into AK, AK1 and AK2, STEERSAT's bias taken off, S11.1 (V1, HDOT and H), and NOPOLY on to NOPOLYM. Bank 37's order pairs are still the faithful port's |
 | P11 of the CM, part 3: the order pairs of bank 37 | `P11.agc` (CM pp. 543-544) | [`src/p11/`](src/p11/) | ATTDISP1 to NOPOLYM in `aterjob.c`, in the listing's notation: the SM to spacecraft matrix TSMV from the pitch and the roll (RTB RLTST: is the rollout over?), its half unit vectors XDC, YDC and ZDC for CALCGTA, which gives the desired gimbal angles; NOPOLYM, where attitude hold enters too, takes the desired angles less the CDUs (V1STO2S, RTB DELSTOR) on to ATTDISP2. With it the file is whole: every key of the faithful tables runs readable code |
+| TPI_SEARCH of the CM, part 1: the search sector and the search loop | `TPI_SEARCH.agc` (CM pp. 551-556) | [`src/tpi_search/`](src/tpi_search/) | The TPI search of P17 and P77 (bank 36), in the listing's notation, in `s17.c`. S17.1 brings both vehicles to the TPI time (LEMCONIC, CSMCONIC), finds the altitude difference (KFLAG its sign) and the phase angle THETZERO between them; S17.2 bounds the search sector and turns its angles into the start and end times (TIMETHET). BIS ends the search at its end time (RNGETEST), CONCAUL and ADVCSM bring the passive vehicle to the transfer's end, and JUNCT3 solves the transfer (INITVEL) for the total delta V and the pericenter (PERIAPO), tests it against the safe pericenter (HPERMIN) and goes on to the step (JUNCT1), the interpolation (INTERP), HALFSAFE or the alarm (ALARUMS). The other keys are still the faithful port's |
 
 Beside them:
 
@@ -969,6 +970,15 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    bit 10 often clear; for an order pair at NEWOPS with LOC the key, a
    VAC area as the work area, MPAC, MODE and the work area stirred);
    every key must run readable code.
+   `make cm-tpi-search-cases` runs the CM's TPI_SEARCH: the port's test
+   through the readable tables, then tests/cm_tpi_search_cases.c: the
+   readable interpretive code word for word against the rope, the keys
+   against the faithful tables, then readable and faithful side by side
+   at every key, 4,096 states for each readable key (the search's times,
+   pericenters, velocities and angles, the vehicles' states, the scale
+   indexes mostly small, the flag words; at NEWOPS with LOC the key, a VAC
+   area as the work area, MPAC, MODE and the work area stirred), 16 for
+   each key no part has written yet.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

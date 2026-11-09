@@ -2171,6 +2171,14 @@ static const word TWO_REDOSAT[2] = KW_2REDOSAT; /* 2REDOSAT: 2CADR REDOSAT */
 static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
 #endif
 
+/* ---- TPI_SEARCH (the CM's) ---- */
+#define S17_1   ((word)K_S17_1) /* S17.1 (bank 36) */
+#define S17_2   ((word)K_S17_2) /* S17.2 */
+#define BIS     ((word)K_BIS)
+#define CONCAUL ((word)K_CONCAUL)
+#define ADVCSM  ((word)K_ADVCSM)
+#define JUNCT3  ((word)K_JUNCT3)
+
 /* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 1: the keys ---- */
 
 /* Its labels in bank 40 and fixed-fixed, both missions, and the routines
