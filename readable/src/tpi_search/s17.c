@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* TPI_SEARCH.agc of the CM, part 1 (Comanche055 pp. 551-556, bank 36):
- * S17.1, S17.2, BIS, CONCAUL, ADVCSM and JUNCT3.
+/* TPI_SEARCH.agc of the CM, parts 1 and 2 (Comanche055 pp. 551-558, bank
+ * 36): S17.1 and S17.2, the search, from S17.1 to NEXUS. TRANSANG, which
+ * the search calls (bank 07), is in transang.c.
  *
  * "BOTH ROUTINES ARE CALLED IN INTERPRETIVE CODE AND RETURN VIA QPRET"
  * (S17.1 through NORMEX, S17.2 through QTEMP, where each keeps its
@@ -322,5 +323,160 @@ static const word junct3_words[] = {
 };
 
 const struct interpretive_code JUNCT3_CODE = {036u, JUNCT3, COUNT(junct3_words), junct3_words};
+
+/* ---- JUNCT1 to NEXUS -- pp. 556-558 ---- */
+
+/* JUNCT1: the step in MPAC (CDSEC, or CLSEC from LRGRDVO) to DELTEE,
+ * complemented with KFLAG set ("OFF IS PLUS ON IS MINUS": BOFF +1 skips
+ * the DCOMP). JUNCT2: TF moved on by DELTEE, and the loop again at BIS
+ * ("RECYCLE"). */
+static const word junct1_words[] = {
+    /* JUNCT1 */ ORDERS(BOFF, DCOMP), /* "OFF IS PLUS ON IS MINUS" */
+    SWITCH(BOFF, KFLAG),
+    ADDRESS_AT(JUNCT1, 3), /* +1 */
+    STORE(DELTEE),
+    /* JUNCT2 */ ORDERS(DLOAD, DAD),
+    ADDRESS_PLUS_ONE(DELTEE),
+    ADDRESS_PLUS_ONE(TF),
+    STCALL(TF),
+    ADDRESS(BIS), /* "RECYCLE" */
+};
+
+const struct interpretive_code JUNCT1_CODE = {036u, JUNCT1, COUNT(junct1_words), junct1_words};
+
+/* INTERP: the last pericenter was unsafe and this one is safe: ITSWICH
+ * set (the next solution is taken as it is), and the step scaled to land
+ * DFTMOON ("500 FEET") above the least safe pericenter: DELTEE times
+ * (HPERMIN + DFTMOON - HP) over HP less HPO ("HP-HPO", from JUNCT3's two
+ * differences), each normalized (NORM, its shift in X1 and in X2) and the
+ * quotient shifted back by X2 less X1; then JUNCT2. */
+static const word interp_words[] = {
+    /* INTERP */ ORDERS(SET, DSU), /* "HP-HPO" */
+    SWITCH(SET, ITSWICH),
+    ORDERS(NORM, PDDL),
+    ADDRESS_PLUS_ONE(X1),
+    ADDRESS_PLUS_ONE(DFTMOON),
+    ORDERS(DAD, DSU),
+    ADDRESS_PLUS_ONE(HPERMIN),
+    ADDRESS_PLUS_ONE(HP),
+    ORDERS(NORM, SR1),
+    ADDRESS_PLUS_ONE(X2),
+    ORDERS(XSU_2, DDV),
+    ADDRESS(X1),
+    ORDERS(DMP, SR_STAR),
+    ADDRESS_PLUS_ONE(DELTEE),
+    SR_X2(-1),
+    STCALL(DELTEE),
+    ADDRESS(JUNCT2),
+};
+
+const struct interpretive_code INTERP_CODE = {036u, INTERP, COUNT(interp_words), interp_words};
+
+/* HALFSAFE: this pericenter is safe. HPERMIN less HP kept on the list
+ * ("SAVE HP-HPLIM FOR POSSIBLE"), and DELVEE less DELVEO too ("SAVE THIS
+ * TOO"): the total velocity changed by less than LIMVEL ("2 FT PS"), and
+ * the search is done (ENDEN). Else HPERMIN less HPO on the list: with the
+ * total velocity smaller than the last, LRGRDVO; with the last pericenter
+ * unsafe (HPERMIN less HPO positive), INTERP; else back half a step,
+ * DELTEE halved and complemented, at JUNCT2. */
+static const word halfsafe_words[] = {
+    /* HALFSAFE */ ORDERS(PDDL, DSU), /* "SAVE HP-HPLIM FOR POSSIBLE" */
+    ADDRESS_PLUS_ONE(DELVEE),
+    ADDRESS_PLUS_ONE(DELVEO), /* "SAVE THIS TOO" */
+    ORDERS(PUSH, ABS),
+    ORDERS(DSU, BMN),
+    ADDRESS_PLUS_ONE(LIMVEL), /* "2 FT PS" */
+    ADDRESS(ENDEN),
+    ORDERS(DLOAD, DSU),
+    ADDRESS_PLUS_ONE(HPERMIN),
+    ADDRESS_PLUS_ONE(HPO),
+    ORDER(PDDL),
+    ORDERS(BMN, DLOAD),
+    ADDRESS(LRGRDVO),
+    ORDERS(BPL, DLOAD),
+    ADDRESS(INTERP),
+    ADDRESS_PLUS_ONE(DELTEE),
+    ORDERS(SR1, DCOMP),
+    STCALL(DELTEE),
+    ADDRESS(JUNCT2),
+};
+
+const struct interpretive_code HALFSAFE_CODE = {036u, HALFSAFE, COUNT(halfsafe_words),
+                                                halfsafe_words};
+
+/* LRGRDVO: with the last pericenter safe too (HPERMIN less HPO, from the
+ * list, negative), on with the same step (JUNCT2); else a step of CLSEC
+ * from JUNCT1. */
+static const word lrgrdvo_words[] = {
+    /* LRGRDVO */ ORDER(DLOAD), ORDERS(BMN, DLOAD), ADDRESS(JUNCT2),
+    ADDRESS_PLUS_ONE(CLSEC),    ORDER(GOTO),        ADDRESS(JUNCT1),
+};
+
+const struct interpretive_code LRGRDVO_CODE = {036u, LRGRDVO, COUNT(lrgrdvo_words), lrgrdvo_words};
+
+/* RNGETEST, "TIME RAN OUT ASSUME SOLUTION IF SAVE PERICENTER": HP below
+ * HPERMIN, the alarm (ALARUMS); else TF one step back ("TIME OF
+ * SOLUTION"). ENDEN: RELDELV given the sign of the transfer's radial
+ * velocity at TPF ("SG2 WITH MAGNITUDE": VTPRIME, the velocity it arrives
+ * with, dotted with RPASS4; "NOW SIGN(RELDELV)=SIGN(SG2)"), and
+ * TRANSANG, the passive's "CENTRAL ANGLE" of travel through the transfer
+ * ("COMPUTE OMEGA T , CENTRAL ANGLE"). Then its radial velocity at TPI
+ * ("SG1", RACT3 dotted with VIPRIME), signed by RELDELV: positive, the
+ * two agree ("IF POSITIVE THEN SG1 = SG2 OTHERWISE",
+ * "SIGN(SG2-SG1)=SIGN(SG2)=SIGN(RELDELV)"), and USEKAY. Else -2 signed by
+ * RELDELV: positive (RELDELV negative), NEXUS with 2; else 2 on at USEKAY
+ * +4, less P21ONENN: 1. */
+static const word rngetest_words[] = {
+    /* RNGETEST */ ORDERS(DLOAD, DSU),
+    ADDRESS_PLUS_ONE(HP),
+    ADDRESS_PLUS_ONE(HPERMIN),
+    ORDERS(BMN, DLOAD),
+    ADDRESS(ALARUMS),
+    ADDRESS_PLUS_ONE(TF),
+    ORDER(DSU),
+    ADDRESS_PLUS_ONE(DELTEE),
+    STORE(TF), /* "TIME OF SOLUTION" */
+    /* ENDEN */ ORDER(VLOAD),
+    ADDRESS_PLUS_ONE(VTPRIME),
+    ORDERS(DOT, PDDL), /* "SG2 WITH MAGNITUDE" */
+    ADDRESS_PLUS_ONE(RPASS4),
+    ADDRESS_PLUS_ONE(RELDELV),
+    ORDERS(SIGN, STADR), /* "NOW SIGN(RELDELV)=SIGN(SG2)" */
+    AFTER_STADR(STCALL(RELDELV)),
+    ADDRESS(TRANSANG), /* "COMPUTE OMEGA T , CENTRAL ANGLE" */
+    ORDERS(VLOAD, DOT),
+    ADDRESS_PLUS_ONE(RACT3),
+    ADDRESS_PLUS_ONE(VIPRIME), /* "SG1" */
+    ORDERS(SIGN, BPL),         /* "IF POSITIVE THEN SG1 = SG2 OTHERWISE" */
+    ADDRESS_PLUS_ONE(RELDELV),
+    ADDRESS(USEKAY), /* "SIGN(SG2-SG1)=SIGN(SG2)=SIGN(RELDELV)" */
+    ORDERS(SLOAD, DCOMP),
+    ADDRESS_PLUS_ONE(DECTWO),
+    ORDERS(SIGN, BPL),
+    ADDRESS_PLUS_ONE(RELDELV),
+    ADDRESS(NEXUS),
+    ORDERS(DCOMP, GOTO),
+    ADDRESS_AT(USEKAY, 4),
+};
+
+const struct interpretive_code RNGETEST_CODE = {036u, RNGETEST, COUNT(rngetest_words),
+                                                rngetest_words};
+
+/* USEKAY: 2, and with KFLAG clear 1 (2 less P21ONENN). NEXUS: that to
+ * NN1 (noun 55's R1), HP to POSTTPI, and S17.2 returns through QTEMP. */
+static const word usekay_words[] = {
+    /* USEKAY */ ORDERS(SLOAD, BON),
+    ADDRESS_PLUS_ONE(DECTWO),
+    SWITCH(BON, KFLAG),
+    ADDRESS(NEXUS),
+    ORDER(DSU),
+    ADDRESS_PLUS_ONE(P21ONENN),
+    /* NEXUS */ STODL(NN1),
+    ADDRESS_PLUS_ONE(HP),
+    STCALL(POSTTPI),
+    ADDRESS(QTEMP),
+};
+
+const struct interpretive_code USEKAY_CODE = {036u, USEKAY, COUNT(usekay_words), usekay_words};
 
 #endif

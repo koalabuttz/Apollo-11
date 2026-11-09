@@ -266,6 +266,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | P11 of the CM, part 2: the order pairs of bank 34 | `P11.agc` (CM pp. 537-547) | [`src/p11/`](src/p11/) | The interpretive code of bank 34, in the listing's notation. In `p11.c`: at REP11A, the earth rate compensation (ERCOMP from THETAN) and EARTHR, back to P11OUT; in MATRXJOB the pad's position (LALOTORV) and the down direction (GETDOWN), and from them and the launch azimuth the REFSMMAT, VN1 and SATRLRT's sign; VHHDOT's CALL of S11.1. In `aterjob.c`: ATTDISP's pitch on to bank 37, ATTDISP2's attitude errors in body axes into AK, AK1 and AK2, STEERSAT's bias taken off, S11.1 (V1, HDOT and H), and NOPOLY on to NOPOLYM. Bank 37's order pairs are still the faithful port's |
 | P11 of the CM, part 3: the order pairs of bank 37 | `P11.agc` (CM pp. 543-544) | [`src/p11/`](src/p11/) | ATTDISP1 to NOPOLYM in `aterjob.c`, in the listing's notation: the SM to spacecraft matrix TSMV from the pitch and the roll (RTB RLTST: is the rollout over?), its half unit vectors XDC, YDC and ZDC for CALCGTA, which gives the desired gimbal angles; NOPOLYM, where attitude hold enters too, takes the desired angles less the CDUs (V1STO2S, RTB DELSTOR) on to ATTDISP2. With it the file is whole: every key of the faithful tables runs readable code |
 | TPI_SEARCH of the CM, part 1: the search sector and the search loop | `TPI_SEARCH.agc` (CM pp. 551-556) | [`src/tpi_search/`](src/tpi_search/) | The TPI search of P17 and P77 (bank 36), in the listing's notation, in `s17.c`. S17.1 brings both vehicles to the TPI time (LEMCONIC, CSMCONIC), finds the altitude difference (KFLAG its sign) and the phase angle THETZERO between them; S17.2 bounds the search sector and turns its angles into the start and end times (TIMETHET). BIS ends the search at its end time (RNGETEST), CONCAUL and ADVCSM bring the passive vehicle to the transfer's end, and JUNCT3 solves the transfer (INITVEL) for the total delta V and the pericenter (PERIAPO), tests it against the safe pericenter (HPERMIN) and goes on to the step (JUNCT1), the interpolation (INTERP), HALFSAFE or the alarm (ALARUMS). The other keys are still the faithful port's |
+| TPI_SEARCH of the CM, part 2: the step, the end of the search and TRANSANG | `TPI_SEARCH.agc` (CM pp. 556-559) | [`src/tpi_search/`](src/tpi_search/) | The rest of the search loop in `s17.c` (bank 36): JUNCT1 and JUNCT2 step the transfer time TF (CDSEC or CLSEC, signed by KFLAG) and go round again at BIS; INTERP, once the pericenter turns safe, scales the step to land 500 feet above the least safe one; HALFSAFE ends the search when the total delta V changes by less than 2 ft/s (ENDEN), else steps on (LRGRDVO), interpolates or steps back half; RNGETEST takes the last solution when time runs out with a safe pericenter, else the alarm; ENDEN and USEKAY set the sign of the TPF impulse, NN1 and POSTTPI, and return through QTEMP. In `transang.c` (bank 07), TRANSANG, the passive vehicle's central angle of travel during the transfer (CENTANG, in revolutions). The basic code is still the faithful port's |
 
 Beside them:
 
@@ -975,8 +976,9 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    readable interpretive code word for word against the rope, the keys
    against the faithful tables, then readable and faithful side by side
    at every key, 4,096 states for each readable key (the search's times,
-   pericenters, velocities and angles, the vehicles' states, the scale
-   indexes mostly small, the flag words; at NEWOPS with LOC the key, a VAC
+   pericenters, velocities and angles, the vehicles' states, X1 mostly
+   MUTABLE's index for the Earth or the Moon, the flag words; at NEWOPS
+   with LOC the key, a VAC
    area as the work area, MPAC, MODE and the work area stirred), 16 for
    each key no part has written yet.
    `make pinball-cases` runs the faithful port's Pinball tests with the

@@ -5610,6 +5610,9 @@
 #define I_AK 003361u
 #define I_E2 003702u
 #define I_TFI 003453u
+#define I_DELTEE 003611u
+#define I_D1_32 011042u
+#define I_DECTWO 071641u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u

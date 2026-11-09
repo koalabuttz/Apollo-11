@@ -10,13 +10,14 @@
  * First the words: the readable interpretive code (src/tpi_search/),
  * written in the listing's notation, must be the original program's rope,
  * word for word. Then the keys, which must be the faithful tables', and
- * the ones the parts written so far cover must run readable code (part 1:
- * the order pairs of bank 36 from S17.1 to JUNCT3). Then the runs: each
+ * the ones the parts written so far cover must run readable code (parts 1
+ * and 2: the order pairs, those of bank 36 and TRANSANG's). Then the runs: each
  * readable key from 4,096 states (the others from 16), each one of the
  * port's frozen test states (c64-port/tests/cm_tpi_search_vectors.h)
  * entered at the key, most stirred further: the search's words (TTPI,
  * TF and its bounds, the pericenters HP, HPO and HPERMIN, the velocities
- * DELVEE and DELVEO, the angles, the scale indexes XRS), the vehicles'
+ * DELVEE and DELVEO, the angles, the scale indexes XRS), X1 (for
+ * both, mostly MUTABLE's index for the Earth or the Moon), the vehicles'
  * states, the flag words (KFLAG, AVFLAG, ITSWICH, RVSW), the work area
  * (FIXLOC, mostly a VAC area) and MPAC, A, L and Q, any erasable word,
  * EBANK (mostly E7, the file's), the latches, FB, or a state the routines
@@ -46,7 +47,9 @@ struct interpretive_code {
     unsigned count;
     const uint16_t *words;
 };
-extern const struct interpretive_code S17_1_CODE, S17_2_CODE, BIS_CODE, CONCAUL_CODE, JUNCT3_CODE;
+extern const struct interpretive_code S17_1_CODE, S17_2_CODE, BIS_CODE, CONCAUL_CODE, JUNCT3_CODE,
+    JUNCT1_CODE, INTERP_CODE, HALFSAFE_CODE, LRGRDVO_CODE, RNGETEST_CODE, USEKAY_CODE,
+    TRANSANG_CODE;
 extern const agc_routine_table cm_tpi_search_basic, cm_tpi_search_interpretive;
 extern const agc_routine_table faithful_cm_tpi_search_basic, faithful_cm_tpi_search_interpretive;
 bool cm_tpi_search_readable(uint16_t key, bool order_pair);
@@ -66,9 +69,8 @@ bool cm_tpi_search_readable(uint16_t key, bool order_pair);
 #define PUSHLOC_AT  0166u
 #define X1_OFF      0046u
 
-/* Part 1: the order pairs of bank 36 up to JUNCT1. */
-#define PART1_PAIRS 104u
-#define JUNCT1_AT   02333u
+/* Parts 1 and 2: the order pairs of bank 36 and bank 07 (TRANSANG). */
+#define WRITTEN_PAIRS 165u
 
 #define CASES       4096u
 #define OTHER_CASES 16u
@@ -180,6 +182,15 @@ static void pair_state(uint16_t *w, uint16_t key, unsigned n)
     }
 }
 
+/* An index into MUTABLE: mostly the Earth's (-2) or the Moon's (-10D),
+ * now and then a small one. */
+static uint16_t mutable_index(void)
+{
+    unsigned k = pick(8u);
+
+    return k < 3u ? 077775u : k < 6u ? 077765u : (uint16_t)pick(13u);
+}
+
 /* The search's words: each name's place and its length in words. */
 static const struct {
     uint16_t at, length;
@@ -219,8 +230,10 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, bool 
             if (pick(2u))
                 for (k = 0; k < search_words[i].length; ++k)
                     w[search_words[i].at + k] = value_word();
-        /* The scale indexes (small, now and then any). */
-        w[I_XRS] = pick(8u) ? (uint16_t)pick(13u) : value_word();
+        /* The scale indexes: X1 mostly MUTABLE's index, the Earth's -2 or
+         * the Moon's -10D, as the conic routines leave it; X2 small; now
+         * and then any. */
+        w[I_XRS] = pick(8u) ? mutable_index() : value_word();
         w[I_XRS + 1u] = pick(8u) ? (uint16_t)pick(13u) : value_word();
         /* The flag words: KFLAG (FLAGWRD0), AVFLAG (FLAGWRD2), ITSWICH
          * and RVSW (FLAGWRD7). */
@@ -252,6 +265,7 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, bool 
     if (n % 4u != 0u && pick(64u) == 0u) w[3u + pick(03775u)] |= 0100000u;
     if (interpretive) {
         pair_state(w, key, n);
+        if (pick(2u)) w[w[FIXLOC_AT] + X1_OFF] = mutable_index();
         w[BANKSET_AT] = pick(32u) ? w[6] : any_word();
     }
 }
@@ -324,13 +338,26 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 
 static const struct interpretive_code *const codes[] = {
     /* Part 1: bank 36 */
-    &S17_1_CODE, &S17_2_CODE, &BIS_CODE, &CONCAUL_CODE, &JUNCT3_CODE,
+    &S17_1_CODE,
+    &S17_2_CODE,
+    &BIS_CODE,
+    &CONCAUL_CODE,
+    &JUNCT3_CODE,
+    /* Part 2: bank 36 */
+    &JUNCT1_CODE,
+    &INTERP_CODE,
+    &HALFSAFE_CODE,
+    &LRGRDVO_CODE,
+    &RNGETEST_CODE,
+    &USEKAY_CODE,
+    /* Part 2: bank 07 */
+    &TRANSANG_CODE,
 };
 
-/* Whether part 1 covers an order pair. */
-static bool in_part1(uint16_t key)
+/* Whether the parts written so far cover an order pair. */
+static bool written(uint16_t key)
 {
-    return key / 1024u == 036u && 02000u + key % 1024u < JUNCT1_AT;
+    return key / 1024u == 036u || key / 1024u == 07u;
 }
 
 int main(int argc, char **argv)
@@ -357,15 +384,15 @@ int main(int argc, char **argv)
         }
     for (i = 0; i < faithful_cm_tpi_search_interpretive.count; ++i) {
         uint16_t key = faithful_cm_tpi_search_interpretive.entries[i].physical;
-        if (cm_tpi_search_readable(key, true) != in_part1(key)) {
+        if (cm_tpi_search_readable(key, true) != written(key)) {
             printf("FAIL: order pair %02o,%04o %s\n", key / 1024u, 02000u + key % 1024u,
-                   in_part1(key) ? "not readable" : "readable before its part");
+                   written(key) ? "not readable" : "readable before its part");
             ++failures;
         }
-        pairs += in_part1(key);
+        pairs += written(key);
     }
-    if (pairs != PART1_PAIRS) {
-        printf("FAIL: %u order pairs in part 1, not %u\n", pairs, PART1_PAIRS);
+    if (pairs != WRITTEN_PAIRS) {
+        printf("FAIL: %u order pairs in parts 1 and 2, not %u\n", pairs, WRITTEN_PAIRS);
         ++failures;
     }
     if (failures) {
