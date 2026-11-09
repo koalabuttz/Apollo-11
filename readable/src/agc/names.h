@@ -5203,6 +5203,11 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define ERASWAK2 ((word)K_ERASWAK2)
 #define STALTEM  ERASABLE(K_STALTEM)
 #endif
+/* MIDTOAV1 and MIDTOAV2: the caller's return (IRETURN1), and the labels
+ * the basic code is at. */
+#define IRETURN1 ERASABLE(K_IRETURN1)
+#define CKMID2   ((word)K_CKMID2)
+#define NOTIME   ((word)K_NOTIME)
 #define MOVEACSM ((word)K_MOVEACSM)
 #define MOVEPCSM ((word)K_MOVEPCSM)
 #define MOVEALEM ((word)K_MOVEALEM)
