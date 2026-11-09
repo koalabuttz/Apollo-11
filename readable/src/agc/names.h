@@ -2204,7 +2204,8 @@ static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
  * ROLLC, FLAGWRD2, PIPTIME, BETA/180, SW/NDX (SW_NDX), T5LOC, T6LOC;
  * COSM, SINO, SINOCOSM, COSO, COSOCOSM, SINM, the rates PREL, QREL and
  * RREL, CM/SAVE (CM_SAVE), CALFA, SALFA, PHIDOT, BETADOT, BETACOM, AK1,
- * QAXERR, ROLLTM, RAXERR, JETEM2. */
+ * QAXERR, ROLLTM, RAXERR, JETEM2; JNDX, JNDX1, -VT/180 (MVT_180), LCX/360,
+ * -VT/180E, VSQ/4API, XD/360, VDT/180, TON1, TON2, TUSED, ERRORZ. */
 #define READGYMB    ((word)K_READGYMB)
 #define READGYM1    ((word)K_READGYM1)
 #define DOBRATE_Q   ((word)K_DOBRATE_Q) /* DOBRATE? */
@@ -2229,6 +2230,25 @@ static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
 #define EXDAP3      ((word)K_EXDAP3)
 #define EXDAP1      ((word)K_EXDAP1)
 #define EXDAP2      ((word)K_EXDAP2)
+#define GETLCX      ((word)K_GETLCX)
+#define TRTAGXPI    ((word)K_TRTAGXPI)
+#define COMPAT      ((word)K_COMPAT)
+#define WHICHALF    ((word)K_WHICHALF)
+#define REFLECT     ((word)K_REFLECT)
+#define DZ1         ((word)K_DZ1)
+#define DZ2         ((word)K_DZ2)
+#define MAXVTEST    ((word)K_MAXVTEST)
+#define MAXVTIM1    ((word)K_MAXVTIM1)
+#define GETON1      ((word)K_GETON1)
+#define OVRLINE     ((word)K_OVRLINE)
+#define MAXVTIM2    ((word)K_MAXVTIM2)
+#define OVRLINE1    ((word)K_OVRLINE1)
+#define OVRLINE2    ((word)K_OVRLINE2)
+#define GETON2      ((word)K_GETON2)
+#define GETOFF      ((word)K_GETOFF)
+#define DZCALL      ((word)K_DZCALL)
+#define DZCALL1     ((word)K_DZCALL1)
+#define HALFPR      ((word)K_HALFPR) /* EQUALS NEG1/2 +1 */
 #define EXDAPIN     ((word)K_EXDAPIN)
 #define THREE_DDZ   ((word)K_3DDZ) /* 3DDZ */
 #define BIASEDZ     ((word)K_BIASEDZ)
@@ -2252,6 +2272,16 @@ static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
 #define YDOTLIM     ((word)KW_YDOTLIM) /* DEC 16366 */
 #define NSEC        ((word)KW_NSEC)    /* DEC 2100, 21 s */
 #define C45LIM      ((word)KW_C45LIM)  /* DEC .29289, 1.0-COS(45) */
+#define TWO_T_TCDU  ((word)KW_2T_TCDU)  /* 2T/TCDU = OCT50 */
+#define ONE_16A1    ((word)KW_1_16A1)   /* 1/16A1 = 180/8ATT */
+#define K180_8ATT   ((word)KW_180_8ATT) /* 180/8ATT: DEC .61813187 */
+#define BUFLIM      ((word)KW_BUFLIM)   /* = XS/360 */
+#define VSQMIN      ((word)KW_VSQMIN)   /* DEC .61050061 E-3 */
+#define XMIN_360    ((word)KW_XMIN_360) /* XMIN/360: DEC 182 */
+#define XS_360      ((word)KW_XS_360)   /* XS/360: DEC 91 */
+#define MVM_360K    ((word)KW_MVM_360K) /* -VM/360K: DEC -.22222222 */
+#define KTRCS       ((word)KW_KTRCS)    /* = HALF */
+#define MVMT_180    ((word)KW_MVMT_180) /* -VMT/180 = -VM/360K */
 
 /* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 1: the keys ---- */
 

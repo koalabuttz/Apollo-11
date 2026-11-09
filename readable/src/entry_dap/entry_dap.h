@@ -17,7 +17,7 @@
  * the binding (src/binding/cm_entry_dap_routines.c) goes on at a key of
  * the same part of the faithful port's, as its run does.
  *
- * Written in five parts (README.md):
+ * Written in six parts (README.md):
  *   A: readgymb.c, READGYMB to ANGOVCOR and FLUSHJET (pp. 1063-1065, bank
  *     15 and fixed-fixed); dapon.c, CM/DAPON and CM/DAPIC (pp. 1066-1069,
  *     bank 20).
@@ -29,7 +29,9 @@
  *     15.
  *   D: exdap.c, the extra atmospheric DAP, EXDAP to EXDAP2 (pp.
  *     1077-1079), bank 15.
- *   E: SETJTAG to CM/END (pp. 1079-1092, bank 15).
+ *   E: cm_rcs.c, SETJTAG and CM/RCS to OVRLINE1 (pp. 1081-1085), bank
+ *     15.
+ *   F: GETOFF to CM/END (pp. 1085-1092, bank 15).
  * The binding runs the faithful port's routines for the keys no part has
  * written yet. */
 #ifndef READABLE_ENTRY_DAP_H
@@ -113,6 +115,7 @@ void biasedz_after_3ddz(void); /* BIASEDZ +010 */
 void two_d_sdz(void);          /* 2D/SDZ (no key: only called) */
 void jet_code(word table);     /* INDEX A; CAF table */
 void index_a_ca(word base);    /* INDEX A; CA base */
+void index_a_cs(word base);    /* INDEX A; CS base */
 
 /* ---- Part D: exdap.c (bank 15) ---- */
 void exdap(void);                /* EXDAP */
@@ -134,6 +137,29 @@ void exdap2_betadot(void);       /* EXDAP2 +022 */
 void exdap2_after_biasedz(void); /* EXDAP2 +024 */
 void exdap2_cs_l(void);          /* EXDAP2 +041 */
 void nsec_constant(void);        /* EXDAP2 +043, NSEC */
+
+/* ---- Part E: cm_rcs.c (bank 15) ---- */
+void setjtag(void);            /* SETJTAG */
+void setjtag_taskover(void);   /* SETJTAG +6 */
+void cm_rcs(void);             /* CM/RCS */
+void cm_rcs_vt_positive(void); /* GETLCX +012 */
+void cm_rcs_vt_plus0(void);    /* GETLCX +013 */
+void cm_rcs_vt_negative(void); /* GETLCX +014 */
+void cm_rcs_shortest(void);    /* GETLCX +015 */
+void cm_rcs_cs_pos1_2(void);   /* GETLCX +027 */
+void cm_rcs_ad_lcx(void);      /* GETLCX +030 */
+void compat(void);             /* COMPAT */
+void compat_tc(void);          /* COMPAT +6 */
+void compat_ca(void);          /* COMPAT +7 */
+void reflect(void);            /* REFLECT */
+void reflect_ts(void);         /* REFLECT +1 */
+void reflect_ts_sr(void);      /* REFLECT +2 */
+void reflect_jndx(void);       /* REFLECT +5 */
+void dz1(void);                /* DZ1 */
+void maxvtest_ad(void);        /* MAXVTEST +3 */
+void maxvtim1(void);           /* MAXVTIM1 */
+void ovrline(void);            /* OVRLINE */
+void ovrline1(void);           /* OVRLINE1 */
 
 #endif
 
