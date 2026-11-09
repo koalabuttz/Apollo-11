@@ -5608,6 +5608,8 @@
 #define I_THETAN 002452u
 #define I_INCORPEX 003674u
 #define I_AK 003361u
+#define I_E2 003702u
+#define I_TFI 003453u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u
