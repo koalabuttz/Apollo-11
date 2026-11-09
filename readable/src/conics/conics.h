@@ -22,7 +22,10 @@
  *     pp. 1277-1282), DELTIME (deltime.c: LM pp. 1180-1181, CM pp.
  *     1283-1284) and CHECKCTR (checkctr.c: LM p. 1183, CM p. 1286);
  *   part 2: ITERATOR (iterator.c: LM pp. 1182-1183, CM pp. 1285-1286) and
- *     NEWSTATE with LAMENTER (newstate.c: LM p. 1184, CM p. 1287).
+ *     NEWSTATE with LAMENTER (newstate.c: LM p. 1184, CM p. 1287);
+ *   part 3: TIME-THETA (timethet.c: LM p. 1186, CM p. 1289), PARAM and
+ *     GEOM (param.c: LM pp. 1186-1188, CM pp. 1289-1291) and GETX (getx.c:
+ *     LM pp. 1189-1192, CM pp. 1292-1295).
  * The binding (src/binding/conics_routines.c) runs the faithful port's
  * routines at the keys no part has written yet. */
 #ifndef READABLE_CONICS_H
@@ -51,11 +54,19 @@ extern const struct interpretive_code KEPLER_CODE, DELTIME_CODE, DELTIME_S_CODE,
 /* Part 2: ITERATOR, and NEWSTATE with LAMENTER. */
 extern const struct interpretive_code ITERATOR_CODE, NEWSTATE_CODE;
 
+/* Part 3: TIME-THETA, PARAM with GEOM (in bank 4), and GETX's two
+ * stretches (to its EXIT, and after its POLY). */
+extern const struct interpretive_code TIMETHET_CODE, PARAM_CODE, GETX_CODE, GETX_SERIES_CODE;
+
 /* DELTIME's basic code: the two series by POLY. */
 void deltime_after_exit(void);        /* DELTIME +1: TC POLY, S(XI)'s series */
 void deltime_after_poly(void);        /* DELTIME +027: TC INTPRET */
 void deltime_after_second_exit(void); /* DELTIME +033: TC POLY, C(XI)'s series */
 void deltime_after_second_poly(void); /* DELTIME +061: TC INTPRET */
+
+/* GETX's basic code: its series by POLY. */
+void getx_after_exit(void); /* POLYCOEF +010: TC POLY */
+void getx_after_poly(void); /* POLYCOEF +030: TC INTPRET */
 
 /* CHECKCTR: ITERCTR counted down, to MPAC, then DANZIG. KEPLER and
  * ITERATOR reach it by RTB. */

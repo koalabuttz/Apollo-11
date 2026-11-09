@@ -51,9 +51,10 @@ struct interpretive_code {
     const uint16_t *words;
 };
 extern const struct interpretive_code KEPLER_CODE, DELTIME_CODE, DELTIME_S_CODE, DELTIME_C_CODE,
-    ITERATOR_CODE, NEWSTATE_CODE;
+    ITERATOR_CODE, NEWSTATE_CODE, TIMETHET_CODE, PARAM_CODE, GETX_CODE, GETX_SERIES_CODE;
 static const struct interpretive_code *const codes[] = {
-    &KEPLER_CODE, &DELTIME_CODE, &DELTIME_S_CODE, &DELTIME_C_CODE, &ITERATOR_CODE, &NEWSTATE_CODE};
+    &KEPLER_CODE,   &DELTIME_CODE,  &DELTIME_S_CODE, &DELTIME_C_CODE, &ITERATOR_CODE,
+    &NEWSTATE_CODE, &TIMETHET_CODE, &PARAM_CODE,     &GETX_CODE,      &GETX_SERIES_CODE};
 bool conics_readable(uint16_t key, bool order_pair);
 #if LUMINARY099
 extern const agc_routine_table lm_conic_compiled_basic, lm_conic_compiled_interpretive;
@@ -94,19 +95,23 @@ typedef cm_native_io mission_io;
 #define NEWOPS_AT         06070u
 #define KEPRTN_AT         02112u                          /* in E4 */
 #define VLOAD_MUTABLE_KEY (012u * 1024u + 02026u % 1024u) /* KEPLERN +3 */
+#define STOVL_MUTABLE_KEY (04u * 1024u + 03101u % 1024u)  /* PARAM +15 */
 #else
 #define NEWOPS_AT         06037u
 #define KEPRTN_AT         02270u
 #define VLOAD_MUTABLE_KEY (012u * 1024u + 02045u % 1024u) /* KEPLERN +3 */
+#define STOVL_MUTABLE_KEY (04u * 1024u + 03654u % 1024u)  /* PARAM +15 */
 /* DANZIG, where an RTB's routine ends; and the keys a pair's right-hand
  * order waits at in EDOP (its code plus one) while the RTB on its left
- * runs: KEPLER's RTB BHIZ CHECKCTR and DELTIME's two RTB PDDL TPMODEs. */
+ * runs: KEPLER's RTB BHIZ CHECKCTR, DELTIME's two RTB PDDL TPMODEs and
+ * GETX's at 1/WLOOP. */
 #define DANZIG_AT         06030u
 static const struct {
     uint16_t key, edop;
 } pending[] = {{012u * 1024u + 02306u % 1024u, 0147u},
                {012u * 1024u + 02524u % 1024u, 0052u},
-               {012u * 1024u + 02533u % 1024u, 0052u}};
+               {012u * 1024u + 02533u % 1024u, 0052u},
+               {012u * 1024u + 03165u % 1024u, 0052u}};
 #endif
 /* The index registers and the returns, in the work area: X1, X2, S1, S2
  * and QPRET. */
@@ -294,10 +299,10 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
                                                     : (uint16_t)(077777u - rnd() % 16u);
     w[(fixloc + X2_OFFSET) & 03777u] =
         rnd() % 2u ? (uint16_t)(rnd() % 19u) : (uint16_t)(077777u - rnd() % 16u);
-    /* At KEPLER's VLOAD* MUTABLE,1, only the earth's or the moon's: the
-     * faithful port keeps MUTABLE's 14 words alone, and refuses any other
-     * index. */
-    if (interpretive && key == VLOAD_MUTABLE_KEY)
+    /* At KEPLER's VLOAD* MUTABLE,1 and PARAM's STOVL* COGA (MUTABLE,1),
+     * only the earth's or the moon's: the faithful port keeps MUTABLE's
+     * 14 words alone, and refuses any other index. */
+    if (interpretive && (key == VLOAD_MUTABLE_KEY || key == STOVL_MUTABLE_KEY))
         w[(fixloc + X1_OFFSET) & 03777u] = rnd() % 2u ? 077775u : 077765u;
     /* The push-down list in the work area, below X1 and X2. */
     if (w[PUSHLOC_AT] < fixloc || w[PUSHLOC_AT] > fixloc + 037u || n % 4u != 0u)
