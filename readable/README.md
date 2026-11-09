@@ -288,6 +288,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Integration initialization, part 2: the entries, A-PCHK, RECTOUT and TESTLOOP | `INTEGRATION_INITIALIZATION.agc` (LM pp. 1213-1219, CM pp. 1317-1324) | [`src/integration_init/`](src/integration_init/) | The entries to orbital integration, in `integrv.c`: CSMPREC and LEMPREC (precision integration by Encke's method), CSMCONIC and LEMCONIC (Kepler's method) take the integration (INTSTALL) and set the flags for their vehicle and kind; INTEGRVS integrates a state vector already in RCV and VCV; INTEGRV lets the caller set the flags, and brings in the vehicle's permanent vector (PTOACSM or PTOALEM, back at ALOADED, which picks the conic or the loop; the CM keeps ALOADED in bank 11). TESTLOOP, in `testloop.c`, picks each time step of the precision integration: a fraction of the orbit's period from the distance to the central body, truncated to a multiple of 128 centiseconds and at most DT/2MAX (SGNAGREE and SIGNMPAC by RTB), and goes on at TIMESTEP until less than DT/2MIN is left; RVCON is the conic's single step. At the end, in `rectout.c`, A-PCHK (the CM first checks for a change of origin, CHKSWTCH) keeps the result as the permanent vector when STATEFLG asks, under a restart phase (PHASCHNG, REINTFLG, ATOPCSM or ATOPLEM); RECTOUT gives the caller the state on the push-down list, and INTEXIT clears the flags. The other keys are still the faithful port's |
 | Integration initialization, part 3: INTSTALL and INTWAKE | `INTEGRATION_INITIALIZATION.agc` (LM pp. 1217, 1219-1220, CM pp. 1321, 1324-1326) | [`src/integration_init/`](src/integration_init/) | Orbital integration has one set of erasables, so one job at a time may use it. INTSTALL, in `intstall.c`, takes it: with the stall area's RASFLAG bits clear (INTBITAB), the job sets INTFLBIT and goes back to its caller (OKTOGRAB, GOBAC); otherwise it sleeps (JOBSLEEP) on WAKESTAL until the job before it is done. INTWAKE, run from INTEXIT's basic code, gives it back: with REINTFLG set the caller's return is kept in TBASE2 across a phase change of restart group 2; then every job asleep on WAKESTAL is woken (JOBWAKE, until LOCCTR says none was found) and the bits cleared. The CM has three stall areas (INTSTALL and INTWAKE, ERASTAL1 and ERASWAK1, ERASTAL2 and ERASWAK2), INDEX by L or STALTEM picking each one's words. The other keys are still the faithful port's |
 | Integration initialization, part 4: AVETOMID and MIDTOAV | `INTEGRATION_INITIALIZATION.agc` (LM pp. 1221-1225, CM pp. 1327-1331) | [`src/integration_init/`](src/integration_init/) | The two ends of a burn. AVETOMID, in `avetomid.c`, is the way out of one: the state vector AVERAGEG kept (RN, VN, PIPTIME) becomes this vehicle's permanent one (MINIRECT, MOVATHIS), after the W-matrix, if it is valid, has been integrated through the burn (INT/W), and the other vehicle is brought to PIPTIME too (the LM's code does it first, OTHERS; the CM's last, unless the LM is on the surface; the CM's AVETOMID is in bank 35). MIDTOAV1 and MIDTOAV2, in `midtoav.c`, are the way in: this vehicle's state vector integrated to TDEC1 or to the present plus TIMEDELT, with CKMID2 checking the clock after every time step (TESTLOOP); too late for TDEC1, NOTIME sets alarm 1703, gives the caller its error return and integrates to the present. The result goes to RN1, VN1 and PIPTIME1, and to the caller in basic code (TPAGREE, BANKJUMP). The CM's MID2 also keeps 5.6SECS for its caller (T-TO-ADD). The other keys are still the faithful port's |
+| Integration initialization, part 5: INTWAKEU and GRP2PC | `INTEGRATION_INITIALIZATION.agc` (LM pp. 1225-1226, CM pp. 1332-1333) | [`src/integration_init/`](src/integration_init/) | The end of an uplinked state vector update (P27), in `intwakeu.c`, in UPDATE2 (bank 4 in the LM, 27 in the CM): the vector in RRECT and VRECT becomes the CSM's or the LM's permanent one (UPSVFLAG's sign; ATOPCSM or ATOPLEM), in the earth's sphere or the moon's (UPMNSVCD), and the W-matrix it belonged with is marked not valid (ORBWFLAG or RENDWFLG). Then UPSVFLAG is cleared, the integration given back (INTWAKE0), and the caller's return, kept in INTWAKUQ, runs as an instruction after a phase change of restart group 2. GRP2PC makes that phase change for interpretive code. With this part the file is whole: the binding no longer hands any key to the faithful tables |
 
 Beside them:
 
@@ -1059,13 +1060,14 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    `make integration-init-cases` runs INTEGRATION_INITIALIZATION, both
    missions, written part by part, the same way
    (tests/integration_init_cases.c): the words of each part against the
-   rope, the keys, then readable and faithful side by side at every key a
-   part has written, 2,048 states for each key (MPAC and the push-down
-   list, the work area with the index registers as the program sets them
-   and the returns, the words of E3, E4, E5 and E7 (the state vectors,
-   DIFEQCNT, the times), the flag words, EDOP, the E-bank, NEWJOB, the
-   latches; at the CM's keys after an RTB, Z at DANZIG with the order in
-   EDOP), with LOADTIME and the moves after the LM's RTBs.
+   rope, the keys, then readable and faithful side by side at every key,
+   2,048 states for each key (MPAC and the push-down list, the work area
+   with the index registers as the program sets them and the returns, the
+   words of E3, E4, E5 and E7 (the state vectors, DIFEQCNT, the times),
+   the flag words, EDOP, the E-bank, NEWJOB, the latches; at the CM's keys
+   after an RTB, Z at DANZIG with the order in EDOP), with LOADTIME,
+   SGNAGREE, SIGNMPAC and the moves after the LM's RTBs; every key must
+   run readable code.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

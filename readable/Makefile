@@ -3235,15 +3235,15 @@ conics-cases: $(BUILD)/con-oracle-lm $(BUILD)/con-oracle-cm $(BUILD)/con-cases-l
 	./$(BUILD)/con-cases-cm $(ROPES)
 
 # INTEGRATION_INITIALIZATION.agc, both missions' way into orbital
-# integration (written part by part): the port's tests
+# integration: the port's tests
 # (tests/test_lm_integration_init.c and test_cm_integration_init.c, their
 # frozen cases run to their stops through the programs of
 # tests/lm_integration_init_target.c and cm_integration_init_target.c,
 # against the original programs' yaAGC digests) through the readable
 # tables, with tests/with_ropes.c loading the ropes the readable
 # interpreter reads; then tests/integration_init_cases.c side by side, for
-# each mission, with the faithful routines (renamed faithful_), which run
-# the keys no part has written yet. The faithful routines run LOADTIME,
+# each mission, with the faithful routines (renamed faithful_), every key
+# of both tables readable. The faithful routines run LOADTIME,
 # SGNAGREE and SIGNMPAC (rtb_angles.c, rtb_agreement.c) and the moves
 # (lm_integration_moves.c) from their RTBs.
 II_NAMES_LM := lm_integration_init_basic lm_integration_init_interpretive

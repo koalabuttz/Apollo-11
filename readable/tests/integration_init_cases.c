@@ -8,10 +8,10 @@
  * (the Makefile renames them).
  *
  * First the words: the readable interpretive code (src/integration_init/),
- * written in the listing's notation, part by part, must be the original
- * program's rope, word for word. Then the keys, which must be the faithful
- * tables'. Then the runs: each key a part has written (the others run the
- * faithful routines on both sides) from 2,048 states, each one of the
+ * written in the listing's notation, must be the original program's
+ * rope, word for word. Then the keys, which must be the faithful tables',
+ * each with a readable routine. Then the runs: each key from 2,048
+ * states, each one of the
  * port's frozen test states of the mission
  * (c64-port/tests/lm_integration_init_vectors.h and
  * cm_integration_init_vectors.h) entered at the key, most stirred further:
@@ -53,18 +53,19 @@ struct interpretive_code {
 extern const struct interpretive_code STATINT1_CODE, SETIFLGS_CODE, ATOPCSM_CODE, PTOACSM_CODE,
     ATOPLEM_CODE, PTOALEM_CODE, USEPIOS_CODE, INTEGRV_CODE, ALOADED_CODE, A_PCHK_CODE, PHEXIT_CODE,
     TESTLOOP_CODE, INTSTALL_CODE, INTWAKE0_CODE, GOBAC_RVQ_CODE, AVETOMID_CODE, MIDTOAV_CODE,
-    CKMID2_CODE, NOTIME_RVQ_CODE;
+    CKMID2_CODE, NOTIME_RVQ_CODE, INTWAKEU_CODE, GRP2PC_CODE, GRP2PC_GOTO_CODE;
 #if COMANCHE055
 extern const struct interpretive_code ERASTAL1_CODE, ERASTAL2_CODE;
 #endif
 static const struct interpretive_code *const codes[] = {
-    &STATINT1_CODE, &SETIFLGS_CODE, &ATOPCSM_CODE,  &PTOACSM_CODE,    &ATOPLEM_CODE,
-    &PTOALEM_CODE,  &USEPIOS_CODE,  &INTEGRV_CODE,  &ALOADED_CODE,    &A_PCHK_CODE,
-    &PHEXIT_CODE,   &TESTLOOP_CODE, &INTSTALL_CODE, &INTWAKE0_CODE,   &GOBAC_RVQ_CODE,
+    &STATINT1_CODE, &SETIFLGS_CODE,    &ATOPCSM_CODE,  &PTOACSM_CODE,    &ATOPLEM_CODE,
+    &PTOALEM_CODE,  &USEPIOS_CODE,     &INTEGRV_CODE,  &ALOADED_CODE,    &A_PCHK_CODE,
+    &PHEXIT_CODE,   &TESTLOOP_CODE,    &INTSTALL_CODE, &INTWAKE0_CODE,   &GOBAC_RVQ_CODE,
 #if COMANCHE055
     &ERASTAL1_CODE, &ERASTAL2_CODE,
 #endif
-    &AVETOMID_CODE, &MIDTOAV_CODE,  &CKMID2_CODE,   &NOTIME_RVQ_CODE,
+    &AVETOMID_CODE, &MIDTOAV_CODE,     &CKMID2_CODE,   &NOTIME_RVQ_CODE, &INTWAKEU_CODE,
+    &GRP2PC_CODE,   &GRP2PC_GOTO_CODE,
 };
 bool integration_init_readable(uint16_t key, bool order_pair);
 #if LUMINARY099
@@ -103,6 +104,11 @@ typedef cm_native_io mission_io;
 #define PUSHLOC_AT  0166u
 #define NEWJOB_AT   0067u
 #define STATE_AT    0074u /* the flagwords, STATE to STATE +11 */
+#if LUMINARY099
+#define GRP2SVQ_AT 02711u
+#else
+#define GRP2SVQ_AT 03536u
+#endif
 /* The keys that store a vector at 6D, or push values: in a NOVAC job's work
  * area (FIXLOC 0110, MPAC -36D) the store runs over ADDRWD and FIXLOC,
  * the interpreter's own words, as it goes, which no program does: these
@@ -349,6 +355,9 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
         unsigned at = (w[FIXLOC_AT] + k) & 03777u;
         if (!(w[at] & 074000u)) w[at] = (uint16_t)(04000u + rnd() % 034000u);
     }
+    /* GRP2SVQ too, the return GRP2PC keeps (in E5 in the LM, E7 in the
+     * CM) and its GOTO takes. */
+    if (!(w[GRP2SVQ_AT] & 074000u)) w[GRP2SVQ_AT] = (uint16_t)(04000u + rnd() % 034000u);
     w[6] = (uint16_t)(w[4] | eb);
     /* Now and then a state no program has: BBANK not the two banks, or a
      * word of 16 bits. */
@@ -447,6 +456,20 @@ int main(int argc, char **argv)
     }
     failures += tables_differ(&readable_basic, &faithful_basic, "basic");
     failures += tables_differ(&readable_interpretive, &faithful_interpretive, "interpretive");
+    for (i = 0; i < faithful_basic.count; ++i) {
+        uint16_t key = faithful_basic.entries[i].physical;
+        if (!integration_init_readable(key, false)) {
+            printf("FAIL: basic key %02o,%04o not readable\n", key / 1024u, 02000u + key % 1024u);
+            ++failures;
+        }
+    }
+    for (i = 0; i < faithful_interpretive.count; ++i) {
+        uint16_t key = faithful_interpretive.entries[i].physical;
+        if (!integration_init_readable(key, true)) {
+            printf("FAIL: order pair %02o,%04o not readable\n", key / 1024u, 02000u + key % 1024u);
+            ++failures;
+        }
+    }
     if (failures || mission_count == 0u) {
         printf("integration-init-cases " MISSION ": %u failures\n",
                failures + (mission_count == 0u));

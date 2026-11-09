@@ -6,10 +6,7 @@
  * <m>_integration_init_interpretive. The keys come from the faithful
  * tables, in their order (integration_init_keys.inc and
  * cm_integration_init_keys.inc, which tools/p20_p25_keys.py writes from
- * them). The keys no part has written yet run the faithful port's
- * routines (renamed faithful_) until their parts are written.
- * Partial file: Luminary099/INTEGRATION_INITIALIZATION.agc and
- * Comanche055/INTEGRATION_INITIALIZATION.agc.
+ * them). Every key runs a readable routine.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
  * the file (PHASCHNG, FINDVAC, LONGCALL, DANZIG) or reaches NEWOPS through
@@ -55,6 +52,7 @@
 /* The bank of STATEINT and the moves (INTINIT), and LOADTIME's (FB),
  * from their FCADRs. */
 #define INTINIT_BANK  CODE_BANK(I_STATEINT)
+#define UPDATE2_BANK  CODE_BANK(I_INTWAKEU) /* INTWAKEU and GRP2PC */
 #define MOVES_BANK    ((word)(I_MOVEACSM & 076000u))
 #define LOADTIME_BANK ((word)(I_LOADTIME & 076000u))
 
@@ -64,19 +62,6 @@
 #define A_PCHK_EXIT A_PCHK
 #else
 #define A_PCHK_EXIT ANDOUT
-#endif
-
-/* The faithful tables, renamed. */
-#if LUMINARY099
-extern const agc_routine_table faithful_lm_integration_init_basic,
-    faithful_lm_integration_init_interpretive;
-#define faithful_basic        faithful_lm_integration_init_basic
-#define faithful_interpretive faithful_lm_integration_init_interpretive
-#else
-extern const agc_routine_table faithful_cm_integration_init_basic,
-    faithful_cm_integration_init_interpretive;
-#define faithful_basic        faithful_cm_integration_init_basic
-#define faithful_interpretive faithful_cm_integration_init_interpretive
 #endif
 
 static jmp_buf back;
@@ -242,6 +227,12 @@ static const struct basic_entry {
     {KEY(INTINIT_BANK, CKMID2 - 2u), entmid1_after_tpagree, false},
     {KEY(INTINIT_BANK, NOTIME + 2u), notime_after_exit, false},
     {KEY(INTINIT_BANK, NOTIME + 5u), notime_after_alarm, false},
+    /* Part 5 */
+    {KEY(UPDATE2_BANK, INTWAKEU), intwakeu, false},
+    {KEY(UPDATE2_BANK, INTWAKUP + 5u), intwakup_after_exit, false},
+    {KEY(UPDATE2_BANK, INTWAKUP + 7u), intwakup_after_phaschng, false},
+    {KEY(UPDATE2_BANK, GRP2PC + 2u), grp2pc_after_exit, false},
+    {KEY(UPDATE2_BANK, GRP2PC + 4u), grp2pc_after_phaschng, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -255,15 +246,16 @@ static const struct basic_entry *basic_entry(uint16_t key)
 
 /* ---- The order pairs ---- */
 
-/* The parts of the code written so far. */
+/* The file's interpretive code, in its parts. */
 static const struct interpretive_code *const codes[] = {
-    &STATINT1_CODE, &SETIFLGS_CODE, &ATOPCSM_CODE,  &PTOACSM_CODE,    &ATOPLEM_CODE,
-    &PTOALEM_CODE,  &USEPIOS_CODE,  &INTEGRV_CODE,  &ALOADED_CODE,    &A_PCHK_CODE,
-    &PHEXIT_CODE,   &TESTLOOP_CODE, &INTSTALL_CODE, &INTWAKE0_CODE,   &GOBAC_RVQ_CODE,
+    &STATINT1_CODE, &SETIFLGS_CODE,    &ATOPCSM_CODE,  &PTOACSM_CODE,    &ATOPLEM_CODE,
+    &PTOALEM_CODE,  &USEPIOS_CODE,     &INTEGRV_CODE,  &ALOADED_CODE,    &A_PCHK_CODE,
+    &PHEXIT_CODE,   &TESTLOOP_CODE,    &INTSTALL_CODE, &INTWAKE0_CODE,   &GOBAC_RVQ_CODE,
 #if COMANCHE055
     &ERASTAL1_CODE, &ERASTAL2_CODE,
 #endif
-    &AVETOMID_CODE, &MIDTOAV_CODE,  &CKMID2_CODE,   &NOTIME_RVQ_CODE,
+    &AVETOMID_CODE, &MIDTOAV_CODE,     &CKMID2_CODE,   &NOTIME_RVQ_CODE, &INTWAKEU_CODE,
+    &GRP2PC_CODE,   &GRP2PC_GOTO_CODE,
 };
 
 /* The part of the code an address of a bank is in, or none. */
@@ -395,16 +387,14 @@ static enum exec_status run_basic(void (*routine)(void), apollo_overlay_state *s
     return EXEC_OK;
 }
 
-/* Each basic key's routine: the readable one, or the faithful port's until
- * its part is written. */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each basic key's routine. */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct basic_entry *entry = basic_entry(key);
     mission_io *io = device;
 
-    if (!entry) return faithful_basic.entries[index].call(program, state, device);
-    if (!program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
+    if (!entry || !program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
     if (FBANK != (word)((key / 1024u) << 10) || !superbank_off(key / 1024u) ||
         !sane(BASIC_WORK_AREA))
         return EXEC_OUT_OF_SCOPE;
@@ -414,9 +404,8 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     return run_basic(entry->routine, state, io);
 }
 
-/* Each order pair's routine: one pass of the readable interpreter, or the
- * faithful port's until its part is written. */
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each order pair's routine: one pass of the readable interpreter. */
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
@@ -427,8 +416,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     enum exec_status status;
     bool started;
 
-    if (!code) return faithful_interpretive.entries[index].call(program, state, device);
-    if (!program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
+    if (!code || !program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
 #if COMANCHE055
     if (pending_order(key))
         started = LOC == at && at_danzig(bank, pending_order(key));
@@ -459,13 +447,13 @@ bool integration_init_readable(uint16_t key, bool order_pair)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #if LUMINARY099
 #include "integration_init_keys.inc"
