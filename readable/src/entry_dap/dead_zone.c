@@ -31,20 +31,38 @@ static bool table_word(unsigned address)
            (address + 1u >= LIMITS && address <= LIMITS + 2u);
 }
 
-/* INDEX A; CA (or CAF) base: the word A words on from base (A -1, +0 or
- * +1 for a tag). An index that lands in fixed memory outside the tables
- * is not modelled; one in erasable memory reads it, but not Z. */
-void index_a_ca(word base)
+/* INDEX A: the address A words on from base (A -1, +0 or +1 for a tag).
+ * An index that lands in fixed memory outside the tables is not
+ * modelled; nor is Z. */
+static unsigned indexed_by_a(word base)
 {
     int at = (int)base + value_of(a_word());
 
     if (at < 0 || at > 07777 || at == (int)Z_ADDRESS) not_modelled();
-    if (at < 02000) {
-        ca((unsigned)at);
-        return;
-    }
-    if (!table_word((unsigned)at)) not_modelled();
-    set_A(fetch_fixed((word)at));
+    if (at >= 02000 && !table_word((unsigned)at)) not_modelled();
+    return (unsigned)at;
+}
+
+/* INDEX A; CA (or CAF) base. */
+void index_a_ca(word base)
+{
+    unsigned at = indexed_by_a(base);
+
+    if (at < 02000u)
+        ca(at);
+    else
+        set_A(fetch_fixed((word)at));
+}
+
+/* INDEX A; CS base (TRTAGXPI's CS HALFPR). */
+void index_a_cs(word base)
+{
+    unsigned at = indexed_by_a(base);
+
+    if (at < 02000u)
+        cs(at);
+    else
+        set_A(negate(fetch_fixed((word)at)));
 }
 
 /* INDEX A; CAF table: the jet code for A's tag. */
