@@ -130,3 +130,5 @@ Comanche055/TPI_SEARCH.agc                     src/tpi_search
 Comanche055/CM_ENTRY_DIGITAL_AUTOPILOT.agc     src/entry_dap
 Luminary099/FIXED_FIXED_CONSTANT_POOL.agc      src/constant_pool
 Comanche055/FIXED_FIXED_CONSTANT_POOL.agc      src/constant_pool
+Luminary099/INTERPRETIVE_CONSTANT.agc          src/constant_pool
+Comanche055/INTERPRETIVE_CONSTANTS.agc         src/constant_pool

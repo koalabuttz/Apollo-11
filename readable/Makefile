@@ -224,7 +224,7 @@ CTPI_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/tpi_search/*.c)) \
 	src/binding/cm_tpi_search_routines.c
 CED_SOURCES := src/agc/agc.c src/binding/machine.c $(sort $(wildcard src/entry_dap/*.c)) \
 	src/binding/cm_entry_dap_routines.c
-FFCP_SOURCES := src/agc/agc.c src/constant_pool/fixed_fixed_constant_pool.c
+FFCP_SOURCES := src/agc/agc.c $(sort $(wildcard src/constant_pool/*.c))
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
 	src/binding/standard_lead_routines.c)
 PIN_SOURCES := src/agc/agc.c $(sort $(wildcard src/interpreter/*.c)) src/interbank/interbank.c \
@@ -3015,9 +3015,11 @@ cm-entry-dap-cases: $(BUILD)/ced-oracle $(BUILD)/ced-cases
 	./$(BUILD)/ced-oracle $(ROPES)
 	./$(BUILD)/ced-cases $(ROPES)
 
-# FIXED_FIXED_CONSTANT_POOL.agc, the constants every bank reaches (data
-# only): tests/constant_pool_cases.c, once per mission, checks each word
-# laid out against the assembled rope and each label against the listing.
+# FIXED_FIXED_CONSTANT_POOL.agc, the constants every bank reaches, and
+# INTERPRETIVE_CONSTANT(S).agc, the interpreter's in each half of the rope
+# (data only): tests/constant_pool_cases.c, once per mission, checks each
+# word laid out against the assembled rope and each label against the
+# listing.
 $(BUILD)/constant-pool-cases-lm: $(FFCP_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) \
 		tests/constant_pool_cases.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(PORT)/src/rope_image_host.c $(filter %.o,$^) \
@@ -3030,9 +3032,9 @@ $(BUILD)/constant-pool-cases-cm: $(FFCP_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) \
 constant-pool-cases: $(BUILD)/constant-pool-cases-lm $(BUILD)/constant-pool-cases-cm
 	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
 	./$(BUILD)/constant-pool-cases-lm $(PORT)/build/fixed-data/Luminary099/MAIN.agc.bin \
-		../Luminary099/FIXED_FIXED_CONSTANT_POOL.agc
+		../Luminary099/FIXED_FIXED_CONSTANT_POOL.agc ../Luminary099/INTERPRETIVE_CONSTANT.agc
 	./$(BUILD)/constant-pool-cases-cm $(PORT)/build/fixed-data/Comanche055/MAIN.agc.bin \
-		../Comanche055/FIXED_FIXED_CONSTANT_POOL.agc
+		../Comanche055/FIXED_FIXED_CONSTANT_POOL.agc ../Comanche055/INTERPRETIVE_CONSTANTS.agc
 
 # LUNAR_LANDING_GUIDANCE_EQUATIONS.agc, the LM's landing guidance: the
 # port's test (tests/test_lm_llge.c, its frozen cases run to their stops

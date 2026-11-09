@@ -4177,6 +4177,7 @@
 #define I_HIDP1_4 046511u
 #define I_REMDIST 064000u
 #define I_VMOON 002722u
+#define I_ZUNIT 024000u
 #define I_ORBCHG3 064217u
 #define I_LPS20_1 051255u
 #define I_LPS20_2 053565u

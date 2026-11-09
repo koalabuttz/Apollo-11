@@ -32,17 +32,6 @@
 #include "constant_pool.h"
 #include "../agc/names.h"
 
-/* A word of the pool: its label and value. */
-struct pool_word {
-    const char *label;
-    word value;
-};
-
-#define WORD(label, value) {label, (word)(value)}
-#define MINUS(n)           (077777u - (n))
-#define VN(verb, noun)     ((verb) * 0200u + (noun))
-#define COUNT(array)       (sizeof(array) / sizeof((array)[0]))
-
 /* ---- Block 02, from DPOSMAX ---- */
 
 static const struct pool_word block02[] = {
