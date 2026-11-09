@@ -60,7 +60,20 @@ static bool in_bank(unsigned bank)
 
 static const struct interpretive_code *const codes[] = {
     /* Part 1: bank 36 */
-    &S17_1_CODE, &S17_2_CODE, &BIS_CODE, &CONCAUL_CODE, &JUNCT3_CODE,
+    &S17_1_CODE,
+    &S17_2_CODE,
+    &BIS_CODE,
+    &CONCAUL_CODE,
+    &JUNCT3_CODE,
+    /* Part 2: bank 36 */
+    &JUNCT1_CODE,
+    &INTERP_CODE,
+    &HALFSAFE_CODE,
+    &LRGRDVO_CODE,
+    &RNGETEST_CODE,
+    &USEKAY_CODE,
+    /* Part 2: bank 07 */
+    &TRANSANG_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
@@ -73,6 +86,19 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
             address < codes[i]->first + codes[i]->count)
             return codes[i];
     return NULL;
+}
+
+/* MUTABLE, read by index (TRANSANG's STODL* and PDDL*, by X1 as the pass
+ * finds it): the faithful port carries only the words an index of -2 (the
+ * Earth's) or -10D (the Moon's) reads, and refuses a load from anywhere
+ * else; so does the binding. */
+static bool outside_mutable(uint16_t key)
+{
+    word x1;
+
+    if (key != KEY(07u, TRANSANG + 011u) && key != KEY(07u, TRANSANG + 016u)) return false;
+    x1 = agc.memory[(FIXLOC + I_X1) & 03777u];
+    return x1 != 077775u && x1 != 077765u;
 }
 
 /* The faithful tables, renamed. */
@@ -103,7 +129,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
         return faithful_cm_tpi_search_interpretive.entries[index].call(program, state, device);
     if (!program || !state || !io || !bind_machine(program, state, io)) return EXEC_OUT_OF_SCOPE;
     if (Z != NEWOPS || !in_bank(bank) || LOC != (word)(02000u + key % 1024u) || BANKSET != BBANK ||
-        INTBIT15 != (FBANK & 040000u) || !sane())
+        INTBIT15 != (FBANK & 040000u) || !sane() || outside_mutable(key))
         return EXEC_OUT_OF_SCOPE;
 
     before = *state;

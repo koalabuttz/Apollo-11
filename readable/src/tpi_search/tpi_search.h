@@ -18,7 +18,9 @@
  *   part 1: s17.c, S17.1, S17.2, BIS, CONCAUL, ADVCSM and JUNCT3 (pp.
  *     551-556, bank 36): the search sector and the search loop up to its
  *     pericenter test.
- *   part 2: JUNCT1 to NEXUS (bank 36) and TRANSANG (bank 07).
+ *   part 2: s17.c, JUNCT1 to NEXUS (pp. 556-558, bank 36): the step
+ *     and its interpolation, the end of the search; transang.c, TRANSANG
+ *     (pp. 558-559, bank 07): the passive's central angle of travel.
  *   part 3: P17, P77 and their displays (bank 35), the basic code.
  * The binding (src/binding/cm_tpi_search_routines.c) runs the faithful
  * port's keys on these routines, and on the faithful port's own for the
@@ -33,6 +35,10 @@
 
 /* ---- Part 1 (s17.c, bank 36) ---- */
 extern const struct interpretive_code S17_1_CODE, S17_2_CODE, BIS_CODE, CONCAUL_CODE, JUNCT3_CODE;
+
+/* ---- Part 2 (s17.c, bank 36; transang.c, bank 07) ---- */
+extern const struct interpretive_code JUNCT1_CODE, INTERP_CODE, HALFSAFE_CODE, LRGRDVO_CODE,
+    RNGETEST_CODE, USEKAY_CODE, TRANSANG_CODE;
 
 #endif
 

@@ -2178,6 +2178,13 @@ static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
 #define CONCAUL ((word)K_CONCAUL)
 #define ADVCSM  ((word)K_ADVCSM)
 #define JUNCT3  ((word)K_JUNCT3)
+#define JUNCT1   ((word)K_JUNCT1)
+#define INTERP   ((word)K_INTERP)
+#define HALFSAFE ((word)K_HALFSAFE)
+#define LRGRDVO  ((word)K_LRGRDVO)
+#define RNGETEST ((word)K_RNGETEST)
+#define USEKAY   ((word)K_USEKAY)
+#define TRANSANG ((word)K_TRANSANG) /* (bank 07) */
 
 /* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 1: the keys ---- */
 
