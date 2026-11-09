@@ -77,6 +77,7 @@
 #define ORDER_SL2        0064u
 #define ORDER_VSL4       0064u /* (SL2's code too) */
 #define ORDER_INCR_1     0066u /* INCR,1 */
+#define ORDER_ROUND      0070u
 #define ORDER_VXM        0071u
 #define ORDER_TIX_2      0072u /* TIX,2 */
 #define ORDER_VXM_STAR   0073u /* VXM* */

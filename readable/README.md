@@ -278,6 +278,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Interpretive constants | `INTERPRETIVE_CONSTANT.agc` (LM pp. 1100-1101; the CM's `INTERPRETIVE_CONSTANTS.agc`, pp. 1205-1206) | [`src/constant_pool/`](src/constant_pool/) | The vectors and double words interpretive code names as operands, in `interpretive_constants.c`, laid out twice because the interpreter reaches a fixed operand only in its own half of the rope: at INTPRET1, DP1/4TH, the unit vectors UNITZ, UNITY and UNITX sharing their words, the zero vector ZEROVECS and DPPOSMAX; at INTPRET2, the same as ZUNIT, YUNIT, XUNIT and ZEROVEC, then -0, -6 and -12 and the two LODPMAX. Each word is written as the listing has it (2DEC, 2OCT, OCT, DEC). Data only: the readable routines name these words by their labels (names.h) |
 | Latitude, longitude and altitude | `LATITUDE_LONGITUDE_SUBROUTINES.agc` (LM pp. 1133-1139, CM pp. 1236-1242) | [`src/lat_long/`](src/lat_long/) | Between a position vector and latitude, longitude and altitude over the earth or the moon (LUNAFLAG), all interpretive code in bank 13, the same in both missions. LAT-LONG turns the vector into the planet's axes (R-TO-RP) and takes the latitude and longitude from it by ARCTAN and the altitude above the radius SETRE gives; LALOTORV goes the other way (RP-TO-R). GETERAD is the earth's radius at a latitude on the ellipsoid (with ERADFLAG), SETGAMMA the ratio that turns latitude on the ellipsoid into the direction from the centre, and ARCTAN an angle from its sine and cosine, in revolutions within a half turn either way. The CM's file keeps its own ERAD and 504RM |
 | Planetary inertial orientation | `PLANETARY_INERTIAL_ORIENTATION.agc` (LM pp. 1140-1148, CM pp. 1243-1251) | [`src/planetary/`](src/planetary/) | Between the reference axes and a planet's own, which turn with it, the earth's or the moon's (MPAC zero for the earth), all interpretive code, the same in both missions. RP-TO-R takes a vector in the planet's axes to the reference axes, R=MT(T)*(RP+LPXRP); R-TO-RP goes the other way, RP=M(T)*(R-LXR). MOONMX builds the moon's matrix M at a time from three angles that grow at steady rates (B, F and the node, each by NEWANGLE, X=X0+(XDOT)(T+T0)) and the tilt of the moon's equator; EARTHMX the earth's, a turn about its axis; EARTHL the earth's small vector L. The LM's code is spread over banks 24, 25, 26 and 6 (MOONMX goes on at MOONMXA in bank 25); the CM's is all in bank 26 and keeps the moon's and the earth's constants at its end |
+| Measurement incorporation | `MEASUREMENT_INCORPORATION.agc` (LM pp. 1149-1158, CM pp. 1252-1261) | [`src/measurement_inc/`](src/measurement_inc/), with the state vector moves of `INTEGRATION_INITIALIZATION.agc` (LM pp. 1211-1213, CM pp. 1315-1317) in [`src/integration_init/`](src/integration_init/) | The navigation filter's last step: a measurement (a radar range or angle, a star or landmark sighting) taken into the state vector. INCORP1 works out, from the error transition matrix W and the measurement's BVECTOR, the vector ZI, the scalar GAMMA, the weighting vector OMEGA and the deviation DELTAX, in 6 dimensions or 9 (with the radar or landmark bias, DMENFLG); NEWZCOMP scales ZI to keep its precision. INCORP2 adds the deviation to the LM's or the CSM's state vector (VEHUPFLG), moving it into the integration's RRECT and back (MOVEPLEM and the rest, through SETBANK), and updates W one column at a time in a job of three phases, each safe against a restart: the column into HOLDW, then HOLDW into W, the column's indices kept twice (WIXA, ZIXA for the phase at work; WIXB, ZIXB for the next). Mostly interpretive code, the same in both missions (the CM's NEWZCOMP is split over two banks) |
 
 Beside them:
 
@@ -1027,6 +1028,16 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    and the index registers, the returns in S1, S2 and QPRET, the launch
    data TIMSUBO, AZO, AXO, -AYO and 504LM, the E-bank often E3 or E4,
    NEWJOB, the latches); every key must run readable code.
+   `make measurement-inc-cases` runs MEASUREMENT_INCORPORATION, both
+   missions, the same way (tests/measurement_inc_cases.c): the words of
+   each part against the rope, the keys, then readable and faithful side
+   by side at every key, 2,048 states for each key (MPAC and the
+   push-down list, the work area with the index registers as the program
+   sets them and the returns, the words of E3, E4, E5 and E7 (W, ZI,
+   BVECTOR, DELTAX, OMEGA, HOLDW, the state vectors, EGRESS), the flag
+   words, WIXA to ZIXB, the E-bank, NEWJOB, the latches); every key must
+   run readable code, with the state vector moves and TPMODE after their
+   RTBs.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

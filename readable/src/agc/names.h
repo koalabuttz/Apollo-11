@@ -5160,6 +5160,25 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define ACYJETS          ((word)KW_ACYJETS)  /* OCT 34360 */
 #endif
 
+/* MEASUREMENT_INCORPORATION.agc: INCORP2's phases, and its constants
+ * (DOCSM1's). */
+#define INCORP2       ((word)K_INCORP2)
+#define FAZA          ((word)K_FAZA)
+#define FAZA1         ((word)K_FAZA1)
+#define FAZB1         ((word)K_FAZB1)
+#define FAZAB5        ((word)K_FAZAB5)
+#define FIFTY_FOUR_DD ((word)KW_54DD) /* 54DD, DEC 54 */
+#define SIX_DD        ((word)KW_6DD)  /* 6DD, DEC -6 */
+
+/* INTEGRATION_INITIALIZATION.agc: the state vector moves, and SETBANK's
+ * constants. */
+#define MOVEACSM ((word)K_MOVEACSM)
+#define MOVEPCSM ((word)K_MOVEPCSM)
+#define MOVEALEM ((word)K_MOVEALEM)
+#define MOVEPLEM ((word)K_MOVEPLEM)
+#define INTBANK  ((word)KW_INTBANK)  /* BBCON INTEGRV */
+#define FORTYONE ((word)KW_FORTYONE) /* DEC 41 */
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
