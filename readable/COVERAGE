@@ -127,3 +127,4 @@ Comanche055/JET_SELECTION_LOGIC.agc            src/cm_dap
 Comanche055/IMU_CALIBRATION_AND_ALIGNMENT.agc  src/imu_calibration
 Comanche055/P11.agc                            src/p11
 Comanche055/TPI_SEARCH.agc                     src/tpi_search
+Comanche055/CM_ENTRY_DIGITAL_AUTOPILOT.agc     src/entry_dap

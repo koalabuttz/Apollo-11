@@ -4,17 +4,13 @@
  *
  * Built with the readable tables (src/binding/cm_entry_dap_routines.c)
  * and the faithful port's under the same names with faithful_ in front
- * (the Makefile renames them), which also run the keys no part has
- * written yet.
+ * (the Makefile renames them).
  *
  * First the keys, which must be the faithful table's, and the hot table's,
  * which must be the faithful one's with the same routines as the basic
- * table; the ones the parts written so far cover must run readable code
- * (parts A to C: READGYMB to the dead zone tests, FLUSHJET, CM/DAPON
- * and CM/DAPIC). Then
- * the runs: each readable key from 4,096 states (the others from 16),
- * each one of the port's frozen test states
- * (c64-port/tests/cm_entry_dap_vectors.h) entered at the key, most
+ * table; every key must run readable code (the file is whole). Then the
+ * runs: each key from 4,096 states, each one of the port's frozen test
+ * states (c64-port/tests/cm_entry_dap_vectors.h) entered at the key, most
  * stirred further: CM/FLAGS (mostly its switches), IMODES33's fine align
  * bit, the CDUs and the last gimbal angles, JETEM (often +0, -0, 1 or
  * -1), CM/GYMDT, PIPTIME and TIME1, ALFA/180 and ROLL/180, FLAGWRD2,
@@ -28,20 +24,23 @@
  * a dead zone's edge), ROLLHOLD (often ROLL/180), PAXERR1 and AK2,
  * CM/RCS's -VT/180, LCX/360, VSQ/4API, XD/360, VDT/180 (often small),
  * -VT/180E, TON1, TON2, JNDX, JNDX1 (often +0, -0, 1 or -1), TUSED,
- * ROLLC and ERRORZ, the jets' channels 5 and 6, any erasable bank's
- * words, A (often an overflow), L, Q (often 3, or a key of the file's to
+ * ROLLC and ERRORZ, the roll jets' list (TOFF, often small, and the jet
+ * bits TBITS, T1BITS, T2BITS and NUJET; OUTTAG often +0, -0, 1 or -1),
+ * the telemetry's SW/NDX (often a small index), CMTMTIME, CM/SAVE and
+ * PAXERR, the jets' channels 5 and 6, any erasable bank's words, A
+ * (often an overflow, now and then a small index), L (now and then 0 or
+ * 1, or a register's address), Q (often 3, or a key of the file's to
  * return to, now and then +0 or -0), FB (any for FLUSHJET), EBANK (any
- * for CM/DAPON and CM/DAPIC), the latches, or a state the routines
- * refuse (BBANK not the two banks, ZERO not +0, a word of 16 bits). Each
- * runs once on each side, as the program's trampoline would call the
- * key's routine, with a hardware record or (now and then) none. Where
- * either port runs, the other must too, with the same memory, io and
- * hardware records, word for word;
+ * for CM/DAPON and CM/DAPIC), the latches, or a state the routines refuse
+ * (BBANK not the two banks, ZERO not +0, a word of 16 bits). Each runs once on each side, as the
+ * program's trampoline would call the key's routine, with a hardware
+ * record or (now and then) none. Where either port runs, the other must
+ * too, with the same memory, io and hardware records, word for word;
  * where the readable one refuses, it must leave everything as it found
  * it; and the faithful routine must run in at least 1 of 16 of each
- * readable key's states (but NSEC's, a constant neither runs). A timer
- * stops a run that goes on past a tenth of a second; such a state must
- * loop on both sides. */
+ * key's states (but NSEC's, a constant neither runs). A timer stops a
+ * run that goes on past a tenth of a second; such a state must loop on
+ * both sides. */
 #define _POSIX_C_SOURCE 200809L /* sigsetjmp, setitimer */
 #include <setjmp.h>
 #include <signal.h>
@@ -66,8 +65,7 @@ bool cm_entry_dap_readable(uint16_t key);
  * 01400), unswitched ones at their address. */
 #define AT(name) ((unsigned)K_##name >= 01400u ? (unsigned)K_##name + 01400u : (unsigned)K_##name)
 
-#define CASES       4096u
-#define OTHER_CASES 16u
+#define CASES 4096u
 
 static uint32_t seed = 1039u;
 static uint16_t rnd(void)
@@ -185,24 +183,17 @@ static uint16_t register_word(uint16_t v)
 /* The frozen cases. */
 static unsigned mission_cases[CM_ENTRY_DAP_VECTORS], mission_count;
 
-/* The keys parts A to E cover: READGYMB to OVRLINE1 and FLUSHJET (indexes
- * 0 to 84), CM/DAPON and CM/DAPIC (120 to 137). */
-static bool written_part(unsigned index)
-{
-    return index <= 84u || (index >= 120u && index <= 137u);
-}
-
 /* NSEC (EXDAP2 +043), a constant: neither port runs it. */
 #define NSEC_KEY (015u * 1024u + (03171u & 01777u))
 
 /* The file's words a TC Q returns to: after FLUSHJET at READGYMB +012,
  * DOBRATE? +010 and CM/DAPON +015, DOBRATE? +4 to +7, after RATEAVG
  * and ANGOVCOR, after the dead zone tests, and after the TCs of EXDAP
- * and CM/RCS. */
-static const uint16_t returns[] = {02446u, 02476u, 03627u, 02472u, 02473u, 02474u, 02475u, 02570u,
-                                   02604u, 02623u, 02676u, 02730u, 02734u, 02741u, 02763u, 02770u,
-                                   03016u, 03112u, 03123u, 03053u, 03054u, 03106u, 03150u, 03152u,
-                                   03167u, 03171u, 03215u, 03306u, 03307u, 03355u, 03415u, 03431u};
+ * and CM/RCS, and after ANGOVCOR from DZCALL. */
+static const uint16_t returns[] = {
+    02446u, 02476u, 03627u, 02472u, 02473u, 02474u, 02475u, 02570u, 02604u, 02623u, 02676u,
+    02730u, 02734u, 02741u, 02763u, 02770u, 03016u, 03112u, 03123u, 03053u, 03054u, 03106u,
+    03150u, 03152u, 03167u, 03171u, 03215u, 03306u, 03307u, 03355u, 03415u, 03431u, 03670u};
 
 /* A Q to return to: 3, one of the file's words, a word of fixed memory,
  * or any. */
@@ -336,6 +327,19 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hw, u
         w[AT(TUSED)] = value_word();
         w[AT(ROLLC)] = value_word();
         w[AT(ERRORZ)] = value_word();
+        /* The roll jets' list, and the telemetry's words. */
+        w[AT(TOFF)] = pick(2u) ? sign_word() : number((int)pick(400u) - 200);
+        w[AT(TBITS)] = any_word();
+        w[AT(T1BITS)] = any_word();
+        w[AT(T2BITS)] = any_word();
+        w[AT(NUJET)] = any_word();
+        w[AT(OUTTAG)] = sign_word();
+        if (pick(2u)) w[AT(TON1)] = number((int)pick(400u) - 200);
+        if (pick(2u)) w[AT(TON2)] = number((int)pick(400u) - 200);
+        w[AT(SW_NDX)] = pick(2u) ? number((int)pick(20u) - 15) : value_word();
+        w[AT(CMTMTIME)] = value_word();
+        w[AT(CM_SAVE)] = any_word();
+        w[AT(PAXERR)] = value_word();
         w[AT(SALFA)] = pick(2u) ? sign_word() : value_word();
         w[AT(CMDAPMOD)] = sign_word();
         w[AT(P63FLAG)] = sign_word();
@@ -358,7 +362,11 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hw, u
                               : number(5 - table);
             w[0] = sign_extended(w[0]);
         }
+        if (pick(8u) == 0u) w[0] = number((int)pick(32u) - 16); /* a small index */
         w[1] = register_word(value_word());
+        if (pick(8u) == 0u) { /* DZCALL's 0 or 1, now and then a register */
+            w[1] = (uint16_t)(pick(2u) ? pick(2u) : pick(8u));
+        }
         if (pick(4u) == 0u) { /* A and L about a dead zone's edge */
             w[0] = sign_extended(edge_word(pick(2u)));
             w[1] = sign_extended(edge_word(false));
@@ -395,15 +403,14 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
     for (i = 0; i < faithful->count; ++i) {
         uint16_t key = faithful->entries[i].physical;
         bool readable_key = cm_entry_dap_readable(key);
-        unsigned ran = 0, bad = 0, cases = readable_key ? CASES : OTHER_CASES;
+        unsigned ran = 0, bad = 0;
 
-        if (readable_key != written_part(i)) {
-            printf("FAIL: key %u (%04o) %s\n", key, 02000u + key % 1024u,
-                   readable_key ? "runs readable code, no part has it" : "has no readable routine");
+        if (!readable_key) {
+            printf("FAIL: key %u (%04o) has no readable routine\n", key, 02000u + key % 1024u);
             ++failures;
         }
         *written += readable_key;
-        for (n = 0; n < cases; ++n) {
+        for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;
             cm_native_io io, fio, rio;
             agc_hardware hardware, fhw, rhw;
@@ -429,13 +436,9 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                 why = sf == LOOPS ? "faithful loops, readable does not" : "readable loops";
             else if (sf == LOOPS)
                 why = NULL;
-            else if (!readable_key) { /* the faithful routine on both sides */
-                if (sf != sr || memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio) ||
-                    memcmp(&fhw, &rhw, sizeof fhw))
-                    why = "the faithful routine twice, two results";
-            } else if (sr != EXEC_OK &&
-                       (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio) ||
-                        memcmp(&rhw, &hardware, sizeof rhw)))
+            else if (sr != EXEC_OK &&
+                     (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio) ||
+                      memcmp(&rhw, &hardware, sizeof rhw)))
                 why = "readable refusal changed the state";
             else if (sf == EXEC_OK && sr != EXEC_OK)
                 why = "readable refused, faithful ran";
@@ -455,7 +458,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                                fa.words[w], start.words[w]);
             }
         }
-        if (readable_key && ran < CASES / 16u && bad == 0u && key != NSEC_KEY) {
+        if (ran < CASES / 16u && bad == 0u && key != NSEC_KEY) {
             printf("FAIL key %u: the faithful routine ran in %u of %u states\n", key, ran, CASES);
             ++bad;
         }
@@ -490,10 +493,8 @@ int main(int argc, char **argv)
     on_alarm.sa_handler = stop;
     sigaction(SIGALRM, &on_alarm, NULL);
     failures += keys(&cm_entry_dap_basic, &faithful_cm_entry_dap_basic, &runs, &written, &loops);
-    printf(
-        "cm-entry-dap-cases: %u of %u keys readable (parts A to E, all basic) from %u states each "
-        "(the others %u), %u run by the faithful routines, %u looping on both sides, %u "
-        "failures\n",
-        written, faithful_cm_entry_dap_basic.count, CASES, OTHER_CASES, runs, loops, failures);
+    printf("cm-entry-dap-cases: %u of %u keys readable (the file whole, all basic) from %u states "
+           "each, %u run by the faithful routines, %u looping on both sides, %u failures\n",
+           written, faithful_cm_entry_dap_basic.count, CASES, runs, loops, failures);
     return failures != 0;
 }

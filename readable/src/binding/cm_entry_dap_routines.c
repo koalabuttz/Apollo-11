@@ -8,12 +8,7 @@
  *
  * The tables carry every key of the faithful ones, in their order
  * (cm_entry_dap_keys.inc, which tools/p20_p25_keys.py writes from them).
- * A key in a part written so far runs its readable routine; the other
- * keys run the faithful port's routines (renamed faithful_) until their
- * parts are written.
- *
- * Partial file: Comanche055/CM_ENTRY_DIGITAL_AUTOPILOT.agc (COVERAGE
- * counts it when whole).
+ * Every key runs a readable routine.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
  * the file's code (WAITLIST, TASKOVER, PHASCHNG, 2PHSCHNG, BANKCALL,
@@ -213,6 +208,42 @@ static const struct basic_entry {
     {KEY(015u, MAXVTIM1), maxvtim1},
     {KEY(015u, OVRLINE), ovrline},
     {KEY(015u, OVRLINE1), ovrline1},
+    /* Part F: GETOFF to CM/END (bank 15) */
+    {KEY(015u, GETOFF), getoff},
+    {KEY(015u, GETOFF + 1u), getoff_mp},
+    {KEY(015u, GETOFF + 3u), getoff_ts},
+    {KEY(015u, GETOFF + 010u), getoff_mp_ton1},
+    {KEY(015u, TOFFOVFL), toffovfl},
+    {KEY(015u, TIMSCAL + 2u), timscal_ton1},
+    {KEY(015u, TON2TEST), ton2test},
+    {KEY(015u, TON2TEST + 4u), ton2test_t2bits},
+    {KEY(015u, TON2TEST + 013u), ton2test_zero},
+    {KEY(015u, TIMETST3), timetst3},
+    {KEY(015u, TIMETST4), timetst4},
+    {KEY(015u, TIMETST5), timetst5},
+    {KEY(015u, JETCALL1), jetcall1},
+    {KEY(015u, JETCALL3), jetcall3},
+    {KEY(015u, JETCALL3 + 1u), jetcall3_cs},
+    {KEY(015u, JETCALL3 + 2u), jetcall3_toff},
+    {KEY(015u, JETCALL2), jetcall2},
+    {KEY(015u, JETACTN), jetactn},
+    {KEY(015u, ROLLDUMP), rolldump},
+    {KEY(015u, JETCALL), jetcall},
+    {KEY(015u, DZCALL), dzcall},
+    {KEY(015u, DZCALL + 3u), dzcall_rolltm},
+    {KEY(015u, DZCALL + 5u), dzcall_ts_a},
+    {KEY(015u, DZCALL + 7u), dzcall_ad_l},
+    {KEY(015u, DZCALL + 011u), dzcall_rollhold},
+    {KEY(015u, DZCALL1), dzcall1},
+    {KEY(015u, CM_FDAI), cm_fdai},
+    {KEY(015u, CM_FDAI + 1u), cm_fdai_mp},
+    {KEY(015u, CM_FDAI + 5u), cm_fdai_ads},
+    {KEY(015u, CM_FDAIR), cm_fdair},
+    {KEY(015u, CM_DUMPR + 6u), cm_dumpr_after_needler},
+    {KEY(015u, CMTMFILE), cmtmfile},
+    {KEY(015u, CMTMFILE + 4u), cmtmfile_ts},
+    {KEY(015u, SAVENDX), savendx},
+    {KEY(015u, CM_END), cm_end},
     /* Part A: CM/DAPON and CM/DAPIC (bank 20) */
     {KEY(020u, CM_DAPON), cm_dapon},
     {KEY(020u, CM_DAPON + 4u), cm_dapon_after_dapbit1},
@@ -277,14 +308,10 @@ static void run_on(uint16_t key)
     }
 }
 
-/* The faithful tables, renamed. */
-extern const agc_routine_table faithful_cm_entry_dap_basic;
-
 /* ---- The keys, in the faithful table's order ---- */
 
-/* Each key's routine: the readable one, and on at the keys of its part;
- * or the faithful port's until its part is written. */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each key's routine: the readable one, and on at the keys of its part. */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct basic_entry *entry = basic_entry(key);
@@ -293,8 +320,7 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     apollo_overlay_state before;
     word fb = (word)((key / 1024u) << 10);
 
-    if (!entry) return faithful_cm_entry_dap_basic.entries[index].call(program, state, device);
-    if (!program || !program->hardware || !state || !io) return EXEC_OUT_OF_SCOPE;
+    if (!entry || !program || !program->hardware || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     if (key / 1024u == 03u) fb = FBANK; /* FLUSHJET, under any FB */
     if (!basic_sane(fb, key == KEY(020u, CM_DAPON) || key == KEY(020u, CM_DAPIC)))
@@ -324,7 +350,7 @@ bool cm_entry_dap_readable(uint16_t key)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)
 #include "cm_entry_dap_keys.inc"
