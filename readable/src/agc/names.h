@@ -2205,7 +2205,8 @@ static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
  * COSM, SINO, SINOCOSM, COSO, COSOCOSM, SINM, the rates PREL, QREL and
  * RREL, CM/SAVE (CM_SAVE), CALFA, SALFA, PHIDOT, BETADOT, BETACOM, AK1,
  * QAXERR, ROLLTM, RAXERR, JETEM2; JNDX, JNDX1, -VT/180 (MVT_180), LCX/360,
- * -VT/180E, VSQ/4API, XD/360, VDT/180, TON1, TON2, TUSED, ERRORZ. */
+ * -VT/180E, VSQ/4API, XD/360, VDT/180, TON1, TON2, TUSED, ERRORZ; TOFF,
+ * TBITS, T1BITS, T2BITS, OUTTAG, NUJET, PAXERR, CMTMTIME, ENDBUF. */
 #define READGYMB    ((word)K_READGYMB)
 #define READGYM1    ((word)K_READGYM1)
 #define DOBRATE_Q   ((word)K_DOBRATE_Q) /* DOBRATE? */
@@ -2248,6 +2249,28 @@ static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
 #define GETOFF      ((word)K_GETOFF)
 #define DZCALL      ((word)K_DZCALL)
 #define DZCALL1     ((word)K_DZCALL1)
+#define TOFFOVFL    ((word)K_TOFFOVFL)
+#define GETOFF2     ((word)K_GETOFF2)
+#define TIMSCAL     ((word)K_TIMSCAL)
+#define TIMETST     ((word)K_TIMETST)
+#define TIMETST1    ((word)K_TIMETST1)
+#define TOFFTEST    ((word)K_TOFFTEST)
+#define TIMETST2    ((word)K_TIMETST2)
+#define TON2TEST    ((word)K_TON2TEST)
+#define TIMETST3    ((word)K_TIMETST3)
+#define TIMETST4    ((word)K_TIMETST4)
+#define TIMETST5    ((word)K_TIMETST5)
+#define JETCALL1    ((word)K_JETCALL1)
+#define JETCALL3    ((word)K_JETCALL3)
+#define JETCALL2    ((word)K_JETCALL2)
+#define JETACTN     ((word)K_JETACTN)
+#define ROLLDUMP    ((word)K_ROLLDUMP)
+#define JETCALL     ((word)K_JETCALL)
+#define CM_DUMPR    ((word)K_CM_DUMPR) /* CM/DUMPR */
+#define CMTMFILE    ((word)K_CMTMFILE)
+#define SAVENDX     ((word)K_SAVENDX)
+#define CM_END      ((word)K_CM_END)   /* CM/END */
+#define T5IDLER2    ((word)K_T5IDLER2) /* 2CADR T5IDLOC */
 #define HALFPR      ((word)K_HALFPR) /* EQUALS NEG1/2 +1 */
 #define EXDAPIN     ((word)K_EXDAPIN)
 #define THREE_DDZ   ((word)K_3DDZ) /* 3DDZ */
@@ -2282,6 +2305,9 @@ static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
 #define MVM_360K    ((word)KW_MVM_360K) /* -VM/360K: DEC -.22222222 */
 #define KTRCS       ((word)KW_KTRCS)    /* = HALF */
 #define MVMT_180    ((word)KW_MVMT_180) /* -VMT/180 = -VM/360K */
+#define MINUS_T_3   ((word)KW_MT_3)     /* -T-3: DEC -203 */
+#define TWO_JETT    ((word)KW_2JETT)    /* 2JETT = 4SECS */
+#define FOUR_JETT   ((word)KW_4JETT)    /* 4JETT: DEC 800 */
 
 /* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 1: the keys ---- */
 

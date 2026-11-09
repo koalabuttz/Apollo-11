@@ -31,9 +31,8 @@
  *     1077-1079), bank 15.
  *   E: cm_rcs.c, SETJTAG and CM/RCS to OVRLINE1 (pp. 1081-1085), bank
  *     15.
- *   F: GETOFF to CM/END (pp. 1085-1092, bank 15).
- * The binding runs the faithful port's routines for the keys no part has
- * written yet. */
+ *   F: roll_jets.c, GETOFF, TIMETST, JETCALL and DZCALL (pp. 1085-1089);
+ *     cm_fdai.c, DZCALL +3 to CM/END (pp. 1089-1091), bank 15. */
 #ifndef READABLE_ENTRY_DAP_H
 #define READABLE_ENTRY_DAP_H
 
@@ -103,19 +102,20 @@ void attrates_ak1(void);       /* ATTRATES +047 */
 void attrates_rolltm(void);    /* ATTRATES +054 */
 
 /* ---- Part C: atm_dap.c and dead_zone.c (bank 15) ---- */
-void atm_cmdapmod(void);       /* ATTRATES +066 */
-void atm_ak1(void);            /* ATTRATES +067 */
-void atm_yjetcode(void);       /* ATTRATES +076 */
-void exdapin(void);            /* EXDAPIN */
-void exdapin_fdai(void);       /* EXDAPIN +7 */
-void exdapin_fdair(void);      /* EXDAPIN +010 */
-void three_d_dz(void);         /* 3DDZ */
-void biasedz(void);            /* BIASEDZ */
-void biasedz_after_3ddz(void); /* BIASEDZ +010 */
-void two_d_sdz(void);          /* 2D/SDZ (no key: only called) */
-void jet_code(word table);     /* INDEX A; CAF table */
-void index_a_ca(word base);    /* INDEX A; CA base */
-void index_a_cs(word base);    /* INDEX A; CS base */
+void atm_cmdapmod(void);              /* ATTRATES +066 */
+void atm_ak1(void);                   /* ATTRATES +067 */
+void atm_yjetcode(void);              /* ATTRATES +076 */
+void exdapin(void);                   /* EXDAPIN */
+void exdapin_fdai(void);              /* EXDAPIN +7 */
+void exdapin_fdair(void);             /* EXDAPIN +010 */
+void three_d_dz(void);                /* 3DDZ */
+void biasedz(void);                   /* BIASEDZ */
+void biasedz_after_3ddz(void);        /* BIASEDZ +010 */
+void two_d_sdz(void);                 /* 2D/SDZ (no key: only called) */
+void jet_code(word table);            /* INDEX A; CAF table */
+void index_a_ca(word base);           /* INDEX A; CA base */
+void index_a_cs(word base);           /* INDEX A; CS base */
+void index_ca(unsigned k, word base); /* INDEX k; CA base */
 
 /* ---- Part D: exdap.c (bank 15) ---- */
 void exdap(void);                /* EXDAP */
@@ -160,6 +160,43 @@ void maxvtest_ad(void);        /* MAXVTEST +3 */
 void maxvtim1(void);           /* MAXVTIM1 */
 void ovrline(void);            /* OVRLINE */
 void ovrline1(void);           /* OVRLINE1 */
+
+/* ---- Part F: roll_jets.c and cm_fdai.c (bank 15) ---- */
+void getoff(void);                 /* GETOFF */
+void getoff_mp(void);              /* GETOFF +1 */
+void getoff_ts(void);              /* GETOFF +3 */
+void getoff_mp_ton1(void);         /* GETOFF +010 */
+void toffovfl(void);               /* TOFFOVFL */
+void timscal_ton1(void);           /* TIMSCAL +2 */
+void ton2test(void);               /* TON2TEST */
+void ton2test_t2bits(void);        /* TON2TEST +4 */
+void ton2test_zero(void);          /* TON2TEST +013 */
+void timetst3(void);               /* TIMETST3 */
+void timetst4(void);               /* TIMETST4 */
+void timetst5(void);               /* TIMETST5 */
+void jetcall1(void);               /* JETCALL1 */
+void jetcall3(void);               /* JETCALL3 */
+void jetcall3_cs(void);            /* JETCALL3 +1 */
+void jetcall3_toff(void);          /* JETCALL3 +2 */
+void jetcall2(void);               /* JETCALL2 */
+void jetactn(void);                /* JETACTN */
+void rolldump(void);               /* ROLLDUMP */
+void jetcall(void);                /* JETCALL */
+void dzcall(void);                 /* DZCALL */
+void dzcall_rolltm(void);          /* DZCALL +3 */
+void dzcall_ts_a(void);            /* DZCALL +5 */
+void dzcall_ad_l(void);            /* DZCALL +7 */
+void dzcall_rollhold(void);        /* DZCALL +011 */
+void dzcall1(void);                /* DZCALL1 */
+void cm_fdai(void);                /* CM/FDAI */
+void cm_fdai_mp(void);             /* CM/FDAI +1 */
+void cm_fdai_ads(void);            /* CM/FDAI +5 */
+void cm_fdair(void);               /* CM/FDAIR */
+void cm_dumpr_after_needler(void); /* CM/DUMPR +6 */
+void cmtmfile(void);               /* CMTMFILE */
+void cmtmfile_ts(void);            /* CMTMFILE +4 */
+void savendx(void);                /* SAVENDX */
+void cm_end(void);                 /* CM/END */
 
 #endif
 
