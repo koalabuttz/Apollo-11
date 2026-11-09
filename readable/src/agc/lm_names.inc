@@ -937,6 +937,15 @@
 #define K_600SECS 02630u
 #define K_SIGNMPAC 03712u
 #define K_A_PCHK 03157u
+#define K_INTSTALL 03414u
+#define K_INTWAKE 03425u
+#define K_INTWAKE1 03445u
+#define K_GOBAC 03463u
+#define K_WAKESTAL 03465u
+#define K_INTBITAB 03466u
+#define K_INTFLBIT 04736u
+#define K_INTEXIT 03225u
+#define K_INTWAKE0 03423u
 #define K_KEPLERN 02023u
 #define K_DELTIME 02421u
 #define K_CHECKCTR 02644u
@@ -5995,6 +6004,8 @@
 #define I_MODREG 001011u
 #define I_TIMESTEP 023252u
 #define I__3D 025751u
+#define I_INTWAKE0 027423u
+#define I_GOBAC 027463u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u
