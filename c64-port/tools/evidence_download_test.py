@@ -68,13 +68,15 @@ def main():
             if self.headers.get('Authorization') != f'Bearer {TOKEN}':
                 self.send_error(401)
             elif self.path == '/repos/o/r/releases/tags/evidence-m':
-                body = json.dumps({'assets': [{'name': 'abc-x.log', 'url': f'{api_url}/assets/1'}]}).encode()
+                body = json.dumps({'assets': [{'name': 'abc-x.log', 'url': f'{api_url}/assets/1'},
+                                              {'name': 'def-x.log', 'url': f'{api_url}/assets/2'}]}).encode()
                 self.send_response(200)
                 self.end_headers()
                 self.wfile.write(body)
-            elif self.path == '/assets/1':
+            elif self.path in ('/assets/1', '/assets/2'):
                 self.send_response(302)
-                self.send_header('Location', f'{cdn_url}/signed/abc-x.log')
+                name = 'abc-x.log' if self.path.endswith('1') else 'def-x.log'
+                self.send_header('Location', f'{cdn_url}/signed/{name}')
                 self.end_headers()
             else:
                 self.send_error(404)
@@ -123,6 +125,10 @@ def main():
             evidence.download(url + 'abc-x.log', tmp / 'a.log', good)
             if (tmp / 'a.log').read_bytes() != DATA:
                 failures.append('API fallback returned the wrong bytes')
+            # After one fallback, later downloads in the run go straight to the API.
+            evidence.download(url + 'def-x.log', tmp / 'e.log', good)
+            if HITS['cdn /releases/download/evidence-m/def-x.log'] or HITS['cdn /signed/def-x.log'] != 1:
+                failures.append(f'later download did not go straight to the API: {dict(HITS)}')
 
         def api_mismatch():
             expect_mismatch(tmp / 'b.log', bad, 'abc-x.log')
