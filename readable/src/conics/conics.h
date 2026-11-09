@@ -25,7 +25,8 @@
  *     NEWSTATE with LAMENTER (newstate.c: LM p. 1184, CM p. 1287);
  *   part 3: TIME-THETA (timethet.c: LM p. 1186, CM p. 1289), PARAM and
  *     GEOM (param.c: LM pp. 1186-1188, CM pp. 1289-1291) and GETX (getx.c:
- *     LM pp. 1189-1192, CM pp. 1292-1295).
+ *     LM pp. 1189-1192, CM pp. 1292-1295);
+ *   part 4: LAMBERT (lambert.c: LM pp. 1193-1197, CM pp. 1296-1300).
  * The binding (src/binding/conics_routines.c) runs the faithful port's
  * routines at the keys no part has written yet. */
 #ifndef READABLE_CONICS_H
@@ -57,6 +58,9 @@ extern const struct interpretive_code ITERATOR_CODE, NEWSTATE_CODE;
 /* Part 3: TIME-THETA, PARAM with GEOM (in bank 4), and GETX's two
  * stretches (to its EXIT, and after its POLY). */
 extern const struct interpretive_code TIMETHET_CODE, PARAM_CODE, GETX_CODE, GETX_SERIES_CODE;
+
+/* Part 4: LAMBERT. */
+extern const struct interpretive_code LAMBERT_CODE;
 
 /* DELTIME's basic code: the two series by POLY. */
 void deltime_after_exit(void);        /* DELTIME +1: TC POLY, S(XI)'s series */
