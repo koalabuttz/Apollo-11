@@ -31,12 +31,12 @@ static bool table_word(unsigned address)
            (address + 1u >= LIMITS && address <= LIMITS + 2u);
 }
 
-/* INDEX A; CAF table: the jet code for A's tag (A -1, +0 or +1). An index
- * that lands outside the tables is not modelled; one that lands in
- * erasable memory reads it (as CA), but not Z. */
-void jet_code(word table)
+/* INDEX A; CA (or CAF) base: the word A words on from base (A -1, +0 or
+ * +1 for a tag). An index that lands in fixed memory outside the tables
+ * is not modelled; one in erasable memory reads it, but not Z. */
+void index_a_ca(word base)
 {
-    int at = (int)table + value_of(a_word());
+    int at = (int)base + value_of(a_word());
 
     if (at < 0 || at > 07777 || at == (int)Z_ADDRESS) not_modelled();
     if (at < 02000) {
@@ -45,6 +45,12 @@ void jet_code(word table)
     }
     if (!table_word((unsigned)at)) not_modelled();
     set_A(fetch_fixed((word)at));
+}
+
+/* INDEX A; CAF table: the jet code for A's tag. */
+void jet_code(word table)
+{
+    index_a_ca(table);
 }
 
 /* ---- The tags' ends ---- */

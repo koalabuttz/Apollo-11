@@ -2225,6 +2225,10 @@ static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
 #define ATDOTCAD    ((word)K_ATDOTCAD) /* 2CADR ATTRATES */
 #define ATTRATES    ((word)K_ATTRATES)
 #define EXDAP       ((word)K_EXDAP)
+#define EXDAP4      ((word)K_EXDAP4)
+#define EXDAP3      ((word)K_EXDAP3)
+#define EXDAP1      ((word)K_EXDAP1)
+#define EXDAP2      ((word)K_EXDAP2)
 #define EXDAPIN     ((word)K_EXDAPIN)
 #define THREE_DDZ   ((word)K_3DDZ) /* 3DDZ */
 #define BIASEDZ     ((word)K_BIASEDZ)
@@ -2246,6 +2250,8 @@ static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
 #define CM_BIAS     ((word)KW_CM_BIAS) /* CM/BIAS: DEC 55 */
 #define FOUR_D_SLIM ((word)KW_4D_SLIM) /* 4D/SLIM: DEC 16348 */
 #define YDOTLIM     ((word)KW_YDOTLIM) /* DEC 16366 */
+#define NSEC        ((word)KW_NSEC)    /* DEC 2100, 21 s */
+#define C45LIM      ((word)KW_C45LIM)  /* DEC .29289, 1.0-COS(45) */
 
 /* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 1: the keys ---- */
 

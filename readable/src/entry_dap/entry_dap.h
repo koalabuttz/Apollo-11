@@ -27,7 +27,9 @@
  *   C: atm_dap.c, the yaw and pitch DAPs in the atmosphere and EXDAPIN
  *     (pp. 1074-1075); dead_zone.c, the dead zone tests (p. 1076), bank
  *     15.
- *   D and E: EXDAP to CM/END (pp. 1077-1092, bank 15).
+ *   D: exdap.c, the extra atmospheric DAP, EXDAP to EXDAP2 (pp.
+ *     1077-1079), bank 15.
+ *   E: SETJTAG to CM/END (pp. 1079-1092, bank 15).
  * The binding runs the faithful port's routines for the keys no part has
  * written yet. */
 #ifndef READABLE_ENTRY_DAP_H
@@ -110,6 +112,28 @@ void biasedz(void);            /* BIASEDZ */
 void biasedz_after_3ddz(void); /* BIASEDZ +010 */
 void two_d_sdz(void);          /* 2D/SDZ (no key: only called) */
 void jet_code(word table);     /* INDEX A; CAF table */
+void index_a_ca(word base);    /* INDEX A; CA base */
+
+/* ---- Part D: exdap.c (bank 15) ---- */
+void exdap(void);                /* EXDAP */
+void exdap_tcf(void);            /* EXDAP +3 */
+void exdap_ad_c45lim(void);      /* EXDAP +4 */
+void exdap_ts_a(void);           /* EXDAP +5 */
+void exdap_p63_plus0(void);      /* EXDAP +013 */
+void exdap_p63_negative(void);   /* EXDAP +014 */
+void exdap_phaschng(void);       /* EXDAP +015 */
+void exdap_after_phaschng(void); /* EXDAP +017 */
+void exdap4(void);               /* EXDAP4 */
+void exdap1(void);               /* EXDAP1 */
+void exdap1_mode0(void);         /* EXDAP1 +5 */
+void exdap1_after_biasedz(void); /* EXDAP1 +011 */
+void exdap1_after_alfa_dz(void); /* EXDAP1 +022 */
+void exdap2_p63flag(void);       /* EXDAP2 +3 */
+void exdap2_paxerr1(void);       /* EXDAP2 +013 */
+void exdap2_betadot(void);       /* EXDAP2 +022 */
+void exdap2_after_biasedz(void); /* EXDAP2 +024 */
+void exdap2_cs_l(void);          /* EXDAP2 +041 */
+void nsec_constant(void);        /* EXDAP2 +043, NSEC */
 
 #endif
 
