@@ -277,6 +277,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Fixed-fixed constant pool | `FIXED_FIXED_CONSTANT_POOL.agc` (LM pp. 1095-1099, CM pp. 1200-1204) | [`src/constant_pool/`](src/constant_pool/) | The constants every bank reaches with a CAF, in fixed-fixed memory (banks 02 and 03), in `fixed_fixed_constant_pool.c`: the indexed table (DPOSMAX, POSMAX, NEG1/2 and the bit table BIT15 to BIT1), NEG0 and ZERO, the small numbers, the priorities PRIO3 to PRIO37 and the negative words to NEGONE, in rising order, each written as the listing has it (OCT, DEC, VN) and laid out where the listing assembles it; the lines for words kept in other files, and the equates, stay as comments. The LM's pool alone has OCT33 and OCT35. Data only: the readable routines name these words by their labels (names.h) |
 | Interpretive constants | `INTERPRETIVE_CONSTANT.agc` (LM pp. 1100-1101; the CM's `INTERPRETIVE_CONSTANTS.agc`, pp. 1205-1206) | [`src/constant_pool/`](src/constant_pool/) | The vectors and double words interpretive code names as operands, in `interpretive_constants.c`, laid out twice because the interpreter reaches a fixed operand only in its own half of the rope: at INTPRET1, DP1/4TH, the unit vectors UNITZ, UNITY and UNITX sharing their words, the zero vector ZEROVECS and DPPOSMAX; at INTPRET2, the same as ZUNIT, YUNIT, XUNIT and ZEROVEC, then -0, -6 and -12 and the two LODPMAX. Each word is written as the listing has it (2DEC, 2OCT, OCT, DEC). Data only: the readable routines name these words by their labels (names.h) |
 | Latitude, longitude and altitude | `LATITUDE_LONGITUDE_SUBROUTINES.agc` (LM pp. 1133-1139, CM pp. 1236-1242) | [`src/lat_long/`](src/lat_long/) | Between a position vector and latitude, longitude and altitude over the earth or the moon (LUNAFLAG), all interpretive code in bank 13, the same in both missions. LAT-LONG turns the vector into the planet's axes (R-TO-RP) and takes the latitude and longitude from it by ARCTAN and the altitude above the radius SETRE gives; LALOTORV goes the other way (RP-TO-R). GETERAD is the earth's radius at a latitude on the ellipsoid (with ERADFLAG), SETGAMMA the ratio that turns latitude on the ellipsoid into the direction from the centre, and ARCTAN an angle from its sine and cosine, in revolutions within a half turn either way. The CM's file keeps its own ERAD and 504RM |
+| Planetary inertial orientation | `PLANETARY_INERTIAL_ORIENTATION.agc` (LM pp. 1140-1148, CM pp. 1243-1251) | [`src/planetary/`](src/planetary/) | Between the reference axes and a planet's own, which turn with it, the earth's or the moon's (MPAC zero for the earth), all interpretive code, the same in both missions. RP-TO-R takes a vector in the planet's axes to the reference axes, R=MT(T)*(RP+LPXRP); R-TO-RP goes the other way, RP=M(T)*(R-LXR). MOONMX builds the moon's matrix M at a time from three angles that grow at steady rates (B, F and the node, each by NEWANGLE, X=X0+(XDOT)(T+T0)) and the tilt of the moon's equator; EARTHMX the earth's, a turn about its axis; EARTHL the earth's small vector L. The LM's code is spread over banks 24, 25, 26 and 6 (MOONMX goes on at MOONMXA in bank 25); the CM's is all in bank 26 and keeps the moon's and the earth's constants at its end |
 
 Beside them:
 
@@ -1018,6 +1019,14 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    area, ALPHAV, LAT, LONG, ALT, ALPHAM, ERADM, the returns in INCORPEX
    and S2, RLS, the flag words of LUNAFLAG and ERADFLAG, the E-bank often
    ALPHAV's, NEWJOB, the latches); every key must run readable code.
+   `make planetary-cases` runs PLANETARY_INERTIAL_ORIENTATION, both
+   missions, the same way (tests/planetary_cases.c): the words of each
+   part against the rope, the keys, then readable and faithful side by
+   side at every key, 4,096 states for each key (MPAC, often zero, and the
+   push-down list, the work area with the vector, the time, the matrix
+   and the index registers, the returns in S1, S2 and QPRET, the launch
+   data TIMSUBO, AZO, AXO, -AYO and 504LM, the E-bank often E3 or E4,
+   NEWJOB, the latches); every key must run readable code.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
