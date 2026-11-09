@@ -124,6 +124,8 @@ static const struct basic_entry {
     {KEY(CONICS_BANK, DELTIME + 027u), deltime_after_poly},
     {KEY(CONICS_BANK, DELTIME + 033u), deltime_after_second_exit},
     {KEY(CONICS_BANK, DELTIME + 061u), deltime_after_second_poly},
+    {KEY(CONICS_BANK, POLYCOEF + 010u), getx_after_exit},
+    {KEY(CONICS_BANK, POLYCOEF + 030u), getx_after_poly},
 #if COMANCHE055
     {KEY(CONICS_BANK, CHECKCTR), checkctr},
 #endif
@@ -142,7 +144,8 @@ static const struct basic_entry *basic_entry(uint16_t key)
 
 /* The parts of the code written so far. */
 static const struct interpretive_code *const codes[] = {
-    &KEPLER_CODE, &DELTIME_CODE, &DELTIME_S_CODE, &DELTIME_C_CODE, &ITERATOR_CODE, &NEWSTATE_CODE,
+    &KEPLER_CODE,   &DELTIME_CODE,  &DELTIME_S_CODE, &DELTIME_C_CODE, &ITERATOR_CODE,
+    &NEWSTATE_CODE, &TIMETHET_CODE, &PARAM_CODE,     &GETX_CODE,      &GETX_SERIES_CODE,
 };
 
 /* The part of the code an address of a bank is in, or none. */
@@ -159,8 +162,8 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
 
 #if COMANCHE055
 /* The CM's keys a pair's right-hand order waits at in EDOP while its
- * left, an RTB, runs a routine: KEPLER's RTB BHIZ CHECKCTR and DELTIME's
- * two RTB PDDL TPMODEs. The routine ends at DANZIG, which finds the order
+ * left, an RTB, runs a routine: KEPLER's RTB BHIZ CHECKCTR, DELTIME's
+ * two RTB PDDL TPMODEs and GETX's at 1/WLOOP. The routine ends at DANZIG, which finds the order
  * in EDOP and resumes the pass at LOC: EDOP holds the order's code plus
  * one. */
 static const struct pending_order {
@@ -170,6 +173,7 @@ static const struct pending_order {
     {KEY(CONICS_BANK, KEPLERN + 0244u), ORDER_BHIZ + 1u}, /* BRNCHCTR +1 */
     {KEY(CONICS_BANK, DELTIME + 071u), ORDER_PDDL + 1u},
     {KEY(CONICS_BANK, DELTIME + 0100u), ORDER_PDDL + 1u},
+    {KEY(CONICS_BANK, K_1_WLOOP + 2u), ORDER_PDDL + 1u},
 };
 
 static const struct pending_order *pending_order(uint16_t key)

@@ -222,6 +222,9 @@
 /* STODL*: a store, and a load indexed by the address word after it
  * ("STODL* MARKDOWN +1" then "0,1"): its code is 020000. */
 #define STODL_STAR_AT(name, n) ((word)(020000u | (I_##name + (n) + 1u)))
+/* STOVL*: a store, and a vector load indexed by the address word after
+ * it ("STOVL* COGA" then "MUTABLE,1"): its code is 030000. */
+#define STOVL_STAR(name) ((word)(030000u | (I_##name + 1u)))
 
 /* The job's work area (its VAC area, or a NOVAC job's) word by word, as
  * the listing numbers it: "10D" is word 10 (decimal) from FIXLOC, written
