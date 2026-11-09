@@ -280,12 +280,14 @@
  * (20577: X1 leaves it as it is), "0,2" SR_X2(0) (57176), "2,2" SRR_X2(2)
  * (56174, with the round bit) and SLR_X2(2) (56574). VSR* takes SR*'s,
  * and SL* and VSL* by X1 a left shift's: "0 -1,1" is SL_X1(-1) (20200);
- * SRR* by X1, "0,1", SRR_X1(0) (21601). */
+ * SRR* by X1, "0,1", SRR_X1(0) (21601), and SLR* by X1, "1,1", SLR_X1(1)
+ * (21202). */
 #define SR_X1(n)  SR_COUNT(n)
 #define SL_X1(n)  SL_COUNT(n)
 #define SRR_X1(n) ((word)(020000u + 01000u + 0600u + (unsigned)(n) + 1u))
 #define SR_X2(n)  ((word)(~SR_COUNT(n) & 077777u))
 #define SRR_X2(n) ((word)(~(020000u + 01000u + 0600u + (unsigned)(n) + 1u) & 077777u))
+#define SLR_X1(n) SLR_COUNT(n)
 #define SLR_X2(n) ((word)(~SLR_COUNT(n) & 077777u))
 /* SL*'s by X2, "0 -2,2": a left shift's, complemented, as VSL*'s. */
 #define SL_X2(n) VSL_X2(n)
