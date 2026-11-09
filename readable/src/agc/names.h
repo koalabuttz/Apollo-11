@@ -5179,6 +5179,11 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define INTBANK  ((word)KW_INTBANK)  /* BBCON INTEGRV */
 #define FORTYONE ((word)KW_FORTYONE) /* DEC 41 */
 
+/* CONIC_SUBROUTINES.agc: KEPLER's start, DELTIME and CHECKCTR. */
+#define KEPLERN  ((word)K_KEPLERN)
+#define DELTIME  ((word)K_DELTIME)
+#define CHECKCTR ((word)K_CHECKCTR)
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

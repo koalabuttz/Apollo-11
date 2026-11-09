@@ -230,6 +230,8 @@ PL_SOURCES := $(INTERPRETER_SOURCES) src/planetary/planetary.c src/binding/plane
 MINC_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/measurement_inc/*.c)) \
 	src/integration_init/moves.c src/rtb_op_codes/rtb_op_codes.c \
 	src/binding/measurement_inc_routines.c
+CON_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/conics/*.c)) \
+	src/rtb_op_codes/rtb_op_codes.c src/binding/conics_routines.c
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
 	src/binding/standard_lead_routines.c)
 PIN_SOURCES := src/agc/agc.c $(sort $(wildcard src/interpreter/*.c)) src/interbank/interbank.c \
@@ -242,11 +244,11 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) $(R60_SOURCES) \
-	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(P40_SOURCES) $(CP40_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SO_SOURCES) $(BB_SOURCES) $(LLD_SOURCES) $(THR_SOURCES) $(LLGE_SOURCES) $(P70_SOURCES) $(P12_SOURCES) $(ASC_SOURCES) $(SVC_SOURCES) $(LAD_SOURCES) $(FCW_SOURCES) $(P51_SOURCES) $(CP51_SOURCES) $(EPH_SOURCES) $(CP61_SOURCES) $(CSVC_SOURCES) $(CRENT_SOURCES) $(CBAT_SOURCES) $(CP37_SOURCES) $(CTVCI_SOURCES) $(CTVCX_SOURCES) $(CTVCM_SOURCES) $(CTVCR_SOURCES) $(CTVCD_SOURCES) $(CTVCS_SOURCES) $(CTVCL_SOURCES) $(CMYS_SOURCES) $(CRCS_SOURCES) $(CAM_SOURCES) $(CRDX_SOURCES) $(CJS_SOURCES) $(CIC_SOURCES) $(CP11_SOURCES) $(CTPI_SOURCES) $(CED_SOURCES) $(FFCP_SOURCES) $(LL_SOURCES) $(PL_SOURCES) $(MINC_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
+	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(P40_SOURCES) $(CP40_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SO_SOURCES) $(BB_SOURCES) $(LLD_SOURCES) $(THR_SOURCES) $(LLGE_SOURCES) $(P70_SOURCES) $(P12_SOURCES) $(ASC_SOURCES) $(SVC_SOURCES) $(LAD_SOURCES) $(FCW_SOURCES) $(P51_SOURCES) $(CP51_SOURCES) $(EPH_SOURCES) $(CP61_SOURCES) $(CSVC_SOURCES) $(CRENT_SOURCES) $(CBAT_SOURCES) $(CP37_SOURCES) $(CTVCI_SOURCES) $(CTVCX_SOURCES) $(CTVCM_SOURCES) $(CTVCR_SOURCES) $(CTVCD_SOURCES) $(CTVCS_SOURCES) $(CTVCL_SOURCES) $(CMYS_SOURCES) $(CRCS_SOURCES) $(CAM_SOURCES) $(CRDX_SOURCES) $(CJS_SOURCES) $(CIC_SOURCES) $(CP11_SOURCES) $(CTPI_SOURCES) $(CED_SOURCES) $(FFCP_SOURCES) $(LL_SOURCES) $(PL_SOURCES) $(MINC_SOURCES) $(CON_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
 HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases throttle-cases llge-cases p70-cases p12-cases ascent-cases servicer-cases landing-displays-cases findcduw-cases p51-p53-cases cm-p51-p53-cases ephemerides-cases cm-p61-p67-cases cm-servicer-cases cm-reentry-cases cm-body-attitude-cases cm-p37-p70-cases cm-tvc-init-cases cm-tvc-exec-cases cm-tvc-massprop-cases cm-tvc-restarts-cases cm-tvc-daps-cases cm-tvc-stroke-cases cm-tvc-roll-cases cm-mysubs-cases cm-rcs-dap-cases cm-auto-man-cases cm-rcs-dap-exec-cases cm-jet-select-cases cm-imu-cal-cases cm-p11-cases cm-tpi-search-cases cm-entry-dap-cases constant-pool-cases lat-long-cases planetary-cases measurement-inc-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases throttle-cases llge-cases p70-cases p12-cases ascent-cases servicer-cases landing-displays-cases findcduw-cases p51-p53-cases cm-p51-p53-cases ephemerides-cases cm-p61-p67-cases cm-servicer-cases cm-reentry-cases cm-body-attitude-cases cm-p37-p70-cases cm-tvc-init-cases cm-tvc-exec-cases cm-tvc-massprop-cases cm-tvc-restarts-cases cm-tvc-daps-cases cm-tvc-stroke-cases cm-tvc-roll-cases cm-mysubs-cases cm-rcs-dap-cases cm-auto-man-cases cm-rcs-dap-exec-cases cm-jet-select-cases cm-imu-cal-cases cm-p11-cases cm-tpi-search-cases cm-entry-dap-cases constant-pool-cases lat-long-cases planetary-cases measurement-inc-cases conics-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
@@ -261,7 +263,7 @@ all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases
 	cm-tvc-massprop-cases cm-tvc-restarts-cases cm-tvc-daps-cases cm-tvc-stroke-cases \
 	cm-tvc-roll-cases cm-mysubs-cases cm-rcs-dap-cases cm-auto-man-cases cm-rcs-dap-exec-cases \
 	cm-jet-select-cases cm-imu-cal-cases cm-p11-cases cm-tpi-search-cases cm-entry-dap-cases \
-	constant-pool-cases lat-long-cases planetary-cases measurement-inc-cases
+	constant-pool-cases lat-long-cases planetary-cases measurement-inc-cases conics-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -3179,6 +3181,56 @@ measurement-inc-cases: $(BUILD)/minc-oracle-lm $(BUILD)/minc-oracle-cm $(BUILD)/
 	./$(BUILD)/minc-oracle-cm $(ROPES)
 	./$(BUILD)/minc-cases-lm $(ROPES)
 	./$(BUILD)/minc-cases-cm $(ROPES)
+
+# CONIC_SUBROUTINES.agc, both missions' conics (written part by part): the
+# port's tests (tests/test_lm_conic_compiled.c and test_cm_conics.c, their
+# frozen cases run to their stops through the programs of
+# tests/lm_conic_compiled_target.c and cm_conics_target.c, against the
+# original programs' yaAGC digests) through the readable tables, with
+# tests/with_ropes.c loading the ropes the readable interpreter reads; then
+# tests/conics_cases.c side by side, for each mission, with the faithful
+# routines (renamed faithful_, which also run the keys no part has written
+# yet). The faithful routines run TPMODE (rtb_modes.c) and the LM's
+# CHECKCTR (lm_conic_checkctr.c) from their RTBs.
+CON_NAMES_LM := lm_conic_compiled_basic lm_conic_compiled_interpretive
+CON_NAMES_CM := cm_conics_basic cm_conics_interpretive
+CON_COMMON := $(LL_COMMON) $(PORT)/src/rtb_angles.c $(PORT)/src/rtb_modes.c \
+	$(PORT)/src/lm_conic_checkctr.c
+
+$(BUILD)/con-faithful-lm.o: $(PORT)/src/lm_conic_compiled.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(CON_NAMES_LM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/con-faithful-cm.o: $(PORT)/src/cm_conics.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(CON_NAMES_CM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/con-test-lm.o: $(PORT)/tests/test_lm_conic_compiled.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/con-test-cm.o: $(PORT)/tests/test_cm_conics.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/con-oracle-lm: $(CON_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/con-faithful-lm.o \
+		$(BUILD)/con-test-lm.o tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CON_COMMON) $(PORT)/tests/lm_conic_compiled_target.c \
+		tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/con-oracle-cm: $(CON_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/con-faithful-cm.o \
+		$(BUILD)/con-test-cm.o tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CON_COMMON) $(PORT)/tests/cm_conics_target.c \
+		tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/con-cases-lm: $(CON_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/con-faithful-lm.o \
+		tests/conics_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(CON_COMMON) $(filter %.o,$^) tests/conics_cases.c -o $@
+$(BUILD)/con-cases-cm: $(CON_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/con-faithful-cm.o \
+		tests/conics_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(CON_COMMON) $(filter %.o,$^) tests/conics_cases.c -o $@
+
+conics-cases: $(BUILD)/con-oracle-lm $(BUILD)/con-oracle-cm $(BUILD)/con-cases-lm \
+		$(BUILD)/con-cases-cm
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/con-oracle-lm $(ROPES)
+	./$(BUILD)/con-oracle-cm $(ROPES)
+	./$(BUILD)/con-cases-lm $(ROPES)
+	./$(BUILD)/con-cases-cm $(ROPES)
 
 # LUNAR_LANDING_GUIDANCE_EQUATIONS.agc, the LM's landing guidance: the
 # port's test (tests/test_lm_llge.c, its frozen cases run to their stops

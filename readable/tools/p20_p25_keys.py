@@ -87,7 +87,9 @@ FILES = (('lm_p20_p25', READABLE / 'src/binding/p20_p25_keys.inc'),
          ('lm_planetary', READABLE / 'src/binding/planetary_keys.inc'),
          ('cm_planetary', READABLE / 'src/binding/cm_planetary_keys.inc'),
          ('lm_measurement_inc', READABLE / 'src/binding/measurement_inc_keys.inc'),
-         ('cm_measurement_inc', READABLE / 'src/binding/cm_measurement_inc_keys.inc'))
+         ('cm_measurement_inc', READABLE / 'src/binding/cm_measurement_inc_keys.inc'),
+         ('lm_conic_compiled', READABLE / 'src/binding/conics_keys.inc'),
+         ('cm_conics', READABLE / 'src/binding/cm_conics_keys.inc'))
 
 
 def generate(m):
