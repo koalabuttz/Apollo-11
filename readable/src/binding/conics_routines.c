@@ -142,10 +142,7 @@ static const struct basic_entry *basic_entry(uint16_t key)
 
 /* The parts of the code written so far. */
 static const struct interpretive_code *const codes[] = {
-    &KEPLER_CODE,
-    &DELTIME_CODE,
-    &DELTIME_S_CODE,
-    &DELTIME_C_CODE,
+    &KEPLER_CODE, &DELTIME_CODE, &DELTIME_S_CODE, &DELTIME_C_CODE, &ITERATOR_CODE, &NEWSTATE_CODE,
 };
 
 /* The part of the code an address of a bank is in, or none. */

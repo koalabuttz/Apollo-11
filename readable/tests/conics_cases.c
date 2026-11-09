@@ -16,8 +16,9 @@
  * and its mode, the push-down list and its pointer, the work area (the
  * conics' variables, X, XI, ITERCTR and the rest, the index registers as
  * the program sets them, the returns in S1, S2 and QPRET), the E-bank,
- * the words of E3, E4 and E5 (the state vectors, TAU., XKEPNEW, the
- * return in KEPRTN, DELX and DELT), NEWJOB, the overflow indicator, now
+ * the words of E3, E4, E5 and E7 (the state vectors, TAU., XKEPNEW, the
+ * return in KEPRTN, DELX, DELT, ITERATOR's and NEWSTATE's words), the
+ * flagwords, NEWJOB, the overflow indicator, now
  * and then any word but the interpreter's own, the latches, or a state
  * the routines refuse (another work area, another bank, BBANK not the two
  * banks, a word of 16 bits). At the CM's keys after an RTB, mostly Z at
@@ -49,9 +50,10 @@ struct interpretive_code {
     unsigned count;
     const uint16_t *words;
 };
-extern const struct interpretive_code KEPLER_CODE, DELTIME_CODE, DELTIME_S_CODE, DELTIME_C_CODE;
-static const struct interpretive_code *const codes[] = {&KEPLER_CODE, &DELTIME_CODE,
-                                                        &DELTIME_S_CODE, &DELTIME_C_CODE};
+extern const struct interpretive_code KEPLER_CODE, DELTIME_CODE, DELTIME_S_CODE, DELTIME_C_CODE,
+    ITERATOR_CODE, NEWSTATE_CODE;
+static const struct interpretive_code *const codes[] = {
+    &KEPLER_CODE, &DELTIME_CODE, &DELTIME_S_CODE, &DELTIME_C_CODE, &ITERATOR_CODE, &NEWSTATE_CODE};
 bool conics_readable(uint16_t key, bool order_pair);
 #if LUMINARY099
 extern const agc_routine_table lm_conic_compiled_basic, lm_conic_compiled_interpretive;
@@ -87,6 +89,7 @@ typedef cm_native_io mission_io;
 #define BANKSET_AT  0165u
 #define PUSHLOC_AT  0166u
 #define NEWJOB_AT   0067u
+#define STATE_AT    0074u /* the flagwords, STATE to STATE +11 */
 #if LUMINARY099
 #define NEWOPS_AT         06070u
 #define KEPRTN_AT         02112u                          /* in E4 */
@@ -227,18 +230,24 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
         for (k = 010u; k < 046u; ++k)
             if (rnd() % 2u) w[(fixloc + k) & 03777u] = value_word();
         if (rnd() % 4u == 0u) w[(fixloc + 026u) & 03777u] = (uint16_t)(rnd() % 3u);
-        /* Often the E-bank one the file's words are in (E3, E4 or E5),
-         * and now and then any of those banks' words. */
+        /* Often the E-bank one the file's words are in (E3, E4, E5 or
+         * E7), and now and then any of those banks' words. */
         if (rnd() % 2u) {
-            eb = (uint16_t)(3u + rnd() % 3u);
+            static const uint16_t banks[] = {3u, 4u, 5u, 7u};
+            eb = banks[rnd() % 4u];
             w[3] = (uint16_t)(eb << 8);
         }
-        for (k = 3u; k < 6u; ++k)
+        for (k = 0; k < 4u; ++k)
             if (rnd() % 4u == 0u) {
-                unsigned j, at = k * 0400u;
+                static const uint16_t banks[] = {3u, 4u, 5u, 7u};
+                unsigned j, at = banks[k] * 0400u;
                 for (j = 0; j < 0400u; ++j)
                     if (rnd() % 8u == 0u) w[at + j] = value_word();
             }
+        /* The flagwords: a bit now and then (SLOPESW, ORDERSW and the
+         * rest). */
+        for (k = 0; k < 12u; ++k)
+            if (rnd() % 4u == 0u) w[STATE_AT + k] ^= (uint16_t)(1u << (rnd() % 15u));
         /* The returns: places in fixed memory, as the interpreter reads
          * them (below). KEPRTN too. */
         w[(fixloc + S1_OFFSET) & 03777u] = (uint16_t)(04000u + rnd() % 034000u);
