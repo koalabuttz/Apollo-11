@@ -4248,6 +4248,7 @@
 #define I_CDUTRIG 047477u
 #define I_HIDP1_4 055324u
 #define I_VMOON 002751u
+#define I_ZUNIT 011557u
 #define I_TIG 003412u
 #define I_INTYPFLG 000070u
 #define I_GRP2PC 056750u
