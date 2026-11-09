@@ -20,7 +20,10 @@
  *     pp. 1337-1340);
  *   part 2: OBLATE to COSPHIE (oblate.c: LM pp. 1234-1237, CM pp.
  *     1341-1344), and the LM's QUALITY1 and QUALITY2 (quality.c: LM pp.
- *     1247-1248).
+ *     1247-1248);
+ *   part 3: DIFEQTAB to DIFEQ0, with the sphere of influence checks
+ *     (timestep.c: LM pp. 1237-1238, CM pp. 1344-1345), and DOSWITCH to
+ *     MINIRECT (rectify.c: LM pp. 1239-1240, CM pp. 1345-1347).
  * The binding (src/binding/orbital_integration_routines.c) gives the keys
  * of the faithful port's tables written so far their readable routines. */
 #ifndef READABLE_ORBITAL_INTEGRATION_H
@@ -49,6 +52,10 @@ extern const struct interpretive_code OBLATE_CODE;
 #if LUMINARY099
 extern const struct interpretive_code QUALITY1_CODE;
 #endif
+
+/* Part 3: DIFEQTAB to DIFEQ0 with the sphere checks; DOSWITCH, ORIGCHNG,
+ * RECTIFY and MINIRECT. */
+extern const struct interpretive_code TIMESTEP_CODE, DOSWITCH_CODE;
 
 /* Part 1's basic code: after INT-ABRT's EXIT. */
 void int_abrt_after_exit(void); /* INT-ABRT +1: TC POODOO */

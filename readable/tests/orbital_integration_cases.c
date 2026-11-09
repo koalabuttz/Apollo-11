@@ -48,14 +48,13 @@ struct interpretive_code {
     unsigned count;
     const uint16_t *words;
 };
-extern const struct interpretive_code KEPPREP_CODE, ACCOMP_CODE, OBLATE_CODE;
+extern const struct interpretive_code KEPPREP_CODE, ACCOMP_CODE, OBLATE_CODE, TIMESTEP_CODE,
+    DOSWITCH_CODE;
 #if LUMINARY099
 extern const struct interpretive_code QUALITY1_CODE;
 #endif
 static const struct interpretive_code *const codes[] = {
-    &KEPPREP_CODE,
-    &ACCOMP_CODE,
-    &OBLATE_CODE,
+    &KEPPREP_CODE,  &ACCOMP_CODE, &OBLATE_CODE, &TIMESTEP_CODE, &DOSWITCH_CODE,
 #if LUMINARY099
     &QUALITY1_CODE,
 #endif
@@ -112,6 +111,13 @@ typedef cm_native_io mission_io;
  * NBRANCH's CGOTO, which picks a DIFEQTAB entry by MPAC: DIFEQCNT (0,
  * -12 or -24, as SLOAD loads it) times -1/12. */
 #define K11(z) (uint16_t)(011u * 1024u + (z) % 1024u)
+/* ORIGEX, the return ORIGCHNG and the CM's CHKSWTCH keep, which the CM's
+ * RPQOK and EARSPH take by GOTO. */
+#if LUMINARY099
+#define ORIGEX_AT 02112u
+#else
+#define ORIGEX_AT 02270u
+#endif
 #if LUMINARY099
 static const uint16_t x2_keys[] = {K11(02401u), K11(02426u), K11(02750u), K11(03025u), K11(03102u),
                                    K11(03107u), K11(03116u), K11(03122u), K11(03140u)};
@@ -335,6 +341,7 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
         unsigned at = (w[FIXLOC_AT] + k) & 03777u;
         if (!(w[at] & 074000u)) w[at] = (uint16_t)(04000u + rnd() % 034000u);
     }
+    if (!(w[ORIGEX_AT] & 074000u)) w[ORIGEX_AT] = (uint16_t)(04000u + rnd() % 034000u);
     w[6] = (uint16_t)(w[4] | eb);
     /* Now and then a state no program has: BBANK not the two banks, or a
      * word of 16 bits. */
