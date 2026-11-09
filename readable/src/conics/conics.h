@@ -26,9 +26,13 @@
  *   part 3: TIME-THETA (timethet.c: LM p. 1186, CM p. 1289), PARAM and
  *     GEOM (param.c: LM pp. 1186-1188, CM pp. 1289-1291) and GETX (getx.c:
  *     LM pp. 1189-1192, CM pp. 1292-1295);
- *   part 4: LAMBERT (lambert.c: LM pp. 1193-1197, CM pp. 1296-1300).
- * The binding (src/binding/conics_routines.c) runs the faithful port's
- * routines at the keys no part has written yet. */
+ *   part 4: LAMBERT (lambert.c: LM pp. 1193-1197, CM pp. 1296-1300);
+ *   part 5: TIME-RADIUS (timerad.c: LM pp. 1198-1199, CM pp.
+ *     1301-1302), APSIDES and ABTCONIC (apsides.c: LM pp. 1200-1201, CM
+ *     pp. 1303-1304) and the constants in bank 4 (constants.c: LM p.
+ *     1185, CM p. 1288).
+ * With part 5 the file is whole: the binding
+ * (src/binding/conics_routines.c) runs readable code at every key. */
 #ifndef READABLE_CONICS_H
 #define READABLE_CONICS_H
 
@@ -62,6 +66,9 @@ extern const struct interpretive_code TIMETHET_CODE, PARAM_CODE, GETX_CODE, GETX
 /* Part 4: LAMBERT. */
 extern const struct interpretive_code LAMBERT_CODE;
 
+/* Part 5: TIME-RADIUS, APSIDES with ABTCONIC, and the constants. */
+extern const struct interpretive_code TIMERAD_CODE, APSIDES_CODE, CONIC_CONSTANTS;
+
 /* DELTIME's basic code: the two series by POLY. */
 void deltime_after_exit(void);        /* DELTIME +1: TC POLY, S(XI)'s series */
 void deltime_after_poly(void);        /* DELTIME +027: TC INTPRET */
@@ -71,6 +78,9 @@ void deltime_after_second_poly(void); /* DELTIME +061: TC INTPRET */
 /* GETX's basic code: its series by POLY. */
 void getx_after_exit(void); /* POLYCOEF +010: TC POLY */
 void getx_after_poly(void); /* POLYCOEF +030: TC INTPRET */
+
+/* ABTCONIC's basic code: alarm 607. */
+void abtconic_after_exit(void); /* ABTCONIC +1: TC POODOO */
 
 /* CHECKCTR: ITERCTR counted down, to MPAC, then DANZIG. KEPLER and
  * ITERATOR reach it by RTB. */

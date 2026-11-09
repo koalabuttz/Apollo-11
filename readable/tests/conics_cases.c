@@ -52,11 +52,11 @@ struct interpretive_code {
 };
 extern const struct interpretive_code KEPLER_CODE, DELTIME_CODE, DELTIME_S_CODE, DELTIME_C_CODE,
     ITERATOR_CODE, NEWSTATE_CODE, TIMETHET_CODE, PARAM_CODE, GETX_CODE, GETX_SERIES_CODE,
-    LAMBERT_CODE;
+    LAMBERT_CODE, TIMERAD_CODE, APSIDES_CODE, CONIC_CONSTANTS;
 static const struct interpretive_code *const codes[] = {
-    &KEPLER_CODE,   &DELTIME_CODE,     &DELTIME_S_CODE, &DELTIME_C_CODE,
-    &ITERATOR_CODE, &NEWSTATE_CODE,    &TIMETHET_CODE,  &PARAM_CODE,
-    &GETX_CODE,     &GETX_SERIES_CODE, &LAMBERT_CODE};
+    &KEPLER_CODE,   &DELTIME_CODE,  &DELTIME_S_CODE, &DELTIME_C_CODE, &ITERATOR_CODE,
+    &NEWSTATE_CODE, &TIMETHET_CODE, &PARAM_CODE,     &GETX_CODE,      &GETX_SERIES_CODE,
+    &LAMBERT_CODE,  &TIMERAD_CODE,  &APSIDES_CODE,   &CONIC_CONSTANTS};
 bool conics_readable(uint16_t key, bool order_pair);
 #if LUMINARY099
 extern const agc_routine_table lm_conic_compiled_basic, lm_conic_compiled_interpretive;
@@ -428,6 +428,20 @@ int main(int argc, char **argv)
     }
     failures += tables_differ(&readable_basic, &faithful_basic, "basic");
     failures += tables_differ(&readable_interpretive, &faithful_interpretive, "interpretive");
+    for (i = 0; i < faithful_basic.count; ++i) {
+        uint16_t key = faithful_basic.entries[i].physical;
+        if (!conics_readable(key, false)) {
+            printf("FAIL: basic key %02o,%04o not readable\n", key / 1024u, 02000u + key % 1024u);
+            ++failures;
+        }
+    }
+    for (i = 0; i < faithful_interpretive.count; ++i) {
+        uint16_t key = faithful_interpretive.entries[i].physical;
+        if (!conics_readable(key, true)) {
+            printf("FAIL: order pair %02o,%04o not readable\n", key / 1024u, 02000u + key % 1024u);
+            ++failures;
+        }
+    }
     if (failures || mission_count == 0u) {
         printf("conics-cases " MISSION ": %u failures\n", failures + (mission_count == 0u));
         return 1;

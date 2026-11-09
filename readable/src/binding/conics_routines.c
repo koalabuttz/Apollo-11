@@ -7,11 +7,7 @@
  * their order (conics_keys.inc and cm_conics_keys.inc, which
  * tools/p20_p25_keys.py writes from them).
  *
- * Partial file: Luminary099/CONIC_SUBROUTINES.agc and
- * Comanche055/CONIC_SUBROUTINES.agc (COVERAGE counts them when whole).
- * The keys of the parts written so far run readable routines; the others
- * run the faithful port's (renamed faithful_) until their parts are
- * written.
+ * Every key runs a readable routine.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
  * the file (POLY, DANZIG) or reaches NEWOPS through a TC INTPRET. An order
@@ -126,6 +122,7 @@ static const struct basic_entry {
     {KEY(CONICS_BANK, DELTIME + 061u), deltime_after_second_poly},
     {KEY(CONICS_BANK, POLYCOEF + 010u), getx_after_exit},
     {KEY(CONICS_BANK, POLYCOEF + 030u), getx_after_poly},
+    {KEY(CONICS_BANK, ABTCONIC + 1u), abtconic_after_exit},
 #if COMANCHE055
     {KEY(CONICS_BANK, CHECKCTR), checkctr},
 #endif
@@ -144,9 +141,9 @@ static const struct basic_entry *basic_entry(uint16_t key)
 
 /* The parts of the code written so far. */
 static const struct interpretive_code *const codes[] = {
-    &KEPLER_CODE,   &DELTIME_CODE,     &DELTIME_S_CODE, &DELTIME_C_CODE,
-    &ITERATOR_CODE, &NEWSTATE_CODE,    &TIMETHET_CODE,  &PARAM_CODE,
-    &GETX_CODE,     &GETX_SERIES_CODE, &LAMBERT_CODE,
+    &KEPLER_CODE,   &DELTIME_CODE,  &DELTIME_S_CODE, &DELTIME_C_CODE, &ITERATOR_CODE,
+    &NEWSTATE_CODE, &TIMETHET_CODE, &PARAM_CODE,     &GETX_CODE,      &GETX_SERIES_CODE,
+    &LAMBERT_CODE,  &TIMERAD_CODE,  &APSIDES_CODE,
 };
 
 /* The part of the code an address of a bank is in, or none. */
@@ -242,18 +239,6 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
 
 /* ---- The keys, in the faithful tables' order ---- */
 
-/* The faithful tables, renamed. */
-#if LUMINARY099
-extern const agc_routine_table faithful_lm_conic_compiled_basic,
-    faithful_lm_conic_compiled_interpretive;
-#define faithful_basic        faithful_lm_conic_compiled_basic
-#define faithful_interpretive faithful_lm_conic_compiled_interpretive
-#else
-extern const agc_routine_table faithful_cm_conics_basic, faithful_cm_conics_interpretive;
-#define faithful_basic        faithful_cm_conics_basic
-#define faithful_interpretive faithful_cm_conics_interpretive
-#endif
-
 /* A readable basic routine; a run it refuses part way leaves the state
  * as it was. */
 static enum exec_status run_basic(void (*routine)(void), apollo_overlay_state *state,
@@ -271,24 +256,21 @@ static enum exec_status run_basic(void (*routine)(void), apollo_overlay_state *s
     return EXEC_OK;
 }
 
-/* Each basic key's routine: the readable one, or the faithful port's until
- * its part is written. */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each basic key's routine. */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct basic_entry *entry = basic_entry(key);
     mission_io *io = device;
 
-    if (!entry) return faithful_basic.entries[index].call(program, state, device);
-    if (!program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
+    if (!entry || !program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
     if (FBANK != (word)((key / 1024u) << 10) || !sane(BASIC_WORK_AREA)) return EXEC_OUT_OF_SCOPE;
     if (entry->routine == checkctr && !checkctr_sane()) return EXEC_OUT_OF_SCOPE;
     return run_basic(entry->routine, state, io);
 }
 
-/* Each order pair's routine: one pass of the readable interpreter, or the
- * faithful port's until its part is written. */
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each order pair's routine: one pass of the readable interpreter. */
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
@@ -299,8 +281,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     enum exec_status status;
     bool started;
 
-    if (!code) return faithful_interpretive.entries[index].call(program, state, device);
-    if (!program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
+    if (!code || !program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
 #if COMANCHE055
     if (pending_order(key))
         started = LOC == at && at_danzig(bank, pending_order(key));
@@ -331,13 +312,13 @@ bool conics_readable(uint16_t key, bool order_pair)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #if LUMINARY099
 #include "conics_keys.inc"
