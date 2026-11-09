@@ -911,6 +911,7 @@
 #define K_DSPOCTIN 03412u
 #define K_ENDSPOCT 03415u
 #define K_DPOSMAX 04732u
+#define K_PRIO22 07710u
 #define K_NVSUBB 02000u
 #define K_LOADLV1 02001u
 #define K_ENTPASHI 02012u
