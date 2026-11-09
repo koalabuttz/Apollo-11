@@ -8,12 +8,9 @@
  *
  * First the words: the readable interpretive code (src/p11/), written in
  * the listing's notation, must be the original program's rope, word for
- * word. Then the keys, which must be the faithful tables', and every
- * basic key and every order pair of bank 34 must run readable code (bank
- * 37's order pairs, not yet written, the faithful port's). Then the
- * runs: each readable key from 4,096 states (each other key, which runs
- * the faithful routine through the readable table, from 16), each one of
- * the port's frozen test states
+ * word. Then the keys, which must be the faithful tables', and every key
+ * must run readable code (the file is whole). Then the runs: each key
+ * from 4,096 states, each one of the port's frozen test states
  * (c64-port/tests/cm_p11_vectors.h) entered at the key, most stirred
  * further: the restart words P11 keeps (LIFTTEMP, TLIFTOFF, PHASE5, the
  * clock), the takeover's switch SATSW, FLAGWRD6's Saturn stick bits, the
@@ -33,7 +30,7 @@
  * port runs, the other must too, with the same memory and io and
  * hardware records, word for word; where the readable one refuses, it
  * must leave everything as it found it; and the faithful routine must run
- * in at least 1 of 16 of each readable key's states. */
+ * in at least 1 of 16 of each key's states. */
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -52,7 +49,7 @@ struct interpretive_code {
     const uint16_t *words;
 };
 extern const struct interpretive_code P11_CODE, MATRXJOB_CODE, VHHDOT_CODE, GETDOWN_CODE,
-    ATTDISP_CODE, ATTDISP2_CODE, STEERSAT_CODE, S11_1_CODE, NOPOLY_CODE;
+    ATTDISP_CODE, ATTDISP2_CODE, STEERSAT_CODE, S11_1_CODE, NOPOLY_CODE, ATTDISP1_CODE;
 extern const agc_routine_table cm_p11_basic, cm_p11_interpretive;
 extern const agc_routine_table faithful_cm_p11_basic, faithful_cm_p11_interpretive;
 bool cm_p11_readable(uint16_t key, bool order_pair);
@@ -76,8 +73,7 @@ bool cm_p11_readable(uint16_t key, bool order_pair);
 #define PUSHLOC_AT  0166u
 #define X1_OFF      0046u
 
-#define CASES       4096u
-#define OTHER_CASES 16u
+#define CASES 4096u
 
 static uint32_t seed = 1101u;
 static uint16_t rnd(void)
@@ -311,17 +307,15 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hw, u
 }
 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
-                     bool order_pairs, unsigned *runs, unsigned *written)
+                     bool order_pairs, unsigned *runs)
 {
     unsigned i, n, failures = 0;
 
     for (i = 0; i < faithful->count; ++i) {
         uint16_t key = faithful->entries[i].physical;
-        bool readable_key = cm_p11_readable(key, order_pairs);
-        unsigned ran = 0, bad = 0, cases = readable_key ? CASES : OTHER_CASES;
+        unsigned ran = 0, bad = 0;
 
-        *written += readable_key;
-        for (n = 0; n < cases; ++n) {
+        for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;
             cm_native_io io, fio, rio;
             agc_hardware hw, fhw, rhw;
@@ -342,13 +336,8 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             sf = faithful->entries[i].call(&fp, &fa, &fio);
             sr = readable->entries[i].call(&rp, &ra, &rio);
             ran += sf == EXEC_OK;
-            if (!readable_key) { /* the faithful routine on both sides */
-                if (sf != sr || memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio) ||
-                    memcmp(&fhw, &rhw, sizeof fhw))
-                    why = "the table does not run the faithful routine";
-            } else if (sr != EXEC_OK &&
-                       (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio) ||
-                        memcmp(&rhw, &hw, sizeof rhw)))
+            if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio) ||
+                                  memcmp(&rhw, &hw, sizeof rhw)))
                 why = "readable refusal changed the state";
             else if (sf == EXEC_OK && sr != EXEC_OK)
                 why = "readable refused, faithful ran";
@@ -369,9 +358,9 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                                fa.words[w], start.words[w]);
             }
         }
-        if (readable_key && ran < cases / 16u && bad == 0u) {
+        if (ran < CASES / 16u && bad == 0u) {
             printf("FAIL %02o,%04o: the faithful routine ran in %u of %u states\n", key / 1024u,
-                   02000u + key % 1024u, ran, cases);
+                   02000u + key % 1024u, ran, CASES);
             ++bad;
         }
         *runs += ran;
@@ -381,17 +370,23 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 }
 
 static const struct interpretive_code *const codes[] = {
-    /* Part 2 */
-    &P11_CODE,      &MATRXJOB_CODE, &VHHDOT_CODE, &GETDOWN_CODE, &ATTDISP_CODE,
-    &ATTDISP2_CODE, &STEERSAT_CODE, &S11_1_CODE,  &NOPOLY_CODE,
+    /* Bank 34 */
+    &P11_CODE,
+    &MATRXJOB_CODE,
+    &VHHDOT_CODE,
+    &GETDOWN_CODE,
+    &ATTDISP_CODE,
+    &ATTDISP2_CODE,
+    &STEERSAT_CODE,
+    &S11_1_CODE,
+    &NOPOLY_CODE,
+    /* Bank 37 */
+    &ATTDISP1_CODE,
 };
-
-/* The order pairs part 2 writes: bank 34's. */
-#define BANK34_PAIRS 68u
 
 int main(int argc, char **argv)
 {
-    unsigned i, failures = 0, runs = 0, basic = 0, pairs = 0, words = 0;
+    unsigned i, failures = 0, runs = 0, basic = 0, words = 0;
 
     if (argc < 3 || !apollo_rope_load(0, argv[1]) || !apollo_rope_load(1, argv[2])) {
         printf("usage: %s ROPE_LM ROPE_CM\n", argv[0]);
@@ -413,28 +408,20 @@ int main(int argc, char **argv)
     }
     for (i = 0; i < faithful_cm_p11_interpretive.count; ++i) {
         uint16_t key = faithful_cm_p11_interpretive.entries[i].physical;
-        if (cm_p11_readable(key, true) != (key / 1024u == 034u)) {
-            printf("FAIL: order pair %02o,%04o %s\n", key / 1024u, 02000u + key % 1024u,
-                   key / 1024u == 034u ? "not readable" : "readable before part 3");
+        if (!cm_p11_readable(key, true)) {
+            printf("FAIL: order pair %02o,%04o not readable\n", key / 1024u, 02000u + key % 1024u);
             ++failures;
         }
-        pairs += key / 1024u == 034u;
-    }
-    if (pairs != BANK34_PAIRS) {
-        printf("FAIL: %u order pairs in bank 34, not %u\n", pairs, BANK34_PAIRS);
-        ++failures;
     }
     if (failures) {
         printf("cm-p11-cases: %u failures\n", failures);
         return 1;
     }
-    basic = pairs = 0;
-    failures += keys(&cm_p11_basic, &faithful_cm_p11_basic, false, &runs, &basic);
-    failures += keys(&cm_p11_interpretive, &faithful_cm_p11_interpretive, true, &runs, &pairs);
-    printf("cm-p11-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
-           "pairs) from %u states each, the others from %u, %u run by the faithful routines, %u "
-           "failures\n",
-           words, basic + pairs, cm_p11_basic.count + cm_p11_interpretive.count, basic, pairs,
-           CASES, OTHER_CASES, runs, failures);
+    failures += keys(&cm_p11_basic, &faithful_cm_p11_basic, false, &runs);
+    failures += keys(&cm_p11_interpretive, &faithful_cm_p11_interpretive, true, &runs);
+    printf("cm-p11-cases: %u words as the rope's, all %u keys readable (%u basic, %u order pairs) "
+           "from %u states each, %u run by the faithful routines, %u failures\n",
+           words, cm_p11_basic.count + cm_p11_interpretive.count, cm_p11_basic.count,
+           cm_p11_interpretive.count, CASES, runs, failures);
     return failures != 0;
 }

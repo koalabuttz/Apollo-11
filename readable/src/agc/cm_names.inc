@@ -260,6 +260,9 @@
 #define K_MBDYTCTL 03667u
 #define K_ATTDISP2 02416u
 #define K_S11_1 02542u
+#define K_ATTDISP1 02155u
+#define K_ATTDISPR 02176u
+#define K_NOPOLYM 02233u
 #define K_IMUTEST 02004u
 #define K_IMUSTLLG 02316u
 #define K_PONG 02250u
@@ -5863,6 +5866,11 @@
 #define I_EARTHALT 070560u
 #define I_ALTI 003734u
 #define I_NOPOLYM 076233u
+#define I_RLTST 070604u
+#define I_DELSTOR 070564u
+#define I_SPOLYARG 003307u
+#define I_BOOSTEMP 003316u
+#define I_ATTDISP2 070416u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u
