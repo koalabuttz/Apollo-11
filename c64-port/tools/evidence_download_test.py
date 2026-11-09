@@ -4,7 +4,11 @@ redirect without forwarding the token (#1256), and the SHA256 check holds.
 
 Two local servers stand in for GitHub: "cdn" answers 504 on the download URL
 and serves the asset bytes only to requests with no Authorization header;
-"api" needs the token, lists the release and 302s the asset to "cdn"."""
+"api" needs the token, lists the release and 302s the asset to "cdn".
+Two more assets take the CDN route only: "ok" is served at once (a SHA256
+mismatch there must exit without a retry or the API), and "missing" is a
+404 (raised at once, never retried or sent to the API)."""
+import collections
 import hashlib
 import http.server
 import json
@@ -17,6 +21,8 @@ import urllib.request
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import evidence  # noqa: E402
+
+HITS = collections.Counter()
 
 DATA = b'evidence bytes\n'
 TOKEN = 'test-token'
@@ -33,7 +39,14 @@ class Cdn(http.server.BaseHTTPRequestHandler):
         pass
 
     def do_GET(self):
-        if self.path.startswith('/releases/download/'):
+        HITS['cdn ' + self.path] += 1
+        if self.path.endswith('/ok-x.log'):
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(DATA)
+        elif self.path.endswith('/missing-x.log'):
+            self.send_error(404)
+        elif self.path.startswith('/releases/download/'):
             self.send_error(504)
         elif self.headers.get('Authorization'):
             self.send_error(400, 'token forwarded to the CDN')
@@ -51,6 +64,7 @@ def main():
             pass
 
         def do_GET(self):
+            HITS['api'] += 1
             if self.headers.get('Authorization') != f'Bearer {TOKEN}':
                 self.send_error(401)
             elif self.path == '/repos/o/r/releases/tags/evidence-m':
@@ -81,26 +95,68 @@ def main():
 
     evidence.urllib.request.urlopen = urlopen
     failures = []
-    with tempfile.TemporaryDirectory() as tmp:
-        target = pathlib.Path(tmp) / 'x.log'
-        record = {'sha256': hashlib.sha256(DATA).hexdigest()}
-        evidence.download('https://github.com/o/r/releases/download/evidence-m/abc-x.log', target, record)
-        if target.read_bytes() != DATA:
-            failures.append('API fallback returned the wrong bytes')
+    url = 'https://github.com/o/r/releases/download/evidence-m/'
+    good = {'sha256': hashlib.sha256(DATA).hexdigest()}
+    bad = {'sha256': '0' * 64}
+
+    def case(name, run):
         evidence.USE_API, evidence.RELEASES = False, {}
+        HITS.clear()
         try:
-            evidence.download('https://github.com/o/r/releases/download/evidence-m/abc-x.log',
-                              pathlib.Path(tmp) / 'y.log', {'sha256': '0' * 64})
-            failures.append('SHA256 mismatch was accepted')
+            run()
+        except BaseException as error:  # a failing case reports, never tracebacks
+            failures.append(f'{name}: {type(error).__name__}: {error}')
+
+    def expect_mismatch(target, record, file):
+        try:
+            evidence.download(url + file, target, record)
         except SystemExit as error:
             if 'SHA256 mismatch' not in str(error):
-                failures.append(f'unexpected exit: {error}')
+                raise
+            return
+        failures.append(f'{file}: SHA256 mismatch was accepted')
+
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp = pathlib.Path(tmp)
+
+        def fallback():
+            evidence.download(url + 'abc-x.log', tmp / 'a.log', good)
+            if (tmp / 'a.log').read_bytes() != DATA:
+                failures.append('API fallback returned the wrong bytes')
+
+        def api_mismatch():
+            expect_mismatch(tmp / 'b.log', bad, 'abc-x.log')
+            if HITS['cdn /signed/abc-x.log'] != 1:
+                failures.append(f'API-route mismatch was retried: {dict(HITS)}')
+
+        def cdn_mismatch():
+            expect_mismatch(tmp / 'c.log', bad, 'ok-x.log')
+            if HITS['cdn /releases/download/evidence-m/ok-x.log'] != 1 or HITS['api']:
+                failures.append(f'CDN mismatch was retried: {dict(HITS)}')
+            if any(tmp.glob('.download-*')) or (tmp / 'c.log').exists():
+                failures.append('CDN mismatch left a file behind')
+
+        def not_found():
+            try:
+                evidence.download(url + 'missing-x.log', tmp / 'd.log', good)
+                failures.append('404 was not raised')
+            except evidence.urllib.error.HTTPError as error:
+                if error.code != 404:
+                    raise
+            if HITS['cdn /releases/download/evidence-m/missing-x.log'] != 1 or HITS['api'] or evidence.USE_API:
+                failures.append(f'404 was retried or sent to the API: {dict(HITS)}')
+
+        case('fallback', fallback)
+        case('API-route mismatch', api_mismatch)
+        case('CDN-route mismatch', cdn_mismatch)
+        case('404', not_found)
     cdn.shutdown()
     api.shutdown()
     for failure in failures:
         print('FAIL:', failure, file=sys.stderr)
     if not failures:
-        print('PASS: evidence API fallback follows the redirect without the token; SHA256 checked')
+        print('PASS: evidence API fallback follows the redirect without the token; '
+              'SHA256 checked on both routes and not retried; 404 not retried')
     return 1 if failures else 0
 
 
