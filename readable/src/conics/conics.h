@@ -20,7 +20,9 @@
  * Written in parts (README.md):
  *   part 1: KEPLER (kepler.c: KEPLERN to KEPCONVG, LM pp. 1174-1179, CM
  *     pp. 1277-1282), DELTIME (deltime.c: LM pp. 1180-1181, CM pp.
- *     1283-1284) and CHECKCTR (checkctr.c: LM p. 1183, CM p. 1286).
+ *     1283-1284) and CHECKCTR (checkctr.c: LM p. 1183, CM p. 1286);
+ *   part 2: ITERATOR (iterator.c: LM pp. 1182-1183, CM pp. 1285-1286) and
+ *     NEWSTATE with LAMENTER (newstate.c: LM p. 1184, CM p. 1287).
  * The binding (src/binding/conics_routines.c) runs the faithful port's
  * routines at the keys no part has written yet. */
 #ifndef READABLE_CONICS_H
@@ -45,6 +47,9 @@ static inline void tc_to(word at, word routine)
  * (its EXIT, the store between its POLYs, and the rest after the second
  * POLY). */
 extern const struct interpretive_code KEPLER_CODE, DELTIME_CODE, DELTIME_S_CODE, DELTIME_C_CODE;
+
+/* Part 2: ITERATOR, and NEWSTATE with LAMENTER. */
+extern const struct interpretive_code ITERATOR_CODE, NEWSTATE_CODE;
 
 /* DELTIME's basic code: the two series by POLY. */
 void deltime_after_exit(void);        /* DELTIME +1: TC POLY, S(XI)'s series */
