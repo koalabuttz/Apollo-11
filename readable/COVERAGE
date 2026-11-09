@@ -134,3 +134,5 @@ Luminary099/INTERPRETIVE_CONSTANT.agc          src/constant_pool
 Comanche055/INTERPRETIVE_CONSTANTS.agc         src/constant_pool
 Luminary099/LATITUDE_LONGITUDE_SUBROUTINES.agc src/lat_long
 Comanche055/LATITUDE_LONGITUDE_SUBROUTINES.agc src/lat_long
+Luminary099/PLANETARY_INERTIAL_ORIENTATION.agc src/planetary
+Comanche055/PLANETARY_INERTIAL_ORIENTATION.agc src/planetary

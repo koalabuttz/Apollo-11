@@ -226,6 +226,7 @@ CED_SOURCES := src/agc/agc.c src/binding/machine.c $(sort $(wildcard src/entry_d
 	src/binding/cm_entry_dap_routines.c
 FFCP_SOURCES := src/agc/agc.c $(sort $(wildcard src/constant_pool/*.c))
 LL_SOURCES := $(INTERPRETER_SOURCES) src/lat_long/lat_long.c src/binding/lat_long_routines.c
+PL_SOURCES := $(INTERPRETER_SOURCES) src/planetary/planetary.c src/binding/planetary_routines.c
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
 	src/binding/standard_lead_routines.c)
 PIN_SOURCES := src/agc/agc.c $(sort $(wildcard src/interpreter/*.c)) src/interbank/interbank.c \
@@ -238,11 +239,11 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) $(R60_SOURCES) \
-	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(P40_SOURCES) $(CP40_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SO_SOURCES) $(BB_SOURCES) $(LLD_SOURCES) $(THR_SOURCES) $(LLGE_SOURCES) $(P70_SOURCES) $(P12_SOURCES) $(ASC_SOURCES) $(SVC_SOURCES) $(LAD_SOURCES) $(FCW_SOURCES) $(P51_SOURCES) $(CP51_SOURCES) $(EPH_SOURCES) $(CP61_SOURCES) $(CSVC_SOURCES) $(CRENT_SOURCES) $(CBAT_SOURCES) $(CP37_SOURCES) $(CTVCI_SOURCES) $(CTVCX_SOURCES) $(CTVCM_SOURCES) $(CTVCR_SOURCES) $(CTVCD_SOURCES) $(CTVCS_SOURCES) $(CTVCL_SOURCES) $(CMYS_SOURCES) $(CRCS_SOURCES) $(CAM_SOURCES) $(CRDX_SOURCES) $(CJS_SOURCES) $(CIC_SOURCES) $(CP11_SOURCES) $(CTPI_SOURCES) $(CED_SOURCES) $(FFCP_SOURCES) $(LL_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
+	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(P40_SOURCES) $(CP40_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SO_SOURCES) $(BB_SOURCES) $(LLD_SOURCES) $(THR_SOURCES) $(LLGE_SOURCES) $(P70_SOURCES) $(P12_SOURCES) $(ASC_SOURCES) $(SVC_SOURCES) $(LAD_SOURCES) $(FCW_SOURCES) $(P51_SOURCES) $(CP51_SOURCES) $(EPH_SOURCES) $(CP61_SOURCES) $(CSVC_SOURCES) $(CRENT_SOURCES) $(CBAT_SOURCES) $(CP37_SOURCES) $(CTVCI_SOURCES) $(CTVCX_SOURCES) $(CTVCM_SOURCES) $(CTVCR_SOURCES) $(CTVCD_SOURCES) $(CTVCS_SOURCES) $(CTVCL_SOURCES) $(CMYS_SOURCES) $(CRCS_SOURCES) $(CAM_SOURCES) $(CRDX_SOURCES) $(CJS_SOURCES) $(CIC_SOURCES) $(CP11_SOURCES) $(CTPI_SOURCES) $(CED_SOURCES) $(FFCP_SOURCES) $(LL_SOURCES) $(PL_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
 HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases throttle-cases llge-cases p70-cases p12-cases ascent-cases servicer-cases landing-displays-cases findcduw-cases p51-p53-cases cm-p51-p53-cases ephemerides-cases cm-p61-p67-cases cm-servicer-cases cm-reentry-cases cm-body-attitude-cases cm-p37-p70-cases cm-tvc-init-cases cm-tvc-exec-cases cm-tvc-massprop-cases cm-tvc-restarts-cases cm-tvc-daps-cases cm-tvc-stroke-cases cm-tvc-roll-cases cm-mysubs-cases cm-rcs-dap-cases cm-auto-man-cases cm-rcs-dap-exec-cases cm-jet-select-cases cm-imu-cal-cases cm-p11-cases cm-tpi-search-cases cm-entry-dap-cases constant-pool-cases lat-long-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases throttle-cases llge-cases p70-cases p12-cases ascent-cases servicer-cases landing-displays-cases findcduw-cases p51-p53-cases cm-p51-p53-cases ephemerides-cases cm-p61-p67-cases cm-servicer-cases cm-reentry-cases cm-body-attitude-cases cm-p37-p70-cases cm-tvc-init-cases cm-tvc-exec-cases cm-tvc-massprop-cases cm-tvc-restarts-cases cm-tvc-daps-cases cm-tvc-stroke-cases cm-tvc-roll-cases cm-mysubs-cases cm-rcs-dap-cases cm-auto-man-cases cm-rcs-dap-exec-cases cm-jet-select-cases cm-imu-cal-cases cm-p11-cases cm-tpi-search-cases cm-entry-dap-cases constant-pool-cases lat-long-cases planetary-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
@@ -257,7 +258,7 @@ all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases
 	cm-tvc-massprop-cases cm-tvc-restarts-cases cm-tvc-daps-cases cm-tvc-stroke-cases \
 	cm-tvc-roll-cases cm-mysubs-cases cm-rcs-dap-cases cm-auto-man-cases cm-rcs-dap-exec-cases \
 	cm-jet-select-cases cm-imu-cal-cases cm-p11-cases cm-tpi-search-cases cm-entry-dap-cases \
-	constant-pool-cases lat-long-cases
+	constant-pool-cases lat-long-cases planetary-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -3083,6 +3084,50 @@ lat-long-cases: $(BUILD)/ll-oracle-lm $(BUILD)/ll-oracle-cm $(BUILD)/ll-cases-lm
 	./$(BUILD)/ll-oracle-cm $(ROPES)
 	./$(BUILD)/ll-cases-lm $(ROPES)
 	./$(BUILD)/ll-cases-cm $(ROPES)
+
+# PLANETARY_INERTIAL_ORIENTATION.agc, both missions: the port's test
+# (tests/test_planetary.c, its frozen cases run to their stops through the
+# program of tests/planetary_target.c, against the original program's
+# yaAGC digests) with each mission's readable routines and the other
+# mission's faithful ones, tests/with_ropes.c loading the ropes the
+# readable interpreter reads; then tests/planetary_cases.c side by side,
+# for each mission.
+PL_NAMES_LM := lm_planetary_basic lm_planetary_interpretive
+PL_NAMES_CM := cm_planetary_basic cm_planetary_interpretive
+
+$(BUILD)/pl-faithful-lm.o: $(PORT)/src/lm_planetary.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(PL_NAMES_LM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/pl-faithful-cm.o: $(PORT)/src/cm_planetary.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(PL_NAMES_CM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/pl-test.o: $(PORT)/tests/test_planetary.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/pl-oracle-lm: $(PL_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/pl-test.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LL_COMMON) $(PORT)/src/cm_planetary.c \
+		$(PORT)/tests/planetary_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/pl-oracle-cm: $(PL_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/pl-test.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LL_COMMON) $(PORT)/src/lm_planetary.c \
+		$(PORT)/tests/planetary_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/pl-cases-lm: $(PL_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/pl-faithful-lm.o \
+		tests/planetary_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(LL_COMMON) $(filter %.o,$^) \
+		tests/planetary_cases.c -o $@
+$(BUILD)/pl-cases-cm: $(PL_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/pl-faithful-cm.o \
+		tests/planetary_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(LL_COMMON) $(filter %.o,$^) \
+		tests/planetary_cases.c -o $@
+
+planetary-cases: $(BUILD)/pl-oracle-lm $(BUILD)/pl-oracle-cm $(BUILD)/pl-cases-lm \
+		$(BUILD)/pl-cases-cm
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/pl-oracle-lm $(ROPES)
+	./$(BUILD)/pl-oracle-cm $(ROPES)
+	./$(BUILD)/pl-cases-lm $(ROPES)
+	./$(BUILD)/pl-cases-cm $(ROPES)
 
 # LUNAR_LANDING_GUIDANCE_EQUATIONS.agc, the LM's landing guidance: the
 # port's test (tests/test_lm_llge.c, its frozen cases run to their stops
