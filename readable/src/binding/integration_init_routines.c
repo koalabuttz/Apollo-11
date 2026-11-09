@@ -16,8 +16,9 @@
  * a TC INTPRET. An order pair is one pass of the readable interpreter
  * over the listing's words (interpret_listing()), in the part of the code
  * LOC is in. The LM's pair runs an RTB's routine and the rest of the
- * pair, as the faithful one does: LOADTIME (src/rtb_op_codes/) or a move
- * (moves.c). The CM's pass ends at the RTB; the routine ends at DANZIG,
+ * pair, as the faithful one does: LOADTIME, SGNAGREE or SIGNMPAC
+ * (src/rtb_op_codes/), or a move (moves.c). The CM's pass ends at the
+ * RTB; the routine ends at DANZIG,
  * and the key there goes on with the pair's right-hand order, which waits
  * in EDOP (see pending_orders). At a move's own key the LM's routine goes
  * on from its DANZIG too, when no order waits there.
@@ -56,6 +57,14 @@
 #define INTINIT_BANK  CODE_BANK(I_STATEINT)
 #define MOVES_BANK    ((word)(I_MOVEACSM & 076000u))
 #define LOADTIME_BANK ((word)(I_LOADTIME & 076000u))
+
+/* The basic code after A-PCHK's EXIT starts 3 words on from the LM's
+ * A-PCHK, from the CM's ANDOUT. */
+#if LUMINARY099
+#define A_PCHK_EXIT A_PCHK
+#else
+#define A_PCHK_EXIT ANDOUT
+#endif
 
 /* The faithful tables, renamed. */
 #if LUMINARY099
@@ -207,6 +216,10 @@ static const struct basic_entry {
     {KEY(INTINIT_BANK, MOVEPCSM), movepcsm_key, true},
     {KEY(INTINIT_BANK, MOVEALEM), movealem_key, true},
     {KEY(INTINIT_BANK, MOVEPLEM), moveplem_key, true},
+    /* Part 2 */
+    {KEY(INTINIT_BANK, A_PCHK_EXIT + 3u), a_pchk_after_exit, false},
+    {KEY(INTINIT_BANK, A_PCHK_EXIT + 5u), a_pchk_after_phaschng, false},
+    {KEY(INTINIT_BANK, A_PCHK_EXIT + 7u), a_pchk_after_upflag, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -222,8 +235,8 @@ static const struct basic_entry *basic_entry(uint16_t key)
 
 /* The parts of the code written so far. */
 static const struct interpretive_code *const codes[] = {
-    &STATINT1_CODE, &SETIFLGS_CODE, &ATOPCSM_CODE, &PTOACSM_CODE,
-    &ATOPLEM_CODE,  &PTOALEM_CODE,  &USEPIOS_CODE,
+    &STATINT1_CODE, &SETIFLGS_CODE, &ATOPCSM_CODE, &PTOACSM_CODE, &ATOPLEM_CODE, &PTOALEM_CODE,
+    &USEPIOS_CODE,  &INTEGRV_CODE,  &ALOADED_CODE, &A_PCHK_CODE,  &PHEXIT_CODE,  &TESTLOOP_CODE,
 };
 
 /* The part of the code an address of a bank is in, or none. */
@@ -240,7 +253,8 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
 
 #if COMANCHE055
 /* The CM's keys a pair's right-hand order waits at in EDOP while its
- * left, an RTB, runs a routine: PTOACSM's RTB BON. The routine ends at
+ * left, an RTB, runs a routine: PTOACSM's RTB BON, and DT/2COMP's RTB SL
+ * (SGNAGREE). The routine ends at
  * DANZIG, which finds the order in EDOP and resumes the pass at LOC: EDOP
  * holds the order's code plus one. */
 static const struct pending_order {
@@ -248,6 +262,7 @@ static const struct pending_order {
     word edop;
 } pending_orders[] = {
     {KEY(INTINIT_BANK, CODE_Z(I_PTOACSM) + 1u), ORDER_BON + 1u},
+    {KEY(INTINIT_BANK, CODE_Z(I_DT_2COMP) + 4u), ORDER_SL + 1u},
 };
 
 static const struct pending_order *pending_order(uint16_t key)
@@ -270,6 +285,28 @@ static bool at_danzig(unsigned bank, const struct pending_order *pending)
 #endif
 
 #if LUMINARY099
+/* The routines of RTB_OP_CODES the LM's pairs run, at their addresses
+ * under their banks (FB, from their FCADRs). */
+static const struct {
+    word at, bank;
+    void (*routine)(void);
+} rtb_routines[] = {
+    {LOADTIME, LOADTIME_BANK, loadtime},                /* STATINT1 */
+    {SGNAGREE, (word)(I_SGNAGREE & 076000u), sgnagree}, /* DT/2COMP */
+    {SIGNMPAC, (word)(I_SIGNMPAC & 076000u), signmpac}, /* GETMAXDT */
+};
+
+/* The RTB_OP_CODES routine an RTB has gone to, or none. */
+static void (*rtb_routine_at(void))(void)
+{
+    unsigned i;
+
+    for (i = 0; i < COUNT(rtb_routines); ++i)
+        if (Z == rtb_routines[i].at && FBANK == rtb_routines[i].bank)
+            return rtb_routines[i].routine;
+    return NULL;
+}
+
 /* The move an RTB has gone to, or none. */
 static void (*move_at(void))(void)
 {
@@ -282,8 +319,9 @@ static void (*move_at(void))(void)
 }
 #endif
 
-/* One pass; in the LM, after RTB LOADTIME or an RTB of a move, the
- * routine and its DANZIG, which goes on with the pair's other order. */
+/* One pass; in the LM, after an RTB of LOADTIME, SGNAGREE, SIGNMPAC or a
+ * move, the routine and its DANZIG, which goes on with the pair's other
+ * order. */
 static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
                                  mission_io *io, const struct interpretive_code *code)
 {
@@ -292,9 +330,9 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
 
     if (interpret_listing(program, state, io, code) != EXEC_OK) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
-    if (Z == LOADTIME && FBANK == LOADTIME_BANK) {
+    routine = rtb_routine_at();
+    if (routine) {
         if (!sane(true)) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
-        routine = loadtime;
     } else {
         routine = move_at();
         if (!routine) return EXEC_OK;

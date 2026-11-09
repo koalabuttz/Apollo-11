@@ -152,6 +152,7 @@
 #define ORDER_BOF        0162u
 #define ORDER_BOFSET     0162u
 #define ORDER_BOFF       0162u /* (BOF under its other name) */
+#define ORDER_BOFCLR     0162u
 #define ORDER_BOFINV     0162u
 #define ORDER_INVERT     0162u
 #define ORDER_BON        0162u
@@ -189,6 +190,7 @@
 #define SWITCH_BOFF   0340u /* (BOF under its other name) */
 #define SWITCH_BONCLR 0200u
 #define SWITCH_BOFSET 0040u
+#define SWITCH_BOFCLR 0240u
 #define SWITCH_CLRGO  0220u
 #define SWITCH_SETGO  0020u
 #define SWITCH_BOFINV 0140u

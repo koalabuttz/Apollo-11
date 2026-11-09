@@ -1878,13 +1878,14 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #endif
 
 /* 1STO2S, V1STO2S, 2V1STO2S and their 1TO2SUB, LOADTIME, SGNAGREE,
- * TPMODE, DPMODE and NORMUNX1, RTB routines (RTB_OP_CODES.agc). */
+ * TPMODE, SIGNMPAC, DPMODE and NORMUNX1, RTB routines (RTB_OP_CODES.agc). */
 #define LOADTIME    ((word)K_LOADTIME)
 #define ONE_STO2S   ((word)K_1STO2S)
 #define TWO_V1STO2S ((word)K_2V1STO2S)
 #define ONE_TO2SUB  ((word)K_1TO2SUB)
 #define V1STO2S     ((word)K_V1STO2S)
 #define TPMODE      ((word)K_TPMODE)
+#define SIGNMPAC    ((word)K_SIGNMPAC)
 #define DPMODE      ((word)K_DPMODE)
 #define NORMUNX1    ((word)K_NORMUNX1)
 #define NORMUNIT    ((word)K_NORMUNIT)
@@ -5177,6 +5178,12 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define ENDINT     ((word)K_ENDINT)
 #define NOINT      ((word)K_NOINT)
 #define SECS600_AT ((word)K_600SECS) /* 600SECS: 2DEC 60000 */
+/* A-PCHK, whose basic code follows its EXIT in the LM; in the CM it
+ * follows ANDOUT's. */
+#define A_PCHK ((word)K_A_PCHK)
+#if COMANCHE055
+#define ANDOUT ((word)K_ANDOUT)
+#endif
 #define MOVEACSM ((word)K_MOVEACSM)
 #define MOVEPCSM ((word)K_MOVEPCSM)
 #define MOVEALEM ((word)K_MOVEALEM)

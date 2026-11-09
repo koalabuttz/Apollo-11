@@ -22,6 +22,7 @@ void one_sto2s(void);
 void v1sto2s(void);
 void two_v1sto2s(void);
 void tpmode(void);
+void signmpac(void);
 void dpmode(void);
 void normunx1(void);
 void normunit(void);
