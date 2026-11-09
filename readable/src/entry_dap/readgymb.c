@@ -189,7 +189,8 @@ static void cm_gymic_zero(void)
 /* ANGOVCOR: "COME HERE TO CORRECT FOR OVERFLOW IN ANGULAR CALCULATIONS"
  * ("THIS COSTS 2 MCT TO USE."): A to L, and with "NO OVFL" back by TC Q;
  * with an overflow, A +1 or -1, LIMITS +1 or -1 added into L (ADS), and
- * on at ANGOVCOR +5, its TC Q. */
+ * on at ANGOVCOR +5, its TC Q (the faithful port's run stops there, at
+ * a key of another of its parts). */
 void angovcor(void)
 {
     if (!ts(L_ADDRESS)) {
@@ -199,6 +200,12 @@ void angovcor(void)
     set_A(fetch_fixed(indexed(LIMITS, a_word()))); /* INDEX A; CAF LIMITS */
     ads(L_ADDRESS);
     continue_at(ANGOVCOR + 5u);
+}
+
+/* ANGOVCOR +5: back by TC Q. */
+void angovcor_return(void)
+{
+    tc_q();
 }
 
 #endif
