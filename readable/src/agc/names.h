@@ -5208,6 +5208,12 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define IRETURN1 ERASABLE(K_IRETURN1)
 #define CKMID2   ((word)K_CKMID2)
 #define NOTIME   ((word)K_NOTIME)
+/* INTWAKEU and GRP2PC (in UPDATE2): the labels the basic code is at, and
+ * the return INTWAKEU keeps ("INTWAKUQ = INTWAK1Q"). */
+#define INTWAKEU ((word)K_INTWAKEU)
+#define INTWAKUP ((word)K_INTWAKUP)
+#define GRP2PC   ((word)K_GRP2PC)
+#define INTWAKUQ ERASABLE(K_INTWAKUQ)
 #define MOVEACSM ((word)K_MOVEACSM)
 #define MOVEPCSM ((word)K_MOVEPCSM)
 #define MOVEALEM ((word)K_MOVEALEM)

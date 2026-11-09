@@ -33,9 +33,11 @@
  *     EXIT (intstall.c: LM pp. 1217, 1219-1220, CM pp. 1321, 1324-1326);
  *   part 4: AVETOMID (avetomid.c: LM pp. 1221-1222, CM pp. 1327-1328) and
  *     MIDTOAV1 and MIDTOAV2 to TIMEDELT (midtoav.c: LM pp. 1223-1225, CM
- *     pp. 1329-1331).
- * The binding (src/binding/integration_init_routines.c) runs the faithful
- * port's routines at the keys no part has written yet. */
+ *     pp. 1329-1331);
+ *   part 5: INTWAKEU to GRP2PC (intwakeu.c: LM pp. 1225-1226, CM pp.
+ *     1332-1333).
+ * The binding (src/binding/integration_init_routines.c) gives every key
+ * of the faithful port's tables its readable routine. */
 #ifndef READABLE_INTEGRATION_INIT_H
 #define READABLE_INTEGRATION_INIT_H
 
@@ -120,5 +122,17 @@ void entmid1_after_exit(void);    /* CKMID2 -7: INHINT */
 void entmid1_after_tpagree(void); /* CKMID2 -2: CA IRETURN1 */
 void notime_after_exit(void);     /* NOTIME +2: INCR IRETURN1 */
 void notime_after_alarm(void);    /* NOTIME +5: TC INTPRET */
+
+/* Part 5: the words after INTWAKEU's TC INTPRET (to INTWAKUP's EXIT),
+ * UPMNSVCD with GRP2PC (to its EXIT), and the GOTO after GRP2PC's TC
+ * INTPRET. */
+extern const struct interpretive_code INTWAKEU_CODE, GRP2PC_CODE, GRP2PC_GOTO_CODE;
+
+/* Part 5's basic code, each from a key. */
+void intwakeu(void);                /* INTWAKEU */
+void intwakup_after_exit(void);     /* INTWAKUP +5: TC PHASCHNG */
+void intwakup_after_phaschng(void); /* INTWAKUP +7: TC INTWAKUQ */
+void grp2pc_after_exit(void);       /* GRP2PC +2: TC PHASCHNG */
+void grp2pc_after_phaschng(void);   /* GRP2PC +4: TC INTPRET */
 
 #endif
