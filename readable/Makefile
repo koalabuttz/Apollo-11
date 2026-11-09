@@ -3189,9 +3189,9 @@ measurement-inc-cases: $(BUILD)/minc-oracle-lm $(BUILD)/minc-oracle-cm $(BUILD)/
 # original programs' yaAGC digests) through the readable tables, with
 # tests/with_ropes.c loading the ropes the readable interpreter reads; then
 # tests/conics_cases.c side by side, for each mission, with the faithful
-# routines (renamed faithful_, which also run the keys no part has written
-# yet). The faithful routines run TPMODE (rtb_modes.c) and the LM's
-# CHECKCTR (lm_conic_checkctr.c) from their RTBs.
+# routines (renamed faithful_), every key of both tables readable. The
+# faithful routines run TPMODE (rtb_modes.c) and the LM's CHECKCTR
+# (lm_conic_checkctr.c) from their RTBs.
 CON_NAMES_LM := lm_conic_compiled_basic lm_conic_compiled_interpretive
 CON_NAMES_CM := cm_conics_basic cm_conics_interpretive
 CON_COMMON := $(LL_COMMON) $(PORT)/src/rtb_angles.c $(PORT)/src/rtb_modes.c \

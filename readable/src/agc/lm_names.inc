@@ -942,6 +942,9 @@
 #define K_POLYCOEF 03031u
 #define K_1_WLOOP 03151u
 #define K_LAMBERT 03212u
+#define K_TIMERAD 03547u
+#define K_APSIDES 03674u
+#define K_ABTCONIC 03742u
 #define K_NVSUBB 02000u
 #define K_LOADLV1 02001u
 #define K_ENTPASHI 02012u
@@ -4416,6 +4419,17 @@
 #define I_ONEBIT 011056u
 #define I_COGLOLIM 011062u
 #define I_TARGETV 025541u
+#define I_RTNTR 002710u
+#define I_TERMNVEC 025630u
+#define I_CIRCULAR 025660u
+#define I_BADR2 025664u
+#define I_APSESW 000202u
+#define I_COSF 000030u
+#define I_RTNAPSE 002710u
+#define I_GETECC 025710u
+#define I_D1_8 011030u
+#define I_INFINAPO 025737u
+#define I_LDPOSMAX 024017u
 #define I_EGRESS 002772u
 #define I_BVECTOR 003524u
 #define I_W 002400u

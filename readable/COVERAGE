@@ -138,3 +138,5 @@ Luminary099/PLANETARY_INERTIAL_ORIENTATION.agc src/planetary
 Comanche055/PLANETARY_INERTIAL_ORIENTATION.agc src/planetary
 Luminary099/MEASUREMENT_INCORPORATION.agc      src/measurement_inc
 Comanche055/MEASUREMENT_INCORPORATION.agc      src/measurement_inc
+Luminary099/CONIC_SUBROUTINES.agc              src/conics
+Comanche055/CONIC_SUBROUTINES.agc              src/conics
