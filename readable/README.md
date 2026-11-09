@@ -276,6 +276,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | CM_ENTRY_DIGITAL_AUTOPILOT, part F: the roll jets' timing, the dead zone and the FDAI needles | `CM_ENTRY_DIGITAL_AUTOPILOT.agc` (CM pp. 1085-1091) | [`src/entry_dap/`](src/entry_dap/) | The end of the 2 s roll system and the 0.1 s cycle (bank 15). In `roll_jets.c`: GETOFF finds the coasting time between the two burns (TOFF) and scales the three times to centiseconds; TIMETST makes them a list with their jets, dropping an interval of 2 cs or less and one that would end past the 2 s; JETCALL works down the list, firing each interval's jets (WRITE ROLLJETS) and coming back by WAITLIST for the next, and stops if the DAP is in standby. DZCALL, inside the dead zone, turns the roll jets off and keeps the roll angle or the roll command in ROLLHOLD. In `cm_fdai.c`: CM/FDAI integrates the roll error between the 2 s updates for the roll needle (PAXERR); CM/DUMPR, on alternate passes, drives the FDAI needles (NEEDLER) or files the body rates for telemetry (CMTMFILE, SAVENDX); CM/END ends the cycle and RESUMEs (CM_ENTRY_DIGITAL_AUTOPILOT whole) |
 | Fixed-fixed constant pool | `FIXED_FIXED_CONSTANT_POOL.agc` (LM pp. 1095-1099, CM pp. 1200-1204) | [`src/constant_pool/`](src/constant_pool/) | The constants every bank reaches with a CAF, in fixed-fixed memory (banks 02 and 03), in `fixed_fixed_constant_pool.c`: the indexed table (DPOSMAX, POSMAX, NEG1/2 and the bit table BIT15 to BIT1), NEG0 and ZERO, the small numbers, the priorities PRIO3 to PRIO37 and the negative words to NEGONE, in rising order, each written as the listing has it (OCT, DEC, VN) and laid out where the listing assembles it; the lines for words kept in other files, and the equates, stay as comments. The LM's pool alone has OCT33 and OCT35. Data only: the readable routines name these words by their labels (names.h) |
 | Interpretive constants | `INTERPRETIVE_CONSTANT.agc` (LM pp. 1100-1101; the CM's `INTERPRETIVE_CONSTANTS.agc`, pp. 1205-1206) | [`src/constant_pool/`](src/constant_pool/) | The vectors and double words interpretive code names as operands, in `interpretive_constants.c`, laid out twice because the interpreter reaches a fixed operand only in its own half of the rope: at INTPRET1, DP1/4TH, the unit vectors UNITZ, UNITY and UNITX sharing their words, the zero vector ZEROVECS and DPPOSMAX; at INTPRET2, the same as ZUNIT, YUNIT, XUNIT and ZEROVEC, then -0, -6 and -12 and the two LODPMAX. Each word is written as the listing has it (2DEC, 2OCT, OCT, DEC). Data only: the readable routines name these words by their labels (names.h) |
+| Latitude, longitude and altitude | `LATITUDE_LONGITUDE_SUBROUTINES.agc` (LM pp. 1133-1139, CM pp. 1236-1242) | [`src/lat_long/`](src/lat_long/) | Between a position vector and latitude, longitude and altitude over the earth or the moon (LUNAFLAG), all interpretive code in bank 13, the same in both missions. LAT-LONG turns the vector into the planet's axes (R-TO-RP) and takes the latitude and longitude from it by ARCTAN and the altitude above the radius SETRE gives; LALOTORV goes the other way (RP-TO-R). GETERAD is the earth's radius at a latitude on the ellipsoid (with ERADFLAG), SETGAMMA the ratio that turns latitude on the ellipsoid into the direction from the centre, and ARCTAN an angle from its sine and cosine, in revolutions within a half turn either way. The CM's file keeps its own ERAD and 504RM |
 
 Beside them:
 
@@ -1009,6 +1010,14 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    DPOSMAX and PRIO22; from DP1/4TH and ZUNIT) against the assembled rope
    at its address, and the labels, word by word, against the listing's
    (a 2DEC or 2OCT two words), with none left out.
+   `make lat-long-cases` runs LATITUDE_LONGITUDE_SUBROUTINES, both
+   missions: the port's test through each mission's readable table, then
+   tests/lat_long_cases.c: the words against the rope, the keys against
+   the faithful tables, then readable and faithful side by side at every
+   key, 4,096 states for each key (MPAC and the push-down list, the work
+   area, ALPHAV, LAT, LONG, ALT, ALPHAM, ERADM, the returns in INCORPEX
+   and S2, RLS, the flag words of LUNAFLAG and ERADFLAG, the E-bank often
+   ALPHAV's, NEWJOB, the latches); every key must run readable code.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
