@@ -276,6 +276,13 @@
 #define K_RNGETEST 02416u
 #define K_USEKAY 02454u
 #define K_TRANSANG 02441u
+#define K_P17 03151u
+#define K_P77 03153u
+#define K_P17_1 03154u
+#define K_P17_2 03220u
+#define K_P17_3 03224u
+#define K_VNCOMP17 03237u
+#define K_ALARUMS 03254u
 #define K_IMUTEST 02004u
 #define K_IMUSTLLG 02316u
 #define K_PONG 02250u
@@ -3561,6 +3568,7 @@
 #define KW_PRIO1 001000u
 #define KW_STIKBITS 000077u
 #define KW_100MST5 037766u
+#define KW_V06N72 001510u
 #define KW_ENDTASK {072471u,073714u}
 #define KW_DPBIT14 {000000u,020000u}
 #define KW_LGCL2CDR {003461u,002063u}
@@ -5932,6 +5940,10 @@
 #define I_DECTWO 073116u
 #define I_NN1 003765u
 #define I_P21ONENN 076147u
+#define I_HPL 073125u
+#define I_HPE 073123u
+#define I_P17_1 073154u
+#define I_P17_2 073220u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u

@@ -6,21 +6,24 @@
  *
  * The tables carry every key of the faithful ones, in their order
  * (cm_tpi_search_keys.inc, which tools/p20_p25_keys.py writes from them).
- * An order pair in a part written so far runs the readable interpreter
- * on the listing's code; the other keys run the faithful port's routines
- * (renamed faithful_) until their parts are written.
+ * Every basic key runs a readable routine, and every order pair the
+ * readable interpreter on the listing's code.
  *
- * Partial file: Comanche055/TPI_SEARCH.agc (COVERAGE counts it when whole).
- *
- * Plumbing only. An order pair is one pass of the interpreter, from
- * NEWOPS with LOC the key. The states it takes, as the faithful pairs':
- * FB the key's bank (with the superbank bit clear), ZERO +0, the bank
- * registers agreeing, the interrupt and superbank latches in range,
- * every erasable word an ordinary one, NEWJOB +0 or positive and FIXLOC
- * a VAC area. A pass the readable code refuses part way leaves the state
- * and io record as they were. */
+ * Plumbing only. A basic routine runs from its key until control leaves
+ * the file (AVFLAGA, AVFLAGP, P20FLGON, VNPOOH, BANKCALL, BLANKET, ALARM,
+ * ENDOFJOB, GOTOPOOH, or a return saved in QSAVED) or reaches NEWOPS
+ * through a TC INTPRET. An order pair is one pass of the interpreter,
+ * from NEWOPS with LOC the key. The states both take, as the faithful
+ * routines': FB the key's bank (with the superbank bit clear), ZERO +0,
+ * the bank registers agreeing, the interrupt and superbank latches in
+ * range, every erasable word an ordinary one, NEWJOB +0 or positive and
+ * FIXLOC a VAC area; an order pair, too, Z at NEWOPS, BANKSET the BBANK
+ * and INTBIT15 the bank's bit 15. A run the readable code refuses part
+ * way leaves the state and io record as they were. */
+#include <setjmp.h>
 #include <stddef.h>
 #include "binding.h"
+#include "rope_image.h"
 #include "cm_tpi_search.h"
 #include "../tpi_search/tpi_search.h"
 #include "../agc/names.h"
@@ -34,7 +37,30 @@
 /* Channel 7's superbank bit. */
 #define SUPERBANK_BIT 0100u
 
-/* The states the faithful routines take (its basic_sane() and sane()). */
+static jmp_buf back;
+
+static void leave(void)
+{
+    longjmp(back, 1);
+}
+
+/* The file's constants are the rope's. */
+static word rope_word(unsigned physical)
+{
+    agc_word value = 0;
+
+    if (physical > 0xFFFFu || !apollo_rope_read(1u, (uint16_t)physical, &value)) not_modelled();
+    return (word)(value & MINUS_ZERO);
+}
+
+static void bind(const agc_native_program *program, apollo_overlay_state *state, cm_native_io *io)
+{
+    bind_machine(program, state, io);
+    agc.fixed_memory = rope_word;
+    agc.leave = leave;
+}
+
+/* The states the faithful routines take (its sane()). */
 static bool sane(void)
 {
     unsigned i;
@@ -56,23 +82,69 @@ static bool in_bank(unsigned bank)
     return FBANK == (word)(bank << 10) && (bank < 030u || !(*agc.superbank & SUPERBANK_BIT));
 }
 
+/* ---- The basic code ---- */
+
+static const struct basic_entry {
+    uint16_t key;
+    void (*routine)(void);
+} basic_entries[] = {
+    /* P17 and P77 */
+    {KEY(035u, P17), p17},
+    {KEY(035u, P17 + 1u), p17_after_avflaga},
+    {KEY(035u, P77), p77},
+    /* P17.1 */
+    {KEY(035u, P17_1), p17_1},
+    {KEY(035u, P17_1 + 1u), p17_1_after_p20flgon},
+    {KEY(035u, P17_1 + 3u), p17_1_after_vnpooh},
+    {KEY(035u, P17_1 + 020u), p17_1_after_exit},
+    {KEY(035u, P17_1 + 022u), p17_1_after_vncomp17},
+    /* P17.3 */
+    {KEY(035u, P17_3), p17_3},
+    {KEY(035u, P17_3 + 2u), p17_3_after_vncomp17},
+    {KEY(035u, P17_3 + 5u), p17_3_terminate},
+    {KEY(035u, P17_3 + 6u), p17_3_proceed},
+    {KEY(035u, P17_3 + 7u), p17_3_recycle},
+    {KEY(035u, P17_3 + 010u), p17_3_immediate_return},
+    {KEY(035u, P17_3 + 012u), p17_3_after_blanket},
+    /* VNCOMP17 */
+    {KEY(035u, VNCOMP17 + 6u), vncomp17_terminate},
+    {KEY(035u, VNCOMP17 + 7u), vncomp17_proceed},
+    {KEY(035u, VNCOMP17 + 010u), vncomp17_recycle},
+    /* ALARUMS */
+    {KEY(035u, ALARUMS + 2u), alarums_after_exit},
+    {KEY(035u, ALARUMS + 4u), alarums_after_alarm},
+    {KEY(035u, ALARUMS + 6u), alarums_after_vncomp17},
+};
+
+static const struct basic_entry *basic_entry(uint16_t key)
+{
+    unsigned i;
+
+    for (i = 0; i < COUNT(basic_entries); ++i)
+        if (basic_entries[i].key == key) return &basic_entries[i];
+    return NULL;
+}
+
 /* ---- The order pairs ---- */
 
 static const struct interpretive_code *const codes[] = {
-    /* Part 1: bank 36 */
+    /* Bank 35 */
+    &P17_1_CODE,
+    &P17_1_OPTION_CODE,
+    &ALARUMS_CODE,
+    /* Bank 36 */
     &S17_1_CODE,
     &S17_2_CODE,
     &BIS_CODE,
     &CONCAUL_CODE,
     &JUNCT3_CODE,
-    /* Part 2: bank 36 */
     &JUNCT1_CODE,
     &INTERP_CODE,
     &HALFSAFE_CODE,
     &LRGRDVO_CODE,
     &RNGETEST_CODE,
     &USEKAY_CODE,
-    /* Part 2: bank 07 */
+    /* Bank 07 */
     &TRANSANG_CODE,
 };
 
@@ -101,22 +173,33 @@ static bool outside_mutable(uint16_t key)
     return x1 != 077775u && x1 != 077765u;
 }
 
-/* The faithful tables, renamed. */
-extern const agc_routine_table faithful_cm_tpi_search_basic, faithful_cm_tpi_search_interpretive;
-
 /* ---- The keys, in the faithful tables' order ---- */
 
-/* Each basic key's routine: the faithful port's until its part is
- * written. */
-static enum exec_status basic(unsigned index, const agc_native_program *program,
+/* Each basic key's routine, the readable one. */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
-    return faithful_cm_tpi_search_basic.entries[index].call(program, state, device);
+    const struct basic_entry *entry = basic_entry(key);
+    cm_native_io *io = device, kept;
+    apollo_overlay_state before;
+
+    if (!entry || !program || !state || !io) return EXEC_OUT_OF_SCOPE;
+    bind(program, state, io);
+    if (!in_bank(key / 1024u) || !sane()) return EXEC_OUT_OF_SCOPE;
+
+    before = *state;
+    kept = *io;
+    if (setjmp(back)) {
+        *state = before;
+        *io = kept;
+        return EXEC_OUT_OF_SCOPE;
+    }
+    entry->routine();
+    return EXEC_OK;
 }
 
-/* Each order pair's routine: one pass of the readable interpreter, or the
- * faithful port's until its part is written. */
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each order pair's routine: one pass of the readable interpreter. */
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
@@ -125,9 +208,8 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     const struct interpretive_code *code = code_at(bank, (word)(02000u + key % 1024u));
     enum exec_status status;
 
-    if (!code)
-        return faithful_cm_tpi_search_interpretive.entries[index].call(program, state, device);
-    if (!program || !state || !io || !bind_machine(program, state, io)) return EXEC_OUT_OF_SCOPE;
+    if (!code || !program || !state || !io) return EXEC_OUT_OF_SCOPE;
+    bind(program, state, io);
     if (Z != NEWOPS || !in_bank(bank) || LOC != (word)(02000u + key % 1024u) || BANKSET != BBANK ||
         INTBIT15 != (FBANK & 040000u) || !sane() || outside_mutable(key))
         return EXEC_OUT_OF_SCOPE;
@@ -145,20 +227,21 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
 /* For the side-by-side test: whether a key runs readable code. */
 bool cm_tpi_search_readable(uint16_t key, bool order_pair)
 {
-    return order_pair && code_at(key / 1024u, (word)(02000u + key % 1024u)) != NULL;
+    return order_pair ? code_at(key / 1024u, (word)(02000u + key % 1024u)) != NULL
+                      : basic_entry(key) != NULL;
 }
 
 #define BASIC(i, bank, address)                                                                    \
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, program, state, device);                                                   \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #include "cm_tpi_search_keys.inc"
 #undef BASIC
