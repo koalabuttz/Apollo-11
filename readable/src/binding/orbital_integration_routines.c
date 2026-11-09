@@ -144,9 +144,7 @@ static const struct basic_entry *basic_entry(uint16_t key)
 
 /* The parts of the code written so far. */
 static const struct interpretive_code *const codes[] = {
-    &KEPPREP_CODE,
-    &ACCOMP_CODE,
-    &OBLATE_CODE,
+    &KEPPREP_CODE,  &ACCOMP_CODE, &OBLATE_CODE, &TIMESTEP_CODE, &DOSWITCH_CODE,
 #if LUMINARY099
     &QUALITY1_CODE,
 #endif
