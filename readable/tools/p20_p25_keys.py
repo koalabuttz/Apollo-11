@@ -93,7 +93,9 @@ FILES = (('lm_p20_p25', READABLE / 'src/binding/p20_p25_keys.inc'),
          ('lm_integration_init', READABLE / 'src/binding/integration_init_keys.inc'),
          ('cm_integration_init', READABLE / 'src/binding/cm_integration_init_keys.inc'),
          ('lm_orbital_integration', READABLE / 'src/binding/orbital_integration_keys.inc'),
-         ('cm_orbital_integration', READABLE / 'src/binding/cm_orbital_integration_keys.inc'))
+         ('cm_orbital_integration', READABLE / 'src/binding/cm_orbital_integration_keys.inc'),
+         ('lm_inflight_align', READABLE / 'src/binding/inflight_align_keys.inc'),
+         ('cm_inflight_align', READABLE / 'src/binding/cm_inflight_align_keys.inc'))
 
 
 def generate(m):

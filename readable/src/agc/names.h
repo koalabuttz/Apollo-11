@@ -5227,6 +5227,9 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define ENDSTATE ((word)K_ENDSTATE)
 #define WMATEND  ((word)K_WMATEND)
 
+/* INFLIGHT_ALIGNMENT_ROUTINES.agc: GIMLOCK1, where the basic code is. */
+#define GIMLOCK1 ((word)K_GIMLOCK1)
+
 /* CONIC_SUBROUTINES.agc: KEPLER's start, DELTIME, CHECKCTR, GETX's
  * POLYCOEF and ABTCONIC. */
 #define KEPLERN  ((word)K_KEPLERN)
