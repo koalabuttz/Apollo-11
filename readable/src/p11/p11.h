@@ -97,6 +97,8 @@ void nopoly(void);                 /* NOPOLY */
  * S11.1 and NOPOLY +1. */
 extern const struct interpretive_code ATTDISP_CODE, ATTDISP2_CODE, STEERSAT_CODE, S11_1_CODE,
     NOPOLY_CODE;
+/* And bank 37's (part 3): ATTDISP1 to NOPOLYM. */
+extern const struct interpretive_code ATTDISP1_CODE;
 
 /* ---- satstick.c: SATSTKON, REDOSAT, SATSTICK -- pp. 548-550 ---- */
 void satstkon(void);                /* SATSTKON */

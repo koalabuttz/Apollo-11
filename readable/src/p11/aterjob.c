@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: MIT */
-/* P11.agc of the CM, parts 1 and 2 (Comanche055 pp. 542-547, bank 34): ATERJOB,
+/* P11.agc of the CM (Comanche055 pp. 542-547, banks 34 and 37): ATERJOB,
  * the job that "PROVIDES ATTITUDE ERROR DISPLAYS TO THE FDAI DURING SONE
  * BOOST", about every half second, and steers the Saturn with them when
  * the crew has the S/C control of Saturn switch on; the small routines
@@ -11,8 +11,8 @@
  * then, until POLYSTOP, the pitch polynomial (POLYNUM's coefficients,
  * POWRSERS) and the roll "LAUNCHAZ-AZIMUTH-.5+SATRLRT*T". The
  * interpretive code turns these into "THE ATTITUDE ERRORS ... AK, AK1,
- * AK2 AS INPUT TO NEEDLER, THE FDAI ATTITUDE ERROR DISPLAY ROUTINE": the
- * code here (part 2), and in bank 37 ATTDISP1 to NOPOLYM (part 3).
+ * AK2 AS INPUT TO NEEDLER, THE FDAI ATTITUDE ERROR DISPLAY ROUTINE"
+ * (ATTDISP1 to NOPOLYM, in bank 37, and ATTDISP2).
  *
  * SATSW is the takeover's state: +1 display only, +0 the needles
  * initialized for steering (the errors at that moment become the bias,
@@ -102,6 +102,100 @@ static const word attdisp_words[] = {
 
 const struct interpretive_code ATTDISP_CODE = {034u, ATTDISP + 025u, COUNT(attdisp_words),
                                                attdisp_words};
+
+/* ---- ATTDISP1 to NOPOLYM -- pp. 543-544, bank 37 ---- */
+
+/* ATTDISP1: "CONSTRUCT SM TO S/C MATRIX, TSMV" from the pitch P (pushed)
+ * and the roll, "LAUNCHAZ-AZIMUTH-.5+SATRLRT*T" ("TIME1 - RSPSTART ,CSECS
+ * B-14.", SPOLYARG, times SATRLRT), "ASSUMING X(SM) ALONG LAUNCH
+ * AZIMUTH"; RTB RLTST, "DETERMINE IF ROLLOUT IS COMPLETED" (and if it
+ * is, no roll), ends the pass, and ATTDISPR goes on. TSMV, halved: -.5*COS(P),
+ * .5*SIN(P) and 0 at 14D, 10D and 12D; at 16D to 26D the products with
+ * the roll R. From them "THE HALF UNIT VECTORS XDC,YDC,ZDC = INPUT TO
+ * CALCGTA", which computes the "DESIRED SM ORIENTATION" OGC, IGC and MGC.
+ *
+ * NOPOLYM, where "ATTITUDE HOLD" (NOPOLY) enters too: the desired angles
+ * pushed twice, so that from word 2 of the list they read IGC, MGC, OGC,
+ * the "Y,Z,X ORDER OF CDUSPOT" ("CHANGE IGC TO MGC FOR COMPATIBILITY");
+ * CDUTRIG the CDUs, their sines and cosines. Those three, made two's
+ * complement single precision (V1STO2S), into BOOSTEMP; the list's first
+ * six words +0; the CDUs (CDUSPOT) the same way, and RTB DELSTOR, "STORE
+ * DELTACDU INTO PDL 0,2,4" (DTHETA, DPSI, DPHI), ends the pass. Then MPAC
+ * gets DPHI + DTHETA*SIN(CDUZ), with the "CHANGE SCALE OF AK TO 2REVS",
+ * and ATTDISP2 in bank 34 goes on. */
+static const word attdisp1_words[] = {
+    /* ATTDISP1 */ ORDERS(COS, DCOMP),
+    STODL_D(14), /* "-.5*COS(P)" */
+    ORDER(SIN),
+    STODL_D(10), /* ".5*SIN(P)" */
+    ADDRESS_PLUS_ONE(ZEROVECS),
+    STORE_D(12), /* "0" */
+    ORDERS(SLOAD, DMP),
+    ADDRESS_PLUS_ONE(SPOLYARG),
+    ADDRESS_PLUS_ONE(SATRLRT),
+    ORDERS(SL, DSU),
+    SL_COUNT(14),
+    ADDRESS_PLUS_ONE(DPHALF),
+    ORDERS(DAD, DSU),
+    ADDRESS_PLUS_ONE(LAUNCHAZ), /* "LAUNCHAZ = ANGLE FROM NORTH TO X(SM)." */
+    ADDRESS_PLUS_ONE(AZIMUTH),  /* "AZIMUTH = -ANGLE FROM NORTH TO Z(S/C)" */
+    ORDER(RTB),
+    ADDRESS(RLTST),
+    /* ATTDISPR */ ORDERS(PUSH, COS), /* "CONTINUE COMPUTING TSMV" */
+    ORDER(PUSH),                      /* "LET R(RAD) = 2*PI*ROLL(REV)" */
+    ORDERS(DMP, SL1),
+    ADDRESS_PLUS_ONE_D(14),
+    STODL_D(22), /* "-.5*COS(R)*COS(P)" */
+    ORDER(DCOMP),
+    STORE_D(18), /* "-.5*COS(R)" */
+    ORDERS(DMP, SL1),
+    ADDRESS_PLUS_ONE_D(10),
+    STODL_D(26), /* "-.5*COS(R)*SIN(P)" */
+    ORDERS(SIN, PUSH),
+    STORE_D(24), /* ".5*SIN(R)" */
+    ORDERS(DMP, SL1),
+    ADDRESS_PLUS_ONE_D(14),
+    STODL_D(16), /* "-.5*SIN(R)*COS(P)" */
+    ORDER(DCOMP),
+    ORDERS(DMP, SL1),
+    ADDRESS_PLUS_ONE_D(10),
+    STOVL_D(20), /* "-.5*SIN(R)*SIN(P)" */
+    ADDRESS_PLUS_ONE_D(10),
+    ORDER(UNIT),
+    STOVL(XDC), /* "XDC = .5*UNIT(SIN(P),0,-COS(P))" */
+    ADDRESS_PLUS_ONE_D(16),
+    ORDER(UNIT),
+    STOVL(YDC),
+    ADDRESS_PLUS_ONE_D(22),
+    ORDER(UNIT),
+    STCALL(ZDC),
+    ADDRESS(CALCGTA),
+    /* NOPOLYM */ ORDERS(VLOAD, PUSH),
+    ADDRESS_PLUS_ONE(OGC),
+    ORDERS(PUSH, CALL),
+    ADDRESS(CDUTRIG), /* "WITH Y,Z,X ORDER OF CDUSPOT" */
+    ORDERS(VLOAD, RTB),
+    ADDRESS_PLUS_ONE_D(2),
+    ADDRESS(V1STO2S),
+    STOVL(BOOSTEMP),
+    ADDRESS_PLUS_ONE(ZEROVECS),
+    STOVL_D(0),
+    ADDRESS_PLUS_ONE(CDUSPOT),
+    ORDERS(RTB, RTB),
+    ADDRESS(V1STO2S),
+    ADDRESS(DELSTOR),
+    STODL_D(10),
+    ADDRESS_PLUS_ONE(SINCDUZ),
+    ORDERS(DMP, SL1),
+    ADDRESS_PLUS_ONE_D(0),
+    ORDERS(DAD, SR2), /* "CHANGE SCALE OF AK TO 2REVS" */
+    ADDRESS_PLUS_ONE_D(4),
+    ORDER(GOTO),
+    ADDRESS(ATTDISP2),
+};
+
+const struct interpretive_code ATTDISP1_CODE = {037u, ATTDISP1, COUNT(attdisp1_words),
+                                                attdisp1_words};
 
 /* STRSAT, with the S/C control of Saturn switch on: "CHECK IF NEEDLER HAS
  * BEEN INITIALIZED" (SATSW +0 or negative): "YES - CONTINUE"; else
@@ -241,12 +335,12 @@ static void akload(void)
     steersat();
 }
 
-/* ATTDISP2, from bank 37's code (ATTDISP1 to NOPOLYM), with the gimbal
- * angle errors at 0, 2 and 4 of the push-down list and the outer one in
- * MPAC: the errors in body axes, by the gimbal angles' sines and cosines
- * (COSCDUZ, COSCDUX, SINCDUX), each halved: 16D ".5(DPHI +
- * DTHETA*SIN(CDUZ))", 17D and 18D from DTHETA and DPSI by the outer
- * angle. "STORE ATTITUDE ERRORS IN AK,AK1,AK2". */
+/* ATTDISP2, from bank 37's code (NOPOLYM), with the gimbal angle errors
+ * DTHETA, DPSI and DPHI at 0, 2 and 4 of the push-down list and in MPAC
+ * the first body axis error: the errors in body axes, by the gimbal
+ * angles' sines and cosines (COSCDUZ, COSCDUX, SINCDUX), each halved: 16D
+ * ".5(DPHI + DTHETA*SIN(CDUZ))", 17D and 18D from DTHETA and DPSI by the
+ * outer angle. "STORE ATTITUDE ERRORS IN AK,AK1,AK2". */
 static const word attdisp2_words[] = {
     STODL_D(16),           ADDRESS_PLUS_ONE(COSCDUZ), ORDERS(DMP, PUSH), ADDRESS_PLUS_ONE_D(0),
     ORDERS(DMP, SL1),      ADDRESS_PLUS_ONE(COSCDUX), ORDERS(PDDL, DMP), ADDRESS_PLUS_ONE(SINCDUX),

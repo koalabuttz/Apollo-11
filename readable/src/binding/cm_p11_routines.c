@@ -6,16 +6,15 @@
  *
  * The tables carry every key of the faithful ones, in their order
  * (cm_p11_keys.inc, which tools/p20_p25_keys.py writes from them). Every
- * basic key runs a readable routine, and every order pair of bank 34 the
- * readable interpreter on the listing's code; bank 37's order pairs run
- * the faithful port's routines (renamed faithful_) until part 3.
- *
- * Partial file: Comanche055/P11.agc (COVERAGE counts it when whole).
+ * basic key runs a readable routine, and every order pair the readable
+ * interpreter on the listing's code.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
  * the file (BANKCALL, IBNKCALL, PHASCHNG, WAITLIST, FINDVAC, POWRSERS,
  * DANZIG, RESUME, ...) or reaches NEWOPS through a TC INTPRET; an order
- * pair is one pass of the interpreter, from NEWOPS with LOC the key.
+ * pair is one pass of the interpreter, from NEWOPS with LOC the key (on
+ * through RTB V1STO2S, as the faithful pair runs it; RTB RLTST and RTB
+ * DELSTOR end the pass, at their own keys).
  *
  * The device is the CM's io record (cm_native_io), which keeps channel
  * 12 (the Saturn takeover's bit 9); channels 30 (the S/C control of
@@ -36,6 +35,7 @@
 #include "../p11/p11.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
+#include "../rtb_op_codes/rtb_op_codes.h"
 
 #if COMANCHE055
 
@@ -188,9 +188,18 @@ static const struct basic_entry *basic_entry(uint16_t key)
 /* ---- The order pairs ---- */
 
 static const struct interpretive_code *const codes[] = {
-    /* Part 2: bank 34 */
-    &P11_CODE,      &MATRXJOB_CODE, &VHHDOT_CODE, &GETDOWN_CODE, &ATTDISP_CODE,
-    &ATTDISP2_CODE, &STEERSAT_CODE, &S11_1_CODE,  &NOPOLY_CODE,
+    /* Bank 34 */
+    &P11_CODE,
+    &MATRXJOB_CODE,
+    &VHHDOT_CODE,
+    &GETDOWN_CODE,
+    &ATTDISP_CODE,
+    &ATTDISP2_CODE,
+    &STEERSAT_CODE,
+    &S11_1_CODE,
+    &NOPOLY_CODE,
+    /* Bank 37 */
+    &ATTDISP1_CODE,
 };
 
 /* The table an address of a bank is in, or none. */
@@ -203,6 +212,19 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
             address < codes[i]->first + codes[i]->count)
             return codes[i];
     return NULL;
+}
+
+/* One pass; after RTB V1STO2S (NOPOLYM's), the routine and the pass on
+ * from its DANZIG, as the faithful pair runs them. */
+static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
+                                 cm_native_io *io, const struct interpretive_code *code)
+{
+    if (interpret_listing(program, state, io, code) != EXEC_OK) return EXEC_OUT_OF_SCOPE;
+    bind(program, state, io);
+    if (Z != V1STO2S || FBANK != (word)(I_V1STO2S & 076000u)) return EXEC_OK;
+    if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
+    v1sto2s();
+    return interpret_listing(program, state, io, code);
 }
 
 /* ---- The keys, in the faithful tables' order ---- */
@@ -230,12 +252,8 @@ static enum exec_status basic(uint16_t key, const agc_native_program *program,
     return EXEC_OK;
 }
 
-/* The faithful order pairs, renamed. */
-extern const agc_routine_table faithful_cm_p11_interpretive;
-
-/* Each order pair's routine: one pass of the readable interpreter where
- * its code is written, the faithful port's routine where it is not yet. */
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each order pair's routine: one pass of the readable interpreter. */
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
@@ -244,8 +262,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     const struct interpretive_code *code = code_at(bank, (word)(02000u + key % 1024u));
     enum exec_status status;
 
-    if (!code) return faithful_cm_p11_interpretive.entries[index].call(program, state, device);
-    if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
+    if (!code || !program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     if (Z != NEWOPS || !in_bank(bank) || LOC != (word)(02000u + key % 1024u) || BANKSET != BBANK ||
         INTBIT15 != (FBANK & 040000u) || !sane())
@@ -253,7 +270,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
 
     before = *state;
     kept = *io;
-    status = interpret_listing(program, state, io, code);
+    status = one_pass(program, state, io, code);
     if (status != EXEC_OK) {
         *state = before;
         *io = kept;
@@ -278,7 +295,7 @@ bool cm_p11_readable(uint16_t key, bool order_pair)
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #include "cm_p11_keys.inc"
 #undef BASIC

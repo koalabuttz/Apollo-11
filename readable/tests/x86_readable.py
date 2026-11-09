@@ -270,8 +270,8 @@ REPLACED = (
 # are no longer called.
 # IMU_CALIBRATION_AND_ALIGNMENT (src/imu_calibration): the CM's routine
 # tables, all readable; the faithful ones, renamed, are no longer called.
-# P11 (src/p11): the CM's routine tables, the basic keys readable; the
-# faithful tables, renamed, run the order pairs no part has written yet.
+# P11 (src/p11): the CM's routine tables, all readable; the faithful ones,
+# renamed, are no longer called.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],

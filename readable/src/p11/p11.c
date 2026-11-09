@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: MIT */
-/* P11.agc of the CM, parts 1 and 2 (Comanche055 pp. 535-541, bank 34):
+/* P11.agc of the CM (Comanche055 pp. 535-541, bank 34):
  * P11, its restart point REP11, VHHDOT (SERVICER's exit during the boost),
  * ATERTASK and GETDOWN.
  *
