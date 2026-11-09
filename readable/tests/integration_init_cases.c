@@ -51,10 +51,11 @@ struct interpretive_code {
     const uint16_t *words;
 };
 extern const struct interpretive_code STATINT1_CODE, SETIFLGS_CODE, ATOPCSM_CODE, PTOACSM_CODE,
-    ATOPLEM_CODE, PTOALEM_CODE, USEPIOS_CODE;
+    ATOPLEM_CODE, PTOALEM_CODE, USEPIOS_CODE, INTEGRV_CODE, ALOADED_CODE, A_PCHK_CODE, PHEXIT_CODE,
+    TESTLOOP_CODE;
 static const struct interpretive_code *const codes[] = {
-    &STATINT1_CODE, &SETIFLGS_CODE, &ATOPCSM_CODE, &PTOACSM_CODE,
-    &ATOPLEM_CODE,  &PTOALEM_CODE,  &USEPIOS_CODE};
+    &STATINT1_CODE, &SETIFLGS_CODE, &ATOPCSM_CODE, &PTOACSM_CODE, &ATOPLEM_CODE, &PTOALEM_CODE,
+    &USEPIOS_CODE,  &INTEGRV_CODE,  &ALOADED_CODE, &A_PCHK_CODE,  &PHEXIT_CODE,  &TESTLOOP_CODE};
 bool integration_init_readable(uint16_t key, bool order_pair);
 #if LUMINARY099
 extern const agc_routine_table lm_integration_init_basic, lm_integration_init_interpretive;
@@ -92,14 +93,29 @@ typedef cm_native_io mission_io;
 #define PUSHLOC_AT  0166u
 #define NEWJOB_AT   0067u
 #define STATE_AT    0074u /* the flagwords, STATE to STATE +11 */
-/* The keys that store a vector at 6D: in a NOVAC job's work area
- * (FIXLOC 0110, MPAC -36D) the store runs over ADDRWD and FIXLOC, the
- * interpreter's own words, as it goes, which no program does: these take
- * a VAC area. */
+/* The keys that store a vector at 6D, or push values: in a NOVAC job's work
+ * area (FIXLOC 0110, MPAC -36D) the store runs over ADDRWD and FIXLOC,
+ * the interpreter's own words, as it goes, which no program does: these
+ * take a VAC area. And the keys whose operand X2 indexes (RECTOUT's VSL*
+ * and PDDL*, TESTLOOP's DSU* and DDV*): there X2 is the origin, 0 or 2,
+ * as TESTLOOP's LXA,2 PBODY sets it; another X2 reads words in fixed
+ * memory the faithful port's routines do not take. They take a VAC area
+ * too: a NOVAC job's X2 is MPAC +3, which a vector's shift changes. */
 #if LUMINARY099
-static const uint16_t vac_keys[] = {013u * 1024u + 03016u % 1024u}; /* USEPIOS +015 */
+static const uint16_t vac_keys[] = {013u * 1024u + 03016u % 1024u, /* USEPIOS +015 */
+                                    /* RECTOUT's pushes */
+                                    013u * 1024u + 03206u % 1024u, 013u * 1024u + 03211u % 1024u,
+                                    013u * 1024u + 03214u % 1024u, 013u * 1024u + 03217u % 1024u};
+static const uint16_t x2_keys[] = {013u * 1024u + 03203u % 1024u, 013u * 1024u + 03206u % 1024u,
+                                   013u * 1024u + 03214u % 1024u, 013u * 1024u + 03273u % 1024u,
+                                   013u * 1024u + 03303u % 1024u};
 #else
-static const uint16_t vac_keys[] = {013u * 1024u + 03042u % 1024u};
+static const uint16_t vac_keys[] = {013u * 1024u + 03042u % 1024u, 013u * 1024u + 03234u % 1024u,
+                                    013u * 1024u + 03237u % 1024u, 013u * 1024u + 03242u % 1024u,
+                                    013u * 1024u + 03245u % 1024u};
+static const uint16_t x2_keys[] = {013u * 1024u + 03231u % 1024u, 013u * 1024u + 03234u % 1024u,
+                                   013u * 1024u + 03242u % 1024u, 013u * 1024u + 03321u % 1024u,
+                                   013u * 1024u + 03331u % 1024u};
 #endif
 
 #if LUMINARY099
@@ -109,11 +125,11 @@ static const uint16_t vac_keys[] = {013u * 1024u + 03042u % 1024u};
 #define NEWOPS_AT 06037u
 /* DANZIG, where an RTB's routine ends; and the keys a pair's right-hand
  * order waits at in EDOP (its code plus one) while the RTB on its left
- * runs: PTOACSM's RTB BON. */
+ * runs: PTOACSM's RTB BON, and DT/2COMP's RTB SL. */
 #define DANZIG_AT 06030u
 static const struct {
     uint16_t key, edop;
-} pending[] = {{013u * 1024u + 02732u % 1024u, 0163u}};
+} pending[] = {{013u * 1024u + 02732u % 1024u, 0163u}, {013u * 1024u + 03352u % 1024u, 0116u}};
 #endif
 /* The index registers and the returns, in the work area: X1, X2, S1, S2
  * and QPRET. */
@@ -290,6 +306,8 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
             rnd() % 2u ? (uint16_t)(MPAC_AT - 044u) : (uint16_t)(rnd() % 02000u);
     for (k = 0; interpretive && k < sizeof vac_keys / sizeof vac_keys[0]; ++k)
         if (key == vac_keys[k] && fixloc == MPAC_AT - 044u) fixloc = w[FIXLOC_AT] = 0401u;
+    for (k = 0; interpretive && k < sizeof x2_keys / sizeof x2_keys[0]; ++k)
+        if (key == x2_keys[k] && fixloc == MPAC_AT - 044u) fixloc = w[FIXLOC_AT] = 0401u;
     /* X1 and X2 as the program sets them: X1 the central body's MUTABLE
      * entry (-2 for the earth, -10 for the moon) or a shift count, X2 the
      * origin (PBODY: 0 or 2) or a shift count (small, either sign). An
@@ -303,6 +321,8 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
                                                     : (uint16_t)(077777u - rnd() % 16u);
     w[(fixloc + X2_OFFSET) & 03777u] =
         rnd() % 2u ? (uint16_t)(rnd() % 19u) : (uint16_t)(077777u - rnd() % 16u);
+    for (k = 0; interpretive && k < sizeof x2_keys / sizeof x2_keys[0]; ++k)
+        if (key == x2_keys[k]) w[(fixloc + X2_OFFSET) & 03777u] = rnd() % 2u ? 0u : 2u;
     /* The push-down list in the work area, below X1 and X2. */
     if (w[PUSHLOC_AT] < fixloc || w[PUSHLOC_AT] > fixloc + 037u || n % 4u != 0u)
         w[PUSHLOC_AT] = (uint16_t)(fixloc + rnd() % 040u);

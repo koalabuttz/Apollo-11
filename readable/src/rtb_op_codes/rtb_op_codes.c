@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* RTB_OP_CODES.agc (Luminary099) and RT8_OP_CODES.agc (Comanche055), the
  * same code in both: the routines an interpretive RTB runs. So far
- * LOADTIME, SGNAGREE, CDULOGIC, 1STO2S, V1STO2S, TPMODE, DPMODE and 2V1STO2S with
+ * LOADTIME, SGNAGREE, CDULOGIC, 1STO2S, V1STO2S, TPMODE, SIGNMPAC, DPMODE and 2V1STO2S with
  * their 1TO2SUB, and the CM's TRANSP1 and TRANSP2. */
 #include "rtb_op_codes.h"
 #include "../agc/names.h"
@@ -91,6 +91,27 @@ void v1sto2s(void)
     ts(ADDRESS_OF(MPAC));
     set_A(ONE); /* TPMODE: CAF ONE, "MODE IS TP." */
     newmode();  /* TCF NEWMODE */
+}
+
+/* SIGNMPAC -- LM p. 1401, CM p. 1514.
+ * "THE SUBROUTINE SIGNMPAC SETS C(MPAC, MPAC +1) TO SIGN(MPAC)": DPOSMAX
+ * for a positive MPAC or +0, its complement for a negative one or -0
+ * ("ALSO +0 YIELDS POSMAX AND -0 YIELDS NEGMAX"). Only MPAC is looked at;
+ * the mode becomes double precision, back to DANZIG ("RETURN IS TO THE
+ * NEXT INTERPRETIVE INSTRUCTION IN THE CALLING SEQUENCE"). */
+void signmpac(void)
+{
+    dca(DPOSMAX); /* EXTEND; DCA DPOSMAX */
+    dxch(ADDRESS_OF(MPAC));
+    switch (ccs_register(A_ADDRESS)) {
+    case POSITIVE: dpmode(); break;           /* DPMODE: CAF ZERO; TCF SLOAD2 +2 */
+    case IS_PLUS_ZERO: sload2_plus2(); break; /* TCF SLOAD2 +2 */
+    case NEGATIVE:                            /* TCF +1 */
+    case IS_MINUS_ZERO:
+        dcs(DPOSMAX);
+        sload2();
+        break; /* EXTEND; DCS DPOSMAX; TCF SLOAD2 */
+    }
 }
 
 /* DPMODE -- LM p. 1401, CM p. 1514.

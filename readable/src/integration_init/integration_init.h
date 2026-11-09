@@ -24,7 +24,11 @@
  *     1211-1213, CM pp. 1315-1317), with MEASUREMENT_INCORPORATION;
  *   part 1: STATEINT to NOINT (stateint.c: LM pp. 1209-1210, CM pp.
  *     1313-1314) and the transfers ATOPCSM to USEPIOS (transfers.c: LM
- *     pp. 1210-1213, CM pp. 1314-1317).
+ *     pp. 1210-1213, CM pp. 1314-1317);
+ *   part 2: the entries CSMPREC to INTEGRV2 and ALOADED (integrv.c: LM
+ *     pp. 1213-1216, CM pp. 1317-1320), A-PCHK to INTEXIT (rectout.c: LM
+ *     pp. 1216-1217, CM pp. 1320-1321) and RVCON, TESTLOOP to DT/2MAX
+ *     (testloop.c: LM pp. 1217-1219, CM pp. 1321-1324).
  * The binding (src/binding/integration_init_routines.c) runs the faithful
  * port's routines at the keys no part has written yet. */
 #ifndef READABLE_INTEGRATION_INIT_H
@@ -66,5 +70,17 @@ void endint_after_longcall(void);   /* ENDINT +011: TC ENDOFJOB */
 void noint_after_exit(void);        /* NOINT +1: TC PHASCHNG */
 void noint_after_phaschng(void);    /* NOINT +3: TC DOWNFLAG */
 void noint_after_downflag(void);    /* NOINT +5: TC ENDOFJOB */
+
+/* Part 2: the entries (to INTEGRV2's BON GOTO), ALOADED, A-PCHK (to its
+ * EXIT), the words after its TC INTPRET (to INTEXIT's EXIT), and RVCON to
+ * DT/2MAX. */
+extern const struct interpretive_code INTEGRV_CODE, ALOADED_CODE, A_PCHK_CODE, PHEXIT_CODE,
+    TESTLOOP_CODE;
+
+/* Part 2's basic code: after A-PCHK's EXIT (the CM's ANDOUT's), each from
+ * a key. */
+void a_pchk_after_exit(void);     /* A-PCHK (ANDOUT) +3: TC PHASCHNG */
+void a_pchk_after_phaschng(void); /* +5: TC UPFLAG */
+void a_pchk_after_upflag(void);   /* +7: TC INTPRET */
 
 #endif
