@@ -488,11 +488,11 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define V05N09   ((word)KW_V05N09)
 #define V37FLBIT ((word)KW_V37FLBIT)
 #define NODOBIT  ((word)KW_NODOBIT)
+#define REINTBIT ((word)KW_REINTBIT)
 #if LUMINARY099
 #define OCT35    ((word)KW_OCT35)
 #define BBSERVDL ((word)KW_BBSERVDL) /* BBCON SERVIDLE */
 #define STATEBIT ((word)KW_STATEBIT)
-#define REINTBIT ((word)KW_REINTBIT)
 /* ADR40400 and ADR77770 are instructions, TCF OCT40400 and TCF OCT77770,
  * read as words. */
 #define ADR40400 ((word)KW_ADR40400)
@@ -5183,6 +5183,25 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define A_PCHK ((word)K_A_PCHK)
 #if COMANCHE055
 #define ANDOUT ((word)K_ANDOUT)
+#endif
+/* INTSTALL and INTWAKE: the stall area's words. The CM has three areas,
+ * picked by INDEX from L or STALTEM ("STALTEM EQUALS MPAC"). */
+#define INTSTALL ((word)K_INTSTALL)
+#define INTWAKE  ((word)K_INTWAKE)
+#define INTWAKE0 ((word)K_INTWAKE0)
+#define INTWAKE1 ((word)K_INTWAKE1)
+#define GOBAC    ((word)K_GOBAC)
+#define WAKESTAL ((word)K_WAKESTAL)
+#define INTBITAB ((word)K_INTBITAB)
+#define INTEXIT  ((word)K_INTEXIT)
+#if COMANCHE055
+#define ALLSTALL ((word)K_ALLSTALL)
+#define WAKE1    ((word)K_WAKE1)
+#define ERASTAL1 ((word)K_ERASTAL1)
+#define ERASTAL2 ((word)K_ERASTAL2)
+#define ERASWAK1 ((word)K_ERASWAK1)
+#define ERASWAK2 ((word)K_ERASWAK2)
+#define STALTEM  ERASABLE(K_STALTEM)
 #endif
 #define MOVEACSM ((word)K_MOVEACSM)
 #define MOVEPCSM ((word)K_MOVEPCSM)

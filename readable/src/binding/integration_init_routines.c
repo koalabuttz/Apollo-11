@@ -220,6 +220,23 @@ static const struct basic_entry {
     {KEY(INTINIT_BANK, A_PCHK_EXIT + 3u), a_pchk_after_exit, false},
     {KEY(INTINIT_BANK, A_PCHK_EXIT + 5u), a_pchk_after_phaschng, false},
     {KEY(INTINIT_BANK, A_PCHK_EXIT + 7u), a_pchk_after_upflag, false},
+    /* Part 3 */
+    {KEY(INTINIT_BANK, INTEXIT + 012u), intexit_after_exit, false},
+    {KEY(INTINIT_BANK, INTSTALL + 1u), intstall_after_exit, false},
+    {KEY(INTINIT_BANK, INTWAKE0 + 1u), intwake1, false},
+    {KEY(INTINIT_BANK, INTWAKE), intwake, false},
+    {KEY(INTINIT_BANK, INTWAKE + 011u), intwake_after_phaschng, false},
+    {KEY(INTINIT_BANK, INTWAKE1), intwake1, false},
+#if LUMINARY099
+    {KEY(INTINIT_BANK, INTWAKE + 4u), intwake_after_intwake1, false},
+    {KEY(INTINIT_BANK, INTWAKE1 + 3u), intwake1_after_jobwake, false},
+#else
+    {KEY(INTINIT_BANK, WAKE1 + 4u), intwake1_after_jobwake, false},
+    {KEY(INTINIT_BANK, ERASTAL1 + 1u), erastal1_after_exit, false},
+    {KEY(INTINIT_BANK, ERASTAL2 + 1u), erastal2_after_exit, false},
+    {KEY(INTINIT_BANK, ERASWAK1), eraswak1, false},
+    {KEY(INTINIT_BANK, ERASWAK2), eraswak2, false},
+#endif
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -235,8 +252,12 @@ static const struct basic_entry *basic_entry(uint16_t key)
 
 /* The parts of the code written so far. */
 static const struct interpretive_code *const codes[] = {
-    &STATINT1_CODE, &SETIFLGS_CODE, &ATOPCSM_CODE, &PTOACSM_CODE, &ATOPLEM_CODE, &PTOALEM_CODE,
-    &USEPIOS_CODE,  &INTEGRV_CODE,  &ALOADED_CODE, &A_PCHK_CODE,  &PHEXIT_CODE,  &TESTLOOP_CODE,
+    &STATINT1_CODE, &SETIFLGS_CODE, &ATOPCSM_CODE,  &PTOACSM_CODE,  &ATOPLEM_CODE,
+    &PTOALEM_CODE,  &USEPIOS_CODE,  &INTEGRV_CODE,  &ALOADED_CODE,  &A_PCHK_CODE,
+    &PHEXIT_CODE,   &TESTLOOP_CODE, &INTSTALL_CODE, &INTWAKE0_CODE, &GOBAC_RVQ_CODE,
+#if COMANCHE055
+    &ERASTAL1_CODE, &ERASTAL2_CODE,
+#endif
 };
 
 /* The part of the code an address of a bank is in, or none. */

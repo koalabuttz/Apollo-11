@@ -52,10 +52,18 @@ struct interpretive_code {
 };
 extern const struct interpretive_code STATINT1_CODE, SETIFLGS_CODE, ATOPCSM_CODE, PTOACSM_CODE,
     ATOPLEM_CODE, PTOALEM_CODE, USEPIOS_CODE, INTEGRV_CODE, ALOADED_CODE, A_PCHK_CODE, PHEXIT_CODE,
-    TESTLOOP_CODE;
+    TESTLOOP_CODE, INTSTALL_CODE, INTWAKE0_CODE, GOBAC_RVQ_CODE;
+#if COMANCHE055
+extern const struct interpretive_code ERASTAL1_CODE, ERASTAL2_CODE;
+#endif
 static const struct interpretive_code *const codes[] = {
-    &STATINT1_CODE, &SETIFLGS_CODE, &ATOPCSM_CODE, &PTOACSM_CODE, &ATOPLEM_CODE, &PTOALEM_CODE,
-    &USEPIOS_CODE,  &INTEGRV_CODE,  &ALOADED_CODE, &A_PCHK_CODE,  &PHEXIT_CODE,  &TESTLOOP_CODE};
+    &STATINT1_CODE, &SETIFLGS_CODE, &ATOPCSM_CODE,  &PTOACSM_CODE,  &ATOPLEM_CODE,
+    &PTOALEM_CODE,  &USEPIOS_CODE,  &INTEGRV_CODE,  &ALOADED_CODE,  &A_PCHK_CODE,
+    &PHEXIT_CODE,   &TESTLOOP_CODE, &INTSTALL_CODE, &INTWAKE0_CODE, &GOBAC_RVQ_CODE,
+#if COMANCHE055
+    &ERASTAL1_CODE, &ERASTAL2_CODE,
+#endif
+};
 bool integration_init_readable(uint16_t key, bool order_pair);
 #if LUMINARY099
 extern const agc_routine_table lm_integration_init_basic, lm_integration_init_interpretive;

@@ -28,7 +28,9 @@
  *   part 2: the entries CSMPREC to INTEGRV2 and ALOADED (integrv.c: LM
  *     pp. 1213-1216, CM pp. 1317-1320), A-PCHK to INTEXIT (rectout.c: LM
  *     pp. 1216-1217, CM pp. 1320-1321) and RVCON, TESTLOOP to DT/2MAX
- *     (testloop.c: LM pp. 1217-1219, CM pp. 1321-1324).
+ *     (testloop.c: LM pp. 1217-1219, CM pp. 1321-1324);
+ *   part 3: INTSTALL to INTBITAB, and the basic code after INTEXIT's
+ *     EXIT (intstall.c: LM pp. 1217, 1219-1220, CM pp. 1321, 1324-1326).
  * The binding (src/binding/integration_init_routines.c) runs the faithful
  * port's routines at the keys no part has written yet. */
 #ifndef READABLE_INTEGRATION_INIT_H
@@ -82,5 +84,28 @@ extern const struct interpretive_code INTEGRV_CODE, ALOADED_CODE, A_PCHK_CODE, P
 void a_pchk_after_exit(void);     /* A-PCHK (ANDOUT) +3: TC PHASCHNG */
 void a_pchk_after_phaschng(void); /* +5: TC UPFLAG */
 void a_pchk_after_upflag(void);   /* +7: TC INTPRET */
+
+/* Part 3: the EXITs of INTSTALL and INTWAKE0 (the CM's ERASTAL1 and
+ * ERASTAL2 too), and GOBAC's RVQ. */
+extern const struct interpretive_code INTSTALL_CODE, INTWAKE0_CODE, GOBAC_RVQ_CODE;
+#if COMANCHE055
+extern const struct interpretive_code ERASTAL1_CODE, ERASTAL2_CODE;
+#endif
+
+/* Part 3's basic code, each from a key. */
+void intstall_after_exit(void);    /* INTSTALL +1 */
+void intwake(void);                /* INTWAKE */
+void intwake_after_phaschng(void); /* INTWAKE +011: CA TBASE2 */
+void intwake1(void);               /* INTWAKE1, and INTWAKE0 +1 */
+void intwake1_after_jobwake(void); /* INTWAKE1 +3 (the CM's WAKE1 +4) */
+void intexit_after_exit(void);     /* INTEXIT +012: CA MPAC */
+#if LUMINARY099
+void intwake_after_intwake1(void); /* INTWAKE +4 */
+#else
+void erastal1_after_exit(void); /* ERASTAL1 +1 */
+void erastal2_after_exit(void); /* ERASTAL2 +1 */
+void eraswak1(void);            /* ERASWAK1 */
+void eraswak2(void);            /* ERASWAK2 */
+#endif
 
 #endif
