@@ -22,8 +22,11 @@
  * rates and their last changes, GAMDOT (often +0, -0, 1 or -1), the
  * commanded angles, SR, A now and then a jet code tag (or an index that
  * lands on LIMITS or in erasable memory), A and L about a dead zone's
- * edge, JETAG, JETEM2, CALFA, SALFA, CMDAPMOD and
- * P63FLAG (often +0, -0, 1 or -1), the jets' channels 5 and 6, any erasable bank's words, A
+ * edge, JETAG, JETEM2, CALFA, SALFA, CMDAPMOD and P63FLAG (often +0,
+ * -0, 1 or -1; CALFA often about 45 degrees, C45LIM's edge), EXDAP's
+ * errors RAXERR and QAXERR and rates BETADOT, QREL and RREL (often about
+ * a dead zone's edge), ROLLHOLD (often ROLL/180), PAXERR1 and AK2, the
+ * jets' channels 5 and 6, any erasable bank's words, A
  * (often an overflow), L, Q (often 3, or a key of the file's to return
  * to), FB (any for FLUSHJET), EBANK (any for CM/DAPON and CM/DAPIC), the
  * latches, or a state the routines refuse (BBANK not the two banks, ZERO
@@ -33,8 +36,9 @@
  * too, with the same memory, io and hardware records, word for word;
  * where the readable one refuses, it must leave everything as it found
  * it; and the faithful routine must run in at least 1 of 16 of each
- * readable key's states. A timer stops a run that goes on past a tenth
- * of a second; such a state must loop on both sides. */
+ * readable key's states (but NSEC's, a constant neither runs). A timer
+ * stops a run that goes on past a tenth of a second; such a state must
+ * loop on both sides. */
 #define _POSIX_C_SOURCE 200809L /* sigsetjmp, setitimer */
 #include <setjmp.h>
 #include <signal.h>
@@ -178,19 +182,23 @@ static uint16_t register_word(uint16_t v)
 /* The frozen cases. */
 static unsigned mission_cases[CM_ENTRY_DAP_VECTORS], mission_count;
 
-/* The keys parts A to C cover: READGYMB to the dead zones and FLUSHJET
- * (indexes 0 to 44), CM/DAPON and CM/DAPIC (120 to 137). */
+/* The keys parts A to D cover: READGYMB to EXDAP2 and FLUSHJET (indexes
+ * 0 to 63), CM/DAPON and CM/DAPIC (120 to 137). */
 static bool written_part(unsigned index)
 {
-    return index <= 44u || (index >= 120u && index <= 137u);
+    return index <= 63u || (index >= 120u && index <= 137u);
 }
+
+/* NSEC (EXDAP2 +043), a constant: neither port runs it. */
+#define NSEC_KEY (015u * 1024u + (03171u & 01777u))
 
 /* The file's words a TC Q returns to: after FLUSHJET at READGYMB +012,
  * DOBRATE? +010 and CM/DAPON +015, DOBRATE? +4 to +7, after RATEAVG
- * and ANGOVCOR, and after the dead zone tests. */
+ * and ANGOVCOR, after the dead zone tests, and after EXDAP's TCs. */
 static const uint16_t returns[] = {02446u, 02476u, 03627u, 02472u, 02473u, 02474u, 02475u,
                                    02570u, 02604u, 02623u, 02676u, 02730u, 02734u, 02741u,
-                                   02763u, 02770u, 03016u, 03112u, 03123u};
+                                   02763u, 02770u, 03016u, 03112u, 03123u, 03053u, 03054u,
+                                   03106u, 03150u, 03152u, 03167u, 03171u};
 
 /* A Q to return to: 3, one of the file's words, a word of fixed memory,
  * or any. */
@@ -296,6 +304,19 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hw, u
         w[AT(JETAG)] = sign_word();
         w[AT(JETEM2)] = pick(2u) ? sign_word() : number((int)pick(400u) - 200);
         w[AT(CALFA)] = sign_word();
+        if (pick(4u) == 0u) { /* about COS(45), C45LIM's edge (11585) */
+            int v = 11585 + (int)pick(5u) - 2;
+            w[AT(CALFA)] = number(pick(2u) ? v : -v);
+        }
+        /* EXDAP's errors, rates and roll. */
+        w[AT(RAXERR)] = pick(2u) ? edge_word(false) : value_word();
+        w[AT(QAXERR)] = pick(2u) ? edge_word(false) : value_word();
+        w[AT(BETADOT)] = pick(2u) ? edge_word(true) : value_word();
+        w[AT(QREL)] = pick(2u) ? edge_word(true) : w[AT(QREL)];
+        w[AT(RREL)] = pick(2u) ? edge_word(true) : w[AT(RREL)];
+        w[AT(ROLLHOLD)] = pick(2u) ? w[AT(ROLL_180)] : value_word();
+        w[AT(PAXERR1)] = value_word();
+        w[AT(AK2)] = value_word();
         w[AT(SALFA)] = pick(2u) ? sign_word() : value_word();
         w[AT(CMDAPMOD)] = sign_word();
         w[AT(P63FLAG)] = sign_word();
@@ -414,7 +435,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                                fa.words[w], start.words[w]);
             }
         }
-        if (readable_key && ran < CASES / 16u && bad == 0u) {
+        if (readable_key && ran < CASES / 16u && bad == 0u && key != NSEC_KEY) {
             printf("FAIL key %u: the faithful routine ran in %u of %u states\n", key, ran, CASES);
             ++bad;
         }
@@ -450,7 +471,7 @@ int main(int argc, char **argv)
     sigaction(SIGALRM, &on_alarm, NULL);
     failures += keys(&cm_entry_dap_basic, &faithful_cm_entry_dap_basic, &runs, &written, &loops);
     printf(
-        "cm-entry-dap-cases: %u of %u keys readable (parts A to C, all basic) from %u states each "
+        "cm-entry-dap-cases: %u of %u keys readable (parts A to D, all basic) from %u states each "
         "(the others %u), %u run by the faithful routines, %u looping on both sides, %u "
         "failures\n",
         written, faithful_cm_entry_dap_basic.count, CASES, OTHER_CASES, runs, loops, failures);
