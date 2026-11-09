@@ -5221,6 +5221,9 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define INTBANK  ((word)KW_INTBANK)  /* BBCON INTEGRV */
 #define FORTYONE ((word)KW_FORTYONE) /* DEC 41 */
 
+/* ORBITAL_INTEGRATION.agc: INT-ABRT, where the basic code is. */
+#define INT_ABRT ((word)K_INT_ABRT)
+
 /* CONIC_SUBROUTINES.agc: KEPLER's start, DELTIME, CHECKCTR, GETX's
  * POLYCOEF and ABTCONIC. */
 #define KEPLERN  ((word)K_KEPLERN)
