@@ -2094,6 +2094,38 @@ static const word QERRCALL[2] = KW_QERRCALL; /* 2CADR CALLQERR */
 static const word GTSCADR[2] = KW_GTSCADR; /* 2CADR GTS */
 #endif
 
+/* ---- TJET_LAW (the LM's) ---- */
+
+/* Its labels (bank 17) where a TC calls out, and its constants: the jet
+ * time scalings and limits, the 2DEC .00375A8, and -1/8 (bank 2). */
+#if LUMINARY099
+#define JETSON             ((word)K_JETSON)
+#define DRIFT_ON           ((word)K_DRIFT_ON) /* DRIFT/ON */
+#define ZON1_2_3           ((word)K_ZON1_2_3) /* ZON1,2,3 */
+#define ZONE5              ((word)K_ZONE5)
+#define ZONE3              ((word)K_ZONE3)
+#define SMALRATE           ((word)K_SMALRATE)
+#define RUFLAW1            ((word)K_RUFLAW1)
+#define RUFLAW2            ((word)K_RUFLAW2)
+#define RUFLAW3            ((word)K_RUFLAW3)
+#define SENSOR             ((word)KW_SENSOR)
+#define MINUS_3DEG         ((word)KW_M3DEG)      /* -3DEG: DEC -.06667 */
+#define MINUS_POINT0112A8  ((word)KW_M_0112A8)   /* -.0112A8: DEC -.00141 */
+#define POINT1AT4          ((word)KW__1AT4)      /* .1AT4: DEC .025 */
+#define POINT1AT2          ((word)KW__1AT2)      /* .1AT2: DEC .05 */
+#define POINT0375AT4       ((word)KW__0375AT4)   /* .0375AT4: DEC .00938 */
+#define MINUS_POINT025AT2  ((word)KW_M_025AT2)   /* -.025AT2: DEC -.0125 */
+#define MINUS_POINT025AT4  ((word)KW_M_025AT4)   /* -.025AT4: DEC -.00625 */
+#define MINUS_POINT05AT2   ((word)KW_M_05AT2)    /* -.05AT2: DEC -.025 */
+#define MINUS_POINT15AT2   ((word)KW_M_15AT2)    /* -.15AT2: DEC -.075 */
+#define MINUS_TJMAX        ((word)KW_MTJMAX)     /* -TJMAX: DEC -.0375 */
+#define TJMIN              ((word)KW_TJMIN)      /* DEC .005 */
+#define MINUS_TJMIN        ((word)KW_MTJMIN)     /* -TJMIN: DEC -.005 */
+#define RUFRATE            ((word)KW_RUFRATE)    /* DEC .1444 */
+#define MINUS_1_8          ((word)KW_M1_8)       /* -1/8: OCT 73777 */
+static const word POINT00375A8[2] = KW__00375A8; /* .00375A8: 2DEC .00375 B-3 */
+#endif
+
 /* ---- SYSTEM_TEST_STANDARD_LEAD_INS ---- */
 
 /* Its entries: in bank 4 (the LM's, and the CM's E/JOBWAK) and bank 13
