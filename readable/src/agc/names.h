@@ -2126,6 +2126,15 @@ static const word GTSCADR[2] = KW_GTSCADR; /* 2CADR GTS */
 static const word POINT00375A8[2] = KW__00375A8; /* .00375A8: 2DEC .00375 B-3 */
 #endif
 
+/* ---- KALMAN_FILTER (the LM's) ---- */
+
+/* Its constants: 100 ms in TIME6's units (-100MST6, its own) and at 1
+ * second (-100MS, P-AXIS's). */
+#if LUMINARY099
+#define MINUS_100MST6 ((word)KW_M100MST6) /* -100MST6: DEC -160 */
+#define MINUS_100MS   ((word)KW_M100MS)   /* -100MS: DEC -.1 */
+#endif
+
 /* ---- SYSTEM_TEST_STANDARD_LEAD_INS ---- */
 
 /* Its entries: in bank 4 (the LM's, and the CM's E/JOBWAK) and bank 13
