@@ -514,7 +514,7 @@ static const word surfstar_words[] = {
     ADDRESS_PLUS_ONE(SCAXIS),         /* */
     ORDERS(VSL1, VAD),                /* "UP 0-5" */
     /* JUSTOA */ ORDERS(UNIT, CALL),  /* */
-    ADDRESS(TRG_STARNBSM),            /* */
+    ADDRESS(TRG_STAR_NBSM),           /* */
     STCALL_D(24),                     /* "STAR VEC IN SM" */
     ADDRESS(AVEIT),                   /* "GO AVERAGE" */
 };
@@ -656,13 +656,13 @@ static const word avestar_words[] = {
     STOVL(CDUSPOT),                  /* */
     ADDRESS_PLUS_ONE_D(12),          /* "LOAD Y-PLANE VECTOR IN NG" */
     ORDER(CALL),                     /* */
-    ADDRESS(TRG_STARNBSM),           /* "CONVERT IT TO STABLE MEMBER" */
+    ADDRESS(TRG_STAR_NBSM),          /* "CONVERT IT TO STABLE MEMBER" */
     ORDERS(PUSH, VLOAD_STAR),        /* */
     ADDRESS_PLUS_ONE_X1(0),          /* "PUT X-MARK CDUS IN CDUSPOT FOR TRG*NBSM" */
     STOVL(CDUSPOT),                  /* */
     ADDRESS_PLUS_ONE_D(18),          /* "LOAD X-PLANE VECTOR IN NB" */
     ORDER(CALL),                     /* */
-    ADDRESS(TRG_STARNBSM),           /* "CONVERT IT TO STABLE-MEMBER" */
+    ADDRESS(TRG_STAR_NBSM),          /* "CONVERT IT TO STABLE-MEMBER" */
     ORDERS(VXV, UNIT),               /* "UNIT(XPSM * YPSM)" */
     ORDER(STADR),                    /* */
     AFTER_STADR(STORE_D(24)),        /* */

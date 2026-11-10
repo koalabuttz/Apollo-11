@@ -50,7 +50,7 @@ static const word gyrotrim_words[] = {
     STOVL(CDUSPOT),
     ADDRESS_PLUS_ONE(XUNIT),
     ORDER(CALL),
-    ADDRESS(TRG_STARNBSM),
+    ADDRESS(TRG_STAR_NBSM),
     STOVL(STARAD),
     ADDRESS_PLUS_ONE(YUNIT),
     ORDER(CALL),
@@ -411,7 +411,7 @@ void p57post_site(void)
 static const word p57post_site_words[] = {
     /* P57POST +016 */ ORDERS(VLOAD, CALL),
     ADDRESS_PLUS_ONE(GSAV),
-    ADDRESS(CDU_STARNBSM), /* "GO TO SM COORDS" */
+    ADDRESS(CDU_STAR_NBSM), /* "GO TO SM COORDS" */
     ORDERS(VXM, SET),
     ADDRESS_PLUS_ONE(REFSMMAT),
     SWITCH(SET, LUNAFLAG),

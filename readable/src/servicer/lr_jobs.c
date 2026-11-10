@@ -393,7 +393,7 @@ void setpos(void)
 static const word setpos_words[] = {
     /* SETPOS +16 */ ORDERS(VLOAD, CALL),
     ADDRESS_PLUS_ONE(UNITY), /* "CONVERT UNITY(ANTENNA) TO NB" */
-    ADDRESS(TRG_STARSMNB),
+    ADDRESS(TRG_STAR_SMNB),
     STOVL(VYBEAMNB),
     ADDRESS_PLUS_ONE(UNITX), /* "CONVERT UNITX(ANTENNA) TO NB" */
     ORDER(CALL),

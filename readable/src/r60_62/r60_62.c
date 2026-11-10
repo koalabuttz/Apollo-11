@@ -510,7 +510,7 @@ void ballangs_after_makecadr(void)
 static const word ballangs_words[] = {
     ORDERS(SETPD, CALL),
     ADDRESS_PLUS_ONE_D(0),
-    ADDRESS(CD_STARTR_STARG),   /* CD*TR*G */
+    ADDRESS(CD_STAR_TR_STAR_G), /* CD*TR*G */
     ORDERS(DLOAD, DMP),         /* */
     ADDRESS_PLUS_ONE(SINCDUX),  /* "SIN (OGA)" */
     ADDRESS_PLUS_ONE(COSCDUZ),  /* "COS (MGA)" */
