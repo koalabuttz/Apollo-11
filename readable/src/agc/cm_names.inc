@@ -2621,6 +2621,8 @@
 #define K_DEXI 00143u
 #define K_RTNSAVER 00145u
 #define K_TERM1TMP 00133u
+#define K_COSCDUY 00744u
+#define K_SINCDUY 00736u
 #define K_COSM 01511u
 #define K_SINO 01512u
 #define K_SINOCOSM 01514u

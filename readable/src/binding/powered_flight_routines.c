@@ -5,23 +5,19 @@
  * cm_powered_subs.c): <m>_powered_subs_basic and
  * <m>_powered_subs_interpretive. The keys come from the faithful tables,
  * in their order (powered_flight_keys.inc and cm_powered_flight_keys.inc,
- * which tools/p20_p25_keys.py writes from them). The keys no part has
- * written yet (the LM's FLESHPOT in bank 10, the CM's SMCDURES) run the
- * faithful port's routines (renamed faithful_) until their part is
- * written.
- * Partial file: Luminary099/POWERED_FLIGHT_SUBROUTINES.agc and
- * Comanche055/POWERED_FLIGHT_SUBROUTINES.agc.
+ * which tools/p20_p25_keys.py writes from them).
  *
  * Plumbing only. A basic routine runs from its key until control leaves
- * the file: at a TC to a routine outside it (USPRCADR, MPACVBUF, SPSIN,
- * SPCOS, the CM's DMPSUB), into the interpreter (INTPRET), or back to a
- * caller. A return to a place in the file (CD*TR*GS's TC TEM2 to CDUTRIG
- * +2, AX*SR*T's TC RTNSAVER to C*MM*N2 +1) goes on there, as the faithful
- * port does. An order pair is one pass of the readable interpreter over
+ * the file: at a TC or TCF to a routine outside it (USPRCADR, MPACVBUF,
+ * SPSIN, SPCOS, the CM's DMPSUB, the LM's BANKCALL, VXV and SWRETURN),
+ * into the interpreter (INTPRET), or back to a caller. A return to a
+ * place in the file (CD*TR*GS's TC TEM2 to CDUTRIG +2, AX*SR*T's TC
+ * RTNSAVER to C*MM*N2 +1) goes on there, as the faithful port does. An order pair is one pass of the readable interpreter over
  * the listing's words (interpret_listing()), in the part of the code LOC
  * is in. The words after the TC USPRCADRs (CADR CDULOGIC, COSINE and SINE
- * +1) are order pairs too: reached at DANZIG with the EXIT USPRCADR left
- * in EDOP still to run, which goes back to the basic code after them.
+ * +1) and the LM's TCF VXV are order pairs too: reached at DANZIG with an
+ * EXIT left in EDOP still to run, which goes back to the basic code after
+ * them.
  *
  * The states the faithful routines take: FB the key's bank, ZERO +0, the
  * bank registers agreeing, the interrupt and superbank latches in range,
@@ -29,8 +25,8 @@
  * the program's hardware record, which the file never uses); at an order
  * pair also NEWJOB +0 or a core set and FIXLOC one of the VAC areas, and
  * Z at NEWOPS, BANKSET the BBANK and INTBIT15 the bank's bit 15 (after a
- * USPRCADR, Z at DANZIG and BANKSET the bank's, with EDOP 1). A run the readable code refuses
- * part way leaves the state as it was. */
+ * USPRCADR or VXV, Z at DANZIG and BANKSET the bank's, with EDOP 1). A
+ * run the readable code refuses part way leaves the state as it was. */
 #include <setjmp.h>
 #include <stddef.h>
 #include "binding.h"
@@ -48,20 +44,10 @@
 /* A key: the bank, and the address in it. */
 #define KEY(bank, address) (uint16_t)((bank) * 1024u + ((address) & 01777u))
 
-/* The bank of the file's code (POWFLITE). */
+/* The banks of the file's code: POWFLITE, and the LM's FLESHLOC. */
 #define POWFLITE_BANK CODE_BANK(I_CDUTRIG)
-
-/* The faithful tables, renamed. */
 #if LUMINARY099
-extern const agc_routine_table faithful_lm_powered_subs_basic,
-    faithful_lm_powered_subs_interpretive;
-#define faithful_basic        faithful_lm_powered_subs_basic
-#define faithful_interpretive faithful_lm_powered_subs_interpretive
-#else
-extern const agc_routine_table faithful_cm_powered_subs_basic,
-    faithful_cm_powered_subs_interpretive;
-#define faithful_basic        faithful_cm_powered_subs_basic
-#define faithful_interpretive faithful_cm_powered_subs_interpretive
+#define FLESHLOC_BANK CODE_BANK(I_CALCSMSC)
 #endif
 
 static jmp_buf back;
@@ -125,8 +111,8 @@ static bool sane(bool work_area)
 
 /* ---- The basic code ---- */
 
-/* The places in bank 23 a run starts at or goes on at: the keys, and the
- * returns into the file. */
+/* The places a run starts at or goes on at: the keys, and the returns
+ * into the file. In bank 23, but for the LM's in bank 10. */
 static const struct place {
     word at;
     void (*routine)(void);
@@ -162,13 +148,29 @@ static const struct place {
 #endif
 };
 
-static const struct place *place_at(unsigned bank, word at)
+#if LUMINARY099
+static const struct place fleshloc_places[] = {
+    {CALCSMSC + 1u, calcsmsc_plus1},        {CALCSMSC + 3u, calcsmsc_plus3},
+    {FLESHPOT - 1u, fleshpot_minus1},       {FLESHPOT, fleshpot},
+    {FLESHPOT + 0135u, fleshpot_after_vxv},
+};
+#endif
+
+static const struct place *place_in(const struct place *table, unsigned count, word at)
 {
     unsigned i;
 
-    if (bank != POWFLITE_BANK) return NULL;
-    for (i = 0; i < COUNT(places); ++i)
-        if (places[i].at == at) return &places[i];
+    for (i = 0; i < count; ++i)
+        if (table[i].at == at) return &table[i];
+    return NULL;
+}
+
+static const struct place *place_at(unsigned bank, word at)
+{
+    if (bank == POWFLITE_BANK) return place_in(places, COUNT(places), at);
+#if LUMINARY099
+    if (bank == FLESHLOC_BANK) return place_in(fleshloc_places, COUNT(fleshloc_places), at);
+#endif
     return NULL;
 }
 
@@ -189,8 +191,10 @@ static const struct interpretive_code *const codes[] = {
     &CDUTRIG_CODE,       &CDUTRIG_RVQ_CODE,    &CD_STAR_TR_STAR_G_CODE, &CD_STAR_TR_STAR_G_RVQ_CODE,
     &CDU_STAR_SMNB_CODE, &TRG_STAR_SMNB_CODE,  &C_STAR_MM_STAR_N2_CODE, &CDU_STAR_NBSM_CODE,
     &TRG_STAR_NBSM_CODE, &STAR_SMNB_STAR_CODE, &STAR_NBSM_STAR_CODE,
-#if COMANCHE055
-    &NBSM_CODE,
+#if LUMINARY099
+    &CALCSMSC_CODE,      &CALCSMSC_RVQ_CODE,
+#else
+    &NBSM_CODE,          &SMCDURES_CODE,
 #endif
 };
 
@@ -206,10 +210,14 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
     return NULL;
 }
 
-/* The words after TR*GL**P's TC USPRCADRs: CADR CDULOGIC, COSINE and SINE
- * +1. */
-static bool after_usprcadr(unsigned bank, word at)
+/* The words where an EXIT in EDOP comes back to basic code: after
+ * TR*GL**P's TC USPRCADRs (CADR CDULOGIC, COSINE and SINE +1), and the
+ * LM's TCF VXV. */
+static bool exit_pending(unsigned bank, word at)
 {
+#if LUMINARY099
+    if (bank == FLESHLOC_BANK && at == FLESHPOT + 0134u) return true;
+#endif
     return bank == POWFLITE_BANK &&
            (at == TR_STAR_GL_STAR_STAR_P + 7u || at == TR_STAR_GL_STAR_STAR_P + 015u ||
             at == TR_STAR_GL_STAR_STAR_P + 025u);
@@ -234,16 +242,14 @@ static enum exec_status run(void (*routine)(void), apollo_overlay_state *state, 
     return EXEC_OK;
 }
 
-/* Each basic key's routine: the readable one, or the faithful port's until
- * its part is written. */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each basic key's routine. */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct place *place = place_at(key / 1024u, (word)(02000u + key % 1024u));
     mission_io *io = device;
 
-    if (!place) return faithful_basic.entries[index].call(program, state, device);
-    if (!program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
+    if (!place || !program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
 #if COMANCHE055
     if (!program->hardware) return EXEC_OUT_OF_SCOPE;
 #endif
@@ -251,9 +257,8 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     return run(place->routine, state, io);
 }
 
-/* Each order pair's routine: one pass of the readable interpreter, or the
- * faithful port's until its part is written. */
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each order pair's routine: one pass of the readable interpreter. */
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
@@ -263,9 +268,9 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     const struct interpretive_code *code = code_at(bank, at);
     enum exec_status status;
 
-    if (!code && !after_usprcadr(bank, at))
-        return faithful_interpretive.entries[index].call(program, state, device);
-    if (!program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
+    if ((!code && !exit_pending(bank, at)) || !program || !state || !io ||
+        !bind(program, state, io))
+        return EXEC_OUT_OF_SCOPE;
     if (code) {
         if (Z != NEWOPS || FBANK != (word)(bank << 10) || LOC != at || BANKSET != BBANK ||
             INTBIT15 != (FBANK & 040000u) || !sane(true))
@@ -291,7 +296,7 @@ bool powered_flight_readable(uint16_t key, bool order_pair)
     unsigned bank = key / 1024u;
     word at = (word)(02000u + key % 1024u);
 
-    if (order_pair) return code_at(bank, at) != NULL || after_usprcadr(bank, at);
+    if (order_pair) return code_at(bank, at) != NULL || exit_pending(bank, at);
     return place_at(bank, at) != NULL;
 }
 
@@ -299,13 +304,13 @@ bool powered_flight_readable(uint16_t key, bool order_pair)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #if LUMINARY099
 #include "powered_flight_keys.inc"

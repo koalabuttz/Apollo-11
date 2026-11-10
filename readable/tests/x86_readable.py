@@ -290,8 +290,7 @@ REPLACED = (
 # tables, all readable; the faithful ones, renamed, are no longer called.
 # INFLIGHT_ALIGNMENT_ROUTINES (src/inflight_align): the same.
 # POWERED_FLIGHT_SUBROUTINES (src/powered_flight): both missions' routine
-# tables, bank 23 readable; the faithful ones, renamed, run the keys part
-# 2 has still to write (the LM's FLESHPOT, the CM's SMCDURES).
+# tables, all readable; the faithful ones, renamed, are no longer called.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],
