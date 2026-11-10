@@ -233,6 +233,9 @@ REPLACED = (
     # DAP_INTERFACE_SUBROUTINES.agc, the LM's (src/dap_interface): the
     # routine table.
     'lm_dap_interface.o',
+    # DAPIDLER_PROGRAM.agc, the LM's (src/dapidler): the routine table and
+    # the hot one, the entries a DAP pass reaches.
+    'lm_dapidler.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed

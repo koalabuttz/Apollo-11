@@ -1920,6 +1920,44 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define SETMAXDB ((word)K_SETMAXDB) /* (the CM's is below) */
 #endif
 
+/* ---- DAPIDLER_PROGRAM (the LM's) ---- */
+
+/* Its labels (bank 16; ALTDSPLY's in bank 20), and what it calls:
+ * 1/ACCSET by NOVAC, QERRCALC (bank 17), CALCPERR, PAXIS (bank 16). Its
+ * constants: the masks MANFLAG and BGIM23, ONETENTH, DACLIMIT and the
+ * words either side of it (DEC -384, DEC 384: a limit of 384 by INDEX), the
+ * 2CADRs IDLERADR, PAXADIDL, DSPCADR and MORECADR, and its EQUALS names. */
+#if LUMINARY099
+#define CHEKBITS  ((word)K_CHEKBITS)
+#define CHEKMORE  ((word)K_CHEKMORE)
+#define DAPIDLER  ((word)K_DAPIDLER)
+#define CHECKUP   ((word)K_CHECKUP)
+#define STARTDAP  ((word)K_STARTDAP)
+#define SETTIME5  ((word)K_SETTIME5)
+#define MOREIDLE  ((word)K_MOREIDLE)
+#define SHUTDOWN  ((word)K_SHUTDOWN)
+#define JUMPDSP   ((word)K_JUMPDSP)
+#define ALTDSPLY  ((word)K_ALTDSPLY)
+#define DSPLYTOT  ((word)K_DSPLYTOT)
+#define OVERSUB2  ((word)K_OVERSUB2)
+#define RETNMORE  ((word)K_RETNMORE)
+#define QERRCALC  ((word)K_QERRCALC)
+#define CALCPERR  ((word)K_CALCPERR)
+#define ONE_ACCSET ((word)K_1_ACCSET) /* 1/ACCSET */
+#define MANFLAG   ((word)KW_MANFLAG)
+#define BGIM23    ((word)KW_BGIM23)
+#define ONETENTH  ((word)KW_ONETENTH)
+#define DACLIMIT  ((word)K_DACLIMIT)
+#define CALLGMBL  BIT5   /* CALLGMBL EQUALS BIT5 */
+#define MS100     ((word)KW_OCT37766) /* MS100 = OCT37766 */
+#define DSPLYALT  BIT4   /* DSPLYALT EQUALS BIT4 */
+#define NEEDLBIT  BIT4   /* NEEDLBIT = BIT4, of FLAGWRD0 */
+static const word IDLERADR[2] = KW_IDLERADR; /* 2CADR DAPIDLER */
+static const word PAXADIDL[2] = KW_PAXADIDL; /* 2CADR PAXIS */
+static const word DSPCADR[2] = KW_DSPCADR;   /* 2CADR ALTDSPLY */
+static const word MORECADR[2] = KW_MORECADR; /* 2CADR CHEKMORE */
+#endif
+
 /* ---- SYSTEM_TEST_STANDARD_LEAD_INS ---- */
 
 /* Its entries: in bank 4 (the LM's, and the CM's E/JOBWAK) and bank 13
