@@ -75,6 +75,8 @@
 #define K_BAILOUT 05634u
 #define K_POODOO1 05726u
 #define K_POODOO 05652u
+#define K_CALLACCS 02133u
+#define K_1_ACCJOB 02454u
 #define K_RRANGLES 02133u
 #define K_2V1STO2S 03635u
 #define K_1TO2SUB 03644u
@@ -2813,6 +2815,10 @@
 #define K_UPOLDMOD 01171u
 #define K_TETCSM 01570u
 #define K_TETLEM 01642u
+#define K_ALPHAQ 01424u
+#define K_ALPHAR 01425u
+#define K_AOSQTERM 01545u
+#define K_AOSRTERM 01546u
 #define K_XSM 01642u
 #define K_ZSM 01656u
 #define K_WHICH 01455u
@@ -3268,6 +3274,10 @@
 #define KW_SELFBANK 066102u
 #define KW_TSKOVCDR 005261u
 #define KW_T3RPTBB 002103u
+#define KW_DBSELECT 000010u
+#define KW_NARROWDB 000155u
+#define KW_WIDEDB 003434u
+#define KW_POWERDB 000554u
 #define KW_54DD 000066u
 #define KW_6DD 077771u
 #define KW_12DD 000014u

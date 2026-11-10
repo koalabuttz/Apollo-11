@@ -1906,6 +1906,20 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define LOCTHETA ((word)KW_LOCTHETA)
 #endif
 
+/* ---- DAP_INTERFACE_SUBROUTINES (the LM's) ---- */
+
+/* CALLACCS (TC NOVAC at +1), the deadbands (scaled at 45 degrees) and the
+ * DBSELECT bit of DAPBOOLS. */
+#if LUMINARY099
+#define CALLACCS ((word)K_CALLACCS)
+#define DBSELECT ((word)KW_DBSELECT)
+#define NARROWDB ((word)KW_NARROWDB)
+#define WIDEDB   ((word)KW_WIDEDB)
+#define POWERDB  ((word)KW_POWERDB)
+#define STOPRATE ((word)K_STOPRATE) /* (the CM's is above) */
+#define SETMAXDB ((word)K_SETMAXDB) /* (the CM's is below) */
+#endif
+
 /* ---- SYSTEM_TEST_STANDARD_LEAD_INS ---- */
 
 /* Its entries: in bank 4 (the LM's, and the CM's E/JOBWAK) and bank 13
