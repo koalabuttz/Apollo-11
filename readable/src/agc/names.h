@@ -2135,6 +2135,40 @@ static const word POINT00375A8[2] = KW__00375A8; /* .00375A8: 2DEC .00375 B-3 */
 #define MINUS_100MS   ((word)KW_M100MS)   /* -100MS: DEC -.1 */
 #endif
 
+/* ---- TRIM_GIMBAL_CONTROL_SYSTEM (the LM's) ---- */
+
+/* Its labels (bank 21; ACDT+C12, P-AXIS's ACDTPC12, in bank 16), its
+ * constants, the 2CADR CLOSEADR, and its EQUALS names in the ITEMPs.
+ * GMBLBITA's neighbours, ROOTHALF, OCT11276 and GMBLBITB, are read by
+ * INDEX QRCNTR from the rope. */
+#if LUMINARY099
+#define GTS      ((word)K_GTS)
+#define GOQTRIMG ((word)K_GOQTRIMG)
+#define GTSQAXIS ((word)K_GTSQAXIS)
+#define TIMEGMBL ((word)K_TIMEGMBL)
+#define DONEYET  ((word)K_DONEYET)
+#define GTSQRT   ((word)K_GTSQRT)
+#define SCALDONE ((word)K_SCALDONE)
+#define RSTOFGTS ((word)K_RSTOFGTS)
+#define PRODUCT  ((word)K_PRODUCT)
+#define DOSHIFT  ((word)K_DOSHIFT)
+#define LOUPE    ((word)K_LOUPE)
+#define GOCLOSE  ((word)K_GOCLOSE)
+#define GMBLBITA ((word)K_GMBLBITA)
+#define ROOTCYCL ((word)K_ROOTCYCL)
+#define NEG1_3   ((word)KW_NEG1_3)   /* NEG1/3: DEC -.33333 */
+#define BGIM     ((word)KW_BGIM)     /* OCTAL 07400 */
+#define OCT23146 ((word)KW_OCT23146) /* "DECIMAL .6" */
+#define OCT00240 ((word)KW_OCT00240) /* "DECIMAL 10/1024" */
+#define ROOTHALF ((word)KW_ROOTHALF) /* "SQUARE ROOT OF 1/2" */
+#define OCT11276 ((word)KW_OCT11276) /* "POSMAX - ROOTHALF" */
+#define TWELVE   ((word)KW_TWELVE)   /* TWELVE EQUALS OCT14 */
+static const word CLOSEADR[2] = KW_CLOSEADR; /* 2CADR CLOSEOUT */
+#define K_CHNL12   K_ITEMP6 /* CHNL12 EQUALS ITEMP6 */
+#define K_QRNDXER  K_ITEMP6 /* QRNDXER EQUALS ITEMP6 */
+#define K_NZACCDOT K_ITEMP3 /* NZACCDOT EQUALS ITEMP3 */
+#endif
+
 /* ---- SYSTEM_TEST_STANDARD_LEAD_INS ---- */
 
 /* Its entries: in bank 4 (the LM's, and the CM's E/JOBWAK) and bank 13
