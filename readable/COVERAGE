@@ -168,3 +168,4 @@ Luminary099/Q_R-AXIS_RCS_AUTOPILOT.agc          src/q_r_axis
 Luminary099/TJET_LAW.agc                        src/tjet_law
 Luminary099/KALMAN_FILTER.agc                   src/kalman_filter
 Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc      src/trim_gimbal
+Luminary099/AOSTASK_AND_AOSJOB.agc              src/aostask
