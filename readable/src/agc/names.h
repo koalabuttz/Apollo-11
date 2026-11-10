@@ -2169,6 +2169,68 @@ static const word CLOSEADR[2] = KW_CLOSEADR; /* 2CADR CLOSEOUT */
 #define K_NZACCDOT K_ITEMP3 /* NZACCDOT EQUALS ITEMP3 */
 #endif
 
+/* ---- AOSTASK_AND_AOSJOB (the LM's) ---- */
+
+/* Its labels (bank 20), among them the tables read by INDEX from the rope
+ * (INERCONA to INERCONC, GIMBLBTS, COEFF, -UMASK and +UMASK), and its
+ * constants. Its erasable words, most of them EQUALS names in MPAC and
+ * the Executive's VBUF, are named by ADDRESS_OF. */
+#if LUMINARY099
+#define ONE_ACCJOB          ((word)K_1_ACCJOB)  /* 1/ACCJOB */
+#define ONE_ACCS            ((word)K_1_ACCS)    /* 1/ACCS */
+#define LRESC               ((word)K_LRESC)
+#define SPSCONT             ((word)K_SPSCONT)
+#define DOCKTEST            ((word)K_DOCKTEST)
+#define DVOVSUB             ((word)K_DVOVSUB)
+#define DOCKED              ((word)K_DOCKED)
+#define SPSLOOP1            ((word)K_SPSLOOP1)
+#define SPSLOOP2            ((word)K_SPSLOOP2)
+#define F_MASS              ((word)K_F_MASS)    /* F(MASS) */
+#define JACCUV              ((word)K_JACCUV)
+#define ONE_ACCONT          ((word)K_1_ACCONT)  /* 1/ACCONT */
+#define GETAOSUV            ((word)K_GETAOSUV)
+#define DOPAXIS             ((word)K_DOPAXIS)
+#define BOTHAXES            ((word)K_BOTHAXES)
+#define BIGAOS              ((word)K_BIGAOS)
+#define SKIPDB1             ((word)K_SKIPDB1)
+#define ACCHERE             ((word)K_ACCHERE)
+#define ACCTHERE            ((word)K_ACCTHERE)
+#define CL1_NET_PLUS        ((word)K_CL1_NETP)  /* CL1/NET+ */
+#define STMIN_MINUS         ((word)K_STMINM)    /* STMIN- */
+#define STORV               ((word)K_STORV)
+#define ONE_ACCRET          ((word)K_1_ACCRET)  /* 1/ACCRET */
+#define INVERT              ((word)K_INVERT)
+#define DO1_NET_PLUS        ((word)K_DO1_NETP)  /* DO1/NET+ */
+#define ONE_ANET_MINUS      ((word)K_1_ANETM)   /* 1/ANET- */
+#define ONE_NETMIN          ((word)K_1_NETMIN)  /* 1/NETMIN */
+#define INERCONA            ((word)K_INERCONA)  /* 2DEC: A for P, Q, R (descent, ascent) */
+#define INERCONB            ((word)K_INERCONB)  /* DEC, every other word: B */
+#define INERCONC            ((word)K_INERCONC)  /* DEC, every other word: C */
+#define GIMBLBTS            ((word)K_GIMBLBTS)  /* OCTAL 01400, 01000, 06000, 04000 */
+#define COEFF               ((word)K_COEFF)     /* DEC: C, F, B, A, E, D, twice */
+#define MINUS_UMASK         ((word)K_MUMASK)    /* -UMASK: OCT 00110, OCT 00022 */
+#define PLUS_UMASK          ((word)K_PUMASK)    /* +UMASK: OCT 00204, OCT 00041 */
+#define DGBF                ((word)KW_DGBF)     /* DEC 0.6: ".3 SCALED AT 1/2" */
+#define ZERO_35356          ((word)KW_0_35356)  /* 0.35356: DEC 0.35356 */
+#define POINT7071           ((word)KW__7071)    /* .7071: DEC .70711 */
+#define MINUS_POINT7071     ((word)KW_M_7071)   /* -.7071: DEC -.70711 */
+#define MINUS_EPSMAX        ((word)KW_MEPSMAX)  /* -EPSMAX: DEC -.42265 */
+#define GFACTM              ((word)KW_GFACTM)   /* OCT 337 */
+#define NINE                ((word)KW_NINE)
+#define PAXISADR            ((word)KW_PAXISADR) /* GENADR PAXIS */
+#define ONE_JACCCON         ((word)KW_1JACCCON) /* 1JACCCON: OCT 00167 */
+#define MINUS_POINT1875     ((word)KW_M_1875)   /* -.1875: DEC -.18750 */
+#define ZONE3MAX            ((word)KW_ZONE3MAX) /* DEC .004375 */
+#define FLATVAL             ((word)KW_FLATVAL)  /* DEC .01778 */
+#define MINUS_POINT03R_S2   ((word)KW_M_03R_S2) /* -.03R/S2: OCT 77377 */
+#define POINT0125RS         BIT8                /* .0125RS EQUALS BIT8 */
+#define ONE_POINT03         POSMAX              /* 1/.03 EQUALS POSMAX */
+#define LOASCENT            ((word)KW_LOASCENT) /* DEC 2200 B-16 */
+#define HIDESCNT            ((word)KW_HIDESCNT) /* DEC 15300 B-16 */
+#define LODESCNT            ((word)KW_LODESCNT) /* DEC 1750 B-16 */
+static const word TORQCONS[2] = KW_TORQCONS;   /* 2DEC 0.51443 B-14 */
+#endif
+
 /* ---- SYSTEM_TEST_STANDARD_LEAD_INS ---- */
 
 /* Its entries: in bank 4 (the LM's, and the CM's E/JOBWAK) and bank 13

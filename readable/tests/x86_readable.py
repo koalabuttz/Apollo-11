@@ -79,6 +79,8 @@ REPLACED = (
     'lm_rcsmon.o',
     # KALMAN_FILTER.agc, the LM's (src/kalman_filter).
     'lm_kalman.o',
+    # AOSTASK_AND_AOSJOB.agc, the LM's 1/ACCS (src/aostask).
+    'lm_aostask.o',
     # AGS_INITIALIZATION.agc, the LM's R47 (src/ags_initialization).
     'lm_ags_init.o',
     # AOTMARK.agc, the LM's sighting marks (src/aotmark).
