@@ -219,6 +219,10 @@ REPLACED = (
     # IMU_MODE_SWITCHING_ROUTINES.agc, both missions (src/imu_mode_switching):
     # the two routine tables.
     'imu_mode_switching.o',
+    # DISPLAY_INTERFACE_ROUTINES.agc, both missions (src/display_interface):
+    # the six modules the port's tables (lanec_di_routines.o) call.
+    'lanec_di_dsp.o', 'lanec_di_mark.o', 'lanec_di_play.o', 'lanec_di_sleep.o',
+    'lanec_di_idle.o', 'lanec_di_nvdsp.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
