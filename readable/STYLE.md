@@ -199,6 +199,8 @@ Every change to `readable/` must keep both:
    about a minute):
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
+   - `code-extents`: every table of interpretive code begins and ends
+     where the listing's code or constants do (`tools/code_extents.py`);
    - `kernel-cases`: every case of the resident-kernel corpus (about 42,000
      runs per pair of missions) on the readable Executive and WAITLIST,
      each matching the original program's yaAGC digest and the faithful

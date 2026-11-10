@@ -1140,6 +1140,13 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    port.
    `make names-check` checks
    the generated names and the restart tables against the listings.
+   `make code-extents` holds every table of interpretive code (its bank,
+   first word and count, as compiled) to the listing: a table begins and
+   ends on whole listing lines, and the word past each end is a basic
+   instruction, another table's, another file's, or the label
+   tools/code_extents.py names for it. The case tests check a table's
+   words against the rope but take its count from the table, so this is
+   what notices a table one word short.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight
    scenarios (P63 descent, rendezvous, entry, restarts, ...) against the
