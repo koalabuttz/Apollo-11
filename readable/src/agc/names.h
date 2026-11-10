@@ -1958,6 +1958,88 @@ static const word DSPCADR[2] = KW_DSPCADR;   /* 2CADR ALTDSPLY */
 static const word MORECADR[2] = KW_MORECADR; /* 2CADR CHEKMORE */
 #endif
 
+/* ---- P-AXIS_RCS_AUTOPILOT (the LM's) ---- */
+
+/* Its labels (bank 16), and what it reaches out of the file: ACDT+C12,
+ * RATELOOP and SPSRCS (bank 16), CALLQERR, JTLST and TJETLAW (bank 17).
+ * Its constants, the 2CADR QERRCALL, and its EQUALS names: the RCSFLAGS
+ * bits PBIT and QRBIT, the DAPBOOLS bits OURRCBIT and AORBSYST, the trim
+ * gimbal drive bits of channel 12, BITS9,11 and 25/32. */
+#if LUMINARY099
+#define PAXIS       ((word)K_PAXIS)
+#define ONE_STOTWOS ((word)K_1STOTWOS) /* 1STOTWOS */
+#define SUBDIVDE    ((word)K_SUBDIVDE)
+#define OVERSUB     ((word)K_OVERSUB)
+#define BACKP       ((word)K_BACKP)
+#define LMONLY      ((word)K_LMONLY)
+#define P_RATE      ((word)K_P_RATE)
+#define Q_RATE      ((word)K_Q_RATE)
+#define R_RATE      ((word)K_R_RATE)
+#define PAXFILT     ((word)K_PAXFILT)
+#define SUPERJOB    ((word)K_SUPERJOB)
+#define PRETIMCK    ((word)K_PRETIMCK)
+#define CHKRTIMR    ((word)K_CHKRTIMR)
+#define DECQTIMR    ((word)K_DECQTIMR)
+#define DECRTIMR    ((word)K_DECRTIMR)
+#define SKIPPAXS    ((word)K_SKIPPAXS)
+#define CHKVISFZ    ((word)K_CHKVISFZ)
+#define TRYUORV     ((word)K_TRYUORV)
+#define ABORTYZ     ((word)K_ABORTYZ)
+#define ALTERYZ     ((word)K_ALTERYZ)
+#define TSNEXTP     ((word)K_TSNEXTP)
+#define MANMODE     ((word)K_MANMODE)
+#define DETENTCK    ((word)K_DETENTCK)
+#define RATEDONE    ((word)K_RATEDONE)
+#define JUSTOUT     ((word)K_JUSTOUT)
+#define ZEROENBL    ((word)K_ZEROENBL)
+#define RATERROR    ((word)K_RATERROR)
+#define PEGI        ((word)K_PEGI)
+#define LAST        ((word)K_LAST)
+#define PJETSLEC    ((word)K_PJETSLEC)
+#define ALTSYST     ((word)K_ALTSYST)
+#define DKALT       ((word)K_DKALT)
+#define JETSOFF     ((word)K_JETSOFF)
+#define PURGENCY    ((word)K_PURGENCY)
+#define HEADTJET    ((word)K_HEADTJET)
+#define SELECTP     ((word)K_SELECTP)
+#define SELECTYZ    ((word)K_SELECTYZ)
+#define JETSALL     ((word)K_JETSALL)
+#define TYPEP       ((word)K_TYPEP)
+#define INDXYZ      ((word)K_INDXYZ)
+#define MINTIMES    ((word)K_MINTIMES)
+#define QRAXIS      ((word)K_QRAXIS)
+#define ACDTPC12    ((word)K_ACDTPC12) /* ACDT+C12 */
+#define RATELOOP    ((word)K_RATELOOP)
+#define CALLQERR    ((word)K_CALLQERR)
+#define SPSRCS      ((word)K_SPSRCS)
+#define TJETLAW     ((word)K_TJETLAW)
+#define JTLST       ((word)K_JTLST)
+#define MOCT630     ((word)KW_MOCT630)  /* -OCT630 */
+#define ONE_40      ((word)KW_1_40)     /* 1/40 */
+#define K40CYC      ((word)KW_40CYC)    /* 40CYC */
+#define PQRBIT      ((word)KW_PQRBIT)
+#define LINRATP     ((word)KW_LINRATP)
+#define M160MST6    ((word)KW_M160MST6) /* -160MST6 */
+#define MFOURDEG    ((word)KW_MFOURDEG) /* -FOURDEG */
+#define PLUS150MST6 ((word)KW_P150MST6) /* +150MST6 */
+#define M136MST6    ((word)KW_M136MST6) /* -136MST6 */
+#define OCT_07400   ((word)KW_07400OCT) /* 07400OCT */
+#define BITS8_9     ((word)KW_BITS8_9)  /* BITS8,9 */
+#define SUPERADR    ((word)KW_SUPERADR) /* GENADR SUPERJOB +1 */
+#define SUPERJOB_WORD ((word)KW_SUPERJOB) /* SUPERJOB's word, TCF RATELOOP */
+#define PBIT        BIT10   /* PBIT EQUALS BIT10 */
+#define QRBIT       BIT11   /* QRBIT EQUALS BIT11 */
+#define OURRCBIT    BIT12   /* OURRCBIT = BIT12, of DAPBOOLS */
+#define AORBSYST    BIT5    /* AORBSYST = BIT5, of DAPBOOLS */
+#define QGIMBITS    OCT1400 /* QGIMBITS EQUALS OCT1400 */
+#define RGIMBITS    PRIO6   /* RGIMBITS EQUALS PRIO6 */
+#define BITS9_11    EBANK5  /* BITS9,11 EQUALS EBANK5 */
+#define K25_32      PRIO31  /* 25/32 = PRIO31 */
+#define MBIT14      ((word)KW_MBIT14) /* -BIT14: OCT 57777 */
+#define K200MS      ((word)KW_200MS)  /* 200MS */
+static const word QERRCALL[2] = KW_QERRCALL; /* 2CADR CALLQERR */
+#endif
+
 /* ---- SYSTEM_TEST_STANDARD_LEAD_INS ---- */
 
 /* Its entries: in bank 4 (the LM's, and the CM's E/JOBWAK) and bank 13

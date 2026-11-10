@@ -2874,6 +2874,7 @@
 #define K_UPOLDMOD 00301u
 #define K_TETCSM 01570u
 #define K_TETLEM 01642u
+#define K_CH31TEMP 01632u
 #define K_COSM 01511u
 #define K_SINO 01512u
 #define K_SINOCOSM 01514u
