@@ -93,7 +93,7 @@ RCSMON_SOURCES := src/agc/agc.c src/rcs_failure_monitor/rcs_failure_monitor.c sr
 	src/binding/rcs_failure_monitor_routines.c
 AGS_SOURCES := src/agc/agc.c src/ags_initialization/ags_initialization.c src/binding/machine.c \
 	$(INTERPRETER_SOURCES) src/binding/ags_initialization_routines.c
-AOTMARK_SOURCES := $(INTERPRETER_SOURCES) src/aotmark/aotmark.c src/rtb_op_codes/rtb_op_codes.c \
+AOTMARK_SOURCES := $(INTERPRETER_SOURCES) src/aotmark/aotmark.c src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c \
 	src/binding/aotmark_routines.c
 SXTMARK_SOURCES := src/agc/agc.c src/sxtmark/sxtmark.c src/binding/machine.c \
 	src/binding/sxtmark_routines.c
@@ -103,28 +103,28 @@ EV_SOURCES := $(INTERPRETER_SOURCES) src/extended_verbs/front.c src/extended_ver
 	src/binding/extended_verbs_routines.c
 NOUNS_SOURCES := src/agc/agc.c src/pinball_noun_tables/readers.c src/pinball_noun_tables/tables.c \
 	src/binding/noun_reader_routines.c
-GEOMETRY_SOURCES := $(INTERPRETER_SOURCES) src/geometry/geometry.c src/rtb_op_codes/rtb_op_codes.c \
+GEOMETRY_SOURCES := $(INTERPRETER_SOURCES) src/geometry/geometry.c src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c \
 	src/binding/geometry_routines.c
 IMU_COMP_SOURCES := src/agc/agc.c src/imu_compensation/imu_compensation.c src/binding/machine.c \
 	src/binding/imu_compensation_routines.c
-R63_SOURCES := $(INTERPRETER_SOURCES) src/r63/r63.c src/rtb_op_codes/rtb_op_codes.c \
+R63_SOURCES := $(INTERPRETER_SOURCES) src/r63/r63.c src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c \
 	src/binding/r63_routines.c
 AMR_SOURCES := $(INTERPRETER_SOURCES) src/attitude_maneuver/attitude_maneuver.c \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/attitude_maneuver_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/attitude_maneuver_routines.c
 GLA_SOURCES := $(INTERPRETER_SOURCES) src/gimbal_lock/gimbal_lock.c \
 	src/binding/gimbal_lock_routines.c
 KAL_SOURCES := $(INTERPRETER_SOURCES) src/kalcmanu_steering/kalcmanu_steering.c \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/kalcmanu_steering_routines.c
-R60_SOURCES := $(INTERPRETER_SOURCES) src/r60_62/r60_62.c src/rtb_op_codes/rtb_op_codes.c \
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/kalcmanu_steering_routines.c
+R60_SOURCES := $(INTERPRETER_SOURCES) src/r60_62/r60_62.c src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c \
 	src/binding/r60_62_routines.c
 RLR_SOURCES := src/agc/agc.c src/binding/machine.c src/radar_leadin/radar_leadin.c \
 	src/binding/radar_leadin_routines.c
 SBA_SOURCES := $(INTERPRETER_SOURCES) src/sband_antenna/sband_antenna.c \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/sband_antenna_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/sband_antenna_routines.c
 P20_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p20_p25/*.c)) \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/p20_p25_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/p20_p25_routines.c
 CP20_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p20_p25_cm/*.c)) \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/cm_p20_p25_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/cm_p20_p25_routines.c
 P30_SOURCES := $(INTERPRETER_SOURCES) src/p30/p30.c src/binding/p30_routines.c
 CP30_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p30_cm/*.c)) \
 	src/binding/cm_p30_routines.c
@@ -137,19 +137,19 @@ P31_SOURCES := $(INTERPRETER_SOURCES) src/lambert_aimpoint/lambert_aimpoint.c \
 P21_SOURCES := $(INTERPRETER_SOURCES) src/ground_track/ground_track.c \
 	src/binding/ground_track_routines.c
 P34_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p34_p35/*.c)) \
-	src/rtb_op_codes/rtb_op_codes.c \
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c \
 	src/binding/p34_routines.c
 P40_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p40_p47/*.c)) \
 	src/binding/p40_routines.c
 CP40_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p40_p47_cm/*.c)) \
 	src/binding/cm_p40_routines.c
-R31_SOURCES := $(INTERPRETER_SOURCES) src/r31/r31.c src/rtb_op_codes/rtb_op_codes.c \
+R31_SOURCES := $(INTERPRETER_SOURCES) src/r31/r31.c src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c \
 	src/binding/r31_routines.c
 P76_SOURCES := $(INTERPRETER_SOURCES) src/p76/p76.c src/binding/p76_routines.c
-R30_SOURCES := $(INTERPRETER_SOURCES) src/r30/r30.c src/rtb_op_codes/rtb_op_codes.c \
+R30_SOURCES := $(INTERPRETER_SOURCES) src/r30/r30.c src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c \
 	src/binding/r30_routines.c
 SO_SOURCES := $(INTERPRETER_SOURCES) src/stable_orbit/stable_orbit.c \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/stable_orbit_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/stable_orbit_routines.c
 BB_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/burn_baby/*.c)) \
 	src/binding/burn_baby_routines.c
 LLD_SOURCES := $(INTERPRETER_SOURCES) src/lunar_landing/lunar_landing.c \
@@ -157,34 +157,34 @@ LLD_SOURCES := $(INTERPRETER_SOURCES) src/lunar_landing/lunar_landing.c \
 THR_SOURCES := $(INTERPRETER_SOURCES) src/throttle/throttle.c src/landing_guidance/subroutines.c \
 	src/binding/throttle_routines.c
 LLGE_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/landing_guidance/*.c)) \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/llge_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/llge_routines.c
 P70_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p70_p71/*.c)) \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/p70_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/p70_routines.c
 P12_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p12/*.c)) \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/p12_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/p12_routines.c
 ASC_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/ascent/*.c)) \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/ascent_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/ascent_routines.c
 SVC_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/servicer/*.c)) \
 	src/binding/servicer_routines.c
 FCW_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/findcduw/*.c)) \
 	src/powered_flight/quictrig.c src/single_precision/single_precision.c \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/findcduw_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/findcduw_routines.c
 P51_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p51_p53/*.c)) \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/p51_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/p51_routines.c
 CP51_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p51_p53_cm/*.c)) \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/cm_p51_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/cm_p51_routines.c
 EPH_SOURCES := $(INTERPRETER_SOURCES) src/ephemerides/ephemerides.c \
 	src/binding/ephemerides_routines.c
 CP61_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p61_p67/*.c)) \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/cm_p61_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/cm_p61_routines.c
 CSVC_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/servicer_cm/*.c)) \
 	src/binding/cm_servicer_routines.c
 CRENT_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/reentry/*.c)) \
 	src/binding/cm_reentry_routines.c
 CBAT_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/body_attitude/*.c)) \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/cm_body_attitude_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/cm_body_attitude_routines.c
 CP37_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p37_p70/*.c)) \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/cm_p37_p70_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/cm_p37_p70_routines.c
 CTVCI_SOURCES := src/agc/agc.c src/binding/machine.c $(sort $(wildcard src/tvc/*.c)) \
 	src/binding/cm_tvc_init_routines.c
 CTVCX_SOURCES := src/agc/agc.c src/binding/machine.c $(sort $(wildcard src/tvc/*.c)) \
@@ -216,9 +216,9 @@ LAD_SOURCES := src/agc/agc.c src/binding/machine.c src/landing_displays/landing_
 	src/binding/landing_displays_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
 	src/binding/imu_performance_routines.c
-CIC_SOURCES := $(INTERPRETER_SOURCES) src/rtb_op_codes/rtb_op_codes.c $(sort $(wildcard src/imu_calibration/*.c)) \
+CIC_SOURCES := $(INTERPRETER_SOURCES) src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c $(sort $(wildcard src/imu_calibration/*.c)) \
 	src/binding/cm_imu_cal_routines.c
-CP11_SOURCES := $(INTERPRETER_SOURCES) src/rtb_op_codes/rtb_op_codes.c $(sort $(wildcard src/p11/*.c)) \
+CP11_SOURCES := $(INTERPRETER_SOURCES) src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c $(sort $(wildcard src/p11/*.c)) \
 	src/binding/cm_p11_routines.c
 CTPI_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/tpi_search/*.c)) \
 	src/binding/cm_tpi_search_routines.c
@@ -229,16 +229,16 @@ STAR_SOURCES := src/agc/agc.c src/star_tables/star_tables.c
 LL_SOURCES := $(INTERPRETER_SOURCES) src/lat_long/lat_long.c src/binding/lat_long_routines.c
 PL_SOURCES := $(INTERPRETER_SOURCES) src/planetary/planetary.c src/binding/planetary_routines.c
 MINC_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/measurement_inc/*.c)) \
-	src/integration_init/moves.c src/rtb_op_codes/rtb_op_codes.c \
+	src/integration_init/moves.c src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c \
 	src/binding/measurement_inc_routines.c
 CON_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/conics/*.c)) \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/conics_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/conics_routines.c
 II_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/integration_init/*.c)) \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/integration_init_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/integration_init_routines.c
 OI_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/orbital_integration/*.c)) \
 	src/binding/orbital_integration_routines.c
 IFA_SOURCES := $(INTERPRETER_SOURCES) src/inflight_align/inflight_align.c \
-	src/rtb_op_codes/rtb_op_codes.c src/binding/inflight_align_routines.c
+	src/rtb_op_codes/rtb_op_codes.c src/binding/rtb_run_on.c src/binding/inflight_align_routines.c
 PFS_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/powered_flight/*.c)) \
 	src/single_precision/single_precision.c src/binding/powered_flight_routines.c
 TFF_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/time_free_fall/*.c)) \
@@ -251,6 +251,9 @@ DI_SOURCES := src/agc/agc.c $(sort $(wildcard src/display_interface/*.c)) \
 	src/binding/display_interface_routines.c
 UP_SOURCES := $(sort $(INTERPRETER_SOURCES) $(wildcard src/update_program/*.c) \
 	src/binding/update_program_routines.c)
+RTB_LM_SOURCES := $(sort $(INTERPRETER_SOURCES) src/rtb_op_codes/rtb_op_codes.c \
+	src/binding/rtb_run_on.c src/binding/rtb_op_codes_routines.c)
+RTB_CM_SOURCES := $(sort $(RTB_LM_SOURCES) src/rtb_op_codes/quality.c)
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
 	src/binding/standard_lead_routines.c)
 PIN_SOURCES := src/agc/agc.c $(sort $(wildcard src/interpreter/*.c)) src/interbank/interbank.c \
@@ -263,11 +266,11 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) $(R60_SOURCES) \
-	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(P40_SOURCES) $(CP40_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SO_SOURCES) $(BB_SOURCES) $(LLD_SOURCES) $(THR_SOURCES) $(LLGE_SOURCES) $(P70_SOURCES) $(P12_SOURCES) $(ASC_SOURCES) $(SVC_SOURCES) $(LAD_SOURCES) $(FCW_SOURCES) $(P51_SOURCES) $(CP51_SOURCES) $(EPH_SOURCES) $(CP61_SOURCES) $(CSVC_SOURCES) $(CRENT_SOURCES) $(CBAT_SOURCES) $(CP37_SOURCES) $(CTVCI_SOURCES) $(CTVCX_SOURCES) $(CTVCM_SOURCES) $(CTVCR_SOURCES) $(CTVCD_SOURCES) $(CTVCS_SOURCES) $(CTVCL_SOURCES) $(CMYS_SOURCES) $(CRCS_SOURCES) $(CAM_SOURCES) $(CRDX_SOURCES) $(CJS_SOURCES) $(CIC_SOURCES) $(CP11_SOURCES) $(CTPI_SOURCES) $(CED_SOURCES) $(FFCP_SOURCES) $(LL_SOURCES) $(PL_SOURCES) $(MINC_SOURCES) $(CON_SOURCES) $(II_SOURCES) $(OI_SOURCES) $(IFA_SOURCES) $(PFS_SOURCES) $(TFF_SOURCES) $(SC_SOURCES) $(IMS_SOURCES) $(DI_SOURCES) $(UP_SOURCES) $(STAR_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
+	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(P40_SOURCES) $(CP40_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SO_SOURCES) $(BB_SOURCES) $(LLD_SOURCES) $(THR_SOURCES) $(LLGE_SOURCES) $(P70_SOURCES) $(P12_SOURCES) $(ASC_SOURCES) $(SVC_SOURCES) $(LAD_SOURCES) $(FCW_SOURCES) $(P51_SOURCES) $(CP51_SOURCES) $(EPH_SOURCES) $(CP61_SOURCES) $(CSVC_SOURCES) $(CRENT_SOURCES) $(CBAT_SOURCES) $(CP37_SOURCES) $(CTVCI_SOURCES) $(CTVCX_SOURCES) $(CTVCM_SOURCES) $(CTVCR_SOURCES) $(CTVCD_SOURCES) $(CTVCS_SOURCES) $(CTVCL_SOURCES) $(CMYS_SOURCES) $(CRCS_SOURCES) $(CAM_SOURCES) $(CRDX_SOURCES) $(CJS_SOURCES) $(CIC_SOURCES) $(CP11_SOURCES) $(CTPI_SOURCES) $(CED_SOURCES) $(FFCP_SOURCES) $(LL_SOURCES) $(PL_SOURCES) $(MINC_SOURCES) $(CON_SOURCES) $(II_SOURCES) $(OI_SOURCES) $(IFA_SOURCES) $(PFS_SOURCES) $(TFF_SOURCES) $(SC_SOURCES) $(IMS_SOURCES) $(DI_SOURCES) $(UP_SOURCES) $(STAR_SOURCES) $(RTB_CM_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
 HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 
 .PHONY: all check code-extents kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases throttle-cases llge-cases p70-cases p12-cases ascent-cases servicer-cases landing-displays-cases findcduw-cases p51-p53-cases cm-p51-p53-cases ephemerides-cases cm-p61-p67-cases cm-servicer-cases cm-reentry-cases cm-body-attitude-cases cm-p37-p70-cases cm-tvc-init-cases cm-tvc-exec-cases cm-tvc-massprop-cases cm-tvc-restarts-cases cm-tvc-daps-cases cm-tvc-stroke-cases cm-tvc-roll-cases cm-mysubs-cases cm-rcs-dap-cases cm-auto-man-cases cm-rcs-dap-exec-cases cm-jet-select-cases cm-imu-cal-cases cm-p11-cases cm-tpi-search-cases cm-entry-dap-cases constant-pool-cases lat-long-cases planetary-cases measurement-inc-cases conics-cases integration-init-cases orbital-integration-cases inflight-align-cases powered-flight-cases time-free-fall-cases self-check-cases imu-mode-switching-cases display-interface-cases update-program-cases star-tables-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases throttle-cases llge-cases p70-cases p12-cases ascent-cases servicer-cases landing-displays-cases findcduw-cases p51-p53-cases cm-p51-p53-cases ephemerides-cases cm-p61-p67-cases cm-servicer-cases cm-reentry-cases cm-body-attitude-cases cm-p37-p70-cases cm-tvc-init-cases cm-tvc-exec-cases cm-tvc-massprop-cases cm-tvc-restarts-cases cm-tvc-daps-cases cm-tvc-stroke-cases cm-tvc-roll-cases cm-mysubs-cases cm-rcs-dap-cases cm-auto-man-cases cm-rcs-dap-exec-cases cm-jet-select-cases cm-imu-cal-cases cm-p11-cases cm-tpi-search-cases cm-entry-dap-cases constant-pool-cases lat-long-cases planetary-cases measurement-inc-cases conics-cases integration-init-cases orbital-integration-cases inflight-align-cases powered-flight-cases time-free-fall-cases self-check-cases imu-mode-switching-cases display-interface-cases update-program-cases star-tables-cases rtb-op-codes-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage code-extents kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
@@ -285,7 +288,7 @@ all: names-check coverage code-extents kernel-cases interbank-cases phase-cases 
 	constant-pool-cases lat-long-cases planetary-cases measurement-inc-cases conics-cases integration-init-cases \
 	orbital-integration-cases inflight-align-cases powered-flight-cases time-free-fall-cases \
 	self-check-cases imu-mode-switching-cases display-interface-cases update-program-cases \
-	star-tables-cases
+	star-tables-cases rtb-op-codes-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -4025,3 +4028,45 @@ star-tables-cases: $(BUILD)/star-tables-cases
 		{ echo "no CM rope: run c64-port/tools/setup_cloud.sh"; exit 1; }
 	./$(BUILD)/star-tables-cases $(PORT)/build/fixed-data/Comanche055/MAIN.agc.bin \
 		../Comanche055/STAR_TABLES.agc
+
+# RTB_OP_CODES.agc (RT8_OP_CODES.agc in the CM), both missions: the port's
+# test (tests/test_rtb_op_codes.c, its frozen cases run to their stops
+# through the program of tests/rtb_op_codes_target.c, against the original
+# programs' yaAGC digests) on the readable tables, each mission's linked
+# apart with only its two tables left global, and tests/with_ropes.c
+# loading the ropes the readable code reads (1TO2SUB's and CDUINC's
+# tables). Then tests/rtb_op_codes_cases.c side by side, each mission,
+# every key, the faithful tables renamed faithful_.
+RTB_NAMES = $(1)_rtb_op_codes_basic $(1)_rtb_op_codes_interpretive
+RTB_PORT := $(PORT)/src/lm_interp_orders.c $(PORT)/src/lm_interp_steps.c \
+	$(PORT)/src/cm_interp_orders.c $(PORT)/src/cm_interp_steps.c $(KU_COMMON) \
+	$(PORT)/src/rope_image_host.c $(PORT)/tests/interp_case.c
+$(BUILD)/rtb-lm.o: $(RTB_LM_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+	ld -r $^ -o $@.all
+	objcopy $(foreach n,$(call RTB_NAMES,lm),--keep-global-symbol=$(n)) $@.all $@
+$(BUILD)/rtb-cm.o: $(RTB_CM_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+	ld -r $^ -o $@.all
+	objcopy $(foreach n,$(call RTB_NAMES,cm) QUALITY1_CODE QUALITY2_CODE,--keep-global-symbol=$(n)) \
+		$@.all $@
+$(BUILD)/rtb-faithful-%.o: $(PORT)/src/%_rtb_op_codes.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(call RTB_NAMES,$*),-D$(n)=faithful_$(n)) \
+		-c $< -o $@
+$(BUILD)/rtb-test.o: $(PORT)/tests/test_rtb_op_codes.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/rtb-oracle: $(BUILD)/rtb-lm.o $(BUILD)/rtb-cm.o $(BUILD)/rtb-test.o tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(RTB_PORT) $(PORT)/tests/rtb_op_codes_target.c \
+		tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/rtb-cases-lm: $(BUILD)/rtb-lm.o $(BUILD)/rtb-faithful-lm.o tests/rtb_op_codes_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(RTB_PORT) $(filter %.o,$^) \
+		tests/rtb_op_codes_cases.c -o $@
+$(BUILD)/rtb-cases-cm: $(BUILD)/rtb-cm.o $(BUILD)/rtb-faithful-cm.o tests/rtb_op_codes_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(RTB_PORT) $(filter %.o,$^) \
+		tests/rtb_op_codes_cases.c -o $@
+
+rtb-op-codes-cases: $(BUILD)/rtb-oracle $(BUILD)/rtb-cases-lm $(BUILD)/rtb-cases-cm
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/rtb-oracle $(ROPES)
+	./$(BUILD)/rtb-cases-lm $(ROPES)
+	./$(BUILD)/rtb-cases-cm $(ROPES)

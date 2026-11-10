@@ -274,6 +274,7 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
     if (i == COUNT(rtb_routines)) return EXEC_OK;
     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
     rtb_routines[i].routine();
+    rtb_run_on();
     return interpret_listing(program, state, io, code);
 }
 

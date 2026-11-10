@@ -230,6 +230,7 @@ static enum exec_status pair(const agc_native_program *program, apollo_overlay_s
     if (!ordinary()) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
     cdulogic();
+    rtb_run_on();
     return interpret_listing(program, state, &io->io, code);
 }
 

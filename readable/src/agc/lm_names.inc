@@ -1569,6 +1569,9 @@
 #define K_NORMUNIT 03726u
 #define K_NOSHIFT 03770u
 #define K_OFFTUNIT 03766u
+#define K_CDUINC 03660u
+#define K_PULSEIMU 03705u
+#define K_VECSGNAG 03772u
 #define K_P76 02207u
 #define K_ENDP76 02333u
 #define K_V82CALL 03242u

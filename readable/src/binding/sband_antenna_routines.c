@@ -157,6 +157,7 @@ static enum exec_status pair(const agc_native_program *program, apollo_overlay_s
     if (!sane()) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
     loadtime();
+    rtb_run_on();
     return interpret_listing(program, state, io, &SBAND_CODE);
 }
 

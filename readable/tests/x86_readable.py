@@ -226,6 +226,10 @@ REPLACED = (
     # UPDATE_PROGRAM.agc, both missions (src/update_program): the routine
     # tables and UPJOB's interpretive words.
     'lm_update.o', 'cm_update.o',
+    # RTB_OP_CODES.agc (RT8_OP_CODES.agc in the CM), both missions
+    # (src/rtb_op_codes): the routine tables, with the CM's QUALITY1 and
+    # QUALITY2.
+    'lm_rtb_op_codes.o', 'cm_rtb_op_codes.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed

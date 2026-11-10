@@ -206,6 +206,7 @@ static enum exec_status pair(const agc_native_program *program, apollo_overlay_s
         if (!sane()) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
         if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
         routine();
+        rtb_run_on();
         if (interpret_listing(program, state, io, code) != EXEC_OK) return EXEC_OUT_OF_SCOPE;
     }
     return EXEC_OK;

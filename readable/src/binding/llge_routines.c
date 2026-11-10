@@ -318,6 +318,7 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
         return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it: a vector) */
     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
     normunit();
+    rtb_run_on();
     if (Z == POODOO1) return EXEC_OK;
     return interpret_listing(program, state, &io->io, code);
 }

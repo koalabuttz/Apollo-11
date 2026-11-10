@@ -457,6 +457,7 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
         if (Z != run_through[i].address || FBANK != run_through[i].bank) continue;
         if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
         run_through[i].routine();
+        rtb_run_on();
         return interpret_listing(program, state, &io->io, code);
     }
     return EXEC_OK;
