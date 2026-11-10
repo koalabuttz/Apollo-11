@@ -415,7 +415,9 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_q_r_axis.o': lambda m: ['lm_q_r_axis_routines', 'lm_q_r_axis_hot_routines',
                                        'lm_q_r_axis_tg_hot_routines'] if m == 'lm' else [],
            # TJET_LAW.agc, the LM's (src/tjet_law): likewise.
-           'lm_tjet_law.o': lambda m: ['lm_tjet_law_routines'] if m == 'lm' else []}
+           'lm_tjet_law.o': lambda m: ['lm_tjet_law_routines'] if m == 'lm' else [],
+           # TRIM_GIMBAL_CONTROL_SYSTEM.agc, the LM's (src/trim_gimbal): likewise.
+           'lm_trim_gimbal.o': lambda m: ['lm_trim_gimbal_routines'] if m == 'lm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
