@@ -86,11 +86,11 @@ static void r_star_tl_star_star_p(void)
     case NEGATIVE: /* CCS leaves A |DEXDEX| - 1 */ break;
     default: not_modelled();
     }
-    dca(indexed(INDEXI, a_word()));
+    dca(indexed_read(INDEXI, a_word(), 2u));
     dxch(ADDRESS_OF(DEXI));
     set_A(ONE);
     ts(BUF_AT(0u));
-    dcs(indexed(VBUF_AT(0u), DEX1));
+    dcs(indexed_read(VBUF_AT(0u), DEX1, 2u));
     loop1();
 }
 
@@ -138,7 +138,7 @@ void loop1_after_sine_product(void)
     dxch(ADDRESS_OF(TERM1TMP));
     set_A(SIX);
     ads(ADDRESS_OF(ADDRWD));
-    dca(indexed(VBUF_AT(0u), picked_offset()));
+    dca(indexed_read(VBUF_AT(0u), picked_offset(), 2u));
     dxch(ADDRESS_OF(MPAC));
     tc_dmpsub(LOOP1 + 022u, loop1_after_cosine_product); /* "MULTIPLY BY COS(CDUANGLE)" */
 }
@@ -159,7 +159,7 @@ void loop1_after_cosine_product(void)
     das(ADDRESS_OF(TERM1TMP));
     dxch(ADDRESS_OF(TERM1TMP));
     ddoubl();
-    component = indexed(VBUF_AT(0u), picked_offset());
+    component = indexed_write(VBUF_AT(0u), picked_offset());
     dxch(component);
     dxch(BUF_AT(0u));
     switch (ccs_at(A_ADDRESS)) { /* "'CAUSE THAT'S WHERE THE INDEX NOW IS" */

@@ -5255,6 +5255,11 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define SINE                   ((word)K_SINE)
 #define DMPSUB                 ((word)K_DMPSUB)
 #define MPACVBUF               ((word)K_MPACVBUF)
+#if LUMINARY099
+#define CALCSMSC               ((word)K_CALCSMSC)
+#define FLESHPOT               ((word)K_FLESHPOT)
+#define XNBECADR               ((word)KW_XNBECADR) /* ECADR XNB */
+#endif
 #define TEM2                   ERASABLE(K_TEM2)
 #define TEM3                   ERASABLE(K_TEM3)
 #define DEX1                   ERASABLE(K_DEX1)

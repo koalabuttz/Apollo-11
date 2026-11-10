@@ -2,14 +2,15 @@
 /* POWERED_FLIGHT_SUBROUTINES.agc (Luminary099 pp. 1259-1267, Comanche055
  * pp. 1365-1372): the sines and cosines of the CDU angles, and the
  * transformations between the navigation base and the stable member, in
- * bank 23. The LM's FLESHPOT and the CM's SMCDURES are still the faithful
- * port's (c64-port/src/lm_powered_subs.c and cm_powered_subs.c).
+ * bank 23; the LM's XNB matrix (CALCSMSC and FLESHPOT, in bank 10); and
+ * the CM's gimbal angle increments (SMCDURES).
  *
  * Most of the file is basic code. Each function below runs from a place
  * the flight program enters (a key of the faithful tables, or a return
- * into the file) until control leaves the file: by a TC to a routine
- * outside it (USPRCADR, MPACVBUF, SPSIN, SPCOS, the CM's DMPSUB), back
- * into the interpreter (INTPRET), or back to a caller. */
+ * into the file) until control leaves the file: by a TC or TCF to a
+ * routine outside it (USPRCADR, MPACVBUF, SPSIN, SPCOS, the CM's DMPSUB,
+ * the LM's BANKCALL, VXV and SWRETURN), back into the interpreter
+ * (INTPRET), or back to a caller. */
 #ifndef READABLE_POWERED_FLIGHT_H
 #define READABLE_POWERED_FLIGHT_H
 
@@ -24,14 +25,37 @@
 #define CODE_Z(fcadr)    ((word)(02000u + ((fcadr) & 01777u)))
 #endif
 
+/* INDEX: the address an indexed instruction reads (one word, or two for
+ * DCA and DCS) or a DXCH writes. Not modelled, where the faithful port
+ * refuses them: a read past fixed-fixed memory or of Z, or a DXCH outside
+ * the erasable words above the registers (the program's indexes keep
+ * each in its table). */
+static inline unsigned indexed_read(unsigned address, word index, unsigned words)
+{
+    unsigned at = indexed(address, index), last = at + words - 1u;
+
+    if (last > 07777u || last == Z_ADDRESS) not_modelled();
+    return at;
+}
+
+static inline unsigned indexed_write(unsigned address, word index)
+{
+    unsigned at = indexed(address, index);
+
+    if (at + 1u < 010u || at + 1u > 01777u) not_modelled();
+    return at;
+}
+
 /* The interpretive words: each entry's EXIT, and the RVQs and VLOAD RVQ
  * the interface routines go back to the interpreter for. */
 extern const struct interpretive_code CDUTRIG_CODE, CDUTRIG_RVQ_CODE, CD_STAR_TR_STAR_G_CODE,
     CD_STAR_TR_STAR_G_RVQ_CODE, CDU_STAR_SMNB_CODE, TRG_STAR_SMNB_CODE, C_STAR_MM_STAR_N2_CODE,
     CDU_STAR_NBSM_CODE, TRG_STAR_NBSM_CODE, STAR_SMNB_STAR_CODE, STAR_NBSM_STAR_CODE,
     AX_STAR_SR_STAR_T_CONSTANTS;
-#if COMANCHE055
-extern const struct interpretive_code NBSM_CODE;
+#if LUMINARY099
+extern const struct interpretive_code CALCSMSC_CODE, CALCSMSC_RVQ_CODE;
+#else
+extern const struct interpretive_code NBSM_CODE, SMCDURES_CODE;
 #endif
 
 /* cdutrig.c: CDUTRIG, CD*TR*G, CDUTRIGS and CD*TR*GS. */
@@ -70,5 +94,14 @@ void star_nbsm_star_plus1(void);    /* *NBSM* +1: TCF C*MM*N3 */
 void ax_star_sr_star_t(void);          /* AX*SR*T */
 void loop1_after_sine_product(void);   /* LOOP1 +5 (the CM's DMPSUB's return) */
 void loop1_after_cosine_product(void); /* LOOP1 +023 (the same) */
+
+#if LUMINARY099
+/* fleshpot.c: CALCSMSC and FLESHPOT. */
+void calcsmsc_plus1(void);     /* CALCSMSC +1: TC BANKCALL */
+void calcsmsc_plus3(void);     /* CALCSMSC +3: TC INTPRET */
+void fleshpot_minus1(void);    /* FLESHPOT -1: CAF XNBECADR */
+void fleshpot(void);           /* FLESHPOT */
+void fleshpot_after_vxv(void); /* FLESHPOT +0135, after TCF VXV */
+#endif
 
 #endif

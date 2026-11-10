@@ -27,7 +27,7 @@ static void next_angle(void)
 {
     mask(SIX);
     ts(ADDRESS_OF(ITEMP2));
-    ca(indexed(ADDRESS_OF(CDUSPOT), ITEMP2));
+    ca(indexed_read(ADDRESS_OF(CDUSPOT), ITEMP2, 1u));
     tc_at(QUICTRIG + 010u); /* TC SPSIN */
 }
 
@@ -46,23 +46,25 @@ static void start(void)
 static void store_sine(void)
 {
     mp(BIT14);
-    dxch(indexed(ADDRESS_OF(SINCDU), ITEMP2));
-    ca(indexed(ADDRESS_OF(CDUSPOT), ITEMP2));
+    dxch(indexed_write(ADDRESS_OF(SINCDU), ITEMP2));
+    ca(indexed_read(ADDRESS_OF(CDUSPOT), ITEMP2, 1u));
     tc_at(QUICTRIG + 017u); /* TC SPCOS */
 }
 
 /* After SPCOS: the cosine, scaled, to COSCDU; then the next angle (true),
  * or, after the last, interrupts on and back by TC A. Not modelled:
- * ITEMP2 negative, which the MASK never leaves. */
+ * ITEMP2 negative, which the MASK never leaves, and a return that is not
+ * an address in the program. */
 static bool store_cosine(void)
 {
     mp(BIT14);
-    dxch(indexed(ADDRESS_OF(COSCDU), ITEMP2));
+    dxch(indexed_write(ADDRESS_OF(COSCDU), ITEMP2));
     switch (ccs_at(ADDRESS_OF(ITEMP2))) {
     case POSITIVE: next_angle(); return true;
     case IS_PLUS_ZERO:
         ca(ADDRESS_OF(ITEMP1));
         relint();
+        if (A < 010u || A > 07777u) not_modelled();
         tc_through(A_ADDRESS); /* TC A */
         return false;
     default: not_modelled(); return false;

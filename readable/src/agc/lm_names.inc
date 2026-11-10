@@ -2252,6 +2252,7 @@
 #define K_TSTPOINT 03755u
 #define K_SINESLOC 03762u
 #define K_INDEXI 03763u
+#define K_FLESHPOT 02037u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -2562,6 +2563,8 @@
 #define K_DEXI 00143u
 #define K_RTNSAVER 00145u
 #define K_TERM1TMP 00157u
+#define K_COSCDUY 00744u
+#define K_SINCDUY 00736u
 #define K_XSM 01642u
 #define K_ZSM 01656u
 #define K_WHICH 01455u
@@ -3129,6 +3132,7 @@
 #define KW_WTLTCADR 005203u
 #define KW_NOVACADR 005072u
 #define KW_OCT1400 001400u
+#define KW_XNBECADR 002664u
 #define KW_PRIO14 014000u
 #define KW_OCT37776 037776u
 #define KW_BIT10 001000u

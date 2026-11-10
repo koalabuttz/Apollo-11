@@ -20,7 +20,7 @@
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
 
-/* TC at "at" to a routine outside the file, which reads the word after
+/* TC at the word at to a routine outside the file, which reads the word after
  * the TC (USPRCADR's CADR). */
 static void tc_to(word at, word routine)
 {
@@ -112,7 +112,7 @@ static void tr_star_gl_star_star_p(void)
 {
     mask(SIX);
     ts(ADDRESS_OF(TEM3));
-    ca(indexed(ADDRESS_OF(CDUSPOT), TEM3));
+    ca(indexed_read(ADDRESS_OF(CDUSPOT), TEM3, 1u));
     dxch(ADDRESS_OF(MPAC));
     dxch(VBUF_AT(4u));
     tc_to(TR_STAR_GL_STAR_STAR_P + 6u, USPRCADR); /* CADR CDULOGIC */
@@ -123,7 +123,7 @@ static void tr_star_gl_star_star_p(void)
 void tr_star_gl_star_star_p_after_cdulogic(void)
 {
     dca(ADDRESS_OF(MPAC));
-    dxch(indexed(ADDRESS_OF(CDUSPOT), TEM3));
+    dxch(indexed_write(ADDRESS_OF(CDUSPOT), TEM3));
     tc_to(TR_STAR_GL_STAR_STAR_P + 014u, USPRCADR); /* CADR COSINE */
 }
 
@@ -132,8 +132,8 @@ void tr_star_gl_star_star_p_after_cdulogic(void)
 void tr_star_gl_star_star_p_after_cosine(void)
 {
     dxch(ADDRESS_OF(MPAC));
-    dxch(indexed(ADDRESS_OF(COSCDU), TEM3));
-    dca(indexed(ADDRESS_OF(CDUSPOT), TEM3));
+    dxch(indexed_write(ADDRESS_OF(COSCDU), TEM3));
+    dca(indexed_read(ADDRESS_OF(CDUSPOT), TEM3, 2u));
     tc_to(TR_STAR_GL_STAR_STAR_P + 024u, USPRCADR); /* CADR SINE +1 */
 }
 
@@ -148,7 +148,7 @@ void tr_star_gl_star_star_p_after_sine(void)
 
     dxch(VBUF_AT(4u));
     dxch(ADDRESS_OF(MPAC));
-    dxch(indexed(ADDRESS_OF(SINCDU), TEM3));
+    dxch(indexed_write(ADDRESS_OF(SINCDU), TEM3));
     switch (ccs_at(ADDRESS_OF(TEM3))) {
     case POSITIVE: tr_star_gl_star_star_p(); return;
     case IS_PLUS_ZERO:

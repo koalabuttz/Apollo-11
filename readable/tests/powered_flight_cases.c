@@ -10,9 +10,8 @@
  * First the words: the readable interpretive code (src/powered_flight/),
  * written in the listing's notation, must be the original program's
  * rope, word for word, and so must its constants. Then the keys, which
- * must be the faithful tables'. Then the runs: each key the readable
- * tables have written (the file is partial: the rest run the faithful
- * routines) from 2,048 states, each one of the port's frozen test states
+ * must be the faithful tables', each with a readable routine. Then the
+ * runs: each key from 2,048 states, each one of the port's frozen test states
  * of the mission (c64-port/tests/lm_powered_subs_vectors.h or
  * cm_powered_subs_vectors.h) entered at the key, most stirred further:
  * MPAC and its mode, the push-down list and its pointer, the work area,
@@ -22,8 +21,9 @@
  * state the routines refuse (another work area, another bank, BBANK not
  * the two banks, a word of 16 bits). The words the file's basic code
  * keeps between its steps (the angle's offset in TEM3 or ITEMP2, the
- * returns in TEM2, ITEMP1 and RTNSAVER, AX*SR*T's counts and indexes)
- * hold values the program gives them. Each runs once on each side, as
+ * returns in TEM2, ITEMP1 and RTNSAVER, AX*SR*T's counts and indexes,
+ * the LM's FLESHPOT's matrix address in TEM1 and the user's EBANK in
+ * TEM2) hold values the program gives them. Each runs once on each side, as
  * the program's trampoline would call the key's routine. Where either
  * port runs, the other must too, with the same memory and io record,
  * word for word; where the readable one refuses, it must leave
@@ -55,24 +55,23 @@ extern const struct interpretive_code CDUTRIG_CODE, CDUTRIG_RVQ_CODE, CD_STAR_TR
     CD_STAR_TR_STAR_G_RVQ_CODE, CDU_STAR_SMNB_CODE, TRG_STAR_SMNB_CODE, C_STAR_MM_STAR_N2_CODE,
     CDU_STAR_NBSM_CODE, TRG_STAR_NBSM_CODE, STAR_SMNB_STAR_CODE, STAR_NBSM_STAR_CODE,
     AX_STAR_SR_STAR_T_CONSTANTS;
-#if COMANCHE055
-extern const struct interpretive_code NBSM_CODE;
+#if LUMINARY099
+extern const struct interpretive_code CALCSMSC_CODE, CALCSMSC_RVQ_CODE;
+#else
+extern const struct interpretive_code NBSM_CODE, SMCDURES_CODE;
 #endif
 static const struct interpretive_code *const codes[] = {
-    &CDUTRIG_CODE,
-    &CDUTRIG_RVQ_CODE,
-    &CD_STAR_TR_STAR_G_CODE,
-    &CD_STAR_TR_STAR_G_RVQ_CODE,
-    &CDU_STAR_SMNB_CODE,
-    &TRG_STAR_SMNB_CODE,
-    &C_STAR_MM_STAR_N2_CODE,
-    &CDU_STAR_NBSM_CODE,
-    &TRG_STAR_NBSM_CODE,
-    &STAR_SMNB_STAR_CODE,
-    &STAR_NBSM_STAR_CODE,
-    &AX_STAR_SR_STAR_T_CONSTANTS,
-#if COMANCHE055
+    &CDUTRIG_CODE,           &CDUTRIG_RVQ_CODE,
+    &CD_STAR_TR_STAR_G_CODE, &CD_STAR_TR_STAR_G_RVQ_CODE,
+    &CDU_STAR_SMNB_CODE,     &TRG_STAR_SMNB_CODE,
+    &C_STAR_MM_STAR_N2_CODE, &CDU_STAR_NBSM_CODE,
+    &TRG_STAR_NBSM_CODE,     &STAR_SMNB_STAR_CODE,
+    &STAR_NBSM_STAR_CODE,    &AX_STAR_SR_STAR_T_CONSTANTS,
+#if LUMINARY099
+    &CALCSMSC_CODE,          &CALCSMSC_RVQ_CODE,
+#else
     &NBSM_CODE,
+    &SMCDURES_CODE,
 #endif
 };
 bool powered_flight_readable(uint16_t key, bool order_pair);
@@ -123,18 +122,20 @@ typedef cm_native_io mission_io;
  * it +010, +016 and +026), QUICTRIG, AX*SR*T, LOOP1, and the places
  * CD*TR*GS and AX*SR*T go back to in the file. */
 #if LUMINARY099
-#define DANZIG_AT  06061u
-#define TRGLP_Z    03560u
-#define QUICTRIG_Z 03615u
-#define AXSRT_Z    03675u
-#define LOOP1_Z    03716u
-#define CDUTRIG_Z  03537u
-#define CDTRG_Z    03543u
-#define CDUSMNB_Z  03646u
-#define TRGSMNB_Z  03651u
-#define CMMN2_Z    03655u
-#define CDUNBSM_Z  03661u
-#define TRGNBSM_Z  03664u
+#define DANZIG_AT     06061u
+#define TRGLP_Z       03560u
+#define QUICTRIG_Z    03615u
+#define AXSRT_Z       03675u
+#define LOOP1_Z       03716u
+#define CDUTRIG_Z     03537u
+#define CDTRG_Z       03543u
+#define CDUSMNB_Z     03646u
+#define TRGSMNB_Z     03651u
+#define CMMN2_Z       03655u
+#define CDUNBSM_Z     03661u
+#define TRGNBSM_Z     03664u
+#define FLESHPOT_Z    02037u
+#define FLESHLOC_BANK 010u
 #else
 #define DANZIG_AT  06030u
 #define TRGLP_Z    03520u
@@ -152,11 +153,20 @@ typedef cm_native_io mission_io;
 #endif
 #define AFTER_USPRCADR(z) ((z) == TRGLP_Z + 7u || (z) == TRGLP_Z + 015u || (z) == TRGLP_Z + 025u)
 #define POWFLITE_BANK     023u
+/* And the LM's TCF VXV, which leaves an EXIT in EDOP too. */
+#if LUMINARY099
+#define EXIT_PENDING(bank, z)                                                                      \
+    (((bank) == POWFLITE_BANK && AFTER_USPRCADR(z)) ||                                             \
+     ((bank) == FLESHLOC_BANK && (z) == FLESHPOT_Z + 0134u))
+#else
+#define EXIT_PENDING(bank, z) ((bank) == POWFLITE_BANK && AFTER_USPRCADR(z))
+#endif
 /* The erasable words the basic code keeps between its steps (TEM2 and
  * TEM3 share DEXDEX and DEX1). */
 #define ADDRWD_AT   0116u
 #define VBUF_AT     0122u
 #define BUF_AT      0130u
+#define TEM1_AT     0141u
 #define TEM2_AT     0142u
 #define TEM3_AT     0143u
 #define DEXDEX_AT   0142u
@@ -247,24 +257,32 @@ static uint16_t value_word(void)
 }
 
 /* A return: a place the file's code is called from (the word after a TC
- * in the file, or in fixed-fixed memory), or now and then any. */
+ * in the file, or in fixed-fixed memory), or now and then a word that is
+ * none (the routines refuse it). Not a random word of erasable or
+ * switchable fixed memory: there TC TEM2 can come back to itself, or
+ * into a chain of erasable words that never reaches fixed memory, and
+ * run for ever (the faithful port stops the program there). */
 static uint16_t a_return(void)
 {
     static const uint16_t places[] = {CDUTRIG_Z + 2u, CDTRG_Z + 2u,   CDUSMNB_Z + 2u,
                                       TRGSMNB_Z + 2u, CDUNBSM_Z + 2u, TRGNBSM_Z + 2u,
                                       CMMN2_Z + 1u};
-    unsigned k = rnd() % 4u;
+    unsigned k = rnd() % 16u;
+    uint16_t to;
 
-    if (k < 2u) return places[rnd() % (sizeof places / sizeof places[0])];
-    if (k == 2u) return (uint16_t)(04000u + rnd() % 04000u);
-    return (uint16_t)(010u + rnd() % 07770u);
+    if (k < 8u) return places[rnd() % (sizeof places / sizeof places[0])];
+    if (k < 14u) return (uint16_t)(04000u + rnd() % 04000u);
+    do to = rnd() % 2u ? (uint16_t)(rnd() % 010u) : any_word();
+    while (to >= 010u && to < 010000u);
+    return to;
 }
 
 /* At the basic code's places, the words it keeps between its steps as
  * the program leaves them: in TR*GL**P, the offset in TEM3 (4, 2 or 0)
  * and the return in TEM2; in QUICTRIG, the offset in ITEMP2 and the
  * return in ITEMP1; at AX*SR*T, +3 or -3 in A; in LOOP1, DEXDEX +-3 to 1,
- * DEX1 and DEX2 the INDEXI pair it picks, BUF the index (1, then 0),
+ * DEX1 and DEX2 the INDEXI pair it picks, BUF the index (1, then 0,
+ * now and then any word),
  * ADDRWD at the angle's sine (or, after the sine, its cosine), and the
  * return in RTNSAVER. */
 static void program_values(uint16_t *w, uint16_t z)
@@ -287,7 +305,7 @@ static void program_values(uint16_t *w, uint16_t z)
         pair = negative ? count - 1u : 3u - count;
         w[DEX1_AT] = indexi[pair];
         w[DEX1_AT + 1u] = indexi[pair + 1u];
-        w[BUF_AT] = (uint16_t)(rnd() % 2u);
+        w[BUF_AT] = rnd() % 32u ? (uint16_t)(rnd() % 2u) : any_word();
         w[ADDRWD_AT] = (uint16_t)(SINCDU_AT + w[DEX1_AT] + (z > LOOP1_Z + 5u ? 6u : 0u));
         w[RTNSAVER_AT] = a_return();
     }
@@ -310,7 +328,7 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
     io->interrupt_enabled = c->interrupt_enabled;
     eb = (uint16_t)(w[3] >> 8);
     w[4] = (uint16_t)(bank << 10);
-    if (interpretive && bank == POWFLITE_BANK && AFTER_USPRCADR(z)) {
+    if (interpretive && EXIT_PENDING(bank, z)) {
         w[5] = DANZIG_AT; /* USPRCADR's EXIT pending, LOC the CADR */
         w[LOC_AT] = z;
         w[EDOP_AT] = rnd() % 8u ? 1u : (uint16_t)(rnd() % 4u);
@@ -426,6 +444,22 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
             if (rnd() % 2u) w[032u + k] = value_word(); /* the CDU counters */
     }
     if (!interpretive && bank == POWFLITE_BANK) program_values(w, z);
+#if LUMINARY099
+    /* At FLESHPOT, an ECADR in A, of a matrix in E1 to E7 (in E0 it would
+     * be the registers); now and then overflowing, which TS TEM2 skips the
+     * XCH EBANK for. */
+    if (!interpretive && bank == FLESHLOC_BANK && z == FLESHPOT_Z) {
+        w[0] = (uint16_t)(((1u + rnd() % 7u) << 8) | rnd() % 0400u);
+        if (rnd() % 8u == 0u) w[0] |= 040000u;
+    }
+    /* After FLESHPOT's VXV, the matrix's address in TEM1 (01400 and the
+     * ECADR's low eight bits, the matrix inside the window) and the
+     * user's EBANK in TEM2. */
+    if (!interpretive && bank == FLESHLOC_BANK && z == FLESHPOT_Z + 0135u) {
+        w[TEM1_AT] = (uint16_t)(01400u + rnd() % 0357u);
+        w[TEM2_AT] = (uint16_t)((rnd() % 8u) << 8);
+    }
+#endif
 #if COMANCHE055
     /* At NBSM's LXC,1 (NBSM +2), the angles' address in S1, an erasable
      * one, as the program gives it ("BASE ADDRESS OF THE CDU ANGLES IS IN
@@ -455,7 +489,6 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
         uint16_t key = faithful->entries[i].physical, z = (uint16_t)(02000u + key % 1024u);
         unsigned ran = 0, bad = 0;
 
-        if (!powered_flight_readable(key, interpretive)) continue;
         ++*tested;
         for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;
@@ -527,6 +560,20 @@ int main(int argc, char **argv)
     }
     failures += tables_differ(&readable_basic, &faithful_basic, "basic");
     failures += tables_differ(&readable_interpretive, &faithful_interpretive, "interpretive");
+    for (i = 0; i < faithful_basic.count; ++i) {
+        uint16_t key = faithful_basic.entries[i].physical;
+        if (!powered_flight_readable(key, false)) {
+            printf("FAIL: basic key %02o,%04o not readable\n", key / 1024u, 02000u + key % 1024u);
+            ++failures;
+        }
+    }
+    for (i = 0; i < faithful_interpretive.count; ++i) {
+        uint16_t key = faithful_interpretive.entries[i].physical;
+        if (!powered_flight_readable(key, true)) {
+            printf("FAIL: order pair %02o,%04o not readable\n", key / 1024u, 02000u + key % 1024u);
+            ++failures;
+        }
+    }
     if (failures || mission_count == 0u) {
         printf("powered-flight-cases " MISSION ": %u failures\n", failures + (mission_count == 0u));
         return 1;

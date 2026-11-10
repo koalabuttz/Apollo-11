@@ -3402,8 +3402,8 @@ inflight-align-cases: $(BUILD)/ifa-oracle-lm $(BUILD)/ifa-oracle-cm $(BUILD)/ifa
 # through the readable tables, with tests/with_ropes.c loading the ropes
 # the readable interpreter reads; then tests/powered_flight_cases.c side
 # by side, for each mission, with the faithful routines (renamed
-# faithful_), at every key the readable tables have written. The faithful
-# LM runs DMPSUB in line (lm_dmpsub.c).
+# faithful_), every key of both tables readable. The faithful LM runs DMP
+# and DMPSUB in line (lm_dmpsub.c).
 PFS_NAMES_LM := lm_powered_subs_basic lm_powered_subs_interpretive
 PFS_NAMES_CM := cm_powered_subs_basic cm_powered_subs_interpretive
 PFS_COMMON := $(LL_COMMON) $(PORT)/src/lm_dmpsub.c
