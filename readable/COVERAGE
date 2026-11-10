@@ -150,3 +150,5 @@ Luminary099/POWERED_FLIGHT_SUBROUTINES.agc     src/powered_flight
 Comanche055/POWERED_FLIGHT_SUBROUTINES.agc     src/powered_flight
 Luminary099/TIME_OF_FREE_FALL.agc              src/time_free_fall
 Comanche055/TIME_OF_FREE_FALL.agc              src/time_free_fall
+Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc       src/self_check
+Comanche055/AGC_BLOCK_TWO_SELF-CHECK.agc       src/self_check
