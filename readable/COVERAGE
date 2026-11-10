@@ -164,3 +164,4 @@ Comanche055/RT8_OP_CODES.agc                    src/rtb_op_codes
 Luminary099/DAP_INTERFACE_SUBROUTINES.agc       src/dap_interface
 Luminary099/DAPIDLER_PROGRAM.agc                src/dapidler
 Luminary099/P-AXIS_RCS_AUTOPILOT.agc            src/p_axis
+Luminary099/Q_R-AXIS_RCS_AUTOPILOT.agc          src/q_r_axis
