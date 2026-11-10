@@ -408,7 +408,10 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            # P-AXIS_RCS_AUTOPILOT.agc, the LM's (src/p_axis): its three
            # routine tables; the sites and data words stay the faithful's.
            'lm_p_axis.o': lambda m: ['lm_p_axis_routines', 'lm_p_axis_hot_routines',
-                                     'lm_p_axis_tg_hot_routines'] if m == 'lm' else []}
+                                     'lm_p_axis_tg_hot_routines'] if m == 'lm' else [],
+           # Q_R-AXIS_RCS_AUTOPILOT.agc, the LM's (src/q_r_axis): likewise.
+           'lm_q_r_axis.o': lambda m: ['lm_q_r_axis_routines', 'lm_q_r_axis_hot_routines',
+                                       'lm_q_r_axis_tg_hot_routines'] if m == 'lm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',

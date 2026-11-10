@@ -2040,6 +2040,60 @@ static const word MORECADR[2] = KW_MORECADR; /* 2CADR CHEKMORE */
 static const word QERRCALL[2] = KW_QERRCALL; /* 2CADR CALLQERR */
 #endif
 
+/* ---- Q_R-AXIS_RCS_AUTOPILOT (the LM's) ---- */
+
+/* Its labels (bank 17; MAKERUPT in fixed-fixed), and AXISDIFF, the table
+ * of TJET_LAW's it reads. Its constants, the 2CADR GTSCADR, and its EQUALS names:
+ * ATTSTEER, 14MS, and the DAPBOOLS and FLAGWRD5 bits AORBTRAN and
+ * SNUFFBIT. */
+#if LUMINARY099
+#define RCS      ((word)K_RCS)
+#define TSNUMBRT ((word)K_TSNUMBRT)
+#define QRCONTRL ((word)K_QRCONTRL)
+#define MINRTN   ((word)K_MINRTN)
+#define CHEKSTIK ((word)K_CHEKSTIK)
+#define ENTERQR  ((word)K_ENTERQR)
+#define ENTERUV  ((word)K_ENTERUV)
+#define VDB      ((word)K_VDB)
+#define QRTIME   ((word)K_QRTIME)
+#define BACKHAND ((word)K_BACKHAND)
+#define TRYGTS   ((word)K_TRYGTS)
+#define GOTOGTS  ((word)K_GOTOGTS)
+#define CHKINGTS ((word)K_CHKINGTS)
+#define STILLRCS ((word)K_STILLRCS)
+#define ATTSTEER STILLRCS /* ATTSTEER EQUALS STILLRCS */
+#define TJLAW    ((word)K_TJLAW)
+#define AFTERTJ  ((word)K_AFTERTJ)
+#define DOROTAT  ((word)K_DOROTAT)
+#define NOROTAT  ((word)K_NOROTAT)
+#define LOOPER   ((word)K_LOOPER)
+#define DOSKIP   ((word)K_DOSKIP)
+#define NOTMIN   ((word)K_NOTMIN)
+#define XTRANS   ((word)K_XTRANS)
+#define INDEXES  ((word)K_INDEXES)
+#define ROT_TOUV ((word)K_ROT_TOUV) /* ROT-TOUV */
+#define SELCTSUB ((word)K_SELCTSUB)
+#define ALLJETS  ((word)K_ALLJETS)
+#define TYPEPOLY ((word)K_TYPEPOLY)
+#define CLOSEOUT ((word)K_CLOSEOUT)
+#define MAKERUPT ((word)K_MAKERUPT) /* (fixed-fixed) */
+#define AXISDIFF ((word)K_AXISDIFF)
+#define K60MS    ((word)KW_60MS)    /* 60MS: DEC 96 */
+#define MINADR   ((word)KW_MINADR)  /* GENADR MINRTN */
+#define OCT63    ((word)KW_OCT63)
+#define K40CYCL  ((word)KW_40CYCL)  /* 40CYCL */
+#define LINRAT   ((word)KW_LINRAT)
+#define HANDADR  ((word)KW_HANDADR) /* GENADR BACKHAND */
+#define TJMINT6  ((word)KW_PTJMINT6) /* +TJMINT6: DEC 22 */
+#define K14MS    TJMINT6            /* 14MS = +TJMINT6 */
+#define M150MS   ((word)KW_M150MS)  /* -150MS: DEC -240 */
+#define TJLAWADR ((word)KW_TJLAWADR) /* GENADR TJLAW +3 */
+#define ADRRUPT  ((word)KW_ADRRUPT) /* ADRES ENDJASK */
+#define AORBTRAN BIT10 /* AORBTRAN = BIT10, of DAPBOOLS */
+#define SNUFFBIT BIT13 /* SNUFFBIT = BIT13, of FLAGWRD5 */
+static const word GTSCADR[2] = KW_GTSCADR; /* 2CADR GTS */
+#endif
+
 /* ---- SYSTEM_TEST_STANDARD_LEAD_INS ---- */
 
 /* Its entries: in bank 4 (the LM's, and the CM's E/JOBWAK) and bank 13
