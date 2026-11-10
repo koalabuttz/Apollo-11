@@ -5275,6 +5275,78 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define POLYCOEF ((word)K_POLYCOEF)
 #define ABTCONIC ((word)K_ABTCONIC)
 
+/* ---- AGC_BLOCK_TWO_SELF-CHECK.agc ---- */
+
+/* Its labels, in bank 43 (SELFCHK, STSHOSUM and NXTBNK above); the file's
+ * first word (ERASCON1) and last (LSTBNKCH); and the erasable words it
+ * indexes by, SKEEP3 and SKEEP7, and SCOUNT +0 and +1, its pass counts
+ * (the others, SKEEP1-7, SMODE, ERESTORE, SFAIL, ERCOUNT, by ADDRESS_OF). */
+#define SELF_CHECK_FIRST  ((word)K_ERASCON1)
+#define SELF_CHECK_LAST   ((word)K_LSTBNKCH)
+#define TCALARM2          ((word)K_TCALARM2)
+#define SIDLOOP           ((word)K_SIDLOOP)
+#define SMODECHK          ((word)K_SMODECHK)
+#define BNKOPTN           ((word)K_BNKOPTN)
+#define SOPTION1          ((word)K_SOPTION1)
+#define SOPTION4          ((word)K_SOPTION4)
+#define SOPTION5          ((word)K_SOPTION5)
+#define CHECKNJ           ((word)K_CHECKNJ)
+#define ERASCHK           ((word)K_ERASCHK)
+#define ZERO_EBANK        ((word)K_0EBANK) /* 0EBANK */
+#define E134567B          ((word)K_E134567B)
+#define TWO_EBANK         ((word)K_2EBANK) /* 2EBANK */
+#define ERASLOOP          ((word)K_ERASLOOP)
+#define ELOOPFIN          ((word)K_ELOOPFIN)
+#define CNTRLOOP          ((word)K_CNTRLOOP)
+#define CYCLSHFT          ((word)K_CYCLSHFT)
+#define ROPECHK           ((word)K_ROPECHK)
+#define COMADRS           ((word)K_COMADRS)
+#define FXFX              ((word)K_FXFX)
+#define FXADRS            ((word)K_FXADRS)
+#define ADSUM             ((word)K_ADSUM)
+#define ADRSCHK           ((word)K_ADRSCHK)
+#define CONTINU           ((word)K_CONTINU)
+#define ADRS_PLUS_1       ((word)K_ADRSP1) /* ADRS+1 */
+#define SEVENTEEN_TO20    ((word)K_17TO20) /* 17TO20 */
+#define TWENTY_SEVEN_TO30 ((word)K_27TO30) /* 27TO30 */
+#define GONXTBNK          ((word)K_GONXTBNK)
+#define SOPTION           ((word)K_SOPTION)
+#define SOPT              ((word)K_SOPT)
+#define BNKCHK            ((word)K_BNKCHK)
+#define SKEEP3            ERASABLE(K_SKEEP3)
+#define SKEEP7            ERASABLE(K_SKEEP7)
+#define SCOUNT(n)         ERASABLE(K_SCOUNT + (n))
+
+/* Its constants: the EQUALS it gives the bits and small numbers (SBIT4,
+ * S+7, S-ZERO and the rest), and its own words. */
+#define S_MINUS_ZERO  ((word)KW_S_ZERO) /* S-ZERO */
+#define S_MINUS_1     ((word)KW_S_1)    /* S-1 */
+#define S_MINUS_7     ((word)KW_S_7)    /* S-7 */
+#define S_PLUS_7      ((word)KW_SP7)    /* S+7 */
+#define S8BITS        ((word)KW_S8BITS)
+#define S10BITS       ((word)KW_S10BITS)
+#define S13BITS       ((word)KW_S13BITS)
+#define SBIT4         ((word)KW_SBIT4)
+#define SBIT7         ((word)KW_SBIT7)
+#define SBIT9         ((word)KW_SBIT9)
+#define SBIT11        ((word)KW_SBIT11)
+#define SBIT12        ((word)KW_SBIT12)
+#define SBIT15        ((word)KW_SBIT15)
+#define SBNK03        ((word)KW_SBNK03)
+#define CNTRCON       ((word)KW_CNTRCON)
+#define ERASCON1      ((word)KW_ERASCON1)
+#define ERASCON2      ((word)KW_ERASCON2)
+#define ERASCON3      ((word)KW_ERASCON3)
+#define ERASCON4      ((word)KW_ERASCON4)
+#define ERASCON5      ((word)KW_ERASCON5)
+#define ERASCON6      ((word)KW_ERASCON6)
+#define CONC_PLUS_S1  ((word)KW_CONCPS1)  /* CONC+S1 */
+#define CONC_PLUS_S2  ((word)KW_CONCPS2)  /* CONC+S2 */
+#define MINUS_MAXADRS ((word)KW_MMAXADRS) /* -MAXADRS */
+#define SIXTY         ((word)KW_SIXTY)
+#define SUPRCON       ((word)KW_SUPRCON)
+#define LSTBNKCH      ((word)KW_LSTBNKCH)
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

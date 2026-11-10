@@ -297,6 +297,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Powered flight subroutines, part 1: the CDU angles' sines and cosines, and AX*SR*T | `POWERED_FLIGHT_SUBROUTINES.agc` (LM pp. 1259-1265, CM pp. 1365-1371) | [`src/powered_flight/`](src/powered_flight/) | Bank 23's turning of vectors between the navigation base and the stable member. CDUTRIG and CD*TR*G, from interpretive code, and CDUTRIGS and CD*TR*GS, from basic, find the sines and cosines of the CDU counters' angles or those at CDUSPOT through the interpreter's COSINE and SINE (USPRCADR), into SINCDU and COSCDU (`cdutrig.c`); QUICTRIG does the same faster with SPSIN and SPCOS, interrupts inhibited (`quictrig.c`, which FINDCDUW's RTB runs too). AX*SR*T turns the vector in VBUF by the three angles, one axis at a time, from the navigation base to the stable member (+3 in A) or back (-3), counting in DEXDEX and picking the components from INDEXI (`ax_sr_t.c`); the interface routines CDU*NBSM, TRG*NBSM, *NBSM* and their SMNB twins call it from interpretive code, and the CM's older NBSM takes the angles' address in S1 (`transforms.c`). |
 | Powered flight subroutines, part 2: FLESHPOT and SMCDURES | `POWERED_FLIGHT_SUBROUTINES.agc` (LM pp. 1265-1267, CM p. 1372) | [`src/powered_flight/`](src/powered_flight/) | Each mission's own end of the file. The LM's FLESHPOT, in bank 10, makes the matrix from the navigation base to the stable member (XNB) at the ECADR in A: the X and Z axes from the CDU angles' sines and cosines with DMP and DMPSUB, the Y axis their cross product by the interpreter's VXV, which FLESHPOT enters from basic code with an EXIT waiting in EDOP; CALCSMSC calls it from interpretive code for XNB itself (`fleshpot.c`). The CM's SMCDURES turns small rotations about the stable member's axes (DTHETASM) into changes of the CDU angles (DCDU), in interpretive code (`smcdures.c`) |
 | Time of free fall | `TIME_OF_FREE_FALL.agc` (LM pp. 1268-1283, CM pp. 1373-1388) | [`src/time_free_fall/`](src/time_free_fall/) | Bank 27's conic times, the same code in both missions, for the displays of P30, R30 and entry. The user leaves the state vector in RONE and VONE and 1/SQRT(MU) at the earth's scale or the moon's; TFFCONIC works out the conic into the push-down list (the present radius, the semi-latus rectum, alfa, the reciprocal of the semi-major axis, its root and 1/alfa, with their norm counts in X1 and X2), TFFRP/RA the perigee and apogee radii, and CALCTFF and CALCTPER the time of flight to a radius or to perigee, by the series T(X) (an RTB to TC POLY) or, for an ellipse past 90 degrees of eccentric anomaly, TFFELL's form; POSMAX where the conic never gets there. All in interpretive code but T(X) and ENDT(X) (`time_free_fall.c`) |
+| Self-check | `AGC_BLOCK_TWO_SELF_CHECK.agc` (LM pp. 1284-1293), `AGC_BLOCK_TWO_SELF-CHECK.agc` (CM pp. 1394-1403) | [`src/self_check/`](src/self_check/) | The back-up idle loop and its checks, the same code in both missions. SELFCHK is the Executive's idle job: SMODECHK gives any new job its turn (CHECKNJ, POSTJUMP ADVAN, which comes back through SELFRET) and runs the option in SMODE: ERASCHK writes each pair of erasable words with its own addresses and their complements, bank by bank, then CNTRCHK and CYCLSHFT; ROPECHK sums each bank of fixed memory and checks the sum against the bank number; an error goes to ALARM2 (01102), and -0 resumes after it through SFAIL. STSHOSUM and NXTBNK are SHOW-BANKSUM's (verb 91). Every place a pass comes back to is a routine of its own |
 
 Beside them:
 
@@ -1119,6 +1120,14 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    its norm counts, the flag words, the E-bank, NEWJOB, the latches), with
    the pairs after each RTB T(X) entered at DANZIG; every key must run
    readable code.
+   `make self-check-cases` runs the faithful port's self-check test
+   (tests/test_self_check.c: frozen cases and whole-rope runs of ROPECHK
+   and SHOW-BANKSUM against the original programs' yaAGC digests, both
+   missions in one program) on the readable tables, then readable and
+   faithful side by side (tests/self_check_cases.c): 16,384 states for
+   each key of the idle loop's table and the rest, from the port's case
+   images, with SFAIL and SKEEP1 sending the run to each word the file
+   goes on at, any SMODE, NEWJOB, SKEEP5-7 and A.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

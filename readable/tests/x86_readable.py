@@ -212,6 +212,10 @@ REPLACED = (
     # table. cm_mysubs.o, which nothing else calls, is no longer called
     # (--gc-sections drops it).
     'cm_mysubs_routines.o',
+    # AGC_BLOCK_TWO_SELF-CHECK.agc, both missions' self-check and bank
+    # sums (src/self_check): the idle loop's tables and the rest, and
+    # SUPDACAL's rope reader.
+    'lm_self_check.o', 'lm_self_check_idle.o', 'cm_self_check.o', 'cm_self_check_idle.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
@@ -386,7 +390,7 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
                     't4jump', 'imumon', 'goextvb', 'showsum', 'imufinek', 'lodnntab', 'one_pipa',
                     'e_bkcall', 'charin', 'sbandant', 'p3xorp7x', 'r31call', 'endp76', 'v82call',
-                    'vndsply_proceed')
+                    'vndsply_proceed', 'selfchk')
 # And each mission's own: R63 is the LM's alone; GIMBAL_LOCK_AVOIDANCE's
 # table has each mission's name, and the CM's KALCMANU_STEERING and ANGLFIND
 # have routines the LM's have not (STOPRATE, SECAD's basic code), as has
