@@ -143,7 +143,7 @@ void r61lem1_in_auto(void)
 static const word r61lem1_auto_words[] = {
     ORDERS(VLOAD, CALL),
     ADDRESS_PLUS_ONE(RRTARGET),
-    ADDRESS(CDU_STARSMNB),
+    ADDRESS(CDU_STAR_SMNB),
     ORDERS(DLOAD, DSU),
     ADDRESS_PLUS_ONE_AT(MPAC, 5),
     ADDRESS_PLUS_ONE(COS15DEG),

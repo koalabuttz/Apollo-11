@@ -3187,7 +3187,6 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRMTRACK */
 #define GOTANGLS ((word)K_GOTANGLS)
 #define R29LOKON ((word)K_R29LOKON)
 #define END29DOD ((word)K_END29DOD)
-#define MPACVBUF ((word)K_MPACVBUF)
 #define RR29GAIN ((word)KW_RR29GAIN) /* DEC -.53624 */
 #define R29FXLOC ((word)KW_R29FXLOC) /* ADRES INTB15+ -34D */
 /* Part 18, R29's radar reading: R29READ and R29RDJOB (bank 24). TIMEHOLD,
@@ -4246,7 +4245,6 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
 #define ONESTO2S    ((word)K_ONESTO2S)
 #define ONE_TO2_TCQ ((word)K_1TO2_TCQ) /* 1TO2&TCQ */
 #define PAUTNO      ((word)K_PAUTNO)
-#define QUICTRIG    ((word)K_QUICTRIG)
 #define SINZERO     ((word)K_SINZERO)
 #define TCQCDUW     ((word)K_TCQCDUW)
 #define TSL_TCQ     ((word)K_TSL_TCQ) /* TSL&TCQ */
@@ -4269,7 +4267,6 @@ static const word SVEXTADR[2] = KW_SVEXTADR; /* 2CADR SERVEXIT */
  * QUICTRIG index (CPHI, DELCDUX, OMEGAPD, DELPEROR, 1JACC, CDUSPOT, SINCDU,
  * COSCDU). */
 #define MINUS_DELGMB_AT(n) (K_MDELGMB + (n)) /* -DELGMB +n */
-#define TEM2               ERASABLE(K_TEM2)
 #define NDXCDUW            ERASABLE(K_NDXCDUW)
 
 /* P51-P53.agc (LM) */
@@ -5229,6 +5226,38 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 
 /* INFLIGHT_ALIGNMENT_ROUTINES.agc: GIMLOCK1, where the basic code is. */
 #define GIMLOCK1 ((word)K_GIMLOCK1)
+
+/* POWERED_FLIGHT_SUBROUTINES.agc: where its basic code is, and the
+ * routines it calls. (The LM's listing spells SINESLOC SINSLOC; the
+ * assembled one, corrected, as the CM's.) */
+#define CDUTRIG                ((word)K_CDUTRIG)
+#define CD_STAR_TR_STAR_G      ((word)K_CD_STAR_TR_STAR_G)      /* CD*TR*G */
+#define CDUTRIGS               ((word)K_CDUTRIGS)
+#define CD_STAR_TR_STAR_GS     ((word)K_CD_STAR_TR_STAR_GS)     /* CD*TR*GS */
+#define TR_STAR_GL_STAR_STAR_P ((word)K_TR_STAR_GL_STAR_STAR_P) /* TR*GL**P */
+#define QUICTRIG               ((word)K_QUICTRIG)
+#define CDU_STAR_SMNB          ((word)K_CDU_STAR_SMNB)          /* CDU*SMNB */
+#define TRG_STAR_SMNB          ((word)K_TRG_STAR_SMNB)          /* TRG*SMNB */
+#define C_STAR_MM_STAR_N1      ((word)K_C_STAR_MM_STAR_N1)      /* C*MM*N1 */
+#define C_STAR_MM_STAR_N2      ((word)K_C_STAR_MM_STAR_N2)      /* C*MM*N2 */
+#define CDU_STAR_NBSM          ((word)K_CDU_STAR_NBSM)          /* CDU*NBSM */
+#define TRG_STAR_NBSM          ((word)K_TRG_STAR_NBSM)          /* TRG*NBSM */
+#define C_STAR_MM_STAR_N3      ((word)K_C_STAR_MM_STAR_N3)      /* C*MM*N3 */
+#define STAR_SMNB_STAR         ((word)K_STAR_SMNB_STAR)         /* *SMNB* */
+#define STAR_NBSM_STAR         ((word)K_STAR_NBSM_STAR)         /* *NBSM* */
+#define AX_STAR_SR_STAR_T      ((word)K_AX_STAR_SR_STAR_T)      /* AX*SR*T */
+#define R_STAR_TL_STAR_STAR_P  ((word)K_R_STAR_TL_STAR_STAR_P)  /* R*TL**P */
+#define LOOP1                  ((word)K_LOOP1)
+#define LOOP2                  ((word)K_LOOP2)
+#define TSTPOINT               ((word)K_TSTPOINT)
+#define SINESLOC               ((word)K_SINESLOC)
+#define INDEXI                 ((word)K_INDEXI)
+#define SINE                   ((word)K_SINE)
+#define DMPSUB                 ((word)K_DMPSUB)
+#define MPACVBUF               ((word)K_MPACVBUF)
+#define TEM2                   ERASABLE(K_TEM2)
+#define TEM3                   ERASABLE(K_TEM3)
+#define DEX1                   ERASABLE(K_DEX1)
 
 /* CONIC_SUBROUTINES.agc: KEPLER's start, DELTIME, CHECKCTR, GETX's
  * POLYCOEF and ABTCONIC. */

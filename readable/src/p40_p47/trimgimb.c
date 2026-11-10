@@ -128,7 +128,7 @@ static const word s41_1_words[] = {
     ORDERS(MXV, VSL1),
     ADDRESS_PLUS_ONE(REFSMMAT),
     ORDER(GOTO),
-    ADDRESS(CDU_STARSMNB),
+    ADDRESS(CDU_STAR_SMNB),
 };
 
 const struct interpretive_code S41_1_CODE = {027u, S41_1, COUNT(s41_1_words), s41_1_words};

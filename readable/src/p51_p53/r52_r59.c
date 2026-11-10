@@ -257,7 +257,7 @@ static const word r59a_words[] = {
     ADDRESS_PLUS_ONE_AT_X1(CATLOG, 0),
     ADDRESS_PLUS_ONE(REFSMMAT),
     ORDERS(UNIT, CALL),
-    ADDRESS(CDU_STARSMNB),
+    ADDRESS(CDU_STAR_SMNB),
     STORE(STAR),
     ORDER(EXIT),
 };

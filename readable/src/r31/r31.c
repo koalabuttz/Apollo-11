@@ -313,7 +313,7 @@ static const word rev83_words[] = {
     ORDERS(UNIT, PDVL), /* "UNIT(R) TO PD 0-5" */
     ADDRESS_PLUS_ONE(UNITZ),
     ORDER(CALL),
-    ADDRESS(CDU_STARNBSM),
+    ADDRESS(CDU_STAR_NBSM),
     ORDERS(VXM, PUSH), /* "UNIT(Z)/4 TO PD 6-11" */
     ADDRESS_PLUS_ONE(REFSMMAT),
     ORDERS(VPROJ, VSL2), /* "UNIT(P)=UNIT(UZ-(UZ)PROJ(UR))" */

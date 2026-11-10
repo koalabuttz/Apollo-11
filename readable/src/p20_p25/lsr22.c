@@ -392,7 +392,7 @@ void mxmymz(void)
 static const word angles_words[] = {
     ORDERS(VLOAD, CALL),
     ADDRESS_PLUS_ONE(UNITX),
-    ADDRESS(TRG_STARNBSM),
+    ADDRESS(TRG_STAR_NBSM),
     ORDERS(VXM, VSL1),
     ADDRESS_PLUS_ONE(REFSMMAT),
     STOVL(MX),

@@ -612,7 +612,7 @@ static const word littlsub_words[] = {
     STCALL(CDUSPOT),
     ADDRESS(SXTNB),
     ORDER(CALL),
-    ADDRESS(TRG_STARNBSM),
+    ADDRESS(TRG_STAR_NBSM),
     ORDER(GOTO),
     ADDRESS(QPLAC),
     ORDER(EXIT),

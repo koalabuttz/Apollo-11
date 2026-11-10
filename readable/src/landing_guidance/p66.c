@@ -161,7 +161,7 @@ static const word itrpnt1_words[] = {
     ORDER(DAD),         /* (0) */
     ORDERS(PDVL, CALL), /* (2) */
     ADDRESS_PLUS_ONE(UNITX),
-    ADDRESS(CDU_STARNBSM),
+    ADDRESS(CDU_STAR_NBSM),
     ORDER(DOT),
     ADDRESS_PLUS_ONE_D(14),
     STORE_D(22),

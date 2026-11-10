@@ -83,6 +83,7 @@ C cannot spell every AGC name, so:
 | a trailing `?` | `_Q` | `STABL?` → `STABL_Q`, `stabl_q()` |
 | a leading `?` | `Q_` | `?GUIDSUB` → `Q_GUIDSUB`, `q_guidsub_plus1()` |
 | `*` (the indexed forms) | `_STAR` | `DLOAD*` → `DLOAD_STAR`, `dodload_star()` |
+| `*` inside a name | `_STAR_` | `AX*SR*T` → `AX_STAR_SR_STAR_T`, `ax_star_sr_star_t()` |
 | `=` | `_EQ_` | `ACOS=0` → `ACOS_EQ_0` |
 | `(` ... `)` | `_` and nothing | `LAT(SPL)` → `LAT_SPL` |
 | `,` or `&` | `_` | `BITS4&6` → `BITS4_6` |
