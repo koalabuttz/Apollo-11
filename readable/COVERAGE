@@ -152,3 +152,5 @@ Luminary099/TIME_OF_FREE_FALL.agc              src/time_free_fall
 Comanche055/TIME_OF_FREE_FALL.agc              src/time_free_fall
 Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc       src/self_check
 Comanche055/AGC_BLOCK_TWO_SELF-CHECK.agc       src/self_check
+Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc    src/imu_mode_switching
+Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc    src/imu_mode_switching

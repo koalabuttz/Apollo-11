@@ -5347,6 +5347,99 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define SUPRCON       ((word)KW_SUPRCON)
 #define LSTBNKCH      ((word)KW_LSTBNKCH)
 
+/* ---- IMU_MODE_SWITCHING_ROUTINES (src/imu_mode_switching/) ---- */
+
+/* Its code: zeroing, coarse and fine align, the PIPAs (bank 07). */
+#define IMUZERO     ((word)K_IMUZERO)
+#define IMUZEROA    ((word)K_IMUZEROA)
+#define MODEEXIT    ((word)K_MODEEXIT)
+#define IMUZERO2    ((word)K_IMUZERO2)
+#define IMUZERO3    ((word)K_IMUZERO3)
+#define IMUCOARS    ((word)K_IMUCOARS)
+#define COARS       ((word)K_COARS)
+#define COARS1      ((word)K_COARS1)
+#define COARS2      ((word)K_COARS2)
+#define COMZERO     ((word)K_COMZERO)
+#define COMNEG      ((word)K_COMNEG)
+#define NEXTCDU     ((word)K_NEXTCDU)
+#define COARSERR    ((word)K_COARSERR)
+#define CA_PLUS_ECE ((word)K_CAPECE) /* CA+ECE */
+#define SETCOARS    ((word)K_SETCOARS)
+#define RNDREFDR    ((word)K_RNDREFDR)
+#define IMUFINE     ((word)K_IMUFINE)
+#define IMUFINED    ((word)K_IMUFINED)
+#define IFAILOK     ((word)K_IFAILOK)
+#define PFAILOK     ((word)K_PFAILOK)
+#define PFAILOK2    ((word)K_PFAILOK2)
+#define NOATTOFF    ((word)K_NOATTOFF)
+#define PIPUSE      ((word)K_PIPUSE)
+#define PIPUSE1     ((word)K_PIPUSE1)
+#define PIPFREE     ((word)K_PIPFREE)
+#define PIPFREE2    ((word)K_PIPFREE2)
+
+/* Gyro torquing, the mode ends and the stalls (bank 07). GYROFRAC is a
+ * 2DEC (.215 B-21), read by DCA. */
+#define IMUPULSE                 ((word)K_IMUPULSE)
+#define GWAKE2                   ((word)K_GWAKE2)
+#define GYROAGRE                 ((word)K_GYROAGRE)
+#define GWAKE                    ((word)K_GWAKE)
+#define STRTGYRO                 ((word)K_STRTGYRO)
+#define STRTGYR2                 ((word)K_STRTGYR2)
+#define NORESET                  ((word)K_NORESET)
+#define LASTSEG                  ((word)K_LASTSEG)
+#define GYROEXIT                 ((word)K_GYROEXIT)
+#define AUG3                     ((word)K_AUG3)
+#define EIGHT_ONE_NINETY_TWO_AUG ((word)K_8192AUG) /* 8192AUG */
+#define GYROFRAC                 ((word)K_GYROFRAC)
+#define ENDIMU                   ((word)K_ENDIMU)
+#define IMUBAD                   ((word)K_IMUBAD)
+#define BADEND                   ((word)K_BADEND)
+#define GOODEND                  ((word)K_GOODEND)
+#define ENDMODE                  ((word)K_ENDMODE)
+#define AOTSTALL                 ((word)K_AOTSTALL)
+#define RADSTALL                 ((word)K_RADSTALL)
+#define IMUSTALL                 ((word)K_IMUSTALL)
+#define MODESLP                  ((word)K_MODESLP)
+#define MODABORT                 ((word)K_MODABORT)
+#define GOMANUR                  ((word)K_GOMANUR)
+
+/* R02 (LM bank 04, CM bank 07), P06 and P05 (LM bank 37, CM bank 26). */
+#define R02ZERO  ((word)K_R02ZERO)
+#define P06      ((word)K_P06)
+#define PRESTAND ((word)K_PRESTAND)
+#define SCALPREP ((word)K_SCALPREP)
+#define POSTAND  ((word)K_POSTAND)
+#define POSTCOM  ((word)K_POSTCOM)
+
+/* Where it goes: SHORTMP (P05's shift). */
+#define SHORTMP ((word)K_SHORTMP)
+
+/* Its erasables: CDUIND (the CDU COARS is at, 2 down to 0), COMMAND
+ * (the pulses still to send each CDU), TIME2SAV and SCALSAVE (P06's
+ * snapshots of TIME2,TIME1 and the scaler), RUPTREG2 (the device index). */
+#define CDUIND   ERASABLE(K_CDUIND)
+#define RUPTREG2 ERASABLE(K_RUPTREG2)
+
+/* Its constants. -COMMAX and -COMMAX-: "COMMAX = MAX NUMBER OF PULSES
+ * ALLOWED MINUS ONE" (191); COARSTOL, 2 degrees negative; LGWAKE, CADR
+ * GWAKE; GDESELCT, channel 14's gyro select and activity bits; KALEBCON,
+ * ECADR BCDU; OCT62 EQUALS .5SEC. */
+#define SUPER011           ((word)KW_SUPER011)
+#define BITS3_4            ((word)KW_BITS3_4)    /* BITS3&4 */
+#define BITS4TO5           ((word)KW_BITS4TO5)   /* BITS4-5 */
+#define MINUS_COMMAX       ((word)KW_MCOMMAX)    /* -COMMAX */
+#define MINUS_COMMAX_MINUS ((word)KW_MCOMMAXM)   /* -COMMAX- */
+#define SIX_HUNDRED_MS     ((word)KW_600MS)      /* 600MS */
+#define COARSTOL           ((word)KW_COARSTOL)
+#define OCT40010           ((word)KW_OCT40010)
+#define LGWAKE             ((word)KW_LGWAKE)
+#define GDESELCT           ((word)KW_GDESELCT)
+#define MINUS_GYROMIN      ((word)KW_MGYROMIN)   /* -GYROMIN */
+#define MINUS1             ((word)KW_MINUS1)
+#define KALEBCON           ((word)KW_KALEBCON)
+#define OCT220             ((word)KW_OCT220)
+#define OCT62              ((word)KW_OCT62)
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

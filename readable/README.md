@@ -298,6 +298,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Powered flight subroutines, part 2: FLESHPOT and SMCDURES | `POWERED_FLIGHT_SUBROUTINES.agc` (LM pp. 1265-1267, CM p. 1372) | [`src/powered_flight/`](src/powered_flight/) | Each mission's own end of the file. The LM's FLESHPOT, in bank 10, makes the matrix from the navigation base to the stable member (XNB) at the ECADR in A: the X and Z axes from the CDU angles' sines and cosines with DMP and DMPSUB, the Y axis their cross product by the interpreter's VXV, which FLESHPOT enters from basic code with an EXIT waiting in EDOP; CALCSMSC calls it from interpretive code for XNB itself (`fleshpot.c`). The CM's SMCDURES turns small rotations about the stable member's axes (DTHETASM) into changes of the CDU angles (DCDU), in interpretive code (`smcdures.c`) |
 | Time of free fall | `TIME_OF_FREE_FALL.agc` (LM pp. 1268-1283, CM pp. 1373-1388) | [`src/time_free_fall/`](src/time_free_fall/) | Bank 27's conic times, the same code in both missions, for the displays of P30, R30 and entry. The user leaves the state vector in RONE and VONE and 1/SQRT(MU) at the earth's scale or the moon's; TFFCONIC works out the conic into the push-down list (the present radius, the semi-latus rectum, alfa, the reciprocal of the semi-major axis, its root and 1/alfa, with their norm counts in X1 and X2), TFFRP/RA the perigee and apogee radii, and CALCTFF and CALCTPER the time of flight to a radius or to perigee, by the series T(X) (an RTB to TC POLY) or, for an ellipse past 90 degrees of eccentric anomaly, TFFELL's form; POSMAX where the conic never gets there. All in interpretive code but T(X) and ENDT(X) (`time_free_fall.c`) |
 | Self-check | `AGC_BLOCK_TWO_SELF_CHECK.agc` (LM pp. 1284-1293), `AGC_BLOCK_TWO_SELF-CHECK.agc` (CM pp. 1394-1403) | [`src/self_check/`](src/self_check/) | The back-up idle loop and its checks, the same code in both missions. SELFCHK is the Executive's idle job: SMODECHK gives any new job its turn (CHECKNJ, POSTJUMP ADVAN, which comes back through SELFRET) and runs the option in SMODE: ERASCHK writes each pair of erasable words with its own addresses and their complements, bank by bank, then CNTRCHK and CYCLSHFT; ROPECHK sums each bank of fixed memory and checks the sum against the bank number; an error goes to ALARM2 (01102), and -0 resumes after it through SFAIL. STSHOSUM and NXTBNK are SHOW-BANKSUM's (verb 91). Every place a pass comes back to is a routine of its own |
+| IMU mode switching | `IMU_MODE_SWITCHING_ROUTINES.agc` (LM pp. 1309-1337, CM pp. 1420-1448) | [`src/imu_mode_switching/`](src/imu_mode_switching/) | How a program drives the IMU's modes and waits on them, the same code in both missions but for a few words. IMUZERO zeroes the CDUs; IMUCOARS drives the gimbals to THETAD in passes of at most 192 pulses and checks them to 2 degrees; IMUFINE goes to fine align; PIPUSE and PIPFREE arm and disarm the PIPA fail warning; IMUPULSE torques the gyros, Y, Z then X, each a WAITLIST task, in trains of 8192 pulses when long. Each mode switch is a chain of tasks that ends at ENDIMU, GOODEND or BADEND, which wakes the program waiting in IMUSTALL (or AOTSTALL, RADSTALL); every step first tests that the IMU is not being caged. Then R02, the IMU status check, and P06 and P05, the computer to standby and back with TIME1 and TIME2 brought up to date from the scaler. Every place a call out of the file returns to is a routine of its own |
 
 Beside them:
 
@@ -1128,6 +1129,16 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    each key of the idle loop's table and the rest, from the port's case
    images, with SFAIL and SKEEP1 sending the run to each word the file
    goes on at, any SMODE, NEWJOB, SKEEP5-7 and A.
+   `make imu-mode-switching-cases` runs the faithful port's IMU mode
+   switching test (tests/test_imu_mode_switching.c: each routine's entry
+   cases and every BANKCALL or IBNKCALL round trip through the faithful
+   inter-bank routines, against the original programs' yaAGC digests, and
+   its refusals, both missions in one program) on the readable tables,
+   then readable and faithful side by side
+   (tests/imu_mode_switching_cases.c): 4,096 states for each key of both
+   missions, from the port's case images, with A, Q, MODECADR, RUPTREG2,
+   LOCCTR, LGYRO, MPAC, ATTCADR and the gyro commands any sign or out of
+   range, the cage bit, EBANK 0, channel 13's trap bits and no hardware.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
