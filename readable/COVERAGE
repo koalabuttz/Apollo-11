@@ -148,3 +148,5 @@ Luminary099/INFLIGHT_ALIGNMENT_ROUTINES.agc    src/inflight_align
 Comanche055/INFLIGHT_ALIGNMENT_ROUTINES.agc    src/inflight_align
 Luminary099/POWERED_FLIGHT_SUBROUTINES.agc     src/powered_flight
 Comanche055/POWERED_FLIGHT_SUBROUTINES.agc     src/powered_flight
+Luminary099/TIME_OF_FREE_FALL.agc              src/time_free_fall
+Comanche055/TIME_OF_FREE_FALL.agc              src/time_free_fall

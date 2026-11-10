@@ -296,6 +296,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | In-flight alignment routines | `INFLIGHT_ALIGNMENT_ROUTINES.agc` (LM pp. 1249-1257, CM pp. 1355-1363) | [`src/inflight_align/`](src/inflight_align/) | The arithmetic of turning the IMU's stable member to a new orientation, all in bank 23, in `inflight_align.c`. CALCGTA finds the gyro torquing angles (IGC, MGC, OGC) that bring the stable member to the desired axes XDC, YDC and ZDC. ARCTRIG gets an angle from its sine and cosine (the arcsine within 45 degrees of 0 or 180, else the arccosine). CALCGA finds the gimbal angles for a stable member (XSM, YSM, ZSM) and the navigation base's axes (XNB, YNB, ZNB), into THETAD as the CDUs count them (RTB V1STO2S; the CM's, with CPHIFLAG set, clears it and goes back before THETAD is stored); a middle gimbal angle over 60 degrees goes to GIMLOCK1, whose basic code gives alarm 401 and sets GLOKFAIL. AXISGEN makes a triad from two stars seen in each of two frames and from the two triads one frame's axes in the other, into XDC, YDC, ZDC and STARAD |
 | Powered flight subroutines, part 1: the CDU angles' sines and cosines, and AX*SR*T | `POWERED_FLIGHT_SUBROUTINES.agc` (LM pp. 1259-1265, CM pp. 1365-1371) | [`src/powered_flight/`](src/powered_flight/) | Bank 23's turning of vectors between the navigation base and the stable member. CDUTRIG and CD*TR*G, from interpretive code, and CDUTRIGS and CD*TR*GS, from basic, find the sines and cosines of the CDU counters' angles or those at CDUSPOT through the interpreter's COSINE and SINE (USPRCADR), into SINCDU and COSCDU (`cdutrig.c`); QUICTRIG does the same faster with SPSIN and SPCOS, interrupts inhibited (`quictrig.c`, which FINDCDUW's RTB runs too). AX*SR*T turns the vector in VBUF by the three angles, one axis at a time, from the navigation base to the stable member (+3 in A) or back (-3), counting in DEXDEX and picking the components from INDEXI (`ax_sr_t.c`); the interface routines CDU*NBSM, TRG*NBSM, *NBSM* and their SMNB twins call it from interpretive code, and the CM's older NBSM takes the angles' address in S1 (`transforms.c`). |
 | Powered flight subroutines, part 2: FLESHPOT and SMCDURES | `POWERED_FLIGHT_SUBROUTINES.agc` (LM pp. 1265-1267, CM p. 1372) | [`src/powered_flight/`](src/powered_flight/) | Each mission's own end of the file. The LM's FLESHPOT, in bank 10, makes the matrix from the navigation base to the stable member (XNB) at the ECADR in A: the X and Z axes from the CDU angles' sines and cosines with DMP and DMPSUB, the Y axis their cross product by the interpreter's VXV, which FLESHPOT enters from basic code with an EXIT waiting in EDOP; CALCSMSC calls it from interpretive code for XNB itself (`fleshpot.c`). The CM's SMCDURES turns small rotations about the stable member's axes (DTHETASM) into changes of the CDU angles (DCDU), in interpretive code (`smcdures.c`) |
+| Time of free fall | `TIME_OF_FREE_FALL.agc` (LM pp. 1268-1283, CM pp. 1373-1388) | [`src/time_free_fall/`](src/time_free_fall/) | Bank 27's conic times, the same code in both missions, for the displays of P30, R30 and entry. The user leaves the state vector in RONE and VONE and 1/SQRT(MU) at the earth's scale or the moon's; TFFCONIC works out the conic into the push-down list (the present radius, the semi-latus rectum, alfa, the reciprocal of the semi-major axis, its root and 1/alfa, with their norm counts in X1 and X2), TFFRP/RA the perigee and apogee radii, and CALCTFF and CALCTPER the time of flight to a radius or to perigee, by the series T(X) (an RTB to TC POLY) or, for an ellipse past 90 degrees of eccentric anomaly, TFFELL's form; POSMAX where the conic never gets there. All in interpretive code but T(X) and ENDT(X) (`time_free_fall.c`) |
 
 Beside them:
 
@@ -1108,6 +1109,16 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    address; FLESHPOT's ECADR, and its TEM1 and TEM2 after VXV), with the
    order pairs after TR*GL**P's USPRCADRs and FLESHPOT's TCF VXV entered
    at DANZIG; every key must run readable code.
+   `make time-free-fall-cases` runs the faithful port's tests of
+   TIME_OF_FREE_FALL (tests/test_lm_tff_abi.c and
+   test_cm_time_free_fall.c, frozen cases against the original programs'
+   yaAGC digests) on each mission's readable routines, then readable and
+   faithful side by side (tests/time_free_fall_cases.c): the words, the
+   series and the constants against the rope, the keys, then 2,048
+   states for each key (MPAC and the push-down list, the work area and
+   its norm counts, the flag words, the E-bank, NEWJOB, the latches), with
+   the pairs after each RTB T(X) entered at DANZIG; every key must run
+   readable code.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

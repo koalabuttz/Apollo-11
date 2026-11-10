@@ -97,7 +97,9 @@ FILES = (('lm_p20_p25', READABLE / 'src/binding/p20_p25_keys.inc'),
          ('lm_inflight_align', READABLE / 'src/binding/inflight_align_keys.inc'),
          ('cm_inflight_align', READABLE / 'src/binding/cm_inflight_align_keys.inc'),
          ('lm_powered_subs', READABLE / 'src/binding/powered_flight_keys.inc'),
-         ('cm_powered_subs', READABLE / 'src/binding/cm_powered_flight_keys.inc'))
+         ('cm_powered_subs', READABLE / 'src/binding/cm_powered_flight_keys.inc'),
+         ('lm_tff_abi', READABLE / 'src/binding/time_free_fall_keys.inc'),
+         ('cm_time_free_fall', READABLE / 'src/binding/cm_time_free_fall_keys.inc'))
 
 
 def generate(m):
