@@ -223,6 +223,9 @@ REPLACED = (
     # the six modules the port's tables (lanec_di_routines.o) call.
     'lanec_di_dsp.o', 'lanec_di_mark.o', 'lanec_di_play.o', 'lanec_di_sleep.o',
     'lanec_di_idle.o', 'lanec_di_nvdsp.o',
+    # UPDATE_PROGRAM.agc, both missions (src/update_program): the routine
+    # tables and UPJOB's interpretive words.
+    'lm_update.o', 'cm_update.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
