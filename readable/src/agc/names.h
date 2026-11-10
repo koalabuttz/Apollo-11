@@ -1775,8 +1775,11 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #endif
 
 /* TCDANZIG = ENDT(X) (TIME_OF_FREE_FALL.agc), the basic TC DANZIG a BOVB
- * goes to only to reset OVFIND. */
+ * goes to only to reset OVFIND; T(X), the TC POLY an RTB goes to for the
+ * time of free fall's series, which returns to ENDT(X). */
 #define TCDANZIG ((word)K_TCDANZIG)
+#define T_X      ((word)K_T_X)
+#define ENDT_X   ((word)K_ENDT_X)
 
 /* ---- IMU compensation (IMU_COMPENSATION_PACKAGE.agc, bank 06) ---- */
 

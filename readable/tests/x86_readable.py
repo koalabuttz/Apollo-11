@@ -291,6 +291,7 @@ REPLACED = (
 # INFLIGHT_ALIGNMENT_ROUTINES (src/inflight_align): the same.
 # POWERED_FLIGHT_SUBROUTINES (src/powered_flight): both missions' routine
 # tables, all readable; the faithful ones, renamed, are no longer called.
+# TIME_OF_FREE_FALL (src/time_free_fall): the same.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],
@@ -374,7 +375,12 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
                                 if m == 'lm' else [],
            'cm_powered_subs.o': lambda m: ['cm_powered_subs_basic',
                                            'cm_powered_subs_interpretive']
-                                if m == 'cm' else []}
+                                if m == 'cm' else [],
+           'lm_tff_abi.o': lambda m: ['lm_tff_abi_basic', 'lm_tff_abi_interpretive']
+                           if m == 'lm' else [],
+           'cm_time_free_fall.o': lambda m: ['cm_time_free_fall_basic',
+                                             'cm_time_free_fall_interpretive']
+                                  if m == 'cm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
