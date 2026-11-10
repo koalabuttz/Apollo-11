@@ -308,6 +308,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | P-axis RCS autopilot | `P-AXIS_RCS_AUTOPILOT.agc` (LM pp. 1421-1441) | [`src/p_axis/`](src/p_axis/) | The LM's RCS autopilot, the T5RUPT task every 100 ms while the DAP is on (PAXIS): the CDUs read and the KALCMANU desired angles moved on; the rate derivation (BACKP), a state estimator whose rates and attitude errors are filtered against the jets' and the offset acceleration's expected effect (the trap filters, the offset acceleration estimate); the trim gimbal drive timers (PRETIMCK); the Y-Z translation jets from the hand controller (CHKVISFZ, with SELECTP's jet policies around failed jets); and the P axis: the minimum impulse mode, the manual rate command mode (direct rate, PEGI, or pseudo-auto) and the automatic one (TJETLAW, or SPSRCS docked), the jets selected for the rotation (PJETSLEC) and timed by T6 (JTLST). Then the Q and R axes (QRAXIS, by DTCB to bank 17) |
 | Q,R-axes RCS autopilot | `Q_R-AXIS_RCS_AUTOPILOT.agc` (LM pp. 1442-1459) | [`src/q_r_axis/`](src/q_r_axis/) | The RCS autopilot's Q and R axes, which the P axis reaches by DTCB (CALLQERR): the Q,R attitude errors (QERRCALC); the control for this pass, the trim gimbal (GTS) or the jets (TRYGTS); the X translation the hand controller or the program asks for; then for each of the U and V axes, the jets' own axes (ROT-TOUV), the jet time of the minimum impulse mode, the rate command mode (direct rate, or pseudo-auto) or the automatic one (TJETLAW, or SPSRCS docked), and the jets for it around failed ones (SELCTSUB), short firings timed by T6 (JTLST). Then CLOSEOUT: an interrupt by program (EDRUPT) that resumes the interrupted job |
 | Jet firing time | `TJET_LAW.agc` (LM pp. 1460-1469) | [`src/tjet_law/`](src/tjet_law/) | TJETLAW, the subroutine the RCS autopilot calls for one axis's jet time (P, U or V): from the attitude error and its rate, the fine law's phase-plane zones (coast, fire to the axis, minimum impulse, or a time by one of three approximations) or, for a large error or rate, the rough laws (RUFLAW1, -2, -3); the signed time in TJP, TJU or TJV and the jets to use in NUMBERT |
+| Jet torques for the rate filter | `KALMAN_FILTER.agc` (LM pp. 1470-1471) | [`src/kalman_filter/`](src/kalman_filter/) | RATELOOP, which the P axis's T5RUPT reaches before the rate filter (BACKP): for each jet axis the jet time this pass fires (all of a short firing, else 100 ms of it), the torque that gives with the axis's jet count, kept for the filter and summed into the downlist's torque counters; then the jet rates about R and Q (ROTORQUE) |
 
 Beside them:
 
@@ -1219,6 +1220,12 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    images, with E, EDOT, SENSETYP, FLAT, TJP, TJU, TJV and ACCSWU, -V
    stirred (+0, -0, small or any word), and now and then an AXISCTR, a
    return in Q or a bank the faithful routine refuses.
+   `make kalman-filter-cases` runs the faithful port's KALMAN_FILTER test
+   (tests/test_lm_kalman.c, its frozen cases against the original
+   program's yaAGC digests) on the readable routine, then readable and
+   faithful side by side (tests/kalman_filter_cases.c): 65,536 random
+   states with the jet times +0, -0, short, at the 100 ms edge or long,
+   the jet counts, A, L, Q, the banks and the latches stirred.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

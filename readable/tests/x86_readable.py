@@ -77,6 +77,8 @@ REPLACED = (
     't4rupt_core.o', 'lm_t4rupt_imu.o', 'cm_t4rupt_imu.o', 'lm_t4rupt_rr.o', 'cm_t4rupt_optics.o',
     # RCS_FAILURE_MONITOR.agc, the LM's (src/rcs_failure_monitor).
     'lm_rcsmon.o',
+    # KALMAN_FILTER.agc, the LM's (src/kalman_filter).
+    'lm_kalman.o',
     # AGS_INITIALIZATION.agc, the LM's R47 (src/ags_initialization).
     'lm_ags_init.o',
     # AOTMARK.agc, the LM's sighting marks (src/aotmark).
