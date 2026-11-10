@@ -216,6 +216,9 @@ REPLACED = (
     # sums (src/self_check): the idle loop's tables and the rest, and
     # SUPDACAL's rope reader.
     'lm_self_check.o', 'lm_self_check_idle.o', 'cm_self_check.o', 'cm_self_check_idle.o',
+    # IMU_MODE_SWITCHING_ROUTINES.agc, both missions (src/imu_mode_switching):
+    # the two routine tables.
+    'imu_mode_switching.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
