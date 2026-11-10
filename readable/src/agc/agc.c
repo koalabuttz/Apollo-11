@@ -130,12 +130,14 @@ void mp(word value)
 
 void wor_dsalmout(void)
 {
+    if (!agc.dsalmout) not_modelled();
     *agc.dsalmout = (uint16_t)((overflow_corrected(A) | *agc.dsalmout) & MINUS_ZERO);
     A = sign_extend(*agc.dsalmout);
 }
 
 void wand_dsalmout(void)
 {
+    if (!agc.dsalmout) not_modelled();
     *agc.dsalmout = (uint16_t)(overflow_corrected(A) & *agc.dsalmout & MINUS_ZERO);
     A = sign_extend(*agc.dsalmout);
 }

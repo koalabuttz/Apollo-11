@@ -5607,6 +5607,55 @@ static const word AVOUTCAD[2] = KW_AVOUTCAD; /* 2CADR AVGEND */
 #define PRIODBIT      ((word)KW_PRIODBIT)
 #endif
 
+/* ---- UPDATE_PROGRAM (src/update_program/) ---- */
+/* The verbs (bank 43) and P27 (bank 04, the CM's bank 27). The CM's
+ * assembly spells DELTATOK DELTAOK. */
+#define V70UPDAT ((word)K_V70UPDAT)
+#define V71UPDAT ((word)K_V71UPDAT)
+#define V72UPDAT ((word)K_V72UPDAT)
+#define V73UPDAT ((word)K_V73UPDAT)
+#define UPERROR  ((word)K_UPERROR)
+#define UPPART2  ((word)K_UPPART2)
+#define OHWELL1  ((word)K_OHWELL1)
+#define OHWELL2  ((word)K_OHWELL2)
+#define UPVERIFY ((word)K_UPVERIFY)
+#define CK4V32   ((word)K_CK4V32)
+#define UPSTORE  ((word)K_UPSTORE)
+#define UPEND73  ((word)K_UPEND73)
+#define UPFNDVAC ((word)K_UPFNDVAC)
+#define UPJOB    ((word)K_UPJOB)
+#define UPWAKE   ((word)K_UPWAKE)
+#define UPPART3  ((word)K_UPPART3)
+#define TIMEDIDL ((word)K_TIMEDIDL)
+#define TIMEDIDR ((word)K_TIMEDIDR)
+#if LUMINARY099
+#define DELTATOK ((word)K_DELTATOK)
+#else
+#define DELTATOK ((word)K_DELTAOK)
+#endif
+#define UPOUT    ((word)K_UPOUT)
+#define UPEND70  ((word)K_UPEND70)
+#define UPERROUT ((word)K_UPERROUT)
+#define UPACTOFF ((word)K_UPACTOFF)
+/* Its constants: UP70-UP73 are ZERO to THREE, UP21 is MD1 (21) and
+ * UPDTPHAS FIVE, by EQUALS; the ECADRs ADUPTEMP, ADUPBUFF and ADUPBFM1
+ * (UPBUFF -1); the verb-nouns UPLOADNV (V21N01) and UPVRFYNV (V21N02); the
+ * LM's VERIFBIT, FLAGWRD7 bit 3. */
+#define UP70     ((word)KW_UP70)
+#define UP71     ((word)KW_UP71)
+#define UP72     ((word)KW_UP72)
+#define UP73     ((word)KW_UP73)
+#define UP21     ((word)KW_UP21)
+#define UPDTPHAS ((word)KW_UPDTPHAS)
+#define ADUPTEMP ((word)KW_ADUPTEMP)
+#define ADUPBUFF ((word)KW_ADUPBUFF)
+#define ADUPBFM1 ((word)KW_ADUPBFM1)
+#define UPLOADNV ((word)KW_UPLOADNV)
+#define UPVRFYNV ((word)KW_UPVRFYNV)
+#if LUMINARY099
+#define VERIFBIT ((word)KW_VERIFBIT)
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

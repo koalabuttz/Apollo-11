@@ -156,3 +156,5 @@ Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc    src/imu_mode_switching
 Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc    src/imu_mode_switching
 Luminary099/DISPLAY_INTERFACE_ROUTINES.agc     src/display_interface
 Comanche055/DISPLAY_INTERFACE_ROUTINES.agc     src/display_interface
+Luminary099/UPDATE_PROGRAM.agc                 src/update_program
+Comanche055/UPDATE_PROGRAM.agc                 src/update_program
