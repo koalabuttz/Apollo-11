@@ -165,3 +165,4 @@ Luminary099/DAP_INTERFACE_SUBROUTINES.agc       src/dap_interface
 Luminary099/DAPIDLER_PROGRAM.agc                src/dapidler
 Luminary099/P-AXIS_RCS_AUTOPILOT.agc            src/p_axis
 Luminary099/Q_R-AXIS_RCS_AUTOPILOT.agc          src/q_r_axis
+Luminary099/TJET_LAW.agc                        src/tjet_law

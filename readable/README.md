@@ -307,6 +307,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | DAP idler | `DAPIDLER_PROGRAM.agc` (LM pp. 1410-1420) | [`src/dapidler/`](src/dapidler/) | The T5RUPT task that runs every 100 ms while the LM's DAP is off (DAPIDLER, started by fresh start and restart): 1/ACCSET set up once by a NOVAC job; the mode select switch (channel 31), the IMU (IMODES33) and PGNCS control (channel 30) checked (CHEKBITS, CHEKMORE); with 1/ACCS done, STARTDAP zeroes the attitude errors (ZATTEROR) and initializes the DAP's erasables and its T6 jet timing, and hands the next T5RUPT to PAXIS. Meanwhile the attitude errors are worked out (QERRCALC, CALCPERR) and the jets and trim gimbal kept off (SHUTDOWN). In bank 20, the FDAI needles: ALTDSPLY alternates between working out the errors (the DAP's, or the total attitude errors through the gimbal-to-pilot matrix, DSPLYTOT, pinned by OVERSUB2) and driving the needles (NEEDLER: the turn-on passes, then the DAC loop that meters counts into the CDU error counters) |
 | P-axis RCS autopilot | `P-AXIS_RCS_AUTOPILOT.agc` (LM pp. 1421-1441) | [`src/p_axis/`](src/p_axis/) | The LM's RCS autopilot, the T5RUPT task every 100 ms while the DAP is on (PAXIS): the CDUs read and the KALCMANU desired angles moved on; the rate derivation (BACKP), a state estimator whose rates and attitude errors are filtered against the jets' and the offset acceleration's expected effect (the trap filters, the offset acceleration estimate); the trim gimbal drive timers (PRETIMCK); the Y-Z translation jets from the hand controller (CHKVISFZ, with SELECTP's jet policies around failed jets); and the P axis: the minimum impulse mode, the manual rate command mode (direct rate, PEGI, or pseudo-auto) and the automatic one (TJETLAW, or SPSRCS docked), the jets selected for the rotation (PJETSLEC) and timed by T6 (JTLST). Then the Q and R axes (QRAXIS, by DTCB to bank 17) |
 | Q,R-axes RCS autopilot | `Q_R-AXIS_RCS_AUTOPILOT.agc` (LM pp. 1442-1459) | [`src/q_r_axis/`](src/q_r_axis/) | The RCS autopilot's Q and R axes, which the P axis reaches by DTCB (CALLQERR): the Q,R attitude errors (QERRCALC); the control for this pass, the trim gimbal (GTS) or the jets (TRYGTS); the X translation the hand controller or the program asks for; then for each of the U and V axes, the jets' own axes (ROT-TOUV), the jet time of the minimum impulse mode, the rate command mode (direct rate, or pseudo-auto) or the automatic one (TJETLAW, or SPSRCS docked), and the jets for it around failed ones (SELCTSUB), short firings timed by T6 (JTLST). Then CLOSEOUT: an interrupt by program (EDRUPT) that resumes the interrupted job |
+| Jet firing time | `TJET_LAW.agc` (LM pp. 1460-1469) | [`src/tjet_law/`](src/tjet_law/) | TJETLAW, the subroutine the RCS autopilot calls for one axis's jet time (P, U or V): from the attitude error and its rate, the fine law's phase-plane zones (coast, fire to the axis, minimum impulse, or a time by one of three approximations) or, for a large error or rate, the rough laws (RUFLAW1, -2, -3); the signed time in TJP, TJU or TJV and the jets to use in NUMBERT |
 
 Beside them:
 
@@ -1211,6 +1212,13 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    stirred; the keys the file's own runs hand Z on to entered as those
    runs enter them, and now and then otherwise (then the readable routine
    must refuse cleanly or run).
+   `make tjet-law-cases` runs the faithful port's TJET_LAW test
+   (tests/test_lm_tjet_law.c, likewise) on the readable table, with the
+   ropes loaded, then readable and faithful side by side
+   (tests/tjet_law_cases.c): 65,536 runs of TJETLAW from the port's case
+   images, with E, EDOT, SENSETYP, FLAT, TJP, TJU, TJV and ACCSWU, -V
+   stirred (+0, -0, small or any word), and now and then an AXISCTR, a
+   return in Q or a bank the faithful routine refuses.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
