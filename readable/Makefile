@@ -256,6 +256,8 @@ RTB_LM_SOURCES := $(sort $(INTERPRETER_SOURCES) src/rtb_op_codes/rtb_op_codes.c 
 RTB_CM_SOURCES := $(sort $(RTB_LM_SOURCES) src/rtb_op_codes/quality.c)
 DAPIF_SOURCES := src/agc/agc.c src/binding/machine.c src/dap_interface/dap_interface.c \
 	src/binding/dap_interface_routines.c
+DAPID_SOURCES := src/agc/agc.c src/binding/machine.c src/dapidler/dapidler.c \
+	src/binding/dapidler_routines.c
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
 	src/binding/standard_lead_routines.c)
 PIN_SOURCES := src/agc/agc.c $(sort $(wildcard src/interpreter/*.c)) src/interbank/interbank.c \
@@ -268,11 +270,11 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) $(R60_SOURCES) \
-	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(P40_SOURCES) $(CP40_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SO_SOURCES) $(BB_SOURCES) $(LLD_SOURCES) $(THR_SOURCES) $(LLGE_SOURCES) $(P70_SOURCES) $(P12_SOURCES) $(ASC_SOURCES) $(SVC_SOURCES) $(LAD_SOURCES) $(FCW_SOURCES) $(P51_SOURCES) $(CP51_SOURCES) $(EPH_SOURCES) $(CP61_SOURCES) $(CSVC_SOURCES) $(CRENT_SOURCES) $(CBAT_SOURCES) $(CP37_SOURCES) $(CTVCI_SOURCES) $(CTVCX_SOURCES) $(CTVCM_SOURCES) $(CTVCR_SOURCES) $(CTVCD_SOURCES) $(CTVCS_SOURCES) $(CTVCL_SOURCES) $(CMYS_SOURCES) $(CRCS_SOURCES) $(CAM_SOURCES) $(CRDX_SOURCES) $(CJS_SOURCES) $(CIC_SOURCES) $(CP11_SOURCES) $(CTPI_SOURCES) $(CED_SOURCES) $(FFCP_SOURCES) $(LL_SOURCES) $(PL_SOURCES) $(MINC_SOURCES) $(CON_SOURCES) $(II_SOURCES) $(OI_SOURCES) $(IFA_SOURCES) $(PFS_SOURCES) $(TFF_SOURCES) $(SC_SOURCES) $(IMS_SOURCES) $(DI_SOURCES) $(UP_SOURCES) $(STAR_SOURCES) $(RTB_CM_SOURCES) $(DAPIF_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
+	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(P40_SOURCES) $(CP40_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SO_SOURCES) $(BB_SOURCES) $(LLD_SOURCES) $(THR_SOURCES) $(LLGE_SOURCES) $(P70_SOURCES) $(P12_SOURCES) $(ASC_SOURCES) $(SVC_SOURCES) $(LAD_SOURCES) $(FCW_SOURCES) $(P51_SOURCES) $(CP51_SOURCES) $(EPH_SOURCES) $(CP61_SOURCES) $(CSVC_SOURCES) $(CRENT_SOURCES) $(CBAT_SOURCES) $(CP37_SOURCES) $(CTVCI_SOURCES) $(CTVCX_SOURCES) $(CTVCM_SOURCES) $(CTVCR_SOURCES) $(CTVCD_SOURCES) $(CTVCS_SOURCES) $(CTVCL_SOURCES) $(CMYS_SOURCES) $(CRCS_SOURCES) $(CAM_SOURCES) $(CRDX_SOURCES) $(CJS_SOURCES) $(CIC_SOURCES) $(CP11_SOURCES) $(CTPI_SOURCES) $(CED_SOURCES) $(FFCP_SOURCES) $(LL_SOURCES) $(PL_SOURCES) $(MINC_SOURCES) $(CON_SOURCES) $(II_SOURCES) $(OI_SOURCES) $(IFA_SOURCES) $(PFS_SOURCES) $(TFF_SOURCES) $(SC_SOURCES) $(IMS_SOURCES) $(DI_SOURCES) $(UP_SOURCES) $(STAR_SOURCES) $(RTB_CM_SOURCES) $(DAPIF_SOURCES) $(DAPID_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
 HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 
 .PHONY: all check code-extents kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases throttle-cases llge-cases p70-cases p12-cases ascent-cases servicer-cases landing-displays-cases findcduw-cases p51-p53-cases cm-p51-p53-cases ephemerides-cases cm-p61-p67-cases cm-servicer-cases cm-reentry-cases cm-body-attitude-cases cm-p37-p70-cases cm-tvc-init-cases cm-tvc-exec-cases cm-tvc-massprop-cases cm-tvc-restarts-cases cm-tvc-daps-cases cm-tvc-stroke-cases cm-tvc-roll-cases cm-mysubs-cases cm-rcs-dap-cases cm-auto-man-cases cm-rcs-dap-exec-cases cm-jet-select-cases cm-imu-cal-cases cm-p11-cases cm-tpi-search-cases cm-entry-dap-cases constant-pool-cases lat-long-cases planetary-cases measurement-inc-cases conics-cases integration-init-cases orbital-integration-cases inflight-align-cases powered-flight-cases time-free-fall-cases self-check-cases imu-mode-switching-cases display-interface-cases update-program-cases star-tables-cases rtb-op-codes-cases dap-interface-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases throttle-cases llge-cases p70-cases p12-cases ascent-cases servicer-cases landing-displays-cases findcduw-cases p51-p53-cases cm-p51-p53-cases ephemerides-cases cm-p61-p67-cases cm-servicer-cases cm-reentry-cases cm-body-attitude-cases cm-p37-p70-cases cm-tvc-init-cases cm-tvc-exec-cases cm-tvc-massprop-cases cm-tvc-restarts-cases cm-tvc-daps-cases cm-tvc-stroke-cases cm-tvc-roll-cases cm-mysubs-cases cm-rcs-dap-cases cm-auto-man-cases cm-rcs-dap-exec-cases cm-jet-select-cases cm-imu-cal-cases cm-p11-cases cm-tpi-search-cases cm-entry-dap-cases constant-pool-cases lat-long-cases planetary-cases measurement-inc-cases conics-cases integration-init-cases orbital-integration-cases inflight-align-cases powered-flight-cases time-free-fall-cases self-check-cases imu-mode-switching-cases display-interface-cases update-program-cases star-tables-cases rtb-op-codes-cases dap-interface-cases dapidler-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage code-extents kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
@@ -290,7 +292,7 @@ all: names-check coverage code-extents kernel-cases interbank-cases phase-cases 
 	constant-pool-cases lat-long-cases planetary-cases measurement-inc-cases conics-cases integration-init-cases \
 	orbital-integration-cases inflight-align-cases powered-flight-cases time-free-fall-cases \
 	self-check-cases imu-mode-switching-cases display-interface-cases update-program-cases \
-	star-tables-cases rtb-op-codes-cases dap-interface-cases
+	star-tables-cases rtb-op-codes-cases dap-interface-cases dapidler-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -4099,3 +4101,45 @@ $(BUILD)/dapif-cases: $(DAPIF_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/da
 dap-interface-cases: $(BUILD)/dapif-oracle $(BUILD)/dapif-cases
 	./$(BUILD)/dapif-oracle
 	./$(BUILD)/dapif-cases
+
+# DAPIDLER_PROGRAM.agc, the LM's: the port's test (tests/test_lm_dapidler.c,
+# its frozen cases run through the routines, the faithful Executive and
+# inter-bank routines against the original program's yaAGC digests) on the
+# readable table. That test also counts the faithful routines' branches
+# its cases take: tests/dapidler_paths.c runs the faithful routine on a
+# copy of each state for that count, then the readable routine, whose
+# result stands. Then tests/dapidler_cases.c side by side, every key, the
+# faithful tables renamed faithful_.
+DAPID_NAMES := lm_dapidler_routines lm_dapidler_hot_routines
+DAPID_PORT := $(addprefix $(PORT)/,src/agc_fast_ops.c src/agc_fast_window.c src/agc_image_ops.c \
+	src/agc_hardware_divide.c src/lm_interbank_routines.c src/lm_interbank_idle.c \
+	src/lm_interbank.c src/lm_exec_routines.c src/lm_admission_image.c src/lm_waitlist_image.c \
+	src/waitlist.c src/executive.c src/p66_native.c src/agc_transfer.c src/agc_word.c \
+	src/agc_multiword.c tests/lm_dapidler_cases.c)
+DAPID_FLAGS := -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections
+$(BUILD)/dapid-faithful.o: $(PORT)/src/lm_dapidler.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(DAPID_FLAGS) $(foreach n,$(DAPID_NAMES),-D$(n)=faithful_$(n)) \
+		-c $< -o $@
+$(BUILD)/dapid-faithful-paths.o: $(PORT)/src/lm_dapidler.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(DAPID_FLAGS) -DLM_DI_COUNT_PATHS \
+		$(foreach n,$(DAPID_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/dapid-readable.o: $(DAPID_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+	ld -r $^ -o $@.all
+	objcopy $(foreach n,$(DAPID_NAMES),--redefine-sym $(n)=readable_$(n)) $@.all $@
+$(BUILD)/dapid-test.o: $(PORT)/tests/test_lm_dapidler.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(DAPID_FLAGS) -c $< -o $@
+$(BUILD)/dapid-oracle: $(BUILD)/dapid-readable.o $(BUILD)/dapid-faithful-paths.o \
+		$(BUILD)/dapid-test.o tests/dapidler_paths.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(DAPID_FLAGS) -DLM_DI_COUNT_PATHS $(DAPID_PORT) \
+		tests/dapidler_paths.c $(filter %.o,$^) -o $@
+$(BUILD)/dapid-cases: $(DAPID_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/dapid-faithful.o \
+		tests/dapidler_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(DAPID_FLAGS) $(DAPID_PORT) $(filter %.o,$^) \
+		tests/dapidler_cases.c -o $@
+
+dapidler-cases: $(BUILD)/dapid-oracle $(BUILD)/dapid-cases
+	./$(BUILD)/dapid-oracle
+	./$(BUILD)/dapid-cases
