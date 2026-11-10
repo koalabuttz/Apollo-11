@@ -161,3 +161,4 @@ Comanche055/UPDATE_PROGRAM.agc                 src/update_program
 Comanche055/STAR_TABLES.agc                     src/star_tables
 Luminary099/RTB_OP_CODES.agc                    src/rtb_op_codes
 Comanche055/RT8_OP_CODES.agc                    src/rtb_op_codes
+Luminary099/DAP_INTERFACE_SUBROUTINES.agc       src/dap_interface

@@ -230,6 +230,9 @@ REPLACED = (
     # (src/rtb_op_codes): the routine tables, with the CM's QUALITY1 and
     # QUALITY2.
     'lm_rtb_op_codes.o', 'cm_rtb_op_codes.o',
+    # DAP_INTERFACE_SUBROUTINES.agc, the LM's (src/dap_interface): the
+    # routine table.
+    'lm_dap_interface.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
