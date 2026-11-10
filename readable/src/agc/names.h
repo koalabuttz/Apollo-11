@@ -2231,6 +2231,18 @@ static const word CLOSEADR[2] = KW_CLOSEADR; /* 2CADR CLOSEOUT */
 static const word TORQCONS[2] = KW_TORQCONS;   /* 2DEC 0.51443 B-14 */
 #endif
 
+/* ---- SPS_BACK-UP_RCS_CONTROL (the LM's) ---- */
+
+/* UTIME, the inhibition counts read by INDEX AXISCTR from the rope (OCT
+ * 00004 for P at -1, OCT 00012 for U and V), and the rate constants. Its
+ * erasable words are named by ADDRESS_OF; OLDSENSE EQUALS DAPTREG1. */
+#if LUMINARY099
+#define UTIME    ((word)K_UTIME)
+#define RATELIM2 ((word)KW_RATELIM2) /* OCT 00632: "1.125 DEG/SEC" */
+#define RATELIM1 CALLCODE            /* RATELIM1 = CALLCODE */
+#define RATEDB1  ((word)KW_TBUILDFX) /* RATEDB1 = TBUILDFX: DEC 37 */
+#endif
+
 /* ---- SYSTEM_TEST_STANDARD_LEAD_INS ---- */
 
 /* Its entries: in bank 4 (the LM's, and the CM's E/JOBWAK) and bank 13
