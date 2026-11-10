@@ -41,6 +41,11 @@ enum exec_status interpret_listing_any_newjob(const agc_native_program *program,
                                               apollo_overlay_state *state, void *device,
                                               const struct interpretive_code *code);
 
+/* After an RTB routine an order pair runs (src/rtb_op_codes/), which
+ * ends where the listing leaves the file: on through the routines it
+ * leaves for, to the pair's DANZIG (rtb_run_on.c). */
+void rtb_run_on(void);
+
 /* Keys: physical addresses of fixed-fixed (04000-07777) and bank 01. */
 #define FF(z)        (uint16_t)(2048u + ((z) - 04000u))
 #define B1(z)        (uint16_t)(1024u + ((z) - 02000u))

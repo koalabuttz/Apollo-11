@@ -518,12 +518,14 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
     bind(program, state, io);
     if (Z == TPMODE && FBANK == TPMODE_BANK) { /* (the faithful pair takes any state) */
         tpmode();
+        rtb_run_on();
         return interpret_listing(program, state, io, code);
     }
     if (Z != LOADTIME || FBANK != LOADTIME_BANK) return EXEC_OK;
     if (!sane(true)) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
     loadtime();
+    rtb_run_on();
     return interpret_listing(program, state, io, code);
 }
 

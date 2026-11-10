@@ -224,6 +224,7 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
     if (Z != V1STO2S || FBANK != (word)(I_V1STO2S & 076000u)) return EXEC_OK;
     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
     v1sto2s();
+    rtb_run_on();
     return interpret_listing(program, state, io, code);
 }
 

@@ -233,6 +233,7 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
     }
     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
     routine();
+    if (routine == tpmode) rtb_run_on();
 #endif
     return interpret_listing(program, state, io, code);
 }

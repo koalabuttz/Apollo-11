@@ -351,11 +351,13 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
 {
 #if LUMINARY099
     void (*routine)(void);
+    bool rtb;
 
     if (interpret_listing(program, state, io, code) != EXEC_OK) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     routine = rtb_routine_at();
-    if (routine) {
+    rtb = routine != NULL;
+    if (rtb) {
         if (!sane(true)) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
     } else {
         routine = move_at();
@@ -364,6 +366,7 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
     }
     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
     routine();
+    if (rtb) rtb_run_on();
 #endif
     return interpret_listing(program, state, io, code);
 }

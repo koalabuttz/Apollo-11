@@ -843,6 +843,7 @@ static enum exec_status one_pass(uint16_t key, const agc_native_program *program
         if (!sane(true)) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
         if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
         loadtime();
+        rtb_run_on();
         return interpret_listing(program, state, &io->io, code);
     }
     if (Z == TCDANZIG && FBANK == TCDANZIG_BANK) {
@@ -852,12 +853,14 @@ static enum exec_status one_pass(uint16_t key, const agc_native_program *program
     }
     if (Z == TPMODE && FBANK == TPMODE_BANK) { /* (the faithful pair takes any state) */
         tpmode();
+        rtb_run_on();
         return interpret_listing(program, state, &io->io, code);
     }
     if (Z == CDULOGIC && FBANK == CDULOGIC_BANK) {
         if (!sane(true)) return EXEC_OUT_OF_SCOPE;
         if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
         cdulogic();
+        rtb_run_on();
         return interpret_listing(program, state, &io->io, code);
     }
     return EXEC_OK;

@@ -187,6 +187,7 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
     if (Z != CDULOGIC || FBANK != CDULOGIC_BANK) return EXEC_OK;
     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
     cdulogic();
+    rtb_run_on();
     return interpret_listing(program, state, io, code) == EXEC_OK ? EXEC_OK : EXEC_OUT_OF_SCOPE;
 }
 

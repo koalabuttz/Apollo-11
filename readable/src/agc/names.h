@@ -1894,6 +1894,17 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define NORMUNIT    ((word)K_NORMUNIT)
 #define SGNAGREE    ((word)K_SGNAGREE)
 #define OFFTUNIT    ((word)K_OFFTUNIT)
+/* CDUINC, PULSEIMU and VECSGNAG (both missions), and the CM's READPIPS,
+ * VECMODE and INCRCDUS, with its LOCTHETA (ADRES THETAD). */
+#define CDUINC      ((word)K_CDUINC)
+#define PULSEIMU    ((word)K_PULSEIMU)
+#define VECSGNAG    ((word)K_VECSGNAG)
+#if !LUMINARY099
+#define READPIPS ((word)K_READPIPS)
+#define VECMODE  ((word)K_VECMODE)
+#define INCRCDUS ((word)K_INCRCDUS)
+#define LOCTHETA ((word)KW_LOCTHETA)
+#endif
 
 /* ---- SYSTEM_TEST_STANDARD_LEAD_INS ---- */
 
