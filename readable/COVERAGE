@@ -169,3 +169,4 @@ Luminary099/TJET_LAW.agc                        src/tjet_law
 Luminary099/KALMAN_FILTER.agc                   src/kalman_filter
 Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc      src/trim_gimbal
 Luminary099/AOSTASK_AND_AOSJOB.agc              src/aostask
+Luminary099/SPS_BACK-UP_RCS_CONTROL.agc         src/sps_backup

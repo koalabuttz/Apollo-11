@@ -81,6 +81,8 @@ REPLACED = (
     'lm_kalman.o',
     # AOSTASK_AND_AOSJOB.agc, the LM's 1/ACCS (src/aostask).
     'lm_aostask.o',
+    # SPS_BACK-UP_RCS_CONTROL.agc, the LM's SPSRCS (src/sps_backup).
+    'lm_sps_backup.o',
     # AGS_INITIALIZATION.agc, the LM's R47 (src/ags_initialization).
     'lm_ags_init.o',
     # AOTMARK.agc, the LM's sighting marks (src/aotmark).

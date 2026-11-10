@@ -311,6 +311,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Jet torques for the rate filter | `KALMAN_FILTER.agc` (LM pp. 1470-1471) | [`src/kalman_filter/`](src/kalman_filter/) | RATELOOP, which the P axis's T5RUPT reaches before the rate filter (BACKP): for each jet axis the jet time this pass fires (all of a short firing, else 100 ms of it), the torque that gives with the axis's jet count, kept for the filter and summed into the downlist's torque counters; then the jet rates about R and Q (ROTORQUE) |
 | Trim gimbal control | `TRIM_GIMBAL_CONTROL_SYSTEM.agc` (LM pp. 1472-1484) | [`src/trim_gimbal/`](src/trim_gimbal/) | GTS, the descent engine's trim gimbal as the Q and R axes' attitude controller: for each axis the drive that brings attitude error, rate and offset acceleration to zero together (the sign of NEGUSUM, with GTSQRT's square root), a reversal pausing the gimbal for a pass; ACDT+C12, the drive bits of channel 12 and the acceleration rates they give; TIMEGMBL, the drive times that null the offset accelerations |
 | Jet and gimbal accelerations for the DAP | `AOSTASK_AND_AOSJOB.agc` (LM pp. 1485-1506) | [`src/aostask/`](src/aostask/) | 1/ACCS, run whenever the mass, the deadband or the configuration changes: LEMMASS held between the stage's limits; the jet accelerations about P, Q and R from fits in the mass (ascent or descent), or from the docked polynomials; the coupling of Q and R and the U and V accelerations; in descent the engine's moment arm and the gimbal's ACCDOTQ and ACCDOTR; the gimbal switches; then 1/ACCONT: the P axis's reciprocal accelerations, and for the U and V axes the reciprocal net and coast accelerations, the acceleration functions and the fire and coast deadbands, sent to the DAP by GENTRAN, with ACCSOKAY set at the end |
+| Docked RCS jets | `SPS_BACK-UP_RCS_CONTROL.agc` (LM pp. 1507-1510) | [`src/sps_backup/`](src/sps_backup/) | SPSRCS, the phase-plane controller for one axis (P, U or V) in docked flight: the jets' present sense and the rate dead band, the outer rate limit, the coast zone about the line E + 4 EDOT, and the inhibition logic that holds the jets off for a few passes after a stop or a reversal; the new jet time, half a unit either way or zero, in TJP, TJU or TJV |
 
 Beside them:
 
@@ -1245,6 +1246,13 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    jet accelerations, the offsets, the deadbands and the DAPBOOLS bits now
    real-sized, now +0, -0, small or any word, and now and then a bank, a
    latch or a missing record the faithful routines refuse.
+   `make sps-backup-cases` runs the faithful port's SPS_BACK-UP_RCS_CONTROL
+   test (tests/test_lm_sps_backup.c, its frozen cases against the original
+   program's yaAGC digests) on the readable routine, then readable and
+   faithful side by side (tests/sps_backup_cases.c): 65,536 runs of SPSRCS
+   from random states, with the axis, the jet times, the inhibition
+   counters, E, EDOT, DKDB and DRIFTBIT stirred, and now and then a bank,
+   a return or a latch the faithful routine refuses.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
