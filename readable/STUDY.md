@@ -24,6 +24,11 @@ CM=evidence/fixed-data-cm-original.rope.bin
 X86_DSKY=1 $R/x86-flight-lm $LM    # the LM, with a DSKY in the terminal
 ```
 
+The two ropes are checked in under `c64-port/evidence/`, so a fresh
+checkout has them. `x86-flight-lm` and `x86-flight-cm` are the compiled
+readable programs (the build also makes `-core` variants, where the
+native interpreter core runs every interpretive point, as on the C64).
+
 The program starts from GOJAM, the hardware restart. Its arguments are
 the rope, how long to fly in centiseconds of AGC time, and the keys to
 press (`@2200V37E63E` presses V37E63E at 22 s). On the live DSKY, `v`,
@@ -118,7 +123,7 @@ it is and torques the gyros back.
 and fine align), `gyro_torquing.c` and `mode_ends.c`;
 `t4rupt/imu_monitor.c`; `inflight_align/inflight_align.c`; in
 `p51_p53/`, `p52.c`, `s50_r56.c` (the stars), `r52_r59.c` (the optics),
-then `aotmark/aotmark.c`, then `p51.c` and `p57.c`. For the CM:
+then `aotmark/aotmark.c`, then `p51_p53/p51.c` and `p51_p53/p57.c`. For the CM:
 `p51_p53_cm/p52.c`, `p51_p53_cm/r51_r55.c`, `sxtmark/sxtmark.c`.
 
 | Beside it | LM pages | CM pages |
