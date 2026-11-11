@@ -68,6 +68,9 @@ Take one routine across the three views. NOVAC starts a basic job:
    and the search for a free core set, the job switch and the rest follow
    the same way, each function headed by its label and pages.
 
+For an order to read the files in, following a mission from boot to
+entry, see [STUDY.md](STUDY.md).
+
 ## What is here
 
 | Subsystem | Listing | Readable C | Routines |
