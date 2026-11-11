@@ -65,6 +65,10 @@ RECORD = READABLE / 'tests/x86_lockstep_record.txt'
 # NASSP core's start point, which the landing's routines arm a HANDRUPT
 # trap in (channel 13's bits 12 to 14, which the tool compares as traps).
 QUICK_FLIGHTS = ('lm-p63-nassp',)
+# A scenario input the x86 program does not read (x86_flight_scenarios:
+# the harness's 1,1,2 clock only): two rows that differ in it alone are
+# one run.
+HARNESS_ONLY = ('FLIGHT_SWAP_MCT',)
 # Flight scenarios this check does not count, each with the number of
 # points at which it differs and the reason. A full run flies them too,
 # and fails if one no longer differs at that many points (then the reason
@@ -208,8 +212,8 @@ def record(path, summary, left_out, twice):
                  f'{sum(r["points_not_matched"] or 0 for r in summary)} points that differ, '
                  f'{sum(not r["ok"] for r in summary)} rows failed.')
     if twice:
-        lines.append('# Flown twice, as a check row and as a scenario, and counted twice: '
-                     + ', '.join(f'{a} = {b}' for a, b in twice) + '.')
+        lines.append('# One run under two names (a check row and a scenario, alike in all the x86 program reads), '
+                     'counted twice: ' + ', '.join(f'{a} = {b}' for a, b in twice) + '.')
     for name, (points, reason) in LEFT_OUT.items():
         r = left_out.get(name)
         flown = (f' Flown: {r["checked"]} routines and core slots, {r["points_not_matched"]} points that differ.'
@@ -293,8 +297,11 @@ def main():
     missing = sorted(set(QUICK_FLIGHTS) - {r[0] for r in rows})
     if missing:
         sys.exit(f'x86_lockstep: QUICK_FLIGHTS names a row the suite no longer has: {", ".join(missing)}')
-    # One run under two names: the same program, time, keys and inputs.
-    twice = [(a_[0], b[0]) for i, a_ in enumerate(rows) for b in rows[i + 1:] if a_[1:6] == b[1:6]]
+    # One run under two names: the same program, time, keys and inputs
+    # (but an input the x86 program does not read).
+    def run(r):
+        return r[1:5] + ({k: v for k, v in r[5].items() if k not in HARNESS_ONLY},)
+    twice = [(a_[0], b[0]) for i, a_ in enumerate(rows) for b in rows[i + 1:] if run(a_) == run(b)]
     left = [(name, exe[m, 'compiled'], m, cs, keys, env, False) for name, m, cs, keys, env in flights
             if name in LEFT_OUT] if every_row else []
     if a.names:
