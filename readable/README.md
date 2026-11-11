@@ -17,7 +17,10 @@ the real x86_64 flight program's every routine, with none of the faithful
 port's linked beside it (see *Gates*, the link check), and the
 gates check it against the faithful port, word for word: the faithful
 port is the reference, and it is checked against the original program
-run in yaAGC on the host. So the readable code is as exact as the
+run in yaAGC on the host. The flight program is also flown against yaAGC
+itself, with no faithful routine between them: after every routine it
+runs, its memory and channels must be the original program's (gate 3).
+So the readable code is as exact as the
 faithful port, apart from the few places where one of them departs from
 the AGC on purpose (see *Departures*), and as far as the gates look (see
 *Gates*).
@@ -366,9 +369,11 @@ From `readable/`, with a C compiler, Make and Python 3:
 make                       # gate 1: names-check, coverage and the case tests (seconds)
 make x86-scenarios-quick   # gate 2 on the PR set (26 rows)
 make x86-scenarios         # gate 2 on every row (86)
+make x86-lockstep-quick    # gate 3 on the PR set (32 rows, two minutes)
+make x86-lockstep          # gate 3 on every row (117, about 20 minutes on 8 processors)
 ```
 
-Gate 2 needs the port's toolchain once, for the harness's yaAGC:
+Gates 2 and 3 need the port's toolchain once, for yaAGC:
 `c64-port/tools/setup_cloud.sh`.
 
 1. **Case tests.** `make kernel-cases` runs the faithful port's
@@ -1383,8 +1388,72 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    through tables with the faithful port's keys
    (`src/binding/*_tables.inc`, which `tools/lanec_keys.py` writes from
    the port's tables and `make names-check` holds to them).
+3. **x86 against Virtual AGC.** Gates 1 and 2 compare the readable
+   routines with the faithful port. This one compares the readable flight
+   program with the original program itself (`tests/x86_lockstep.py`).
+   It builds the port's lockstep tool
+   (`c64-port/tools/x86_flight_lockstep.c`) over the readable objects.
+   The program's own step flies a scenario, and for every routine it
+   runs, and every slot of the interpreter core, Virtual AGC's engine
+   (yaAGC) is loaded with the state the routine started in and run on
+   the original rope until it reaches the routine's continuation. There
+   all 2,048 words of erasable memory, the I/O channels (5, 6, 10 to 15,
+   30 to 35 and the superbank) and the interrupt state must be the
+   routine's. So the registers and channels gate 2 leaves out are
+   compared here, and after every routine, not once at a row's end. A
+   point that differs fails the row, as does a step refused or a basic
+   point no routine holds.
+   The rows are the port's 16 check rows in both interpretive modes
+   (P00, the DAP holding attitude, V37, DOWNRUPT, restarts, typed keys,
+   the TC trap) and gate 2's flight scenarios, 85 of the 86: 117 rows,
+   217 million routines and core slots when the gate was added, none
+   differing. `tests/x86_lockstep_record.txt` is that run, row by row
+   (`make x86-lockstep-record` writes it). PRs fly the 32 check rows,
+   the nightly run every row.
+   `tests/x86_lockstep.py --wrong` (run by both make targets) tries the
+   check on a program that is wrong, the LM program with one TS that
+   stores its word plus one, once: the check must name that routine and
+   no other.
+   What this gate does not show:
+   - **When a routine runs.** yaAGC's clock is frozen. The clock periods
+     and the interrupts taken are the program's own: the port's timers
+     and its entry to an interrupt, which are among the seven machine
+     objects and which the port's own test checks against yaAGC. A row
+     with no difference is one yaAGC run whose clock ran on the
+     program's schedule.
+   - **A difference carried forward.** yaAGC is loaded from the
+     program's state before every routine, so each routine is checked
+     from the state the readable program was in. A wrong word fails the
+     routine that made it, and is not looked for again.
+   - **Four things the tool lets through.** Z is not compared (the
+     continuation is). Q may have its sixteenth bit clear where yaAGC's
+     copies its fifteenth (*Departures*, Q after a switch order).
+     Channels 3 and 4, the scaler, are not compared. Channel 13's bits
+     12 to 14 arm the HANDRUPT traps and never read back on the AGC, so
+     they are compared as the three traps, not as channel bits.
+   - **The inputs.** The scenario inputs and the vehicle models are the
+     port's (`c64-port/platform/x86`), as in gate 2. The 24 rows that
+     start from the NASSP core dump start from the harness's state at
+     that point, since the x86 program never reads the dump; from there
+     on every routine is checked against yaAGC as in the other rows.
+   - **One scenario.** `lm-p52-watchman` is left out. Its job loops in
+     GOTOERS until the night watchman restarts the AGC, and the tool
+     cannot follow either. A step of the loop ends where it started (in
+     the readable interpreter at the GOTO order after 63 hops, with A
+     and the erasable bank as the hops left them: *Departures*, an
+     endless GOTO chain), and yaAGC, looping inside GOTOERS, does not
+     come back there. And the tool has no case for the watchman's
+     restart (it treats the TC trap's). The row fails the same way with
+     the faithful routines: 173 steps at 2 points with them, 174 at 2
+     points with the readable ones, all in the loop or at the restart.
+     Gate 2 flies the row, and gate 3 flies the same P52 without the
+     loop (`lm-p52-realign`).
+   The test binary links yaAGC, which the readable program must never
+   do: it is a test, built apart (`build/x86-flight/lockstep/`), and the
+   link check is run on it too, with yaAGC's three objects added to what
+   it may load.
 
-CI runs both on every PR that touches `readable/`, or what it is built
+CI runs all three on every PR that touches `readable/`, or what it is built
 from and checked against: the faithful port's sources, tests and tools
 and the listings (`.github/workflows/readable-ci.yml`).
 
@@ -1394,37 +1463,45 @@ Where the readable code, the faithful port and the AGC do not all agree,
 on purpose, in one list.
 
 Where the readable code departs from the AGC as the faithful port does.
-The gates cannot see these, since they compare the two ports:
+Gates 1 and 2 cannot see these, since they compare the two ports. Gate 3
+compares with Virtual AGC; what it makes of each is said with it:
 
 - **An endless GOTO chain.** The AGC follows a chain of erasable CADRs for
   as long as it goes on; a cycle would run until the night watchman
   restarts the computer. The interpreter stops the job at GOTO after 63
   hops (`GOTO_HOPS`, `src/interpreter/sequence.c`), and the next pass goes
-  on.
+  on. Gate 3 leaves out the one scenario with such a cycle
+  (`lm-p52-watchman`).
 - **Q after a switch order.** SWITCHES leaves the switch word in Q with
   TS Q, which on the AGC copies all 16 bits of A. The faithful core keeps
   15, and the rest of the flight program takes Q so; after a pass that
   ran a switch order, the binding leaves Q as the faithful core does
-  (`src/binding/interpreter_core.c`).
+  (`src/binding/interpreter_core.c`). Gate 3's tool accepts this one
+  difference in Q and no other.
 - **HI10 run as MASK.** On UPTEST's +0 path the AGC runs the constant
   HI10 (OCT 77740) as MASK 7740. It changes only A, which TMFAIL2
   overwrites at once, so neither port runs it (`src/keyrupt/keyrupt.c`).
+  No row of gate 3 shows a difference from it.
 - **OCT37737 run as CA 7737.** On SYNCT4's +0 path the AGC runs the
   constant OCT37737 as CA 7737. It changes only A, which SYNCT4's CAF
   overwrites at once, so neither port runs it (`src/t4rupt/t4rupt.c`).
+  No row of gate 3 shows a difference from it.
 - **RESUME reruns the word at ZRUPT -1.** The AGC's RESUME runs the
   instruction the interrupt saved in BRUPT; both ports go on at ZRUPT -1
   instead. The bindings take only states where BRUPT is that word under
   the banks being restored, and the port's tests check both outcomes
   against yaAGC (`src/waitlist/waitlist.c`, `src/binding/
-  rupt_routines.c`).
+  rupt_routines.c`). In gate 3 yaAGC runs the word in BRUPT, and every
+  row agrees.
 - **VERB69 stops at its word.** Verb 69's fan word is TC VERB69, a TC
   to itself: the AGC runs it until the hardware's TC trap restarts the
   computer. Both ports stop the step at VERB69
-  (`src/extended_verbs/front.c`).
+  (`src/extended_verbs/front.c`). Gate 3 checks the stop against yaAGC's
+  TC and the restart from 04000 on; the trap is the program's own.
 - **Steps not modelled.** An INDEX that would make an instruction the
   listing does not intend, or a channel a routine does not use, calls
-  `not_modelled()`: the binding puts the state back and refuses.
+  `not_modelled()`: the binding puts the state back and refuses. A
+  refused step fails a row of gate 3, and no row has one.
 
 Where the faithful port departs from the AGC and the readable code does
 what the AGC does, or refuses. All are states no flight program makes;

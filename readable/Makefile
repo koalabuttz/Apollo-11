@@ -47,6 +47,10 @@
 #   make x86-scenarios-quick / x86-scenarios
 #                         the x86 exact scenario suite on that program (needs
 #                         the port's toolchain: c64-port/tools/setup_cloud.sh)
+#   make x86-lockstep-quick / x86-lockstep
+#                         that program against Virtual AGC itself, routine
+#                         by routine (tests/x86_lockstep.py; the same
+#                         toolchain)
 #
 # The readable sources build with READABLE_CFLAGS; the faithful port's
 # sources they are tested with build with the port's own flags.
@@ -290,7 +294,8 @@ HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 
 .PHONY: all check code-extents kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
 	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases throttle-cases llge-cases p70-cases p12-cases ascent-cases servicer-cases landing-displays-cases findcduw-cases p51-p53-cases cm-p51-p53-cases ephemerides-cases cm-p61-p67-cases cm-servicer-cases cm-reentry-cases cm-body-attitude-cases cm-p37-p70-cases cm-tvc-init-cases cm-tvc-exec-cases cm-tvc-massprop-cases cm-tvc-restarts-cases cm-tvc-daps-cases cm-tvc-stroke-cases cm-tvc-roll-cases cm-mysubs-cases cm-rcs-dap-cases cm-auto-man-cases cm-rcs-dap-exec-cases cm-jet-select-cases cm-imu-cal-cases cm-p11-cases cm-tpi-search-cases cm-entry-dap-cases constant-pool-cases lat-long-cases planetary-cases measurement-inc-cases conics-cases integration-init-cases orbital-integration-cases inflight-align-cases powered-flight-cases time-free-fall-cases self-check-cases imu-mode-switching-cases display-interface-cases update-program-cases star-tables-cases rtb-op-codes-cases dap-interface-cases dapidler-cases p-axis-cases q-r-axis-cases tjet-law-cases kalman-filter-cases trim-gimbal-cases aostask-cases sps-backup-cases assembly-cases names-check \
-	coverage x86-flight x86-link-check x86-objects-lm x86-objects-cm x86-scenarios-quick x86-scenarios format clean
+	coverage x86-flight x86-link-check x86-objects-lm x86-objects-cm x86-scenarios-quick x86-scenarios \
+	x86-lockstep-quick x86-lockstep x86-lockstep-record format clean
 all: names-check coverage code-extents x86-link-check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
@@ -1373,6 +1378,24 @@ x86-scenarios-quick: $(X86_OBJECTS) $(HARNESS_ENGINE)
 
 x86-scenarios: $(X86_OBJECTS) $(HARNESS_ENGINE)
 	python3 tests/x86_readable.py scenarios
+
+# The readable program against Virtual AGC, routine by routine
+# (tests/x86_lockstep.py): first on a program that is wrong, which it must
+# fail, then the port's check rows (quick) or those and the flight
+# scenarios.
+x86-lockstep-quick: $(X86_OBJECTS) $(HARNESS_ENGINE)
+	python3 tests/x86_lockstep.py --wrong
+	python3 tests/x86_lockstep.py --quick
+
+x86-lockstep: $(X86_OBJECTS) $(HARNESS_ENGINE)
+	python3 tests/x86_lockstep.py --wrong
+	python3 tests/x86_lockstep.py
+
+# The same, and the run's rows written to tests/x86_lockstep_record.txt,
+# the run of record: commit it when the rows or their counts change.
+x86-lockstep-record: $(X86_OBJECTS) $(HARNESS_ENGINE)
+	python3 tests/x86_lockstep.py --wrong
+	python3 tests/x86_lockstep.py --record tests/x86_lockstep_record.txt
 
 format:
 	$(PORT)/deps/llvm-mos/bin/clang-format -i --style=file:$(PORT)/.clang-format $(SOURCES) $(filter %.h,$(HEADERS))

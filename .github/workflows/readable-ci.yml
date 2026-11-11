@@ -5,6 +5,10 @@
 #      port's oracles and routines, side by side; readable/README.md).
 #   2. The x86 exact scenario suite with the readable routines linked in:
 #      the quick set (26 rows) on PRs and pushes, every row nightly.
+#   3. That program against Virtual AGC itself, routine by routine
+#      (readable/tests/x86_lockstep.py), in a job of its own: the 32 check
+#      rows on PRs and pushes, every row (117) nightly. Each run first
+#      tries the check on a program that is wrong.
 name: readable-ci
 # It runs on a change to readable/ and on a change to what readable/ is
 # built from and checked against: the faithful port's sources, its tests
@@ -105,4 +109,44 @@ jobs:
         with:
           name: readable-scenarios
           path: readable/build/x86-flight/scenarios/summary.json
+          if-no-files-found: ignore
+
+  virtual-agc:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - name: Lean checkout
+        env:
+          REF: ${{ github.sha }}
+        run: |
+          git init -q .
+          git remote add origin "https://github.com/${GITHUB_REPOSITORY}"
+          git config http.https://github.com/.extraheader \
+            "AUTHORIZATION: basic $(printf 'x-access-token:%s' '${{ github.token }}' | base64 -w0)"
+          git fetch -q --filter=blob:limit=1m --depth=1 origin "$REF"
+          git show FETCH_HEAD:c64-port/tools/ci_checkout.sh | bash -s FETCH_HEAD
+      - name: Toolchain cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            c64-port/deps/llvm-mos
+            c64-port/deps/vice-data
+            c64-port/deps/virtualagc
+            c64-port/deps/fixture
+          key: port-deps-${{ hashFiles('c64-port/tools/versions.json', 'c64-port/tools/setup_cloud.sh', 'c64-port/tools/prepare_reference.py') }}
+      - name: Install pinned toolchain
+        working-directory: c64-port
+        run: tools/setup_cloud.sh
+      - name: Gate 3, x86 against Virtual AGC
+        working-directory: readable
+        env:
+          FULL: ${{ github.event_name == 'schedule' || inputs.full == true }}
+        run: |
+          source ../c64-port/deps/env.sh
+          if [ "$FULL" = true ]; then make -j4 x86-lockstep; else make -j4 x86-lockstep-quick; fi
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: readable-lockstep
+          path: readable/build/x86-flight/lockstep/summary.json
           if-no-files-found: ignore
