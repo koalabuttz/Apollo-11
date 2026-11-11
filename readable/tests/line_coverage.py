@@ -26,13 +26,20 @@ line numbers, so an edit elsewhere in the file does not move it. The line
 numbers and the counts in the ledger are those of the measure it was last
 written from, for the reader; they are not compared.
 
-Every .c file under src/ must be accounted for too: it has lines that are
-counted, or the ledger names it among the sources with none, as one the
-build compiles that holds no line to run ([no-code]: tables and names) or
-as one no target compiles ([not-built], with why). The check fails on a
-source with no lines that the ledger does not name, on one it names that
-has lines now, and on one named as the wrong kind. (A header's lines are
-counted where a source that includes it is compiled.)
+Every file under src/ must be accounted for too. A .c file has lines that
+are counted, or the ledger names it among the files that are not, as one
+the build compiles that holds no line to run ([no-code]: tables, names and
+interpretive words) or as one no target compiles ([not-built], with why).
+A header or .inc file is counted where a source that includes it is
+compiled, so it must be read by a source the build compiles, directly or
+through another header, or be named [not-built] too. The check fails on a
+file that is not counted and not named, on one named that is counted now,
+and on one named as the wrong kind.
+
+What is measured is C. An interpretive program is a table of words to the
+compiler, with no line to run: the measure does not see which of its words
+the interpreter ran, in a [no-code] source or in a source that has C lines
+of its own beside its tables.
 
   line_coverage.py             build, run, measure, and hold to the ledger
   line_coverage.py --measure   measure the counts of the last run again
@@ -42,6 +49,9 @@ counted where a source that includes it is compiled.)
   line_coverage.py --self-check  the check itself on made-up measures and
                                ledgers, with no build (make all runs it)
   line_coverage.py --jobs N    make all with N jobs at once (4)
+  line_coverage.py --guard-check  only the measure's guard, on a small
+                               program built for the purpose (needs clang;
+                               the first step of a run)
 
 `make line-coverage`, from readable/. Needs clang with its profile runtime
 (libclang-rt-<n>-dev), llvm-profdata, llvm-cov, and the port's toolchain
@@ -80,7 +90,7 @@ ENTRY = re.compile(r'  (\S+), lines? (\d+)(?:-(\d+))? \((\d+) unrun\) ([0-9a-f]{
 CLASS = re.compile(r'\[([a-z0-9-]+)\] (.+)$')
 REASON = re.compile(r'\[([a-z0-9-]+)\](?: (.+))?$', re.S)
 SOURCE = re.compile(r'  - src/(\S+): (.*)$')
-SOURCES_HEAD = 'Sources of src/ with no line counted:'
+SOURCES_HEAD = 'Files of src/ that are not counted:'
 # The classes a source with no line counted is named under, and whether the
 # build compiles a source of that class.
 SOURCE_CLASSES = {'no-code': True, 'not-built': False}
@@ -112,6 +122,8 @@ def tools():
 def fly(jobs):
     """Every target of make all, then gate 2's scenarios, each program
     writing its counts under PROFILES. A test that fails fails this."""
+    if guard_check():
+        sys.exit('line_coverage: the guard does not hold; nothing built')
     PROFILES.mkdir(parents=True, exist_ok=True)
     for old in PROFILES.glob('*.profraw'):
         old.unlink()
@@ -132,10 +144,132 @@ def fly(jobs):
             sys.exit(f'line_coverage: {" ".join(command)} failed with LINE_COVERAGE=1')
 
 
+TOY = {
+    # Two files of one base name, each with a static function of one name.
+    'src/one/part.c': 'static int helper(int x) { return x + 1; }\nint one(int x) { return helper(x); }\n',
+    'src/two/part.c': 'static int helper(int x) { return x + 2; }\nint two(int x) { return helper(x); }\n',
+    # One source built once for each mission, each build's names kept local.
+    'src/both.c': '#if LM\nstatic int mission(void) { return 1; }\n#else\nstatic int mission(void) { return 2; }\n'
+                  '#endif\nint shared(int x)\n{\n    return x + mission();\n}\n'
+                  'int ENTRY(void) { return shared(1); }\n',
+    # The test itself, which is not measured.
+    'main.c': 'int one(int), two(int), lm_entry(void), cm_entry(void);\n'
+              'int main(void) { return one(1) + two(1) + lm_entry() + cm_entry() == 10 ? 0 : 1; }\n',
+}
+TOY_OBJECTS = (('one.o', 'src/one/part.c', []), ('two.o', 'src/two/part.c', []),
+               ('both-lm.o', 'src/both.c', ['-DLM=1', '-DENTRY=lm_entry']),
+               ('both-cm.o', 'src/both.c', ['-DLM=0', '-DENTRY=cm_entry']), ('main.o', 'main.c', []))
+
+
+def guard_check():
+    """The measure's guard and the build that keeps it quiet, tried on a
+    small program that has both things the guard is for: two files of one
+    base name with a static function of one name, and one source built for
+    both missions and linked into one test. Built plainly by clang, the
+    program holds those names twice and the guard must refuse it. Built by
+    tests/coverage_cc.py it is one program for each mission, none holding
+    a name twice, and each function's count is its own. Returns the number
+    of things that are not so."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('toy_coverage_cc', READABLE / 'tests/coverage_cc.py')
+    cc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(cc)
+    scratch = BUILD / 'guard-check'
+    shutil.rmtree(scratch, ignore_errors=True)
+    for name, text in TOY.items():
+        (scratch / name).parent.mkdir(parents=True, exist_ok=True)
+        (scratch / name).write_text(text)
+    # (The compiler takes this directory for readable/src, and keeps what
+    # it leaves apart from the real build's.)
+    cc.SRC, cc.BUILD = str(scratch / 'src') + os.sep, scratch
+    cc.PROFILES, cc.MAPS_KEPT = scratch / 'profiles', scratch / 'maps'
+    cc.PROFILES.mkdir()
+    counting = ['-std=c99', '-O2', '-fprofile-instr-generate', '-fcoverage-mapping']
+    failures = []
+
+    def build(kind, compile_, link):
+        objects = []
+        for obj, source, defines in TOY_OBJECTS:
+            made = scratch / f'{kind}-{obj}'
+            compile_([*counting, *defines, '-c', str(scratch / source), '-o', f'{made}.all'])
+            entry = [d.split('=')[1] for d in defines if d.startswith('-DENTRY=')]
+            subprocess.run(['objcopy', *(f'--keep-global-symbol={e}' for e in entry), f'{made}.all', str(made)],
+                           check=True)
+            objects.append(str(made))
+        link(['-fprofile-instr-generate', *objects, '-o', str(scratch / kind)])
+        return scratch / kind
+
+    def held(program, raw):
+        """A program's lines of the toy sources and the names it holds twice."""
+        data = scratch / (program.name + '.profdata')
+        subprocess.run([PROFDATA, 'merge', '-o', str(data), str(raw)], check=True)
+        export = subprocess.run([COV, 'export', '-format=lcov', f'-instr-profile={data}', str(program)],
+                                capture_output=True, text=True, check=True).stdout
+        counted, file = {}, None
+        for record in export.split('\n'):
+            if record.startswith('SF:'):
+                file = record[3:][len(cc.SRC):] if record[3:].startswith(cc.SRC) else None
+            elif file and record.startswith('DA:'):
+                counted[(file, int(record[3:].split(',')[0]))] = int(record[3:].split(',')[1])
+        return counted, held_twice(raw)
+
+    # Plainly: the names are held twice, and the guard says so.
+    def plainly(arguments):
+        subprocess.run(['clang', *arguments], check=True)
+    plain = build('plain', plainly, plainly)
+    raw = scratch / 'plain.profraw'
+    subprocess.run([str(plain)], env={**os.environ, 'LLVM_PROFILE_FILE': str(raw)}, check=True)
+    _, twice_held = held(plain, raw)
+    for name in ('shared', 'part.c:helper'):
+        if name not in twice_held:
+            failures.append(f'built plainly, the program is not seen to hold {name} twice')
+    if not refused('plain', twice_held, {'shared', 'part.c:helper'}):
+        failures.append('the guard does not refuse a program that holds a measured name twice')
+
+    # By the measure's compiler: a program for each mission, none of them
+    # holding a name twice, and the line of shared() run once in each.
+    def by_wrapper(arguments):
+        if cc.main([str(a) for a in arguments]):
+            failures.append('tests/coverage_cc.py did not build the program')
+    built = build('measured', by_wrapper, by_wrapper)
+    environment = {key: value for key, value in os.environ.items() if key != 'LLVM_PROFILE_FILE'}
+    if not failures and subprocess.run([str(built)], env=environment).returncode:
+        failures.append('the program built by tests/coverage_cc.py does not run')
+    parts = sorted(scratch.glob('measured+*'))
+    if [part.name for part in parts if not part.name.endswith('.o')] != ['measured+cm', 'measured+lm']:
+        failures.append('tests/coverage_cc.py did not link a program for each mission')
+    for part in [part for part in parts if not part.name.endswith('.o')] if not failures else []:
+        raws = sorted(cc.PROFILES.glob(part.name + '.*.profraw'))
+        if len(raws) != 1:
+            failures.append(f'{part.name} left {len(raws)} count files')
+            continue
+        counted, twice_held = held(part, raws[0])
+        if twice_held:
+            failures.append(f'{part.name} holds two functions named {sorted(twice_held)[0]}')
+        want = {('one/part.c', 1): 1, ('one/part.c', 2): 1, ('two/part.c', 1): 1, ('two/part.c', 2): 1,
+                ('both.c', 2 if part.name.endswith('lm') else 4): 1,
+                **{('both.c', line): 1 for line in (7, 8, 9, 10)}}
+        if counted != want:
+            failures.append(f'{part.name} counts {sorted(counted.items())}, not each of its lines once')
+    sources, lines, _ = compiled([kept.read_text() for kept in sorted(cc.MAPS_KEPT.glob('*.lcov'))])
+    if sources != {'one/part.c', 'two/part.c', 'both.c'}:
+        failures.append(f'the compiles left the lines of {sorted(sources)}')
+    if not failures:
+        shutil.rmtree(scratch)
+    for failure in failures:
+        print(f'FAIL line coverage guard check: {failure}')
+    print(f"{'FAIL' if failures else 'ok  '} line coverage guard check: a program that holds two functions of one "
+          'name is refused when built plainly, and is two programs with a count for each function when built '
+          f'by tests/coverage_cc.py; {len(failures)} not so')
+    return len(failures)
+
+
 def programs():
     """The linked programs of the coverage build."""
     found = []
     for path in sorted(BUILD.rglob('*')):
+        if BUILD / 'guard-check' in path.parents:
+            continue
         if path.is_file() and not path.suffix and os.access(path, os.X_OK):
             with path.open('rb') as f:
                 if f.read(4) == b'\x7fELF':
@@ -159,13 +293,30 @@ def profile_ids(profile):
     return shown.split('Binary IDs:')[1].split()
 
 
+def twice(shown):
+    """The names listed more than once in what llvm-profdata shows of a
+    count file's functions."""
+    held = collections.Counter(re.findall(r'^  (\S+):$', shown, re.M))
+    return {name for name, times in held.items() if times > 1}
+
+
 def held_twice(profile):
     """The names a program holds more than one function under, from one of
     its count files, which lists every function it holds."""
-    shown = subprocess.run([PROFDATA, 'show', '--all-functions', str(profile)], capture_output=True, text=True,
-                           check=True).stdout
-    held = collections.Counter(re.findall(r'^  (\S+):$', shown, re.M))
-    return {name for name, times in held.items() if times > 1}
+    return twice(subprocess.run([PROFDATA, 'show', '--all-functions', str(profile)], capture_output=True, text=True,
+                                check=True).stdout)
+
+
+def refused(program, held, measured):
+    """Why a program's counts cannot be used: it holds two functions under
+    a name the measure counts (held: the names it holds twice, measured:
+    the names of every function of src/). Nothing if it holds none."""
+    both = sorted(held & measured)
+    if not both:
+        return ''
+    return (f'{program} holds two functions named {both[0]}'
+            + (f' (and of {len(both) - 1} more names)' if len(both) > 1 else '')
+            + '; their counts cannot be told apart (tests/coverage_cc.py)')
 
 
 def counts(program, profiles):
@@ -198,15 +349,18 @@ def counts(program, profiles):
     return lines, functions, set(where), held_twice(profiles[0])
 
 
-def compiled():
+def compiled(maps=None):
     """What the build compiled of src/, from what each compile left under
-    MAPS (tests/coverage_cc.py): the sources, every line with code,
-    {file: {line: 0}}, and the functions, {file: {(first line, name)}}."""
+    MAPS (tests/coverage_cc.py; maps: their texts): the sources, every
+    line with code, {file: {line: 0}}, and the functions, {file: {(first
+    line, name)}}."""
     sources, lines, functions = set(), {}, {}
     prefix = str(SRC) + os.sep
-    for kept in sorted(MAPS.glob('*.lcov')):
+    if maps is None:
+        maps = [kept.read_text() for kept in sorted(MAPS.glob('*.lcov'))]
+    for text in maps:
         file = None
-        for record in kept.read_text().split('\n'):
+        for record in text.split('\n'):
             if record.startswith('SOURCE:'):
                 sources.add(record[7:])
             elif record.startswith('SF:'):
@@ -237,11 +391,28 @@ def no_code_lines(file):
     return out
 
 
+def united(results, built_lines, built_functions):
+    """Every program's counts, united with what the build compiled: a line
+    is run if any program ran it, and a line the build compiled into no
+    program that ran is not run (results: each program's lines and
+    functions, as counts() gives them)."""
+    lines, functions = collections.defaultdict(dict), collections.defaultdict(set)
+    for program_lines, program_functions in results:
+        for file, counted in program_lines.items():
+            for line, count in counted.items():
+                lines[file][line] = max(lines[file].get(line, 0), count)
+        for file, named in program_functions.items():
+            functions[file] |= named
+    for file, counted in built_lines.items():
+        for line in counted:
+            lines[file].setdefault(line, 0)
+        functions[file] |= built_functions.get(file, set())
+    return lines, functions
+
+
 def measure():
-    """Every program's counts, united: a line is run if any program ran
-    it, and a line the build compiled into no program that ran is not run.
-    Also the programs that left no counts, and the sources of src/ that
-    the build compiled."""
+    """Every program's counts, united (united()). Also the programs that
+    left no counts, and the sources of src/ that the build compiled."""
     profiles = sorted(PROFILES.glob('*.profraw'))
     if not profiles:
         sys.exit(f'line_coverage: no counts under {PROFILES.relative_to(READABLE)} (run without --measure)')
@@ -252,35 +423,23 @@ def measure():
                 by_id[i].append(profile)
         found = programs()
         ran = [(p, by_id.get(i)) for p, i in zip(found, pool.map(build_id, found)) if i]
-        lines, functions = collections.defaultdict(dict), collections.defaultdict(set)
         counted_programs = [pr for pr in ran if pr[1]]
         results = list(pool.map(lambda pr: counts(*pr), counted_programs))
-        for program_lines, program_functions, _, _ in results:
-            for file, counted in program_lines.items():
-                for line, count in counted.items():
-                    lines[file][line] = max(lines[file].get(line, 0), count)
-            for file, named in program_functions.items():
-                functions[file] |= named
     # A program that holds two functions under one name has their counts
     # added together where the two are alike in shape, and shows the lines
     # of one of them only (both missions' builds of one source in one test;
     # two files' static functions of one name). tests/coverage_cc.py builds
     # every program so that none does; one that does is refused here.
     measured = set().union(*(names for _, _, names, _ in results))
-    for (program, _), (_, _, _, twice) in zip(counted_programs, results):
-        both = sorted(twice & measured)
-        if both:
-            sys.exit(f'line_coverage: {program.name} holds two functions named {both[0]}'
-                     + (f' (and of {len(both) - 1} more names)' if len(both) > 1 else '')
-                     + '; their counts cannot be told apart (tests/coverage_cc.py)')
+    for (program, _), (_, _, _, held) in zip(counted_programs, results):
+        why = refused(program.name, held, measured)
+        if why:
+            sys.exit(f'line_coverage: {why}')
     sources, built_lines, built_functions = compiled()
     if not sources:
         sys.exit(f'line_coverage: no compile left its lines under {MAPS.relative_to(READABLE)} '
                  '(run without --measure)')
-    for file, counted in built_lines.items():
-        for line in counted:
-            lines[file].setdefault(line, 0)
-        functions[file] |= built_functions.get(file, set())
+    lines, functions = united([result[:2] for result in results], built_lines, built_functions)
     for file in list(lines):
         for line in no_code_lines(file) & set(lines[file]):
             del lines[file][line]
@@ -289,14 +448,15 @@ def measure():
     return lines, functions, [p.name for p, profiles in ran if not profiles], sources
 
 
-def stretches(lines, functions):
+def stretches(lines, functions, text_of=lambda file: (SRC / file).read_text()):
     """The unrun lines, grouped: [(file, function, first, last, unrun
     lines, digest, text)]. A stretch is the unrun lines of one function
     with no run line between them; its text is the source from its first
-    line to its last."""
+    line to its last. (A file may hold two functions of one name, one for
+    each mission: a line is of the function that starts last before it.)"""
     out = []
     for file in sorted(lines):
-        source = (SRC / file).read_text().split('\n')
+        source = text_of(file).split('\n')
         starts = sorted(functions[file])
 
         def function(line):
@@ -416,16 +576,66 @@ def source_fits(name, why, built):
     return '' if built or why else 'is [not-built] and does not say why'
 
 
-def without_lines(lines, compiled_sources, named):
-    """The .c files of src/ with no line counted, {file: reason}: the
-    ledger's reason for each it names; for one it does not, [no-code] if
-    the build compiles it, and none if not."""
-    out = {}
-    for path in sorted(SRC.rglob('*.c')):
-        file = str(path.relative_to(SRC))
-        if file not in lines:
-            out[file] = named.get(file) or ('[no-code]' if file in compiled_sources else NO_REASON)
+def includes_of(file, text=None):
+    """The files of src/ that a file of src/ includes by name: in quotes,
+    or by a macro the file defines as a name in quotes (each such
+    definition: a source for both missions defines one for each)."""
+    text = (SRC / file).read_text() if text is None else text
+    names = re.findall(r'^[ \t]*#[ \t]*include[ \t]*"([^"]+)"', text, re.M)
+    for macro in re.findall(r'^[ \t]*#[ \t]*include[ \t]+([A-Za-z_]\w*)[ \t]*$', text, re.M):
+        names += re.findall(rf'^[ \t]*#[ \t]*define[ \t]+{macro}[ \t]+"([^"]+)"', text, re.M)
+    out = set()
+    for name in names:
+        path = Path(os.path.normpath(SRC / file / '..' / name))
+        if path.is_file() and path.is_relative_to(SRC):
+            out.add(str(path.relative_to(SRC)))
     return out
+
+
+def read_by(compiled_sources, includes=includes_of):
+    """The files of src/ the build reads: the sources it compiles and
+    every file one of them includes, directly or through another."""
+    read, left = set(), list(compiled_sources)
+    while left:
+        file = left.pop()
+        if file not in read:
+            read.add(file)
+            left += includes(file)
+    return read
+
+
+def files_of_src():
+    return sorted(str(path.relative_to(SRC)) for path in SRC.rglob('*') if path.suffix in ('.c', '.h', '.inc'))
+
+
+def without_lines(lines, read, named, files=None):
+    """The files of src/ that the measure does not count, {file: reason}:
+    a .c file with no line counted, and a header (or .inc) that no source
+    the build compiles reads. (A header the build reads is tied through
+    the sources that read it: a function added to it would be counted.)
+    The reason is the ledger's for each file it names; for one it does
+    not, [no-code] if the build reads it, and none if not. (read: the
+    files the build reads, read_by(); files: those of src/.)"""
+    out = {}
+    for file in files_of_src() if files is None else files:
+        if file not in lines and (file.endswith('.c') or file not in read):
+            out[file] = named.get(file) or ('[no-code]' if file in read else NO_REASON)
+    return out
+
+
+def interpretive(lines):
+    """How much interpretive code src/ holds, which this measure does not
+    count: the programs (each a table of words, a struct
+    interpretive_code), the files they are in, and how many of those
+    files have lines of C that are counted."""
+    programs, files = 0, set()
+    for file in files_of_src():
+        held = len(re.findall(r'^(?:static )?const struct interpretive_code \w+ = \{',
+                              (SRC / file).read_text(), re.M))
+        if held:
+            programs += held
+            files.add(file)
+    return programs, len(files), len(files & set(lines))
 
 
 def by_reason(found, reasons):
@@ -440,20 +650,28 @@ def by_reason(found, reasons):
 
 
 def write_ledger(path, version, lines, found, never, classes, reasons, sources):
-    """(sources: the .c files of src/ with no line counted, {file: reason}.)"""
+    """(sources: the files of src/ the measure does not count, {file: reason}.)"""
     total = sum(len(counted) for counted in lines.values())
     unrun = sum(s[4] for s in found)
     sources_with = sum(1 for file in lines if file.endswith('.c'))
+    sources_without = sum(1 for file in sources if file.endswith('.c'))
+    programs, program_files, with_lines = interpretive(lines)
     out = ['# The lines of readable/src that no test and no scenario runs, and why.',
            '# tests/line_coverage.py --write writes this file and keeps each reason;',
            '# `make line-coverage` measures again and holds the tree to it.',
            '#',
            f'# Measured with {version}.',
-           f'# {len(lines)} files hold lines to run ({sources_with} of the {sources_with + len(sources)} .c files '
-           'under src/, and',
-           f'# {len(lines) - sources_with} headers); {total} such lines; {unrun} of them unrun',
+           f'# {len(lines)} files hold lines of C to run ({sources_with} of the {sources_with + sources_without} '
+           '.c files under src/,',
+           f'# and {len(lines) - sources_with} headers); {total} such lines; {unrun} of them unrun',
            f'# ({100 * unrun / total:.2f}%), in {len(found)} stretches of {len({s[0] for s in found})} files.',
            '# Built and never run: ' + (', '.join(never) or 'no program') + '.',
+           '#',
+           '# These are lines of C only. Interpretive code is tables of words, which',
+           f'# hold no line to run: {programs} interpretive programs in {program_files} files of src/',
+           f'# ({with_lines} of them files with C lines that are counted, the rest among the',
+           '# files not counted, below). Which of their words the interpreter ran,',
+           '# this measure does not see.',
            '#',
            '# By reason:',
            *[f'#   {line}' for line in by_reason(found, reasons)],
@@ -490,7 +708,7 @@ def judge(found, classes, reasons, sources=None, named=None, compiled_sources=()
     define, or one that does not fit the stretch: fits()); and what is
     wrong with the sources it names as having no line counted, a line each
     (sources: those the measure found, without_lines(); named: the
-    ledger's; compiled_sources: those the build compiled)."""
+    ledger's; compiled_sources: the files the build reads, read_by())."""
     measured = dict(zip(key_of(found), found))
     new = [s for key, s in measured.items() if key not in reasons]
     gone = [key for key in reasons if key not in measured]
@@ -514,10 +732,13 @@ def judge(found, classes, reasons, sources=None, named=None, compiled_sources=()
     for file in sorted(set(sources) | set(named)):
         if file not in named:
             files.append(f'src/{file} has no line counted and the ledger does not name it'
-                         + ('' if file in compiled_sources else ' (no target compiles it)'))
+                         + ('' if file in compiled_sources else
+                            ' (no target compiles it)' if file.endswith('.c') else
+                            ' (no source the build compiles reads it)'))
         elif file not in sources:
-            files.append(f'src/{file} is named as having no line counted and '
-                         + ('has lines now' if (SRC / file).is_file() else 'is no file'))
+            files.append(f'src/{file} is named as not counted and '
+                         + ('is no file' if not (SRC / file).is_file() else
+                            'has lines now' if file.endswith('.c') else 'the build reads it now'))
         else:
             name, why = class_of(named[file])
             what = source_fits(name, why, file in compiled_sources)
@@ -623,10 +844,54 @@ def self_check():
     expect('a source with no class', found, swap('tables.c: [no-code]', 'tables.c: tables'), (0, 0, 0, 1))
     expect('a source under a stretch\'s class', found, swap('tables.c: [no-code]', 'tables.c: [never] tables'),
            (0, 0, 0, 1))
+    expect('a header that no compiled source reads, and the ledger does not name', found, same, (0, 0, 0, 1),
+           sources={**named, 't/spare.h': ''})
+
+    # The parts of the measure itself, each on made-up data.
+    def part(name, got, want):
+        tried.append(name)
+        if got != want:
+            failures.append(f'{name}: {got!r}, expected {want!r}')
+    shown = 'Counters:\n  fetch:\n    Hash: 0x1\n  store:\n    Hash: 0x2\n  fetch:\n    Hash: 0x1\n  main:\n'
+    part('a count file that lists a name twice', twice(shown), {'fetch'})
+    part('a count file that lists each name once', twice(shown.replace('  store', '  other', 1).replace(
+        '  fetch:\n    Hash: 0x1\n  main', '  main')), set())
+    part('a program that holds a measured name twice', bool(refused('p', {'fetch'}, {'fetch', 'store'})), True)
+    part('a program that holds only a name of its own twice', refused('p', {'main'}, {'fetch', 'store'}), '')
+    part('a program that holds no name twice', refused('p', set(), {'fetch', 'store'}), '')
+    src = str(SRC) + os.sep
+    maps = [f'SOURCE:a/a.c\nSF:{src}a/a.c\nFN:3,readable/src/a/a.c:helper\nFN:9,first\nDA:4,0\nDA:10,0\n'
+            f'SF:/elsewhere/{"x" * len(src)}/other.h\nFN:1,theirs\nDA:1,0\nSF:{src}a/a.h\nFN:2,inlined\nDA:2,0\n',
+            'SOURCE:t/tables.c\n']
+    built_lines = {'a/a.c': {4: 0, 10: 0}, 'a/a.h': {2: 0}}
+    built_functions = {'a/a.c': {(3, 'helper'), (9, 'first')}, 'a/a.h': {(2, 'inlined')}}
+    part('what the compiles left', compiled(maps), ({'a/a.c', 't/tables.c'}, built_lines, built_functions))
+    all_lines, all_functions = united([({'a/a.c': {10: 0, 11: 2}}, {'a/a.c': {(9, 'first')}}),
+                                       ({'a/a.c': {10: 5, 11: 0}}, {})], built_lines, built_functions)
+    part('counts united: the most any program counted, and 0 for a compiled line in no program',
+         (dict(all_lines), dict(all_functions)),
+         ({'a/a.c': {10: 5, 11: 2, 4: 0}, 'a/a.h': {2: 0}}, built_functions))
+    # One file with a function of one name for each mission, and one between.
+    pair = stretches({'m/m.c': {3: 0, 12: 0, 22: 0}}, {'m/m.c': {(1, 'same'), (10, 'other'), (20, 'same')}},
+                     lambda file: '\n'.join(f'line {n};' for n in range(1, 30)))
+    part('two functions of one name in one file', [(s[1], s[2]) for s in pair],
+         [('same', 3), ('other', 12), ('same', 22)])
+    part('what a source includes: in quotes, and through a macro of its own for each mission',
+         includes_of('agc/agc.c', '#include <stdio.h>\n#include "agc.h"\n#if LUMINARY099\n'
+                     '#define NAMES "lm_names.inc"\n#else\n#define NAMES "cm_names.inc"\n#endif\n'
+                     '#include NAMES\n#include "no_such_file.h"\n'),
+         {'agc/agc.h', 'agc/lm_names.inc', 'agc/cm_names.inc'})
+    includes = {'a/a.c': {'a/a.h'}, 'a/a.h': {'agc/names.h'}, 'agc/names.h': set(), 't/tables.c': set()}
+    read = read_by({'a/a.c', 't/tables.c'}, lambda file: includes[file])
+    part('the files the build reads', read, {'a/a.c', 'a/a.h', 'agc/names.h', 't/tables.c'})
+    part('the files that are not counted',
+         without_lines({'a/a.c': {10: 0}, 'a/a.h': {2: 1}}, read, {'t/spare.c': '[not-built] Why.'},
+                       ['a/a.c', 'a/a.h', 'a/spare.h', 'agc/names.h', 't/new.c', 't/spare.c', 't/tables.c']),
+         {'a/spare.h': NO_REASON, 't/new.c': NO_REASON, 't/spare.c': '[not-built] Why.', 't/tables.c': '[no-code]'})
     for failure in failures:
         print(f'FAIL line coverage self-check: {failure}')
-    print(f"{'FAIL' if failures else 'ok  '} line coverage self-check: {len(tried)} made-up measures and ledgers, "
-          f'{len(failures)} judged wrongly')
+    print(f"{'FAIL' if failures else 'ok  '} line coverage self-check: {len(tried)} made-up measures, ledgers and "
+          f'parts of a measure, {len(failures)} judged wrongly')
     return 1 if failures else 0
 
 
@@ -641,7 +906,7 @@ def listing(lines, file):
         print(f'{mark} {number:5d} {text}')
 
 
-OPTIONS = ('--measure', '--write', '--list', '--self-check', '--fly', '--jobs')
+OPTIONS = ('--measure', '--write', '--list', '--self-check', '--fly', '--jobs', '--guard-check')
 
 
 def main():
@@ -654,6 +919,8 @@ def main():
     if '--self-check' in args:
         return self_check()
     version = tools()
+    if '--guard-check' in args:
+        return 1 if guard_check() else 0
     jobs = int(args[args.index('--jobs') + 1]) if '--jobs' in args else JOBS
     if not {'--measure', '--write', '--list'} & set(args) or '--fly' in args:
         fly(jobs)
@@ -663,11 +930,12 @@ def main():
         return 0
     found = stretches(lines, functions)
     classes, reasons, named = read_ledger()
+    compiled_sources = read_by(compiled_sources)
     sources = without_lines(lines, compiled_sources, named)
     total = sum(len(counted) for counted in lines.values())
     unrun = sum(s[4] for s in found)
     print(f'line coverage: {len(lines)} files, {total} lines, {unrun} unrun ({100 * unrun / total:.2f}%) in '
-          f'{len(found)} stretches of {len({s[0] for s in found})} files; {len(sources)} sources with no line '
+          f'{len(found)} stretches of {len({s[0] for s in found})} files; {len(sources)} files of src/ not '
           f'counted; built and never run: {", ".join(never) or "no program"}')
     if '--write' in args:
         write_ledger(LEDGER, version, lines, found, never, classes, reasons, sources)
@@ -687,7 +955,7 @@ def main():
     bad = len(new) + len(gone) + len(unexplained) + len(files)
     print(f"{'FAIL' if bad else 'ok  '} line coverage against {LEDGER.relative_to(READABLE)}: {len(new)} unrun "
           f'stretches not in it, {len(gone)} of its stretches not unrun now, {len(unexplained)} with a reason '
-          f'that does not stand, {len(files)} sources not accounted for')
+          f'that does not stand, {len(files)} files not accounted for')
     if bad:
         # What --write would make of this measure, for a run whose tree
         # is not at hand (CI keeps it).

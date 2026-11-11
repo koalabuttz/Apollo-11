@@ -1539,8 +1539,10 @@ scenarios. Each program that ran left its counts, and a line of `src/` is
 run if any of them ran it. What is counted is every line the build
 compiled, in a program that ran or not: each compile leaves the lines of
 its object, and a line no program holds counts as unrun. Of the 60,127
-lines with code in them, 1,504 (2.5%) are run by none, in 631 stretches
-of 214 files.
+lines of C with code in them, 1,504 (2.5%) are run by none, in 631
+stretches of 214 files. That is a figure for the C alone: interpretive
+code is tables of words, and none of its words is among those lines
+(below).
 
 clang keeps a function's counts under its name, and a program that holds
 two functions of one name has their counts added together and the lines
@@ -1549,17 +1551,21 @@ So the measure's build has its own compiler (`tests/coverage_cc.py`):
 only `src/` is counted, a static function is named by its file's path,
 and a test of both missions is linked once for each mission, with the
 other's counters cut out, and run as both. The measure refuses a program
-that still holds a name twice.
+that still holds a name twice. A run begins by trying that on a small
+program made for it, which has both things: built plainly it must be
+refused, and built by the measure's compiler it must be a program for
+each mission with every function's count its own (`--guard-check`). A
+line that both missions share is run if either mission's build ran it.
 
 Every one of those stretches stands in `tests/line_coverage.txt`, with
 its text and the reason it does not run, and the check fails on an unrun
 stretch that is not there, on one that is there and now runs, and on one
 whose reason does not stand. A stretch is known by its file, its function
 and its text, so an edit elsewhere in a file does not move it. `make all`
-tries the check itself on made-up measures and ledgers
-(`line-coverage-check`), with no build. Each reason is one of five kinds.
-The ledger says what each means, and the check holds each stretch to its
-kind's rule:
+tries the check itself on made-up measures and ledgers, and each part of
+the measure on made-up data (`line-coverage-check`), with no build. Each
+reason is one of five kinds. The ledger says what each means, and the
+check holds each stretch to its kind's rule:
 
 - **refusal** (767 lines): how a binding refuses a state its routines do
   not model. No case's state and no scenario makes those files refuse.
@@ -1575,23 +1581,36 @@ kind's rule:
   program stores there or on what the assembler makes, and says what was
   looked at. The comment at the line must say never, and the reason why.
   An example: an order that tests MODE for -0. Interpretive code loads
-  before it tests, and no load leaves -0; but MODE is an erasable word
-  that basic code uses too (the LM's R29 keeps the negative of a sine
-  there, in a job of its own), so no line of the interpreter rules it out.
+  before it tests, and no load leaves -0; but MODE is a word of the
+  job's core set that basic code uses too (the LM's R29 keeps the
+  negative of a sine there, which can be -0, and a core set is not
+  cleared for its next job), so no line of the interpreter rules it out
+  and no check proves it of every entry.
 - **open** (417 lines, 158 stretches): not looked at yet. Each is owed a
   case that runs it or the reason none can, and the count is in the
   ledger's head.
 
-The measured files are tied to `src/` too. Of its 474 `.c` files, 406
-hold lines that are counted. The other 68 are named in the ledger, each
-with its kind: **no-code**, a source the build compiles that holds no
-line to run. The check fails on a source that is not counted and not
-named, on one named that the build does not compile, and on one named
-that has lines now. These 68 are the ten tables of `src/assembly` and 58
-sources of words: interpretive programs and their constants. That is a
-limit of the measure: an interpretive program is data to it, and it does
-not see which of its words the interpreter ran. What holds those programs
-is that the cases and scenarios compare what they compute.
+The files are tied to `src/` too. Of its 474 `.c` files, 406 hold lines
+that are counted. The other 68 are named in the ledger, each with its
+kind: **no-code**, a source the build compiles that holds no line of C
+to run. A header or `.inc` file is counted where a source that includes
+it is compiled, so each must be read by a source the build compiles,
+directly or through another header. The check fails on a file that is
+not counted and not named, on one named that the build does not compile,
+and on one named that has lines now.
+
+**What this measure leaves out: all interpretive code.** An interpretive
+program is a table of words to the compiler, with no line to run, so the
+measure cannot see which of its words the interpreter ran. `src/` holds
+811 such programs (each a `struct interpretive_code`) in 199 files. 55
+of those files are among the 68 with no line of C at all; the other 144
+have C lines of their own, which are counted, beside tables that are
+not. So "2.5% unrun" says nothing of the interpretive words, in any
+file. What holds those programs today is that each table is compared
+with the rope word for word and that the cases and scenarios compare
+what the programs compute. Which words run, and which way each branch
+goes, is a measure of its own that the validation plan now has as item
+3b.
 
 What else the measure cannot see: a line is run if it ran once, in any
 state, and a line with two branches on it is run if either was. A macro's

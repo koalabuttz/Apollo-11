@@ -3,10 +3,16 @@
 # `make line-coverage` measures again and holds the tree to it.
 #
 # Measured with Ubuntu clang version 18.1.3 (1ubuntu1).
-# 433 files hold lines to run (406 of the 474 .c files under src/, and
-# 27 headers); 60127 such lines; 1504 of them unrun
+# 433 files hold lines of C to run (406 of the 474 .c files under src/,
+# and 27 headers); 60127 such lines; 1504 of them unrun
 # (2.50%), in 631 stretches of 214 files.
 # Built and never run: x86-flight-cm-core, x86-flight-lm-core, x86-link-check.
+#
+# These are lines of C only. Interpretive code is tables of words, which
+# hold no line to run: 811 interpretive programs in 199 files of src/
+# (144 of them files with C lines that are counted, the rest among the
+# files not counted, below). Which of their words the interpreter ran,
+# this measure does not see.
 #
 # By reason:
 #   impossible: 139 lines in 65 stretches
@@ -19,22 +25,24 @@
 
 [impossible] No state brings the routine to the line: the routine's own
     lines, or its file's, rule the outcome out (what they leave in the word
-    the branch tests), and the reason says how. The line is what the AGC
-    would do there. An argument, not a run.
+    the branch tests), and the reason says how. The line follows the
+    listing's instructions for the outcome. An argument, not a run: nothing
+    compares the line.
 [never] No program brings the state to the line, though the routine's own
     lines do not rule it out: the reason rests on what the rest of the
     program stores there or on what the assembler makes, and says what, and
-    what was looked at. The comment at the line says never. The line is what
-    the AGC would do if it came; where the reason says there is no faithful
-    run, nothing compares the line.
-[no-code] Of a source: it holds no line to run, only tables, names and words.
-    Interpretive code is such words: the interpreter's lines run them, and
-    this measure does not see which of them ran (the cases and scenarios that
-    compare those programs' results hold them). The build compiles the source
+    what was looked at. The comment at the line says never. The line follows
+    the listing's instructions for the state; where the reason says there is
+    no faithful run, nothing compares the line.
+[no-code] Of a source: it holds no line of C to run, only tables, names and
+    words. Most are interpretive programs, which are tables of words: the
+    interpreter's lines run them, and this measure does not see which of
+    their words ran (nor in the many sources that hold such tables beside C
+    lines of their own; the head counts both). The build compiles the source
     (the check holds it to that), and a function added to it would be counted
     from then on.
-[not-built] Of a source: no target of the build compiles it, and the reason
-    says why it stands in src/.
+[not-built] Of a file: no target of the build compiles it, or no source the
+    build compiles reads it, and the reason says why it stands in src/.
 [not-modelled] The stretch is, or ends in, not_modelled(): the source marks
     the outcome as one that cannot come there (a CCS outcome its word never
     has, a value outside a switch's table). A routine that met it would stop
@@ -48,7 +56,7 @@
     out of scope. It runs only if a routine of the file is given such a
     state. No case's state and no scenario does.
 
-Sources of src/ with no line counted:
+Files of src/ that are not counted:
   - src/ascent/vertical_rise.c: [no-code]
   - src/assembly/assembly_and_operation_information.c: [no-code]
   - src/assembly/contract_and_approvals.c: [no-code]
@@ -2438,20 +2446,28 @@ src/interpreter/dispatcher.c
     | tc_at(ADDRESS_OF(LVBUF));
     | continue_at(LVBUF);
     | return;
-    why: [never] MODE is not -0 when an order tests it. The interpreter's own
-         orders leave +0, +1 or -1 there, as the listing's comments say of
-         each store (double precision, triple, vector). Basic code stores
-         there too, and both listings were searched for every instruction
-         that names MODE or USERPRIO, the same word: an EBANK (the IMU
-         compensation), a job's priority (the display interface), +0, a count
-         up from it, or -1 (the landing guidance, the Servicer, P11), what a
-         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
-         negative of a sine there, which can be -0, in a job of basic code
-         alone that ends with it. That an order which tests MODE comes after
-         a load that set it is how interpretive code is written, not
-         something a run here shows: the side by side test keeps MODE to +0,
-         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
-         there is no faithful run to compare a MODE of -0 with.
+    why: [never] MODE is not -0 when an order tests it (CCS MODE, INDEX
+         MODE). The interpreter's own orders leave +0, +1 or -1 there, as the
+         listing's comments say of each store (double precision, triple,
+         vector). Basic code stores there too. Both listings were searched
+         for every instruction that names MODE, or USERPRIO or SIGNAOS, which
+         are the same word: an EBANK (the IMU compensation), a job's priority
+         (the display interface), +0, a count up from it, or -1 (the landing
+         guidance, the Servicer, P11), +0 or +1 (1/ACCS, as SIGNAOS), what a
+         DAS leaves in A (R29.LOS), none of them -0; and the LM's R29DODES
+         keeps the negative of a sine there, which can be -0. R29DODES is a
+         job of basic code that enters the interpreter only at UNIT, which
+         does not test MODE. But MODE is a word of the job's core set: the
+         Executive swaps it out and in with the job (DXCH MPAC +6), and
+         CORFOUND gives a new job a core set without clearing it, so a -0
+         left there waits for the set's next job. What the reason rests on is
+         how interpretive code is written, which no line here and no check
+         proves of every entry: an order that tests MODE comes after a load
+         that set it, and basic code that goes into the interpreter where a
+         test comes first sets MODE itself (the landing guidance, the
+         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
+         faithful core does (tests/interpreter_fuzz.c), so there is no
+         faithful run to compare a MODE of -0 with.
   indjump, line 477 (1 unrun) 8d701d3a
     | case 015: ccall(); return;  /* computed call (never: no program has the order) */
     why: [never] CCALL: no program has the order (neither mission's listing
@@ -2600,56 +2616,80 @@ src/interpreter/load_store.c
     | * EXTEND, as CA MPAC +4.) */
     | ca(ADDRESS_OF(MPAC) + 4u);
     | break;
-    why: [never] MODE is not -0 when an order tests it. The interpreter's own
-         orders leave +0, +1 or -1 there, as the listing's comments say of
-         each store (double precision, triple, vector). Basic code stores
-         there too, and both listings were searched for every instruction
-         that names MODE or USERPRIO, the same word: an EBANK (the IMU
-         compensation), a job's priority (the display interface), +0, a count
-         up from it, or -1 (the landing guidance, the Servicer, P11), what a
-         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
-         negative of a sine there, which can be -0, in a job of basic code
-         alone that ends with it. That an order which tests MODE comes after
-         a load that set it is how interpretive code is written, not
-         something a run here shows: the side by side test keeps MODE to +0,
-         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
-         there is no faithful run to compare a MODE of -0 with.
+    why: [never] MODE is not -0 when an order tests it (CCS MODE, INDEX
+         MODE). The interpreter's own orders leave +0, +1 or -1 there, as the
+         listing's comments say of each store (double precision, triple,
+         vector). Basic code stores there too. Both listings were searched
+         for every instruction that names MODE, or USERPRIO or SIGNAOS, which
+         are the same word: an EBANK (the IMU compensation), a job's priority
+         (the display interface), +0, a count up from it, or -1 (the landing
+         guidance, the Servicer, P11), +0 or +1 (1/ACCS, as SIGNAOS), what a
+         DAS leaves in A (R29.LOS), none of them -0; and the LM's R29DODES
+         keeps the negative of a sine there, which can be -0. R29DODES is a
+         job of basic code that enters the interpreter only at UNIT, which
+         does not test MODE. But MODE is a word of the job's core set: the
+         Executive swaps it out and in with the job (DXCH MPAC +6), and
+         CORFOUND gives a new job a core set without clearing it, so a -0
+         left there waits for the set's next job. What the reason rests on is
+         how interpretive code is written, which no line here and no check
+         proves of every entry: an order that tests MODE comes after a load
+         that set it, and basic code that goes into the interpreter where a
+         test comes first sets MODE itself (the landing guidance, the
+         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
+         faithful core does (tests/interpreter_fuzz.c), so there is no
+         faithful run to compare a MODE of -0 with.
   pddl, line 287 (1 unrun) c2b25cf7
     | case IS_MINUS_ZERO: break;                  /* (never: MODE -0) */
-    why: [never] MODE is not -0 when an order tests it. The interpreter's own
-         orders leave +0, +1 or -1 there, as the listing's comments say of
-         each store (double precision, triple, vector). Basic code stores
-         there too, and both listings were searched for every instruction
-         that names MODE or USERPRIO, the same word: an EBANK (the IMU
-         compensation), a job's priority (the display interface), +0, a count
-         up from it, or -1 (the landing guidance, the Servicer, P11), what a
-         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
-         negative of a sine there, which can be -0, in a job of basic code
-         alone that ends with it. That an order which tests MODE comes after
-         a load that set it is how interpretive code is written, not
-         something a run here shows: the side by side test keeps MODE to +0,
-         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
-         there is no faithful run to compare a MODE of -0 with.
+    why: [never] MODE is not -0 when an order tests it (CCS MODE, INDEX
+         MODE). The interpreter's own orders leave +0, +1 or -1 there, as the
+         listing's comments say of each store (double precision, triple,
+         vector). Basic code stores there too. Both listings were searched
+         for every instruction that names MODE, or USERPRIO or SIGNAOS, which
+         are the same word: an EBANK (the IMU compensation), a job's priority
+         (the display interface), +0, a count up from it, or -1 (the landing
+         guidance, the Servicer, P11), +0 or +1 (1/ACCS, as SIGNAOS), what a
+         DAS leaves in A (R29.LOS), none of them -0; and the LM's R29DODES
+         keeps the negative of a sine there, which can be -0. R29DODES is a
+         job of basic code that enters the interpreter only at UNIT, which
+         does not test MODE. But MODE is a word of the job's core set: the
+         Executive swaps it out and in with the job (DXCH MPAC +6), and
+         CORFOUND gives a new job a core set without clearing it, so a -0
+         left there waits for the set's next job. What the reason rests on is
+         how interpretive code is written, which no line here and no check
+         proves of every entry: an order that tests MODE comes after a load
+         that set it, and basic code that goes into the interpreter where a
+         test comes first sets MODE itself (the landing guidance, the
+         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
+         faithful core does (tests/interpreter_fuzz.c), so there is no
+         faithful run to compare a MODE of -0 with.
   pdvl, lines 347-351 (5 unrun) c29b5b10
     | case IS_MINUS_ZERO: /* (never: MODE -0. VPDVL's DCA would run as CA.) */
     | ca(indexed(3u, ADDRWD));
     | dxch(ADDRESS_OF(MPAC) + 3u);
     | vpdvl_plus4();
     | return;
-    why: [never] MODE is not -0 when an order tests it. The interpreter's own
-         orders leave +0, +1 or -1 there, as the listing's comments say of
-         each store (double precision, triple, vector). Basic code stores
-         there too, and both listings were searched for every instruction
-         that names MODE or USERPRIO, the same word: an EBANK (the IMU
-         compensation), a job's priority (the display interface), +0, a count
-         up from it, or -1 (the landing guidance, the Servicer, P11), what a
-         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
-         negative of a sine there, which can be -0, in a job of basic code
-         alone that ends with it. That an order which tests MODE comes after
-         a load that set it is how interpretive code is written, not
-         something a run here shows: the side by side test keeps MODE to +0,
-         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
-         there is no faithful run to compare a MODE of -0 with.
+    why: [never] MODE is not -0 when an order tests it (CCS MODE, INDEX
+         MODE). The interpreter's own orders leave +0, +1 or -1 there, as the
+         listing's comments say of each store (double precision, triple,
+         vector). Basic code stores there too. Both listings were searched
+         for every instruction that names MODE, or USERPRIO or SIGNAOS, which
+         are the same word: an EBANK (the IMU compensation), a job's priority
+         (the display interface), +0, a count up from it, or -1 (the landing
+         guidance, the Servicer, P11), +0 or +1 (1/ACCS, as SIGNAOS), what a
+         DAS leaves in A (R29.LOS), none of them -0; and the LM's R29DODES
+         keeps the negative of a sine there, which can be -0. R29DODES is a
+         job of basic code that enters the interpreter only at UNIT, which
+         does not test MODE. But MODE is a word of the job's core set: the
+         Executive swaps it out and in with the job (DXCH MPAC +6), and
+         CORFOUND gives a new job a core set without clearing it, so a -0
+         left there waits for the set's next job. What the reason rests on is
+         how interpretive code is written, which no line here and no check
+         proves of every entry: an order that tests MODE comes after a load
+         that set it, and basic code that goes into the interpreter where a
+         test comes first sets MODE itself (the landing guidance, the
+         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
+         faithful core does (tests/interpreter_fuzz.c), so there is no
+         faithful run to compare a MODE of -0 with.
 
 src/interpreter/sequence.c
   ccall, lines 31-40 (10 unrun) 579bed02
@@ -2742,20 +2782,28 @@ src/interpreter/shifts.c
          count leaves, one lower each time.
   right, line 469 (1 unrun) bec88a41
     | case IS_MINUS_ZERO: break;                    /* (never; would enter VRIGHT2 with A +0) */
-    why: [never] MODE is not -0 when an order tests it. The interpreter's own
-         orders leave +0, +1 or -1 there, as the listing's comments say of
-         each store (double precision, triple, vector). Basic code stores
-         there too, and both listings were searched for every instruction
-         that names MODE or USERPRIO, the same word: an EBANK (the IMU
-         compensation), a job's priority (the display interface), +0, a count
-         up from it, or -1 (the landing guidance, the Servicer, P11), what a
-         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
-         negative of a sine there, which can be -0, in a job of basic code
-         alone that ends with it. That an order which tests MODE comes after
-         a load that set it is how interpretive code is written, not
-         something a run here shows: the side by side test keeps MODE to +0,
-         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
-         there is no faithful run to compare a MODE of -0 with.
+    why: [never] MODE is not -0 when an order tests it (CCS MODE, INDEX
+         MODE). The interpreter's own orders leave +0, +1 or -1 there, as the
+         listing's comments say of each store (double precision, triple,
+         vector). Basic code stores there too. Both listings were searched
+         for every instruction that names MODE, or USERPRIO or SIGNAOS, which
+         are the same word: an EBANK (the IMU compensation), a job's priority
+         (the display interface), +0, a count up from it, or -1 (the landing
+         guidance, the Servicer, P11), +0 or +1 (1/ACCS, as SIGNAOS), what a
+         DAS leaves in A (R29.LOS), none of them -0; and the LM's R29DODES
+         keeps the negative of a sine there, which can be -0. R29DODES is a
+         job of basic code that enters the interpreter only at UNIT, which
+         does not test MODE. But MODE is a word of the job's core set: the
+         Executive swaps it out and in with the job (DXCH MPAC +6), and
+         CORFOUND gives a new job a core set without clearing it, so a -0
+         left there waits for the set's next job. What the reason rests on is
+         how interpretive code is written, which no line here and no check
+         proves of every entry: an order that tests MODE comes after a load
+         that set it, and basic code that goes into the interpreter where a
+         test comes first sets MODE itself (the landing guidance, the
+         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
+         faithful core does (tests/interpreter_fuzz.c), so there is no
+         faithful run to compare a MODE of -0 with.
   vright2, lines 514-518 (5 unrun) 46cc12ac
     | case IS_PLUS_ZERO: continue;
     | case NEGATIVE:
@@ -2809,20 +2857,28 @@ src/interpreter/trig.c
 src/interpreter/unit_sqrt.c
   abvalabs, line 256 (1 unrun) cfd15e2d
     | case IS_MINUS_ZERO: abval_plus1(); return; /* (never) */
-    why: [never] MODE is not -0 when an order tests it. The interpreter's own
-         orders leave +0, +1 or -1 there, as the listing's comments say of
-         each store (double precision, triple, vector). Basic code stores
-         there too, and both listings were searched for every instruction
-         that names MODE or USERPRIO, the same word: an EBANK (the IMU
-         compensation), a job's priority (the display interface), +0, a count
-         up from it, or -1 (the landing guidance, the Servicer, P11), what a
-         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
-         negative of a sine there, which can be -0, in a job of basic code
-         alone that ends with it. That an order which tests MODE comes after
-         a load that set it is how interpretive code is written, not
-         something a run here shows: the side by side test keeps MODE to +0,
-         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
-         there is no faithful run to compare a MODE of -0 with.
+    why: [never] MODE is not -0 when an order tests it (CCS MODE, INDEX
+         MODE). The interpreter's own orders leave +0, +1 or -1 there, as the
+         listing's comments say of each store (double precision, triple,
+         vector). Basic code stores there too. Both listings were searched
+         for every instruction that names MODE, or USERPRIO or SIGNAOS, which
+         are the same word: an EBANK (the IMU compensation), a job's priority
+         (the display interface), +0, a count up from it, or -1 (the landing
+         guidance, the Servicer, P11), +0 or +1 (1/ACCS, as SIGNAOS), what a
+         DAS leaves in A (R29.LOS), none of them -0; and the LM's R29DODES
+         keeps the negative of a sine there, which can be -0. R29DODES is a
+         job of basic code that enters the interpreter only at UNIT, which
+         does not test MODE. But MODE is a word of the job's core set: the
+         Executive swaps it out and in with the job (DXCH MPAC +6), and
+         CORFOUND gives a new job a core set without clearing it, so a -0
+         left there waits for the set's next job. What the reason rests on is
+         how interpretive code is written, which no line here and no check
+         proves of every entry: an order that tests MODE comes after a load
+         that set it, and basic code that goes into the interpreter where a
+         test comes first sets MODE itself (the landing guidance, the
+         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
+         faithful core does (tests/interpreter_fuzz.c), so there is no
+         faithful run to compare a MODE of -0 with.
   sqrt_, line 290 (1 unrun) bd6aff35
     | case IS_MINUS_ZERO: sqrtshft(); return; /* (A +0 passes the BZMF) */
     why: [impossible] SQRTSUB leaves its shift count in MPTEMP: it starts it
@@ -2830,20 +2886,28 @@ src/interpreter/unit_sqrt.c
          -0 here.
   push, line 363 (1 unrun) c669b68c
     | case IS_MINUS_ZERO: ca(MPAC_AT(4u)); break;     /* (never) */
-    why: [never] MODE is not -0 when an order tests it. The interpreter's own
-         orders leave +0, +1 or -1 there, as the listing's comments say of
-         each store (double precision, triple, vector). Basic code stores
-         there too, and both listings were searched for every instruction
-         that names MODE or USERPRIO, the same word: an EBANK (the IMU
-         compensation), a job's priority (the display interface), +0, a count
-         up from it, or -1 (the landing guidance, the Servicer, P11), what a
-         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
-         negative of a sine there, which can be -0, in a job of basic code
-         alone that ends with it. That an order which tests MODE comes after
-         a load that set it is how interpretive code is written, not
-         something a run here shows: the side by side test keeps MODE to +0,
-         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
-         there is no faithful run to compare a MODE of -0 with.
+    why: [never] MODE is not -0 when an order tests it (CCS MODE, INDEX
+         MODE). The interpreter's own orders leave +0, +1 or -1 there, as the
+         listing's comments say of each store (double precision, triple,
+         vector). Basic code stores there too. Both listings were searched
+         for every instruction that names MODE, or USERPRIO or SIGNAOS, which
+         are the same word: an EBANK (the IMU compensation), a job's priority
+         (the display interface), +0, a count up from it, or -1 (the landing
+         guidance, the Servicer, P11), +0 or +1 (1/ACCS, as SIGNAOS), what a
+         DAS leaves in A (R29.LOS), none of them -0; and the LM's R29DODES
+         keeps the negative of a sine there, which can be -0. R29DODES is a
+         job of basic code that enters the interpreter only at UNIT, which
+         does not test MODE. But MODE is a word of the job's core set: the
+         Executive swaps it out and in with the job (DXCH MPAC +6), and
+         CORFOUND gives a new job a core set without clearing it, so a -0
+         left there waits for the set's next job. What the reason rests on is
+         how interpretive code is written, which no line here and no check
+         proves of every entry: an order that tests MODE comes after a load
+         that set it, and basic code that goes into the interpreter where a
+         test comes first sets MODE itself (the landing guidance, the
+         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
+         faithful core does (tests/interpreter_fuzz.c), so there is no
+         faithful run to compare a MODE of -0 with.
   sqrtneg, lines 506-507 (2 unrun) 461ede13
     | case NEGATIVE: zeroans(); return false;
     | case IS_MINUS_ZERO: fixroot(); return false;
@@ -2893,56 +2957,80 @@ src/interpreter/unit_sqrt.c
 src/interpreter/vectors.c
   vxsc, line 135 (1 unrun) 0f4b2b7b
     | case IS_MINUS_ZERO: vvxsc_plus1(); break; /* (never) */
-    why: [never] MODE is not -0 when an order tests it. The interpreter's own
-         orders leave +0, +1 or -1 there, as the listing's comments say of
-         each store (double precision, triple, vector). Basic code stores
-         there too, and both listings were searched for every instruction
-         that names MODE or USERPRIO, the same word: an EBANK (the IMU
-         compensation), a job's priority (the display interface), +0, a count
-         up from it, or -1 (the landing guidance, the Servicer, P11), what a
-         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
-         negative of a sine there, which can be -0, in a job of basic code
-         alone that ends with it. That an order which tests MODE comes after
-         a load that set it is how interpretive code is written, not
-         something a run here shows: the side by side test keeps MODE to +0,
-         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
-         there is no faithful run to compare a MODE of -0 with.
+    why: [never] MODE is not -0 when an order tests it (CCS MODE, INDEX
+         MODE). The interpreter's own orders leave +0, +1 or -1 there, as the
+         listing's comments say of each store (double precision, triple,
+         vector). Basic code stores there too. Both listings were searched
+         for every instruction that names MODE, or USERPRIO or SIGNAOS, which
+         are the same word: an EBANK (the IMU compensation), a job's priority
+         (the display interface), +0, a count up from it, or -1 (the landing
+         guidance, the Servicer, P11), +0 or +1 (1/ACCS, as SIGNAOS), what a
+         DAS leaves in A (R29.LOS), none of them -0; and the LM's R29DODES
+         keeps the negative of a sine there, which can be -0. R29DODES is a
+         job of basic code that enters the interpreter only at UNIT, which
+         does not test MODE. But MODE is a word of the job's core set: the
+         Executive swaps it out and in with the job (DXCH MPAC +6), and
+         CORFOUND gives a new job a core set without clearing it, so a -0
+         left there waits for the set's next job. What the reason rests on is
+         how interpretive code is written, which no line here and no check
+         proves of every entry: an order that tests MODE comes after a load
+         that set it, and basic code that goes into the interpreter where a
+         test comes first sets MODE itself (the landing guidance, the
+         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
+         faithful core does (tests/interpreter_fuzz.c), so there is no
+         faithful run to compare a MODE of -0 with.
   v_sc, line 446 (1 unrun) c0ac66fb
     | case IS_MINUS_ZERO: vv_sc_plus1(); break; /* (never) */
-    why: [never] MODE is not -0 when an order tests it. The interpreter's own
-         orders leave +0, +1 or -1 there, as the listing's comments say of
-         each store (double precision, triple, vector). Basic code stores
-         there too, and both listings were searched for every instruction
-         that names MODE or USERPRIO, the same word: an EBANK (the IMU
-         compensation), a job's priority (the display interface), +0, a count
-         up from it, or -1 (the landing guidance, the Servicer, P11), what a
-         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
-         negative of a sine there, which can be -0, in a job of basic code
-         alone that ends with it. That an order which tests MODE comes after
-         a load that set it is how interpretive code is written, not
-         something a run here shows: the side by side test keeps MODE to +0,
-         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
-         there is no faithful run to compare a MODE of -0 with.
+    why: [never] MODE is not -0 when an order tests it (CCS MODE, INDEX
+         MODE). The interpreter's own orders leave +0, +1 or -1 there, as the
+         listing's comments say of each store (double precision, triple,
+         vector). Basic code stores there too. Both listings were searched
+         for every instruction that names MODE, or USERPRIO or SIGNAOS, which
+         are the same word: an EBANK (the IMU compensation), a job's priority
+         (the display interface), +0, a count up from it, or -1 (the landing
+         guidance, the Servicer, P11), +0 or +1 (1/ACCS, as SIGNAOS), what a
+         DAS leaves in A (R29.LOS), none of them -0; and the LM's R29DODES
+         keeps the negative of a sine there, which can be -0. R29DODES is a
+         job of basic code that enters the interpreter only at UNIT, which
+         does not test MODE. But MODE is a word of the job's core set: the
+         Executive swaps it out and in with the job (DXCH MPAC +6), and
+         CORFOUND gives a new job a core set without clearing it, so a -0
+         left there waits for the set's next job. What the reason rests on is
+         how interpretive code is written, which no line here and no check
+         proves of every entry: an order that tests MODE comes after a load
+         that set it, and basic code that goes into the interpreter where a
+         test comes first sets MODE itself (the landing guidance, the
+         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
+         faithful core does (tests/interpreter_fuzz.c), so there is no
+         faithful run to compare a MODE of -0 with.
   vv_sc_plus1, lines 457-460 (4 unrun) acaec3e9
     | {
     | ca(indexed(1u, ADDRWD)); /* (never: only from V/SC's -0 slot) */
     | v_sc1();
     | }
-    why: [never] MODE is not -0 when an order tests it. The interpreter's own
-         orders leave +0, +1 or -1 there, as the listing's comments say of
-         each store (double precision, triple, vector). Basic code stores
-         there too, and both listings were searched for every instruction
-         that names MODE or USERPRIO, the same word: an EBANK (the IMU
-         compensation), a job's priority (the display interface), +0, a count
-         up from it, or -1 (the landing guidance, the Servicer, P11), what a
-         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
-         negative of a sine there, which can be -0, in a job of basic code
-         alone that ends with it. That an order which tests MODE comes after
-         a load that set it is how interpretive code is written, not
-         something a run here shows: the side by side test keeps MODE to +0,
-         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
-         there is no faithful run to compare a MODE of -0 with. (Entered only
-         from V/SC's -0 slot.)
+    why: [never] MODE is not -0 when an order tests it (CCS MODE, INDEX
+         MODE). The interpreter's own orders leave +0, +1 or -1 there, as the
+         listing's comments say of each store (double precision, triple,
+         vector). Basic code stores there too. Both listings were searched
+         for every instruction that names MODE, or USERPRIO or SIGNAOS, which
+         are the same word: an EBANK (the IMU compensation), a job's priority
+         (the display interface), +0, a count up from it, or -1 (the landing
+         guidance, the Servicer, P11), +0 or +1 (1/ACCS, as SIGNAOS), what a
+         DAS leaves in A (R29.LOS), none of them -0; and the LM's R29DODES
+         keeps the negative of a sine there, which can be -0. R29DODES is a
+         job of basic code that enters the interpreter only at UNIT, which
+         does not test MODE. But MODE is a word of the job's core set: the
+         Executive swaps it out and in with the job (DXCH MPAC +6), and
+         CORFOUND gives a new job a core set without clearing it, so a -0
+         left there waits for the set's next job. What the reason rests on is
+         how interpretive code is written, which no line here and no check
+         proves of every entry: an order that tests MODE comes after a load
+         that set it, and basic code that goes into the interpreter where a
+         test comes first sets MODE itself (the landing guidance, the
+         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
+         faithful core does (tests/interpreter_fuzz.c), so there is no
+         faithful run to compare a MODE of -0 with. (Entered only from V/SC's
+         -0 slot.)
 
 src/kalman_filter/kalman_filter.c
   jet_time, lines 34-35 (2 unrun) d369bea4

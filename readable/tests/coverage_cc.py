@@ -186,7 +186,10 @@ def compile_one(flags, source, out=None, name=None):
     if measured and not status and '-E' not in flags and '-S' not in flags and '-fsyntax-only' not in flags:
         obj = out or (flags[flags.index('-o') + 1] if '-o' in flags else Path(source).stem + '.o')
         obj = os.path.realpath(obj)
-        keep_map(path, obj, name or (os.path.relpath(obj, BUILD) if obj.startswith(str(BUILD) + os.sep) else obj))
+        # (An object outside the build is known by its source too: two
+        # compiles to one scratch path must not take each other's place.)
+        keep_map(path, obj, name or (os.path.relpath(obj, BUILD) if obj.startswith(str(BUILD) + os.sep)
+                                     else f'{obj}.of.{os.path.relpath(path, SRC)}'))
     return status
 
 
