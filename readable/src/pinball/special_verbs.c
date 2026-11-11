@@ -273,7 +273,7 @@ void tstlts4(void)
     case IS_PLUS_ZERO: tc(TSTLTS4 + 3u, ENDOFJOB); return;
     case NEGATIVE: break;
     case IS_MINUS_ZERO: /* the CADR PINBRNCH word */
-        not_modelled_state("CCS CADRSTOR on -0 (TSTLTS4, UNSUSPEN)");
+        not_modelled_state("CCS CADRSTOR on -0 (TSTLTS4)");
         return;
     }
     tc(TSTLTS4 + 4u, POSTJUMP); /* CADR PINBRNCH */
@@ -294,7 +294,7 @@ void unsuspen(void)
         break;
     case NEGATIVE: break;
     case IS_MINUS_ZERO: /* past ENDRELDS */
-        not_modelled_state("CCS CADRSTOR on -0 (TSTLTS4, UNSUSPEN)");
+        not_modelled_state("CCS CADRSTOR on -0 (UNSUSPEN)");
         return;
     }
     tc(UNSUSPEN + 5u, ENDOFJOB);

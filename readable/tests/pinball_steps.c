@@ -32,8 +32,12 @@
  *     positive one, at a CCS whose fourth way runs into a word that is not
  *     an instruction of that path: CADRSTOR in TSTLTS4 and UNSUSPEN (the
  *     word after is CADR PINBRNCH), MPAC +6 in TESTOFUF (+1, -1 or +0),
- *     DECBRNCH in PUTCOM and PUTNORM (bits 1-5).
+ *     DECBRNCH in PUTCOM and PUTNORM (bits 1-5), and A at VBRELDSP's
+ *     second CCS, which its first CCS and the MASK leave +0 or positive
+ *     (no step of the suites makes it negative: that state is held to
+ *     none).
  *
+ * That is ten branches, each with a name of its own.
  * Each of those branches says so where it stands in src/pinball/, and
  * names its state as it refuses (not_modelled_state, src/agc/agc.h). A
  * step the readable routines refuse and the faithful ones take is counted
@@ -128,7 +132,9 @@ static struct {
               {"TS LOADSTAT with overflow (VBPROC)", 82, 0},
               {"TS MPAC with overflow (MONIT2)", 46, 0},
               {"TS DECOUNT with overflow (ALLDC/OC)", 63, 0},
-              {"CCS CADRSTOR on -0 (TSTLTS4, UNSUSPEN)", 592, 0},
+              {"CCS CADRSTOR on -0 (TSTLTS4)", 441, 0},
+              {"CCS CADRSTOR on -0 (UNSUSPEN)", 151, 0},
+              {"CCS A on a negative word (VBRELDSP)", 0, 0},
               {"CCS MPAC +6 on -0 (TESTOFUF)", 153, 0},
               {"CCS DECBRNCH on a negative word (PUTCOM, PUTNORM)", 417, 0}};
 #define STATES (sizeof states / sizeof states[0])

@@ -132,6 +132,15 @@ def readable_objects(m):
     return objects
 
 
+# The files of the toolchain a link may load, by name: the C start files,
+# the C and math libraries, the compiler's own support library and the
+# loader. A file under a library directory is not the toolchain's for
+# being there.
+TOOLCHAIN_FILE = re.compile(r'(?:[Sg]?crt[1in]|crtbegin[ST]?|crtend[S]?)\.o'
+                            r'|lib(?:c|m|mvec|c_nonshared|gcc|gcc_s|gcc_eh|clang_rt\.[\w.-]+)\.(?:a|so)(?:\.\d+)*'
+                            r'|ld-linux[\w.-]*\.so(?:\.\d+)*|ld64\.so\.\d+')
+
+
 def toolchain_directories(cc):
     """Where cc keeps the C library and its start files."""
     out = subprocess.run([cc, '-print-search-dirs'], capture_output=True, text=True, check=True).stdout
@@ -143,9 +152,10 @@ def link_problems(map_text, cwd, expected, toolchain):
     """The link check. The link map lists every file the linker loaded (its
     LOAD lines), as the path the link named it by, from the directory cwd.
     Each must be one of expected (the readable objects, the step and main,
-    MACHINE) or a file of the toolchain's (the C library, under one of the
-    toolchain directories), and each of expected must be there. Returns
-    what is wrong, a line each; nothing if the program stands alone."""
+    MACHINE) or a file of the toolchain's (the C library: a name
+    TOOLCHAIN_FILE knows, under one of the toolchain directories), and each
+    of expected must be there. Returns what is wrong, a line each; nothing
+    if the program stands alone."""
     expected = {str(Path(o).resolve()) for o in expected}
     seen, problems = set(), []
     for line in map_text.splitlines():
@@ -156,14 +166,17 @@ def link_problems(map_text, cwd, expected, toolchain):
             seen.add(path)
         elif not any(path.startswith(d + os.sep) for d in toolchain):
             problems.append(f'loads {path}, which is not the readable program\'s')
+        elif not TOOLCHAIN_FILE.fullmatch(Path(path).name):
+            problems.append(f'loads {path}, which is among the libraries but is not a file of the C library')
     problems += [f'does not load {path}' for path in sorted(expected - seen)]
     return problems
 
 
-def machine_problems():
-    """Each MACHINE object defines the names listed for it and no other."""
+def machine_problems(machine=None):
+    """Each MACHINE object defines the names listed for it and no other
+    (machine: another list to hold them to, for the check's own test)."""
     problems = []
-    for name, pinned in MACHINE.items():
+    for name, pinned in (MACHINE if machine is None else machine).items():
         out = subprocess.run(['nm', '--defined-only', '--extern-only', str(xb.STORE / 'host' / name)],
                              capture_output=True, text=True, check=True).stdout
         defined = {line.split()[-1] for line in out.splitlines() if line.strip()}

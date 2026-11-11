@@ -1318,7 +1318,9 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    code found in the listing leaves (a word that has overflowed where it
    is stored, a -0 or a negative word at a CCS the program enters with
    +0 or a small positive one; the comment at each refusing branch says
-   why). Each of those eight branches names its state as it refuses, and
+   why). Each of those ten branches names its own state as it refuses
+   (the suites reach nine of them; the tenth, VBRELDSP's, is held to no
+   step), and
    the step test counts the steps the readable routines refuse and the
    faithful ones take by that name and by suite, 1,684 in all, holds
    each count to the number recorded in the test, and fails on a refused
@@ -1356,12 +1358,20 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    table the port's index names. The build's link check reads the
    linker's own list of the files it loaded and fails on any that is not
    a readable object the Makefile names, the step or main, one of the
-   seven, or the C library's; it also fails if one of the seven comes to
-   define a function the check does not list. `make x86-link-check`
-   tries the check on eleven made-up link maps it must fail (a faithful
-   object by a relative path, in an archive, copied in among the
-   readable objects, ...), and `make x86-flight` on a real link with a
-   faithful object added.
+   seven, or a file of the C library by its name (a file is not the
+   library's for lying in its directory); it also fails if one of the
+   seven comes to define a function the check does not list. Each part
+   of the check is tried on what it must fail. `make x86-link-check`
+   (in `make all`, no build needed) gives it twelve made-up link maps (a
+   faithful object by a relative path, in an archive, copied in among
+   the readable objects, among the C library's files, ...) and twelve
+   made-up sources (a C source included in quotes, in angle brackets,
+   by a path, through a macro, after a comment, by `#include_next`,
+   ...). `make x86-flight`, which gate 2's targets run first on every
+   PR, tries the build's own check on a real link with a
+   faithful object added, copies an object in among the readable ones
+   (it must not be taken for one), and holds the seven to a list with
+   one function left out.
    What the program still takes from the faithful port, as data: the
    port's index (which table holds which routine, in what order, and
    each routine's cost on the AGC clock), where a Pinball step ends, and
