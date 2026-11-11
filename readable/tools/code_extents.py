@@ -236,7 +236,7 @@ def elf_tables(path, names):
                 continue
             if length % SIZE:
                 sys.exit('code_extents: %s in %s is %d bytes, not tables of %d'
-                         % (name, path, length, SIZE, SIZE))
+                         % (name, path, length, SIZE))
             base = sections[index][4] + value
             for k in range(length // SIZE):
                 bank, first, count = struct.unpack_from('<IH2xI', data, base + k * SIZE)
