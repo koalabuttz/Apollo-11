@@ -29,7 +29,7 @@ static void gotoers(void);
  * faithful core does.) */
 void ccall(void)
 {
-    incr(ADDRESS_OF(LOC));
+    incr(ADDRESS_OF(LOC));      /* (never runs: see above) */
     ca(indexed(0u, LOC));       /* "GET BASE ADDRESS OF CADR LIST." */
     ad_at(indexed(0u, ADDRWD)); /* "ADD INCREMENT." */
     ts(FBANK_ADDRESS);          /* "SELECT DESIRED CADR." */

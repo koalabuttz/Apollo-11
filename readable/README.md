@@ -409,7 +409,13 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    (the port's own fuzz generator, 20,000 programs per seed, 40 seeds per
    mission), pass by pass, and compares memory and channels word for word;
    it leaves out the operands no assembled program has (the test's header
-   lists them), but still compares MPAC, which flight code names. Then it
+   lists them), but still compares MPAC, which flight code names. After
+   the random programs come the shift orders, made on purpose (the
+   test's `shifts`): each of the sixteen short shifts, and the general
+   shift on every address word YUL can make of a count of 0 to 127, a
+   direction and a round, direct and indexed by X1 and X2 (which take a
+   small count through zero, where the shift turns round), in each MODE:
+   111,744 passes a mission, every one compared. Then it
    enters the interpreter where basic code does
    (`tests/interpreter_side_cases.c`): every entry of the readable table
    (DDV/BDDV, the MAXTEST prologues, UNIT, SQRTSUB, SINE, POLY, DMPSUB,
@@ -419,7 +425,15 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    run every one of those to the same end; one in four has a word no
    program leaves (MODE or a shift count of any sign, FIXLOC anywhere, Q
    or ADDRWD holding no address, an overflow in A), where a routine
-   follows its instructions wherever they lead. `make alarm-cases` runs the faithful port's alarm tests
+   follows its instructions wherever they lead. The run is held to its
+   record: the table's entries by number (55 in the LM, 50 in the CM) and
+   how many of the 2.1 million cases end each way, which the fixed seed
+   makes the same every time. After the random states come the states of
+   the five defects they first found, 2,000 of each made on purpose (an
+   overflow in A at SLOAD2 +2, NEWMODE, SHORTMP and DMPNSUB, any shift
+   count at UNIT +16, a Q that is no address at MPACVBUF), each held to
+   its own record; with any one of the fixes taken out, its cases fail.
+   `make alarm-cases` runs the faithful port's alarm tests
    (every alarm site and entry of each mission, 4,096 cases against the
    original program's yaAGC digests) on the readable alarms and aborts,
    then readable and faithful side by side on 40,000 random states per
@@ -1522,34 +1536,66 @@ clang with its profile runtime, and takes half an hour). It builds every
 target of `make all` again with clang's source coverage and runs them,
 builds the x86 flight program the same way and flies gate 2's 86
 scenarios. Each program that ran left its counts, and a line of `src/` is
-run if any of them ran it. Of the 60,127 lines with code in them, 1,528
-(2.5%) are run by none, in 640 stretches of 217 files.
+run if any of them ran it. What is counted is every line the build
+compiled, in a program that ran or not: each compile leaves the lines of
+its object, and a line no program holds counts as unrun. Of the 60,127
+lines with code in them, 1,504 (2.5%) are run by none, in 631 stretches
+of 214 files.
+
+clang keeps a function's counts under its name, and a program that holds
+two functions of one name has their counts added together and the lines
+of only one shown. Most tests of both missions hold every routine twice.
+So the measure's build has its own compiler (`tests/coverage_cc.py`):
+only `src/` is counted, a static function is named by its file's path,
+and a test of both missions is linked once for each mission, with the
+other's counters cut out, and run as both. The measure refuses a program
+that still holds a name twice.
 
 Every one of those stretches stands in `tests/line_coverage.txt`, with
 its text and the reason it does not run, and the check fails on an unrun
 stretch that is not there, on one that is there and now runs, and on one
-with no reason. A stretch is known by its file, its function and its
-text, so an edit elsewhere in a file does not move it. `make all` tries
-the check itself on made-up measures and ledgers
-(`line-coverage-check`), with no build. Each reason is one of
-five kinds, and the ledger says what each means:
+whose reason does not stand. A stretch is known by its file, its function
+and its text, so an edit elsewhere in a file does not move it. `make all`
+tries the check itself on made-up measures and ledgers
+(`line-coverage-check`), with no build. Each reason is one of five kinds.
+The ledger says what each means, and the check holds each stretch to its
+kind's rule:
 
-- **refusal** (777 lines): how a binding refuses a state its routines do
+- **refusal** (767 lines): how a binding refuses a state its routines do
   not model. No case's state and no scenario makes those files refuse.
+  Only a stretch of `src/binding` may say this.
 - **not-modelled** (123 lines): the source marks the line
-  `not_modelled()`, an outcome that cannot come there.
-- **never** (97 lines): the comment at the line says the outcome never
-  comes, and the line is what the AGC would do if it did.
-- **impossible** (100 lines): no state brings the routine to the line,
-  and the reason says what in the lines before it rules the outcome out.
-  An argument, not a run.
-- **open** (431 lines, 165 stretches): not looked at yet. Each is owed a
+  `not_modelled()`, an outcome that cannot come there. The stretch must
+  hold the call.
+- **impossible** (139 lines): no state brings the routine to the line,
+  and the reason says what in the routine's own lines, or its file's,
+  rules the outcome out. An argument, not a run. The reason must say why.
+- **never** (58 lines): no program brings the state, though the routine's
+  own lines do not rule it out. The reason rests on what the rest of the
+  program stores there or on what the assembler makes, and says what was
+  looked at. The comment at the line must say never, and the reason why.
+  An example: an order that tests MODE for -0. Interpretive code loads
+  before it tests, and no load leaves -0; but MODE is an erasable word
+  that basic code uses too (the LM's R29 keeps the negative of a sine
+  there, in a job of its own), so no line of the interpreter rules it out.
+- **open** (417 lines, 158 stretches): not looked at yet. Each is owed a
   case that runs it or the reason none can, and the count is in the
   ledger's head.
 
-What the measure cannot see: a line is run if it ran once, in any state,
-and a line with two branches on it is run if either was. A macro's lines
-are counted where the macro is used, not where it is defined. Three
+The measured files are tied to `src/` too. Of its 474 `.c` files, 406
+hold lines that are counted. The other 68 are named in the ledger, each
+with its kind: **no-code**, a source the build compiles that holds no
+line to run. The check fails on a source that is not counted and not
+named, on one named that the build does not compile, and on one named
+that has lines now. These 68 are the ten tables of `src/assembly` and 58
+sources of words: interpretive programs and their constants. That is a
+limit of the measure: an interpretive program is data to it, and it does
+not see which of its words the interpreter ran. What holds those programs
+is that the cases and scenarios compare what they compute.
+
+What else the measure cannot see: a line is run if it ran once, in any
+state, and a line with two branches on it is run if either was. A macro's
+lines are counted where the macro is used, not where it is defined. Three
 programs are built and not run here: the two `-core` flight programs,
 which link the same readable objects as the two that fly, and the link
 check's own link, which is made to be refused.
@@ -1557,7 +1603,7 @@ check's own link, which is made to be refused.
 CI runs the three gates on every PR that touches `readable/`, or what it
 is built from and checked against: the faithful port's sources, tests and
 tools and the listings (`.github/workflows/readable-ci.yml`). The line
-coverage runs nightly.
+coverage runs there too, as a job of its own.
 
 ## Departures
 

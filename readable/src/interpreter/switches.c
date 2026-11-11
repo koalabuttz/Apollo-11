@@ -117,7 +117,7 @@ static void test(void)
     case POSITIVE:
     case NEGATIVE: swskip(); return;
     case IS_PLUS_ZERO: swbranch(); return;
-    case IS_MINUS_ZERO:
+    case IS_MINUS_ZERO: /* (never) */
         tc_at(TEST + 5u);
         continue_at(CCSHOLE);
         return;

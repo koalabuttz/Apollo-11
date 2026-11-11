@@ -3,28 +3,42 @@
 # `make line-coverage` measures again and holds the tree to it.
 #
 # Measured with Ubuntu clang version 18.1.3 (1ubuntu1).
-# 433 files have lines that run; 60127 such lines; 1528 of them unrun
-# (2.54%), in 640 stretches of 217 files.
+# 433 files hold lines to run (406 of the 474 .c files under src/, and
+# 27 headers); 60127 such lines; 1504 of them unrun
+# (2.50%), in 631 stretches of 214 files.
 # Built and never run: x86-flight-cm-core, x86-flight-lm-core, x86-link-check.
 #
 # By reason:
-#   impossible: 100 lines in 51 stretches
-#   never: 97 lines in 40 stretches
+#   impossible: 139 lines in 65 stretches
+#   never: 58 lines in 26 stretches
 #   not-modelled: 123 lines in 94 stretches
-#   open: 431 lines in 165 stretches
-#   refusal: 777 lines in 290 stretches
+#   open: 417 lines in 158 stretches
+#   refusal: 767 lines in 288 stretches
 #
 # A reason in brackets is one of these:
 
-[impossible] No state brings the routine to the line: what the lines before
-    it leave in the word the branch tests rules the outcome out, and the
-    reason says how. The line is what the AGC would do there.
-[never] The comment at the line says the outcome never comes, and why. The
-    line is what the AGC would do if it did.
-[not-modelled] The line is, or leads only to, not_modelled(): the source
-    marks the outcome as one that cannot come there (a CCS outcome its word
-    never has, a value outside a switch's table). A routine that met it would
-    stop and its binding refuse the state.
+[impossible] No state brings the routine to the line: the routine's own
+    lines, or its file's, rule the outcome out (what they leave in the word
+    the branch tests), and the reason says how. The line is what the AGC
+    would do there. An argument, not a run.
+[never] No program brings the state to the line, though the routine's own
+    lines do not rule it out: the reason rests on what the rest of the
+    program stores there or on what the assembler makes, and says what, and
+    what was looked at. The comment at the line says never. The line is what
+    the AGC would do if it came; where the reason says there is no faithful
+    run, nothing compares the line.
+[no-code] Of a source: it holds no line to run, only tables, names and words.
+    Interpretive code is such words: the interpreter's lines run them, and
+    this measure does not see which of them ran (the cases and scenarios that
+    compare those programs' results hold them). The build compiles the source
+    (the check holds it to that), and a function added to it would be counted
+    from then on.
+[not-built] Of a source: no target of the build compiles it, and the reason
+    says why it stands in src/.
+[not-modelled] The stretch is, or ends in, not_modelled(): the source marks
+    the outcome as one that cannot come there (a CCS outcome its word never
+    has, a value outside a switch's table). A routine that met it would stop
+    and its binding refuse the state.
 [open] Not looked at yet: owed a case that runs it, or the reason none can.
     Item 3 of the validation plan is not done while a stretch says this.
 [refusal] Part of how a binding refuses a state its routines do not model: a
@@ -34,11 +48,83 @@
     out of scope. It runs only if a routine of the file is given such a
     state. No case's state and no scenario does.
 
+Sources of src/ with no line counted:
+  - src/ascent/vertical_rise.c: [no-code]
+  - src/assembly/assembly_and_operation_information.c: [no-code]
+  - src/assembly/contract_and_approvals.c: [no-code]
+  - src/assembly/controlled_constants.c: [no-code]
+  - src/assembly/entry_lexicon.c: [no-code]
+  - src/assembly/erasable_assignments.c: [no-code]
+  - src/assembly/flagword_assignments.c: [no-code]
+  - src/assembly/input_output_channel_bit_descriptions.c: [no-code]
+  - src/assembly/lunar_landmark_selection_for_cm.c: [no-code]
+  - src/assembly/main.c: [no-code]
+  - src/assembly/tags_for_relative_setloc.c: [no-code]
+  - src/conics/constants.c: [no-code]
+  - src/conics/iterator.c: [no-code]
+  - src/conics/kepler.c: [no-code]
+  - src/conics/lambert.c: [no-code]
+  - src/conics/newstate.c: [no-code]
+  - src/conics/param.c: [no-code]
+  - src/conics/timerad.c: [no-code]
+  - src/conics/timethet.c: [no-code]
+  - src/ephemerides/ephemerides.c: [no-code]
+  - src/fresh_start/stateup.c: [no-code]
+  - src/gimbal_lock/gimbal_lock.c: [no-code]
+  - src/integration_init/avetomid.c: [no-code]
+  - src/integration_init/integrv.c: [no-code]
+  - src/integration_init/testloop.c: [no-code]
+  - src/integration_init/transfers.c: [no-code]
+  - src/lat_long/lat_long.c: [no-code]
+  - src/measurement_inc/measurement_inc.c: [no-code]
+  - src/orbital_integration/constants.c: [no-code]
+  - src/orbital_integration/dow.c: [no-code]
+  - src/orbital_integration/kepprep.c: [no-code]
+  - src/orbital_integration/oblate.c: [no-code]
+  - src/orbital_integration/quality.c: [no-code]
+  - src/orbital_integration/rectify.c: [no-code]
+  - src/orbital_integration/timestep.c: [no-code]
+  - src/p12/guidinit.c: [no-code]
+  - src/p20_p25/getulc.c: [no-code]
+  - src/p20_p25_cm/bvectors.c: [no-code]
+  - src/p20_p25_cm/horiz.c: [no-code]
+  - src/p20_p25_cm/s22_landmark.c: [no-code]
+  - src/p20_p25_cm/w_nine_to_six.c: [no-code]
+  - src/p30_cm/delrspl.c: [no-code]
+  - src/p30_cm/s30_s31.c: [no-code]
+  - src/p32_p33_cm/cdh.c: [no-code]
+  - src/p32_p33_cm/csi.c: [no-code]
+  - src/p32_p35/cdh.c: [no-code]
+  - src/p32_p35/csi.c: [no-code]
+  - src/p34_p35/initvel.c: [no-code]
+  - src/p34_p35/midgim.c: [no-code]
+  - src/p34_p35/periapo.c: [no-code]
+  - src/p34_p35/s34_35.c: [no-code]
+  - src/p37_p70/gamdv.c: [no-code]
+  - src/p37_p70/prec100.c: [no-code]
+  - src/p40_p47/rasteer1.c: [no-code]
+  - src/p61_p67/s61_2.c: [no-code]
+  - src/p61_p67/s61_2_subroutines.c: [no-code]
+  - src/p61_p67/s62_3.c: [no-code]
+  - src/pinball_noun_tables/tables.c: [no-code]
+  - src/planetary/planetary.c: [no-code]
+  - src/powered_flight/smcdures.c: [no-code]
+  - src/reentry/glimiter.c: [no-code]
+  - src/reentry/initroll.c: [no-code]
+  - src/reentry/targetng.c: [no-code]
+  - src/reentry/upcontrl.c: [no-code]
+  - src/rtb_op_codes/quality.c: [no-code]
+  - src/servicer_cm/calcgrav.c: [no-code]
+  - src/tpi_search/s17.c: [no-code]
+  - src/tpi_search/transang.c: [no-code]
+
 
 src/alarm/alarm.c
   fail3, line 163 (1 unrun) b4179894
     | case IS_MINUS_ZERO: proglarm(); return; /* never: the word after the CCS's four */
-    why: [never]
+    why: [impossible] A is FAILREG +2 masked with POSMAX: +0 or positive,
+         never -0. (Nor negative: the line above runs only as the fall
+         through from +0.)
 
 src/aostask/aostask.c
   docktest, line 175 (1 unrun) 126f7bdf
@@ -801,23 +887,9 @@ src/binding/extended_verbs_routines.c
     | return 0;
     | }
     why: [refusal]
-  lanec_ev_radar_dispatch, lines 667-670 (4 unrun) 2296a065
-    | (void)state;
-    | (void)io;
-    | (void)mission;
-    | return LANEC_OUT_OF_SCOPE;
-    why: [refusal]
   lanec_ev_lmi_dispatch, lines 1017-1020 (4 unrun) bf8c5957
     | *state = before;
     | *io = io_before;
-    | return LANEC_OUT_OF_SCOPE;
-    | }
-    why: [refusal]
-  lanec_ev_lmi_dispatch, lines 1033-1038 (6 unrun) 1721c7f1
-    | {
-    | (void)state;
-    | (void)io;
-    | (void)mission;
     | return LANEC_OUT_OF_SCOPE;
     | }
     why: [refusal]
@@ -1745,7 +1817,11 @@ src/binding/servicer_routines.c
 src/binding/sp_routines.c
   fixed_memory, line 25 (1 unrun) f3ea7c18
     | return PLUS_ZERO; /* never read */
-    why: [never]
+    why: [impossible] The routines read fixed memory only at LIMITS plus what
+         an overflowing TS has just left in A, +1 or -1 (SPT's INDEX TEMK and
+         ARG90's INDEX A, src/single_precision/single_precision.c): LIMITS +1
+         and LIMITS -1, which the lines above give. (LIMITS itself is given
+         too, and is not read.)
   run, lines 48-49 (2 unrun) 1ad5f8d0
     | else
     | return EXEC_OUT_OF_SCOPE;
@@ -1995,16 +2071,6 @@ src/display_interface/r_displays.c
     | }
     why: [not-modelled]
 
-src/display_interface/sleep.c
-  xchqadd_after_upent2, line 134 (1 unrun) 197bf41e
-    | mask(BIT3);
-    why: [open]
-
-src/display_interface/starts.c
-  chkprio, line 27 (1 unrun) 197bf41e
-    | mask(BIT3);
-    why: [open]
-
 src/downtelemetry/downlink_lists.c
   assembled, line 785 (1 unrun) dd7edb30
     | case LABEL_ONLY: break;
@@ -2023,8 +2089,8 @@ src/downtelemetry/downtelemetry.c
     why: [impossible] A is the list word just stored in DNECADR plus
          MINTIME2. In the AGC's adder a sum is +0 only when both numbers are
          +0, and MINTIME2 is not.
-  dodnptr, line 283 (1 unrun) c013efa3
-    | case IS_PLUS_ZERO: dosublst(); return;
+  dodnptr, line 283 (1 unrun) 853bd30c
+    | case IS_PLUS_ZERO: dosublst(); return; /* (never: no sublist starts with a zero) */
     why: [never] DNECADR here is a word NEXTINCL or NEXTINSL has just read
          from fixed memory, one that passes for a DNPTR (above 30000, up to
          34000). Of the words the faithful routines read there (the lists and
@@ -2033,8 +2099,8 @@ src/downtelemetry/downtelemetry.c
          where the faithful routine refuses; every other points at a word
          that is not zero. So there is no faithful run to compare a zero one
          with.
-  dodnptr, line 285 (1 unrun) 0039665b
-    | case IS_MINUS_ZERO: break;
+  dodnptr, line 285 (1 unrun) 0e42ad5f
+    | case IS_MINUS_ZERO: break; /* (never) */
     why: [never] DNECADR here is a word NEXTINCL or NEXTINSL has just read
          from fixed memory, one that passes for a DNPTR (above 30000, up to
          34000). Of the words the faithful routines read there (the lists and
@@ -2043,8 +2109,8 @@ src/downtelemetry/downtelemetry.c
          where the faithful routine refuses; every other points at a word
          that is not zero. So there is no faithful run to compare a zero one
          with.
-  snaploop, lines 317-320 (4 unrun) d7d14179
-    | case IS_PLUS_ZERO: /* LDNPHAS2 (GENADR DNPHASE2) runs as TC DNPHASE2 */
+  snaploop, lines 317-320 (4 unrun) c576de33
+    | case IS_PLUS_ZERO: /* (never) LDNPHAS2 (GENADR DNPHASE2) would run as TC DNPHASE2 */
     | tc_at(ADDRESS_OF(LDNPHAS2));
     | dnphase2();
     | return;
@@ -2056,8 +2122,8 @@ src/downtelemetry/downtelemetry.c
          ZERO and NEG0. The faithful routine refuses a pointer outside those
          words, and the +0 slot itself, so there is no faithful run to
          compare one with.
-  snaploop, line 322 (1 unrun) 305d26d1
-    | default: break;
+  snaploop, line 322 (1 unrun) e3a7273a
+    | default: break;                                /* (-0: never) */
     why: [never] SNAPLOOP reads on from the DNPTR's own list, word after
          word, to the first that is not positive. Every list pointer the
          faithful routines read whose list is a snapshot (13 in the LM, 20 in
@@ -2164,13 +2230,17 @@ src/fresh_start/fresh_start.c
     | tc_at(WOR_ENGINE_ON);
     | continue_at(05011u);
     | return;
-    why: [never]
+    why: [impossible] A is FLAGWRD5's complement masked with ENGONBIT: +0 or
+         the one bit, never -0. (Nor negative: the line above runs only as
+         the fall through from +0.)
   nocoarse, lines 634-637 (4 unrun) 64eb8607
     | case IS_MINUS_ZERO:                          /* never: the WOR's word alone, TC 5011 */
     | tc_at(WOR_ENGINE_ON);
     | continue_at(05011u);
     | return;
-    why: [never]
+    why: [impossible] A is FLAGWRD5's complement masked with ENGONBIT: +0 or
+         the one bit, never -0. (Nor negative: the line above runs only as
+         the fall through from +0.)
   nxtrst, line 807 (1 unrun) 7a17fe30
     | not_modelled();
     why: [not-modelled]
@@ -2184,7 +2254,10 @@ src/fresh_start/v37.c
   checktab, lines 449-450 (2 unrun) 12cb6933
     | case NEGATIVE: ca(MPAC1); break; /* never: MPAC +1 counts down */
     | case IS_MINUS_ZERO: break;       /* never */
-    why: [never]
+    why: [impossible] MPAC +1 is the loop's own index: AGAINMM stores there
+         NOV37MM at first, and after that what its CCS of a positive index
+         leaves (one less, down to +0) or the +0 of the other CCS. It is
+         never negative and never -0.
   checktab, lines 452-453 (2 unrun) 2a3ce007
     | break;
     | case IS_PLUS_ZERO: continue;      /* TCF AGAINMM, with +0 */
@@ -2249,12 +2322,6 @@ src/imu_mode_switching/gyro_torquing.c
     | break;
     why: [open]
 
-src/imu_mode_switching/mode_ends.c
-  modabort, lines 165-166 (2 unrun) 1c28f9d8
-    | tc_at(MODABORT); /* TC POODOO; OCT 1210 */
-    | continue_at(POODOO);
-    why: [open]
-
 src/imu_performance/imu_performance.c
   pipachk_landing, line 356 (1 unrun) 5454f838
     | default: not_modelled(); /* (the TS after an INDEX: not a word of its own) */
@@ -2302,14 +2369,18 @@ src/interpreter/dispatcher.c
     | incr(ADDRESS_OF(LOC));
     | continue_at(NEWOPS);
     | return; /* (never) */
-    why: [never]
-  noibnksw, line 157 (1 unrun) f1a52d8d
-    | case IS_MINUS_ZERO: continue_at(NEWOPS + 1u); return;
+    why: [impossible] EDOP is an editing register: it keeps seven bits of
+         what is written to it (bits 8 to 14, moved down), so the CCS reads
+         +0 or a positive word, never a negative one and never -0.
+  noibnksw, line 157 (1 unrun) df5592e1
+    | case IS_MINUS_ZERO: continue_at(NEWOPS + 1u); return; /* (never) */
     why: [never] NEWJOB is +0 or the address of a core set, as the Executive
-         leaves it. The flight program's interpreter takes no pass with a
-         negative NEWJOB (as_expected, src/binding/interpreter_core.c), as
-         the faithful core does: there is no faithful run to compare one
-         with.
+         leaves it, never -0. The flight program's interpreter takes no pass
+         with a negative NEWJOB or one of -0 (as_expected,
+         src/binding/interpreter_core.c), as the faithful core does: there is
+         no faithful run to compare one with. (The two bindings whose cases
+         bring a NEWJOB of any sign, through interpret_listing_any_newjob(),
+         bring none of -0.)
   newops, lines 172-177 (4 unrun) c0e923e8
     | case IS_PLUS_ZERO:
     | /* (never: a program word is never +0. The AGC would run LOW7, OCT
@@ -2317,26 +2388,49 @@ src/interpreter/dispatcher.c
     | tc_at(ADDRESS_OF(LOW7));
     | continue_at(LOW7);
     | return;
-    why: [never]
+    why: [never] A word of interpretive code where an order pair or a store
+         code stands is never +0 or -0: a pair is a negative word and a store
+         code a positive one, and YUL assembles neither zero for one. The
+         side by side test takes no pass that would start at such a word
+         (tests/interpreter_fuzz.c, unassembled()), so there is no faithful
+         run to compare one with.
   newops, line 179 (1 unrun) 6099f891
     | case IS_MINUS_ZERO: break; /* (never: no pair is -0) */
-    why: [never]
-  diradres, line 223 (1 unrun) 8f59ce8f
-    | case IS_PLUS_ZERO:
-    why: [never] An address word is never -0: no program assembles one, and
-         the side by side test leaves such a word out
-         (tests/interpreter_fuzz.c), where the faithful core does something
-         simpler than the AGC.
+    why: [never] A word of interpretive code where an order pair or a store
+         code stands is never +0 or -0: a pair is a negative word and a store
+         code a positive one, and YUL assembles neither zero for one. The
+         side by side test takes no pass that would start at such a word
+         (tests/interpreter_fuzz.c, unassembled()), so there is no faithful
+         run to compare one with.
+  diradres, line 223 (1 unrun) 72ccb481
+    | case IS_PLUS_ZERO: /* (never: the next word is never -0) */
+    why: [never] The word after an order with an address is never -0: an
+         address word is positive, and the order pair that stands there when
+         there is none is negative and never -0 (YUL assembles no such pair).
+         The side by side test makes its address words positive and takes no
+         pass at a pair of -0 (tests/interpreter_fuzz.c, unassembled()), so
+         there is no faithful run to compare one with.
   diradres, line 228 (1 unrun) 5088b281
     | case IS_MINUS_ZERO: break;                   /* (never: an address word +0) */
-    why: [never]
+    why: [never] An address word is never +0: no program assembles one, and
+         the side by side test leaves such a word out
+         (tests/interpreter_fuzz.c, unassembled()), where the faithful core
+         takes it as address 0 and the AGC's CCS as no address word at all.
   itr, lines 282-283 (2 unrun) 58644e6a
     | else
     | continue_at((word)to); /* (never: CYR always holds a code here) */
-    why: [never]
+    why: [impossible] CYR holds 20000 and the order's number, 0 to 37, in its
+         low five bits (and 40000 for an indexed address): OPJUMP's TS and
+         its CCS leave any seven-bit code of an order with an address so
+         ("THE OP CODE IS NOW IN BITS 1-5 OF CYR WITH BIT 14 = 1"), and the
+         loads that come here by themselves store such a word. Added to the
+         instruction, it makes TCF INDJUMP + 0 to 37 and nothing else.
   index_, line 322 (1 unrun) 67e3012c
     | case IS_MINUS_ZERO: break; /* (never: an address word +0) */
-    why: [never]
+    why: [never] An address word is never +0: no program assembles one, and
+         the side by side test leaves such a word out
+         (tests/interpreter_fuzz.c, unassembled()), where the faithful core
+         takes it as address 0 and the AGC's CCS as no address word at all.
   opjump3, lines 445-450 (4 unrun) be2472b7
     | case IS_MINUS_ZERO:
     | /* (never: MODE is never -0. The AGC would run LVBUF, ADRES VBUF, as
@@ -2344,7 +2438,20 @@ src/interpreter/dispatcher.c
     | tc_at(ADDRESS_OF(LVBUF));
     | continue_at(LVBUF);
     | return;
-    why: [never]
+    why: [never] MODE is not -0 when an order tests it. The interpreter's own
+         orders leave +0, +1 or -1 there, as the listing's comments say of
+         each store (double precision, triple, vector). Basic code stores
+         there too, and both listings were searched for every instruction
+         that names MODE or USERPRIO, the same word: an EBANK (the IMU
+         compensation), a job's priority (the display interface), +0, a count
+         up from it, or -1 (the landing guidance, the Servicer, P11), what a
+         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
+         negative of a sine there, which can be -0, in a job of basic code
+         alone that ends with it. That an order which tests MODE comes after
+         a load that set it is how interpretive code is written, not
+         something a run here shows: the side by side test keeps MODE to +0,
+         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
+         there is no faithful run to compare a MODE of -0 with.
   indjump, line 477 (1 unrun) 8d701d3a
     | case 015: ccall(); return;  /* computed call (never: no program has the order) */
     why: [never] CCALL: no program has the order (neither mission's listing
@@ -2352,8 +2459,8 @@ src/interpreter/dispatcher.c
          would run it before anything runs (order_taken,
          src/binding/interpreter_core.c), as the faithful core does. There is
          no faithful run to compare one with.
-  indjump, lines 493-495 (3 unrun) 31e274ac
-    | case 035:                   /* "AVAILABLE": TCF +0, a TCF to itself (no program uses it) */
+  indjump, lines 493-495 (3 unrun) e63abb9a
+    | case 035:                   /* "AVAILABLE": TCF +0, to itself (never: no program has it) */
     | continue_at(INDJUMP + 035u);
     | return;
     why: [never] Address code 35, AVAILABLE: no program has the order
@@ -2379,7 +2486,12 @@ src/interpreter/divide.c
     | tc_at(ADDRESS_OF(LBUF2));
     | continue_at(LBUF2);
     | return;
-    why: [never]
+    why: [impossible] A is BUF's major part less MPAC's, and in the AGC's
+         adder a sum is +0 only when both numbers are +0: MPAC's major part
+         would have to be -0. It comes to MPAC+ positive or zero (BUF+ and
+         MPAC- see to that), and the sign agreement just before the test (an
+         add whose overflow is dropped) leaves a major part of -0 only where
+         it was -POSMAX.
 
 src/interpreter/index_orders.c
   fifteen_adrers, line 185 (1 unrun) a33ec75a
@@ -2479,29 +2591,70 @@ src/interpreter/index_orders.c
 src/interpreter/load_store.c
   store_, line 124 (1 unrun) db4e3013
     | case IS_PLUS_ZERO: break;                     /* (never: no address gives +0) */
-    why: [never]
+    why: [impossible] A is DEC45 less ADDRWD, and in the AGC's adder a sum is
+         +0 only when both numbers are +0, which DEC45 is not. (An ADDRWD of
+         45 gives -0, which has its own case.)
   startsto, lines 153-157 (3 unrun) 6802cb93
     | case IS_MINUS_ZERO:
     | /* (never: MODE is never -0. VSTORE's DCA would run without its
     | * EXTEND, as CA MPAC +4.) */
     | ca(ADDRESS_OF(MPAC) + 4u);
     | break;
-    why: [never]
+    why: [never] MODE is not -0 when an order tests it. The interpreter's own
+         orders leave +0, +1 or -1 there, as the listing's comments say of
+         each store (double precision, triple, vector). Basic code stores
+         there too, and both listings were searched for every instruction
+         that names MODE or USERPRIO, the same word: an EBANK (the IMU
+         compensation), a job's priority (the display interface), +0, a count
+         up from it, or -1 (the landing guidance, the Servicer, P11), what a
+         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
+         negative of a sine there, which can be -0, in a job of basic code
+         alone that ends with it. That an order which tests MODE comes after
+         a load that set it is how interpretive code is written, not
+         something a run here shows: the side by side test keeps MODE to +0,
+         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
+         there is no faithful run to compare a MODE of -0 with.
   pddl, line 287 (1 unrun) c2b25cf7
     | case IS_MINUS_ZERO: break;                  /* (never: MODE -0) */
-    why: [never]
+    why: [never] MODE is not -0 when an order tests it. The interpreter's own
+         orders leave +0, +1 or -1 there, as the listing's comments say of
+         each store (double precision, triple, vector). Basic code stores
+         there too, and both listings were searched for every instruction
+         that names MODE or USERPRIO, the same word: an EBANK (the IMU
+         compensation), a job's priority (the display interface), +0, a count
+         up from it, or -1 (the landing guidance, the Servicer, P11), what a
+         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
+         negative of a sine there, which can be -0, in a job of basic code
+         alone that ends with it. That an order which tests MODE comes after
+         a load that set it is how interpretive code is written, not
+         something a run here shows: the side by side test keeps MODE to +0,
+         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
+         there is no faithful run to compare a MODE of -0 with.
   pdvl, lines 347-351 (5 unrun) c29b5b10
     | case IS_MINUS_ZERO: /* (never: MODE -0. VPDVL's DCA would run as CA.) */
     | ca(indexed(3u, ADDRWD));
     | dxch(ADDRESS_OF(MPAC) + 3u);
     | vpdvl_plus4();
     | return;
-    why: [never]
+    why: [never] MODE is not -0 when an order tests it. The interpreter's own
+         orders leave +0, +1 or -1 there, as the listing's comments say of
+         each store (double precision, triple, vector). Basic code stores
+         there too, and both listings were searched for every instruction
+         that names MODE or USERPRIO, the same word: an EBANK (the IMU
+         compensation), a job's priority (the display interface), +0, a count
+         up from it, or -1 (the landing guidance, the Servicer, P11), what a
+         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
+         negative of a sine there, which can be -0, in a job of basic code
+         alone that ends with it. That an order which tests MODE comes after
+         a load that set it is how interpretive code is written, not
+         something a run here shows: the side by side test keeps MODE to +0,
+         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
+         there is no faithful run to compare a MODE of -0 with.
 
 src/interpreter/sequence.c
-  ccall, lines 31-40 (10 unrun) e8479524
+  ccall, lines 31-40 (10 unrun) 579bed02
     | {
-    | incr(ADDRESS_OF(LOC));
+    | incr(ADDRESS_OF(LOC));      /* (never runs: see above) */
     | ca(indexed(0u, LOC));       /* "GET BASE ADDRESS OF CADR LIST." */
     | ad_at(indexed(0u, ADDRWD)); /* "ADD INCREMENT." */
     | ts(FBANK_ADDRESS);          /* "SELECT DESIRED CADR." */
@@ -2521,7 +2674,10 @@ src/interpreter/shifts.c
     | tc_at(ADDRESS_OF(SRDDV));
     | continue_at(SRDDV);
     | return;
-    why: [never]
+    why: [impossible] CYR holds the order code OPJUMP stored there, cycled
+         once by that TS and once by each CCS since (MASK reads it and does
+         not cycle it). The code was not zero (a code of +0 is EXIT, taken at
+         OPJUMP), and a word that is not zero stays so however it is cycled.
   shortt, line 86 (1 unrun) 0fb30fdc
     | case IS_MINUS_ZERO: tssr_plus1(); return;
     why: [impossible] A short shift's code has bit 3 set and its prefix bits
@@ -2558,10 +2714,12 @@ src/interpreter/shifts.c
   tssl_plus2, line 236 (1 unrun) 3b9d14ea
     | case IS_PLUS_ZERO: /* "SL LEAVES A ZERO IN CYR FOR NO ROUND." (Never: it leaves bit 13.) */
     why: [never] After a short shift CYR still holds the code's bit 3 here,
-         in bit 13. After GENSCL it is +0 only when the MP of ADDRWD's
-         complement leaves a zero of positive sign: an ADDRWD that is -0, or
-         negative and within 1000 (octal) of it. YUL's shift words are
-         positive, with bit 14 set, and the side by side test makes no
+         in bit 13: the TS at OPJUMP and each of the four CCS since (OPJUMP,
+         OPJUMP2, OPJUMP3 and SHORTT's) cycled it one place, and MASK, which
+         only reads it, did not. After GENSCL it is +0 only when the MP of
+         ADDRWD's complement leaves a zero of positive sign: an ADDRWD that
+         is -0, or negative and within 1000 (octal) of it. YUL's shift words
+         are positive, with bit 14 set, and the side by side test makes no
          indexed address that comes out negative (tests/interpreter_fuzz.c).
   shortv, lines 270-275 (4 unrun) 9d746482
     | case IS_PLUS_ZERO:
@@ -2570,7 +2728,10 @@ src/interpreter/shifts.c
     | tc_at(ADDRESS_OF(OCT176));
     | continue_at(OCT176);
     | return;
-    why: [never]
+    why: [impossible] CYR holds the order code OPJUMP stored there, cycled
+         once by that TS and once by each CCS since (MASK reads it and does
+         not cycle it). The code was not zero (a code of +0 is EXIT, taken at
+         OPJUMP), and a word that is not zero stays so however it is cycled.
   vssl, lines 350-351 (2 unrun) 9e843dda
     | case NEGATIVE: tslc2(); return;
     | case IS_MINUS_ZERO: tslc2_plus1(); return;
@@ -2581,7 +2742,20 @@ src/interpreter/shifts.c
          count leaves, one lower each time.
   right, line 469 (1 unrun) bec88a41
     | case IS_MINUS_ZERO: break;                    /* (never; would enter VRIGHT2 with A +0) */
-    why: [never]
+    why: [never] MODE is not -0 when an order tests it. The interpreter's own
+         orders leave +0, +1 or -1 there, as the listing's comments say of
+         each store (double precision, triple, vector). Basic code stores
+         there too, and both listings were searched for every instruction
+         that names MODE or USERPRIO, the same word: an EBANK (the IMU
+         compensation), a job's priority (the display interface), +0, a count
+         up from it, or -1 (the landing guidance, the Servicer, P11), what a
+         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
+         negative of a sine there, which can be -0, in a job of basic code
+         alone that ends with it. That an order which tests MODE comes after
+         a load that set it is how interpretive code is written, not
+         something a run here shows: the side by side test keeps MODE to +0,
+         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
+         there is no faithful run to compare a MODE of -0 with.
   vright2, lines 514-518 (5 unrun) 46cc12ac
     | case IS_PLUS_ZERO: continue;
     | case NEGATIVE:
@@ -2600,8 +2774,8 @@ src/interpreter/shifts.c
          here too, comes with the same test passed.)
 
 src/interpreter/switches.c
-  test, lines 120-123 (4 unrun) 01f21a78
-    | case IS_MINUS_ZERO:
+  test, lines 120-123 (4 unrun) 1eae58af
+    | case IS_MINUS_ZERO: /* (never) */
     | tc_at(TEST + 5u);
     | continue_at(CCSHOLE);
     | return;
@@ -2633,23 +2807,43 @@ src/interpreter/trig.c
          store in neither word.
 
 src/interpreter/unit_sqrt.c
-  abvalabs, line 256 (1 unrun) b263ad09
-    | case IS_MINUS_ZERO: abval_plus1(); return;
-    why: [never] MODE is +0, +1 or -1: NEWMODE and the loads store nothing
-         else. The side by side test keeps to those, as the faithful core
-         does (tests/interpreter_fuzz.c), so there is no faithful run to
-         compare a MODE of -0 with.
+  abvalabs, line 256 (1 unrun) cfd15e2d
+    | case IS_MINUS_ZERO: abval_plus1(); return; /* (never) */
+    why: [never] MODE is not -0 when an order tests it. The interpreter's own
+         orders leave +0, +1 or -1 there, as the listing's comments say of
+         each store (double precision, triple, vector). Basic code stores
+         there too, and both listings were searched for every instruction
+         that names MODE or USERPRIO, the same word: an EBANK (the IMU
+         compensation), a job's priority (the display interface), +0, a count
+         up from it, or -1 (the landing guidance, the Servicer, P11), what a
+         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
+         negative of a sine there, which can be -0, in a job of basic code
+         alone that ends with it. That an order which tests MODE comes after
+         a load that set it is how interpretive code is written, not
+         something a run here shows: the side by side test keeps MODE to +0,
+         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
+         there is no faithful run to compare a MODE of -0 with.
   sqrt_, line 290 (1 unrun) bd6aff35
     | case IS_MINUS_ZERO: sqrtshft(); return; /* (A +0 passes the BZMF) */
     why: [impossible] SQRTSUB leaves its shift count in MPTEMP: it starts it
          at +0 and only adds 7 and 1 to it, so it is never negative and never
          -0 here.
-  push, line 363 (1 unrun) 0e8514b8
-    | case IS_MINUS_ZERO: ca(MPAC_AT(4u)); break;     /* COMPONENTS." */
-    why: [never] MODE is +0, +1 or -1: NEWMODE and the loads store nothing
-         else. The side by side test keeps to those, as the faithful core
-         does (tests/interpreter_fuzz.c), so there is no faithful run to
-         compare a MODE of -0 with.
+  push, line 363 (1 unrun) c669b68c
+    | case IS_MINUS_ZERO: ca(MPAC_AT(4u)); break;     /* (never) */
+    why: [never] MODE is not -0 when an order tests it. The interpreter's own
+         orders leave +0, +1 or -1 there, as the listing's comments say of
+         each store (double precision, triple, vector). Basic code stores
+         there too, and both listings were searched for every instruction
+         that names MODE or USERPRIO, the same word: an EBANK (the IMU
+         compensation), a job's priority (the display interface), +0, a count
+         up from it, or -1 (the landing guidance, the Servicer, P11), what a
+         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
+         negative of a sine there, which can be -0, in a job of basic code
+         alone that ends with it. That an order which tests MODE comes after
+         a load that set it is how interpretive code is written, not
+         something a run here shows: the side by side test keeps MODE to +0,
+         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
+         there is no faithful run to compare a MODE of -0 with.
   sqrtneg, lines 506-507 (2 unrun) 461ede13
     | case NEGATIVE: zeroans(); return false;
     | case IS_MINUS_ZERO: fixroot(); return false;
@@ -2689,30 +2883,66 @@ src/interpreter/unit_sqrt.c
          its bits: never +0.
   sqrtnorm, line 670 (1 unrun) c09b3a76
     | case IS_MINUS_ZERO: cosine(); return; /* (never: runs on into COSINE) */
-    why: [never]
+    why: [impossible] At the second CCS, CYL holds the word TS put there,
+         cycled. It is -0 only if that word was all ones. The first CCS has
+         then taken it (to ARGLO), unless the TS overflowed and skipped that
+         CCS; and an overflowing TS stores all ones only of a doubled major
+         part of -1/2. The major part is positive here: SQRTSUB sends only a
+         positive one to SMPAC+, and the normalizing shifts it left.
 
 src/interpreter/vectors.c
-  vxsc, line 135 (1 unrun) 8de27fca
-    | case IS_MINUS_ZERO: vvxsc_plus1(); break;
-    why: [never] MODE is +0, +1 or -1: NEWMODE and the loads store nothing
-         else. The side by side test keeps to those, as the faithful core
-         does (tests/interpreter_fuzz.c), so there is no faithful run to
-         compare a MODE of -0 with.
-  v_sc, line 446 (1 unrun) b4b22846
-    | case IS_MINUS_ZERO: vv_sc_plus1(); break;
-    why: [never] MODE is +0, +1 or -1: NEWMODE and the loads store nothing
-         else. The side by side test keeps to those, as the faithful core
-         does (tests/interpreter_fuzz.c), so there is no faithful run to
-         compare a MODE of -0 with.
-  vv_sc_plus1, lines 457-460 (4 unrun) a22c8877
+  vxsc, line 135 (1 unrun) 0f4b2b7b
+    | case IS_MINUS_ZERO: vvxsc_plus1(); break; /* (never) */
+    why: [never] MODE is not -0 when an order tests it. The interpreter's own
+         orders leave +0, +1 or -1 there, as the listing's comments say of
+         each store (double precision, triple, vector). Basic code stores
+         there too, and both listings were searched for every instruction
+         that names MODE or USERPRIO, the same word: an EBANK (the IMU
+         compensation), a job's priority (the display interface), +0, a count
+         up from it, or -1 (the landing guidance, the Servicer, P11), what a
+         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
+         negative of a sine there, which can be -0, in a job of basic code
+         alone that ends with it. That an order which tests MODE comes after
+         a load that set it is how interpretive code is written, not
+         something a run here shows: the side by side test keeps MODE to +0,
+         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
+         there is no faithful run to compare a MODE of -0 with.
+  v_sc, line 446 (1 unrun) c0ac66fb
+    | case IS_MINUS_ZERO: vv_sc_plus1(); break; /* (never) */
+    why: [never] MODE is not -0 when an order tests it. The interpreter's own
+         orders leave +0, +1 or -1 there, as the listing's comments say of
+         each store (double precision, triple, vector). Basic code stores
+         there too, and both listings were searched for every instruction
+         that names MODE or USERPRIO, the same word: an EBANK (the IMU
+         compensation), a job's priority (the display interface), +0, a count
+         up from it, or -1 (the landing guidance, the Servicer, P11), what a
+         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
+         negative of a sine there, which can be -0, in a job of basic code
+         alone that ends with it. That an order which tests MODE comes after
+         a load that set it is how interpretive code is written, not
+         something a run here shows: the side by side test keeps MODE to +0,
+         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
+         there is no faithful run to compare a MODE of -0 with.
+  vv_sc_plus1, lines 457-460 (4 unrun) acaec3e9
     | {
-    | ca(indexed(1u, ADDRWD));
+    | ca(indexed(1u, ADDRWD)); /* (never: only from V/SC's -0 slot) */
     | v_sc1();
     | }
-    why: [never] MODE is +0, +1 or -1: NEWMODE and the loads store nothing
-         else. The side by side test keeps to those, as the faithful core
-         does (tests/interpreter_fuzz.c), so there is no faithful run to
-         compare a MODE of -0 with. (Entered only from V/SC's -0 slot.)
+    why: [never] MODE is not -0 when an order tests it. The interpreter's own
+         orders leave +0, +1 or -1 there, as the listing's comments say of
+         each store (double precision, triple, vector). Basic code stores
+         there too, and both listings were searched for every instruction
+         that names MODE or USERPRIO, the same word: an EBANK (the IMU
+         compensation), a job's priority (the display interface), +0, a count
+         up from it, or -1 (the landing guidance, the Servicer, P11), what a
+         DAS leaves in A (R29.LOS), none of them -0; and R29DODES keeps the
+         negative of a sine there, which can be -0, in a job of basic code
+         alone that ends with it. That an order which tests MODE comes after
+         a load that set it is how interpretive code is written, not
+         something a run here shows: the side by side test keeps MODE to +0,
+         +1 and -1, as the faithful core does (tests/interpreter_fuzz.c), so
+         there is no faithful run to compare a MODE of -0 with. (Entered only
+         from V/SC's -0 slot.)
 
 src/kalman_filter/kalman_filter.c
   jet_time, lines 34-35 (2 unrun) d369bea4
@@ -2765,7 +2995,9 @@ src/landing_guidance/redesignator.c
   redesmon, lines 111-112 (2 unrun) 0498c6bb
     | case NEGATIVE: count_em(); return; /* (never) */
     | case IS_MINUS_ZERO: goto zerlina;  /* (never) */
-    why: [never]
+    why: [impossible] ELVIRA has just been given channel 31's complement
+         masked with ALL4BITS (the XCH before the CCS): +0 or positive, never
+         negative and never -0.
 
 src/p20_p25/designate.c
   stdesig1, line 458 (1 unrun) 66eecf0b
@@ -2860,7 +3092,9 @@ src/p20_p25_cm/p22.c
     | tc_at(S22DSPP + 1u);         /* TC S22DSPPA */
     | s22dsppa_display();
     | break;
-    why: [never]
+    why: [impossible] A is 22SUBSCL less BIT14, and in the AGC's adder a sum
+         is +0 only when both numbers are +0, which BIT14's complement is
+         not. (A 22SUBSCL of BIT14 gives -0, which has its own case.)
 
 src/p20_p25_cm/r57.c
   r57_after_exit, line 57 (1 unrun) fccab479
@@ -3031,24 +3265,6 @@ src/pinball/keys.c
     why: [open]
 
 src/pinball/lights.c
-  vbtstlts, lines 55-57 (3 unrun) 1216194e
-    | {
-    | tc(VBTSTLTS, BANKCALL); /* CADR CHKPOOH */
-    | }
-    why: [open]
-  tstlts1, line 118 (1 unrun) 9d03d3f9
-    | set_A(SHOLTS);
-    why: [open]
-  tstlts3, lines 182-184 (3 unrun) ff570073
-    | cs(ADDRESS_OF(OPTMODES));
-    | mask(BIT7);
-    | ads(ADDRESS_OF(OPTMODES));
-    why: [open]
-  error_, lines 245-247 (3 unrun) ff570073
-    | cs(ADDRESS_OF(OPTMODES));
-    | mask(BIT7);
-    | ads(ADDRESS_OF(OPTMODES));
-    why: [open]
   force_bit12, lines 304-305 (2 unrun) d6fbe208
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled(); /* the count runs 10 to 0 */
@@ -3200,7 +3416,7 @@ src/r60_62/r60_62.c
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled();
     why: [not-modelled]
-  toballc_after_godspr, lines 745-746 (2 unrun) 7013710f
+  chklinus, lines 745-746 (2 unrun) 7013710f
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled(); /* (a masked bit) */
     why: [not-modelled]

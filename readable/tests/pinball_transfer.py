@@ -113,7 +113,7 @@ def build(objects):
     compiled = dict(zip([u[0] for u in units], compile_all(flags, units)))
     common = [compiled[s] for s in sources if s != TRAMPOLINE] + [compiled[stirred], compiled[noun_z]]
     NATIVE.parent.mkdir(parents=True, exist_ok=True)
-    subprocess.run([cb.linker(CC), '-O2', *flags, *common, compiled[TRAMPOLINE],
+    subprocess.run([*cb.link(CC), '-O2', *flags, *common, compiled[TRAMPOLINE],
                     compiled['tools/lanec/native.c'], *objects, *cb.LINK, '-o', str(NATIVE)], cwd=PORT, check=True)
     # The step check (tests/pinball_steps.c): the readable trampoline as
     # readable_lanec_pin_run_<m>, beside the faithful one.
@@ -123,7 +123,7 @@ def build(objects):
         subprocess.run(['objcopy', *(f'--redefine-sym=lanec_pin_run_{m}=readable_lanec_pin_run_{m}' for m in ('lm', 'cm')),
                         o, str(renamed_o)], check=True)
         steps_objects.append(str(renamed_o))
-    subprocess.run([cb.linker(CC), '-O2', *flags, *common, compiled[TRAMPOLINE], compiled[steps], *steps_objects,
+    subprocess.run([*cb.link(CC), '-O2', *flags, *common, compiled[TRAMPOLINE], compiled[steps], *steps_objects,
                     *cb.LINK, '-o', str(STEPS)], cwd=PORT, check=True)
     # The oracle: the port's, with pin-stirred (the port's own trampoline;
     # the oracle runs the original program).

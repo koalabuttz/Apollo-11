@@ -154,7 +154,7 @@ void noibnksw(void)
     case IS_PLUS_ZERO: incr(ADDRESS_OF(LOC)); break;
     /* (never: NEWJOB is +0 or a positive core-set offset) */
     case NEGATIVE: break;
-    case IS_MINUS_ZERO: continue_at(NEWOPS + 1u); return;
+    case IS_MINUS_ZERO: continue_at(NEWOPS + 1u); return; /* (never) */
     }
     continue_at(NEWOPS);
 }
@@ -220,9 +220,9 @@ void diradres(void)
     cs(indexed(1u, LOC));
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: pushup(); return;
-    case IS_PLUS_ZERO:
-        /* (never: the next word is never -0. The AGC would run NEG4, DEC -4,
-         * as MASK 7773, which leaves A +0 and goes on below.) */
+    case IS_PLUS_ZERO: /* (never: the next word is never -0) */
+        /* (The AGC would run NEG4, DEC -4, as MASK 7773, which leaves A +0 and
+         * goes on below.) */
         /* fall through */
     case NEGATIVE: incr(ADDRESS_OF(LOC)); break; /* "TO SHOW WE PICKED UP A WORD" */
     case IS_MINUS_ZERO: break;                   /* (never: an address word +0) */
@@ -490,7 +490,7 @@ void indjump(unsigned order)
     case 032: dsu(); return;    /* DP subtract */
     case 033: bdsu(); return;   /* DP subtract from */
     case 034: dad(); return;    /* DP add */
-    case 035:                   /* "AVAILABLE": TCF +0, a TCF to itself (no program uses it) */
+    case 035:                   /* "AVAILABLE": TCF +0, to itself (never: no program has it) */
         continue_at(INDJUMP + 035u);
         return;
     case 036: dmp1(); return; /* DP multiply */

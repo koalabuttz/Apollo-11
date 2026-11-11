@@ -37,6 +37,11 @@
  * failing case: the counts and floors are for the cases run).
  *
  *   interpreter-cases-<m> <lm.bin> <cm.bin> [cases] [seed]
+ *   interpreter-cases-<m> <lm.bin> <cm.bin> shifts
+ *
+ * The second form runs the shift orders, made on purpose (shift_cases(),
+ * below): the random programs shift by whatever count comes up, and these
+ * take each shift order and each count through both cores.
  *
  * Built once per mission. */
 #include "interp_runtime.h"
@@ -262,6 +267,141 @@ static void on_crash(int sig)
 #define MAX_EMPTY   47u
 #define FLOOR_CASES 10000u
 
+/* ---- The shift orders, made on purpose ----
+ * One pass of one order through both cores, from SHIFT_STATES states in
+ * each MODE (double precision, triple, vector):
+ *
+ *   - the sixteen short shifts, a code each: bit 3 of the code set, bit 4
+ *     the direction, and in the last three bits the round and a count of
+ *     1 to 4 for a scalar, a count of 1 to 8 for a vector;
+ *   - the general shift (address order 23), on every address word of the
+ *     form YUL makes: the count in bits 1 to 7, bit 8 set (the pseudo
+ *     sign), bit 9 for a right shift, bit 10 for the round, bit 14 so
+ *     that the word is taken as it stands. Direct, and indexed by X1 and
+ *     by X2 (the word complemented), whose small values here take a small
+ *     count through zero: there bit 8 clears and the shift turns round.
+ *
+ * Each pass must end in both cores with the same status, Z, erasable
+ * memory and channels, as the random programs' passes must. The run is
+ * held to its record: how many passes there are and that every one is
+ * compared. (A pass that the faithful core refuses, or that takes both
+ * states out of the work area's frame, would not be compared: there is
+ * none.) */
+#define SHIFT_STATES 24u
+#define GENERAL      (1u | 023u << 2) /* the general shift's code, direct */
+#define SHIFT_PASSES ((16u + 3u * 2u * 2u * 128u) * 3u * SHIFT_STATES)
+
+struct shift_counts {
+    unsigned passes, compared, refused, left_frame, abandoned, differ;
+};
+
+/* word: the address word after the order, or -1 for none. */
+static void shift_pass(unsigned order, long word, agc_word mode, struct shift_counts *n)
+{
+    static struct {
+        apollo_overlay_state s;
+        agc_word pad[0200000];
+    } fa, ra;
+    agc_word *code = &rope[MISSION][CODE_BANK * 1024u];
+    apollo_overlay_state *f = &fa.s, *r = &ra.s, pre;
+    enum exec_status sf, sr;
+    mission_io fio, rio;
+    unsigned i, diff = 0;
+    bool fw, rw_;
+
+    ++n->passes;
+    /* The order alone in its word (no right-hand code), at the bank's
+     * first word; the next order after it. */
+    code[0] = (agc_word)(~(order + 1u) & 077777u);
+    if (word >= 0) code[1] = (agc_word)word;
+    image(f, MISSION);
+    f->words[0164] = 02000u; /* LOC */
+    f->words[0163] = mode;
+    f->words[4] = (agc_word)(f->words[0165] & 076000u);
+    f->words[6] = (agc_word)(f->words[4] | (f->words[3] >> 8));
+    *r = *f;
+    memset(fa.pad, 0, sizeof fa.pad);
+    memset(ra.pad, 0, sizeof ra.pad);
+    memset(&fio, 0, sizeof fio);
+    fio.interrupt_enabled = 1;
+    rio = fio;
+    pre = *f;
+    if (sigsetjmp(hang, 1)) {
+        ++n->abandoned;
+        return;
+    }
+    arm(300);
+    sf = FAITHFUL(0, f, &fio);
+    READABLE_MCT = 0;
+    sr = READABLE(0, r, &rio);
+    arm(0);
+    if (sf == EXEC_OUT_OF_SCOPE) {
+        ++n->refused;
+        return;
+    }
+    fw = wild(f, &pre) || f->words[067] != pre.words[067];
+    rw_ = wild(r, &pre) || r->words[067] != pre.words[067];
+    if (fw && rw_) {
+        ++n->left_frame;
+        return;
+    }
+    for (i = 0; i < 2048u; ++i) diff += f->words[i] != r->words[i];
+    if (memcmp(fa.pad, ra.pad, sizeof fa.pad)) ++diff;
+    if (fw == rw_ && sf == sr && !diff && !memcmp(&fio, &rio, sizeof fio)) {
+        ++n->compared;
+        return;
+    }
+    if (n->differ++ < 12u) {
+        fprintf(stderr,
+                "shift order %03o word %05lo MODE %05o: status %d/%d, %u words differ "
+                "(faithful/readable):",
+                order, word < 0 ? 0L : word, (unsigned)mode, sf, sr, diff);
+        for (i = 0; i < 2048u && diff; ++i)
+            if (f->words[i] != r->words[i])
+                fprintf(stderr, " %04o=%06o/%06o (was %06o)", i, f->words[i], r->words[i],
+                        pre.words[i]);
+        fprintf(stderr, "\n");
+    }
+}
+
+static int shift_cases(void)
+{
+    static const agc_word modes[3] = {0u, 1u, 077776u};
+    struct shift_counts n;
+    unsigned k, m, s, form, flags, count;
+
+    memset(&n, 0, sizeof n);
+    signal(SIGALRM, on_alarm);
+    signal(SIGSEGV, on_crash);
+    rs = 0x9e3779b97f4a7c15ull ^ 1202u;
+    rnd(2);
+    program(&rope[MISSION][CODE_BANK * 1024u]);
+    for (m = 0; m < 3u; ++m)
+        for (s = 0; s < SHIFT_STATES; ++s) {
+            for (k = 0; k < 16u; ++k) shift_pass(4u | k << 3, -1L, modes[m], &n);
+            /* form: direct, indexed by X1, indexed by X2. flags: bit 9 and
+             * bit 10 of the address word. */
+            for (form = 0; form < 3u; ++form)
+                for (flags = 0; flags < 4u; ++flags)
+                    for (count = 0; count < 128u; ++count) {
+                        unsigned word = 020000u + (flags << 8) + 0200u + count + 1u;
+
+                        shift_pass(GENERAL | (form ? 2u : 0u), form == 2u ? ~word & 077777u : word,
+                                   modes[m], &n);
+                    }
+        }
+    printf("%s shift orders: %u passes, %u compared, %u the faithful core refuses, %u left the "
+           "frame, %u abandoned (%u crashed), %u differ\n",
+           MISSION ? "CM" : "LM", n.passes, n.compared, n.refused, n.left_frame, n.abandoned,
+           crashed, n.differ);
+    if (n.passes != SHIFT_PASSES || n.compared != n.passes) {
+        printf("FAIL: %u passes of %u, %u of them compared and alike\n", n.passes, SHIFT_PASSES,
+               n.compared);
+        return 1;
+    }
+    return 0;
+}
+
 int main(int argc, char **argv)
 {
     static struct {
@@ -275,9 +415,11 @@ int main(int argc, char **argv)
 
     (void)fuzz_main;
     if (argc < 3 || !apollo_rope_load(0, argv[1]) || !apollo_rope_load(1, argv[2])) {
-        fprintf(stderr, "usage: interpreter-cases <lm.bin> <cm.bin> [cases] [seed]\n");
+        fprintf(stderr, "usage: interpreter-cases <lm.bin> <cm.bin> [cases] [seed]\n"
+                        "       interpreter-cases <lm.bin> <cm.bin> shifts\n");
         return 2;
     }
+    if (argc > 3 && !strcmp(argv[3], "shifts")) return shift_cases();
     first = getenv("FUZZ_FIRST") ? (unsigned)atoi(getenv("FUZZ_FIRST")) : 0u;
     if (first > cases) first = cases;
     for (c = first; c < cases; ++c) {

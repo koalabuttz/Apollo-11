@@ -7,15 +7,32 @@ The gates say that what runs is right. This says what runs. Every target of
 build/linecov) and run, then the x86 flight program is built the same way
 and flies gate 2's scenarios. Each program that ran left its counts; for
 each one llvm-cov gives the count of every line of src/ compiled into it,
-and a line is run if any program ran it.
+and a line is run if any program ran it. What is counted is every line the
+build compiled, in a program that ran or not: each compile leaves its
+object's lines (tests/coverage_cc.py, under build/linecov/maps), and a
+line of a function that no program holds is a line not run.
 
 The lines left are grouped into stretches (unrun lines of one function with
 no run line between them), and each stretch must stand in
 tests/line_coverage.txt with the reason it does not run. The check fails on
 a stretch that is not there, on one that is there and now runs, and on one
-with no reason. A stretch is known by its file, its function and its text
-(and, where a function has two with one text, which of them it is), not by
-its line numbers, so an edit elsewhere in the file does not move it.
+whose reason does not stand: none, one of no class, or one of a class that
+does not fit the stretch (fits(), below: a [refusal] outside the bindings,
+a [not-modelled] with no not_modelled() at its lines, a [never] with no
+comment there that says never, a [never] or an [impossible] that does not
+say why). A stretch is known by its file, its function and its text (and,
+where a function has two with one text, which of them it is), not by its
+line numbers, so an edit elsewhere in the file does not move it. The line
+numbers and the counts in the ledger are those of the measure it was last
+written from, for the reader; they are not compared.
+
+Every .c file under src/ must be accounted for too: it has lines that are
+counted, or the ledger names it among the sources with none, as one the
+build compiles that holds no line to run ([no-code]: tables and names) or
+as one no target compiles ([not-built], with why). The check fails on a
+source with no lines that the ledger does not name, on one it names that
+has lines now, and on one named as the wrong kind. (A header's lines are
+counted where a source that includes it is compiled.)
 
   line_coverage.py             build, run, measure, and hold to the ledger
   line_coverage.py --measure   measure the counts of the last run again
@@ -24,6 +41,7 @@ its line numbers, so an edit elsewhere in the file does not move it.
   line_coverage.py --list F    print file F (as src/...) with its counts
   line_coverage.py --self-check  the check itself on made-up measures and
                                ledgers, with no build (make all runs it)
+  line_coverage.py --jobs N    make all with N jobs at once (4)
 
 `make line-coverage`, from readable/. Needs clang with its profile runtime
 (libclang-rt-<n>-dev), llvm-profdata, llvm-cov, and the port's toolchain
@@ -33,7 +51,9 @@ A macro's lines are not counted where the macro is defined: they run where
 it is used, and that line is counted. Nor is a line with no code on it.
 
 What it cannot see: a line is run if it ran once, in any state; and a line
-with two branches on it is run if either was.
+with two branches on it is run if either was. Nor can the check tell a
+reason that is wrong from one that is right: it holds each reason to its
+class's form, and a person reads the argument.
 """
 import collections
 import hashlib
@@ -50,6 +70,7 @@ READABLE = Path(__file__).resolve().parents[1]
 SRC = READABLE / 'src'
 BUILD = READABLE / 'build/linecov'
 PROFILES = BUILD / 'profiles'
+MAPS = BUILD / 'maps'
 LEDGER = READABLE / 'tests/line_coverage.txt'
 JOBS = 4           # of make all
 SHOWN = 6          # lines of a stretch the ledger prints
@@ -57,6 +78,12 @@ NO_REASON = 'TODO'
 PROFDATA = COV = None   # tools() finds them
 ENTRY = re.compile(r'  (\S+), lines? (\d+)(?:-(\d+))? \((\d+) unrun\) ([0-9a-f]{8})$')
 CLASS = re.compile(r'\[([a-z0-9-]+)\] (.+)$')
+REASON = re.compile(r'\[([a-z0-9-]+)\](?: (.+))?$', re.S)
+SOURCE = re.compile(r'  - src/(\S+): (.*)$')
+SOURCES_HEAD = 'Sources of src/ with no line counted:'
+# The classes a source with no line counted is named under, and whether the
+# build compiles a source of that class.
+SOURCE_CLASSES = {'no-code': True, 'not-built': False}
 
 
 def tools():
@@ -88,9 +115,11 @@ def fly(jobs):
     PROFILES.mkdir(parents=True, exist_ok=True)
     for old in PROFILES.glob('*.profraw'):
         old.unlink()
-    # %m: one file for each program (its counts added up over its runs);
-    # four of them, so runs at once do not wait on one file.
-    environment = {**os.environ, 'LINE_COVERAGE': '1', 'LLVM_PROFILE_FILE': str(PROFILES / '%4m.profraw')}
+    # Each program writes its counts to files of its own name there
+    # (tests/coverage_cc.py links the name in; its counts are added up over
+    # its runs, in four files, so that runs at once do not wait on one).
+    environment = {**os.environ, 'LINE_COVERAGE': '1'}
+    environment.pop('LLVM_PROFILE_FILE', None)
     # Started by make line-coverage, the makes below would be a second level
     # down, and the test scripts' own makes a third, where make prints its
     # directory lines into the lists those scripts read. So these start at
@@ -130,11 +159,21 @@ def profile_ids(profile):
     return shown.split('Binary IDs:')[1].split()
 
 
+def held_twice(profile):
+    """The names a program holds more than one function under, from one of
+    its count files, which lists every function it holds."""
+    shown = subprocess.run([PROFDATA, 'show', '--all-functions', str(profile)], capture_output=True, text=True,
+                           check=True).stdout
+    held = collections.Counter(re.findall(r'^  (\S+):$', shown, re.M))
+    return {name for name, times in held.items() if times > 1}
+
+
 def counts(program, profiles):
-    """One program's lines of src/: {file: {line: count}}, and its
-    functions, {file: {name: first line}}. A function name that stands in
-    two files of one program would have the two's counts added together:
-    that is refused."""
+    """One program's lines of src/: {file: {line: count}}, its functions,
+    {file: {(first line, name)}}, their names as clang keeps their counts,
+    and the names the program holds two functions under. A function name
+    that stands in two files of one program would have the two's counts
+    added together: that is refused."""
     data = BUILD / 'profiles' / (program.name + '.profdata')
     subprocess.run([PROFDATA, 'merge', '-o', str(data), *map(str, profiles)], check=True)
     export = subprocess.run([COV, 'export', '-format=lcov', f'-instr-profile={data}', str(program)],
@@ -155,8 +194,29 @@ def counts(program, profiles):
             if where.setdefault(name, file) != file:
                 sys.exit(f'line_coverage: {program.name}: {name} is a function of {where[name]} and of {file}; '
                          'their counts cannot be told apart')
-            functions.setdefault(file, {})[name.split(':')[-1]] = int(line)
-    return lines, functions
+            functions.setdefault(file, set()).add((int(line), name.split(':')[-1]))
+    return lines, functions, set(where), held_twice(profiles[0])
+
+
+def compiled():
+    """What the build compiled of src/, from what each compile left under
+    MAPS (tests/coverage_cc.py): the sources, every line with code,
+    {file: {line: 0}}, and the functions, {file: {(first line, name)}}."""
+    sources, lines, functions = set(), {}, {}
+    prefix = str(SRC) + os.sep
+    for kept in sorted(MAPS.glob('*.lcov')):
+        file = None
+        for record in kept.read_text().split('\n'):
+            if record.startswith('SOURCE:'):
+                sources.add(record[7:])
+            elif record.startswith('SF:'):
+                file = record[3:][len(prefix):] if record[3:].startswith(prefix) else None
+            elif file and record.startswith('DA:'):
+                lines.setdefault(file, {})[int(record[3:].split(',')[0])] = 0
+            elif file and record.startswith('FN:'):
+                line, name = record[3:].split(',', 1)
+                functions.setdefault(file, set()).add((int(line), name.split(':')[-1]))
+    return sources, lines, functions
 
 
 def no_code_lines(file):
@@ -179,7 +239,9 @@ def no_code_lines(file):
 
 def measure():
     """Every program's counts, united: a line is run if any program ran
-    it. Also the programs that left no counts."""
+    it, and a line the build compiled into no program that ran is not run.
+    Also the programs that left no counts, and the sources of src/ that
+    the build compiled."""
     profiles = sorted(PROFILES.glob('*.profraw'))
     if not profiles:
         sys.exit(f'line_coverage: no counts under {PROFILES.relative_to(READABLE)} (run without --measure)')
@@ -190,20 +252,41 @@ def measure():
                 by_id[i].append(profile)
         found = programs()
         ran = [(p, by_id.get(i)) for p, i in zip(found, pool.map(build_id, found)) if i]
-        lines, functions = collections.defaultdict(dict), collections.defaultdict(dict)
-        results = pool.map(lambda pr: counts(*pr), [pr for pr in ran if pr[1]])
-        for program_lines, program_functions in results:
+        lines, functions = collections.defaultdict(dict), collections.defaultdict(set)
+        counted_programs = [pr for pr in ran if pr[1]]
+        results = list(pool.map(lambda pr: counts(*pr), counted_programs))
+        for program_lines, program_functions, _, _ in results:
             for file, counted in program_lines.items():
                 for line, count in counted.items():
                     lines[file][line] = max(lines[file].get(line, 0), count)
             for file, named in program_functions.items():
-                functions[file].update(named)
+                functions[file] |= named
+    # A program that holds two functions under one name has their counts
+    # added together where the two are alike in shape, and shows the lines
+    # of one of them only (both missions' builds of one source in one test;
+    # two files' static functions of one name). tests/coverage_cc.py builds
+    # every program so that none does; one that does is refused here.
+    measured = set().union(*(names for _, _, names, _ in results))
+    for (program, _), (_, _, _, twice) in zip(counted_programs, results):
+        both = sorted(twice & measured)
+        if both:
+            sys.exit(f'line_coverage: {program.name} holds two functions named {both[0]}'
+                     + (f' (and of {len(both) - 1} more names)' if len(both) > 1 else '')
+                     + '; their counts cannot be told apart (tests/coverage_cc.py)')
+    sources, built_lines, built_functions = compiled()
+    if not sources:
+        sys.exit(f'line_coverage: no compile left its lines under {MAPS.relative_to(READABLE)} '
+                 '(run without --measure)')
+    for file, counted in built_lines.items():
+        for line in counted:
+            lines[file].setdefault(line, 0)
+        functions[file] |= built_functions.get(file, set())
     for file in list(lines):
         for line in no_code_lines(file) & set(lines[file]):
             del lines[file][line]
         if not lines[file]:
             del lines[file]
-    return lines, functions, [p.name for p, profiles in ran if not profiles]
+    return lines, functions, [p.name for p, profiles in ran if not profiles], sources
 
 
 def stretches(lines, functions):
@@ -214,7 +297,7 @@ def stretches(lines, functions):
     out = []
     for file in sorted(lines):
         source = (SRC / file).read_text().split('\n')
-        starts = sorted((line, name) for name, line in functions[file].items())
+        starts = sorted(functions[file])
 
         def function(line):
             inside = [name for start, name in starts if start <= line]
@@ -254,16 +337,25 @@ def key_of(found):
 
 
 def read_ledger(path=LEDGER):
-    """The ledger's classes of reason, {name: text}, and its stretches,
-    {key: reason} (keys(), in the ledger's order)."""
-    classes, reasons, seen = {}, {}, collections.Counter()
+    """The ledger's classes of reason, {name: text}, its stretches, {key:
+    reason} (keys(), in the ledger's order), and the sources it names as
+    having no line counted, {file: reason}."""
+    classes, reasons, sources, seen = {}, {}, {}, collections.Counter()
     if not path.is_file():
-        return classes, reasons
-    file = key = None
+        return classes, reasons, sources
+    file = key = listing = None
     for line in path.read_text().split('\n'):
         entry = ENTRY.match(line)
         named = CLASS.match(line)
-        if line.startswith('src/'):
+        source = SOURCE.match(line)
+        if line == SOURCES_HEAD:
+            listing = True
+        elif listing and source and not file:
+            listing = source.group(1)
+            sources[listing] = source.group(2).strip()
+        elif listing and listing is not True and line.startswith('      ') and not file:
+            sources[listing] += ' ' + line.strip()
+        elif line.startswith('src/'):
             file = line[4:].strip()
         elif entry and file:
             name = (file, entry.group(1), entry.group(5))
@@ -274,12 +366,12 @@ def read_ledger(path=LEDGER):
             reasons[key] = line[9:].strip()
         elif line.startswith('         ') and key and reasons.get(key):
             reasons[key] += ' ' + line.strip()
-        elif named and not file:
+        elif named and not file and not listing:
             classes[named.group(1)] = named.group(2)
-        elif line.startswith('    ') and not file and classes and not line.startswith('    |'):
+        elif line.startswith('    ') and not file and not listing and classes and not line.startswith('    |'):
             last = list(classes)[-1]
             classes[last] += ' ' + line.strip()
-    return classes, reasons
+    return classes, reasons, sources
 
 
 def wrap(text, first, rest, width=78):
@@ -292,27 +384,74 @@ def wrap(text, first, rest, width=78):
     return out + [line.rstrip()]
 
 
+def class_of(reason):
+    """A reason's class and what it says after it: (name, why), or (None,
+    reason) for one that starts with no class."""
+    told = REASON.match(reason or '')
+    return (told.group(1), (told.group(2) or '').strip()) if told else (None, reason or '')
+
+
+def fits(name, why, file, text):
+    """What is wrong with a reason of class name, saying why, for a stretch
+    of file with that text; nothing if it fits. Each class of the ledger's
+    head has its rule here."""
+    if name == 'refusal':
+        return '' if file.startswith('binding/') else 'is [refusal] and not in a binding (src/binding)'
+    if name == 'not-modelled':
+        return '' if 'not_modelled' in text else 'is [not-modelled] with no not_modelled() at its lines'
+    if name == 'never' and not re.search(r'\bnever\b', text, re.I):
+        return 'is [never] with no comment at its lines that says never'
+    if name in ('never', 'impossible'):
+        return '' if why else f'is [{name}] and does not say why'
+    return '' if name == 'open' else f'has a class this check has no rule for ([{name}])'
+
+
+def source_fits(name, why, built):
+    """The same for a source the ledger names as having no line counted
+    (built: whether the build compiled it)."""
+    if name not in SOURCE_CLASSES:
+        return f'is named under [{name}], which is no class of a source' if name else 'has no class'
+    if SOURCE_CLASSES[name] != built:
+        return f'is named [{name}] and the build ' + ('compiles it' if built else 'does not compile it')
+    return '' if built or why else 'is [not-built] and does not say why'
+
+
+def without_lines(lines, compiled_sources, named):
+    """The .c files of src/ with no line counted, {file: reason}: the
+    ledger's reason for each it names; for one it does not, [no-code] if
+    the build compiles it, and none if not."""
+    out = {}
+    for path in sorted(SRC.rglob('*.c')):
+        file = str(path.relative_to(SRC))
+        if file not in lines:
+            out[file] = named.get(file) or ('[no-code]' if file in compiled_sources else NO_REASON)
+    return out
+
+
 def by_reason(found, reasons):
     """How much stands under each class of reason: 'name: N lines in M
     stretches', and the same for the stretches with a reason of their own."""
     lines, count = collections.Counter(), collections.Counter()
     for s, key in zip(found, key_of(found)):
-        reason = reasons.get(key, '') or NO_REASON
-        name = reason[1:reason.index(']')] if reason.startswith('[') and ']' in reason else 'a reason of its own'
+        name = class_of(reasons.get(key, ''))[0] or 'no class'
         lines[name] += s[4]
         count[name] += 1
     return [f'{name}: {lines[name]} lines in {count[name]} stretches' for name in sorted(lines)]
 
 
-def write_ledger(path, version, lines, found, never, classes, reasons):
+def write_ledger(path, version, lines, found, never, classes, reasons, sources):
+    """(sources: the .c files of src/ with no line counted, {file: reason}.)"""
     total = sum(len(counted) for counted in lines.values())
     unrun = sum(s[4] for s in found)
+    sources_with = sum(1 for file in lines if file.endswith('.c'))
     out = ['# The lines of readable/src that no test and no scenario runs, and why.',
            '# tests/line_coverage.py --write writes this file and keeps each reason;',
            '# `make line-coverage` measures again and holds the tree to it.',
            '#',
            f'# Measured with {version}.',
-           f'# {len(lines)} files have lines that run; {total} such lines; {unrun} of them unrun',
+           f'# {len(lines)} files hold lines to run ({sources_with} of the {sources_with + len(sources)} .c files '
+           'under src/, and',
+           f'# {len(lines) - sources_with} headers); {total} such lines; {unrun} of them unrun',
            f'# ({100 * unrun / total:.2f}%), in {len(found)} stretches of {len({s[0] for s in found})} files.',
            '# Built and never run: ' + (', '.join(never) or 'no program') + '.',
            '#',
@@ -323,6 +462,9 @@ def write_ledger(path, version, lines, found, never, classes, reasons):
            '']
     for name in sorted(classes):
         out += wrap(classes[name], f'[{name}] ', '    ')
+    out += ['', SOURCES_HEAD]
+    for file in sorted(sources):
+        out += wrap(sources[file] or NO_REASON, f'  - src/{file}: ', '      ')
     out.append('')
     file = None
     for s, key in zip(found, key_of(found)):
@@ -340,18 +482,48 @@ def write_ledger(path, version, lines, found, never, classes, reasons):
     path.write_text('\n'.join(out) + '\n')
 
 
-def judge(found, classes, reasons):
-    """What is wrong between the measured stretches and the ledger: the
-    stretches not in it, its keys that are not unrun stretches now, and its
-    keys with no reason (none, NO_REASON, or a class its head does not
-    define)."""
+def judge(found, classes, reasons, sources=None, named=None, compiled_sources=()):
+    """What is wrong between the measure and the ledger: the measured
+    stretches not in it; its keys that are not unrun stretches now; its
+    keys whose reason does not stand, each with what is wrong, [(key,
+    what)] (no reason, one of no class or of a class its head does not
+    define, or one that does not fit the stretch: fits()); and what is
+    wrong with the sources it names as having no line counted, a line each
+    (sources: those the measure found, without_lines(); named: the
+    ledger's; compiled_sources: those the build compiled)."""
     measured = dict(zip(key_of(found), found))
     new = [s for key, s in measured.items() if key not in reasons]
     gone = [key for key in reasons if key not in measured]
-    unexplained = [key for key, reason in reasons.items() if key in measured and
-                   (not reason or reason == NO_REASON or
-                    (reason.startswith('[') and reason[1:reason.index(']')] not in classes))]
-    return new, gone, unexplained
+    unexplained = []
+    for key, reason in reasons.items():
+        if key not in measured:
+            continue
+        name, why = class_of(reason)
+        if not reason or reason == NO_REASON:
+            what = 'has no reason'
+        elif name is None:
+            what = 'has a reason of no class'
+        elif name not in classes:
+            what = f'has a class the head does not define ([{name}])'
+        else:
+            what = fits(name, why, key[0], '\n'.join(measured[key][6]))
+        if what:
+            unexplained.append((key, what))
+    files = []
+    sources, named = sources or {}, named or {}
+    for file in sorted(set(sources) | set(named)):
+        if file not in named:
+            files.append(f'src/{file} has no line counted and the ledger does not name it'
+                         + ('' if file in compiled_sources else ' (no target compiles it)'))
+        elif file not in sources:
+            files.append(f'src/{file} is named as having no line counted and '
+                         + ('has lines now' if (SRC / file).is_file() else 'is no file'))
+        else:
+            name, why = class_of(named[file])
+            what = source_fits(name, why, file in compiled_sources)
+            if what:
+                files.append(f'src/{file} {what}')
+    return new, gone, unexplained, files
 
 
 def self_check():
@@ -363,48 +535,97 @@ def self_check():
         digest = hashlib.sha1('\n'.join(text).encode()).hexdigest()[:8]
         return (file, function, line, line + len(text) - 1, len(text), digest, text)
     found = [stretch('a/a.c', 'first', 10, ['return 0; /* never: no such word */']),
-             stretch('a/a.c', 'twice', 20, ['leave();']),
-             stretch('a/a.c', 'twice', 30, ['leave();']),
-             stretch('b/b.c', 'long_one', 5, [f'x += {n};' for n in range(SHOWN + 3)])]
+             stretch('binding/a.c', 'twice', 20, ['leave();']),
+             stretch('binding/a.c', 'twice', 30, ['leave();']),
+             stretch('b/b.c', 'long_one', 5, [f'x += {n};' for n in range(SHOWN + 3)]),
+             stretch('b/b.c', 'marked', 40, ['default: not_modelled(); return;'])]
     classes = {'never': 'The comment says the outcome never comes, a text long enough that the ledger has '
                         'to wrap it onto a second line of its head.',
-               'refusal': 'How a binding refuses.'}
-    whys = ['[never]', '[refusal]', '[refusal]', 'A reason of its own, long enough that the ledger has to wrap '
-            'it onto a second line under the stretch it is the reason of.']
+               'impossible': 'The lines before rule it out.',
+               'not-modelled': 'Marked so.',
+               'open': 'Not looked at yet.',
+               'refusal': 'How a binding refuses.',
+               'no-code': 'A source of tables.',
+               'not-built': 'A source no target compiles.'}
+    whys = ['[never] No program assembles such a word.', '[refusal]', '[refusal]',
+            '[impossible] A reason long enough that the ledger has to wrap it onto a second line under the '
+            'stretch it is the reason of.', '[not-modelled]']
     reasons = dict(zip(key_of(found), whys))
-    lines = {'a/a.c': {10: 0, 20: 0, 30: 0, 40: 1}, 'b/b.c': {n: 0 for n in range(5, 5 + SHOWN + 3)}}
-    failures = []
+    lines = {'a/a.c': {10: 0, 40: 1}, 'binding/a.c': {20: 0, 30: 0},
+             'b/b.c': {**{n: 0 for n in range(5, 5 + SHOWN + 3)}, 40: 0}}
+    named = {'t/tables.c': '[no-code]',
+             't/spare.c': '[not-built] Kept for a port that is not started, a reason long enough to wrap onto '
+                          'a second line.'}
+    built = {'t/tables.c'}
+    failures, tried = [], []
 
-    def expect(name, measured, edit, want):
+    def expect(name, measured, edit, want, sources=None, compiled_sources=None):
+        tried.append(name)
         with tempfile.TemporaryDirectory() as scratch:
             ledger = Path(scratch) / 'ledger.txt'
-            write_ledger(ledger, 'no compiler', lines, found, [], classes, reasons)
+            write_ledger(ledger, 'no compiler', lines, found, [], classes, reasons, named)
             ledger.write_text(edit(ledger.read_text()))
-            got = tuple(len(part) for part in judge(measured, *read_ledger(ledger)))
+            read = read_ledger(ledger)
+            got = tuple(len(part) for part in judge(measured, read[0], read[1], named if sources is None else sources,
+                                                    read[2], built if compiled_sources is None else compiled_sources))
         if got != want:
-            failures.append(f'{name}: {got} (not in the ledger, not unrun now, no reason), expected {want}')
+            failures.append(f'{name}: {got} (not in the ledger, not unrun now, a reason that does not stand, '
+                            f'sources), expected {want}')
 
     def same(text):
         return text
-    expect('a ledger read back', found, same, (0, 0, 0))
+
+    def swap(old, new):
+        def edit(text):
+            if text.count(old) != 1:
+                failures.append(f'the self-check\'s own ledger has not one "{old}"')
+            return text.replace(old, new)
+        return edit
+    expect('a ledger read back', found, same, (0, 0, 0, 0))
     if not failures:
         with tempfile.TemporaryDirectory() as scratch:
             ledger = Path(scratch) / 'ledger.txt'
-            write_ledger(ledger, 'no compiler', lines, found, [], classes, reasons)
-            if read_ledger(ledger) != (classes, reasons):
-                failures.append('a ledger read back is not the classes and reasons it was written from')
-    expect('a new unrun stretch', found + [stretch('b/b.c', 'other', 90, ['y = 1;'])], same, (1, 0, 0))
-    expect('a stretch that now runs', found[1:], same, (0, 1, 0))
-    expect('the first of two with one text now runs', found[:1] + found[2:], same, (0, 1, 0))
-    expect('a third with the same text', found[:3] + [stretch('a/a.c', 'twice', 35, ['leave();'])] + found[3:],
-           same, (1, 0, 0))
-    expect('a text that changed', [stretch('a/a.c', 'first', 10, ['return 1;'])] + found[1:], same, (1, 1, 0))
-    expect('no reason', found, lambda text: text.replace('why: [never]', 'why: ' + NO_REASON), (0, 0, 1))
-    expect('a class the head does not define', found, lambda text: text.replace('why: [never]', 'why: [nonesuch]'),
-           (0, 0, 1))
+            write_ledger(ledger, 'no compiler', lines, found, [], classes, reasons, named)
+            if read_ledger(ledger) != (classes, reasons, named):
+                failures.append('a ledger read back is not the classes, reasons and sources it was written from')
+    expect('a new unrun stretch', found + [stretch('b/b.c', 'other', 90, ['y = 1;'])], same, (1, 0, 0, 0))
+    expect('a stretch that now runs', found[1:], same, (0, 1, 0, 0))
+    expect('the first of two with one text now runs', found[:1] + found[2:], same, (0, 1, 0, 0))
+    expect('a third with the same text',
+           found[:3] + [stretch('binding/a.c', 'twice', 35, ['leave();'])] + found[3:], same, (1, 0, 0, 0))
+    expect('a text that changed', [stretch('a/a.c', 'first', 10, ['return 1;'])] + found[1:], same, (1, 1, 0, 0))
+    # A reason that does not stand.
+    never, impossible = 'why: [never] No program assembles such a word.', 'why: [impossible] A reason long'
+    expect('no reason', found, swap(never, 'why: ' + NO_REASON), (0, 0, 1, 0))
+    expect('a class the head does not define', found, swap(never, 'why: [nonesuch] No such word.'), (0, 0, 1, 0))
+    expect('a reason of no class', found, swap(never, 'why: No program assembles such a word.'), (0, 0, 1, 0))
+    expect('a class that is not closed', found, swap(never, 'why: [never No such word.'), (0, 0, 1, 0))
+    expect('a source\'s class on a stretch', found, swap(never, 'why: [no-code]'), (0, 0, 1, 0))
+    expect('a [never] that does not say why', found, swap(never, 'why: [never]'), (0, 0, 1, 0))
+    expect('an [impossible] that does not say why', found,
+           lambda text: re.sub(r'why: \[impossible\][^\n]*\n(?:         [^\n]*\n)*', 'why: [impossible]\n', text),
+           (0, 0, 1, 0))
+    expect('a [never] whose lines do not say never', found, swap(impossible, 'why: [never] A reason long'),
+           (0, 0, 1, 0))
+    expect('a [refusal] outside the bindings', found, swap(never, 'why: [refusal]'), (0, 0, 1, 0))
+    expect('a [not-modelled] with no not_modelled()', found, swap(never, 'why: [not-modelled]'), (0, 0, 1, 0))
+    expect('an [open] stretch', found, swap(never, 'why: [open]'), (0, 0, 0, 0))
+    # The sources with no line counted.
+    expect('a source with no lines that the ledger does not name', found, same, (0, 0, 0, 1),
+           sources={**named, 't/new.c': ''})
+    expect('a named source that has lines now', found, same, (0, 0, 0, 1), sources={'t/tables.c': ''})
+    expect('a [no-code] source the build does not compile', found, same, (0, 0, 0, 1), compiled_sources=set())
+    expect('a [not-built] source the build compiles', found, same, (0, 0, 0, 1),
+           compiled_sources={'t/tables.c', 't/spare.c'})
+    expect('a [not-built] source that does not say why', found,
+           lambda text: re.sub(r'(spare\.c: \[not-built\])[^\n]*\n(?:      [^\n]*\n)*', r'\1\n', text),
+           (0, 0, 0, 1))
+    expect('a source with no class', found, swap('tables.c: [no-code]', 'tables.c: tables'), (0, 0, 0, 1))
+    expect('a source under a stretch\'s class', found, swap('tables.c: [no-code]', 'tables.c: [never] tables'),
+           (0, 0, 0, 1))
     for failure in failures:
         print(f'FAIL line coverage self-check: {failure}')
-    print(f"{'FAIL' if failures else 'ok  '} line coverage self-check: 9 made-up measures and ledgers, "
+    print(f"{'FAIL' if failures else 'ok  '} line coverage self-check: {len(tried)} made-up measures and ledgers, "
           f'{len(failures)} judged wrongly')
     return 1 if failures else 0
 
@@ -424,7 +645,7 @@ OPTIONS = ('--measure', '--write', '--list', '--self-check', '--fly', '--jobs')
 
 
 def main():
-    args = sys.argv[1:]
+    args = [part for a in sys.argv[1:] for part in (a.split('=', 1) if a.startswith('--') else [a])]
     # (An option this does not know must not start half an hour's build.)
     unknown = [a for a in args if a.startswith('-') and a not in OPTIONS]
     if unknown:
@@ -436,37 +657,41 @@ def main():
     jobs = int(args[args.index('--jobs') + 1]) if '--jobs' in args else JOBS
     if not {'--measure', '--write', '--list'} & set(args) or '--fly' in args:
         fly(jobs)
-    lines, functions, never = measure()
+    lines, functions, never, compiled_sources = measure()
     if '--list' in args:
         listing(lines, args[args.index('--list') + 1])
         return 0
     found = stretches(lines, functions)
-    classes, reasons = read_ledger()
+    classes, reasons, named = read_ledger()
+    sources = without_lines(lines, compiled_sources, named)
     total = sum(len(counted) for counted in lines.values())
     unrun = sum(s[4] for s in found)
     print(f'line coverage: {len(lines)} files, {total} lines, {unrun} unrun ({100 * unrun / total:.2f}%) in '
-          f'{len(found)} stretches of {len({s[0] for s in found})} files; built and never run: '
-          f'{", ".join(never) or "no program"}')
+          f'{len(found)} stretches of {len({s[0] for s in found})} files; {len(sources)} sources with no line '
+          f'counted; built and never run: {", ".join(never) or "no program"}')
     if '--write' in args:
-        write_ledger(LEDGER, version, lines, found, never, classes, reasons)
+        write_ledger(LEDGER, version, lines, found, never, classes, reasons, sources)
         print(f'wrote {LEDGER.relative_to(READABLE)}')
         return 0
     for line in by_reason(found, reasons):
         print(f'  {line}')
-    new, gone, unexplained = judge(found, classes, reasons)
+    new, gone, unexplained, files = judge(found, classes, reasons, sources, named, compiled_sources)
     for s in new[:40]:
         print(f'FAIL src/{s[0]}: {s[1]}, lines {s[2]}-{s[3]} ({s[4]} unrun) is not run and not in the ledger')
     for key in gone[:40]:
         print(f'FAIL src/{key[0]}: {key[1]} {key[2]} is in the ledger and is not an unrun stretch now')
-    for key in unexplained[:40]:
-        print(f'FAIL src/{key[0]}: {key[1]} {key[2]} has no reason')
-    bad = len(new) + len(gone) + len(unexplained)
+    for key, what in unexplained[:40]:
+        print(f'FAIL src/{key[0]}: {key[1]} {key[2]} {what}')
+    for line in files[:40]:
+        print(f'FAIL {line}')
+    bad = len(new) + len(gone) + len(unexplained) + len(files)
     print(f"{'FAIL' if bad else 'ok  '} line coverage against {LEDGER.relative_to(READABLE)}: {len(new)} unrun "
-          f'stretches not in it, {len(gone)} of its stretches not unrun now, {len(unexplained)} without a reason')
+          f'stretches not in it, {len(gone)} of its stretches not unrun now, {len(unexplained)} with a reason '
+          f'that does not stand, {len(files)} sources not accounted for')
     if bad:
         # What --write would make of this measure, for a run whose tree
         # is not at hand (CI keeps it).
-        write_ledger(BUILD / LEDGER.name, version, lines, found, never, classes, reasons)
+        write_ledger(BUILD / LEDGER.name, version, lines, found, never, classes, reasons, sources)
         print(f'the ledger as measured is {(BUILD / LEDGER.name).relative_to(READABLE)}')
     return 1 if bad else 0
 

@@ -132,7 +132,7 @@ void vxsc(void)
     case POSITIVE:
     case IS_PLUS_ZERO: dvxsc(); break;
     case NEGATIVE: vvxsc(); break;
-    case IS_MINUS_ZERO: vvxsc_plus1(); break;
+    case IS_MINUS_ZERO: vvxsc_plus1(); break; /* (never) */
     }
 }
 
@@ -443,7 +443,7 @@ void v_sc(void)
     case POSITIVE:
     case IS_PLUS_ZERO: dv_sc(); break;
     case NEGATIVE: vv_sc(); break;
-    case IS_MINUS_ZERO: vv_sc_plus1(); break;
+    case IS_MINUS_ZERO: vv_sc_plus1(); break; /* (never) */
     }
 }
 
@@ -455,7 +455,7 @@ static void vv_sc(void)
 
 static void vv_sc_plus1(void)
 {
-    ca(indexed(1u, ADDRWD));
+    ca(indexed(1u, ADDRWD)); /* (never: only from V/SC's -0 slot) */
     v_sc1();
 }
 
