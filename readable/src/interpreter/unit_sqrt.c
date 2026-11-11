@@ -245,7 +245,8 @@ void dsq(void)
 
 /* ABVALABS -- LM p. 1075, CM p. 1180. "ABVAL OR ABS INSTRUCTION": ABS on a
  * scalar, ABVAL on a vector, which leaves the square of the length in
- * LVSQUARE and runs on into SQRT. (A MODE of -0 would skip ABVAL's TC.) */
+ * LVSQUARE and runs on into SQRT. (MODE is never -0: it would skip ABVAL's
+ * TC.) */
 void abvalabs(void)
 {
     switch (ccs_at(ADDRESS_OF(MODE))) {
@@ -344,8 +345,9 @@ void vsq(void)
 /* PUSH -- LM p. 1077, CM p. 1182. "PUSH DOWN MPAC LEAVING IT LOADED."
  * "PUSH DOWN FIRST TWO REGISTERS IN EACH" case, "INCREMENT PUSHDOWN
  * POINTER" by the mode's size (NO.WDS), then the rest: MPAC +2 for triple
- * precision, the Y and Z components for a vector. (A MODE of -0 would skip
- * the vector's EXTEND: its DCA MPAC +3 would run as CA MPAC +4.) */
+ * precision, the Y and Z components for a vector. (MODE is never -0: it
+ * would skip the vector's EXTEND, and the DCA MPAC +3 would run as CA MPAC
+ * +4.) */
 void push(void)
 {
     dca(MPAC_AT(0u));
@@ -566,7 +568,7 @@ static void arghi(void)
 
 /* ARGHI +4: "X0/2 (ARGLO ENTERS HERE)." Two Newton steps: "X1 = X0/2 +
  * .5(MPAX/2)/(X0/2)" in single precision, then "X2 = X1/2 + (MPAC/2)X1" in
- * double, which "OVERFLOWS IF ARG. NEAR POSMAX". */
+ * double, which "OVERFLOWS IF ARG. NEAR POSMAX". (It never does: the largest's root fits.) */
 static void arghi_plus4(void)
 {
     if (!ts(BUF_AT(0u))) ca(MPAC_AT(0u)); /* "SINGLE-PRECISION THROUGHOUT." */

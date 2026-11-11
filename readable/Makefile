@@ -540,11 +540,47 @@ $(BUILD)/interpreter-cases-cm: $(INTERPRETER_SOURCES:src/%.c=$(BUILD)/cases-cm/%
 		$(BUILD)/faithful-cm/interp_core.o tests/interpreter_fuzz.c $(PORT)/tools/interp_core_fuzz.c
 	$(CC) $(IC_CFLAGS) $(INCLUDES) $(CM) $(IC_COMMON) $(filter %.o,$^) tests/interpreter_fuzz.c -o $@
 
-interpreter-cases: $(BUILD)/interpreter-cases-lm $(BUILD)/interpreter-cases-cm
+# tests/interpreter_side_cases.c enters the readable interpreter where
+# basic code does (src/binding/interpreter_basic.c) and runs the faithful
+# port's routines on the same random states, some of them states no program
+# makes. The faithful routines are built here as the flight program has
+# them: in three parts, part j with faithful<j>_ before each of its names.
+IS_COMMON := $(PORT)/src/agc_image_ops.c $(PORT)/src/agc_transfer.c $(PORT)/src/agc_word.c \
+	$(PORT)/src/agc_multiword.c $(PORT)/src/agc_hardware_divide.c $(PORT)/src/rope_image_host.c
+IS_NAMES := interpreter_basic interpreter_interpretive interpreter_points interpreter_cadr_words \
+	interpreter_externals
+IS_PARTS := 1 2 3
+$(BUILD)/interpreter-side-faithful-lm-%.o: $(PORT)/src/lm_interpreter.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -DLM_INTERPRETER_FLIGHT_PART=$* \
+		$(foreach n,$(IS_NAMES),-Dlm_$(n)=faithful$*_lm_$(n)) -c $< -o $@
+$(BUILD)/interpreter-side-faithful-cm-%.o: $(PORT)/src/cm_interpreter.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -DCM_INTERPRETER_FLIGHT_PART=$* \
+		$(foreach n,$(IS_NAMES),-Dcm_$(n)=faithful$*_cm_$(n)) -c $< -o $@
+$(BUILD)/interpreter-side-seams-lm.o: tests/interpreter_side_seams.c $(HEADERS)
+	@mkdir -p $(dir $@)
+	$(CC) $(READABLE_CFLAGS) $(INCLUDES) $(LM) -c $< -o $@
+$(BUILD)/interpreter-side-seams-cm.o: tests/interpreter_side_seams.c $(HEADERS)
+	@mkdir -p $(dir $@)
+	$(CC) $(READABLE_CFLAGS) $(INCLUDES) $(CM) -c $< -o $@
+$(BUILD)/interpreter-side-cases-lm: $(INTERPRETER_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) \
+		$(IS_PARTS:%=$(BUILD)/interpreter-side-faithful-lm-%.o) $(BUILD)/interpreter-side-seams-lm.o \
+		tests/interpreter_side_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(IS_COMMON) $(filter %.o,$^) tests/interpreter_side_cases.c -o $@
+$(BUILD)/interpreter-side-cases-cm: $(INTERPRETER_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) \
+		$(IS_PARTS:%=$(BUILD)/interpreter-side-faithful-cm-%.o) $(BUILD)/interpreter-side-seams-cm.o \
+		tests/interpreter_side_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(IS_COMMON) $(filter %.o,$^) tests/interpreter_side_cases.c -o $@
+
+interpreter-cases: $(BUILD)/interpreter-cases-lm $(BUILD)/interpreter-cases-cm \
+		$(BUILD)/interpreter-side-cases-lm $(BUILD)/interpreter-side-cases-cm
 	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
 	@for m in lm cm; do for s in $(INTERPRETER_SEEDS); do \
 		printf 'seed %s: ' $$s; ./$(BUILD)/interpreter-cases-$$m $(ROPES) $(INTERPRETER_CASES) $$s || exit 1; \
 	done; done
+	./$(BUILD)/interpreter-side-cases-lm $(word 1,$(ROPES))
+	./$(BUILD)/interpreter-side-cases-cm $(word 2,$(ROPES))
 
 # ---- Alarms and aborts ----
 # The port's own tests (tests/test_lm_alarm.c, test_cm_alarm.c) on the

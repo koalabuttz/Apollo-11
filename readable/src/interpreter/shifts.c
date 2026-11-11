@@ -101,9 +101,9 @@ static void tssr_plus1(void)
     tssr_plus2();
 }
 
-/* TSSR +2: the shifting bit to MPTEMP and the round test. (A CYR of +0 leaves A +0 for NEWMODE: "SET
- * MODE TO DP (C(A) = 0)"; a CYR of -0 enters MPACSHR one word in, with A
- * +0 for the MP.) */
+/* TSSR +2: the shifting bit to MPTEMP and the round test. (Neither zero
+ * comes. A CYR of +0 would leave A +0 for NEWMODE: "SET MODE TO DP (C(A) = 0)";
+ * a CYR of -0 would enter MPACSHR one word in, with A +0 for the MP.) */
 static void tssr_plus2(void)
 {
     ts(ADDRESS_OF(MPTEMP));
@@ -231,13 +231,13 @@ void tssl_plus2(void)
         break;
     }
 
-    switch (ccs_at(CYR_ADDRESS)) {              /* "SEE IF ROUND WANTED." */
-    case POSITIVE: round_(); return;            /* "YES -- ROUND AND EXIT." */
-    case IS_PLUS_ZERO:                          /* "SL LEAVES A ZERO IN CYR FOR NO ROUND." */
+    switch (ccs_at(CYR_ADDRESS)) {   /* "SEE IF ROUND WANTED." */
+    case POSITIVE: round_(); return; /* "YES -- ROUND AND EXIT." */
+    case IS_PLUS_ZERO: /* "SL LEAVES A ZERO IN CYR FOR NO ROUND." (Never: it leaves bit 13.) */
     case NEGATIVE: continue_at(DANZIG); return; /* "NO -- EXIT IMMEDIATELY" */
     case IS_MINUS_ZERO:
-        /* CYR's -0 (GENSCL makes it for an unrounded count) passes the
-         * three exits and runs on into SHORTV. */
+        /* CYR's -0 (GENSCL makes it from a count word without YUL's bit 14:
+         * no assembled one) passes the three exits and runs on into SHORTV. */
         shortv();
         return;
     }

@@ -96,7 +96,12 @@ void sload2(void)
 
 void sload2_plus2(void)
 {
-    ts(ADDRESS_OF(MPAC) + 2u); /* "AND DECLARE DP MODE" */
+    /* "AND DECLARE DP MODE" (An overflow in A, which no caller brings,
+     * skips NEWMODE's TS.) */
+    if (ts(ADDRESS_OF(MPAC) + 2u)) {
+        continue_at(DANZIG);
+        return;
+    }
     newmode();
 }
 
@@ -105,8 +110,11 @@ void sload2_plus2(void)
  * is done; DANZIG takes the next one. */
 void newmode(void)
 {
-    ts(ADDRESS_OF(MODE));
-    continue_at(DANZIG);
+    /* (An overflow in A, which no order leaves, skips DANZIG's CA.) */
+    if (ts(ADDRESS_OF(MODE)))
+        continue_at(DANZIG + 1u);
+    else
+        continue_at(DANZIG);
 }
 
 /* ======================================================================
@@ -466,7 +474,7 @@ void indjump(unsigned order)
     case 012: pddl(); return;   /* push down and DP load */
     case 013: mxv(); return;    /* matrix times vector */
     case 014: pdvl(); return;   /* push down and vector load */
-    case 015: ccall(); return;  /* computed call */
+    case 015: ccall(); return;  /* computed call (never: no program has the order) */
     case 016: vxm(); return;    /* vector times matrix */
     case 017: tslc(); return;   /* normalize MPAC */
     case 020: dmpr(); return;   /* DP multiply and round */
@@ -493,7 +501,7 @@ void indjump(unsigned order)
 /* MISCJUMP -- LM p. 1012, CM p. 1117.
  * "THE FOLLOWING JUMP TABLE APPLIES TO INDEX, BRANCH, AND MISCELLANEOUS
  * INSTRUCTIONS." POLISH holds the address word. Where two orders share an
- * entry, CYR's sign (the code's bit 4) tells them apart. */
+ * entry, CYR's sign (the code's bit 3) tells them apart. */
 void miscjump(unsigned order)
 {
     switch (order) {

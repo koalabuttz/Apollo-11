@@ -14,6 +14,7 @@
  * Z names, the states the core takes, where a pass ends, and what each word
  * of interpretive code charges the work clock. Every instruction run is the
  * readable code's. */
+#include <setjmp.h>
 #include <stddef.h>
 #include "binding.h"
 #include "rope_image.h"
@@ -307,16 +308,38 @@ static enum exec_status run(void)
     return EXEC_OK;
 }
 
+/* Where a step the readable code does not model goes (not_modelled_state():
+ * no order of a pass reaches one, and a state that did is refused and left
+ * as the pass found it). */
+static jmp_buf back;
+
+static void leave(void)
+{
+    longjmp(back, 1);
+}
+
 static enum exec_status entry(const agc_native_program *program, apollo_overlay_state *state,
                               void *device)
 {
     /* (The interpreter reads no program tables: callers may pass none.) */
     static const agc_native_program none;
+    mission_io *io = device, kept_io;
+    apollo_overlay_state before;
+    uint16_t clock = CORE_MCT;
     enum exec_status status;
 
     if (!bind_machine(program ? program : &none, state, device)) return EXEC_OUT_OF_SCOPE;
     agc.fixed_memory = rope_word;
     if (!as_expected()) return EXEC_OUT_OF_SCOPE;
+    agc.leave = leave;
+    before = *state;
+    kept_io = *io;
+    if (setjmp(back)) {
+        *state = before;
+        *io = kept_io;
+        CORE_MCT = clock;
+        return EXEC_OUT_OF_SCOPE;
+    }
     switched = false;
     status = run();
     if (!lanec) q_as_fifteen_bits();

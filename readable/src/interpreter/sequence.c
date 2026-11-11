@@ -23,7 +23,10 @@ static void gotoers(void);
 
 /* CCALL -- LM p. 1023, CM p. 1128.
  * A computed CALL: the operand (at ADDRWD) indexes the list of CADRs whose
- * address follows it. "MAINTAIN LOC FOR QPRET COMPUTATION". */
+ * address follows it. "MAINTAIN LOC FOR QPRET COMPUTATION". (It never
+ * runs: no program has the order, and the flight program's interpreter
+ * refuses it before it starts, src/binding/interpreter_core.c, as the
+ * faithful core does.) */
 void ccall(void)
 {
     incr(ADDRESS_OF(LOC));
