@@ -7,8 +7,9 @@
 #      the quick set (26 rows) on PRs and pushes, every row nightly.
 #   3. That program against Virtual AGC itself, routine by routine
 #      (readable/tests/x86_lockstep.py), in a job of its own: the 32 check
-#      rows on PRs and pushes, every row (117) nightly. Each run first
-#      tries the check on a program that is wrong.
+#      rows and one landing on PRs and pushes, every row (117) nightly.
+#      Each run first tries the check on three programs that are wrong,
+#      and holds each row's counts to the run of record.
 name: readable-ci
 # It runs on a change to readable/ and on a change to what readable/ is
 # built from and checked against: the faithful port's sources, its tests

@@ -19,7 +19,8 @@ gates check it against the faithful port, word for word: the faithful
 port is the reference, and it is checked against the original program
 run in yaAGC on the host. The flight program is also flown against yaAGC
 itself, with no faithful routine between them: after every routine it
-runs, its memory and channels must be the original program's (gate 3).
+runs, its memory and channels must agree with yaAGC's, run on the
+original rope from where the routine started (gate 3).
 So the readable code is as exact as the
 faithful port, apart from the few places where one of them departs from
 the AGC on purpose (see *Departures*), and as far as the gates look (see
@@ -372,7 +373,7 @@ From `readable/`, with a C compiler, Make and Python 3:
 make                       # gate 1: names-check, coverage and the case tests (seconds)
 make x86-scenarios-quick   # gate 2 on the PR set (26 rows)
 make x86-scenarios         # gate 2 on every row (86)
-make x86-lockstep-quick    # gate 3 on the PR set (32 rows, two minutes)
+make x86-lockstep-quick    # gate 3 on the PR set (33 rows, four minutes)
 make x86-lockstep          # gate 3 on every row (117, about 20 minutes on 8 processors)
 ```
 
@@ -1403,30 +1404,39 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    the port's tables and `make names-check` holds to them).
 3. **x86 against Virtual AGC.** Gates 1 and 2 compare the readable
    routines with the faithful port. This one compares the readable flight
-   program with the original program itself (`tests/x86_lockstep.py`).
+   program with yaAGC running the original rope
+   (`tests/x86_lockstep.py`).
    It builds the port's lockstep tool
    (`c64-port/tools/x86_flight_lockstep.c`) over the readable objects.
    The program's own step flies a scenario, and for every routine it
    runs, and every slot of the interpreter core, Virtual AGC's engine
    (yaAGC) is loaded with the state the routine started in and run on
    the original rope until it reaches the routine's continuation. There
-   all 2,048 words of erasable memory, the I/O channels (5, 6, 10 to 15,
-   30 to 35 and the superbank) and the interrupt state must be the
-   routine's. So the registers and channels gate 2 leaves out are
-   compared here, and after every routine, not once at a row's end. A
-   point that differs fails the row, as does a step refused or a basic
-   point no routine holds.
+   yaAGC's 2,048 words of erasable memory, its I/O channels (5, 6, 10 to
+   15, 30 to 35 and the superbank) and its interrupt state (inhibited or
+   not, in an interrupt or not) must be the routine's. So the registers
+   and channels gate 2 leaves out are compared here, and after every
+   routine, not once at a row's end. A point that differs fails the row,
+   as does a step refused or a basic point no routine holds.
    The rows are the port's 16 check rows in both interpretive modes
    (P00, the DAP holding attitude, V37, DOWNRUPT, restarts, typed keys,
-   the TC trap) and gate 2's flight scenarios, 85 of the 86: 117 rows,
-   217 million routines and core slots when the gate was added, none
-   differing. `tests/x86_lockstep_record.txt` is that run, row by row
-   (`make x86-lockstep-record` writes it). PRs fly the 32 check rows,
-   the nightly run every row.
+   the TC trap) and gate 2's flight scenarios, 85 of the 86: 117 rows
+   (two of them, the TC trap in each program, are one run under two
+   names), 217 million routines and core slots, none differing.
+   `tests/x86_lockstep_record.txt` is the run of record, row by row
+   (`make x86-lockstep-record` writes it), and every later run is held
+   to it: a row whose centiseconds, routines checked or yaAGC
+   instructions are not the record's fails, so a check that came to skip
+   routines or to stop yaAGC early fails though every point it still
+   looks at agrees. PRs fly the 32 check rows and one landing from the
+   NASSP core's start point (`lm-p63-nassp`), the nightly run every row.
    `tests/x86_lockstep.py --wrong` (run by both make targets) tries the
-   check on a program that is wrong, the LM program with one TS that
-   stores its word plus one, once: the check must name that routine and
-   no other.
+   check on three programs that are wrong, each once, in one of the
+   things it compares: the LM program with one TS that stores its word
+   plus one (an erasable word), with one WOR that leaves a bit of
+   channel 13 changed (a channel), and with one WOR that leaves the
+   channel's bit 13 set (a HANDRUPT trap armed). Each time the check
+   must name that routine and no other, and name it for that word.
    What this gate does not show:
    - **When a routine runs.** yaAGC's clock is frozen. The clock periods
      and the interrupts taken are the program's own: the port's timers
@@ -1443,7 +1453,22 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
      copies its fifteenth (*Departures*, Q after a switch order).
      Channels 3 and 4, the scaler, are not compared. Channel 13's bits
      12 to 14 arm the HANDRUPT traps and never read back on the AGC, so
-     they are compared as the three traps, not as channel bits.
+     they are compared as the three traps, not as channel bits. That
+     rests on what the programs do with the channel, and
+     `make chan13-sites` (in `make all`, `tests/chan13_sites.py`) holds
+     the listings to it: of the 41 instructions that name channel 13,
+     none is a READ or ROR, the four RANDs and the RXOR keep bits below
+     bit 12, and the rest write it (a WAND or WOR leaves its result in A
+     too, which is compared); four more take their channel from what is
+     keyed in (noun 10).
+   - **What a frozen clock leaves out.** yaAGC's interrupt requests are
+     cleared at every load and its scaler does not run, so none of these
+     is compared with it: which interrupts are pending, the night
+     watchman, the rupt lock and the TC trap (the step's own), the
+     HANDRUPT traps' firing, T6's disabling, the timers' counting, and
+     the entry to an interrupt. Of channel 10 the last word written is
+     compared, not the word of each relay row; channel 16, an input, is
+     loaded and not compared.
    - **The inputs.** The scenario inputs and the vehicle models are the
      port's (`c64-port/platform/x86`), as in gate 2. The 24 rows that
      start from the NASSP core dump start from the harness's state at
@@ -1460,7 +1485,14 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
      the faithful routines: 173 steps at 2 points with them, 174 at 2
      points with the readable ones, all in the loop or at the restart.
      Gate 2 flies the row, and gate 3 flies the same P52 without the
-     loop (`lm-p52-realign`).
+     loop (`lm-p52-realign`). A run of every row flies this one too and
+     requires that it still differ at those 2 points: if the tool learns
+     to follow it, the run says to count it.
+   - **Ten rows of the harness.** Gate 2's 86 scenarios are the
+     harness's flight rows less ten whose inputs the x86 program has no
+     model of (the uplink, the gyro torquing, the optics, the ISS
+     warning and the stolen time of the overload rows). Neither gate
+     flies them; the record names them.
    The test binary links yaAGC, which the readable program must never
    do: it is a test, built apart (`build/x86-flight/lockstep/`), and the
    link check is run on it too, with yaAGC's three objects added to what
