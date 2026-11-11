@@ -8,9 +8,10 @@
  * runs on 65,536 random states: random memory in bank 06, mostly inside
  * the interrupt; DSRUPTSW a phase count, negative (the 20 ms phase) or
  * now and then out of range; DSPCNT and the display table mostly as the
- * display programs keep them, some words waiting to be sent; NOUT, the
- * DSKY flag, IMODES33, the PRO key and RUPTREG1 random; an overflow in A
- * now and then. Where either port runs, the other must too, with the same
+ * display programs keep them, some words waiting to be sent; NOUT (now
+ * and then -0, which no program leaves), the DSKY flag, IMODES33, the PRO
+ * key and RUPTREG1 random; an overflow in A now and then. Where either
+ * port runs, the other must too, with the same
  * memory, io record and channels, word for word; where the readable one
  * refuses, it must leave everything as it found it. The faithful routines
  * are certified against the original program (c64-port/tests/
@@ -107,6 +108,7 @@ static void state(apollo_overlay_state *s, mission_io *io, agc_hardware *hw, uin
     }
     /* NOUT: a few words, none, or negative. */
     s->words[01016] = rnd() % 4u ? (uint16_t)(rnd() % 12u) : (uint16_t)(rnd() & 077777u);
+    if (rnd() % 64u == 0u) s->words[01016] = 077777u; /* -0, which no program leaves */
     /* RUPTREG1 0-7, now and then not. */
     s->words[070] = rnd() % 32u ? (uint16_t)(rnd() % 8u) : (uint16_t)(rnd() & 077777u);
     io->superbank = (uint16_t)((rnd() % 8u) * 020u);

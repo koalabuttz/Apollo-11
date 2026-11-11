@@ -84,7 +84,7 @@ bool llge_readable(uint16_t key, bool order_pair);
 #define PUSHLOC_AT  0166u
 #define ELVIRA_AT   01265u
 #define ZERLINA_AT  01264u
-#define RODCOUNT_AT 01746u
+#define RODCOUNT_AT 03746u /* (in E7) */
 #define RETROOT_AT  0132u
 #define PWRPTR_AT   0117u
 #define DERPTR_AT   0141u

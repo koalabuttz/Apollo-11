@@ -84,9 +84,9 @@ bool p20_p25_readable(uint16_t key, bool order_pair);
 #define PUSHLOC_AT       0166u
 #define MODREG_AT        01011u
 #define OPTION2_AT       01145u
-#define REPOSCNT_AT      01423u
-#define N49FLAG_AT       01746u
-#define NSRCHPNT_AT      01736u
+#define REPOSCNT_AT      03423u /* (in E7, as N49FLAG and NSRCHPNT) */
+#define N49FLAG_AT       03746u
+#define NSRCHPNT_AT      03736u
 #define PIPCTR_AT        01056u
 #define ITEMP1_AT        0061u
 #define ITEMP2_AT        0062u

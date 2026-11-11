@@ -627,7 +627,7 @@ static void markchex(void)
  * CDU ADR OF X-MARK IN X1": the pair's place in the VAC area, six words
  * a pair ("GET C(L) = -6 MARKCNTR"), less the area's address. Then "SET PD
  * POINTER TO ZERO" and into AVESTAR_CODE. (An overflow in AD L would skip
- * the CA FIXLOC.) */
+ * the CA FIXLOC. The store in X1 is INDEX FIXLOC; TS X1: ts_indexed().) */
 static void avestar(void)
 {
     set_A(BIT12);
@@ -636,7 +636,7 @@ static void avestar(void)
     mp(SIX);
     cs(ADDRESS_OF(XYMARK));
     ad_at(L_ADDRESS);
-    if (!ts(indexed(ADDRESS_OF(X1), FIXLOC))) ca(ADDRESS_OF(FIXLOC));
+    if (!ts_indexed((word)(TS_0 + ADDRESS_OF(X1)), FIXLOC)) ca(ADDRESS_OF(FIXLOC));
     ts(ADDRESS_OF(PUSHLOC));
     tc_at(AVESTAR + 013u);
     intpret();

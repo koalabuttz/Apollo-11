@@ -435,8 +435,9 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    original program's yaAGC digests) on the readable routines, then
    readable and faithful side by side on every step of 2,000 runs of
    1,200 DOWNRUPTs per mission, some steps with a control word put out of
-   place; before that it checks the readable downlists word by word
-   against the assembled listing. `make fresh-start-cases` runs the
+   place, and on two states made on purpose (a list word of +0, which no
+   downlist has); before that it checks the readable downlists word by
+   word against the assembled listing. `make fresh-start-cases` runs the
    faithful port's fresh start tests (4,096 cases per mission: every
    entry, with restart groups active, inactive or corrupt, against the
    original program's yaAGC digests) on the readable fresh start and
@@ -471,7 +472,9 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    and as the flight program does. `make aotmark-cases` runs the faithful
    port's test of the LM's sighting marks (2,036 frozen cases, each run to
    its stop) on the readable one, then the two side by side, 4,096 states
-   at each of its 122 keys. `make sxtmark-cases` does the same for the
+   at each of its 122 keys, some with a word no program leaves (a VAC
+   area's use word negative, a mark count of -0, a mark index that puts
+   the cursor reading on FIXLOC). `make sxtmark-cases` does the same for the
    CM's sextant marks (679 frozen cases; 4,096 states at each of its 42
    keys). `make extended-verbs-cases` runs the faithful port's frozen
    oracle rows for the extended verbs' front end (23 cases of its suite,
@@ -1519,8 +1522,8 @@ clang with its profile runtime, and takes half an hour). It builds every
 target of `make all` again with clang's source coverage and runs them,
 builds the x86 flight program the same way and flies gate 2's 86
 scenarios. Each program that ran left its counts, and a line of `src/` is
-run if any of them ran it. Of the 60,127 lines with code in them, 1,559
-(2.6%) are run by none, in 657 stretches of 218 files.
+run if any of them ran it. Of the 60,127 lines with code in them, 1,528
+(2.5%) are run by none, in 640 stretches of 217 files.
 
 Every one of those stretches stands in `tests/line_coverage.txt`, with
 its text and the reason it does not run, and the check fails on an unrun
@@ -1533,14 +1536,14 @@ five kinds, and the ledger says what each means:
 
 - **refusal** (777 lines): how a binding refuses a state its routines do
   not model. No case's state and no scenario makes those files refuse.
-- **not-modelled** (124 lines): the source marks the line
+- **not-modelled** (123 lines): the source marks the line
   `not_modelled()`, an outcome that cannot come there.
-- **never** (89 lines): the comment at the line says the outcome never
+- **never** (97 lines): the comment at the line says the outcome never
   comes, and the line is what the AGC would do if it did.
-- **impossible** (74 lines): no state brings the routine to the line,
+- **impossible** (100 lines): no state brings the routine to the line,
   and the reason says what in the lines before it rules the outcome out.
   An argument, not a run.
-- **open** (495 lines, 202 stretches): not looked at yet. Each is owed a
+- **open** (431 lines, 165 stretches): not looked at yet. Each is owed a
   case that runs it or the reason none can, and the count is in the
   ledger's head.
 

@@ -18,7 +18,9 @@
  * the CM's HOLDFLAG (-1 as MANUSTAT sets it, or any), RATEINDX (0, 2, 4
  * or 6) and RCSFLAGS, the time (TIME2, TIME1) and the
  * maneuver's end (TM: often within a second or two of it) and next second
- * (NEXTIME: often just past TIME1, or TIME1 come round), the flag words
+ * (NEXTIME: often just past TIME1, or TIME1 come round; now and then a
+ * clock word of -0, which no counter holds, with TM or NEXTIME at +0), the
+ * flag words
  * (CALCMAN2), the matrices, angles and rates (MIS, KEL or DEL, BCDU, NCDU,
  * BRATE, ...: any erasable bank's words), the CDUs, NEWJOB, the overflow indicator,
  * now and then any word but the interpreter's own, the latches, or a state
@@ -235,6 +237,20 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
         if (rnd() % 2u)
             w[erasable(w, NEXTIME_AT)] =
                 (uint16_t)((w[TIME1_AT] + rnd() % 0400u + 077577u) % 077777u);
+        /* Now and then a clock no counter holds, -0, with TM or NEXTIME at
+         * +0: only then is a difference TIMECHK or CONTMANU tests +0. */
+        if (rnd() % 16u == 0u) {
+            unsigned tm = erasable(w, TM_AT);
+            if (rnd() % 4u) {
+                w[TIME1_AT] = 077777u;
+                w[tm + 1u] = 0u;
+                w[erasable(w, NEXTIME_AT)] = 0u;
+            }
+            if (rnd() % 2u) {
+                w[TIME2_AT] = 077777u;
+                w[tm] = 0u;
+            }
+        }
         /* A: the LM's ISITAUTO's answer (+0, or bit 14), or any. */
         k = rnd() % 4u;
         w[0] = k == 0u ? 0u : k == 1u ? 020000u : rnd() % 2u ? any_word() : rnd();

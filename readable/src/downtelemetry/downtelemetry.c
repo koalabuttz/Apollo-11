@@ -270,7 +270,8 @@ static void wozero(void)
 /* DODNPTR -- LM p. 993, CM p. 1098.
  * The DNPTR in DNECADR points to a sublist: a regular one goes to SUBLIST
  * word by word (DOSUBLST); a snapshot one (its first word negative) is
- * copied at once, below. */
+ * copied at once, below. (No sublist starts with a zero word: the CCS's
+ * two zero slots never run.) */
 static void dodnptr(void)
 {
     index_ca(0u, DNECADR); /* INDEX DNECADR; 0 0: the DNPTR's own CA */
@@ -293,7 +294,8 @@ static void dodnptr(void)
  * Copy the snapshot, the second word of the sublist on, into DNTMBUFF, a
  * double word for each 1DNADR, then send the first one. A holds each
  * 1DNADR less one (CCS took one off): its EBANK bits go to EBANK, and DCA
- * 1401 + its low eight bits reads the 1DNADR's double word. */
+ * 1401 + its low eight bits reads the 1DNADR's double word. (No snapshot
+ * has a zero word: the CCS's two zero slots never run.) */
 static void snaploop(void)
 {
     enum sign next;

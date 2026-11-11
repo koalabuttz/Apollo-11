@@ -16,15 +16,19 @@
  * words as AOTMARK keeps them (MARKSTAT a VAC area with its flag bits,
  * MARKCNTR, MKDEX, XYMARK, a detent code, SURFFLAG), the mark buttons of
  * channel 16, the VAC areas, EXTVBACT, NEWJOB, the work area, now and then
- * anything. The index registers X1 and X2 are always as the program sets
- * them, the complement of a place in the VAC areas: one that takes an
- * indexed operand into fixed memory, which the AGC (and the readable
- * interpreter) reads from the rope, the faithful port reads from erasable
- * memory. Each runs once on each side, as the program's trampoline
- * would call the key's routine. Where either port runs, the other must
- * too, with the same memory and io record, word for word; where the
- * readable one refuses, it must leave everything as it found it; and the
- * faithful routine must run from some state of every key.
+ * anything, and now and then a word no program leaves: a VAC area's use
+ * word negative or -0, MARKCNTR or MARKSTAT at -0, MARKTYPE entered on its
+ * own with Q at one of VACSTOR's returns, a key word of -0 at FINDKEY's
+ * later tests, and at the surface marks' end an MKDEX that puts CURSOR or
+ * SPIRAL on FIXLOC. The index registers X1 and X2 are always as the
+ * program sets them, the complement of a place in the VAC areas: one that
+ * takes an indexed operand into fixed memory, which the AGC (and the
+ * readable interpreter) reads from the rope, the faithful port reads from
+ * erasable memory. Each runs once on each side, as the program's
+ * trampoline would call the key's routine. Where either port runs, the
+ * other must too, with the same memory and io record, word for word; where
+ * the readable one refuses, it must leave everything as it found it; and
+ * the faithful routine must run from some state of every key.
  *
  * Not counted: a detent code above 0366 at GETDAT +7, where the faithful
  * port's CA AOTEL -1 / CA AOTAZ -1 wraps around into erasable memory and
@@ -58,6 +62,8 @@ extern const agc_routine_table faithful_lm_aotmark_basic, faithful_lm_aotmark_in
 #define VAC1USE_AT  0400u
 #define AOTCODE_AT  0735u
 #define EXTVBACT_AT 01044u
+#define CURSOR_AT   01236u
+#define SPIRAL_AT   01240u
 #define MARKSTAT_AT 01312u
 #define MARKCNTR_AT 01550u
 #define XYMARK_AT   01551u
@@ -65,6 +71,10 @@ extern const agc_routine_table faithful_lm_aotmark_basic, faithful_lm_aotmark_in
 #define NEWOPS_AT   06070u
 /* GETDAT +7, where the detent code is read. */
 #define GETDAT_PLUS7 02072u
+#define FINDKEY_AT   02365u
+#define SURFEND_KEY  02633u
+#define MARKTYPE_AT  02514u
+#define VACSTOR_AT   02526u
 
 #define CASES 4096u
 
@@ -109,6 +119,14 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
+/* Where the state holds a word of the switched erasable bank (MARKCNTR,
+ * XYMARK and MKDEX are in the mark routines' own, E7): in the bank its
+ * EBANK names. */
+static unsigned banked(const apollo_overlay_state *s, unsigned address)
+{
+    return ((unsigned)(s->words[3] >> 8) & 7u) << 8 | (address & 0377u);
+}
+
 /* One state at the key (its physical address; an order pair's for an
  * interpretive key): frozen case n's, and for most n more. */
 static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int interpretive,
@@ -141,11 +159,19 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
             x == 0u  ? 0u
             : x < 7u ? (uint16_t)((0400u + 054u * (rnd() % 5u)) | (rnd() & rnd() & 037000u))
                      : (uint16_t)(rnd() & 077777u);
-        s->words[MARKCNTR_AT] = rnd() % 8u ? (uint16_t)(rnd() % 6u) : (uint16_t)(rnd() & 077777u);
-        s->words[MKDEX_AT] = rnd() % 8u ? (uint16_t)(rnd() % 4u) : (uint16_t)(rnd() & 077777u);
-        s->words[XYMARK_AT] = rnd() % 2u   ? (uint16_t)(rnd() % 8u)
-                              : rnd() % 2u ? (uint16_t)(rnd() & 01400u)
-                                           : (uint16_t)(rnd() & 0777u);
+        s->words[banked(s, MARKCNTR_AT)] =
+            rnd() % 8u ? (uint16_t)(rnd() % 6u) : (uint16_t)(rnd() & 077777u);
+        /* MKDEX: on the surface a place in a VAC area, in flight a count
+         * of mark pairs in bits 12 and up. */
+        x = (uint16_t)(rnd() % 8u);
+        s->words[banked(s, MKDEX_AT)] = x < 3u
+                                            ? (uint16_t)(0400u + 054u * (rnd() % 5u) + rnd() % 040u)
+                                        : x < 5u ? (uint16_t)(rnd() % 6u << 11)
+                                        : x < 7u ? (uint16_t)(rnd() % 4u)
+                                                 : (uint16_t)(rnd() & 077777u);
+        s->words[banked(s, XYMARK_AT)] = rnd() % 2u   ? (uint16_t)(rnd() % 8u)
+                                         : rnd() % 2u ? (uint16_t)(rnd() & 01400u)
+                                                      : (uint16_t)(rnd() & 0777u);
         s->words[AOTCODE_AT] = rnd() % 8u ? (uint16_t)((rnd() % 9u) << 6 | (rnd() & 077u))
                                           : (uint16_t)(rnd() & 077777u);
         s->words[FLAGWRD8_AT] = (uint16_t)((s->words[FLAGWRD8_AT] & ~0200u) | (rnd() % 2u) << 7);
@@ -163,6 +189,31 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
         if (rnd() % 32u == 0u) io->io.interrupt_enabled = (uint16_t)(rnd() % 3u);
         if (rnd() % 32u == 0u) s->words[4] = (uint16_t)(rnd() & 076000u);
         if (rnd() % 32u == 0u) s->words[INTBIT15_AT] = (uint16_t)(rnd() & 077777u);
+        /* Now and then a word no program leaves: a VAC area's use word
+         * negative or -0, MARKCNTR or MARKSTAT at -0. And for MARKTYPE
+         * entered on its own, Q at or beside one of VACSTOR's returns, the
+         * only ones it goes on from. */
+        if (rnd() % 16u == 0u) {
+            uint16_t made = (uint16_t)(rnd() % 5u);
+
+            s->words[VAC1USE_AT + 054u * made] =
+                rnd() % 2u ? 077777u : (uint16_t)(040000u | (rnd() & 037777u));
+            if (rnd() % 2u)
+                for (x = 0; x < made; ++x) s->words[VAC1USE_AT + 054u * x] = 0u;
+        }
+        if (rnd() % 32u == 0u) s->words[banked(s, MARKCNTR_AT)] = 077777u;
+        if (rnd() % 32u == 0u) s->words[MARKSTAT_AT] = 077777u;
+        if (!interpretive && z == MARKTYPE_AT && rnd() % 4u == 0u)
+            s->words[2] = (uint16_t)(VACSTOR_AT + 026u + rnd() % 6u);
+        if (!interpretive && (z == FINDKEY_AT + 010u || z == FINDKEY_AT + 015u) && rnd() % 8u == 0u)
+            s->words[0] = 0177777u;
+        /* And at the surface marks' end, an MKDEX that puts CURSOR or
+         * SPIRAL on FIXLOC, where AVESTAR's own indexed store comes next. */
+        if (!interpretive && z == SURFEND_KEY && rnd() % 8u == 0u) {
+            s->words[banked(s, MKDEX_AT)] = (uint16_t)(FIXLOC_AT - (rnd() % 2u ? 1u : 3u));
+            s->words[CURSOR_AT] = (uint16_t)(rnd() & 077777u);
+            s->words[SPIRAL_AT] = (uint16_t)(rnd() & 077777u);
+        }
     }
     /* The push-down list in the work area, below X1. */
     if (s->words[PUSHLOC_AT] < s->words[FIXLOC_AT] ||
