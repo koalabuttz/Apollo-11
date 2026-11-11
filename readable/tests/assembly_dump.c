@@ -25,14 +25,13 @@ static void main_agc(void)
     }
 }
 
-/* ASSEMBLY_AND_OPERATION_INFORMATION as the listing's text: each line's
- * cells in order. */
-static void assembly_and_operation_information(void)
+/* A file of lists as the listing's text: each line's cells in order. */
+static void print_lists(const struct information_table *tables, unsigned count)
 {
     unsigned t, line, cell;
 
-    for (t = 0; t < INFORMATION_COUNT; ++t) {
-        const struct information_table *table = &INFORMATION[t];
+    for (t = 0; t < count; ++t) {
+        const struct information_table *table = &tables[t];
 
         for (line = 0; line < table->line_count; ++line) {
             for (cell = 0; cell < table->columns; ++cell) {
@@ -48,12 +47,12 @@ static void assembly_and_operation_information(void)
 /* The same, to compare line by line and column by column: each line as its
  * list's name and then a tab before each cell of the list's columns (a
  * cell with nothing in it is empty). */
-static void assembly_and_operation_information_lines(void)
+static void print_list_lines(const struct information_table *tables, unsigned count)
 {
     unsigned t, line, cell;
 
-    for (t = 0; t < INFORMATION_COUNT; ++t) {
-        const struct information_table *table = &INFORMATION[t];
+    for (t = 0; t < count; ++t) {
+        const struct information_table *table = &tables[t];
 
         for (line = 0; line < table->line_count; ++line) {
             printf("%s", table->name);
@@ -65,6 +64,16 @@ static void assembly_and_operation_information_lines(void)
             printf("\n");
         }
     }
+}
+
+static void assembly_and_operation_information(void)
+{
+    print_lists(INFORMATION, INFORMATION_COUNT);
+}
+
+static void assembly_and_operation_information_lines(void)
+{
+    print_list_lines(INFORMATION, INFORMATION_COUNT);
 }
 
 static const char *or_nothing(const char *text)
@@ -389,6 +398,24 @@ static void flagword_assignments_where(void)
 
 #else
 
+static void entry_lexicon(void)
+{
+    print_lists(ENTRY_LEXICON, ENTRY_LEXICON_COUNT);
+}
+
+static void entry_lexicon_lines(void)
+{
+    print_list_lines(ENTRY_LEXICON, ENTRY_LEXICON_COUNT);
+}
+
+static void lunar_landmark_selection_for_cm(void)
+{
+    unsigned line;
+
+    for (line = 0; line < LUNAR_LANDMARK_LINE_COUNT; ++line)
+        printf("%s\n", LUNAR_LANDMARK_SELECTION_FOR_CM[line]);
+}
+
 static void contract_and_approvals(void)
 {
     unsigned a;
@@ -425,6 +452,9 @@ static const struct {
     {"FLAGWORD_ASSIGNMENTS:columns", flagword_assignments_columns},
 #else
     {"CONTRACT_AND_APPROVALS", contract_and_approvals},
+    {"ENTRY_LEXICON", entry_lexicon},
+    {"ENTRY_LEXICON:lines", entry_lexicon_lines},
+    {"LUNAR_LANDMARK_SELECTION_FOR_CM", lunar_landmark_selection_for_cm},
 #endif
 };
 

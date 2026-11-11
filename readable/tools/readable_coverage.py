@@ -12,13 +12,19 @@ c64-port/tools/port_coverage.py weighs the faithful port.
                                 README.md's table of subsystems does not
                                 name, a binding that hands keys to the
                                 faithful tables without naming the partial
-                                file it writes (or naming a whole one), or
-                                a file whose no-code mark does not hold
+                                file it writes (or naming a whole one), a
+                                file whose no-code mark does not hold, or
+                                a no-code file outside src/assembly
 
 A listing file of comments only (no line of code: every line blank or a
-comment) has no routine to write; COVERAGE lists it with the directory
-whose header carries its words, marked no-code, and it counts by its
-lines like any other. The check holds the mark to the listing both ways.
+comment) has no routine to write; COVERAGE lists it in src/assembly,
+marked no-code, and it counts by its lines like any other. The check
+holds the mark to the listing both ways. The files in src/assembly
+(these, and the files of assembler cards that place and name things) are
+tables of the listing's text and values, compared with the listing by
+make assembly-cases, which fails if it does not compare every one of
+them. They are not routines, and the measure says how much of it they
+are on a line of its own.
 """
 import re
 import sys
@@ -41,6 +47,9 @@ COMMENT = re.compile(r'/\*.*?\*/|//[^\n]*', re.S)
 # Such a binding names the listing file it writes part by part, in a
 # comment: "Partial file: Comanche055/AUTOMATIC_MANEUVERS.agc". That file
 # cannot be whole; a binding with a fallback and no such line fails.
+# The directory of the listing's files that hold no routine, as tables
+# (tests/assembly_cases.py compares each with the listing).
+TABLES = 'src/assembly'
 PARTIAL = re.compile(r'Partial file: ((?:Luminary099|Comanche055)/[\w.-]+\.agc)')
 
 
@@ -107,6 +116,10 @@ def main(argv):
         elif not no_code and not code_line(path):
             print(f'FAIL: {path} holds no code: COVERAGE must mark it no-code')
             bad = 1
+        elif no_code and where.rstrip('/') != TABLES:
+            print(f'FAIL: COVERAGE marks {path} no-code in {where}: its words must be '
+                  f'a table in {TABLES}, which make assembly-cases compares')
+            bad = 1
         done[path] = files.get(path, 0)
         where_of[path] = where
     for binding, message in fallbacks(where_of):
@@ -122,6 +135,11 @@ def main(argv):
         lines = sum(v for p, v in done.items() if Path(p).name == name)
         print(f'  the largest share: {name}, {100.0 * lines / sum(done.values()):.0f}% '
               'of the readable lines')
+    tables = {p: n for p, n in done.items() if where_of[p].rstrip('/') == TABLES}
+    if tables:
+        print(f'  tables of the listing, not routines ({TABLES}): {len(tables)} files, '
+              f'{sum(tables.values()):,} lines '
+              f'({100.0 * sum(tables.values()) / total:.1f}% of all lines)')
     for tree in TREES:
         mine = {p: n for p, n in files.items() if p.startswith(tree + '/')}
         got = sum(n for p, n in done.items() if p.startswith(tree + '/'))

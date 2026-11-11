@@ -4428,4 +4428,5 @@ $(BUILD)/assembly-dump-cm: $(ASM_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) tests/as
 	$(CC) $(READABLE_CFLAGS) $(CM) $(filter %.o,$^) tests/assembly_dump.c -o $@ -lm
 
 assembly-cases: $(BUILD)/assembly-dump-lm $(BUILD)/assembly-dump-cm
+	@for r in $(ROPES) $(ROPES:MAIN.agc.bin=assembly.lst); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
 	python3 tests/assembly_cases.py

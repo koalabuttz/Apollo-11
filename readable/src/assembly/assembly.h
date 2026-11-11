@@ -3,13 +3,22 @@
  * and where its words live. Each is one C file here, named for it, that
  * carries the listing file's text as tables, word for word (make
  * assembly-cases prints the tables back and compares them with the
- * listing).
+ * listing). The words are the listing's own: the transcriber's heading of
+ * each file, down to its first page mark, is not carried. No routine is
+ * in these files and no flight code uses these tables; they are the
+ * listing's data and comment in a form a reader and the gate can use.
+ * The C comments that name a page are there to find the place in the
+ * listing; the gate does not compare them.
  *
  *   INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS.agc (LM pp. 54-60): each
  *     channel and its bits (input_output_channel_bit_descriptions.c);
  *   CONTRACT_AND_APPROVALS.agc (CM p. 1): the program's other name, its
  *     contract and the people who signed it off
  *     (contract_and_approvals.c);
+ *   ENTRY_LEXICON.agc (CM pp. 837-843): the entry guidance's glossary,
+ *     list by list (entry_lexicon.c);
+ *   LUNAR_LANDMARK_SELECTION_FOR_CM.agc (CM p. 936): a page with one line
+ *     (lunar_landmark_selection_for_cm.c);
  *   MAIN.agc (both missions): the listing's files in the order of their
  *     pages, each with the directory of its readable C (main.c);
  *   ASSEMBLY_AND_OPERATION_INFORMATION.agc (LM pp. 1-27, CM pp. 2-26):
@@ -51,7 +60,8 @@ extern const unsigned MAIN_COUNT;
 
 /* ---- ASSEMBLY_AND_OPERATION_INFORMATION ---- */
 
-/* One of the file's lists: its name here, the number of columns the
+/* One list of a file of lists (this file's, and the CM's ENTRY_LEXICON's
+ * below): its name here, the number of columns the
  * listing sets it in, the number of its lines, and the lines' cells, line
  * after line (columns cells to a line; a cell is NULL where the line has
  * nothing in that column). */
@@ -168,6 +178,15 @@ struct ebank_ecadr {
     const char *erasable;
     unsigned ecadr;
 };
+
+/* ---- ENTRY_LEXICON and LUNAR_LANDMARK_SELECTION_FOR_CM ---- */
+
+extern const struct information_table ENTRY_LEXICON[];
+extern const unsigned ENTRY_LEXICON_COUNT;
+
+/* The page's lines. */
+extern const char *const LUNAR_LANDMARK_SELECTION_FOR_CM[];
+extern const unsigned LUNAR_LANDMARK_LINE_COUNT;
 
 extern const char EBANK_ECADRS_REMARK[];
 extern const struct ebank_ecadr EBANK_ECADRS[];
