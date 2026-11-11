@@ -32,17 +32,24 @@ command -v x64sc >/dev/null || need+=(vice)
 if [ ${#need[@]} -gt 0 ]; then
   pkgs=(build-essential clang python3 git curl xz-utils)
   case " ${need[*]} " in *" vice "*) pkgs+=(vice) ;; esac
-  # GitHub's runners point apt at azure.archive.ubuntu.com, which has gone
-  # unresolvable for hours at a time. Retry, then fall back to the main
-  # Ubuntu archive for the rest of the job.
-  apt_() { sudo_ env DEBIAN_FRONTEND=noninteractive apt-get -qq -o Acquire::Retries=3 -o Acquire::http::Timeout=30 "$@"; }
+  # GitHub's runners point apt at azure.archive.ubuntu.com (through the
+  # mirror list /etc/apt/apt-mirrors.txt), which has gone unresolvable for
+  # hours at a time. If that name does not resolve, or apt fails, point apt
+  # at the main Ubuntu archive for the rest of the job.
+  apt_() { sudo_ env DEBIAN_FRONTEND=noninteractive apt-get -qq -o Acquire::Retries=2 -o Acquire::http::Timeout=30 "$@"; }
+  apt_main_archive() {
+    echo "apt: switching to archive.ubuntu.com" >&2
+    for f in /etc/apt/apt-mirrors.txt /etc/apt/sources.list /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources; do
+      if [ -f "$f" ]; then sudo_ sed -i 's#//azure\.archive\.ubuntu\.com#//archive.ubuntu.com#g' "$f"; fi
+    done
+  }
+  if grep -qs azure.archive.ubuntu.com /etc/apt/apt-mirrors.txt /etc/apt/sources.list /etc/apt/sources.list.d/* &&
+     ! getent hosts azure.archive.ubuntu.com >/dev/null; then apt_main_archive; fi
   apt_ok=0
   for try in 1 2; do
     if apt_ update && apt_ install -y --no-install-recommends "${pkgs[@]}"; then apt_ok=1; break; fi
-    echo "apt failed (try $try); switching to archive.ubuntu.com" >&2
-    for f in /etc/apt/sources.list /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources; do
-      if [ -f "$f" ]; then sudo_ sed -i 's#//azure\.archive\.ubuntu\.com#//archive.ubuntu.com#g' "$f"; fi
-    done
+    echo "apt failed (try $try)" >&2
+    if [ "$try" = 1 ]; then apt_main_archive; fi
   done
   [ "$apt_ok" = 1 ] || { echo "apt install failed" >&2; exit 100; }
 fi
