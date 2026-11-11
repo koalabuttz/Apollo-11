@@ -262,7 +262,7 @@ static void setloc(void)
 {
     dxch(ADDRESS_OF(NEWLOC));
     dxch(indexed(ADDRESS_OF(LOC), LOCCTR));
-    set_A(negate(IN_CORE_SET(PRIORITY, NEWJOB)));
+    cs(indexed(ADDRESS_OF(PRIORITY), NEWJOB)); /* INDEX NEWJOB; CS PRIORITY */
     A = add16(A, sign_extend(NEWPRIO));
     correct_L();
     if (A != 0u && !(A & 0100000u)) { /* NEWPRIO > that priority: not BZMF */

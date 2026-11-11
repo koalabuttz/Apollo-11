@@ -385,7 +385,12 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    case of its certified milestones, about 42,000 runs over the two
    missions, each checked against the original program's yaAGC digest
    (frozen when the faithful port was certified) and against the faithful
-   routines' final memory word for word.
+   routines' final memory word for word. Then it runs every entry of the
+   readable kernel and of the faithful one side by side on 20,000 random
+   states each (`tests/kernel_side_cases.c`), some of them states no
+   program makes (a core set's PRIORITY at +0, a VAC area's use word
+   negative, RUPTAGN at +0), where a CCS lands on a constant that then
+   runs as an instruction: the two must go the same way.
    `make interbank-cases` runs every inter-bank entry, readable and
    faithful side by side, on 100,000 random machine states each, and
    compares memory and channels word for word. `make phase-cases` runs
@@ -1504,8 +1509,8 @@ clang with its profile runtime, and takes half an hour). It builds every
 target of `make all` again with clang's source coverage and runs them,
 builds the x86 flight program the same way and flies gate 2's 86
 scenarios. Each program that ran left its counts, and a line of `src/` is
-run if any of them ran it. Of the 60,065 lines with code in them, 1,609
-(2.7%) are run by none, in 674 stretches of 219 files.
+run if any of them ran it. Of the 60,086 lines with code in them, 1,569
+(2.6%) are run by none, in 664 stretches of 219 files.
 
 Every one of those stretches stands in `tests/line_coverage.txt`, with
 its text and the reason it does not run, and the check fails on an unrun
@@ -1514,15 +1519,18 @@ with no reason. A stretch is known by its file, its function and its
 text, so an edit elsewhere in a file does not move it. `make all` tries
 the check itself on made-up measures and ledgers
 (`line-coverage-check`), with no build. Each reason is one of
-four kinds, and the ledger says what each means:
+five kinds, and the ledger says what each means:
 
-- **refusal** (771 lines): how a binding refuses a state its routines do
+- **refusal** (769 lines): how a binding refuses a state its routines do
   not model. No case's state and no scenario makes those files refuse.
 - **not-modelled** (124 lines): the source marks the line
   `not_modelled()`, an outcome that cannot come there.
 - **never** (62 lines): the comment at the line says the outcome never
   comes, and the line is what the AGC would do if it did.
-- **open** (652 lines, 265 stretches): not looked at yet. Each is owed a
+- **impossible** (19 lines): no state brings the routine to the line,
+  and the reason says what in the lines before it rules the outcome out.
+  An argument, not a run.
+- **open** (595 lines, 251 stretches): not looked at yet. Each is owed a
   case that runs it or the reason none can, and the count is in the
   ledger's head.
 
@@ -1607,6 +1615,11 @@ the side by side tests do not count them, and print how many they met:
 - **A restart's delta time at a central register or GOLOC, or across
   01377-01400**: the faithful routine reads them as they were before
   RESTARTS changed them. Refused.
+- **A routine of the Executive or WAITLIST that reads fixed memory
+  itself** (VACFOUND's LXCH with a use word that is no erasable address,
+  SETLOC's CS of PRIORITY with a NEWJOB that reaches past erasable
+  memory): the AGC reads the rope; the faithful kernel keeps the low ten
+  bits of the address and reads erasable memory there. Refused.
 - **The interpreter's unassembled operands** (an erasable order given a
   fixed address, a store into fixed memory, an operand past the end of
   its bank, ...): the readable interpreter does what the AGC does, the

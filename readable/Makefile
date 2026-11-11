@@ -3,7 +3,9 @@
 #
 #   make check            the kernel cases, then the x86 quick scenarios
 #   make kernel-cases     every case of the resident-kernel corpus on the
-#                         readable Executive and WAITLIST (seconds)
+#                         readable Executive and WAITLIST, then those against
+#                         the faithful port's kernel on random states
+#                         (seconds)
 #   make interbank-cases  the readable inter-bank routines against the
 #                         faithful port's, case by case (seconds)
 #   make phase-cases      the readable phase table maintenance against the
@@ -367,9 +369,39 @@ $(BUILD)/kernel-cases-lm: $(KERNEL_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(RK_L
 $(BUILD)/kernel-cases-cm: $(KERNEL_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(RK_CM_CASES) $(RK_COMMON)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(RK_CM_FLAGS) $(RK_CM_CASES) $(RK_COMMON) $(filter %.o,$^) -o $@
 
-kernel-cases: $(BUILD)/kernel-cases-lm $(BUILD)/kernel-cases-cm
+# tests/kernel_side_cases.c runs each entry of the readable kernel tables and
+# of the faithful port's (built here with faithful_ before each table's
+# name) on the same random states, some of them states no program makes.
+KS_LM_NAMES := lm_kernel_routines lm_kernel_job_routines lm_kernel_task_routines \
+	lm_kernel_idle_routines
+KS_CM_NAMES := cm_kernel_routines cm_kernel_job_routines cm_kernel_idle_routines
+KS_COMMON := $(PORT)/src/agc_image_ops.c $(PORT)/src/agc_transfer.c $(PORT)/src/agc_word.c \
+	$(PORT)/src/agc_multiword.c $(PORT)/src/agc_hardware_divide.c
+$(BUILD)/kernel-side-faithful-lm.o: $(PORT)/src/lm_kernel.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(KS_LM_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/kernel-side-faithful-cm.o: $(PORT)/src/cm_kernel.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(KS_CM_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/kernel-side-seams-lm.o: tests/kernel_side_seams.c $(HEADERS)
+	@mkdir -p $(dir $@)
+	$(CC) $(READABLE_CFLAGS) $(INCLUDES) $(LM) -c $< -o $@
+$(BUILD)/kernel-side-seams-cm.o: tests/kernel_side_seams.c $(HEADERS)
+	@mkdir -p $(dir $@)
+	$(CC) $(READABLE_CFLAGS) $(INCLUDES) $(CM) -c $< -o $@
+$(BUILD)/kernel-side-cases-lm: $(KERNEL_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) \
+		$(BUILD)/kernel-side-faithful-lm.o $(BUILD)/kernel-side-seams-lm.o tests/kernel_side_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(KS_COMMON) $(filter %.o,$^) tests/kernel_side_cases.c -o $@
+$(BUILD)/kernel-side-cases-cm: $(KERNEL_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) \
+		$(BUILD)/kernel-side-faithful-cm.o $(BUILD)/kernel-side-seams-cm.o tests/kernel_side_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(KS_COMMON) $(filter %.o,$^) tests/kernel_side_cases.c -o $@
+
+kernel-cases: $(BUILD)/kernel-cases-lm $(BUILD)/kernel-cases-cm $(BUILD)/kernel-side-cases-lm \
+		$(BUILD)/kernel-side-cases-cm
 	./$(BUILD)/kernel-cases-lm
 	./$(BUILD)/kernel-cases-cm
+	./$(BUILD)/kernel-side-cases-lm
+	./$(BUILD)/kernel-side-cases-cm
 
 # ---- The inter-bank routines, case by case ----
 # tests/interbank_cases.c runs each entry of the readable tables and of the

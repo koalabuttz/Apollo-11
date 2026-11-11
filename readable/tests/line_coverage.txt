@@ -3,18 +3,22 @@
 # `make line-coverage` measures again and holds the tree to it.
 #
 # Measured with Ubuntu clang version 18.1.3 (1ubuntu1).
-# 433 files have lines that run; 60065 such lines; 1609 of them unrun
-# (2.68%), in 674 stretches of 219 files.
+# 433 files have lines that run; 60086 such lines; 1569 of them unrun
+# (2.61%), in 664 stretches of 219 files.
 # Built and never run: x86-flight-cm-core, x86-flight-lm-core, x86-link-check.
 #
 # By reason:
+#   impossible: 19 lines in 6 stretches
 #   never: 62 lines in 24 stretches
 #   not-modelled: 124 lines in 95 stretches
-#   open: 652 lines in 265 stretches
-#   refusal: 771 lines in 290 stretches
+#   open: 595 lines in 251 stretches
+#   refusal: 769 lines in 288 stretches
 #
 # A reason in brackets is one of these:
 
+[impossible] No state brings the routine to the line: what the lines before
+    it leave in the word the branch tests rules the outcome out, and the
+    reason says how. The line is what the AGC would do there.
 [never] The comment at the line says the outcome never comes, and why. The
     line is what the AGC would do if it did.
 [not-modelled] The line is, or leads only to, not_modelled(): the source
@@ -180,13 +184,7 @@ src/binding/attitude_maneuver_routines.c
     why: [refusal]
 
 src/binding/binding.c
-  run, line 39 (1 unrun) 60864340
-    | return EXEC_OUT_OF_SCOPE;
-    why: [refusal]
-  run, line 47 (1 unrun) 60864340
-    | return EXEC_OUT_OF_SCOPE;
-    why: [refusal]
-  run, line 84 (1 unrun) e07ad122
+  run, line 118 (1 unrun) e07ad122
     | default: return EXEC_OUT_OF_SCOPE;
     why: [refusal]
 
@@ -2090,72 +2088,43 @@ src/entry_dap/dead_zone.c
     why: [open]
 
 src/executive/executive.c
-  findvac2, lines 126-131 (6 unrun) 87b07a60
-    | if (at == 014u) { /* the OCT 1201 runs as TC 1201 */
-    | tc_at((word)(FINDVAC2 + 014u));
-    | continue_at(01201u);
-    | return;
-    | }
-    | vacfound();
-    why: [open]
-  novac2, lines 168-170 (3 unrun) a653f4af
-    | tc_at((word)(NOVAC3 + 4u));
-    | continue_at(NO_CORES);
-    | return;
-    why: [open]
   novac2, lines 197-201 (5 unrun) 19b3c054
     | case NEGATIVE: /* the OCT 1202 runs as TC 1202 */
     | tc_at((word)(NEXTCORE + 5u));
     | continue_at(01202u);
     | return;
     | case IS_MINUS_ZERO: /* on into CHANJOB -2 */ chanjob_minus2(); return;
-    why: [open]
-  spectest, lines 244-247 (4 unrun) 37c150b6
-    | case NEGATIVE:
-    | tc_at((word)(SPECTEST + 3u)); /* TC CCSHOLE */
-    | continue_at(CCSHOLE);
-    | return;
-    why: [open]
+    why: [impossible] EXECTEM2 is never negative or -0 at NEXTCORE: NOVAC2
+         itself starts it at NO.CORES and each pass stores the CCS's count
+         one lower, down to +0, where the search ends.
   waketest, lines 535-536 (2 unrun) 6739c1e7
     | case NEGATIVE: prioch2(); return;
     | case IS_MINUS_ZERO: prioch2_plus1(); return;
-    why: [open]
+    why: [impossible] LOCCTR is never negative or -0 at a match: JOBWAKE2
+         itself starts it at +0 and adds COREINC for each core set it passes.
   endofjob, lines 601-603 (3 unrun) 0ff5486b
     | case IS_PLUS_ZERO: ts(A_ADDRESS); break;
     | case NEGATIVE: break;
     | case IS_MINUS_ZERO: continue_at((word)(EJSCAN + 1u)); return;
-    why: [open]
-  ejscan, lines 630-639 (8 unrun) 626123a9
-    | case IS_PLUS_ZERO:
-    | /* For core set 3 the third word is the constant -CCSPR, which
-    | * runs as an instruction; for the others it is TC CCSHOLE. */
-    | if (k == 3u) {
-    | continue_at((word)(at + 2u));
-    | return;
-    | ... (4 more)
-    why: [open]
-  ejscan, line 651 (1 unrun) a33ec75a
-    | case IS_PLUS_ZERO: break;
-    why: [open]
-  ejscan, lines 663-670 (8 unrun) 2136f7c9
-    | case POSITIVE:
-    | tc_at((word)(at + 1u));
-    | continue_at(CCSHOLE);
-    | return;
-    | case IS_PLUS_ZERO:
-    | tc_at((word)(at + 2u));
-    | ... (2 more)
-    why: [open]
+    why: [impossible] L is PRIORITY's low nine bits, so it is not negative,
+         and the BZMF just before lets through only an L above FAKEPRET: the
+         CCS always finds L positive.
   ejscan, lines 676-678 (3 unrun) e4efb9e8
     | case IS_MINUS_ZERO: /* CAF 0 -1 unindexed: no CCS word to read */
     | continue_at((word)(at + 9u));
     | return;
-    why: [open]
+    why: [impossible] BUF is read here only after BUF +1 came out of the scan
+         negative. The scan starts with BUF +1 at -0 (JOBSLEEP, ENDOFJOB),
+         and then only EJ2 changes it, leaving its return address in BUF; or
+         it starts with BUF at +0 (PRIOCHNG). So BUF is +0 or an address
+         here, never -0.
   ejscan, lines 685-687 (3 unrun) 1ba75236
     | continue_at((word)(at + 8u)); /* not a CCS word */
     | return;
     | }
-    why: [open]
+    why: [impossible] BUF is read here only when it is PRIOCHNG's +0 or the
+         return address EJ2 saved from one of the scan's own TC EJ1s, which
+         is one word after a core set's CCS.
 
 src/extended_verbs/align.c
   rdruseck, line 880 (1 unrun) 0041ee50
@@ -3388,20 +3357,10 @@ src/update_program/verbs.c
     why: [not-modelled]
 
 src/waitlist/waitlist.c
-  wtlst5, lines 187-190 (4 unrun) 55177133
-    | tc_at((word)(WTABORT + 1u));
-    | continue_at(01203u);
-    | return;
-    | }
-    why: [open]
-  taskover, lines 349-351 (3 unrun) 6420eb87
-    | continue_at(T3RUPT2);
-    | return;
-    | }
-    why: [open]
-  longcycl, lines 518-521 (4 unrun) 2ba0c541
-    | case IS_PLUS_ZERO: /* lands on DPBIT14's words ("can't get here") */
+  longcycl, lines 518-520 (3 unrun) 699f2831
+    | case IS_PLUS_ZERO: /* never (the DAS added -0): it would land on DPBIT14's words */
     | continue_at((word)ADDRESS_OF(DPBIT14));
     | return;
-    | case NEGATIVE: continue_at((word)(ADDRESS_OF(DPBIT14) + 1u)); return;
-    why: [open]
+    why: [impossible] The DAS just before added -0 to LONGTIME (and at most a
+         borrow from the low word). In the AGC's adder a sum is +0 only when
+         both numbers are +0, so LONGTIME is never +0 here.
