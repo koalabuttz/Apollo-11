@@ -311,8 +311,8 @@ void into_maxtest(word base, unsigned k)
         maxtest_minus(before);
     else if (before == 21u)
         maxtest_minus(21u);
-    else
-        continue_at(at); /* (never: no count goes outside the prologues) */
+    else /* (never: no count a divide makes goes outside the prologues) */
+        not_modelled_state("a shift count outside the divide's prologues");
 }
 
 /* MAXTEST -n -- LM p. 1061, CM p. 1166. "THE FOLLOWING ARE PROLOGUES TO

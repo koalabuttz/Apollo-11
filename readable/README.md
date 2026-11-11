@@ -409,7 +409,17 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    (the port's own fuzz generator, 20,000 programs per seed, 40 seeds per
    mission), pass by pass, and compares memory and channels word for word;
    it leaves out the operands no assembled program has (the test's header
-   lists them), but still compares MPAC, which flight code names. `make alarm-cases` runs the faithful port's alarm tests
+   lists them), but still compares MPAC, which flight code names. Then it
+   enters the interpreter where basic code does
+   (`tests/interpreter_side_cases.c`): every entry of the readable table
+   (DDV/BDDV, the MAXTEST prologues, UNIT, SQRTSUB, SINE, POLY, DMPSUB,
+   SHORTMP, INTPRET and the rest) and the faithful port's routines, built
+   as the flight program has them, side by side on 20,000 random states
+   each. Three states in four are as a caller brings them, and both must
+   run every one of those to the same end; one in four has a word no
+   program leaves (MODE or a shift count of any sign, FIXLOC anywhere, Q
+   or ADDRWD holding no address, an overflow in A), where a routine
+   follows its instructions wherever they lead. `make alarm-cases` runs the faithful port's alarm tests
    (every alarm site and entry of each mission, 4,096 cases against the
    original program's yaAGC digests) on the readable alarms and aborts,
    then readable and faithful side by side on 40,000 random states per
@@ -1509,8 +1519,8 @@ clang with its profile runtime, and takes half an hour). It builds every
 target of `make all` again with clang's source coverage and runs them,
 builds the x86 flight program the same way and flies gate 2's 86
 scenarios. Each program that ran left its counts, and a line of `src/` is
-run if any of them ran it. Of the 60,086 lines with code in them, 1,569
-(2.6%) are run by none, in 664 stretches of 219 files.
+run if any of them ran it. Of the 60,127 lines with code in them, 1,559
+(2.6%) are run by none, in 657 stretches of 218 files.
 
 Every one of those stretches stands in `tests/line_coverage.txt`, with
 its text and the reason it does not run, and the check fails on an unrun
@@ -1521,16 +1531,16 @@ the check itself on made-up measures and ledgers
 (`line-coverage-check`), with no build. Each reason is one of
 five kinds, and the ledger says what each means:
 
-- **refusal** (769 lines): how a binding refuses a state its routines do
+- **refusal** (777 lines): how a binding refuses a state its routines do
   not model. No case's state and no scenario makes those files refuse.
 - **not-modelled** (124 lines): the source marks the line
   `not_modelled()`, an outcome that cannot come there.
-- **never** (62 lines): the comment at the line says the outcome never
+- **never** (89 lines): the comment at the line says the outcome never
   comes, and the line is what the AGC would do if it did.
-- **impossible** (19 lines): no state brings the routine to the line,
+- **impossible** (74 lines): no state brings the routine to the line,
   and the reason says what in the lines before it rules the outcome out.
   An argument, not a run.
-- **open** (595 lines, 251 stretches): not looked at yet. Each is owed a
+- **open** (495 lines, 202 stretches): not looked at yet. Each is owed a
   case that runs it or the reason none can, and the count is in the
   ledger's head.
 
@@ -1620,6 +1630,10 @@ the side by side tests do not count them, and print how many they met:
   SETLOC's CS of PRIORITY with a NEWJOB that reaches past erasable
   memory): the AGC reads the rope; the faithful kernel keeps the low ten
   bits of the address and reads erasable memory there. Refused.
+- **A return through a Q that holds no address**, from one of the
+  interpreter's routines that basic code calls: the AGC runs the word in
+  Q as an instruction; the faithful routine goes to its low twelve bits.
+  Refused.
 - **The interpreter's unassembled operands** (an erasable order given a
   fixed address, a store into fixed memory, an operand past the end of
   its bank, ...): the readable interpreter does what the AGC does, the
@@ -1627,8 +1641,17 @@ the side by side tests do not count them, and print how many they met:
   out (`tests/interpreter_fuzz.c` lists them).
 
 And states the readable binding refuses where the faithful routine runs,
-also not counted: STATEUP with NEWJOB negative, and the fresh start's
-KLEANs returning to one of the file's own return points.
+also not counted: STATEUP with NEWJOB negative, the fresh start's
+KLEANs returning to one of the file's own return points, and UNIT
+entered at UNIT +16 (after its SQRTSUB, as the flight program's parts
+are cut) with a shift count in MPTEMP that no SQRTSUB leaves, which
+would enter no prologue of MAXTEST.
+
+One kind of made-up state the side by side tests do not make: a power
+series at a made-up address (POWRSERS's A, the words after a TC POLY).
+There the INDEX of every term makes an instruction the listing does not
+intend; the readable code does not model that, and does not refuse it
+either.
 
 And states both ports refuse where the AGC would run, which the side by
 side tests count as agreeing: in the CM's P20-P25, an indexed load from

@@ -420,8 +420,16 @@ def listing(lines, file):
         print(f'{mark} {number:5d} {text}')
 
 
+OPTIONS = ('--measure', '--write', '--list', '--self-check', '--fly', '--jobs')
+
+
 def main():
     args = sys.argv[1:]
+    # (An option this does not know must not start half an hour's build.)
+    unknown = [a for a in args if a.startswith('-') and a not in OPTIONS]
+    if unknown:
+        print(__doc__ if unknown[0] in ('-h', '--help') else f'line_coverage: no option {unknown[0]} (see --help)')
+        return 0 if unknown[0] in ('-h', '--help') else 2
     if '--self-check' in args:
         return self_check()
     version = tools()

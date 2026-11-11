@@ -3,16 +3,16 @@
 # `make line-coverage` measures again and holds the tree to it.
 #
 # Measured with Ubuntu clang version 18.1.3 (1ubuntu1).
-# 433 files have lines that run; 60086 such lines; 1569 of them unrun
-# (2.61%), in 664 stretches of 219 files.
+# 433 files have lines that run; 60127 such lines; 1559 of them unrun
+# (2.59%), in 657 stretches of 218 files.
 # Built and never run: x86-flight-cm-core, x86-flight-lm-core, x86-link-check.
 #
 # By reason:
-#   impossible: 19 lines in 6 stretches
-#   never: 62 lines in 24 stretches
+#   impossible: 74 lines in 35 stretches
+#   never: 89 lines in 35 stretches
 #   not-modelled: 124 lines in 95 stretches
-#   open: 595 lines in 251 stretches
-#   refusal: 769 lines in 288 stretches
+#   open: 495 lines in 202 stretches
+#   refusal: 777 lines in 290 stretches
 #
 # A reason in brackets is one of these:
 
@@ -1077,39 +1077,41 @@ src/binding/interbank_tables.c
     why: [refusal]
 
 src/binding/interpreter_basic.c
-  maxtest_entry, lines 48-50 (3 unrun) 61460f83
-    | {
-    | maxtest_minus((unsigned)(MAXTEST - Z));
-    | }
-    why: [open]
-  sqrtsub_entry, lines 52-54 (3 unrun) 21c48542
-    | {
-    | (void)sqrtsub();
-    | }
-    why: [open]
-  as_expected, line 172 (1 unrun) 3fa97fd8
+  as_expected, line 178 (1 unrun) 3fa97fd8
     | return false;
     why: [open]
 
 src/binding/interpreter_core.c
-  code_word, line 113 (1 unrun) e51e4b7c
+  code_word, line 114 (1 unrun) e51e4b7c
     | address = 2048u + (address & 07777u) - 04000u;
     why: [open]
-  as_expected, line 146 (1 unrun) 3fa97fd8
+  as_expected, line 147 (1 unrun) 3fa97fd8
     | return false;
     why: [open]
-  order_taken, line 171 (1 unrun) 3fa97fd8
+  order_taken, line 172 (1 unrun) 3fa97fd8
     | return false;
     why: [open]
-  run, line 271 (1 unrun) 60864340
+  run, line 272 (1 unrun) 60864340
     | return EXEC_OUT_OF_SCOPE;
     why: [refusal]
-  run, line 273 (1 unrun) 60864340
+  run, line 274 (1 unrun) 60864340
     | return EXEC_OUT_OF_SCOPE;
     why: [refusal]
-  run, line 297 (1 unrun) 775cc72f
+  run, line 298 (1 unrun) 775cc72f
     | swreturn();
     why: [open]
+  leave, lines 317-319 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  entry, lines 338-342 (5 unrun) 3afa58ba
+    | *state = before;
+    | *io = kept_io;
+    | CORE_MCT = clock;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
 
 src/binding/kalcmanu_steering_routines.c
   interpretive, lines 215-217 (3 unrun) 0d3a7d6b
@@ -2292,24 +2294,22 @@ src/interbank/interbank.c
     | case IS_MINUS_ZERO: break;
     why: [open]
 
-src/interpreter/arithmetic.c
-  poly2, lines 420-421 (2 unrun) 25e838e7
-    | case NEGATIVE: dpagree(); return;
-    | case IS_MINUS_ZERO: dpagree_plus1(); return;
-    why: [open]
-
 src/interpreter/dispatcher.c
-  noibnksw, lines 138-142 (5 unrun) d88c187d
+  noibnksw, lines 146-150 (5 unrun) d88c187d
     | case NEGATIVE: continue_at(CHANG2); return; /* (never: EDOP is seven bits) */
     | case IS_MINUS_ZERO:
     | incr(ADDRESS_OF(LOC));
     | continue_at(NEWOPS);
     | return; /* (never) */
     why: [never]
-  noibnksw, line 149 (1 unrun) f1a52d8d
+  noibnksw, line 157 (1 unrun) f1a52d8d
     | case IS_MINUS_ZERO: continue_at(NEWOPS + 1u); return;
-    why: [open]
-  newops, lines 164-169 (4 unrun) c0e923e8
+    why: [never] NEWJOB is +0 or the address of a core set, as the Executive
+         leaves it. The flight program's interpreter takes no pass with a
+         negative NEWJOB (as_expected, src/binding/interpreter_core.c), as
+         the faithful core does: there is no faithful run to compare one
+         with.
+  newops, lines 172-177 (4 unrun) c0e923e8
     | case IS_PLUS_ZERO:
     | /* (never: a program word is never +0. The AGC would run LOW7, OCT
     | * 177, as TC 177.) */
@@ -2317,23 +2317,26 @@ src/interpreter/dispatcher.c
     | continue_at(LOW7);
     | return;
     why: [never]
-  newops, line 171 (1 unrun) 6099f891
+  newops, line 179 (1 unrun) 6099f891
     | case IS_MINUS_ZERO: break; /* (never: no pair is -0) */
     why: [never]
-  diradres, line 215 (1 unrun) 8f59ce8f
+  diradres, line 223 (1 unrun) 8f59ce8f
     | case IS_PLUS_ZERO:
-    why: [open]
-  diradres, line 220 (1 unrun) 5088b281
+    why: [never] An address word is never -0: no program assembles one, and
+         the side by side test leaves such a word out
+         (tests/interpreter_fuzz.c), where the faithful core does something
+         simpler than the AGC.
+  diradres, line 228 (1 unrun) 5088b281
     | case IS_MINUS_ZERO: break;                   /* (never: an address word +0) */
     why: [never]
-  itr, lines 274-275 (2 unrun) 58644e6a
+  itr, lines 282-283 (2 unrun) 58644e6a
     | else
     | continue_at((word)to); /* (never: CYR always holds a code here) */
     why: [never]
-  index_, line 314 (1 unrun) 67e3012c
+  index_, line 322 (1 unrun) 67e3012c
     | case IS_MINUS_ZERO: break; /* (never: an address word +0) */
     why: [never]
-  opjump3, lines 437-442 (4 unrun) be2472b7
+  opjump3, lines 445-450 (4 unrun) be2472b7
     | case IS_MINUS_ZERO:
     | /* (never: MODE is never -0. The AGC would run LVBUF, ADRES VBUF, as
     | * TC VBUF.) */
@@ -2341,14 +2344,22 @@ src/interpreter/dispatcher.c
     | continue_at(LVBUF);
     | return;
     why: [never]
-  indjump, line 469 (1 unrun) 8c283bb7
-    | case 015: ccall(); return;  /* computed call */
-    why: [open]
-  indjump, lines 485-487 (3 unrun) 31e274ac
+  indjump, line 477 (1 unrun) 8d701d3a
+    | case 015: ccall(); return;  /* computed call (never: no program has the order) */
+    why: [never] CCALL: no program has the order (neither mission's listing
+         uses it), and the flight program's interpreter refuses a pass that
+         would run it before anything runs (order_taken,
+         src/binding/interpreter_core.c), as the faithful core does. There is
+         no faithful run to compare one with.
+  indjump, lines 493-495 (3 unrun) 31e274ac
     | case 035:                   /* "AVAILABLE": TCF +0, a TCF to itself (no program uses it) */
     | continue_at(INDJUMP + 035u);
     | return;
-    why: [open]
+    why: [never] Address code 35, AVAILABLE: no program has the order
+         (neither mission's listing uses it), and the flight program's
+         interpreter refuses a pass that would run it before anything runs
+         (order_taken, src/binding/interpreter_core.c), as the faithful core
+         does. There is no faithful run to compare one with.
 
 src/interpreter/divide.c
   mpac_plus, lines 185-189 (3 unrun) 1e2eaa24
@@ -2357,7 +2368,9 @@ src/interpreter/divide.c
     | * as AD L, and the TCF +1 after it goes on. */
     | ad_at(L_ADDRESS);
     | break;
-    why: [open]
+    why: [impossible] A is the sum of -MPAC, -1 and BUF. In the AGC's adder a
+         sum is +0 only when both numbers are +0. -1 is not, so the first sum
+         is never +0, and then neither is the second.
   mpac_plus, lines 211-216 (4 unrun) cc311f21
     | case IS_PLUS_ZERO:
     | /* (never: the majors differed by one before the agreement. The next
@@ -2366,60 +2379,101 @@ src/interpreter/divide.c
     | continue_at(LBUF2);
     | return;
     why: [never]
-  into_maxtest, lines 314-315 (2 unrun) 65bbb2e1
-    | else
-    | continue_at(at); /* (never: no count goes outside the prologues) */
-    why: [never]
-  maxtest, lines 350-353 (4 unrun) d0a9ddb6
-    | case POSITIVE:
-    | tc_at(ADDRESS_OF(BIASHI));
-    | continue_at(BIASHI);
-    | return;
-    why: [open]
-  maxtest, line 356 (1 unrun) 9eb32197
-    | case IS_MINUS_ZERO: genddv_plus1(); return;
-    why: [open]
 
 src/interpreter/index_orders.c
   fifteen_adrers, line 185 (1 unrun) a33ec75a
     | case IS_PLUS_ZERO: break;
-    why: [open]
+    why: [impossible] A is 45 less POLISH. In the AGC's adder a sum is +0
+         only when both numbers are +0. 45 is not (an address of exactly 45
+         gives -0, the slot after the next).
   tagsub, line 217 (1 unrun) f91b5beb
     | case IS_MINUS_ZERO: rtb_bhiz(); return;
-    why: [open]
+    why: [impossible] OPJUMP's TS and CCSs have cycled the order's code
+         through CYR, and the core binding takes no other CYR at 15BITADR: a
+         miscellaneous order's CYR holds its MISCJUMP number in bits 1 to 4,
+         nothing in bits 5 to 13, and the code's bit 3 and prefix above.
+         TAGSUB's CCS is the order's first of CYR, or its second after
+         CALL/ITA's (where bits 4 to 12 are the empty ones): either way CYR
+         is not -0.
   rtb_bhiz, line 235 (1 unrun) f7aebb49
     | case IS_PLUS_ZERO: rtb_plus1(); return;
-    why: [open]
+    why: [impossible] OPJUMP's TS and CCSs have cycled the order's code
+         through CYR, and the core binding takes no other CYR at 15BITADR: a
+         miscellaneous order's CYR holds its MISCJUMP number in bits 1 to 4,
+         nothing in bits 5 to 13, and the code's bit 3 and prefix above. This
+         is RTB/BHIZ's first CCS of CYR: its number, 14, is there, so CYR is
+         not +0.
   rtb_bhiz, line 237 (1 unrun) 1da3aa6a
     | case IS_MINUS_ZERO: bhiz_plus1(); return;
-    why: [open]
+    why: [impossible] OPJUMP's TS and CCSs have cycled the order's code
+         through CYR, and the core binding takes no other CYR at 15BITADR: a
+         miscellaneous order's CYR holds its MISCJUMP number in bits 1 to 4,
+         nothing in bits 5 to 13, and the code's bit 3 and prefix above. This
+         is RTB/BHIZ's first CCS of CYR: bits 5 to 13 are empty, so CYR is
+         not -0.
   bov_b, lines 287-290 (4 unrun) ff5b5aaa
     | case IS_PLUS_ZERO:
     | tc_at(ADDRESS_OF(B5TOBB));
     | continue_at(B5TOBB);
     | return;
-    why: [open]
+    why: [impossible] OPJUMP's TS and CCSs have cycled the order's code
+         through CYR, and the core binding takes no other CYR at 15BITADR: a
+         miscellaneous order's CYR holds its MISCJUMP number in bits 1 to 4,
+         nothing in bits 5 to 13, and the code's bit 3 and prefix above. This
+         is BOV/BOVB's first CCS of CYR: its number, 17, is there, so CYR is
+         not +0.
   bov_b, line 292 (1 unrun) e2ebbba8
     | case IS_MINUS_ZERO: bze_goto(); return;
-    why: [open]
+    why: [impossible] OPJUMP's TS and CCSs have cycled the order's code
+         through CYR, and the core binding takes no other CYR at 15BITADR: a
+         miscellaneous order's CYR holds its MISCJUMP number in bits 1 to 4,
+         nothing in bits 5 to 13, and the code's bit 3 and prefix above. This
+         is BOV/BOVB's first CCS of CYR: bits 5 to 13 are empty, so CYR is
+         not -0.
   bze_goto, line 310 (1 unrun) b070d238
     | default: continue_at(DANZIG); return;
-    why: [open]
+    why: [impossible] OPJUMP's TS and CCSs have cycled the order's code
+         through CYR, and the core binding takes no other CYR at 15BITADR: a
+         miscellaneous order's CYR holds its MISCJUMP number in bits 1 to 4,
+         nothing in bits 5 to 13, and the code's bit 3 and prefix above. This
+         is BZE/GOTO's first CCS of CYR (BOV's -0 slot, the other way here,
+         never comes): its number, 12, is there and bits 5 to 13 are empty,
+         so CYR is neither zero.
   bpl_bmn, line 321 (1 unrun) 7c7699e5
     | case IS_PLUS_ZERO: continue_at(FIVE_B10 & 07777u); return;
-    why: [open]
+    why: [impossible] OPJUMP's TS and CCSs have cycled the order's code
+         through CYR, and the core binding takes no other CYR at 15BITADR: a
+         miscellaneous order's CYR holds its MISCJUMP number in bits 1 to 4,
+         nothing in bits 5 to 13, and the code's bit 3 and prefix above. This
+         is BPL/BMN's first CCS of CYR: its number, 13, is there, so CYR is
+         not +0.
   bpl_bmn, line 329 (1 unrun) 60fcb434
     | case IS_MINUS_ZERO: continue_at(DANZIG); return;
-    why: [open]
+    why: [impossible] OPJUMP's TS and CCSs have cycled the order's code
+         through CYR, and the core binding takes no other CYR at 15BITADR: a
+         miscellaneous order's CYR holds its MISCJUMP number in bits 1 to 4,
+         nothing in bits 5 to 13, and the code's bit 3 and prefix above. This
+         is BPL/BMN's first CCS of CYR: bits 5 to 13 are empty, so CYR is not
+         -0.
   call_ita, lines 352-355 (4 unrun) f2bbbfe7
     | case IS_PLUS_ZERO:
     | tc_at(CALL_ITA + 2u);
     | continue_at(CCSHOLE);
     | return;
-    why: [open]
+    why: [impossible] OPJUMP's TS and CCSs have cycled the order's code
+         through CYR, and the core binding takes no other CYR at 15BITADR: a
+         miscellaneous order's CYR holds its MISCJUMP number in bits 1 to 4,
+         nothing in bits 5 to 13, and the code's bit 3 and prefix above. This
+         is CALL/ITA's first CCS of CYR: its number, 15, is there (STCALL,
+         which enters at 15BITADR, leaves exactly 15), so CYR is not +0.
   call_ita, line 360 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] OPJUMP's TS and CCSs have cycled the order's code
+         through CYR, and the core binding takes no other CYR at 15BITADR: a
+         miscellaneous order's CYR holds its MISCJUMP number in bits 1 to 4,
+         nothing in bits 5 to 13, and the code's bit 3 and prefix above. This
+         is CALL/ITA's first CCS of CYR: bits 5 to 13 are empty (STCALL
+         leaves exactly 15), so CYR is not -0.
 
 src/interpreter/load_store.c
   store_, line 124 (1 unrun) db4e3013
@@ -2444,7 +2498,7 @@ src/interpreter/load_store.c
     why: [never]
 
 src/interpreter/sequence.c
-  ccall, lines 28-37 (10 unrun) e8479524
+  ccall, lines 31-40 (10 unrun) e8479524
     | {
     | incr(ADDRESS_OF(LOC));
     | ca(indexed(0u, LOC));       /* "GET BASE ADDRESS OF CADR LIST." */
@@ -2452,7 +2506,11 @@ src/interpreter/sequence.c
     | ts(FBANK_ADDRESS);          /* "SELECT DESIRED CADR." */
     | mask(LOW10);
     | ... (4 more)
-    why: [open]
+    why: [never] CCALL: no program has the order (neither mission's listing
+         uses it), and the flight program's interpreter refuses a pass that
+         would run it before anything runs (order_taken,
+         src/binding/interpreter_core.c), as the faithful core does. There is
+         no faithful run to compare one with.
 
 src/interpreter/shifts.c
   shortt, lines 79-84 (4 unrun) 98d166fa
@@ -2465,29 +2523,45 @@ src/interpreter/shifts.c
     why: [never]
   shortt, line 86 (1 unrun) 0fb30fdc
     | case IS_MINUS_ZERO: tssr_plus1(); return;
-    why: [open]
+    why: [impossible] A short shift's code has bit 3 set and its prefix bits
+         clear. OPJUMP's TS and three CCSs have cycled it through CYR: here
+         CYR holds the code's top three bits in bits 1 to 3, its bit 3 in bit
+         14 and its bit 4 as the sign, and nothing in bits 4 to 13. So CYR is
+         not -0.
   tssr_plus1, lines 99-102 (4 unrun) 6851cdb9
     | {
     | set_A(BIT14);
     | tssr_plus2();
     | }
-    why: [open]
+    why: [impossible] Entered only from SHORTT's -0 slot, which never comes
+         (SHORTT, above).
   tssr_plus2, line 112 (1 unrun) adf15a9d
     | case IS_PLUS_ZERO: newmode(); return;
-    why: [open]
+    why: [impossible] The second CCS of a short shift's CYR, cycled once more
+         since SHORTT's: the code's bit 3 is in bit 13 now, so CYR is not +0.
   tssr_plus2, lines 114-117 (4 unrun) bc70bec6
     | case IS_MINUS_ZERO:
     | mp_at(MPAC_AT(2u));
     | mpacshr_plus3();
     | return;
-    why: [open]
+    why: [impossible] The second CCS of a short shift's CYR, cycled once more
+         since SHORTT's: bits 3 to 12 are empty, so CYR is not -0.
   tssl_plus2, lines 228-229 (2 unrun) f9f9f7a5
     | case NEGATIVE: round_(); return;
     | case IS_MINUS_ZERO: continue_at(DANZIG); return;
-    why: [open]
-  tssl_plus2, line 236 (1 unrun) 822ef9e6
-    | case IS_PLUS_ZERO:                          /* "SL LEAVES A ZERO IN CYR FOR NO ROUND." */
-    why: [open]
+    why: [impossible] MPTEMP is a shift count less one, never negative and
+         never -0: SHORTT and SHORTV take it from bits of CYR, GENSHFT2 from
+         its CCS of a positive count (LEFT- makes that 176 less it, not
+         negative either), and the loop stores what its own CCS of a positive
+         count leaves, one lower each time.
+  tssl_plus2, line 236 (1 unrun) 3b9d14ea
+    | case IS_PLUS_ZERO: /* "SL LEAVES A ZERO IN CYR FOR NO ROUND." (Never: it leaves bit 13.) */
+    why: [never] After a short shift CYR still holds the code's bit 3 here,
+         in bit 13. After GENSCL it is +0 only when the MP of ADDRWD's
+         complement leaves a zero of positive sign: an ADDRWD that is -0, or
+         negative and within 1000 (octal) of it. YUL's shift words are
+         positive, with bit 14 set, and the side by side test makes no
+         indexed address that comes out negative (tests/interpreter_fuzz.c).
   shortv, lines 270-275 (4 unrun) 9d746482
     | case IS_PLUS_ZERO:
     | /* (never: CYR holds an order code. The next word, OCT176, "USED IN
@@ -2499,7 +2573,11 @@ src/interpreter/shifts.c
   vssl, lines 350-351 (2 unrun) 9e843dda
     | case NEGATIVE: tslc2(); return;
     | case IS_MINUS_ZERO: tslc2_plus1(); return;
-    why: [open]
+    why: [impossible] MPTEMP is a shift count less one, never negative and
+         never -0: SHORTT and SHORTV take it from bits of CYR, GENSHFT2 from
+         its CCS of a positive count (LEFT- makes that 176 less it, not
+         negative either), and the loop stores what its own CCS of a positive
+         count leaves, one lower each time.
   right, line 469 (1 unrun) bec88a41
     | case IS_MINUS_ZERO: break;                    /* (never; would enter VRIGHT2 with A +0) */
     why: [never]
@@ -2509,11 +2587,16 @@ src/interpreter/shifts.c
     | tc_at(ADDRESS_OF(BIASLO)); /* DEC .2974 B-1 is TC 4604 */
     | continue_at(BIASLO);
     | return;
-    why: [open]
+    why: [impossible] MPTEMP was stored just above as a number above zero
+         (the BZMF let no other through) less one: positive, or -0 for
+         exactly one, since a sum with -1 is never +0.
   genscr_plus4, lines 576-577 (2 unrun) 07b4fac2
     | case NEGATIVE:
     | lxch(SLOPEHI & 01777u); /* DEC .5884 is 22650: LXCH 650 */
-    why: [open]
+    why: [impossible] MPTEMP was stored just above as a number above zero
+         (the BZMF let no other through) less one: positive, or -0 for
+         exactly one, since a sum with -1 is never +0. (SQRT, which enters
+         here too, comes with the same test passed.)
 
 src/interpreter/switches.c
   test, lines 120-123 (4 unrun) 01f21a78
@@ -2521,75 +2604,114 @@ src/interpreter/switches.c
     | tc_at(TEST + 5u);
     | continue_at(CCSHOLE);
     | return;
-    why: [open]
+    why: [never] A is the switch word (or its complement) masked with SWBIT,
+         and is -0 only when SWBIT is. SWBIT is one of the fifteen BIT
+         constants unless the order's bit number is 15, where the word after
+         BIT1 is NEG0. No assembled switch order has that number, and the
+         side by side test leaves it out (tests/interpreter_fuzz.c).
 
 src/interpreter/trig.c
   acosst, line 188 (1 unrun) b5f4528b
     | case IS_PLUS_ZERO: asinex(); return;
-    why: [open]
+    why: [impossible] A is MPAC less one half. In the AGC's adder a sum is +0
+         only when both numbers are +0. One half is not (a major part of
+         exactly one half gives -0).
   acosst2, lines 235-236 (2 unrun) 722407c7
     | case NEGATIVE: acos3_plus1(); return;
     | case IS_MINUS_ZERO: acos3_plus2(); return;
-    why: [open]
+    why: [impossible] SQRTSUB leaves its shift count in MPTEMP: it starts it
+         at +0 and only adds 7 and 1 to it, so it is never negative and never
+         -0 here.
   tc_escape, lines 303-304 (2 unrun) 5b295392
     | else
     | continue_at((word)escape);
-    why: [open]
+    why: [impossible] ESCAPE holds LASINEX or LDANZIG, which ARCSIN or ARCCOS
+         stored at the order's start, or TCSUBTR, which ARCCOS +2 put there
+         for a negative argument when it moved the first into ESCAPE2.
+         SQRTSUB, POLY, DMPSUB and the shift, all that run before the TC,
+         store in neither word.
 
 src/interpreter/unit_sqrt.c
-  unit_plus16, line 85 (1 unrun) fdd5af3d
-    | case IS_MINUS_ZERO: dxch(ADDRESS_OF(LV)); break;
-    why: [open]
-  large, line 129 (1 unrun) 0039665b
-    | case IS_MINUS_ZERO: break;
-    why: [open]
-  abvalabs, line 255 (1 unrun) b263ad09
+  abvalabs, line 256 (1 unrun) b263ad09
     | case IS_MINUS_ZERO: abval_plus1(); return;
-    why: [open]
-  sqrt_, line 289 (1 unrun) bd6aff35
+    why: [never] MODE is +0, +1 or -1: NEWMODE and the loads store nothing
+         else. The side by side test keeps to those, as the faithful core
+         does (tests/interpreter_fuzz.c), so there is no faithful run to
+         compare a MODE of -0 with.
+  sqrt_, line 290 (1 unrun) bd6aff35
     | case IS_MINUS_ZERO: sqrtshft(); return; /* (A +0 passes the BZMF) */
-    why: [open]
-  push, line 361 (1 unrun) 0e8514b8
+    why: [impossible] SQRTSUB leaves its shift count in MPTEMP: it starts it
+         at +0 and only adds 7 and 1 to it, so it is never negative and never
+         -0 here.
+  push, line 363 (1 unrun) 0e8514b8
     | case IS_MINUS_ZERO: ca(MPAC_AT(4u)); break;     /* COMPONENTS." */
-    why: [open]
-  sqrtneg, lines 504-505 (2 unrun) 461ede13
+    why: [never] MODE is +0, +1 or -1: NEWMODE and the loads store nothing
+         else. The side by side test keeps to those, as the faithful core
+         does (tests/interpreter_fuzz.c), so there is no faithful run to
+         compare a MODE of -0 with.
+  sqrtneg, lines 506-507 (2 unrun) 461ede13
     | case NEGATIVE: zeroans(); return false;
     | case IS_MINUS_ZERO: fixroot(); return false;
-    why: [open]
-  arghi_plus4, lines 591-593 (3 unrun) 0a60be72
+    why: [impossible] A is what SQRTSUB's CCS of a negative MPAC left: its
+         magnitude less one, which is positive or +0.
+  arghi_plus4, lines 593-595 (3 unrun) 0a60be72
     | set_A(POSMAX);
     | fixroot();
     | }
-    why: [open]
-  sqrtnorm, line 660 (1 unrun) e1034a70
+    why: [impossible] A is what the DAS leaves, and it is not zero only when
+         X1/2 + MPAC/X1 reaches one. MPAC here is the argument halved, under
+         one half by e (2 to the -28 or more), and X1 is under one by d: the
+         sum is about 1 + d*d/2 - e. X1 comes from MPAC's major part alone:
+         for the two largest it is 37777 (d is 2 to the -14, d*d/2 is 2 to
+         the -29, under e), and for any smaller e is 2 to the -15 or more. So
+         the listing's overflow near POSMAX never comes: 37777 37777 gives
+         37777 37777 with A +0. (A sweep of 1,354,176 arguments, every major
+         part from 10000 and every minor part of those from 37700, found
+         none.)
+  sqrtnorm, line 662 (1 unrun) e1034a70
     | case IS_PLUS_ZERO: sqrtnm2(); return;
-    why: [open]
-  sqrtnorm, line 662 (1 unrun) bd78ad2f
+    why: [impossible] SQRTNORM is reached only with MPAC's major part above
+         zero and under one quarter (SMPAC+ and SRTEST, and again after each
+         SQRTNM2). Shifted left once and doubled, it goes into CYL with its
+         top bit clear and some bit set, and CYL's cycle left loses none: the
+         first CCS never finds +0.
+  sqrtnorm, line 664 (1 unrun) bd78ad2f
     | case IS_MINUS_ZERO: arglo(); return;
-    why: [open]
-  sqrtnorm, line 666 (1 unrun) b9a6f41d
+    why: [impossible] SQRTNORM is reached only with MPAC's major part above
+         zero and under one quarter. Shifted left once, doubled and cycled
+         left into CYL, its bit 1 is clear: the first CCS never finds -0.
+  sqrtnorm, line 668 (1 unrun) b9a6f41d
     | case IS_PLUS_ZERO: arghi(); return;   /* "YES -- NOW BETWEEN .5 AND .25." */
-    why: [open]
-  sqrtnorm, line 668 (1 unrun) c09b3a76
+    why: [impossible] The second CCS of CYL comes only after the first found
+         it positive (the TS before them never overflows: the doubled major
+         part is under one half). A positive CYL cycled left once more keeps
+         its bits: never +0.
+  sqrtnorm, line 670 (1 unrun) c09b3a76
     | case IS_MINUS_ZERO: cosine(); return; /* (never: runs on into COSINE) */
     why: [never]
 
 src/interpreter/vectors.c
   vxsc, line 135 (1 unrun) 8de27fca
     | case IS_MINUS_ZERO: vvxsc_plus1(); break;
-    why: [open]
+    why: [never] MODE is +0, +1 or -1: NEWMODE and the loads store nothing
+         else. The side by side test keeps to those, as the faithful core
+         does (tests/interpreter_fuzz.c), so there is no faithful run to
+         compare a MODE of -0 with.
   v_sc, line 446 (1 unrun) b4b22846
     | case IS_MINUS_ZERO: vv_sc_plus1(); break;
-    why: [open]
+    why: [never] MODE is +0, +1 or -1: NEWMODE and the loads store nothing
+         else. The side by side test keeps to those, as the faithful core
+         does (tests/interpreter_fuzz.c), so there is no faithful run to
+         compare a MODE of -0 with.
   vv_sc_plus1, lines 457-460 (4 unrun) a22c8877
     | {
     | ca(indexed(1u, ADDRWD));
     | v_sc1();
     | }
-    why: [open]
-  comp, line 525 (1 unrun) 71ce4b06
-    | case IS_MINUS_ZERO: cs(MPAC_AT(4u)); break;
-    why: [open]
+    why: [never] MODE is +0, +1 or -1: NEWMODE and the loads store nothing
+         else. The side by side test keeps to those, as the faithful core
+         does (tests/interpreter_fuzz.c), so there is no faithful run to
+         compare a MODE of -0 with. (Entered only from V/SC's -0 slot.)
 
 src/kalcmanu_steering/kalcmanu_steering.c
   timechk, line 175 (1 unrun) 012e9d92

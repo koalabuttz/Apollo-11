@@ -435,8 +435,8 @@ void gshift(void)
  * IT SAVES THE SCALAR AT X IN BUF AND CALLS THE V/SC ROUTINE IN BANK 0.
  * IF THE PRESENT MODE IS SCALAR, IT MOVES THE VECTOR AT X INTO MPAC,
  * SAVING THE SCALAR IN MPAC IN BUF BEFORE CALLING THE V/SC ROUTINE IN BANK
- * 0." (A MODE of -0 would skip VV/SC's EXTEND, and the DCA 0 would run as
- * CA 1: the word after the scalar.) */
+ * 0." (MODE is never -0: it would skip VV/SC's EXTEND, and the DCA 0 would
+ * run as CA 1: the word after the scalar.) */
 void v_sc(void)
 {
     switch (ccs_at(ADDRESS_OF(MODE))) {

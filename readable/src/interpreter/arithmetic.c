@@ -484,7 +484,14 @@ static void argzero2(void)
  * ARRIVING IN A." */
 void shortmp(void)
 {
-    ts(ADDRESS_OF(MPTEMP));
+    if (ts(ADDRESS_OF(MPTEMP))) {
+        /* (An overflow in the arriving A, which no caller brings, skips the
+         * EXTEND, and the MP's word without it is a MASK.) */
+        mask_at(MPAC_AT(2u));
+        ts(MPAC_AT(2u));
+        shortmp2();
+        return;
+    }
     shortmp_plus1();
 }
 
@@ -507,8 +514,12 @@ void shortmp2(void)
  * ARRIVING IN A. THE DP PRODUCT DEPARTS BOTH IN MPAC AND IN A AND L." */
 void dmpnsub(void)
 {
-    ts(ADDRESS_OF(DMPNTEMP));
-    mp_at(MPAC_AT(1u));
+    /* (An overflow in the arriving A, which no caller brings, skips the
+     * EXTEND, and the MP's word without it is a MASK.) */
+    if (ts(ADDRESS_OF(DMPNTEMP)))
+        mask_at(MPAC_AT(1u));
+    else
+        mp_at(MPAC_AT(1u));
     dxch(MPAC_AT(0u)); /* "LOW PRODUCT TO MPAC, HIGH FACTOR TO A" */
     mp_at(ADDRESS_OF(DMPNTEMP));
     ca(L_ADDRESS);

@@ -11,7 +11,13 @@
  * for the entry. A routine runs until the readable code leaves it (at
  * DANZIG or NEWOPS, a return to its caller, an alarm). Where that is
  * another of these entries, as the faithful routines do, it goes on
- * there. */
+ * there.
+ *
+ * Only a state no program makes has a routine do what the readable code
+ * does not model (a shift count that would enter no prologue of MAXTEST,
+ * a return through a Q that holds no address): the binding refuses such a
+ * state and leaves it as it found it. */
+#include <setjmp.h>
 #include <stddef.h>
 #include "binding.h"
 #include "rope_image.h"
@@ -176,17 +182,37 @@ static bool as_expected(word z)
     return true;
 }
 
+static jmp_buf back;
+
+static void leave(void)
+{
+    longjmp(back, 1);
+}
+
 static enum exec_status run(const agc_native_program *program, apollo_overlay_state *state,
                             void *device)
 {
+    mission_io *io = device, kept_io;
+    apollo_overlay_state before;
     unsigned i;
 
     if (!bind_machine(program, state, device)) return EXEC_OUT_OF_SCOPE;
     agc.fixed_memory = rope_word;
     i = entry_at();
     if (i == ENTRIES || !as_expected(entries[i].z)) return EXEC_OUT_OF_SCOPE;
+    agc.leave = leave;
+    before = *state;
+    kept_io = *io;
+    if (setjmp(back)) {
+        *state = before;
+        *io = kept_io;
+        return EXEC_OUT_OF_SCOPE;
+    }
     do {
         entries[i].routine();
+        /* A return's TC Q runs the word in Q, which every caller left as
+         * the address to go back to. */
+        if (Z > 07777u) not_modelled_state("a return through a word that is no address");
     } while ((i = entry_at()) != ENTRIES);
     return EXEC_OK;
 }
