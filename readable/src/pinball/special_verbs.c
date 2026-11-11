@@ -185,8 +185,8 @@ void vbproc(void)
 
 void vbproc_plus1(void)
 {
-    if (ts(ADDRESS_OF(LOADSTAT))) not_modelled();
-    tc(VBPROC + 2u, KILMONON); /* "TURN ON KILL MONITOR BIT" */
+    if (ts(ADDRESS_OF(LOADSTAT))) not_modelled(); /* an overflow in A would skip the TC */
+    tc(VBPROC + 2u, KILMONON);                    /* "TURN ON KILL MONITOR BIT" */
 }
 
 void vbproc_plus3(void)

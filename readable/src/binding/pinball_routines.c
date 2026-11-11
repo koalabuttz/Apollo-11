@@ -7,22 +7,21 @@
  * lanec_pin_run_lm or lanec_pin_run_cm (c64-port/src/lanec_pin_trampoline.c),
  * with the list of the port's modules that claim its entry; the trampoline
  * runs them on the mission's device record (an lm_dntm_io or a cm_dntm_io:
- * the channels and the superbank). The readable file takes the
- * trampoline's place under its name. Since part 8 every entry of the
- * tables is a readable routine; the faithful trampoline, built into the
- * readable programs as faithful_lanec_pin_run_<m> (tests/x86_readable.py,
- * the Makefile's pinball tests), still runs a step the readable code does
- * not model.
+ * the channels and the superbank). The readable file takes the tables'
+ * places under their names (at the end of this file), and the
+ * trampoline's, which the faithful port's own tables call in its tests.
+ * No faithful routine runs under it: a step the readable code does not
+ * model is refused.
  *
  * Plumbing only: point the machine at the state and at copies of the
- * channels the record carries, take the states the trampoline takes
- * (lanec_registers_valid), run the readable routine at Z, and give the
- * channels back. A routine the table enters at SWRETURN, the way back from
- * one of the file's BANKCALLs (c64-port/src/lanec_pin_routines.c,
- * swreturn), runs the readable SWRETURN (src/interbank/) first when it
- * returns into a readable entry. A step the readable code does not model
- * runs in the faithful trampoline instead, from the state and the record
- * as they were (but for CLR5's, below).
+ * channels the record carries, take the states the trampoline takes (the
+ * bank registers agreeing, Z a 12-bit address and ZERO +0), run the
+ * readable routine at Z, and give the channels back. A routine the table
+ * enters at SWRETURN, the way back from one of the file's BANKCALLs
+ * (pinball_step_from_bankcall, below), runs the readable SWRETURN
+ * (src/interbank/) first when it returns into a readable entry. A step
+ * the readable code does not model leaves the state and the record as
+ * they were.
  *
  * A routine is one step. The flight program charges the AGC clock for
  * each step by the point it starts at (c64-port/platform/x86/
@@ -32,33 +31,32 @@
  * after another (running the instruction a return cell holds, as the
  * trampoline does) until it reaches a point where the faithful step from
  * the same start ends (pinball_stops.inc), or leaves Pinball (returns to
- * its caller). A step that reaches Pinball code not yet readable runs in
- * the faithful port instead. */
+ * its caller). VERBFAN's step, which leaves by POSTJUMP for the extended
+ * verbs, runs on through their fan (GOEXTVB, src/extended_verbs/front.c)
+ * to the verb's routine, as the faithful step does. */
 #include <setjmp.h>
 #include <stddef.h>
+#include <string.h>
 #include "lanec_pin_routines.h"
+#include "rope_image.h"
 #include "lm_downtelemetry.h"
 #include "cm_downtelemetry.h"
 #include "binding.h"
 #include "../pinball/pinball.h"
 #include "../interbank/interbank.h"
 #include "../executive/executive.h"
+#include "../extended_verbs/extended_verbs.h"
 #include "../agc/names.h"
 
 #if LUMINARY099
-#define PIN_RUN          lanec_pin_run_lm
-#define FAITHFUL_PIN_RUN faithful_lanec_pin_run_lm
-#define THIS_MISSION     LANEC_LM
+#define PIN_RUN lanec_pin_run_lm
+#define ROPE    0u
 typedef lm_dntm_io device_record;
 #else
-#define PIN_RUN          lanec_pin_run_cm
-#define FAITHFUL_PIN_RUN faithful_lanec_pin_run_cm
-#define THIS_MISSION     LANEC_CM
+#define PIN_RUN lanec_pin_run_cm
+#define ROPE    1u
 typedef cm_dntm_io device_record;
 #endif
-
-enum exec_status FAITHFUL_PIN_RUN(const agc_native_program *program, apollo_overlay_state *state,
-                                  void *device, const lanec_pin_dispatch *modules);
 
 /* ---- The readable entries ---- */
 
@@ -70,6 +68,7 @@ struct entry {
 #define BANK_40(at)     (040u * 02000u + ((at) - 02000u))
 #define BANK_41(at)     (041u * 02000u + ((at) - 02000u))
 #define BANK_42(at)     (042u * 02000u + ((at) - 02000u))
+#define BANK_43(at)     (043u * 02000u + ((at) - 02000u))
 #define BANK_04(at)     (004u * 02000u + ((at) - 02000u))
 #define FIXED_FIXED(at) ((unsigned)(at)) /* banks 2 and 3, at 04000-07777 */
 
@@ -418,14 +417,17 @@ static const struct entry entries[] = {
 #define ENTRIES (sizeof entries / sizeof entries[0])
 
 /* INTER-BANK_COMMUNICATION's routines (src/interbank/), which a step runs
- * through on its way between banks; and the Executive's SUPDXCHZ +1
- * (src/executive/), BLNKSUB1's way back to BLANKSUB's caller. */
+ * through on its way between banks; the Executive's SUPDXCHZ +1
+ * (src/executive/), BLNKSUB1's way back to BLANKSUB's caller; and the
+ * extended verbs' fan (GOEXTVB, src/extended_verbs/), where VERBFAN's
+ * step ends. */
 static const struct entry interbank[] = {
     {FIXED_FIXED(BANKCALL), bankcall},
     {FIXED_FIXED(SWRETURN), swreturn},
     {FIXED_FIXED(POSTJUMP), postjump},
     {FIXED_FIXED(BANKJUMP), bankjump},
     {FIXED_FIXED(SUPDXCHZ + 1u), supdxchz_plus1},
+    {BANK_43(GOEXTVB), goextvb},
 };
 #define INTERBANK (sizeof interbank / sizeof interbank[0])
 
@@ -508,39 +510,69 @@ static void leave(void)
 
 static const agc_native_program *program;
 
-/* The program's rope: its fixed_data, or the harness's reader. */
+/* The program's rope: its fixed_data, or the rope image. */
 static word rope_word(unsigned at)
 {
     agc_word value = 0;
-    bool read = at <= 0xFFFFu &&
-                (program->fixed_data
-                     ? program->fixed_data(program, (uint16_t)at, &value)
-                     : lanec_fixed_read && lanec_fixed_read(THIS_MISSION, (uint16_t)at, &value));
+    bool read =
+        at <= 0xFFFFu && (program->fixed_data ? program->fixed_data(program, (uint16_t)at, &value)
+                                              : apollo_rope_read(ROPE, (uint16_t)at, &value));
 
     if (!read) not_modelled();
     return (word)(value & MINUS_ZERO);
 }
 
-/* The record's channels 11 (agc.dsalmout), 12 and 13, superbank and
- * interrupt switch, as the routines change them. */
-static uint16_t dsalmout, channel12, channel13, superbank, interrupts;
+/* The record's channels, superbank and interrupt switch, as the routines
+ * change them: channel 11 (agc.dsalmout), the outputs from 12 on (12, 13
+ * and 14, and the CM's 15 and 16, its two keyboards), and the inputs 30 to
+ * 33. */
+#if LUMINARY099
+#define OUTPUTS 3u
+#else
+#define OUTPUTS 5u
+#endif
+static uint16_t dsalmout, outputs[OUTPUTS], inputs[4], superbank, interrupts;
 
-/* Channel 11 is agc.dsalmout. The lights test reads channel 12 (RAND
- * CHAN12) and it and ERROR LIGHT RESET change channel 13's test alarm bit.
- * Any other channel (CHANDSP's channel nouns, LRPOSOUT's channel 33) is not
- * modelled here: that step runs in the faithful port. */
+/* A channel read. The lights test reads channel 12 (RAND CHAN12),
+ * LRPOSOUT channel 33, and a channel noun (CHANDSP) any channel: L and Q
+ * are channels 1 and 2 and the superbank channel 7; a channel the record
+ * does not carry reads zero, as it does in the faithful port
+ * (c64-port/src/lanec_pin_trampoline.c). */
 static word channel_in(unsigned number)
 {
-    if (number == CHAN12) return channel12;
-    if (number == CHAN13) return channel13;
-    not_modelled();
+    if (number == 1u || number == 2u) return overflow_corrected(agc.memory[number]);
+    if (number == 7u) return superbank;
+    if (number == 011u) return dsalmout;
+    if (number >= 012u && number < 012u + OUTPUTS) return outputs[number - 012u];
+    if (number >= 030u && number <= 033u) return inputs[number - 030u];
     return 0;
 }
 
+/* A channel written. The lights test and ERROR LIGHT RESET change channel
+ * 13's test alarm bit; a load into a channel noun (CHANLOAD) writes any
+ * channel but 7, as the faithful port's does (c64-port/src/lanec.c,
+ * lanec_write): all of A into L or Q, the word into a channel of the
+ * record. A write that would change a channel the record does not carry,
+ * or one of its inputs, is not modelled: that step is refused, as the
+ * faithful trampoline refuses it. Of channel 33 a write can only set the
+ * bits 11 to 15, which a flip-flop of the AGC holds each; and nothing
+ * stays in channel 77, which a write resets. */
 static void channel_out(unsigned number, word value)
 {
-    if (number != CHAN13) not_modelled();
-    channel13 = (uint16_t)(value & 043777u); /* the trap resets do not stay set */
+    if (number == 1u || number == 2u)
+        agc.memory[number] = A;
+    else if (number == 011u)
+        dsalmout = value;
+    else if (number == CHAN13)
+        outputs[1] = (uint16_t)(value & 043777u); /* the trap resets do not stay set */
+    else if (number >= 012u && number < 012u + OUTPUTS)
+        outputs[number - 012u] = value;
+    else if (number == 033u) {
+        if ((inputs[3] & 076000u) != 076000u) not_modelled();
+    } else if (number >= 030u && number <= 032u) {
+        if (value != inputs[number - 030u]) not_modelled();
+    } else if (number != 077u && (number == 7u || number > 077u || value != 0u))
+        not_modelled();
 }
 
 static void bind_record(apollo_overlay_state *state)
@@ -563,8 +595,10 @@ static bool take_record(const agc_native_program *p, device_record *x)
     superbank = x->control.superbank;
     interrupts = x->control.interrupt_enabled;
     dsalmout = p->hardware->channel11;
-    channel12 = x->channel12;
-    channel13 = x->channel13;
+    outputs[0] = x->channel12;
+    outputs[1] = x->channel13;
+    outputs[2] = x->channel14;
+    memcpy(inputs, &x->channel30, sizeof inputs);
     return true;
 }
 
@@ -573,8 +607,9 @@ static void give_record(const agc_native_program *p, device_record *x)
     x->control.superbank = superbank;
     x->control.interrupt_enabled = interrupts;
     p->hardware->channel11 = x->channel11 = dsalmout;
-    x->channel12 = channel12;
-    x->channel13 = channel13;
+    x->channel12 = outputs[0];
+    x->channel13 = outputs[1];
+    x->channel14 = outputs[2];
 }
 #else
 static bool take_record(const agc_native_program *p, device_record *x)
@@ -583,8 +618,12 @@ static bool take_record(const agc_native_program *p, device_record *x)
     superbank = x->io.superbank;
     interrupts = x->io.interrupt_enabled;
     dsalmout = x->io.channel11;
-    channel12 = x->io.channel12;
-    channel13 = x->io.channel13;
+    outputs[0] = x->io.channel12;
+    outputs[1] = x->io.channel13;
+    outputs[2] = x->io.channel14;
+    outputs[3] = x->io.main_keys;
+    outputs[4] = x->io.navigation_keys;
+    memcpy(inputs, &x->channel30, sizeof inputs);
     return true;
 }
 
@@ -594,19 +633,30 @@ static void give_record(const agc_native_program *p, device_record *x)
     x->io.superbank = superbank;
     x->io.interrupt_enabled = interrupts;
     x->io.channel11 = dsalmout;
-    x->io.channel12 = channel12;
-    x->io.channel13 = channel13;
+    x->io.channel12 = outputs[0];
+    x->io.channel13 = outputs[1];
+    x->io.channel14 = outputs[2];
+    x->io.main_keys = outputs[3];
+    x->io.navigation_keys = outputs[4];
 }
 #endif
 
 /* ---- The trampoline ---- */
 
+/* The states the faithful trampoline takes (lanec_registers_valid). */
+static bool as_expected(void)
+{
+    return (EBANK & ~03400u) == 0u && (FBANK & ~076000u) == 0u &&
+           BBANK == (word)(FBANK | (EBANK >> 8)) && Z <= 07777u && agc.memory[ZERO_ADDRESS] == 0u;
+}
+
 /* A step from UPDATNN or UPDATVB (or the word before either, which
- * stores A first). */
+ * stores A first), or from UPDAT1 +2, their TC UPDATRET alone. */
 static bool from_update(unsigned start)
 {
     return start == BANK_41(UPDATNN - 1u) || start == BANK_41(UPDATNN) ||
-           start == BANK_41(UPDATVB - 1u) || start == BANK_41(UPDATVB);
+           start == BANK_41(UPDATVB - 1u) || start == BANK_41(UPDATVB) ||
+           start == BANK_41(UPDAT1 + 2u);
 }
 
 /* The way back from a BANKCALL into a readable entry: Z at SWRETURN, its
@@ -626,19 +676,30 @@ static unsigned swreturn_into_part(void)
     return find(entries, ENTRIES, point) ? point : 0;
 }
 
-/* The step's last word, as the trampoline runs it (cell_return): a routine
- * that ended at a register or at one of the erasable words a return
- * address is kept in (lanec_pin_cells: Q's TC Q, DSEXIT's TC DSEXIT, ...)
- * runs the instruction that word holds when it is a TC (not to itself, and
- * not RELINT, INHINT or EXTEND) or a TCF into fixed memory. */
+/* The erasable words a step of Pinball may end at, to run the instruction
+ * there (the faithful trampoline's list): the words its routines keep a
+ * return address in and end by a TC to (TC DSEXIT, TC WDRET, TC UPDATRET,
+ * TC SFTEMP2, TC MIXTEMP, TC ENTRET, TC RELRET, TC REQRET), and the
+ * instructions REQUESTC and DSPMM leave in MPAC (TC MPAC, TC MPAC +2). */
+static const word return_cells[] = {
+    ADDRESS_OF(RUPTREG3), ADDRESS_OF(DSEXIT),  ADDRESS_OF(WDRET),     ADDRESS_OF(ADDRWD),
+    ADDRESS_OF(UPDATRET), ADDRESS_OF(SFTEMP2), ADDRESS_OF(MIXTEMP),   ADDRESS_OF(ENTRET),
+    ADDRESS_OF(RELRET),   ADDRESS_OF(MPAC),    ADDRESS_OF(MPAC) + 2u, ADDRESS_OF(MPAC) + 6u,
+    ADDRESS_OF(REQRET),
+};
+
+/* The step's last word, as the trampoline runs it: a routine that ended
+ * at a register or at one of the return cells runs the instruction that
+ * word holds when it is a TC (not to itself, and not RELINT, INHINT or
+ * EXTEND) or a TCF into fixed memory. */
 static void run_return_cell(apollo_overlay_state *state)
 {
     uint16_t *w = state->words, z = w[LANEC_Z], t;
     unsigned i;
 
     if (z >= 010u) {
-        for (i = 0; i < LANEC_PIN_CELLS && lanec_pin_cells[i] != z; ++i) continue;
-        if (i == LANEC_PIN_CELLS) return;
+        for (i = 0; i < COUNT(return_cells) && return_cells[i] != z; ++i) continue;
+        if (i == COUNT(return_cells)) return;
     }
     t = w[z];
     if (t <= 07777u) { /* TC: Q the word after it */
@@ -657,12 +718,13 @@ enum exec_status PIN_RUN(const agc_native_program *p, apollo_overlay_state *stat
     device_record *record = device;
     const struct entry *routine;
     unsigned start, routines;
-    bool jumped, returned, swreturned = false;
+    bool returned, fanned, swreturned = false;
 
-    if (!p || !state || !record || !lanec_registers_valid(state) || !take_record(p, record))
-        return FAITHFUL_PIN_RUN(p, state, device, modules);
+    (void)modules; /* (the faithful modules that claim the entry) */
+    if (!p || !state || !record || !take_record(p, record)) return EXEC_OUT_OF_SCOPE;
     program = p;
     bind_record(state);
+    if (!as_expected()) return EXEC_OUT_OF_SCOPE;
     start = here();
     routine = find(entries, ENTRIES, start);
     if (!routine) {
@@ -670,7 +732,7 @@ enum exec_status PIN_RUN(const agc_native_program *p, apollo_overlay_state *stat
          * faithful tables enter there, and run SWRETURN first). */
         unsigned entry = swreturn_into_part();
 
-        if (!entry) return FAITHFUL_PIN_RUN(p, state, device, modules);
+        if (!entry) return EXEC_OUT_OF_SCOPE;
         routine = find(interbank, INTERBANK, start);
         start = entry;
         swreturned = true;
@@ -679,25 +741,22 @@ enum exec_status PIN_RUN(const agc_native_program *p, apollo_overlay_state *stat
     before = *state;
     record_before = *record;
     if (setjmp(back)) {
-        /* A step the readable routines do not model runs in the faithful
-         * port, from the state it started in; but not one from CLR5, where
-         * the faithful port's result differs from the original program's
-         * (issue #1093): that step is refused. */
+        /* A step the readable routines do not model is refused, from the
+         * state it started in. */
         *state = before;
         *record = record_before;
-        if (start == BANK_40(CLR5)) return EXEC_OUT_OF_SCOPE;
-        return FAITHFUL_PIN_RUN(p, state, device, modules);
+        return EXEC_OUT_OF_SCOPE;
     }
     /* The routines of the step, to the point the faithful step ends at. */
     for (routines = 0;; ++routines) {
         unsigned at;
 
         if (routines == 1000u) not_modelled(); /* a guard: a verb 05 display takes some 100 */
-        /* A jump between banks (BANKCALL, POSTJUMP, BANKJUMP), not a
-         * return (SWRETURN). */
-        jumped = routine->routine == bankcall || routine->routine == postjump ||
-                 routine->routine == bankjump;
         routine->routine();
+        fanned = routine->routine == goextvb; /* at the extended verb's routine */
+        /* (VERB69's word of the fan is a TC to itself, which goextvb stops
+         * at; the faithful step has run it once.) */
+        if (fanned && Z == VERB69) tc_at(VERB69);
         /* ACCEPTWD's TC REQRET, back to the routine that asked for the
          * word (REQDATX, REQDATY, REQDATZ) or to ENTPAS0, and a verb's end
          * by TC ENTRET (ENTEXIT), to ENDOFJOB or, for NVSUB's, NVSUBEND:
@@ -710,18 +769,85 @@ enum exec_status PIN_RUN(const agc_native_program *p, apollo_overlay_state *stat
                    (state->words[LANEC_Z] == ADDRESS_OF(UPDATRET) && from_update(start));
         run_return_cell(state);
         at = here();
-        if (returned || (stops_at(start, at) && !(swreturned && routines == 0u))) break;
+        if (returned || fanned || (stops_at(start, at) && !(swreturned && routines == 0u))) break;
         routine = find(entries, ENTRIES, at);
         if (!routine) routine = find(interbank, INTERBANK, at);
-        if (!routine && !pinball_point(at) && !jumped) break; /* back out of Pinball */
-        if (!routine) {
-            /* The faithful step runs on into Pinball code not yet
-             * readable, or by a jump between banks into another file's
-             * code (VERBFAN's POSTJUMP to GOEXTVB): it runs this step. */
-            *state = before;
-            return FAITHFUL_PIN_RUN(p, state, device, modules);
-        }
+        if (!routine && !pinball_point(at)) break; /* out of Pinball, back to its caller */
+        if (!routine) not_modelled();              /* a Pinball word no routine starts at */
     }
     give_record(p, record);
     return EXEC_OK;
 }
+
+/* ---- The tables ----
+ * The faithful port's tables of the file (c64-port/src/
+ * lanec_pin_routines.c and the keypress groups' lanec_pin_keys_*_
+ * routines.c), under their names and with their keys
+ * (tools/lanec_keys.py): the flight program enters Pinball through them
+ * (c64-port/platform/x86/flight_dispatch.c). */
+
+static enum exec_status pinball_step(const agc_native_program *p, apollo_overlay_state *state,
+                                     void *device)
+{
+    return PIN_RUN(p, state, device, NULL);
+}
+
+/* A word one of the file's BANKCALLs comes back to. The step before it
+ * ended in SWRETURN; the faithful port gives the state back to SWRETURN
+ * (BUF2 this word, BUF2 +1 its bank, FBANK the bank SWRETURN put back in
+ * BUF2 +1), which makes this state of it again, and runs the step from
+ * there (c64-port/src/lanec_pin_routines.c, swreturn). So does this. */
+static enum exec_status pinball_step_from_bankcall(const agc_native_program *p,
+                                                   apollo_overlay_state *state, void *device)
+{
+    static apollo_overlay_state before;
+    const unsigned buf2 = ADDRESS_OF(BUF2);
+    enum exec_status status;
+    uint16_t *w;
+
+    if (!state) return EXEC_OUT_OF_SCOPE;
+    w = state->words;
+    if (w[LANEC_Q] != buf2 + 1u || (w[buf2 + 1u] & ~076000u) || (w[LANEC_FB] & ~076000u))
+        return EXEC_OUT_OF_SCOPE;
+    before = *state;
+    w[buf2] = w[LANEC_Z];
+    w[buf2 + 1u] = before.words[LANEC_FB];
+    w[LANEC_FB] = before.words[buf2 + 1u];
+    w[LANEC_BB] = (uint16_t)(w[LANEC_FB] | (w[LANEC_EB] >> 8));
+    w[LANEC_Z] = SWRETURN;
+    status = PIN_RUN(p, state, device, NULL);
+    if (status != EXEC_OK) *state = before;
+    return status;
+}
+
+/* MPAC +3 after an operator's request (verbs 30 and 31). REQUESTC ends in
+ * TC MPAC, which runs the TC NOVAC, TC FINDVAC or TC WAITLIST it stored
+ * there; the Executive or the Waitlist returns to MPAC +3, where REQUESTC
+ * stored TC ENDOFJOB (CA ENDINST, TS MPAC +3), and that word runs as a
+ * TC. Only that word: any other there (other routines' TC MPAC +2 return
+ * to the same cell) is refused (c64-port/src/lanec_pin_request_routines.c). */
+static enum exec_status request_return(const agc_native_program *p, apollo_overlay_state *state,
+                                       void *device)
+{
+    const unsigned mpac3 = ADDRESS_OF(MPAC) + 3u;
+
+    (void)p;
+    (void)device;
+    if (!state || (state->words[LANEC_Z] & 07777u) != mpac3 || state->words[mpac3] != ENDOFJOB)
+        return EXEC_OUT_OF_SCOPE;
+    state->words[LANEC_Q] = (uint16_t)(mpac3 + 1u);
+    state->words[LANEC_Z] = ENDOFJOB;
+    return EXEC_OK;
+}
+
+static const agc_routine_entry request_keys[] = {
+    {(uint16_t)(AGC_TRANSFER_ERASABLE_BASE + ADDRESS_OF(MPAC) + 3u), request_return},
+};
+
+#if LUMINARY099
+#include "pinball_tables.inc"
+const agc_routine_table lanec_pin_request_lm_routines = {request_keys, COUNT(request_keys)};
+#else
+#include "cm_pinball_tables.inc"
+const agc_routine_table lanec_pin_request_cm_routines = {request_keys, COUNT(request_keys)};
+#endif

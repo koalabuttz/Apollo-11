@@ -451,6 +451,16 @@ static inline void tc_return(unsigned address)
 
 /* ---- INDEX ---- */
 
+/* The instruction at fixed address at reads a word of the operator's
+ * choosing, a noun's address. Should that word be Z itself, it holds the
+ * address after the instruction: Z is made so here. (Between a routine's
+ * transfers nothing else reads Z, and the readable routines leave it as
+ * the last transfer set it.) */
+static inline void reads_at(word at)
+{
+    continue_at((word)(at + 1u));
+}
+
 /* INDEX x before an instruction on address: the address x words on, as
  * the AGC adds x to the instruction. An x that would carry out of the
  * instruction's address field (and change the instruction) the readable

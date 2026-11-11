@@ -386,3 +386,13 @@ static const agc_routine_entry basic_keys[] = {
 
 const agc_routine_table readable_interpretive = {pair_keys, COUNT(pair_keys)};
 const agc_routine_table readable_basic = {basic_keys, COUNT(basic_keys)};
+
+#if LUMINARY099
+/* The faithful port's older module of S34/35.1, S34/35.3, S34/35.4,
+ * NOVRWRT and LOMAT (c64-port/src/lm_s3435_routines.c and
+ * lm_s3435b_routines.c), whose tables the flight program's index names
+ * too: empty, the tables above run every key of theirs. */
+static const agc_routine_entry none[] = {{0xFFFFu, NULL}};
+const agc_routine_table lm_s3435_routines = {none, 0u};
+const agc_routine_table lm_s3435b_routines = {none, 0u};
+#endif

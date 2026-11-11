@@ -360,6 +360,7 @@ void readlo(void)
         tc_at(ENDRDLO);
     }
     /* READLO1 */
+    reads_at(READLO1 + 2u);
     dca(indexed_by(0u, a_word())); /* EXTEND; INDEX A; DCA 0 */
     dxch(ADDRESS_OF(MPAC));
     set_A(ZERO);

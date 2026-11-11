@@ -15,6 +15,7 @@
  * files call, or the faithful port's steps stop at, are entries as
  * well. */
 #include "pinball.h"
+#include "../executive/executive.h"
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
 
@@ -171,8 +172,8 @@ static void reldsp2(void)
  * "RELDSP IS USED BY VBPROC, VBTERM, VBRQEXEC, VBRQWAIT, VBRELDSP,
  * EXTENDED VERB DISPATCHER, VBRESEQ, RECALTST." "TURN OFF EXTERNAL
  * MONITOR BIT" (BIT14 of MONSAVE1), interrupts off. A job waiting for the
- * display system (DSPLIST) is woken (JOBWAKE): the faithful port takes
- * RELDSP only with DSPLIST empty, and so does the readable one. */
+ * display system (its address in DSPLIST) is woken (JOBWAKE) and the list
+ * emptied. */
 void reldsp(void)
 {
     xch(Q_ADDRESS);
@@ -181,8 +182,23 @@ void reldsp(void)
     inhint();
     mask_at(ADDRESS_OF(MONSAVE1));
     ts(ADDRESS_OF(MONSAVE1));
-    if (ccs_at(ADDRESS_OF(DSPLIST)) != IS_PLUS_ZERO) not_modelled(); /* JOBWAKE */
-    tc_at(RELDSP + 8u);                                              /* TC RELDSP2: "LIST EMPTY" */
+    switch (ccs_at(ADDRESS_OF(DSPLIST))) {
+    case IS_PLUS_ZERO:
+        tc_at(RELDSP + 8u); /* TC RELDSP2: "LIST EMPTY" */
+        reldsp2();
+        return;
+    case POSITIVE:
+        tc_at(RELDSP + 7u); /* TC +2 */
+        /* fall through */
+    case NEGATIVE:
+        set_A(ZERO);
+        /* fall through */
+    case IS_MINUS_ZERO: break; /* (CCS left +0 in A) */
+    }
+    xch(ADDRESS_OF(DSPLIST));
+    tc_at(RELDSP + 11u);
+    jobwake();
+    if (Z != RELDSP2) not_modelled(); /* JOBWAKE went to CCSHOLE */
     reldsp2();
 }
 

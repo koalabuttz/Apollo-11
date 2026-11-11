@@ -162,16 +162,18 @@ static const struct fan_word lst2fan[] = {
 
 /* GOEXTVB -- LM p. 262, CM p. 236.
  * INDEX MPAC; TC LST2FAN: the verb less 40 in MPAC picks the fan's word,
- * which goes on to the verb's routine. An index beyond the fan's 60 words
+ * which goes on to the verb's routine (a -0 there picks the first, as a
+ * +0 does: the AGC adds it to the TC). An index beyond the fan's 60 words
  * (PINBALL passes none) is not modelled, as in the faithful port. */
 void goextvb(void)
 {
     const struct fan_word *fan;
+    word at = indexed_instruction(LST2FAN, MPAC(0));
 
-    if (MPAC(0) >= FAN_WORDS) not_modelled();
+    if (at < LST2FAN || at >= LST2FAN + FAN_WORDS) not_modelled();
     tc_at(GOEXTVB + 1u);
-    continue_at(LST2FAN + MPAC(0));
-    fan = &lst2fan[MPAC(0)];
+    continue_at(at);
+    fan = &lst2fan[at - LST2FAN];
     /* VERB69's word is TC VERB69, a TC to itself: the AGC runs it until
      * the hardware's TC trap restarts the computer. The routine stops at
      * it, as the faithful port does. */

@@ -76,7 +76,7 @@ void nvsbcom(void)
 
 static void nvsbcom_plus1(void)
 {
-    if (ts(ADDRESS_OF(NVQTEM))) not_modelled();
+    if (ts(ADDRESS_OF(NVQTEM))) not_modelled(); /* an overflow would skip the LXCH */
     lxch(ADDRESS_OF(MONSAVE2));
     tc(NVSBCOM + 3u, KILMONON);
 }
@@ -596,7 +596,7 @@ void recal2(void)
     word locctr = LOCCTR;
 
     ad_at(indexed_by(ADDRESS_OF(LOC), locctr));
-    if (ts(indexed_erasable(ADDRESS_OF(LOC), locctr))) not_modelled();
+    if (ts(indexed_erasable(ADDRESS_OF(LOC), locctr))) not_modelled(); /* (would skip the CA) */
     ca(ADDRESS_OF(NOUNREG));
     ts(L_ADDRESS);
     ca(ADDRESS_OF(VERBREG));

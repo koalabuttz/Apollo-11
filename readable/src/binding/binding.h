@@ -46,9 +46,12 @@ enum exec_status interpret_listing_any_newjob(const agc_native_program *program,
  * leaves for, to the pair's DANZIG (rtb_run_on.c). */
 void rtb_run_on(void);
 
-/* Keys: physical addresses of fixed-fixed (04000-07777) and bank 01. */
-#define FF(z)        (uint16_t)(2048u + ((z) - 04000u))
-#define B1(z)        (uint16_t)(1024u + ((z) - 02000u))
-#define COUNT(table) (uint16_t)(sizeof(table) / sizeof(table)[0])
+/* Keys: physical addresses of fixed-fixed (04000-07777), bank 01, and a
+ * word at 02000-03777 in any switched bank (040-043 are 30-33 with the
+ * superbank bit). */
+#define FF(z)             (uint16_t)(2048u + ((z) - 04000u))
+#define B1(z)             (uint16_t)(1024u + ((z) - 02000u))
+#define SWITCHED(bank, z) (uint16_t)((bank) * 1024u + ((z) - 02000u))
+#define COUNT(table)      (uint16_t)(sizeof(table) / sizeof(table)[0])
 
 #endif

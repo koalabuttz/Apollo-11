@@ -4,8 +4,10 @@
  * a module of its own (c64-port/src/lanec_ev_<part>.c), which its routine
  * tables (lanec_ev_routines.c) call for every key of the part, with the
  * state and a record of the channels (lanec_io, c64-port/include/lanec.h)
- * and the mission. The readable parts take the module's place under its
- * name: part 1, the front end, is lanec_ev_front_dispatch; part 2, the
+ * and the mission. The readable file takes the tables' places under
+ * their names (at the end of this file), and each part its module's,
+ * which the faithful port's own tests call: part 1, the front end, is
+ * lanec_ev_front_dispatch; part 2, the
  * short verbs, lanec_ev_short_dispatch; part 3, alignment and radar
  * designate, lanec_ev_align_dispatch; part 4, the LM's radar test verbs,
  * lanec_ev_radar_dispatch; part 5, the DAP data load, lanec_ev_dap_dispatch;
@@ -42,6 +44,8 @@
 #include "lanec_ev_time.h"
 #include "lanec_ev_lmi.h"
 #include "lanec_ev_track.h"
+#include "lm_downtelemetry.h"
+#include "cm_downtelemetry.h"
 #include "p66_bias.h"
 #if COMANCHE055
 #include "cm_extended_verbs_file.h"
@@ -49,6 +53,7 @@
 #endif
 #include "binding.h"
 #include "../extended_verbs/extended_verbs.h"
+#include "../interpreter/interpreter.h"
 #include "../agc/names.h"
 
 #if LUMINARY099
@@ -1198,4 +1203,154 @@ static const agc_routine_entry basic_entries[] = {
 };
 const agc_routine_table cm_extended_verbs_file_basic = {basic_entries, sizeof basic_entries /
                                                                            sizeof basic_entries[0]};
+#endif
+
+/* ---- The tables ----
+ *
+ * The flight program enters the file through routine tables of the
+ * faithful port's names, with its keys (extended_verbs_tables.inc, which
+ * tools/lanec_keys.py writes). A key's routine is its part, above, run on
+ * the program's own record (an lm_dntm_io or a cm_dntm_io): the superbank
+ * and the interrupt switch, and channels 11 to 14 and 30 to 33. The LM
+ * program keeps channel 11 in its hardware record, and a copy in the
+ * mission's. A part that refuses the state leaves the record as it was. */
+typedef enum lanec_status part_dispatch(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+
+#if LUMINARY099
+typedef lm_dntm_io device_record;
+
+static bool take_record(const agc_native_program *program, const device_record *record,
+                        lanec_io *io)
+{
+    if (!program->hardware) return false;
+    io->superbank = record->control.superbank;
+    io->interrupt_enabled = record->control.interrupt_enabled;
+    io->channel[011] = program->hardware->channel11;
+    io->channel[012] = record->channel12;
+    io->channel[013] = record->channel13;
+    io->channel[014] = record->channel14;
+    io->channel[030] = record->channel30;
+    io->channel[031] = record->channel31;
+    io->channel[032] = record->channel32;
+    io->channel[033] = record->channel33;
+    return true;
+}
+
+static void give_record(const agc_native_program *program, device_record *record,
+                        const lanec_io *io)
+{
+    record->control.superbank = io->superbank;
+    record->control.interrupt_enabled = io->interrupt_enabled;
+    program->hardware->channel11 = record->channel11 = io->channel[011];
+    record->channel12 = io->channel[012];
+    record->channel13 = io->channel[013];
+    record->channel14 = io->channel[014];
+    record->channel30 = io->channel[030];
+    record->channel31 = io->channel[031];
+    record->channel32 = io->channel[032];
+    record->channel33 = io->channel[033];
+}
+#else
+typedef cm_dntm_io device_record;
+
+static bool take_record(const agc_native_program *program, const device_record *record,
+                        lanec_io *io)
+{
+    (void)program;
+    io->superbank = record->io.superbank;
+    io->interrupt_enabled = record->io.interrupt_enabled;
+    io->channel[011] = record->io.channel11;
+    io->channel[012] = record->io.channel12;
+    io->channel[013] = record->io.channel13;
+    io->channel[014] = record->io.channel14;
+    io->channel[030] = record->channel30;
+    io->channel[031] = record->channel31;
+    io->channel[032] = record->channel32;
+    io->channel[033] = record->channel33;
+    return true;
+}
+
+static void give_record(const agc_native_program *program, device_record *record,
+                        const lanec_io *io)
+{
+    (void)program;
+    record->io.superbank = io->superbank;
+    record->io.interrupt_enabled = io->interrupt_enabled;
+    record->io.channel11 = io->channel[011];
+    record->io.channel12 = io->channel[012];
+    record->io.channel13 = io->channel[013];
+    record->io.channel14 = io->channel[014];
+    record->channel30 = io->channel[030];
+    record->channel31 = io->channel[031];
+    record->channel32 = io->channel[032];
+    record->channel33 = io->channel[033];
+}
+#endif
+
+static lanec_io record_channels; /* (the machine keeps its address) */
+
+static enum exec_status run_part(const agc_native_program *program, apollo_overlay_state *state,
+                                 void *device, part_dispatch *part)
+{
+    device_record *record = device;
+
+    if (!program || !state || !record) return EXEC_OUT_OF_SCOPE;
+    memset(&record_channels, 0, sizeof record_channels);
+    if (!take_record(program, record, &record_channels) ||
+        part(state, &record_channels, THIS_MISSION) != LANEC_OK)
+        return EXEC_OUT_OF_SCOPE;
+    give_record(program, record, &record_channels);
+    return EXEC_OK;
+}
+
+#define PART(name)                                                                                 \
+    static enum exec_status name##_part(const agc_native_program *program,                         \
+                                        apollo_overlay_state *state, void *device)                 \
+    {                                                                                              \
+        return run_part(program, state, device, lanec_ev_##name##_dispatch);                       \
+    }
+PART(front)
+PART(short)
+PART(align)
+PART(dap)
+PART(time)
+PART(track)
+#if LUMINARY099
+PART(radar)
+PART(lmi)
+
+#include "extended_verbs_tables.inc"
+
+/* TC INTPRET from the file's basic code, the LM's: the interpreter's
+ * INTPRET (src/interpreter/dispatcher.c) for a Q that names one of the
+ * interpretive words of the table above, which the next step then runs
+ * at NEWOPS. Any other caller's INTPRET is the interpreter's own table's
+ * (interpreter_basic.c), and is refused here. INTPRET reads and writes no
+ * channel; only the superbank and the interrupt switch go in, and RELINT's
+ * switch comes back. */
+static enum exec_status intpret_from_the_file(const agc_native_program *program,
+                                              apollo_overlay_state *state, void *device)
+{
+    device_record *record = device;
+    uint16_t word_after_tc, i;
+
+    if (!program || !state || !record) return EXEC_OUT_OF_SCOPE;
+    memset(&record_channels, 0, sizeof record_channels);
+    record_channels.superbank = record->control.superbank;
+    record_channels.interrupt_enabled = record->control.interrupt_enabled;
+    bind_lanec(state, &record_channels);
+    if (Z != INTPRET || !as_expected() || Q < 02000u || Q >= 04000u) return EXEC_OUT_OF_SCOPE;
+    word_after_tc = SWITCHED(bank_selected(), Q);
+    for (i = 0; i < COUNT(ev_interpretive_keys); ++i)
+        if (ev_interpretive_keys[i].physical == word_after_tc) break;
+    if (i == COUNT(ev_interpretive_keys)) return EXEC_OUT_OF_SCOPE;
+    intpret();
+    record->control.interrupt_enabled = record_channels.interrupt_enabled;
+    return EXEC_OK;
+}
+
+static const agc_routine_entry intpret_key[] = {{FF(INTPRET), intpret_from_the_file}};
+const agc_routine_table lanec_ev_lm_intpret = {intpret_key, COUNT(intpret_key)};
+#else
+#include "cm_extended_verbs_tables.inc"
 #endif

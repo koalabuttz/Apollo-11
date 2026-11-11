@@ -71,7 +71,7 @@ static void monit2(void)
     mask_at(ADDRESS_OF(VERBREG));
     tc_at(MONIT2 + 2u);
     left5();
-    if (ts(ADDRESS_OF(CYL))) not_modelled();
+    if (ts(ADDRESS_OF(CYL))) not_modelled(); /* (LEFT5 leaves no overflow) */
     cs(ADDRESS_OF(CYL));
     xch(ADDRESS_OF(CYL));
     ad_at(ADDRESS_OF(NOUNREG));

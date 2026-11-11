@@ -5,7 +5,9 @@
  * which its routine tables (lanec_di_routines.c) call for every key of the
  * part, with the state, a record of the channels (lanec_io,
  * c64-port/include/lanec.h) and the mission. The readable code takes the
- * modules' places under their names: the display starts and the R displays
+ * tables' places under their names (at the end of this file), and the
+ * modules', which the faithful port's own tests call: the display starts
+ * and the R displays
  * are lanec_di_dsp_dispatch; the mark displays lanec_di_mark_dispatch;
  * MAKEPLAY, WITCHONE, XCHTOEND and LINUSCHR lanec_di_play_dispatch; the
  * sleeping and waking displays and INITDSP lanec_di_sleep_dispatch; ENDIDLE
@@ -464,3 +466,59 @@ enum lanec_status lanec_di_nvdsp_dispatch(apollo_overlay_state *state, lanec_io 
 {
     return RUN(nvdsp_entries);
 }
+
+/* ---- The tables ----
+ *
+ * The flight program enters the file through routine tables of the
+ * faithful port's names, with its keys (display_interface_tables.inc,
+ * which tools/lanec_keys.py writes). A key's routine is its part, above,
+ * run on the program's own record: the superbank and the interrupt switch
+ * of the mission's record, and channel 11, which the LM program keeps in
+ * its hardware record and the CM in the mission's. A part that refuses
+ * the state leaves the record as it was. */
+typedef enum lanec_status part_dispatch(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+
+static enum exec_status run_part(const agc_native_program *program, apollo_overlay_state *state,
+                                 void *device, part_dispatch *part)
+{
+    static const lanec_io none;
+    static lanec_io io; /* (the machine keeps its address) */
+    mission_io *record = device;
+    agc_word *channel11;
+
+    if (!program || !state || !record) return EXEC_OUT_OF_SCOPE;
+#if LUMINARY099
+    if (!program->hardware) return EXEC_OUT_OF_SCOPE;
+    channel11 = &program->hardware->channel11;
+#else
+    channel11 = &record->channel11;
+#endif
+    io = none;
+    io.superbank = record->superbank;
+    io.interrupt_enabled = record->interrupt_enabled;
+    io.channel[011] = *channel11;
+    if (part(state, &io, THIS_MISSION) != LANEC_OK) return EXEC_OUT_OF_SCOPE;
+    record->superbank = io.superbank;
+    record->interrupt_enabled = io.interrupt_enabled;
+    *channel11 = io.channel[011];
+    return EXEC_OK;
+}
+
+#define PART(name)                                                                                 \
+    static enum exec_status name##_part(const agc_native_program *program,                         \
+                                        apollo_overlay_state *state, void *device)                 \
+    {                                                                                              \
+        return run_part(program, state, device, lanec_di_##name##_dispatch);                       \
+    }
+PART(dsp)
+PART(mark)
+PART(play)
+PART(sleep)
+PART(idle)
+PART(nvdsp)
+
+#if LUMINARY099
+#include "display_interface_tables.inc"
+#else
+#include "cm_display_interface_tables.inc"
+#endif

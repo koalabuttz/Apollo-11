@@ -14,10 +14,31 @@
  * twice from the same state: through the faithful trampoline
  * (faithful_lanec_pin_run_<m>) and through the readable one (here as
  * readable_lanec_pin_run_<m>, which tests/pinball_transfer.py renames).
- * Where the faithful step is taken the readable one must be taken too,
- * with the same result; the chain goes on from it. A step the faithful
- * trampoline refuses ends the chain (the readable code may take it: the
- * chain suites check those against the original program).
+ * Where both take the step the results must be the same; the chain goes
+ * on from the faithful one. A step the faithful trampoline refuses ends
+ * the chain (the readable code may take it: the chain suites check those
+ * against the original program).
+ *
+ * The readable routines refuse a step from a state they do not model
+ * (not_modelled(): no faithful routine runs in its place), and the
+ * faithful modules' own suites make such states, which no key and no
+ * routine of the program leaves:
+ *
+ *   - a word about to be stored that has overflowed, where the TS would
+ *     skip the instruction after it: NVSUB's return in NVQTEM, RECAL2's
+ *     LOC of the woken job, VBPROC's LOADSTAT, MONIT2's verb and noun,
+ *     ALLDC/OC's count in DECOUNT;
+ *   - a -0 or a negative word where the program keeps +0 or a small
+ *     positive one, at a CCS whose fourth way runs into a word that is not
+ *     an instruction of that path: CADRSTOR in TSTLTS4 and UNSUSPEN (the
+ *     word after is CADR PINBRNCH), MPAC +6 in TESTOFUF (+1, -1 or +0),
+ *     DECBRNCH in PUTCOM and PUTNORM (bits 1-5).
+ *
+ * Each of those branches says so where it stands in src/pinball/. A step
+ * the readable routines refuse and the faithful ones take is counted, and
+ * each suite's count is held to the number below: a routine that came to
+ * refuse a state the program does make (or to model one of these) changes
+ * it. PINBALL_STEPS_ALL=1 prints every such step.
  *
  * Those chains start from the states the port's own module tests made,
  * the states the keys and the routines before them leave. pin-stirred's
@@ -29,7 +50,8 @@
  * routine goes on as the original program does.
  *
  *   pinball-steps     prints the counts; exit status 1 on any difference
- *                     in pin-transfer's or pin-decdsp3's steps
+ *                     in a held suite's steps, or a count of refused
+ *                     steps that is not the suite's
  *   pinball-steps --stops FILE
  *                     writes where the faithful steps of those chains end,
  *                     and the faithful routine tables' points
@@ -74,9 +96,10 @@ enum exec_status lanec_pin_run_cm(const agc_native_program *p, apollo_overlay_st
     return readable ? readable_lanec_pin_run_cm(p, s, v, f) : faithful_lanec_pin_run_cm(p, s, v, f);
 }
 
-/* Per suite: steps compared, steps that differ, and steps the readable
- * routine takes where the faithful one refuses. */
-static unsigned long steps_compared, readable_more, differences;
+/* Per suite: steps compared, steps that differ, steps the readable routines
+ * refuse where the faithful ones take them, and steps they take where the
+ * faithful ones refuse. */
+static unsigned long steps_compared, readable_more, differences, refused;
 
 static void report(const char *suite, uint32_t n, unsigned step, const char *what,
                    const apollo_overlay_state *from, const apollo_overlay_state *f,
@@ -84,7 +107,11 @@ static void report(const char *suite, uint32_t n, unsigned step, const char *wha
 {
     unsigned i, shown = 0;
 
-    if (++differences > 10u && !getenv("PINBALL_STEPS_ALL")) return;
+    if (!strcmp(what, "refused")) {
+        ++refused;
+        if (!getenv("PINBALL_STEPS_ALL")) return;
+    } else if (++differences > 10u && !getenv("PINBALL_STEPS_ALL"))
+        return;
     printf("DIFF %s case %lu step %u (Z %05o, FB %05o): %s, Z %05o/%05o", suite, (unsigned long)n,
            step, from->words[LANEC_Z], from->words[4], what, f->words[LANEC_Z], r->words[LANEC_Z]);
     for (i = 0; i < 04000u && shown < 8u; ++i)
@@ -445,8 +472,8 @@ static void chain(const char *suite, uint32_t n, apollo_overlay_state *s, lanec_
                 report(suite, n, step, "words", &from, &f, &r);
             else if (memcmp(&f_io, &r_io, sizeof f_io))
                 report(suite, n, step, "channels", &from, &f, &r);
-            if (rs != EXEC_OK || memcmp(f.words, r.words, sizeof f.words) ||
-                memcmp(&f_io, &r_io, sizeof f_io))
+            if (rs == EXEC_OK &&
+                (memcmp(f.words, r.words, sizeof f.words) || memcmp(&f_io, &r_io, sizeof f_io)))
                 return;
         } else if (fs != EXEC_OK)
             return;
@@ -472,81 +499,84 @@ int main(int argc, char **argv)
          * made-up callers, which would make made-up stops (the binding ends
          * a step from UPDATNN or UPDATVB at that return). */
         int held;
-    } suites[] = {{"pin-transfer", 1},
-                  {"pin-decdsp3", 1},
-                  {"pin-stirred", 0},
+        /* The steps of the suite the readable routines refuse and the
+         * faithful ones take: states they do not model (above). */
+        unsigned long refused;
+    } suites[] = {{"pin-transfer", 1, 53},
+                  {"pin-decdsp3", 1, 0},
+                  {"pin-stirred", 0, 0},
                   /* The load verbs and the input scale routines (part 4), which the
                    * chains above hardly reach: the faithful modules' own suites. */
-                  {"pin-head-load", 1},
-                  {"pw-load-request", 1},
-                  {"pw-load-complete", 1},
-                  {"pw-load-control", 1},
-                  {"pw-load-store", 1},
-                  {"pw-decimal-load", 1},
-                  {"pw-input-mode", 1},
-                  {"pw-input-select", 1},
-                  {"pw-input-store", 1},
-                  {"pw-input-factor", 1},
-                  {"pw-input-angle", 1},
-                  {"pw-input-arithmetic", 1},
-                  {"pw-input-scale", 1},
-                  {"pw-input-time", 1},
+                  {"pin-head-load", 1, 0},
+                  {"pw-load-request", 1, 0},
+                  {"pw-load-complete", 1, 0},
+                  {"pw-load-control", 1, 66},
+                  {"pw-load-store", 1, 122},
+                  {"pw-decimal-load", 1, 0},
+                  {"pw-input-mode", 1, 59},
+                  {"pw-input-select", 1, 0},
+                  {"pw-input-store", 1, 269},
+                  {"pw-input-factor", 1, 0},
+                  {"pw-input-angle", 1, 27},
+                  {"pw-input-arithmetic", 1, 20},
+                  {"pw-input-scale", 1, 102},
+                  {"pw-input-time", 1, 0},
                   /* Monitor, DSPFMEM and the alarms (part 5). */
-                  {"pw-monitor", 1},
-                  {"pw-monitor-consumer", 1},
-                  {"pw-monitor-paste", 1},
-                  {"pw-nv-consumer", 1},
-                  {"pw-fixed-display", 1},
-                  {"pw-source-alarm", 1},
-                  {"pw-alarm-cycle", 1},
-                  {"pw-alarm-recycle", 1},
+                  {"pw-monitor", 1, 45},
+                  {"pw-monitor-consumer", 1, 0},
+                  {"pw-monitor-paste", 1, 0},
+                  {"pw-nv-consumer", 1, 0},
+                  {"pw-fixed-display", 1, 0},
+                  {"pw-source-alarm", 1, 0},
+                  {"pw-alarm-cycle", 1, 0},
+                  {"pw-alarm-recycle", 1, 0},
                   /* The special verbs and key release (part 6). */
-                  {"pin-head-proceed", 1},
-                  {"pin-head-release", 1},
-                  {"pin-head-request", 1},
-                  {"pw-major-request", 1},
-                  {"pw-mode-admit", 1},
-                  {"pw-mode-job", 1},
-                  {"pw-request-control", 1},
-                  {"pw-operator-release", 1},
-                  {"pw-operator-request", 1},
-                  {"pw-operator-response", 1},
-                  {"pw-display-release", 1},
-                  {"pw-charin-release", 1},
+                  {"pin-head-proceed", 1, 26},
+                  {"pin-head-release", 1, 37},
+                  {"pin-head-request", 1, 0},
+                  {"pw-major-request", 1, 0},
+                  {"pw-mode-admit", 1, 0},
+                  {"pw-mode-job", 1, 0},
+                  {"pw-request-control", 1, 0},
+                  {"pw-operator-release", 1, 85},
+                  {"pw-operator-request", 1, 0},
+                  {"pw-operator-response", 1, 79},
+                  {"pw-display-release", 1, 0},
+                  {"pw-charin-release", 1, 256},
                   /* Part 7: NVSUB and its company. */
-                  {"pin-head-nvsub", 1},
-                  {"pw-nv-admission", 1},
-                  {"pw-nv-blank", 1},
-                  {"pw-nv-busy", 1},
-                  {"pw-nv-continuation", 1},
-                  {"pw-nv-key", 1},
-                  {"pw-nv-return", 1},
-                  {"pw-nv-update", 2},
-                  {"pw-nv-update-general", 2},
-                  {"pw-blank", 1},
-                  {"pw-blanksub", 1},
-                  {"pw-jam-control", 1},
-                  {"pw-response-recall", 1},
-                  {"pw-operator-schedule", 1},
-                  {"pw-five-blank", 1},
-                  {"pin-gaps", 1},
+                  {"pin-head-nvsub", 1, 20},
+                  {"pw-nv-admission", 1, 0},
+                  {"pw-nv-blank", 1, 0},
+                  {"pw-nv-busy", 1, 0},
+                  {"pw-nv-continuation", 1, 0},
+                  {"pw-nv-key", 1, 0},
+                  {"pw-nv-return", 1, 0},
+                  {"pw-nv-update", 2, 0},
+                  {"pw-nv-update-general", 2, 0},
+                  {"pw-blank", 1, 0},
+                  {"pw-blanksub", 1, 0},
+                  {"pw-jam-control", 1, 67},
+                  {"pw-response-recall", 1, 107},
+                  {"pw-operator-schedule", 1, 0},
+                  {"pw-five-blank", 1, 0},
+                  {"pin-gaps", 1, 0},
                   /* The lights test, RSET, NVSUBUSY and the last entries
                    * (part 8). */
-                  {"pin-head-lamp", 1},
-                  {"pw-lamp-test", 1},
-                  {"pw-lamp-lifecycle", 1},
-                  {"pw-lamp-release", 1},
-                  {"pw-lm-pinball-busy", 1},
-                  {"pw-charin-reset", 1},
-                  {"pw-test-noun", 1},
-                  {"pw-address-request", 1}};
+                  {"pin-head-lamp", 1, 26},
+                  {"pw-lamp-test", 1, 0},
+                  {"pw-lamp-lifecycle", 1, 31},
+                  {"pw-lamp-release", 1, 187},
+                  {"pw-lm-pinball-busy", 1, 0},
+                  {"pw-charin-reset", 1, 0},
+                  {"pw-test-noun", 1, 0},
+                  {"pw-address-request", 1, 0}};
     static apollo_overlay_state s;
     static lanec_io io;
     static lanec_meta m;
     const char *only = getenv("PINBALL_STEPS_CASE"); /* SUITE:CASE, for a debugger */
     unsigned i;
     uint32_t n;
-    int bad = 0;
+    int bad = 0, wrong;
 
     lanec_fixed_read = fixed;
     collect = argc == 3 && !strcmp(argv[1], "--stops");
@@ -558,7 +588,7 @@ int main(int argc, char **argv)
             return 1;
         }
         if (collect && suites[i].held != 1) continue;
-        steps_compared = readable_more = differences = 0;
+        steps_compared = readable_more = differences = refused = 0;
         for (n = 0; n < suite->count; ++n) {
             char name[64];
 
@@ -571,15 +601,19 @@ int main(int argc, char **argv)
             chain(suite->name, n, &s, &io, m.mission);
         }
         if (collect) continue;
+        wrong = suites[i].held && (differences || refused != suites[i].refused);
         printf("%s: pinball-steps %s: %lu Pinball steps the same through the readable routines as "
-               "through the "
-               "faithful port's, %lu differ%s; %lu more taken where the faithful port refuses\n",
+               "through the faithful port's, %lu differ%s; %lu refused from states the readable "
+               "routines do not model",
                !suites[i].held ? "INFO"
-               : differences   ? "FAIL"
+               : wrong         ? "FAIL"
                                : "PASS",
-               suite->name, steps_compared - differences, differences,
-               suites[i].held ? "" : " (not held)", readable_more);
-        bad |= suites[i].held && differences;
+               suite->name, steps_compared - differences - refused, differences,
+               suites[i].held ? "" : " (not held)", refused);
+        if (suites[i].held && refused != suites[i].refused)
+            printf(" (not the %lu held to)", suites[i].refused);
+        printf("; %lu more taken where the faithful port refuses\n", readable_more);
+        bad |= wrong;
     }
     if (collect) write_stops(argv[2]);
     return bad;
