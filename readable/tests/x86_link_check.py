@@ -168,8 +168,8 @@ def sources(port):
 
 def made_up():
     toolchain = ['/usr/lib/x86_64-linux-gnu', '/usr/lib/gcc/x86_64-linux-gnu/13']
-    readable = [str(READABLE / 'build/x86-lm' / name) for name in ('agc/agc.o', 'pinball/nvsub.o')]
-    step = [str(READABLE / 'build/x86-flight' / name) for name in ('flight_dispatch_lm.o', 'flight_main_lm.o')]
+    readable = [str(xr.cb.BUILD / 'x86-lm' / name) for name in ('agc/agc.o', 'pinball/nvsub.o')]
+    step = [str(xr.cb.BUILD / 'x86-flight' / name) for name in ('flight_dispatch_lm.o', 'flight_main_lm.o')]
     machine = [str(HOST / name) for name in xr.MACHINE]
     expected = step + machine + readable
     library = ['/usr/lib/x86_64-linux-gnu/Scrt1.o', '/usr/lib/gcc/x86_64-linux-gnu/13/libgcc.a',
@@ -188,7 +188,7 @@ def made_up():
         ('a faithful object with another suffix', right + [str(HOST / 'lm_single_trig.obj')], '.obj'),
         ('an archive of faithful objects', right + [str(PORT / 'build/libfaithful.a')], 'libfaithful.a'),
         ('an object copied in among the readable ones',
-         right + [str(READABLE / 'build/x86-lm/binding' / FAITHFUL)], FAITHFUL),
+         right + [str(xr.cb.BUILD / 'x86-lm/binding' / FAITHFUL)], FAITHFUL),
         ('an object outside the repository', right + ['/tmp/elsewhere/routines.o'], 'routines.o'),
         ('an object among the C library\'s files', right + [f'/usr/lib/x86_64-linux-gnu/{FAITHFUL}'], FAITHFUL),
         ('an archive among the C library\'s files', right + ['/usr/lib/x86_64-linux-gnu/libfaithful.a'],
@@ -236,7 +236,7 @@ def real_link(cc):
 def stray_object():
     """An object that lies among the readable ones is not one of them: the
     readable objects are those the Makefile names."""
-    stray = READABLE / 'build/x86-lm/binding' / FAITHFUL
+    stray = xr.cb.BUILD / 'x86-lm/binding' / FAITHFUL
     shutil.copyfile(HOST / FAITHFUL, stray)
     try:
         listed = xr.readable_objects('lm')

@@ -515,7 +515,7 @@ void longcycl(void)
     if (ccs(LONGTIME(1)) != POSITIVE) {
         switch (ccs(LONGTIME(0))) {
         case POSITIVE: break;
-        case IS_PLUS_ZERO: /* lands on DPBIT14's words ("can't get here") */
+        case IS_PLUS_ZERO: /* never (the DAS added -0): it would land on DPBIT14's words */
             continue_at((word)ADDRESS_OF(DPBIT14));
             return;
         case NEGATIVE: continue_at((word)(ADDRESS_OF(DPBIT14) + 1u)); return;

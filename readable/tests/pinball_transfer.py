@@ -33,12 +33,14 @@ import os, subprocess, sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+import coverage_build as cb
+
 READABLE = Path(__file__).resolve().parents[1]
 PORT = READABLE.parent / 'c64-port'
 CC = os.environ.get('CC', 'cc')
-NATIVE = READABLE / 'build/lanec-native-readable'
-ORACLE = READABLE / 'build/lanec-oracle-readable'
-STEPS = READABLE / 'build/pinball-steps'
+NATIVE = cb.BUILD / 'lanec-native-readable'
+ORACLE = cb.BUILD / 'lanec-oracle-readable'
+STEPS = cb.BUILD / 'pinball-steps'
 TRAMPOLINE = 'src/lanec_pin_trampoline.c'
 SUITE_LIST = 'tests/lanec_suites.c'
 # The suites that run the tables: whether they compare with the original
@@ -75,7 +77,7 @@ def port_value(name):
 def compile_all(flags, units):
     """Each (source, extra flags) to an object in build/lanec-port/, when
     the source is newer than it; the objects."""
-    out = READABLE / 'build/lanec-port'
+    out = cb.BUILD / 'lanec-port'
     out.mkdir(parents=True, exist_ok=True)
 
     def one(unit):
@@ -111,18 +113,18 @@ def build(objects):
     compiled = dict(zip([u[0] for u in units], compile_all(flags, units)))
     common = [compiled[s] for s in sources if s != TRAMPOLINE] + [compiled[stirred], compiled[noun_z]]
     NATIVE.parent.mkdir(parents=True, exist_ok=True)
-    subprocess.run([CC, '-O2', *flags, *common, compiled[TRAMPOLINE], compiled['tools/lanec/native.c'],
-                    *objects, '-o', str(NATIVE)], cwd=PORT, check=True)
+    subprocess.run([cb.linker(CC), '-O2', *flags, *common, compiled[TRAMPOLINE],
+                    compiled['tools/lanec/native.c'], *objects, *cb.LINK, '-o', str(NATIVE)], cwd=PORT, check=True)
     # The step check (tests/pinball_steps.c): the readable trampoline as
     # readable_lanec_pin_run_<m>, beside the faithful one.
     steps_objects = []
     for o in objects:
-        renamed_o = READABLE / 'build' / ('steps-' + Path(o).name)
+        renamed_o = cb.BUILD / ('steps-' + Path(o).name)
         subprocess.run(['objcopy', *(f'--redefine-sym=lanec_pin_run_{m}=readable_lanec_pin_run_{m}' for m in ('lm', 'cm')),
                         o, str(renamed_o)], check=True)
         steps_objects.append(str(renamed_o))
-    subprocess.run([CC, '-O2', *flags, *common, compiled[TRAMPOLINE], compiled[steps], *steps_objects,
-                    '-o', str(STEPS)], cwd=PORT, check=True)
+    subprocess.run([cb.linker(CC), '-O2', *flags, *common, compiled[TRAMPOLINE], compiled[steps], *steps_objects,
+                    *cb.LINK, '-o', str(STEPS)], cwd=PORT, check=True)
     # The oracle: the port's, with pin-stirred (the port's own trampoline;
     # the oracle runs the original program).
     port_trampoline = compile_all(flags, [(TRAMPOLINE, [])])[0]
@@ -174,7 +176,7 @@ def main():
     # Step for step as the faithful port (tests/pinball_steps.c), and the
     # binding's table of where the faithful steps end current.
     bad |= subprocess.run([str(STEPS)], cwd=PORT).returncode != 0
-    stops = READABLE / 'build/pinball_stops.inc'
+    stops = cb.BUILD / 'pinball_stops.inc'
     subprocess.run([str(STEPS), '--stops', str(stops)], cwd=PORT, check=True)
     current = stops.read_text() == (READABLE / 'src/binding/pinball_stops.inc').read_text()
     print(f"{'PASS' if current else 'FAIL'}: src/binding/pinball_stops.inc "

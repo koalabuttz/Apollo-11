@@ -10,6 +10,10 @@
 #      rows and one landing on PRs and pushes, every row (117) nightly.
 #      Each run first tries the check on three programs that are wrong,
 #      and holds each row's counts to the run of record.
+# And, nightly, which lines run (readable/tests/line_coverage.py): every
+# case test and every scenario again, built with clang's source coverage;
+# each stretch of lines that none runs must stand with its reason in
+# readable/tests/line_coverage.txt.
 name: readable-ci
 # It runs on a change to readable/ and on a change to what readable/ is
 # built from and checked against: the faithful port's sources, its tests
@@ -150,4 +154,50 @@ jobs:
         with:
           name: readable-lockstep
           path: readable/build/x86-flight/lockstep/summary.json
+          if-no-files-found: ignore
+
+  line-coverage:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - name: Lean checkout
+        env:
+          REF: ${{ github.sha }}
+        run: |
+          git init -q .
+          git remote add origin "https://github.com/${GITHUB_REPOSITORY}"
+          git config http.https://github.com/.extraheader \
+            "AUTHORIZATION: basic $(printf 'x-access-token:%s' '${{ github.token }}' | base64 -w0)"
+          git fetch -q --filter=blob:limit=1m --depth=1 origin "$REF"
+          git show FETCH_HEAD:c64-port/tools/ci_checkout.sh | bash -s FETCH_HEAD
+      - name: Toolchain cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            c64-port/deps/llvm-mos
+            c64-port/deps/vice-data
+            c64-port/deps/virtualagc
+            c64-port/deps/fixture
+          key: port-deps-${{ hashFiles('c64-port/tools/versions.json', 'c64-port/tools/setup_cloud.sh', 'c64-port/tools/prepare_reference.py') }}
+      - name: Install pinned toolchain
+        working-directory: c64-port
+        run: tools/setup_cloud.sh
+      - name: clang with its profile runtime
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y --no-install-recommends clang-18 llvm-18 libclang-rt-18-dev
+          mkdir -p "$RUNNER_TEMP/clang18"
+          ln -sf "$(command -v clang-18)" "$RUNNER_TEMP/clang18/clang"
+          echo "$RUNNER_TEMP/clang18" >> "$GITHUB_PATH"
+      - name: Which lines run
+        working-directory: readable
+        run: |
+          source ../c64-port/deps/env.sh
+          make line-coverage
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: readable-line-coverage
+          path: readable/build/linecov/line_coverage.txt
           if-no-files-found: ignore

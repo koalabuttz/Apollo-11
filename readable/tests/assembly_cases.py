@@ -63,6 +63,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import coverage_build as cb
+
 READABLE = Path(__file__).resolve().parents[1]
 ROOT = READABLE.parent
 
@@ -120,7 +122,7 @@ def listing_lines(path):
 
 
 def table_text(mission, name):
-    dump = READABLE / 'build' / f'assembly-dump-{mission}'
+    dump = cb.BUILD / f'assembly-dump-{mission}'
     return subprocess.run([str(dump), name], check=True, capture_output=True, text=True).stdout
 
 

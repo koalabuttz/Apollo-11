@@ -10,7 +10,13 @@
  *
  * Its job is plumbing only: point the machine (src/agc/agc.h) at the
  * program's state, read the inline operands a TC passes (the 2CADR after a
- * TC NOVAC) from the program's fixed memory, and call the routine. */
+ * TC NOVAC) from the program's fixed memory, and call the routine.
+ *
+ * The routines read nothing else of fixed memory and no channel but
+ * DSALMOUT. Only a state no program makes has one try (a VAC area's use
+ * word that is not an erasable address, which VACFOUND then exchanges L
+ * with): the binding refuses such a state and leaves it as it found it. */
+#include <setjmp.h>
 #include <stddef.h>
 #include "binding.h"
 #include "../executive/executive.h"
@@ -20,11 +26,28 @@
 #define T3RUPT_LEAD_IN 04014u /* the T3RUPT interrupt's address */
 #define BANK01         02000u
 
+static jmp_buf back;
+
+static void leave(void)
+{
+    longjmp(back, 1);
+}
+
+/* A read of fixed memory by a routine itself: not modelled. */
+static word fixed_memory(unsigned physical)
+{
+    (void)physical;
+    not_modelled_state("a routine of the Executive or WAITLIST reading fixed memory");
+    return 0;
+}
+
 static enum exec_status run(const agc_native_program *program, apollo_overlay_state *state,
                             void *device)
 {
     static uint16_t no_channel;
-    agc_hardware *hardware;
+    mission_io *io = device, kept_io;
+    agc_hardware *hardware, kept_hardware;
+    apollo_overlay_state before;
     word entry, operand[2] = {0, 0};
 
     if (!bind_machine(program, state, device)) return EXEC_OUT_OF_SCOPE;
@@ -48,6 +71,17 @@ static enum exec_status run(const agc_native_program *program, apollo_overlay_st
     if (!hardware && (entry == K_TASKOVER || entry == T3RUPT_LEAD_IN)) return EXEC_OUT_OF_SCOPE;
     if (!agc.dsalmout) agc.dsalmout = &no_channel; /* never written on these paths */
 
+    agc.fixed_memory = fixed_memory;
+    agc.leave = leave;
+    before = *state;
+    kept_io = *io;
+    if (hardware) kept_hardware = *hardware;
+    if (setjmp(back)) {
+        *state = before;
+        *io = kept_io;
+        if (hardware) *hardware = kept_hardware;
+        return EXEC_OUT_OF_SCOPE;
+    }
     switch (entry) {
     case K_NOVAC: novac(operand); break;
     case K_FINDVAC: findvac(operand); break;
