@@ -35,11 +35,15 @@ CONTROLLED_CONSTANTS.agc's words are compared in order, and then
 the file and with the rope, and each decimal constant's words with the
 words its number makes.
 
-ASSEMBLY_AND_OPERATION_INFORMATION.agc is lists set in columns. Its words
-are compared in order, and then (information_where) its lines one by one:
-each line of the listing must be a line of the table INFORMATION_LISTS
-gives its list, with each run of text in the cell of the column it stands
-in.
+ASSEMBLY_AND_OPERATION_INFORMATION.agc and the CM's ENTRY_LEXICON.agc are
+lists set in columns. Their words are compared in order, and then
+(information_where) their lines one by one: each line of the listing must
+be a line of the table INFORMATION_LISTS gives its list, with each run of
+text in the cell of the column it stands in.
+
+FILES must be the files COVERAGE gives to src/assembly or marks no-code,
+no more and no fewer: a file of comments counts as readable only as a
+table this test compares.
 
 ERASABLE_ASSIGNMENTS.agc is cards and comments. Its words are compared in
 order, and then (erasable_where) its lines one by one, each with its name,
@@ -73,7 +77,9 @@ FILES = (
     ('lm', 'Luminary099', 'TAGS_FOR_RELATIVE_SETLOC'),
     ('cm', 'Comanche055', 'ASSEMBLY_AND_OPERATION_INFORMATION'),
     ('cm', 'Comanche055', 'CONTRACT_AND_APPROVALS'),
+    ('cm', 'Comanche055', 'ENTRY_LEXICON'),
     ('cm', 'Comanche055', 'ERASABLE_ASSIGNMENTS'),
+    ('cm', 'Comanche055', 'LUNAR_LANDMARK_SELECTION_FOR_CM'),
     ('cm', 'Comanche055', 'MAIN'),
     ('cm', 'Comanche055', 'TAGS_FOR_RELATIVE_SETLOC'),
 )
@@ -102,6 +108,15 @@ def listing_words(path):
             continue
         words += [w for w in line.lstrip('#').split() if w.strip('*')]
     return words
+
+
+def listing_lines(path):
+    """The lines after the first page mark that hold text, each without
+    its comment sign and the space around it."""
+    lines = path.read_text().splitlines()
+    start = next(n for n, line in enumerate(lines) if PAGE.match(line))
+    out = [line.lstrip('#').strip() for line in lines[start:] if not PAGE.match(line)]
+    return [line for line in out if line]
 
 
 def table_text(mission, name):
@@ -382,12 +397,21 @@ def constants_where(mission, tree):
     return wrong, len(lines)
 
 
-# ASSEMBLY_AND_OPERATION_INFORMATION.agc's lists, in the listing's order:
-# the words a list's first line begins with, the list's name in the C, and
-# the columns its cells start at (the comment sign is column 0, and a tab
-# goes to the next multiple of 8).
+# The lists of a file of lists, in the listing's order: the words a list's
+# first line begins with, the list's name in the C, and the columns its
+# cells start at (the comment sign is column 0, and a tab goes to the next
+# multiple of 8).
 INFORMATION_LISTS = {
-    'Luminary099': (
+    ('Comanche055', 'ENTRY_LEXICON'): (
+        ('VARIABLE DESCRIPTION MAXIMUM VALUE', 'VARIABLES', (0, 16, 48, 72)),
+        ('EXTRA COMPUTER ERASABLE LOCATIONS', 'EXTRA_ERASABLES', (0, 16, 48)),
+        ('COMPUTER SWITCHES', 'SWITCHES', (0, 16, 48, 72)),
+        ('CONSTANTS AND GAINS', 'CONSTANTS_AND_GAINS', (0, 16, 72)),
+        ('CONVERSION FACTORS AND SCALING CONSTANTS', 'CONVERSION_FACTORS', (0, 8, 72)),
+        ('DISPLAY QUANTITIES', 'DISPLAY_QUANTITIES', (0, 16, 48, 72)),
+        ('BODY ATTITUDE QUANTITIES', 'BODY_ATTITUDE', (0, 16, 48)),
+    ),
+    ('Luminary099', 'ASSEMBLY_AND_OPERATION_INFORMATION'): (
         ('THIS LGC PROGRAM', 'INTRODUCTION', (0,)),
         ('TABLE OF LOG CARDS', 'LOG_SECTIONS', (0, 8, 16)),
         ('VERB LIST FOR LUMINARY', 'VERBS', (0, 8)),
@@ -401,7 +425,7 @@ INFORMATION_LISTS = {
         ('CHECKLIST CODES FOR LUMINARY', 'CHECKLIST_CODES', (0, 16, 31, 72)),
         ('OPTION CODES FOR LUMINARY', 'OPTION_CODES', (0, 16, 48, 80, 96)),
     ),
-    'Comanche055': (
+    ('Comanche055', 'ASSEMBLY_AND_OPERATION_INFORMATION'): (
         ('ASSEMBLY AND OPERATIONS INFORMATION', 'LOG_SECTIONS', (0, 8, 16)),
         ('VERB LIST FOR CSM', 'VERBS', (0,)),
         ('IN THE FOLLOWING NOUN LIST', 'NOUN_LIST_INTRODUCTION', (0,)),
@@ -438,13 +462,13 @@ def runs_of_text(line):
     return runs
 
 
-def information_lines(tree):
+def information_lines(tree, file):
     """The listing's lines as the dump writes them (:lines): the list's
     name, then a tab before each cell; a run of text goes in the cell of
     the last column that starts at or before it."""
-    lines = (ROOT / tree / 'ASSEMBLY_AND_OPERATION_INFORMATION.agc').read_text().splitlines()
+    lines = (ROOT / tree / f'{file}.agc').read_text().splitlines()
     start = next(n for n, line in enumerate(lines) if PAGE.match(line))
-    lists = list(INFORMATION_LISTS[tree])
+    lists = list(INFORMATION_LISTS[tree, file])
     out, name, columns = [], None, None
     for line in lines[start:]:
         runs = runs_of_text(line)
@@ -457,13 +481,13 @@ def information_lines(tree):
             cells[max(n for n, column in enumerate(columns) if column <= at)].append(text)
         out.append('\t'.join([name] + [' '.join(cell) for cell in cells]))
     if lists:
-        raise SystemExit(f'{tree}: no line begins {lists[0][0]}')
+        raise SystemExit(f'{tree}/{file}.agc: no line begins {lists[0][0]}')
     return out
 
 
-def information_where(mission, tree):
-    want = information_lines(tree)
-    got = table_text(mission, 'ASSEMBLY_AND_OPERATION_INFORMATION:lines').splitlines()
+def information_where(mission, tree, file):
+    want = information_lines(tree, file)
+    got = table_text(mission, f'{file}:lines').splitlines()
     wrong = []
     if want != got:
         at = next((n for n, (a, b) in enumerate(zip(want, got)) if a != b),
@@ -637,6 +661,16 @@ def coverage():
     return listed
 
 
+def table_files():
+    """The files COVERAGE gives to src/assembly or marks no-code."""
+    files = set()
+    for line in (READABLE / 'COVERAGE').read_text().splitlines():
+        line = line.split('#')[0].split()
+        if line and (line[1].rstrip('/') == 'src/assembly' or 'no-code' in line[2:]):
+            files.add(line[0])
+    return files
+
+
 def main_table(tree, text):
     """The dump's lines without the directories, and what is wrong with
     the directories."""
@@ -659,17 +693,24 @@ def main_table(tree, text):
 
 def main():
     failures = total = 0
+    compared = {f'{tree}/{name}.agc' for _, tree, name in FILES}
+    for file in sorted(table_files() ^ compared):
+        failures += 1
+        print(f'FAIL: {file} is ' +
+              ('compared here, but COVERAGE does not give it to src/assembly'
+               if file in compared else
+               'in src/assembly or no-code in COVERAGE, but not compared here'))
     for mission, tree, name in FILES:
         wrong = []
         if name == 'MAIN':
             want = main_lines(ROOT / tree / f'{name}.agc')
             got, wrong = main_table(tree, table_text(mission, name))
-        elif name == 'ASSEMBLY_AND_OPERATION_INFORMATION':
+        elif (tree, name) in INFORMATION_LISTS:
             # The alarm list's marks are asterisks, which listing_words
             # leaves out with the rows of asterisks; the lines keep them.
             want = listing_words(ROOT / tree / f'{name}.agc')
             got = [w for w in table_text(mission, name).split() if w.strip('*')]
-            wrong, placed = information_where(mission, tree)
+            wrong, placed = information_where(mission, tree, name)
             total += placed
         elif name == 'ERASABLE_ASSIGNMENTS':
             # A comment sign may stand against the comment's first word.
@@ -693,9 +734,13 @@ def main():
             got = bank_numbers(table_text(mission, name).split())
             wrong, placed = setloc_where(mission, tree)
             total += placed
+        elif name == 'LUNAR_LANDMARK_SELECTION_FOR_CM':
+            # The page's lines whole, asterisks and all.
+            want = listing_lines(ROOT / tree / f'{name}.agc')
+            got = table_text(mission, name).splitlines()
         else:
             want = listing_words(ROOT / tree / f'{name}.agc')
-            got = table_text(mission, name).split()
+            got = [w for w in table_text(mission, name).split() if w.strip('*')]
         total += len(want)
         for problem in wrong:
             failures += 1

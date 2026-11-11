@@ -16,8 +16,8 @@
  * LUNAR_LANDMARK_SELECTION_FOR_CM.agc, the CM's next file (Comanche055
  * p. 936), holds no code: its one page carries only the comment
  * "*** END OF TROUBLE .043 ***", with no instructions, constants or entry
- * points. It has nothing to translate, so it is listed here, with the
- * pages before it. */
+ * points. It has nothing to translate; its line is kept in
+ * src/assembly/lunar_landmark_selection_for_cm.c. */
 #ifndef READABLE_SBAND_ANTENNA_H
 #define READABLE_SBAND_ANTENNA_H
 

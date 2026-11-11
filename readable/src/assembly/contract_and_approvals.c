@@ -2,7 +2,9 @@
 /* CONTRACT_AND_APPROVALS.agc, the CM's: Comanche055 page 1. The listing
  * file holds no code: it is the program's title page, a box with its
  * other name and its contract, and the signatures under it. Here it is,
- * word for word.
+ * word for word, from the page mark on (the revision and date of the
+ * assembly stand in the transcriber's heading above the mark, which is
+ * not carried).
  *
  * The LM's listing opens with ASSEMBLY_AND_OPERATION_INFORMATION.agc and
  * has no such page. */

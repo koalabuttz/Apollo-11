@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 /* MAIN.agc, each mission's: the list of the listing's files in the order
- * the program is assembled, which is the order of its pages. The original
+ * the program is assembled, which is the order of its pages. The listing
  * was one deck of cards; the transcription cut it into a file per section
  * and MAIN.agc puts them together again, a line for each file with its
  * pages.
@@ -170,12 +170,12 @@ const struct listing_file MAIN[] = {
     LISTING_FILE("LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES", 785, 788, "src/ephemerides"),
     LISTING_FILE("P61-P67", 789, 818, "src/p61_p67"),
     LISTING_FILE("SERVICER207", 819, 836, "src/servicer_cm"),
-    LISTING_FILE("ENTRY_LEXICON", 837, 843, "src/reentry"),
+    LISTING_FILE("ENTRY_LEXICON", 837, 843, "src/assembly"),
     LISTING_FILE("REENTRY_CONTROL", 844, 882, "src/reentry"),
     LISTING_FILE("CM_BODY_ATTITUDE", 883, 889, "src/body_attitude"),
     LISTING_FILE("P37_P70", 890, 933, "src/p37_p70"),
     LISTING_FILE("S-BAND_ANTENNA_FOR_CM", 934, 935, "src/sband_antenna"),
-    LISTING_FILE("LUNAR_LANDMARK_SELECTION_FOR_CM", 936, 936, "src/sband_antenna"),
+    LISTING_FILE("LUNAR_LANDMARK_SELECTION_FOR_CM", 936, 936, "src/assembly"),
     LISTING_SECTION("TVCDAPS"),
     LISTING_FILE("TVCINITIALIZE", 937, 944, "src/tvc"),
     LISTING_FILE("TVCEXECUTIVE", 945, 950, "src/tvc"),

@@ -32,8 +32,9 @@
  *
  * ENTRY_LEXICON.agc (pp. 837-843) has no code: it is the guidance's
  * glossary, the names of the GSOP's flow charts with the program's
- * ("COMPUTER NAME") and their scaling ("MAXIMUM VALUE"). A few to read
- * the code by:
+ * ("COMPUTER NAME") and their scaling ("MAXIMUM VALUE"). The whole file
+ * is a table in src/assembly/entry_lexicon.c, line by line. A few of its
+ * entries to read the code by:
  *
  *   D           "TOTAL ACCELERATION", the drag, scaled 805 FPSS (25 g).
  *   V, RDOT     the speed and the "ALTITUDE RATE", scaled "2 VSAT".
