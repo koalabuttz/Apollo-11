@@ -317,6 +317,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | The list of files | `MAIN.agc` (both missions) | [`src/assembly/`](src/assembly/) | The listing's files in the order of their pages, each with the directory here that holds its readable C: the way from a page of the listing to its code |
 | The listing's guide | `ASSEMBLY_AND_OPERATION_INFORMATION.agc` (LM pp. 1-27, CM pp. 2-26) | [`src/assembly/`](src/assembly/) | No code: the listing's own guide to the program, list by list in the listing's lines and columns: the log sections it is assembled from, the verbs, the nouns with their registers and scales, the alarm codes, the checklist codes and the option codes |
 | Bank tags | `TAGS_FOR_RELATIVE_SETLOC.agc` (LM pp. 28-37, CM pp. 27-35) | [`src/assembly/`](src/assembly/) | Which bank of fixed memory each part of the program goes in: the tags a routine names with SETLOC, bank by bank, then the names that stand for other names, and the CM's ECADRs for switching erasable banks |
+| Erasable memory | `ERASABLE_ASSIGNMENTS.agc` (LM pp. 90-152, CM pp. 37-130) | [`src/assembly/`](src/assembly/) | The name and the place of every word of erasable memory: the file line by line, each card with its name, its operand and its comment, and each name's value in the assembled program; with the CM's flags, and what each means set and reset |
 | Flags | `FLAGWORD_ASSIGNMENTS.agc` (LM pp. 61-88) | [`src/assembly/`](src/assembly/) | Every flag of the fourteen flagwords: its name and number, its bit and the bit's name, and what it means set and reset, in the listing's words; with the listing's alphabetical list of them |
 | Constants | `CONTROLLED_CONSTANTS.agc` (LM pp. 38-53) | [`src/assembly/`](src/assembly/) | The constants of the spacecraft and of nature (engines, radars, masses, gravity, the star table, the ephemerides): each with the listing's operand, the number it says, its address and its words |
 
@@ -1277,7 +1278,11 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    must agree with the assignments except where the listing itself does
    not; and every word of CONTROLLED_CONSTANTS must be the rope's at its
    address, the words in the assembler's order, and each decimal
-   constant's words the ones its number makes.
+   constant's words the ones its number makes; and ERASABLE_ASSIGNMENTS
+   is compared line by line (name, card, operand and comment, and in the
+   CM's flag lines the SET and RESET columns), every name's value must
+   be the symbol table's, and the ERASE cards, followed from each
+   SETLOC, must come to the word each names.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

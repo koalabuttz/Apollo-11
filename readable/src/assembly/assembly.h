@@ -19,6 +19,9 @@
  *   TAGS_FOR_RELATIVE_SETLOC.agc (LM pp. 28-37, CM pp. 27-35): the tags
  *     that say which bank each part of the program goes in
  *     (tags_for_relative_setloc.c);
+ *   ERASABLE_ASSIGNMENTS.agc (LM pp. 90-152, CM pp. 37-130): the name
+ *     and the place of every word of erasable memory, line by line, and
+ *     the CM's flags (erasable_assignments.c);
  *   FLAGWORD_ASSIGNMENTS.agc (LM pp. 61-88): the flags, bit by bit, and
  *     what each means set and reset (flagword_assignments.c);
  *   CONTROLLED_CONSTANTS.agc (LM pp. 38-53): the constants of the
@@ -102,6 +105,56 @@ extern const struct setloc_bank SETLOC_BANKS[];
 extern const unsigned SETLOC_BANK_COUNT;
 extern const struct setloc_equate SETLOC_EQUATES[];
 extern const unsigned SETLOC_EQUATE_COUNT;
+
+/* ---- ERASABLE_ASSIGNMENTS ---- */
+
+/* What a name is to the assembler, and its value:
+ *   IN_ERASABLE  a word of erasable memory, by its address as an ECADR, 0
+ *                to 03777. The erasable bank is the address / 0400; the
+ *                words of banks 0 to 2 are at their own addresses, and a
+ *                word of banks 3 to 7 is reached at 01400 + address % 0400
+ *                with its bank switched in;
+ *   NUMBER       a number. A name set equal to a bare number is a number,
+ *                whatever the program uses it for: the special registers
+ *                and counters at addresses 0 to 060, the channels and the
+ *                flags are all numbers;
+ *   IN_FIXED     a word of fixed memory, by its address. */
+enum name_kind { NO_NAME, ERASABLE_ADDRESS, PLAIN_NUMBER, FIXED_ADDRESS };
+
+struct name_value {
+    enum name_kind kind;
+    unsigned number;
+};
+
+/* clang-format off */
+#define IN_ERASABLE(address) {ERASABLE_ADDRESS, address}
+#define NUMBER(number)       {PLAIN_NUMBER, number}
+#define IN_FIXED(address)    {FIXED_ADDRESS, address}
+#define NO_VALUE             {NO_NAME, 0}
+/* clang-format on */
+
+/* One line of ERASABLE_ASSIGNMENTS.agc:
+ *   name     the card's name (NULL for a card with none, and for a line of
+ *            comment);
+ *   card     ERASE, EQUALS, = or SETLOC (NULL for a line of comment);
+ *   operand  the card's operand as the listing writes it, or NULL;
+ *   value    the name's value in the assembled program;
+ *   remark   the comment beside the card, or the line of comment;
+ *   set, reset  in the lines that assign the CM's flags, the comment where
+ *            it stands in two columns: what the flag means set, and what
+ *            it means reset. */
+struct erasable_line {
+    const char *name;
+    const char *card;
+    const char *operand;
+    struct name_value value;
+    const char *remark;
+    const char *set;
+    const char *reset;
+};
+
+extern const struct erasable_line ERASABLE_ASSIGNMENTS[];
+extern const unsigned ERASABLE_LINE_COUNT;
 
 #if COMANCHE055
 

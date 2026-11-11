@@ -181,3 +181,5 @@ Luminary099/FLAGWORD_ASSIGNMENTS.agc            src/assembly
 Luminary099/CONTROLLED_CONSTANTS.agc            src/assembly
 Luminary099/ASSEMBLY_AND_OPERATION_INFORMATION.agc src/assembly no-code
 Comanche055/ASSEMBLY_AND_OPERATION_INFORMATION.agc src/assembly no-code
+Luminary099/ERASABLE_ASSIGNMENTS.agc            src/assembly
+Comanche055/ERASABLE_ASSIGNMENTS.agc            src/assembly

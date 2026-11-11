@@ -67,6 +67,53 @@ static void assembly_and_operation_information_lines(void)
     }
 }
 
+static const char *or_nothing(const char *text)
+{
+    return text ? text : "";
+}
+
+/* ERASABLE_ASSIGNMENTS as the listing's text, a line of the table to a
+ * line: with a space between the fields, or (lines) with a tab between
+ * them, the fields that are not there empty. */
+static void print_erasable_assignments(const char *between)
+{
+    unsigned n;
+
+    for (n = 0; n < ERASABLE_LINE_COUNT; ++n) {
+        const struct erasable_line *line = &ERASABLE_ASSIGNMENTS[n];
+
+        printf("%s%s%s%s%s%s%s%s%s%s%s\n", or_nothing(line->name), between, or_nothing(line->card),
+               between, or_nothing(line->operand), between, or_nothing(line->remark), between,
+               or_nothing(line->set), between, or_nothing(line->reset));
+    }
+}
+
+static void erasable_assignments(void)
+{
+    print_erasable_assignments(" ");
+}
+
+static void erasable_assignments_lines(void)
+{
+    print_erasable_assignments("\t");
+}
+
+/* ERASABLE_ASSIGNMENTS's names, for the comparison with the assembler's
+ * symbol table: "name kind value", the kind E for a word of erasable
+ * memory, C for a number, F for a word of fixed memory, the value in
+ * octal. */
+static void erasable_assignments_where(void)
+{
+    unsigned n;
+
+    for (n = 0; n < ERASABLE_LINE_COUNT; ++n) {
+        const struct erasable_line *line = &ERASABLE_ASSIGNMENTS[n];
+
+        if (line->name)
+            printf("%s %c %o\n", line->name, "?ECF"[line->value.kind], line->value.number);
+    }
+}
+
 /* TAGS_FOR_RELATIVE_SETLOC as the listing's text: the heading; each bank's
  * comment, BLOCK or BANK card, tags and BNKSUM card; each equate; and for
  * the CM the ECADRs, each under its EBANK= card, with a BANK card where
@@ -363,6 +410,9 @@ static const struct {
 } files[] = {
     {"ASSEMBLY_AND_OPERATION_INFORMATION", assembly_and_operation_information},
     {"ASSEMBLY_AND_OPERATION_INFORMATION:lines", assembly_and_operation_information_lines},
+    {"ERASABLE_ASSIGNMENTS", erasable_assignments},
+    {"ERASABLE_ASSIGNMENTS:lines", erasable_assignments_lines},
+    {"ERASABLE_ASSIGNMENTS:where", erasable_assignments_where},
     {"MAIN", main_agc},
     {"TAGS_FOR_RELATIVE_SETLOC", tags_for_relative_setloc},
     {"TAGS_FOR_RELATIVE_SETLOC:where", tags_for_relative_setloc_where},

@@ -41,6 +41,13 @@ each line of the listing must be a line of the table INFORMATION_LISTS
 gives its list, with each run of text in the cell of the column it stands
 in.
 
+ERASABLE_ASSIGNMENTS.agc is cards and comments. Its words are compared in
+order, and then (erasable_where) its lines one by one, each with its name,
+card, operand and comment in their fields; every name's value with the
+assembler's symbol table; the ERASE cards by following them from each
+SETLOC to the word each must name; and the CM's sorted list of flags with
+the flags' numbers, which it must agree with except at CM_LIST_SLIPS.
+
 MAIN.agc is compared line by line instead: a file's line by its name and
 pages (the table writes "p. 5" and "pp. 5" alike as first and last page 5),
 a comment line by its words. Each file's directory in the table must be
@@ -60,11 +67,13 @@ FILES = (
     ('lm', 'Luminary099', 'ASSEMBLY_AND_OPERATION_INFORMATION'),
     ('lm', 'Luminary099', 'INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS'),
     ('lm', 'Luminary099', 'CONTROLLED_CONSTANTS'),
+    ('lm', 'Luminary099', 'ERASABLE_ASSIGNMENTS'),
     ('lm', 'Luminary099', 'FLAGWORD_ASSIGNMENTS'),
     ('lm', 'Luminary099', 'MAIN'),
     ('lm', 'Luminary099', 'TAGS_FOR_RELATIVE_SETLOC'),
     ('cm', 'Comanche055', 'ASSEMBLY_AND_OPERATION_INFORMATION'),
     ('cm', 'Comanche055', 'CONTRACT_AND_APPROVALS'),
+    ('cm', 'Comanche055', 'ERASABLE_ASSIGNMENTS'),
     ('cm', 'Comanche055', 'MAIN'),
     ('cm', 'Comanche055', 'TAGS_FOR_RELATIVE_SETLOC'),
 )
@@ -76,10 +85,11 @@ KEPT_AS = {
     ('Luminary099', 'TRIM_GIMBAL_CNTROL_SYSTEM'): 'TRIM_GIMBAL_CONTROL_SYSTEM',
 }
 
-# A page marker of the transcription ("# Page 61"; also "# Page63" and
-# "# Page 89 (nothing on this page)"), and a transcriber's note beside a
-# line ("# OH 2009-05-15 Not in scan"): neither is the listing's.
-PAGE = re.compile(r'#\s*Page\s*\d+(\s*\(.*\))?\s*$')
+# A page marker of the transcription ("# Page 61"; also "# Page63",
+# "# Page 89 (nothing on this page)" and "# Page 130 ... is empty."), and
+# a transcriber's note beside a line ("# OH 2009-05-15 Not in scan"):
+# neither is the listing's.
+PAGE = re.compile(r'#\s*Page\s*\d+(\s*\(.*\)|\s*\.\.\. is empty\.)?\s*$')
 NOTE = re.compile(r'#\s*[A-Z]{2,3} \d{4}-\d\d-\d\d .*$')
 
 
@@ -463,6 +473,146 @@ def information_where(mission, tree):
     return wrong, len(want)
 
 
+# In the CM's ERASABLE_ASSIGNMENTS.agc the lines that assign the flags, from
+# FLAGWRD0's card to the heading CM_FLAGS_END, have their comments in two
+# columns, SET's and RESET's, the second at CM_RESET_COLUMN.
+CM_FLAGS_END = 'GENERAL ERASABLE ASSIGNMENTS'
+CM_RESET_COLUMN = 64
+
+# The words taken by a card that is not SETLOC, ERASE, EQUALS or =: the
+# CM's line with nothing but an exponent on it, which the assembler gives a
+# word (see erasable_assignments.c).
+OTHER_CARDS = {'-16': 1}
+
+# The flags of the CM's sorted list that its assignments do not have as
+# the list says (erasable_assignments.c says what each slip is).
+CM_LIST_SLIPS = ['DMENFLAG', 'ENG1FLAG', 'IDLEFLAG', 'PRFTRKAT', 'RPQFLAG', 'V67FLAG']
+
+
+def erasable_lines(tree):
+    """ERASABLE_ASSIGNMENTS.agc's lines as the dump's :lines writes them:
+    name, card, operand, comment, SET text and RESET text, a tab between.
+    A line that begins with a comment sign is a comment. On any other,
+    what stands at the margin is the name, the next field the card and
+    the rest before the comment sign the operand. In the CM's flag lines
+    the comment after a card, or on a line under one, goes by its columns
+    to SET or RESET (each run of text between tabs by the column it
+    starts at), unless it is one run that reaches across both columns or
+    the card is a flagword's own (its operand begins STATE)."""
+    lines = (ROOT / tree / 'ERASABLE_ASSIGNMENTS.agc').read_text().splitlines()
+    start = next(n for n, line in enumerate(lines) if PAGE.match(line))
+    out, flags = [], False
+    for line in lines[start:]:
+        if PAGE.match(line) or not line.strip():
+            continue
+        code, sign, comment = line.partition('#')
+        if line.startswith('FLAGWRD0'):
+            flags = tree == 'Comanche055'
+        elif CM_FLAGS_END in line:
+            flags = False
+        fields = code.split()
+        name = fields.pop(0) if fields and not line[0].isspace() else ''
+        card = fields.pop(0) if fields else ''
+        remark, columns = ' '.join(word for word in comment.split() if word != '#'), ['', '']
+        if flags and sign and not line.startswith('#') and not fields[:1] == ['STATE']:
+            runs, text, at, column = [], '', None, len(code.expandtabs(8)) + 1
+            for char in comment + '\t':
+                if char == '\t':
+                    if text.strip():
+                        runs.append((at, ' '.join(text.split())))
+                    text, at, column = '', None, (column // 8 + 1) * 8
+                else:
+                    if at is None and char != ' ':
+                        at = column
+                    text += char
+                    column += 1
+            across = [at < CM_RESET_COLUMN < at + len(text) for at, text in runs]
+            if not any(across):
+                remark = ''
+                columns = [' '.join(text for at, text in runs if (at >= CM_RESET_COLUMN) == right)
+                           for right in (False, True)]
+            elif len(runs) > 1:
+                raise SystemExit(f'{tree}: a comment across the columns and more: {line}')
+        if name or card or remark or any(columns):
+            out.append('\t'.join([name, card, ' '.join(fields), remark] + columns))
+    return out
+
+
+def erasable_where(mission, tree):
+    want = erasable_lines(tree)
+    got = table_text(mission, 'ERASABLE_ASSIGNMENTS:lines').splitlines()
+    wrong = []
+    if want != got:
+        at = next((n for n, (a, b) in enumerate(zip(want, got)) if a != b),
+                  min(len(want), len(got)))
+        wrong.append(f'line {at} of {len(want)} (the table has {len(got)}): the listing has '
+                     f'{want[at:at + 1]}, the table {got[at:at + 1]}')
+
+    # Every name's value against the assembler's symbol table: an erasable
+    # address there is aaaa or, in a switched bank, En,aaaa.
+    symbols = {}
+    for kind in 'ECF':
+        for name, value in symbol_table(tree, kind).items():
+            bank, _, address = value.rpartition(',')
+            if kind == 'E' and bank:
+                symbols[name] = (kind, int(bank[1:], 8) * 0o400 + int(address, 8) - 0o1400)
+            elif not bank:
+                symbols[name] = (kind, int(address, 8))
+    values = {}
+    for line in table_text(mission, 'ERASABLE_ASSIGNMENTS:where').splitlines():
+        name, kind, value = line.split()
+        if name in values:
+            wrong.append(f'{name} is named twice')
+        values[name] = (kind, int(value, 8))
+        if symbols.get(name) != values[name]:
+            wrong.append(f'{name}: the table has {kind} {value}, the assembler '
+                         + ('%s %o' % symbols[name] if name in symbols else 'no such name'))
+
+    # The ERASE cards, followed from each SETLOC: each names the next word
+    # (the one card with a range names the range's first word; no ERASE
+    # follows it before the next SETLOC), and a name with EQUALS or = and
+    # no operand is the next word too.
+    at, erased = None, 0
+    for line in got:
+        name, card, operand = line.split('\t')[:3]
+        more = re.fullmatch(r'\+(\d+)(D?)', operand)
+        span = re.fullmatch(r'([0-7]+) - [0-7]+', operand)
+        here = int(span.group(1), 8) if card == 'ERASE' and span else at
+        if card == 'SETLOC':
+            at = int(operand, 8)
+        elif card == 'ERASE' and (more or span or not operand):
+            if more:
+                at += int(more.group(1), 10 if more.group(2) else 8)
+            at += 0 if span else 1
+        elif card in OTHER_CARDS:
+            at += OTHER_CARDS[card]
+        elif card not in ('', 'EQUALS', '='):
+            wrong.append(f'a card of no known kind: {line.split()}')
+        if name and (card == 'ERASE' or card in ('EQUALS', '=') and not operand):
+            erased += 1
+            if values.get(name) != ('E', here):
+                wrong.append(f'{name}: the cards before it leave it at '
+                             f'{"nowhere" if here is None else "%04o" % here}, the table has '
+                             + '%s %o' % values.get(name, ('nothing', 0)))
+
+    # The CM's sorted list of flags: each line's name must be a number, the
+    # line's, and its bit and flagword that number's.
+    listed, slips = 0, []
+    for line in got if tree == 'Comanche055' else ():
+        entry = re.fullmatch(r'\t\t\t(\S+) (\d+)D BIT (\d+) FLAG (\d+)( .*)?\t\t', line)
+        if line.startswith('FLAGWRD0\t'):
+            break
+        if entry:
+            listed += 1
+            name, number, bit, flagword = entry.group(1), *map(int, entry.group(2, 3, 4))
+            if values.get(name) != ('C', number) or number != flagword * 15 + 15 - bit:
+                slips.append(name)
+    if slips != (CM_LIST_SLIPS if tree == 'Comanche055' else []):
+        wrong.append(f'the sorted list of flags and the flags differ at {slips}, not at '
+                     f'{CM_LIST_SLIPS}')
+    return wrong, len(want) + len(values) + erased + listed
+
+
 def main_lines(path):
     """MAIN.agc's lines as the dump writes them, without the directories."""
     lines = []
@@ -520,6 +670,13 @@ def main():
             want = listing_words(ROOT / tree / f'{name}.agc')
             got = [w for w in table_text(mission, name).split() if w.strip('*')]
             wrong, placed = information_where(mission, tree)
+            total += placed
+        elif name == 'ERASABLE_ASSIGNMENTS':
+            # A comment sign may stand against the comment's first word.
+            want = [w.lstrip('#') for w in listing_words(ROOT / tree / f'{name}.agc')
+                    if w.strip('#')]
+            got = [w for w in table_text(mission, name).split() if w.strip('*')]
+            wrong, placed = erasable_where(mission, tree)
             total += placed
         elif name == 'CONTROLLED_CONSTANTS':
             want = [w for w in listing_words(ROOT / tree / f'{name}.agc') if w != '#']
