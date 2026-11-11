@@ -1,0 +1,227 @@
+/* SPDX-License-Identifier: MIT */
+/* MAIN.agc, each mission's: the list of the listing's files in the order
+ * the program is assembled, which is the order of its pages. The original
+ * was one deck of cards; the transcription cut it into a file per section
+ * and MAIN.agc puts them together again, a line for each file with its
+ * pages.
+ *
+ * Here each line stands with the directory of readable/ that holds that
+ * file's readable C, so the table is also the way from a page of the
+ * listing to its code. The listing's other lines stand as notes: pages
+ * the assembler wrote itself, and in the CM the names of the sections the
+ * program was kept in (COMERASE, COMAID and the rest, which
+ * ASSEMBLY_AND_OPERATION_INFORMATION lists on its first page with the
+ * files of each).
+ *
+ * A file's name stands as MAIN.agc writes it. Two of the LM's lines name
+ * a file the transcription keeps under another name; a comment says
+ * which. */
+#include <stddef.h>
+#include "assembly.h"
+
+/* clang-format off */
+#define LISTING_FILE(name, first, last, readable) {name, first, last, readable, NULL}
+#define LISTING_SECTION(name)                     {NULL, 0, 0, NULL, name}
+#define LISTING_NOTE(note)                        {NULL, 0, 0, NULL, note}
+/* clang-format on */
+
+#if LUMINARY099
+
+/* Luminary 1A, pages 1 to 1510 (the assembler's tables fill the rest). */
+const struct listing_file MAIN[] = {
+    LISTING_FILE("ASSEMBLY_AND_OPERATION_INFORMATION", 1, 27, "src/assembly"),
+    LISTING_FILE("TAGS_FOR_RELATIVE_SETLOC", 28, 37, "src/assembly"),
+    LISTING_FILE("CONTROLLED_CONSTANTS", 38, 53, "src/assembly"),
+    LISTING_FILE("INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS", 54, 60, "src/assembly"),
+    LISTING_FILE("FLAGWORD_ASSIGNMENTS", 61, 88, "src/assembly"),
+    LISTING_NOTE("p. 89 is a GAP-generated table"),
+    LISTING_FILE("ERASABLE_ASSIGNMENTS", 90, 152, "src/assembly"),
+    LISTING_FILE("INTERRUPT_LEAD_INS", 153, 154, "src/lead_ins"),
+    LISTING_FILE("T4RUPT_PROGRAM", 155, 189, "src/t4rupt"),
+    LISTING_FILE("RCS_FAILURE_MONITOR", 190, 192, "src/rcs_failure_monitor"),
+    LISTING_FILE("DOWNLINK_LISTS", 193, 205, "src/downtelemetry"),
+    LISTING_FILE("AGS_INITIALIZATION", 206, 210, "src/ags_initialization"),
+    LISTING_FILE("FRESH_START_AND_RESTART", 211, 237, "src/fresh_start"),
+    LISTING_FILE("RESTART_TABLES", 238, 243, "src/restart"),
+    LISTING_FILE("AOTMARK", 244, 261, "src/aotmark"),
+    LISTING_FILE("EXTENDED_VERBS", 262, 300, "src/extended_verbs"),
+    LISTING_FILE("PINBALL_NOUN_TABLES", 301, 319, "src/pinball_noun_tables"),
+    LISTING_FILE("LEM_GEOMETRY", 320, 325, "src/geometry"),
+    LISTING_FILE("IMU_COMPENSATION_PACKAGE", 326, 337, "src/imu_compensation"),
+    LISTING_FILE("R63", 338, 341, "src/r63"),
+    LISTING_FILE("ATTITUDE_MANEUVER_ROUTINE", 342, 363, "src/attitude_maneuver"),
+    LISTING_FILE("GIMBAL_LOCK_AVOIDANCE", 364, 364, "src/gimbal_lock"),
+    LISTING_FILE("KALCMANU_STEERING", 365, 369, "src/kalcmanu_steering"),
+    LISTING_FILE("SYSTEM_TEST_STANDARD_LEAD_INS", 370, 372, "src/standard_lead"),
+    LISTING_FILE("IMU_PERFORMANCE_TEST_2", 373, 381, "src/imu_performance"),
+    LISTING_FILE("IMU_PERFORMANCE_TESTS_4", 382, 389, "src/imu_performance"),
+    LISTING_FILE("PINBALL_GAME_BUTTONS_AND_LIGHTS", 390, 471, "src/pinball"),
+    LISTING_FILE("R60_62", 472, 485, "src/r60_62"),
+    LISTING_FILE("S-BAND_ANTENNA_FOR_LM", 486, 489, "src/sband_antenna"),
+    LISTING_FILE("RADAR_LEADIN_ROUTINES", 490, 491, "src/radar_leadin"),
+    LISTING_FILE("P20-P25", 492, 614, "src/p20_p25"),
+    LISTING_FILE("P30_P37", 615, 617, "src/p30"),
+    LISTING_FILE("P32-P35_P72-P75", 618, 650, "src/p32_p35"),
+    /* The file is GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc. */
+    LISTING_FILE("LAMBERT_AIMPOINT_GUIDANCE", 651, 653, "src/lambert_aimpoint"),
+    LISTING_FILE("GROUND_TRACKING_DETERMINATION_PROGRAM", 654, 657, "src/ground_track"),
+    LISTING_FILE("P34-35_P74-75", 658, 702, "src/p34_p35"),
+    LISTING_FILE("R31", 703, 708, "src/r31"),
+    LISTING_FILE("P76", 709, 711, "src/p76"),
+    LISTING_FILE("R30", 712, 722, "src/r30"),
+    LISTING_FILE("STABLE_ORBIT", 723, 730, "src/stable_orbit"),
+    LISTING_FILE("BURN_BABY_BURN--MASTER_IGNITION_ROUTINE", 731, 751, "src/burn_baby"),
+    LISTING_FILE("P40-P47", 752, 784, "src/p40_p47"),
+    LISTING_FILE("THE_LUNAR_LANDING", 785, 792, "src/lunar_landing"),
+    LISTING_FILE("THROTTLE_CONTROL_ROUTINES", 793, 797, "src/throttle"),
+    LISTING_FILE("LUNAR_LANDING_GUIDANCE_EQUATIONS", 798, 828, "src/landing_guidance"),
+    LISTING_FILE("P70-P71", 829, 837, "src/p70_p71"),
+    LISTING_FILE("P12", 838, 842, "src/p12"),
+    LISTING_FILE("ASCENT_GUIDANCE", 843, 856, "src/ascent"),
+    LISTING_FILE("SERVICER", 857, 897, "src/servicer"),
+    LISTING_FILE("LANDING_ANALOG_DISPLAYS", 898, 907, "src/landing_displays"),
+    LISTING_FILE("FINDCDUW--GUIDAP_INTERFACE", 908, 925, "src/findcduw"),
+    LISTING_FILE("P51-P53", 926, 983, "src/p51_p53"),
+    LISTING_FILE("LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES", 984, 987, "src/ephemerides"),
+    LISTING_FILE("DOWN_TELEMETRY_PROGRAM", 988, 997, "src/downtelemetry"),
+    LISTING_FILE("INTER-BANK_COMMUNICATION", 998, 1001, "src/interbank"),
+    LISTING_FILE("INTERPRETER", 1002, 1094, "src/interpreter"),
+    LISTING_FILE("FIXED_FIXED_CONSTANT_POOL", 1095, 1099, "src/constant_pool"),
+    LISTING_FILE("INTERPRETIVE_CONSTANT", 1100, 1101, "src/constant_pool"),
+    LISTING_FILE("SINGLE_PRECISION_SUBROUTINES", 1102, 1102, "src/single_precision"),
+    LISTING_FILE("EXECUTIVE", 1103, 1116, "src/executive"),
+    LISTING_FILE("WAITLIST", 1117, 1132, "src/waitlist"),
+    LISTING_FILE("LATITUDE_LONGITUDE_SUBROUTINES", 1133, 1139, "src/lat_long"),
+    LISTING_FILE("PLANETARY_INERTIAL_ORIENTATION", 1140, 1148, "src/planetary"),
+    LISTING_FILE("MEASUREMENT_INCORPORATION", 1149, 1158, "src/measurement_inc"),
+    LISTING_FILE("CONIC_SUBROUTINES", 1159, 1204, "src/conics"),
+    LISTING_FILE("INTEGRATION_INITIALIZATION", 1205, 1226, "src/integration_init"),
+    LISTING_FILE("ORBITAL_INTEGRATION", 1227, 1248, "src/orbital_integration"),
+    LISTING_FILE("INFLIGHT_ALIGNMENT_ROUTINES", 1249, 1258, "src/inflight_align"),
+    LISTING_FILE("POWERED_FLIGHT_SUBROUTINES", 1259, 1267, "src/powered_flight"),
+    LISTING_FILE("TIME_OF_FREE_FALL", 1268, 1283, "src/time_free_fall"),
+    LISTING_FILE("AGC_BLOCK_TWO_SELF_CHECK", 1284, 1293, "src/self_check"),
+    LISTING_FILE("PHASE_TABLE_MAINTENANCE", 1294, 1302, "src/phase_table"),
+    LISTING_FILE("RESTARTS_ROUTINE", 1303, 1308, "src/restart"),
+    LISTING_FILE("IMU_MODE_SWITCHING_ROUTINES", 1309, 1337, "src/imu_mode_switching"),
+    LISTING_FILE("KEYRUPT_UPRUPT", 1338, 1340, "src/keyrupt"),
+    LISTING_FILE("DISPLAY_INTERFACE_ROUTINES", 1341, 1373, "src/display_interface"),
+    LISTING_FILE("SERVICE_ROUTINES", 1374, 1380, "src/service"),
+    LISTING_FILE("ALARM_AND_ABORT", 1381, 1385, "src/alarm"),
+    LISTING_FILE("UPDATE_PROGRAM", 1386, 1396, "src/update_program"),
+    LISTING_FILE("RTB_OP_CODES", 1397, 1402, "src/rtb_op_codes"),
+    LISTING_FILE("T6-RUPT_PROGRAMS", 1403, 1405, "src/t6rupt"),
+    LISTING_FILE("DAP_INTERFACE_SUBROUTINES", 1406, 1409, "src/dap_interface"),
+    LISTING_FILE("DAPIDLER_PROGRAM", 1410, 1420, "src/dapidler"),
+    LISTING_FILE("P-AXIS_RCS_AUTOPILOT", 1421, 1441, "src/p_axis"),
+    LISTING_FILE("Q_R-AXIS_RCS_AUTOPILOT", 1442, 1459, "src/q_r_axis"),
+    LISTING_FILE("TJET_LAW", 1460, 1469, "src/tjet_law"),
+    LISTING_FILE("KALMAN_FILTER", 1470, 1471, "src/kalman_filter"),
+    /* The file is TRIM_GIMBAL_CONTROL_SYSTEM.agc. */
+    LISTING_FILE("TRIM_GIMBAL_CNTROL_SYSTEM", 1472, 1484, "src/trim_gimbal"),
+    LISTING_FILE("AOSTASK_AND_AOSJOB", 1485, 1506, "src/aostask"),
+    LISTING_FILE("SPS_BACK-UP_RCS_CONTROL", 1507, 1510, "src/sps_backup"),
+    LISTING_NOTE("pp. 1511-1743: GAP-generated tables."),
+};
+
+#else
+
+/* Colossus 2A, pages 1 to 1516. */
+const struct listing_file MAIN[] = {
+    LISTING_FILE("CONTRACT_AND_APPROVALS", 1, 1, "src/assembly"),
+    LISTING_FILE("ASSEMBLY_AND_OPERATION_INFORMATION", 2, 26, "src/assembly"),
+    LISTING_FILE("TAGS_FOR_RELATIVE_SETLOC", 27, 35, "src/assembly"),
+    LISTING_NOTE("p. 36 contains no code."),
+    LISTING_SECTION("COMERASE"),
+    LISTING_FILE("ERASABLE_ASSIGNMENTS", 37, 130, "src/assembly"),
+    LISTING_SECTION("COMAID"),
+    LISTING_FILE("INTERRUPT_LEAD_INS", 131, 132, "src/lead_ins"),
+    LISTING_FILE("T4RUPT_PROGRAM", 133, 169, "src/t4rupt"),
+    LISTING_FILE("DOWNLINK_LISTS", 170, 180, "src/downtelemetry"),
+    LISTING_FILE("FRESH_START_AND_RESTART", 181, 210, "src/fresh_start"),
+    LISTING_FILE("RESTART_TABLES", 211, 221, "src/restart"),
+    LISTING_FILE("SXTMARK", 222, 235, "src/sxtmark"),
+    LISTING_FILE("EXTENDED_VERBS", 236, 267, "src/extended_verbs"),
+    LISTING_FILE("PINBALL_NOUN_TABLES", 268, 284, "src/pinball_noun_tables"),
+    LISTING_FILE("CSM_GEOMETRY", 285, 296, "src/geometry"),
+    LISTING_FILE("IMU_COMPENSATION_PACKAGE", 297, 306, "src/imu_compensation"),
+    LISTING_FILE("PINBALL_GAME_BUTTONS_AND_LIGHTS", 307, 389, "src/pinball"),
+    LISTING_FILE("R60_62", 390, 398, "src/r60_62"),
+    LISTING_FILE("ANGLFIND", 399, 411, "src/attitude_maneuver"),
+    LISTING_FILE("GIMBAL_LOCK_AVOIDANCE", 412, 413, "src/gimbal_lock"),
+    LISTING_FILE("KALCMANU_STEERING", 414, 419, "src/kalcmanu_steering"),
+    LISTING_FILE("SYSTEM_TEST_STANDARD_LEAD_INS", 420, 422, "src/standard_lead"),
+    LISTING_FILE("IMU_CALIBRATION_AND_ALIGNMENT", 423, 455, "src/imu_calibration"),
+    LISTING_SECTION("COMEKISS"),
+    LISTING_FILE("GROUND_TRACKING_DETERMINATION_PROGRAM", 456, 459, "src/ground_track"),
+    LISTING_FILE("P34-35_P74-75", 460, 504, "src/p34_p35"),
+    LISTING_FILE("R31", 505, 510, "src/r31"),
+    LISTING_FILE("P76", 511, 513, "src/p76"),
+    LISTING_FILE("R30", 514, 524, "src/r30"),
+    LISTING_FILE("STABLE_ORBIT", 525, 532, "src/stable_orbit"),
+    LISTING_SECTION("TROUBLE"),
+    LISTING_FILE("P11", 533, 550, "src/p11"),
+    LISTING_FILE("TPI_SEARCH", 551, 561, "src/tpi_search"),
+    LISTING_FILE("P20-P25", 562, 634, "src/p20_p25_cm"),
+    LISTING_FILE("P30-P37", 635, 648, "src/p30_cm"),
+    LISTING_FILE("P32-P33_P72-P73", 649, 683, "src/p32_p33_cm"),
+    LISTING_FILE("P40-P47", 684, 736, "src/p40_p47_cm"),
+    LISTING_FILE("P51-P53", 737, 784, "src/p51_p53_cm"),
+    LISTING_FILE("LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES", 785, 788, "src/ephemerides"),
+    LISTING_FILE("P61-P67", 789, 818, "src/p61_p67"),
+    LISTING_FILE("SERVICER207", 819, 836, "src/servicer_cm"),
+    LISTING_FILE("ENTRY_LEXICON", 837, 843, "src/reentry"),
+    LISTING_FILE("REENTRY_CONTROL", 844, 882, "src/reentry"),
+    LISTING_FILE("CM_BODY_ATTITUDE", 883, 889, "src/body_attitude"),
+    LISTING_FILE("P37_P70", 890, 933, "src/p37_p70"),
+    LISTING_FILE("S-BAND_ANTENNA_FOR_CM", 934, 935, "src/sband_antenna"),
+    LISTING_FILE("LUNAR_LANDMARK_SELECTION_FOR_CM", 936, 936, "src/sband_antenna"),
+    LISTING_SECTION("TVCDAPS"),
+    LISTING_FILE("TVCINITIALIZE", 937, 944, "src/tvc"),
+    LISTING_FILE("TVCEXECUTIVE", 945, 950, "src/tvc"),
+    LISTING_FILE("TVCMASSPROP", 951, 955, "src/tvc"),
+    LISTING_FILE("TVCRESTARTS", 956, 960, "src/tvc"),
+    LISTING_FILE("TVCDAPS", 961, 978, "src/tvc"),
+    LISTING_FILE("TVCSTROKETEST", 979, 983, "src/tvc"),
+    LISTING_FILE("TVCROLLDAP", 984, 998, "src/tvc"),
+    LISTING_FILE("MYSUBS", 999, 1001, "src/cm_dap"),
+    LISTING_FILE("RCS-CSM_DIGITAL_AUTOPILOT", 1002, 1024, "src/cm_dap"),
+    LISTING_FILE("AUTOMATIC_MANEUVERS", 1025, 1036, "src/cm_dap"),
+    LISTING_FILE("RCS-CSM_DAP_EXECUTIVE_PROGRAMS", 1037, 1038, "src/cm_dap"),
+    LISTING_FILE("JET_SELECTION_LOGIC", 1039, 1062, "src/cm_dap"),
+    LISTING_FILE("CM_ENTRY_DIGITAL_AUTOPILOT", 1063, 1092, "src/entry_dap"),
+    LISTING_SECTION("CHIEFTAN"),
+    LISTING_FILE("DOWN-TELEMETRY_PROGRAM", 1093, 1102, "src/downtelemetry"),
+    LISTING_FILE("INTER-BANK_COMMUNICATION", 1103, 1106, "src/interbank"),
+    LISTING_FILE("INTERPRETER", 1107, 1199, "src/interpreter"),
+    LISTING_FILE("FIXED_FIXED_CONSTANT_POOL", 1200, 1204, "src/constant_pool"),
+    LISTING_FILE("INTERPRETIVE_CONSTANTS", 1205, 1206, "src/constant_pool"),
+    LISTING_FILE("SINGLE_PRECISION_SUBROUTINES", 1207, 1207, "src/single_precision"),
+    LISTING_FILE("EXECUTIVE", 1208, 1220, "src/executive"),
+    LISTING_FILE("WAITLIST", 1221, 1235, "src/waitlist"),
+    LISTING_FILE("LATITUDE_LONGITUDE_SUBROUTINES", 1236, 1242, "src/lat_long"),
+    LISTING_FILE("PLANETARY_INERTIAL_ORIENTATION", 1243, 1251, "src/planetary"),
+    LISTING_FILE("MEASUREMENT_INCORPORATION", 1252, 1261, "src/measurement_inc"),
+    LISTING_FILE("CONIC_SUBROUTINES", 1262, 1308, "src/conics"),
+    LISTING_FILE("INTEGRATION_INITIALIZATION", 1309, 1333, "src/integration_init"),
+    LISTING_FILE("ORBITAL_INTEGRATION", 1334, 1354, "src/orbital_integration"),
+    LISTING_FILE("INFLIGHT_ALIGNMENT_ROUTINES", 1355, 1364, "src/inflight_align"),
+    LISTING_FILE("POWERED_FLIGHT_SUBROUTINES", 1365, 1372, "src/powered_flight"),
+    LISTING_FILE("TIME_OF_FREE_FALL", 1373, 1388, "src/time_free_fall"),
+    LISTING_FILE("STAR_TABLES", 1389, 1393, "src/star_tables"),
+    LISTING_FILE("AGC_BLOCK_TWO_SELF-CHECK", 1394, 1403, "src/self_check"),
+    LISTING_FILE("PHASE_TABLE_MAINTENANCE", 1404, 1413, "src/phase_table"),
+    LISTING_FILE("RESTARTS_ROUTINE", 1414, 1419, "src/restart"),
+    LISTING_FILE("IMU_MODE_SWITCHING_ROUTINES", 1420, 1448, "src/imu_mode_switching"),
+    LISTING_FILE("KEYRUPT_UPRUPT", 1449, 1451, "src/keyrupt"),
+    LISTING_FILE("DISPLAY_INTERFACE_ROUTINES", 1452, 1484, "src/display_interface"),
+    LISTING_FILE("SERVICE_ROUTINES", 1485, 1492, "src/service"),
+    LISTING_FILE("ALARM_AND_ABORT", 1493, 1496, "src/alarm"),
+    LISTING_FILE("UPDATE_PROGRAM", 1497, 1507, "src/update_program"),
+    LISTING_FILE("RT8_OP_CODES", 1508, 1516, "src/rtb_op_codes"),
+    LISTING_NOTE("pp. 1517-1751: GAP-generated tables."),
+};
+
+#endif
+
+const unsigned MAIN_COUNT = COUNT(MAIN);
