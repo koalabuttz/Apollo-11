@@ -163,6 +163,7 @@ DSPIN DSPIN1 DFRNT DSLV DSMSK 11DSPIN RELDSPON SLEFT5 LEFT5 CHARALRM ERROR VBREL
 RELTAB R1D1 BIT7
 DSPSIGN DSPRND DSPDECWD DSPDCWD1 TRACE1 TRACE1S DECROUND DSPDECNR DSPDC2NR DSP2DEC END2DEC DSPDECVN
 GOVNUPDT DSPOCTWD WDAGAIN OCTBACK DSPLV DSP2BIT DSPOCTIN ENDSPOCT DPOSMAX PRIO22 LAT-LONG RP-TO-R R-TO-RP
+EBMARKDO EBMRKBUF EBDVCNTR EBP40TMP EBDVCNT EBQPLACE EBRN1
 MOONMXA EARTHMX EARTHL
 INCORP1 INCORP2 FAZA FAZA1 FAZB1 FAZAB5 DOCSM NEWZCOMP NEWZCMP1 MOVEACSM MOVEPCSM MOVEALEM MOVEPLEM
 STATEINT STATINT1 ENDINT NOINT 600SECS SIGNMPAC A-PCHK ANDOUT
@@ -1041,6 +1042,13 @@ def noun_names(program):
     return unique(NOUN_ECADR.findall(text))
 
 
+def tags_names(program):
+    """The erasable words TAGS_FOR_RELATIVE_SETLOC.agc's ECADRs name (the
+    CM's EBANK-switching words), as ECADRs (E_<name>) too."""
+    text = open(READABLE.parent / program / 'TAGS_FOR_RELATIVE_SETLOC.agc', errors='replace').read()
+    return unique(NOUN_ECADR.findall(text))
+
+
 ECADR = re.compile(r'\d+,([EC]):\s+(\S+)\s+(?:E([0-7]),)?([0-7]+)\s')
 
 
@@ -1169,6 +1177,12 @@ def generate(key, program):
             continue
         if n not in table:
             raise SystemExit('%s: noun table name %s not in the symbol table' % (program, n))
+        out.append('#define E_%s 0%04ou' % (e_spelling(n), table[n]))
+    for n in tags_names(program):
+        if n in downlist or n in noun_names(program):
+            continue
+        if n not in table:
+            raise SystemExit('%s: TAGS name %s not in the symbol table' % (program, n))
         out.append('#define E_%s 0%04ou' % (e_spelling(n), table[n]))
     for n in fcadr_names(program):
         if where(n) is None:

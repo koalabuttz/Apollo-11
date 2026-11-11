@@ -315,6 +315,10 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Channel bits | `INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS.agc` (LM pp. 54-60) | [`src/assembly/`](src/assembly/) | No code: what each input and output channel is and what each of its bits means, as a table, word for word |
 | Title page | `CONTRACT_AND_APPROVALS.agc` (CM p. 1) | [`src/assembly/`](src/assembly/) | No code: the program's other name (COLOSSUS 2A), its contract, and who submitted and approved it |
 | The list of files | `MAIN.agc` (both missions) | [`src/assembly/`](src/assembly/) | The listing's files in the order of their pages, each with the directory here that holds its readable C: the way from a page of the listing to its code |
+| The listing's guide | `ASSEMBLY_AND_OPERATION_INFORMATION.agc` (LM pp. 1-27, CM pp. 2-26) | [`src/assembly/`](src/assembly/) | No code: the listing's own guide to the program, list by list in the listing's lines and columns: the log sections it is assembled from, the verbs, the nouns with their registers and scales, the alarm codes, the checklist codes and the option codes |
+| Bank tags | `TAGS_FOR_RELATIVE_SETLOC.agc` (LM pp. 28-37, CM pp. 27-35) | [`src/assembly/`](src/assembly/) | Which bank of fixed memory each part of the program goes in: the tags a routine names with SETLOC, bank by bank, then the names that stand for other names, and the CM's ECADRs for switching erasable banks |
+| Flags | `FLAGWORD_ASSIGNMENTS.agc` (LM pp. 61-88) | [`src/assembly/`](src/assembly/) | Every flag of the fourteen flagwords: its name and number, its bit and the bit's name, and what it means set and reset, in the listing's words; with the listing's alphabetical list of them |
+| Constants | `CONTROLLED_CONSTANTS.agc` (LM pp. 38-53) | [`src/assembly/`](src/assembly/) | The constants of the spacecraft and of nature (engines, radars, masses, gravity, the star table, the ephemerides): each with the listing's operand, the number it says, its address and its words |
 
 Beside them:
 
@@ -1261,7 +1265,19 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    (`src/assembly/`): tests/assembly_dump.c prints each file's tables back
    as text, and tests/assembly_cases.py compares that with the listing
    file, every word in order (MAIN.agc line by line, with each file's
-   directory checked against COVERAGE).
+   directory checked against COVERAGE; and the lists of
+   ASSEMBLY_AND_OPERATION_INFORMATION line by line too, each run of text
+   in the cell of the column it stands in). Where a table says where the
+   program lives, that is checked against the assembled program too:
+   every tag of TAGS_FOR_RELATIVE_SETLOC must be the first word of its
+   bank in the assembler's symbol table, and the CM's ECADRs the rope's
+   words; every flag of FLAGWORD_ASSIGNMENTS must have its number and
+   its bit there, each flagword its place after STATE, the SET and RESET
+   text must sit in the listing's columns, and the alphabetical list
+   must agree with the assignments except where the listing itself does
+   not; and every word of CONTROLLED_CONSTANTS must be the rope's at its
+   address, the words in the assembler's order, and each decimal
+   constant's words the ones its number makes.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

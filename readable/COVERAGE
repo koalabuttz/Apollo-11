@@ -175,3 +175,9 @@ Luminary099/INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS.agc src/assembly no-code
 Luminary099/MAIN.agc                            src/assembly
 Comanche055/CONTRACT_AND_APPROVALS.agc          src/assembly no-code
 Comanche055/MAIN.agc                            src/assembly
+Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc        src/assembly
+Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc        src/assembly
+Luminary099/FLAGWORD_ASSIGNMENTS.agc            src/assembly
+Luminary099/CONTROLLED_CONSTANTS.agc            src/assembly
+Luminary099/ASSEMBLY_AND_OPERATION_INFORMATION.agc src/assembly no-code
+Comanche055/ASSEMBLY_AND_OPERATION_INFORMATION.agc src/assembly no-code

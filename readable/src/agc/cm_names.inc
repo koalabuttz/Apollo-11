@@ -1063,6 +1063,13 @@
 #define K_LAT_LONG 02370u
 #define K_RP_TO_R 03344u
 #define K_R_TO_RP 03371u
+#define K_EBMARKDO 02000u
+#define K_EBMRKBUF 02001u
+#define K_EBDVCNTR 02000u
+#define K_EBP40TMP 02001u
+#define K_EBDVCNT 02000u
+#define K_EBQPLACE 02001u
+#define K_EBRN1 02000u
 #define K_EARTHMX 03573u
 #define K_EARTHL 03625u
 #define K_INCORP1 03254u
@@ -4369,6 +4376,10 @@
 #define E_WWPOS 02320u
 #define E_WWVEL 02322u
 #define E_WWOPT 02324u
+#define E_DVCNTR 03431u
+#define E_P40TMP 03672u
+#define E_QPLACES 02426u
+#define E_RN1 01231u
 #define F_P79 011172u
 #define F_P78 010744u
 #define F_P77 073153u

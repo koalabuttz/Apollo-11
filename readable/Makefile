@@ -4423,9 +4423,9 @@ sps-backup-cases: $(BUILD)/spb-oracle $(BUILD)/spb-cases
 # tests/assembly_cases.py compares that with the listing file, every word
 # in order.
 $(BUILD)/assembly-dump-lm: $(ASM_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) tests/assembly_dump.c
-	$(CC) $(READABLE_CFLAGS) $(LM) $(filter %.o,$^) tests/assembly_dump.c -o $@
+	$(CC) $(READABLE_CFLAGS) $(LM) $(filter %.o,$^) tests/assembly_dump.c -o $@ -lm
 $(BUILD)/assembly-dump-cm: $(ASM_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) tests/assembly_dump.c
-	$(CC) $(READABLE_CFLAGS) $(CM) $(filter %.o,$^) tests/assembly_dump.c -o $@
+	$(CC) $(READABLE_CFLAGS) $(CM) $(filter %.o,$^) tests/assembly_dump.c -o $@ -lm
 
 assembly-cases: $(BUILD)/assembly-dump-lm $(BUILD)/assembly-dump-cm
 	python3 tests/assembly_cases.py
