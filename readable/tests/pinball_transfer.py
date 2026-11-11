@@ -52,6 +52,10 @@ SUITE_LIST = 'tests/lanec_suites.c'
 # pin-stirred's chains taken must not fall below this (a readable routine
 # refusing what it should take).
 STIRRED_FLOOR = 8000
+# pin-noun-z's likewise: 162 of its 168 chains (the other 6 are two of
+# pin-transfer's cases, CM 1799 and 1806, which the faithful port refuses
+# too, with NOUNADD changed or not).
+NOUN_Z_FLOOR = 162
 SUITES = (('pin-transfer', '--refusals', 25), ('pin-transfer-c64', '--refusals', None),
           ('pin-decdsp3', '--refusals', 0), ('pin-refuse', '--refusals-only', None))
 
@@ -97,13 +101,15 @@ def build(objects):
                             '-Dlanec_pin_run_cm=faithful_lanec_pin_run_cm'],
                SUITE_LIST: ['-Dlanec_find_suite=port_lanec_find_suite']}
     stirred = str(READABLE / 'tests/pinball_stirred_cases.c')
+    noun_z = str(READABLE / 'tests/pinball_noun_z_cases.c')
     steps = str(READABLE / 'tests/pinball_steps.c')
     units = [(s, renamed.get(s, [])) for s in sources] + [(stirred, ['-Wconversion', '-pedantic']),
+                                                         (noun_z, ['-Wconversion', '-pedantic']),
                                                          (steps, ['-Wconversion', '-pedantic']),
                                                          ('tools/lanec/native.c', []),
                                                          ('tools/lanec/oracle.c', [f'-I{yaagc}'])]
     compiled = dict(zip([u[0] for u in units], compile_all(flags, units)))
-    common = [compiled[s] for s in sources if s != TRAMPOLINE] + [compiled[stirred]]
+    common = [compiled[s] for s in sources if s != TRAMPOLINE] + [compiled[stirred], compiled[noun_z]]
     NATIVE.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run([CC, '-O2', *flags, *common, compiled[TRAMPOLINE], compiled['tools/lanec/native.c'],
                     *objects, '-o', str(NATIVE)], cwd=PORT, check=True)
@@ -157,6 +163,14 @@ def main():
     print(f"{'PASS' if taken >= STIRRED_FLOOR else 'FAIL'}: pin-stirred: {taken} chains taken with the readable "
           f'Pinball (at least {STIRRED_FLOOR})')
     bad |= taken < STIRRED_FLOOR
+    # pin-noun-z (tests/pinball_noun_z_cases.c), the same way: the display
+    # verbs' reads of the Z register against the original program.
+    subprocess.run([sys.executable, 'tools/lanec/diff.py', 'pin-noun-z', '--refusals', '--native', str(NATIVE),
+                    '--oracle', str(ORACLE)], cwd=PORT, check=True)
+    taken = sum(rows('pin-noun-z', '-readable'))
+    print(f"{'PASS' if taken >= NOUN_Z_FLOOR else 'FAIL'}: pin-noun-z: {taken} chains taken with the readable "
+          f'Pinball (at least {NOUN_Z_FLOOR})')
+    bad |= taken < NOUN_Z_FLOOR
     # Step for step as the faithful port (tests/pinball_steps.c), and the
     # binding's table of where the faithful steps end current.
     bad |= subprocess.run([str(STEPS)], cwd=PORT).returncode != 0

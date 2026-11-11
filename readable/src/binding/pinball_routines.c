@@ -36,7 +36,6 @@
  * to the verb's routine, as the faithful step does. */
 #include <setjmp.h>
 #include <stddef.h>
-#include <string.h>
 #include "lanec_pin_routines.h"
 #include "rope_image.h"
 #include "lm_downtelemetry.h"
@@ -535,9 +534,10 @@ static uint16_t dsalmout, outputs[OUTPUTS], inputs[4], superbank, interrupts;
 
 /* A channel read. The lights test reads channel 12 (RAND CHAN12),
  * LRPOSOUT channel 33, and a channel noun (CHANDSP) any channel: L and Q
- * are channels 1 and 2 and the superbank channel 7; a channel the record
- * does not carry reads zero, as it does in the faithful port
- * (c64-port/src/lanec_pin_trampoline.c). */
+ * are channels 1 and 2 and the superbank channel 7. A channel the record
+ * does not carry (3 and 4, the AGC's scalers, among them) reads zero:
+ * that matches the faithful port (c64-port/src/lanec_pin_trampoline.c),
+ * not the AGC, where those channels have their own words. */
 static word channel_in(unsigned number)
 {
     if (number == 1u || number == 2u) return overflow_corrected(agc.memory[number]);
@@ -598,7 +598,10 @@ static bool take_record(const agc_native_program *p, device_record *x)
     outputs[0] = x->channel12;
     outputs[1] = x->channel13;
     outputs[2] = x->channel14;
-    memcpy(inputs, &x->channel30, sizeof inputs);
+    inputs[0] = x->channel30;
+    inputs[1] = x->channel31;
+    inputs[2] = x->channel32;
+    inputs[3] = x->channel33;
     return true;
 }
 
@@ -623,7 +626,10 @@ static bool take_record(const agc_native_program *p, device_record *x)
     outputs[2] = x->io.channel14;
     outputs[3] = x->io.main_keys;
     outputs[4] = x->io.navigation_keys;
-    memcpy(inputs, &x->channel30, sizeof inputs);
+    inputs[0] = x->channel30;
+    inputs[1] = x->channel31;
+    inputs[2] = x->channel32;
+    inputs[3] = x->channel33;
     return true;
 }
 

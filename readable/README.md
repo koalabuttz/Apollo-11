@@ -1307,13 +1307,22 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    from the state it started in: no faithful routine runs under the
    readable Pinball, and the flight program does not link the faithful
    trampoline. The faithful modules' suites make such states, which no
-   key and no routine of the program leaves (a word that has overflowed
-   where it is stored, a -0 or a negative word at a CCS the program
-   enters with +0 or a small positive one): the step test counts the
-   steps the readable routines refuse there and the faithful ones take,
-   1,684 in all, and holds each suite to its count, as the chain test
-   holds pin-transfer to its 25 chains (tests/pinball_steps.c names the
-   states).
+   code found in the listing leaves (a word that has overflowed where it
+   is stored, a -0 or a negative word at a CCS the program enters with
+   +0 or a small positive one; the comment at each refusing branch says
+   why). Each of those eight branches names its state as it refuses, and
+   the step test counts the steps the readable routines refuse and the
+   faithful ones take by that name and by suite, 1,684 in all, holds
+   each count to the number recorded in the test, and fails on a refused
+   step that names no state; the chain test holds pin-transfer to its 25
+   chains the same way. After a refused step a chain goes on from the
+   faithful step's result, so the count takes in later refused steps of
+   the same chain. The counts are what the test measured, not a proof:
+   a state among them that the program did make would be refused in
+   flight, where no faithful routine stands behind the readable one.
+   pin-noun-z points each display verb's read of a noun at the Z
+   register (tests/pinball_noun_z_cases.c), against Virtual AGC and
+   step for step.
    The step check is relative to the faithful port, not independent of
    it: Pinball's stop table comes from the faithful trampoline's steps
    (the tests link it beside the readable one). What a chain computes
@@ -1331,14 +1340,36 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
 2. **x86 exact scenarios.** The x86_64 flight program is built from the
    readable routines alone (`tests/x86_readable.py`): under them are the
    faithful port's step and main (`c64-port/platform/x86`) and its model
-   of the computer, seven objects that translate no listing code (where
-   a fixed word is and the search of a routine table, one's complement
-   words, the DSKY as a device, the channels of a device record, the
-   output drives, the timers and the entry to an interrupt, the rope).
-   The readable bindings define every routine table the port's index
-   names, and the build's link check fails if the link map names any
-   other object of the port, which is to say any faithful routine. The
-   program flies the flight scenarios (P63 descent, rendezvous, entry,
+   of the computer, seven objects that translate no routine of the
+   listing (where a fixed word is and the search of a routine table,
+   one's complement words, the DSKY as a device, the channels of a
+   device record, the output drives, the timers and the entry to an
+   interrupt, the rope). The readable bindings define every routine
+   table the port's index names. The build's link check reads the
+   linker's own list of the files it loaded and fails on any that is not
+   a readable object the Makefile names, the step or main, one of the
+   seven, or the C library's; it also fails if one of the seven comes to
+   define a function the check does not list. `make x86-link-check`
+   tries the check on eleven made-up link maps it must fail (a faithful
+   object by a relative path, in an archive, copied in among the
+   readable objects, ...), and `make x86-flight` on a real link with a
+   faithful object added.
+   What the program still takes from the faithful port, as data: the
+   port's index (which table holds which routine, in what order, and
+   each routine's cost on the AGC clock), where a Pinball step ends, and
+   the addresses in each table's operand set, the words after the TCs
+   its routines serve, which the port's generator lifts from the
+   faithful sources. The step picks a routine by those addresses (the
+   CM's POSTJUMP is in two tables at two costs; without the sets 23 CM
+   scenarios end with other clocks). The words at those addresses are
+   not taken from the port: the build strips them, and the readable
+   routines read each from the rope image. Three bindings also read
+   tables of rope words the port's generators wrote out from the
+   assembled rope (the downlists, the CM's restart tables, the words
+   after the phase table routines' callers: five files of
+   `c64-port/src`); the link check holds the readable sources to those
+   five and to no C source of the port.
+   The program flies the flight scenarios (P63 descent, rendezvous, entry,
    restarts, ...) against the
    harness, which runs the faithful port. Each must end with the same
    erasable memory as the harness, word for word: words 061-03777 (every

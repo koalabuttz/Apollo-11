@@ -115,7 +115,11 @@ static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_m
 
 static const lanec_suite pin_stirred = {"pin-stirred", CASES, make, run};
 
+/* The readable tests' other suite (tests/pinball_noun_z_cases.c). */
+extern const lanec_suite pin_noun_z;
+
 const lanec_suite *lanec_find_suite(const char *name)
 {
+    if (!strcmp(name, pin_noun_z.name)) return &pin_noun_z;
     return strcmp(name, pin_stirred.name) ? port_lanec_find_suite(name) : &pin_stirred;
 }

@@ -75,7 +75,8 @@ static void monit2(void)
     cs(ADDRESS_OF(CYL));
     xch(ADDRESS_OF(CYL));
     ad_at(ADDRESS_OF(NOUNREG));
-    if (ts(ADDRESS_OF(MPAC))) not_modelled(); /* "TEMP STORAGE" */
+    if (ts(ADDRESS_OF(MPAC))) /* "TEMP STORAGE" */
+        not_modelled_state("TS MPAC with overflow (MONIT2)");
     set_A(ZERO);
     ts(ADDRESS_OF(DSPLOCK)); /* "+0 INTO DSPLOCK SO MONITOR CAN RUN." */
     switch (ccs_at(ADDRESS_OF(CADRSTOR))) {

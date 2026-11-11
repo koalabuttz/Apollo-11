@@ -22,13 +22,14 @@
 static const agc_native_program *program_now;
 
 /* The fixed words the routines read are the alarm codes after the callers'
- * TCs (and a routine's own, OCT1103 or OCT217): the program's compiled
- * operands. takes() has found each before the routine runs. */
+ * TCs (and a routine's own, OCT1103 or OCT217): words of the program's
+ * fixed memory (fixed_word_at, binding.h). takes() has found each before
+ * the routine runs. */
 static word fixed_memory(unsigned physical)
 {
     agc_word value = 0;
 
-    agc_site_lookup(program_now->operands, program_now->operand_count, (uint16_t)physical, &value);
+    fixed_word_at(program_now, physical, &value);
     return (word)(value & MINUS_ZERO);
 }
 
@@ -45,8 +46,8 @@ static bool no_overflow(reg16 value)
     return overflow_of(value) == 0;
 }
 
-/* INDEX Q; CA 0 can read the code at address: the caller's compiled
- * operand in fixed memory or, in the LM, an erasable word above the
+/* INDEX Q; CA 0 can read the code at address: the word after the caller's
+ * TC in fixed memory or, in the LM, an erasable word above the
  * registers. */
 static bool code_readable_at(word address)
 {
@@ -58,9 +59,7 @@ static bool code_readable_at(word address)
 #else
     if (address < 02000u) return false;
 #endif
-    return agc_site_lookup(program_now->operands, program_now->operand_count,
-                           (uint16_t)fixed_physical(address), &value) &&
-           value <= MINUS_ZERO;
+    return fixed_word_at(program_now, fixed_physical(address), &value) && value <= MINUS_ZERO;
 }
 
 /* MULTFAIL's AD BIT15 cannot overflow: the alarm does not reach MULTFAIL
@@ -113,7 +112,7 @@ static bool can_resume(void)
 }
 
 /* A routine's own code (OCT1103 after CCSHOLE's TC, OCT217 after
- * CURTAINS's) is a compiled operand too. */
+ * CURTAINS's) is a word of fixed memory too. */
 static bool own_code_at(word address)
 {
     return code_readable_at(address);

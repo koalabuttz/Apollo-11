@@ -45,6 +45,9 @@ struct agc_machine {
     void (*channel_out)(unsigned channel, word value);
     /* Where not_modelled() goes: back to the binding. */
     void (*leave)(void);
+    /* The state the last refused step started from, when the routine named
+     * it (not_modelled_state()), or NULL. */
+    const char *refused_state;
 };
 extern struct agc_machine agc;
 
@@ -452,9 +455,16 @@ void rxor_channel(unsigned channel);
 /* A step the flight program never takes, which the readable routine does
  * not model: an INDEX that would turn an instruction into one the listing
  * does not intend, a channel the routine does not use. The routine stops
- * there: the binding puts the state back as it was, and the faithful port
- * runs the step. Does not return. */
+ * there: the binding puts the state back as it was and refuses the step.
+ * Does not return. */
 void not_modelled(void);
+/* The same, from a state a test's cases reach, though no code of the
+ * listing leaves it: a word that has overflowed where a TS stores it, a -0
+ * where the program keeps +0. `state` names it, in agc.refused_state, and
+ * the test counts its refused steps by that name: a refusal with no name,
+ * or one more or one fewer under a name, fails it (tests/pinball_steps.c).
+ * Does not return. */
+void not_modelled_state(const char *state);
 
 /* ---- Leaving a routine ---- */
 

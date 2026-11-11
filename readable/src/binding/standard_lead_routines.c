@@ -50,7 +50,7 @@ static const agc_native_program *program_now;
 
 /* The one word of fixed memory a lead-in reads (the CADR its caller placed
  * after the call, when the caller is in fixed memory), found before the
- * routine runs: the caller's compiled operand. */
+ * routine runs. */
 static struct {
     unsigned physical;
     word value;
@@ -62,7 +62,7 @@ static word fixed_memory(unsigned physical)
 }
 
 /* The CADR at address q can be read: an erasable word above the central
- * registers, or a compiled operand of the program's (a fixed caller's).
+ * registers, or a word of the program's fixed memory (a fixed caller's).
  * (An erasable caller's q is at least 100, but through EBANK 0's window
  * it can name a central register: the faithful port reads those as
  * plain words, where the AGC's CA rewrites an editing register. Such a
@@ -73,10 +73,7 @@ static bool cadr_readable(word q)
 
     if (q < 02000u) return erasable_index(q) >= 0100u;
     cadr_word.physical = fixed_physical(q);
-    if (!agc_site_lookup(program_now->operands, program_now->operand_count,
-                         (uint16_t)cadr_word.physical, &value) ||
-        value > MINUS_ZERO)
-        return false;
+    if (!fixed_word_at(program_now, cadr_word.physical, &value) || value > MINUS_ZERO) return false;
     cadr_word.value = value;
     return true;
 }

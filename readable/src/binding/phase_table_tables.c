@@ -5,7 +5,7 @@
  * readable build links these in their place.
  *
  * Plumbing only: point the machine at the program's state, give it the
- * words after each TC (the program's compiled operands), and take the
+ * words after each TC (words of the program's fixed memory), and take the
  * states the faithful routines take. */
 #include <string.h>
 #include "binding.h"
@@ -28,16 +28,14 @@
 static const agc_native_program *program_now;
 static bool missing_operand;
 
-/* The words after a TC in fixed memory are the program's compiled
- * operands; a routine that reads any other fixed word is not taken. */
+/* The words after a TC in fixed memory are words of the program's fixed
+ * memory (fixed_word_at, binding.h); a routine that reads one the program
+ * has not is not taken. */
 static word fixed_memory(unsigned physical)
 {
     agc_word value = 0;
 
-    if (!agc_site_lookup(program_now->operands, program_now->operand_count, (uint16_t)physical,
-                         &value) ||
-        value > MINUS_ZERO)
-        missing_operand = true;
+    if (!fixed_word_at(program_now, physical, &value) || value > MINUS_ZERO) missing_operand = true;
     return (word)(value & MINUS_ZERO);
 }
 
