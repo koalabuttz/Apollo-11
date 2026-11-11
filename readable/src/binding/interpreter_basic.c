@@ -12,6 +12,7 @@
  * DANZIG or NEWOPS, a return to its caller, an alarm). Where that is
  * another of these entries, as the faithful routines do, it goes on
  * there. */
+#include <stddef.h>
 #include "binding.h"
 #include "rope_image.h"
 #include "../interpreter/interpreter.h"
@@ -193,3 +194,16 @@ static enum exec_status run(const agc_native_program *program, apollo_overlay_st
 #define BASIC_ENTRY(z, routine) {KEY(z), run},
 static const agc_routine_entry basic[] = {ROUTINES(BASIC_ENTRY)};
 const agc_routine_table BASIC = {basic, COUNT(basic)};
+
+/* The faithful port's holder of last resort for SWRETURN, INTPRET and
+ * DANZIG, its verification interpreter (c64-port/src/lm_interp_runtime.c,
+ * cm_interp_runtime.c), whose table the flight program's index names too:
+ * empty. The readable interpreter and INTER-BANK_COMMUNICATION run those
+ * words (this table, interpreter_core.c and interbank_tables.c), and no
+ * step of the flight scenarios was left to the faithful one. */
+static const agc_routine_entry none[] = {{0xFFFFu, NULL}};
+#if LUMINARY099
+const agc_routine_table lm_interp_runtime_basic = {none, 0u};
+#else
+const agc_routine_table cm_interp_runtime_basic = {none, 0u};
+#endif

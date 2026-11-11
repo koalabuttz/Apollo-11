@@ -56,6 +56,7 @@ void getcomp(void)
  * went back. */
 static bool comptst1_returns(void)
 {
+    tc_at(COMPTST1);
     getcomp();
     tc_at(COMPTST1 + 1u);
     left5();
@@ -208,6 +209,7 @@ void dspabc(void)
     set_A(negate(TWO));
     tc_at(DSPABC + 1u);
     if (!comptest_returns()) return;
+    reads_at(DSPABC + 3u);
     cs(indexed_by(2u, fetch(ADDRESS_OF(NOUNADD)))); /* INDEX NOUNADD; CS 2 */
     xch(ADDRESS_OF(BUF) + 2u);
     dspab();
@@ -218,6 +220,7 @@ void dspab(void)
     set_A(negate(ONE));
     tc_at(DSPAB + 1u);
     if (!comptest_returns()) return;
+    reads_at(DSPAB + 3u);
     cs(indexed_by(1u, fetch(ADDRESS_OF(NOUNADD)))); /* INDEX NOUNADD; CS 1 */
     xch(ADDRESS_OF(BUF) + 1u);
     dspa();
@@ -229,6 +232,7 @@ void dspa(void)
     if (!dectest_returns()) return;
     tc_at(DSPA + 1u);
     if (!tstfordp_returns()) return;
+    reads_at(DSPA + 3u);
     cs(indexed_by(0u, fetch(ADDRESS_OF(NOUNADD)))); /* INDEX NOUNADD; CS 0 */
     dspcom1();
 }
@@ -251,7 +255,8 @@ void dspb(void)
     set_A(negate(ONE));
     tc_at(DSPB + 1u);
     if (!dcomptst_returns()) return;
-    cs(indexed_by(1u, fetch(ADDRESS_OF(NOUNADD))));
+    reads_at(DSPB + 3u);
+    cs(indexed_by(1u, fetch(ADDRESS_OF(NOUNADD)))); /* INDEX NOUNADD; CS 1 */
     tc_at(DSPB + 4u);
     dspcom1();
 }
@@ -261,7 +266,8 @@ void dspc(void)
     set_A(negate(TWO));
     tc_at(DSPC + 1u);
     if (!dcomptst_returns()) return;
-    cs(indexed_by(2u, fetch(ADDRESS_OF(NOUNADD))));
+    reads_at(DSPC + 3u);
+    cs(indexed_by(2u, fetch(ADDRESS_OF(NOUNADD)))); /* INDEX NOUNADD; CS 2 */
     tc_at(DSPC + 4u);
     dspcom1();
 }
@@ -318,6 +324,7 @@ void chandsp(void)
  * SINCE DMP USES IT."), the last first. */
 void decdsp(void)
 {
+    tc_at(DECDSP);
     getcomp();
     tc_at(DECDSP + 1u);
     left5();
@@ -329,6 +336,7 @@ void decdsp(void)
 
         ts(ADDRESS_OF(DECTEM)); /* "DECTEM 1COMP +0, 2COMP +1, 3COMP +2" */
         ad_at(ADDRESS_OF(NOUNADD));
+        reads_at(DSPDCGET + 3u);
         cs(indexed_by(0u, a_word())); /* INDEX A; CS 0 */
         k = fetch(ADDRESS_OF(DECTEM));
         xch(indexed_erasable(ADDRESS_OF(XREG), k));
@@ -429,7 +437,8 @@ void dspdpdec(void)
         tc(DSPDPDEC + 3u, DSPALARM);
         return;
     }
-    tc_at(DSPDPDEC + 2u);                            /* TC +2: "NORMAL NOUN" */
+    tc_at(DSPDPDEC + 2u); /* TC +2: "NORMAL NOUN" */
+    reads_at(DSPDPDEC + 6u);
     dca(indexed_by(0u, fetch(ADDRESS_OF(NOUNADD)))); /* EXTEND; INDEX NOUNADD; DCA 0 */
     dxch(ADDRESS_OF(MPAC));
     set_A(R1D1);

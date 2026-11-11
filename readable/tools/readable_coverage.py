@@ -34,15 +34,13 @@ READABLE = Path(__file__).resolve().parents[1]
 ROOT = READABLE.parent
 TREES = ('Luminary099', 'Comanche055')
 MISSIONS = {'lm': 'Luminary099', 'cm': 'Comanche055'}
-# A binding that runs the faithful port's routine at a key no part has
-# written yet names a faithful table, renamed for the readable build
-# (tests/x86_readable.py): faithful_<table>. Any faithful_ name in the
-# code (not in a comment), whatever it is called and however it is used,
-# counts. (Pinball's faithful trampoline, faithful_lanec_pin_run_<m>, is
-# not a table and not counted: it runs only a step the readable code does
-# not model, src/binding/pinball_routines.c.)
+# A binding that ran the faithful port's routine at a key no part had
+# written yet named a faithful table, renamed for the readable build:
+# faithful_<table>. No binding does now, and the flight program links no
+# faithful routine (tests/x86_readable.py, stands_alone); any faithful_
+# name in a binding's code (not in a comment), whatever it is called and
+# however it is used, still counts.
 FALLBACK = re.compile(r'\bfaithful_\w+')
-TRAMPOLINE = 'faithful_lanec_pin_run_'
 COMMENT = re.compile(r'/\*.*?\*/|//[^\n]*', re.S)
 # Such a binding names the listing file it writes part by part, in a
 # comment: "Partial file: Comanche055/AUTOMATIC_MANEUVERS.agc". That file
@@ -59,8 +57,7 @@ def fallbacks(done):
     found = []
     for binding in sorted((READABLE / 'src/binding').glob('*.c')):
         text = binding.read_text()
-        names = sorted({n for n in FALLBACK.findall(COMMENT.sub(' ', text))
-                        if not n.startswith(TRAMPOLINE)})
+        names = sorted(set(FALLBACK.findall(COMMENT.sub(' ', text))))
         if not names:
             continue
         partial = PARTIAL.findall(text)

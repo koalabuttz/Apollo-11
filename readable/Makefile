@@ -277,7 +277,7 @@ SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/
 	src/binding/standard_lead_routines.c)
 PIN_SOURCES := src/agc/agc.c $(sort $(wildcard src/interpreter/*.c)) src/interbank/interbank.c \
 	src/binding/machine.c $(sort $(wildcard src/pinball/*.c)) src/pinball_noun_tables/readers.c src/pinball_noun_tables/tables.c \
-	src/binding/pinball_routines.c src/executive/executive.c
+	src/binding/pinball_routines.c src/executive/executive.c src/extended_verbs/front.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
@@ -313,6 +313,7 @@ check: all x86-scenarios-quick
 names-check:
 	python3 tools/listing_names.py --check
 	python3 tools/p20_p25_keys.py --check
+	python3 tools/lanec_keys.py --check
 	python3 tools/restart_tables.py --check
 
 coverage:
@@ -1293,17 +1294,19 @@ geometry-cases: $(BUILD)/geometry-oracle-lm $(BUILD)/geometry-oracle-cm $(BUILD)
 	./$(BUILD)/geometry-cases-cm $(ROPES)
 
 # ---- PINBALL_GAME_BUTTONS_AND_LIGHTS ----
-# The readable parts take the place of the port's Pinball trampoline
+# The readable file takes the place of the port's Pinball trampoline
 # (c64-port/src/lanec_pin_trampoline.c) under its names, lanec_pin_run_lm
-# and lanec_pin_run_cm, and hand it (renamed faithful_lanec_pin_run_<m>)
-# only a step the readable code does not model (src/binding/
+# and lanec_pin_run_cm, which the port's Pinball tables call; a step the
+# readable code does not model is refused (src/binding/
 # pinball_routines.c). Each mission's readable objects are built into one
-# object that keeps only its trampoline name. The gate is
+# object that keeps only its trampoline name (the binding's own tables,
+# the flight program's, stay inside it: the tests run the port's). The gate is
 # the port's own Pinball tests, run live against the original program in
 # Virtual AGC with the readable parts in place (tests/pinball_transfer.py).
-# Pinball's NOVAC (DSPMM) and JOBWAKE (RECAL1) run the readable Executive,
-# which switches no job and ends none there: its seams do nothing
-# (tests/pinball_seams.c).
+# Pinball's NOVAC (DSPMM) and JOBWAKE (RECAL1, RELDSP) run the readable
+# Executive, which switches no job and ends none there: its seams do
+# nothing (tests/pinball_seams.c, which also gives the binding the test
+# runner's rope).
 $(BUILD)/pin-readable-lm.o: $(PIN_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/pin-seams-lm.o
 $(BUILD)/pin-readable-cm.o: $(PIN_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/pin-seams-cm.o
 $(BUILD)/pin-seams-lm.o: tests/pinball_seams.c $(HEADERS)

@@ -637,4 +637,52 @@ static const agc_routine_entry basic_keys[] = {
 const agc_routine_table lm_p51_p53_interpretive = {pair_keys, COUNT(pair_keys)};
 const agc_routine_table lm_p51_p53_basic = {basic_keys, COUNT(basic_keys)};
 
+/* ---- The RTB routines by themselves ----
+ * A pass of another table that ends at an RTB to RDCDUS (the
+ * interpreter's own pass over code no table of order pairs holds) finds
+ * the routine here, one step to DANZIG: the faithful port's
+ * lm_p51_p53_rtb_routines (c64-port/src/lm_p51_p53_rtb_routines.c).
+ * The states it takes (p51_p53_rtb): Z at the routine, FB its bank, ZERO
+ * +0, EBANK a bank number alone, the interrupt latch in range and every
+ * word from Q on an ordinary one;
+ * FIXLOC in the VAC areas. */
+static enum exec_status rtb_alone(void (*routine)(void), word at, word bank, bool with_work_area,
+                                  const agc_native_program *program, apollo_overlay_state *state,
+                                  p66_bias_io *io)
+{
+    apollo_overlay_state before;
+    p66_bias_io kept;
+    unsigned i;
+
+    if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
+    bind(program, state, io);
+    if (Z != at || FBANK != bank || *agc.interrupts > 1u || agc.memory[ZERO_ADDRESS] != 0u ||
+        EBANK > 03400u || (EBANK & 0377u))
+        return EXEC_OUT_OF_SCOPE;
+    for (i = Q_ADDRESS; i < 2048u; ++i)
+        if (agc.memory[i] > 077777u) return EXEC_OUT_OF_SCOPE;
+    if (with_work_area && (FIXLOC < 0401u || FIXLOC > 0661u)) return EXEC_OUT_OF_SCOPE;
+
+    before = *state;
+    kept = *io;
+    if (setjmp(back)) {
+        *state = before;
+        *io = kept;
+        return EXEC_OUT_OF_SCOPE;
+    }
+    routine();
+    return EXEC_OK;
+}
+
+static enum exec_status rdcdus_alone(const agc_native_program *program, apollo_overlay_state *state,
+                                     void *device)
+{
+    return rtb_alone(rdcdus, RDCDUS, I_RDCDUS & 076000u, true, program, state, device);
+}
+
+static const agc_routine_entry rtb_keys[] = {
+    {KEY(I_RDCDUS >> 10, RDCDUS), rdcdus_alone},
+};
+const agc_routine_table lm_p51_p53_rtb_routines = {rtb_keys, COUNT(rtb_keys)};
+
 #endif

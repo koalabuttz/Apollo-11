@@ -12,8 +12,9 @@ This is the third of three views of the same program:
 | 2 | `c64-port/` | the faithful C port: one C call per AGC instruction, runs on a Commodore 64 and on x86_64 |
 | 3 | `readable/` (here) | the same routines written to be read, x86_64 only |
 
-The readable code is not a summary or a model of the original. It runs
-in the real x86_64 flight program in place of the faithful code, and the
+The readable code is not a summary or a model of the original. It is
+the real x86_64 flight program's every routine, with none of the faithful
+port's linked beside it (see *Gates*, the link check), and the
 gates check it against the faithful port, word for word: the faithful
 port is the reference, and it is checked against the original program
 run in yaAGC on the host. So the readable code is as exact as the
@@ -335,8 +336,8 @@ Beside them:
 - [`tests/`](tests/): the side-by-side tests of the machine's
   instructions, the inter-bank routines, the phase table maintenance, the
   restarts, the interpreter, the alarms, the single precision sine and
-  cosine, the service routines and the down-telemetry, and the build of the x86_64 flight program with the readable
-  routines in it.
+  cosine, the service routines and the down-telemetry, and the build of the x86_64 flight program from the readable
+  routines, with its link check.
 
 Both missions come from the same source, built with `LUMINARY099=1` or
 `COMANCHE055=1`; where the listings differ the code shows both in place.
@@ -1302,14 +1303,22 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    word, since the flight program charges its clock by step
    (tests/pinball_steps.c). Where a readable step stops comes from those
    chains: src/binding/pinball_stops.inc, which the same test writes and
-   checks is current. A step the readable parts do not model runs in the
-   faithful trampoline, from the state it started in (but for CLR5, whose
-   faithful result differs from the original program's, issue #1093).
-   So the step check is relative to the faithful port, not independent of
-   it: Pinball's stop table and the steps it leaves unmodelled both come
-   from the faithful trampoline. What a chain computes is checked against
-   Virtual AGC; where a step ends is checked only against the faithful
-   port.
+   checks is current. A step the readable parts do not model is refused,
+   from the state it started in: no faithful routine runs under the
+   readable Pinball, and the flight program does not link the faithful
+   trampoline. The faithful modules' suites make such states, which no
+   key and no routine of the program leaves (a word that has overflowed
+   where it is stored, a -0 or a negative word at a CCS the program
+   enters with +0 or a small positive one): the step test counts the
+   steps the readable routines refuse there and the faithful ones take,
+   1,684 in all, and holds each suite to its count, as the chain test
+   holds pin-transfer to its 25 chains (tests/pinball_steps.c names the
+   states).
+   The step check is relative to the faithful port, not independent of
+   it: Pinball's stop table comes from the faithful trampoline's steps
+   (the tests link it beside the readable one). What a chain computes
+   is checked against Virtual AGC; where a step ends is checked only
+   against the faithful port.
    `make names-check` checks
    the generated names and the restart tables against the listings.
    `make code-extents` holds every table of interpretive code (its bank,
@@ -1319,9 +1328,18 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    tools/code_extents.py names for it. The case tests check a table's
    words against the rope but take its count from the table, so this is
    what notices a table one word short.
-2. **x86 exact scenarios.** The x86_64 flight program, with the readable
-   routines linked in place of the faithful ones, flies the flight
-   scenarios (P63 descent, rendezvous, entry, restarts, ...) against the
+2. **x86 exact scenarios.** The x86_64 flight program is built from the
+   readable routines alone (`tests/x86_readable.py`): under them are the
+   faithful port's step and main (`c64-port/platform/x86`) and its model
+   of the computer, seven objects that translate no listing code (where
+   a fixed word is and the search of a routine table, one's complement
+   words, the DSKY as a device, the channels of a device record, the
+   output drives, the timers and the entry to an interrupt, the rope).
+   The readable bindings define every routine table the port's index
+   names, and the build's link check fails if the link map names any
+   other object of the port, which is to say any faithful routine. The
+   program flies the flight scenarios (P63 descent, rendezvous, entry,
+   restarts, ...) against the
    harness, which runs the faithful port. Each must end with the same
    erasable memory as the harness, word for word: words 061-03777 (every
    erasable bank, past the central and special registers and the
@@ -1329,10 +1347,11 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    and the I/O channels are not compared there; the case tests compare
    them, routine by routine. PRs fly the quick set (26 rows), the nightly
    run every row. The DOWNRUPT vector and its RESUME fly readable too
-   (the flight program takes them from the down-telemetry tables). The
-   CM's EXTENDED_VERBS flies readable whole: its tables take the place
-   of the faithful port's compiled copy of the file
-   (`cm_extended_verbs_file.o`).
+   (the flight program takes them from the down-telemetry tables).
+   Pinball, the display interface and the extended verbs are entered
+   through tables with the faithful port's keys
+   (`src/binding/*_tables.inc`, which `tools/lanec_keys.py` writes from
+   the port's tables and `make names-check` holds to them).
 
 CI runs both on every PR that touches `readable/`, or what it is built
 from and checked against: the faithful port's sources, tests and tools

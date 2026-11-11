@@ -13,15 +13,19 @@ readable binding (src/binding/pinball_routines.c) replaces.
 
 This links the port's test runner (build/lanec-native, every lane C suite
 and tools/lanec/native.c) with the readable objects given on the command
-line in place of the trampoline, which it keeps as
-faithful_lanec_pin_run_<m> for the entries not yet readable, into
-build/lanec-native-readable. Then, for each suite:
+line in place of the trampoline, into build/lanec-native-readable. The
+port's trampoline is linked too, as faithful_lanec_pin_run_<m>: the
+readable one never calls it (no step runs faithful code), and the step
+check (tests/pinball_steps.c) runs it beside the readable one. Then, for
+each suite:
 
   - every chain the program takes must end in the original program's
     complete state (diff.py, with the readable runner);
   - every chain the faithful port takes the readable program must take
-    too (the faithful runner's rows against the readable runner's; see
-    SUITES).
+    too (the faithful runner's rows against the readable runner's), but
+    for the chains, counted in SUITES, that start from a state the
+    readable routines do not model and refuse (tests/pinball_steps.c
+    names those states).
 
   pinball_transfer.py READABLE_LM.o READABLE_CM.o
 """
@@ -39,16 +43,17 @@ TRAMPOLINE = 'src/lanec_pin_trampoline.c'
 SUITE_LIST = 'tests/lanec_suites.c'
 # The suites that run the tables: whether they compare with the original
 # program (--refusals) or are all out-of-domain (--refusals-only), and
-# whether the readable program must take every chain the faithful port
-# takes. pin-transfer-c64 registers one module's entries at a time, as a
+# how many chains the faithful port takes that the readable program
+# refuses, from states it does not model (None: not counted).
+# pin-transfer-c64 registers one module's entries at a time, as a
 # C64 program does, so a chain the readable code hands to a routine that
 # module does not register (a TC POSTJUMP the module runs on through) ends
 # there: its chains are compared, not counted.
 # pin-stirred's chains taken must not fall below this (a readable routine
 # refusing what it should take).
 STIRRED_FLOOR = 8000
-SUITES = (('pin-transfer', '--refusals', True), ('pin-transfer-c64', '--refusals', False),
-          ('pin-decdsp3', '--refusals', True), ('pin-refuse', '--refusals-only', False))
+SUITES = (('pin-transfer', '--refusals', 25), ('pin-transfer-c64', '--refusals', None),
+          ('pin-decdsp3', '--refusals', 0), ('pin-refuse', '--refusals-only', None))
 
 
 def port_make(*targets, eval_text=None):
@@ -131,18 +136,20 @@ def main():
         sys.exit(__doc__)
     build(objects)
     bad = 0
-    for suite, mode, counted in SUITES:
+    for suite, mode, unmodelled in SUITES:
         for native in ('build/lanec-native', str(NATIVE)):
             subprocess.run([sys.executable, 'tools/lanec/diff.py', suite, mode, '--native', native],
                            cwd=PORT, check=True)
-        if not counted:
+        if unmodelled is None:
             continue
         faithful, readable = rows(suite, ''), rows(suite, '-readable')
         lost = [i for i, (f, r) in enumerate(zip(faithful, readable)) if f and not r]
-        print(f"{'PASS' if not lost and len(faithful) == len(readable) else 'FAIL'}: {suite}: "
-              f"{sum(readable)} chains taken with the readable Pinball, {sum(faithful)} by the faithful port"
-              + (f'; refused here, taken there: cases {lost[:10]}' if lost else ''))
-        bad |= bool(lost) or len(faithful) != len(readable)
+        good = len(lost) == unmodelled and len(faithful) == len(readable)
+        print(f"{'PASS' if good else 'FAIL'}: {suite}: {sum(readable)} chains taken with the readable "
+              f'Pinball, {sum(faithful)} by the faithful port; {len(lost)} of the faithful port\'s refused, '
+              f'from states the readable routines do not model'
+              + ('' if good else f' (not the {unmodelled} held to): cases {lost[:20]}'))
+        bad |= not good
     # pin-stirred (tests/pinball_stirred_cases.c), on this runner and oracle.
     subprocess.run([sys.executable, 'tools/lanec/diff.py', 'pin-stirred', '--refusals', '--native', str(NATIVE),
                     '--oracle', str(ORACLE)], cwd=PORT, check=True)

@@ -356,6 +356,27 @@ static const agc_routine_entry basic_keys[] = {
 #if LUMINARY099
 const agc_routine_table lm_conic_compiled_interpretive = {pair_keys, COUNT(pair_keys)};
 const agc_routine_table lm_conic_compiled_basic = {basic_keys, COUNT(basic_keys)};
+
+/* CHECKCTR by itself: a pass of another table that ends at an RTB to it
+ * (the interpreter's own pass over code no table of order pairs holds)
+ * finds the routine here, one step to DANZIG: the faithful port's
+ * lm_conic_checkctr_routines (c64-port/src/lm_conic_checkctr_routines.c).
+ * The states it takes: Z at CHECKCTR, FB its bank, and checkctr_sane's. */
+static enum exec_status checkctr_alone(const agc_native_program *program,
+                                       apollo_overlay_state *state, void *device)
+{
+    mission_io *io = device;
+
+    if (!program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
+    if (Z != CHECKCTR || (FBANK & 076000u) != (word)(CONICS_BANK << 10) || !checkctr_sane())
+        return EXEC_OUT_OF_SCOPE;
+    return run_basic(checkctr, state, io);
+}
+
+static const agc_routine_entry checkctr_keys[] = {
+    {KEY(CONICS_BANK, CHECKCTR), checkctr_alone},
+};
+const agc_routine_table lm_conic_checkctr_routines = {checkctr_keys, COUNT(checkctr_keys)};
 #else
 const agc_routine_table cm_conics_interpretive = {pair_keys, COUNT(pair_keys)};
 const agc_routine_table cm_conics_basic = {basic_keys, COUNT(basic_keys)};
