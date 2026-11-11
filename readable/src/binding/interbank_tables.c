@@ -28,9 +28,7 @@ static word fixed_memory(unsigned physical)
     agc_word value = 0;
 
     if (physical == fixed_word.physical) return fixed_word.value;
-    if (!agc_site_lookup(program_now->operands, program_now->operand_count, (uint16_t)physical,
-                         &value) &&
-        program_now->fixed_data)
+    if (!fixed_word_at(program_now, physical, &value) && program_now->fixed_data)
         program_now->fixed_data(program_now, (uint16_t)physical, &value);
     return value;
 }
@@ -53,17 +51,14 @@ static bool q_is_a_return(void)
 }
 
 /* The CADR after the TC can be read: an erasable word above the central
- * registers, or the caller's compiled operand. */
+ * registers, or a word of the program's fixed memory. */
 static bool cadr_at_q(void)
 {
     agc_word cadr;
 
     if (Q < 02000u) return erasable_index(Q) >= 0100u;
     fixed_word.physical = fixed_physical(Q);
-    if (!agc_site_lookup(program_now->operands, program_now->operand_count,
-                         (uint16_t)fixed_word.physical, &cadr) ||
-        cadr > MINUS_ZERO)
-        return false;
+    if (!fixed_word_at(program_now, fixed_word.physical, &cadr) || cadr > MINUS_ZERO) return false;
     fixed_word.value = cadr;
     return true;
 }

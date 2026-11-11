@@ -25,17 +25,15 @@ static const agc_native_program *program_now;
 static bool missing_word;
 
 /* The fixed words the restart routines read: the tables, 600SECS (a
- * LONGCALL's delta time), and the program's compiled operands. */
+ * LONGCALL's delta time), and the words after a TC (fixed_word_at,
+ * binding.h). */
 static word fixed_memory(unsigned physical)
 {
     agc_word value = 0;
 
     if (physical - P_SIZETAB < restart_table_words) return restart_tables[physical - P_SIZETAB];
     if (physical - P_600SECS < 2u) return SECS600[physical - P_600SECS];
-    if (!program_now ||
-        !agc_site_lookup(program_now->operands, program_now->operand_count, (uint16_t)physical,
-                         &value) ||
-        value > MINUS_ZERO)
+    if (!program_now || !fixed_word_at(program_now, physical, &value) || value > MINUS_ZERO)
         missing_word = true;
     return (word)(value & MINUS_ZERO);
 }
@@ -229,8 +227,8 @@ static enum exec_status run_newphase(const agc_native_program *program, apollo_o
 {
     agc_word group;
     if (!device || !bind(program, state, device)) return EXEC_OUT_OF_SCOPE;
-    if (*agc.interrupts > 1u || overflow_of(A) != 0 ||
-        !agc_transfer_operand(program, state, 0, Q, &group) || group < 1u || group > 6u)
+    if (*agc.interrupts > 1u || overflow_of(A) != 0 || !inline_word(program, state, 0, Q, &group) ||
+        group < 1u || group > 6u)
         return EXEC_OUT_OF_SCOPE;
     return run_routine(state, device, newphase);
 }

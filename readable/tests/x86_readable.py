@@ -9,7 +9,11 @@ This builds the same step and main over the readable objects alone
 every table the port's index names (c64-port/build/flight-store/
 <m>-host.inc), under its name. Of the port's own objects only the
 computer under the routines is linked (MACHINE below), and the build fails
-if the link map names any other (stands_alone). The scenario suite
+if the link loads any other file (stands_alone; tests/x86_link_check.py
+tries the check on links it must fail). The step is compiled with the
+port's index, and with its operand sets less their words
+(own_operand_sets): the readable routines read those from the rope image.
+The scenario suite
 (c64-port/tools/x86_flight_scenarios.py) then flies that program against
 the harness, which still runs the faithful port: every row must end with
 the harness's erasable memory, word for word.
@@ -30,28 +34,38 @@ sys.path.insert(0, str(PORT / 'tools'))
 import x86_flight_build as xb  # noqa: E402
 
 # The computer under the routines: the objects of c64-port/src the readable
-# program links. None is a translation of the listing's code.
-MACHINE = (
+# program links, each with the functions and data it defines for other
+# files. None is a translation of a routine of the listing. A function
+# added to one of them fails the build until it is named here, where a
+# reviewer sees it.
+MACHINE = {
     # Where a word of fixed memory is (bank and address to its place in
-    # the rope), the search of a routine table, and the marker the step
-    # keeps DANZIG's place in its index with (a table of one routine that
-    # refuses every state).
-    'agc_transfer.o',
+    # the rope), the search of a routine table and of an operand set, and
+    # the marker the step keeps DANZIG's place in its index with (a table
+    # of one routine that refuses every state).
+    'agc_transfer.o': ('agc_cm_danzig_marker', 'agc_erasable_point', 'agc_fixed_physical',
+                       'agc_lm_danzig_marker', 'agc_resume_exact', 'agc_site_lookup',
+                       'agc_transfer_next', 'agc_transfer_next_paged', 'agc_transfer_operand',
+                       'agc_transfer_point', 'agc_transfer_resolve', 'agc_transfer_run',
+                       'agc_transfer_run_at'),
     # One's complement words: negate, to and from an int.
-    'agc_word.o',
+    'agc_word.o': ('agc_add_register', 'agc_add_word', 'agc_classify', 'agc_compare',
+                   'agc_correct', 'agc_diminished_abs', 'agc_extend', 'agc_from_int', 'agc_negate',
+                   'agc_overflow', 'agc_to_int'),
     # The DSKY, the device: its relays and lights as channels 10 and 11
     # set them.
-    'dsky_display.o',
+    'dsky_display.o': ('dsky_display_advance', 'dsky_display_flash_visible',
+                       'dsky_display_output', 'dsky_display_render', 'dsky_display_reset'),
     # The channels a routine's device record carries, taken from the
     # hardware record before a step and given back after it.
-    'flight_io.o',
+    'flight_io.o': ('flight_io_enter', 'flight_io_leave'),
     # The gyro and CDU output drives, pulse by pulse.
-    'resident_cdu.o',
+    'resident_cdu.o': ('rk_cdu', 'rk_cdu_count', 'rk_cdu_drive'),
     # The timers (TIME1 to TIME6) and the entry to an interrupt.
-    'resident_rupt.o',
+    'resident_rupt.o': ('rk_hand_due', 'rk_rupt_take', 'rk_timer_phase', 'rk_timer_tick'),
     # The rope: the assembled program, read as data.
-    'rope_image_host.o',
-)
+    'rope_image_host.o': ('apollo_rope_load', 'apollo_rope_read'),
+}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
@@ -105,33 +119,112 @@ xb.OUT = READABLE / 'build/x86-flight'
 
 
 def readable_objects(m):
-    objects = sorted((READABLE / f'build/x86-{m}').rglob('*.o'))
-    if not objects:
-        sys.exit(f'x86_readable: no readable objects in build/x86-{m} (run make from readable/)')
-    return [str(o) for o in objects]
+    """The readable objects of mission m: one for each source the Makefile
+    names (make x86-objects-<m>), not whatever lies under build/."""
+    environment = {k: v for k, v in os.environ.items() if k not in ('MAKEFLAGS', 'MAKELEVEL', 'MFLAGS')}
+    listed = subprocess.run(['make', '-s', '--no-print-directory', f'x86-objects-{m}'], cwd=READABLE,
+                            env=environment, capture_output=True, text=True, check=True).stdout.split()
+    objects = [str(READABLE / o) for o in listed]
+    missing = [o for o in objects if not Path(o).is_file()]
+    if not objects or missing:
+        sys.exit(f'x86_readable: {len(missing) or "all"} readable objects of build/x86-{m} are not '
+                 'built (run make x86-flight from readable/)')
+    return objects
 
 
-def stands_alone(exe, link_map, m, platform):
-    """The link check: every object the link map names is a readable one
-    (build/x86-<m>/), the port's step or main (platform), one of MACHINE,
-    or the C library's. Any other object of the repository, which is to
-    say any faithful routine, fails the build."""
-    repository = READABLE.parent
-    allowed = {str((xb.STORE / 'host' / name).resolve()) for name in MACHINE}
-    allowed.update(str(Path(o).resolve()) for o in platform)
-    ours = str((READABLE / f'build/x86-{m}').resolve()) + os.sep
-    machine, others = set(), set()
-    for name in set(re.findall(r'(/[^\s()]+\.(?:o|a))\b', link_map.read_text())):
-        path = str(Path(name).resolve())
-        if not path.startswith(str(repository) + os.sep) or path.startswith(ours):
+def toolchain_directories(cc):
+    """Where cc keeps the C library and its start files."""
+    out = subprocess.run([cc, '-print-search-dirs'], capture_output=True, text=True, check=True).stdout
+    line = next((l for l in out.splitlines() if l.startswith('libraries:')), '')
+    return sorted({str(Path(d).resolve()) for d in line.split('=', 1)[-1].split(':') if d})
+
+
+def link_problems(map_text, cwd, expected, toolchain):
+    """The link check. The link map lists every file the linker loaded (its
+    LOAD lines), as the path the link named it by, from the directory cwd.
+    Each must be one of expected (the readable objects, the step and main,
+    MACHINE) or a file of the toolchain's (the C library, under one of the
+    toolchain directories), and each of expected must be there. Returns
+    what is wrong, a line each; nothing if the program stands alone."""
+    expected = {str(Path(o).resolve()) for o in expected}
+    seen, problems = set(), []
+    for line in map_text.splitlines():
+        if not line.startswith('LOAD '):
             continue
-        (machine if path in allowed else others).add(path)
-    if others:
-        sys.exit(f'x86_readable: {exe.name} links objects that are not the readable program\'s:\n  '
-                 + '\n  '.join(sorted(os.path.relpath(o, repository) for o in others)))
-    if len(machine) != len(allowed):
-        sys.exit(f'x86_readable: {link_map.name} does not name the objects {exe.name} was '
-                 'linked from')
+        path = str((Path(cwd) / line[len('LOAD '):].strip()).resolve())
+        if path in expected:
+            seen.add(path)
+        elif not any(path.startswith(d + os.sep) for d in toolchain):
+            problems.append(f'loads {path}, which is not the readable program\'s')
+    problems += [f'does not load {path}' for path in sorted(expected - seen)]
+    return problems
+
+
+def machine_problems():
+    """Each MACHINE object defines the names listed for it and no other."""
+    problems = []
+    for name, pinned in MACHINE.items():
+        out = subprocess.run(['nm', '--defined-only', '--extern-only', str(xb.STORE / 'host' / name)],
+                             capture_output=True, text=True, check=True).stdout
+        defined = {line.split()[-1] for line in out.splitlines() if line.strip()}
+        if defined != set(pinned):
+            problems.append(f'{name} defines {" ".join(sorted(defined ^ set(pinned)))}, which MACHINE '
+                            '(tests/x86_readable.py) does not say')
+    return problems
+
+
+def stands_alone(exe, link_map, expected, cc):
+    """Fail the build unless exe was linked from expected alone."""
+    problems = link_problems(link_map.read_text(), PORT, expected, toolchain_directories(cc))
+    problems += machine_problems()
+    if problems:
+        sys.exit(f'x86_readable: {exe.name} does not stand alone:\n  ' + '\n  '.join(problems))
+
+
+def own_operand_sets(m):
+    """The port's operand sets of mission m (c64-port/build/flight-store/
+    <m>-sites.inc) with every word taken out: the addresses alone, each
+    with WORD_IN_ROPE (src/binding/binding.h) where its word was. The
+    port's generator lifts the sets from the faithful sources: the words
+    after the TCs each source's routines serve, address and word. The
+    step picks a routine by them (the CM's POSTJUMP is in two tables, at
+    two costs: one serves the self-check's idle loop alone, the other the
+    rest), so the addresses are part of the port's index, as the tables'
+    order and costs are. The words are the rope's, and the readable
+    program reads them there (fixed_word_at). Returns the file's path."""
+    word = re.compile(r'\{(\d+)u,0?\d+u\}')
+    sets = re.compile(r'static const agc_site_operand \w+\[\]=\{((?:\{\w+,0?\d+u\},?)+)\};')
+    lines = (xb.STORE / f'{m}-sites.inc').read_text().splitlines()
+    out = [f'/* Generated by readable/tests/x86_readable.py from c64-port/build/flight-store/{m}-sites.inc: '
+           'the addresses of each operand set, without the words (0100000 in their place: the readable '
+           'routines read each word from the rope image). */']
+    for line in lines[1:]:
+        if not sets.fullmatch(line):
+            sys.exit(f'x86_readable: a line of {m}-sites.inc is not an operand set: {line[:60]}')
+        out.append(word.sub(r'{\1u,0100000u}', line))
+    if len(out) < 2 or not lines[0].startswith('/*'):
+        sys.exit(f'x86_readable: {m}-sites.inc is not the file expected')
+    text = '\n'.join(out) + '\n'
+    if re.search(r',0?[0-7]+u\}', text.replace(',0100000u}', '').replace('{AGC_TRANSFER_NONE,0u}', '')):
+        sys.exit(f'x86_readable: a word of {m}-sites.inc was left in the readable program\'s sets')
+    path = xb.OUT / f'{m}-operand-addresses.inc'
+    if not path.exists() or path.read_text() != text:
+        path.write_text(text)
+    return path
+
+
+def step_flags(m, define, certified_only=False):
+    """The port's compile flags for the step and main, with
+    own_operand_sets in place of the port's sets."""
+    flags = xb.flags(m, define, certified_only)
+    prefix = '-DFLIGHT_HOST_SITES='
+    ours = [i for i, flag in enumerate(flags) if flag.startswith(prefix)]
+    if len(ours) != 1:
+        sys.exit('x86_readable: the port\'s compile flags do not name its operand sets as expected')
+    flags[ours[0]] = f'{prefix}"{own_operand_sets(m)}"'
+    if any('-sites.inc' in flag for flag in flags):
+        sys.exit('x86_readable: the port\'s operand sets are still named in the compile flags')
+    return flags
 
 
 def build(cc, m, mode, certified_only=False):
@@ -139,19 +232,20 @@ def build(cc, m, mode, certified_only=False):
     and, of the port's objects, MACHINE alone."""
     define, suffix = xb.MODES[mode]
     suffix += '-certified' if certified_only else ''
-    flags = xb.flags(m, define, certified_only)
+    flags = step_flags(m, define, certified_only)
     xb.OUT.mkdir(parents=True, exist_ok=True)
     objects = []
     for source in ('flight_dispatch', 'flight_main'):
         o = xb.OUT / f'{source}_{m}{suffix}.o'
         subprocess.run([cc, *flags, '-c', f'platform/x86/{source}.c', '-o', str(o)], cwd=PORT, check=True)
         objects.append(str(o))
-    machine = [str(xb.STORE / 'host' / name) for name in MACHINE]
+    objects += [str(xb.STORE / 'host' / name) for name in MACHINE]
+    objects += readable_objects(m)
     exe = xb.OUT / f'x86-flight-{m}{suffix}'
     link_map = xb.OUT / f'x86-flight-{m}{suffix}.map'
-    subprocess.run([cc, *objects, *machine, *readable_objects(m), *xb.LINK, '-Wl,--gc-sections',
-                    f'-Wl,-Map={link_map}', '-lm', '-o', str(exe)], cwd=PORT, check=True)
-    stands_alone(exe, link_map, m, objects)
+    subprocess.run([cc, *objects, *xb.LINK, '-Wl,--gc-sections', f'-Wl,-Map={link_map}', '-lm', '-o',
+                    str(exe)], cwd=PORT, check=True)
+    stands_alone(exe, link_map, objects, cc)
     # The readable routines must be the ones linked: theirs are present, and
     # the faithful kernel's instruction helpers (k_go and the rest) absent,
     # as is every name the earlier builds kept a faithful routine under.

@@ -191,10 +191,16 @@ void rxor_channel(unsigned channel)
     A = sign_extend((word)(overflow_corrected(A) ^ channel_word(channel)));
 }
 
-void not_modelled(void)
+void not_modelled_state(const char *state)
 {
+    agc.refused_state = state;
     if (agc.leave) agc.leave();
     abort(); /* a binding that runs such a routine always sets agc.leave */
+}
+
+void not_modelled(void)
+{
+    not_modelled_state(NULL);
 }
 
 /* ---- DTCB ---- */

@@ -185,8 +185,9 @@ void vbproc(void)
 
 void vbproc_plus1(void)
 {
-    if (ts(ADDRESS_OF(LOADSTAT))) not_modelled(); /* an overflow in A would skip the TC */
-    tc(VBPROC + 2u, KILMONON);                    /* "TURN ON KILL MONITOR BIT" */
+    /* An overflow in A would skip the TC. */
+    if (ts(ADDRESS_OF(LOADSTAT))) not_modelled_state("TS LOADSTAT with overflow (VBPROC)");
+    tc(VBPROC + 2u, KILMONON); /* "TURN ON KILL MONITOR BIT" */
 }
 
 void vbproc_plus3(void)
@@ -254,7 +255,9 @@ void vbreldsp(void)
         return;
     case IS_PLUS_ZERO: continue_at(TSTLTS4); return;
     case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); return; /* into TSTLTS4 +1 and +2 */
+    case IS_MINUS_ZERO: /* into TSTLTS4 +1 and +2 */
+        not_modelled_state("CCS A on a negative word (VBRELDSP)");
+        return;
     }
 }
 
@@ -269,7 +272,9 @@ void tstlts4(void)
     case POSITIVE: tc_at(TSTLTS4 + 2u); break; /* TC +2 */
     case IS_PLUS_ZERO: tc(TSTLTS4 + 3u, ENDOFJOB); return;
     case NEGATIVE: break;
-    case IS_MINUS_ZERO: not_modelled(); return; /* the CADR PINBRNCH word */
+    case IS_MINUS_ZERO: /* the CADR PINBRNCH word */
+        not_modelled_state("CCS CADRSTOR on -0 (TSTLTS4, UNSUSPEN)");
+        return;
     }
     tc(TSTLTS4 + 4u, POSTJUMP); /* CADR PINBRNCH */
 }
@@ -288,7 +293,9 @@ void unsuspen(void)
         reldsp1();
         break;
     case NEGATIVE: break;
-    case IS_MINUS_ZERO: not_modelled(); return; /* past ENDRELDS */
+    case IS_MINUS_ZERO: /* past ENDRELDS */
+        not_modelled_state("CCS CADRSTOR on -0 (TSTLTS4, UNSUSPEN)");
+        return;
     }
     tc(UNSUSPEN + 5u, ENDOFJOB);
 }

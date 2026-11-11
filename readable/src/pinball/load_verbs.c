@@ -322,7 +322,8 @@ void loadlv_plus5(void)
  * 3COMP, 5 FOR 2COMP." True when it went back. */
 static bool alldc_oc_returns(void)
 {
-    if (ts(ADDRESS_OF(DECOUNT))) not_modelled(); /* an overflow would skip CS DECBRNCH */
+    /* An overflow would skip CS DECBRNCH. */
+    if (ts(ADDRESS_OF(DECOUNT))) not_modelled_state("TS DECOUNT with overflow (ALLDC/OC)");
     cs(ADDRESS_OF(DECBRNCH));
     ts(ADDRESS_OF(SR));
     cs(ADDRESS_OF(SR));
@@ -436,7 +437,8 @@ static void put_by_decbrnch(word at, bool mixed)
     case POSITIVE: tc(at + 1u, PUTDECSF); return; /* "+ DEC" */
     case IS_PLUS_ZERO: break;                     /* "+0 OCTAL" */
     case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); /* DECBRNCH holds bits 1-5 */
+    case IS_MINUS_ZERO: /* DECBRNCH holds bits 1-5 */
+        not_modelled_state("CCS DECBRNCH on a negative word (PUTCOM, PUTNORM)");
     }
     tc_at(at + 2u);
     if (!dctstcyc_returns()) return;

@@ -78,7 +78,7 @@ static bool testofuf_returns(void)
     case NEGATIVE: tc(TESTOFUF + 3u, ALMCYCLE); return false; /* "UF" */
     case IS_MINUS_ZERO: break;
     }
-    not_modelled(); /* MPAC +6 holds +1, -1 or +0 */
+    not_modelled_state("CCS MPAC +6 on -0 (TESTOFUF)"); /* MPAC +6 holds +1, -1 or +0 */
     return false;
 }
 

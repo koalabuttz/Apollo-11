@@ -18,6 +18,22 @@ typedef cm_native_io mission_io;
 /* Point agc at the program's memory and channels. False if any is missing. */
 bool bind_machine(const agc_native_program *program, apollo_overlay_state *state, void *device);
 
+/* The word of fixed memory at a physical address, for a routine that reads
+ * the word after its caller's TC (a CADR, an alarm's code). A program's
+ * operand sets name those addresses: the call sites each table of
+ * routines serves. A case test's set gives each word too, so that the test
+ * can make one up or leave one out. The flight program's set gives the
+ * address alone (WORD_IN_ROPE in the word's place), and the word is read
+ * from the rope image, the program's fixed_data. False if the set does not
+ * name the address, or the program has no rope to read. */
+#define WORD_IN_ROPE UINT16_C(0100000) /* no 15-bit word */
+bool fixed_word_at(const agc_native_program *program, unsigned physical, agc_word *value);
+/* The word at address q that the TC at q-1 passes inline (the 2CADR after
+ * a TC NOVAC): an erasable word of the state above the registers, or a
+ * word of fixed memory under the state's FBANK and the superbank. */
+bool inline_word(const agc_native_program *program, const apollo_overlay_state *state,
+                 unsigned superbank, word q, agc_word *out);
+
 /* One pass of the readable interpreter (interpreter_core.c) over a table
  * of interpretive code in the listing's notation (src/interpreter/
  * notation.h), reading the table's words in place of the rope's. */

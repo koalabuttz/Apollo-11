@@ -10,7 +10,7 @@
  *
  * Its job is plumbing only: point the machine (src/agc/agc.h) at the
  * program's state, read the inline operands a TC passes (the 2CADR after a
- * TC NOVAC) from the program's operand table, and call the routine. */
+ * TC NOVAC) from the program's fixed memory, and call the routine. */
 #include <stddef.h>
 #include "binding.h"
 #include "../executive/executive.h"
@@ -19,13 +19,6 @@
 
 #define T3RUPT_LEAD_IN 04014u /* the T3RUPT interrupt's address */
 #define BANK01         02000u
-
-/* The word the TC at Q-1 passes inline at q (the program's operand table). */
-static bool inline_word(const agc_native_program *program, apollo_overlay_state *state, word q,
-                        word *out)
-{
-    return agc_transfer_operand(program, state, *agc.superbank, q, out);
-}
 
 static enum exec_status run(const agc_native_program *program, apollo_overlay_state *state,
                             void *device)
@@ -41,11 +34,11 @@ static enum exec_status run(const agc_native_program *program, apollo_overlay_st
     /* Read the inline operands first, so that a call from a place the
      * operand table does not know changes nothing. */
     if (entry == K_NOVAC || entry == K_FINDVAC || entry == K_WAITLIST || entry == K_LONGCALL) {
-        if (!inline_word(program, state, Q, &operand[0]) ||
-            !inline_word(program, state, (word)(Q + 1u), &operand[1]))
+        if (!inline_word(program, state, *agc.superbank, Q, &operand[0]) ||
+            !inline_word(program, state, *agc.superbank, (word)(Q + 1u), &operand[1]))
             return EXEC_OUT_OF_SCOPE;
     } else if (entry == K_TWIDDLE || entry == K_FIXDELAY) {
-        if (!inline_word(program, state, Q, &operand[0])) return EXEC_OUT_OF_SCOPE;
+        if (!inline_word(program, state, *agc.superbank, Q, &operand[0])) return EXEC_OUT_OF_SCOPE;
     }
     /* The job switches and the idle loop need channel 11; the end of a task
      * and T3RUPT need to know whether an interrupt is running. */

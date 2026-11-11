@@ -21,8 +21,8 @@
  *
  * The readable routines refuse a step from a state they do not model
  * (not_modelled(): no faithful routine runs in its place), and the
- * faithful modules' own suites make such states, which no key and no
- * routine of the program leaves:
+ * faithful modules' own suites make such states, which no code found in
+ * the listing leaves:
  *
  *   - a word about to be stored that has overflowed, where the TS would
  *     skip the instruction after it: NVSUB's return in NVQTEM, RECAL2's
@@ -34,11 +34,22 @@
  *     word after is CADR PINBRNCH), MPAC +6 in TESTOFUF (+1, -1 or +0),
  *     DECBRNCH in PUTCOM and PUTNORM (bits 1-5).
  *
- * Each of those branches says so where it stands in src/pinball/. A step
- * the readable routines refuse and the faithful ones take is counted, and
- * each suite's count is held to the number below: a routine that came to
- * refuse a state the program does make (or to model one of these) changes
- * it. PINBALL_STEPS_ALL=1 prints every such step.
+ * Each of those branches says so where it stands in src/pinball/, and
+ * names its state as it refuses (not_modelled_state, src/agc/agc.h). A
+ * step the readable routines refuse and the faithful ones take is counted
+ * twice over: by its suite and, in the held suites, by the state named.
+ * Each count is held to the number below (the suites' in main, the states'
+ * in states[]), and a refused step that names no state fails its suite.
+ * So a routine that came to refuse a state the program does make fails
+ * the test, as does one that came to model one of these.
+ * PINBALL_STEPS_ALL=1 prints every such step. The numbers are what this
+ * test counted when the fallback to the faithful routines was taken out
+ * (1,684 steps), not an argument: the argument that no code leaves such a
+ * state is the comment at each branch.
+ *
+ * After a refused step the chain goes on from the faithful step's result,
+ * so a count takes in every later step of the chain that is refused too,
+ * and the steps after a refused one are still compared.
  *
  * Those chains start from the states the port's own module tests made,
  * the states the keys and the routines before them leave. pin-stirred's
@@ -75,6 +86,10 @@ enum exec_status readable_lanec_pin_run_lm(const agc_native_program *, apollo_ov
                                            void *, const lanec_pin_dispatch *);
 enum exec_status readable_lanec_pin_run_cm(const agc_native_program *, apollo_overlay_state *,
                                            void *, const lanec_pin_dispatch *);
+/* The state the readable routines named when they refused the last step, or
+ * NULL; forgotten once read (tests/pinball_seams.c). */
+const char *pinball_refused_state_lm(void);
+const char *pinball_refused_state_cm(void);
 enum exec_status lanec_pin_chain_max(apollo_overlay_state *s, lanec_io *io,
                                      enum lanec_mission mission, uint16_t stop, uint16_t max_steps,
                                      uint16_t *steps);
@@ -99,21 +114,54 @@ enum exec_status lanec_pin_run_cm(const agc_native_program *p, apollo_overlay_st
 /* Per suite: steps compared, steps that differ, steps the readable routines
  * refuse where the faithful ones take them, and steps they take where the
  * faithful ones refuse. */
-static unsigned long steps_compared, readable_more, differences, refused;
+static unsigned long steps_compared, readable_more, differences, refused, unnamed;
+/* Whether the suite's refused steps count toward states[]. */
+static int held_suite;
+
+/* The states the readable routines refuse by name, and the refused steps
+ * of the held suites that start from each. */
+static struct {
+    const char *state;
+    unsigned long held, refused;
+} states[] = {{"TS NVQTEM with overflow (NVSBCOM)", 20, 0},
+              {"TS LOC with overflow (RECAL2)", 311, 0},
+              {"TS LOADSTAT with overflow (VBPROC)", 82, 0},
+              {"TS MPAC with overflow (MONIT2)", 46, 0},
+              {"TS DECOUNT with overflow (ALLDC/OC)", 63, 0},
+              {"CCS CADRSTOR on -0 (TSTLTS4, UNSUSPEN)", 592, 0},
+              {"CCS MPAC +6 on -0 (TESTOFUF)", 153, 0},
+              {"CCS DECBRNCH on a negative word (PUTCOM, PUTNORM)", 417, 0}};
+#define STATES (sizeof states / sizeof states[0])
+
+/* Count a refused step by the state the routine named. */
+static const char *count_refused(const char *state)
+{
+    unsigned i;
+
+    for (i = 0; state && i < STATES; ++i)
+        if (!strcmp(state, states[i].state)) {
+            states[i].refused += held_suite != 0;
+            return state;
+        }
+    ++unnamed;
+    return state ? state : "no state named";
+}
 
 static void report(const char *suite, uint32_t n, unsigned step, const char *what,
-                   const apollo_overlay_state *from, const apollo_overlay_state *f,
-                   const apollo_overlay_state *r)
+                   const char *state, const apollo_overlay_state *from,
+                   const apollo_overlay_state *f, const apollo_overlay_state *r)
 {
     unsigned i, shown = 0;
 
     if (!strcmp(what, "refused")) {
         ++refused;
+        state = count_refused(state);
         if (!getenv("PINBALL_STEPS_ALL")) return;
     } else if (++differences > 10u && !getenv("PINBALL_STEPS_ALL"))
         return;
-    printf("DIFF %s case %lu step %u (Z %05o, FB %05o): %s, Z %05o/%05o", suite, (unsigned long)n,
-           step, from->words[LANEC_Z], from->words[4], what, f->words[LANEC_Z], r->words[LANEC_Z]);
+    printf("DIFF %s case %lu step %u (Z %05o, FB %05o): %s%s%s, Z %05o/%05o", suite,
+           (unsigned long)n, step, from->words[LANEC_Z], from->words[4], what,
+           state ? " from " : "", state ? state : "", f->words[LANEC_Z], r->words[LANEC_Z]);
     for (i = 0; i < 04000u && shown < 8u; ++i)
         if (f->words[i] != r->words[i]) {
             printf(" %04o %05o/%05o", i, f->words[i], r->words[i]);
@@ -456,6 +504,7 @@ static void chain(const char *suite, uint32_t n, apollo_overlay_state *s, lanec_
         } else if (called) {
             readable = 1;
             called = 0;
+            (void)(mission == LANEC_LM ? pinball_refused_state_lm() : pinball_refused_state_cm());
             rs = lanec_pin_chain_max(&r, &r_io, mission, (uint16_t)(AGC_TRANSFER_NONE - 1u), 1u,
                                      &rsteps);
             if (fs != EXEC_OK) {
@@ -467,11 +516,14 @@ static void chain(const char *suite, uint32_t n, apollo_overlay_state *s, lanec_
                 printf("PAIR %s %s %05o %05o %05o %05o\n", suite, mission == LANEC_LM ? "LM" : "CM",
                        from.words[4], from.words[LANEC_Z], f.words[4], f.words[LANEC_Z]);
             if (rs != EXEC_OK)
-                report(suite, n, step, "refused", &from, &f, &r);
+                report(suite, n, step, "refused",
+                       mission == LANEC_LM ? pinball_refused_state_lm()
+                                           : pinball_refused_state_cm(),
+                       &from, &f, &r);
             else if (memcmp(f.words, r.words, sizeof f.words))
-                report(suite, n, step, "words", &from, &f, &r);
+                report(suite, n, step, "words", NULL, &from, &f, &r);
             else if (memcmp(&f_io, &r_io, sizeof f_io))
-                report(suite, n, step, "channels", &from, &f, &r);
+                report(suite, n, step, "channels", NULL, &from, &f, &r);
             if (rs == EXEC_OK &&
                 (memcmp(f.words, r.words, sizeof f.words) || memcmp(&f_io, &r_io, sizeof f_io)))
                 return;
@@ -505,6 +557,9 @@ int main(int argc, char **argv)
     } suites[] = {{"pin-transfer", 1, 53},
                   {"pin-decdsp3", 1, 0},
                   {"pin-stirred", 0, 0},
+                  /* The display verbs' reads of a noun whose address is Z
+                   * (tests/pinball_noun_z_cases.c): made-up nouns, so no stops. */
+                  {"pin-noun-z", 2, 0},
                   /* The load verbs and the input scale routines (part 4), which the
                    * chains above hardly reach: the faithful modules' own suites. */
                   {"pin-head-load", 1, 0},
@@ -588,7 +643,8 @@ int main(int argc, char **argv)
             return 1;
         }
         if (collect && suites[i].held != 1) continue;
-        steps_compared = readable_more = differences = refused = 0;
+        steps_compared = readable_more = differences = refused = unnamed = 0;
+        held_suite = suites[i].held;
         for (n = 0; n < suite->count; ++n) {
             char name[64];
 
@@ -601,7 +657,7 @@ int main(int argc, char **argv)
             chain(suite->name, n, &s, &io, m.mission);
         }
         if (collect) continue;
-        wrong = suites[i].held && (differences || refused != suites[i].refused);
+        wrong = suites[i].held && (differences || unnamed || refused != suites[i].refused);
         printf("%s: pinball-steps %s: %lu Pinball steps the same through the readable routines as "
                "through the faithful port's, %lu differ%s; %lu refused from states the readable "
                "routines do not model",
@@ -612,9 +668,22 @@ int main(int argc, char **argv)
                suites[i].held ? "" : " (not held)", refused);
         if (suites[i].held && refused != suites[i].refused)
             printf(" (not the %lu held to)", suites[i].refused);
+        if (unnamed) printf(", %lu of them from no state the routines name", unnamed);
         printf("; %lu more taken where the faithful port refuses\n", readable_more);
         bad |= wrong;
     }
-    if (collect) write_stops(argv[2]);
+    if (collect) {
+        write_stops(argv[2]);
+        return bad;
+    }
+    /* The held suites' refused steps, by the state each started from. */
+    for (i = 0; i < STATES; ++i) {
+        wrong = !only && states[i].refused != states[i].held;
+        printf("%s: pinball-steps refused: %lu steps of the held suites from %s",
+               wrong ? "FAIL" : "PASS", states[i].refused, states[i].state);
+        if (wrong) printf(" (not the %lu held to)", states[i].held);
+        printf("\n");
+        bad |= wrong;
+    }
     return bad;
 }

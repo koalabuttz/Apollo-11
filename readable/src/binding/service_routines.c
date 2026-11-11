@@ -32,7 +32,7 @@ static struct {
 
 /* The fixed words the routines read: GENTRAN's data, the bit table DEBIT
  * indexes (BIT15, BIT14 ... BIT1), and the ADRES words after a caller's
- * TC (the program's compiled operands). */
+ * TC (fixed_word_at, binding.h). */
 static word fixed_memory(unsigned physical)
 {
     agc_word value = 0;
@@ -40,7 +40,7 @@ static word fixed_memory(unsigned physical)
     if (physical == fixed_data_word.physical) return fixed_data_word.value;
     if (physical >= FF(BIT15_ADDRESS) && physical <= FF(BIT15_ADDRESS + 14u))
         return (word)(040000u >> (physical - FF(BIT15_ADDRESS)));
-    agc_site_lookup(program_now->operands, program_now->operand_count, (uint16_t)physical, &value);
+    fixed_word_at(program_now, physical, &value);
     return (word)(value & MINUS_ZERO);
 }
 
@@ -79,8 +79,7 @@ static bool word_at(word address, word *value)
         *value = fetch(address);
         return true;
     }
-    if (address > 07777u || !agc_site_lookup(program_now->operands, program_now->operand_count,
-                                             (uint16_t)fixed_physical(address), &operand))
+    if (address > 07777u || !fixed_word_at(program_now, fixed_physical(address), &operand))
         return false;
     *value = (word)(operand & MINUS_ZERO);
     return true;
