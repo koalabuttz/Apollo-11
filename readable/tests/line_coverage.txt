@@ -3,15 +3,15 @@
 # `make line-coverage` measures again and holds the tree to it.
 #
 # Measured with Ubuntu clang version 18.1.3 (1ubuntu1).
-# 433 files have lines that run; 60127 such lines; 1559 of them unrun
-# (2.59%), in 657 stretches of 218 files.
+# 433 files have lines that run; 60127 such lines; 1528 of them unrun
+# (2.54%), in 640 stretches of 217 files.
 # Built and never run: x86-flight-cm-core, x86-flight-lm-core, x86-link-check.
 #
 # By reason:
-#   impossible: 74 lines in 35 stretches
-#   never: 89 lines in 35 stretches
-#   not-modelled: 124 lines in 95 stretches
-#   open: 495 lines in 202 stretches
+#   impossible: 100 lines in 51 stretches
+#   never: 97 lines in 40 stretches
+#   not-modelled: 123 lines in 94 stretches
+#   open: 431 lines in 165 stretches
 #   refusal: 777 lines in 290 stretches
 #
 # A reason in brackets is one of these:
@@ -53,53 +53,27 @@ src/aostask/aostask.c
     why: [not-modelled]
 
 src/aotmark/aotmark.c
-  aotmark_after_ccs, line 140 (1 unrun) f4215585
-    | case IS_MINUS_ZERO: not_modelled(); return;
-    why: [not-modelled]
-  mkvac, lines 191-202 (12 unrun) da8fb7e8
-    | case NEGATIVE:
-    | if (area == VAC_AREAS) {
-    | tc_at(MKVAC + 013u);
-    | continue_at(BAILOUT1);
-    | return;
-    | }
-    | ... (6 more)
-    why: [open]
-  markchex, line 619 (1 unrun) 0039665b
-    | case IS_MINUS_ZERO: break;
-    why: [open]
   markrupt, line 756 (1 unrun) efd3f0b5
     | case IS_MINUS_ZERO: break;            /* (on with A +0) */
-    why: [open]
-  markrupt_after_resume, line 780 (1 unrun) fb9aa481
-    | case IS_MINUS_ZERO: markrupt_after_alarm(); return;
-    why: [open]
-  key_set, line 804 (1 unrun) 0039665b
-    | case IS_MINUS_ZERO: break;
-    why: [open]
-  key_set, lines 806-809 (4 unrun) a77a9a7b
-    | tc_at(at);
-    | *into_mkvac = true;
-    | mkvac(2u);
-    | return false;
-    why: [open]
+    why: [impossible] A is channel 16 masked with OCT34, or with the +1 or -1
+         that a TS of an overflow leaves in A: a word with a bit clear, never
+         -0.
   verifymk, line 958 (1 unrun) f4215585
     | case IS_MINUS_ZERO: not_modelled(); return;
     why: [not-modelled]
-  surfrej, line 1069 (1 unrun) 0039665b
-    | case IS_MINUS_ZERO: break;
-    why: [open]
   after_marktype, line 1093 (1 unrun) b08570b4
     | default: return; /* (Z holds it) */
-    why: [open]
-  marktype, line 1120 (1 unrun) d0e5c8c6
-    | after_marktype(tc_q());
-    why: [open]
+    why: [impossible] Every TC MARKTYPE of the file returns to one of the
+         words named above this line (the word after the TC, or the next one
+         in flight), and MARKTYPE entered on its own comes here only with Q
+         at VACSTOR +027 to +032, each of which is named.
   surfend, lines 1299-1301 (3 unrun) 68695019
     | surfagan_plus1();
     | return;
     | }
-    why: [open]
+    why: [impossible] A is MARKSTAT with bit 14 masked out, plus BIT14: a
+         positive word under 20000 plus 20000, or a negative word plus a
+         positive one. Neither sum overflows, so the TS never skips.
 
 src/binding/ags_initialization_routines.c
   basic_at, line 86 (1 unrun) 9ff2bcca
@@ -2034,45 +2008,72 @@ src/display_interface/starts.c
 src/downtelemetry/downlink_lists.c
   assembled, line 785 (1 unrun) dd7edb30
     | case LABEL_ONLY: break;
-    why: [open]
+    why: [impossible] assemble() calls this only for a word whose kind is not
+         LABEL_ONLY (the test is on the line of the call). The case is there
+         so that the switch names every kind.
 
 src/downtelemetry/downtelemetry.c
   dodowntm, lines 97-98 (2 unrun) 8d46d754
     | case NEGATIVE: break;               /* TCF WO1 */
     | case IS_MINUS_ZERO: not_modelled(); /* RAND of BIT7 is never -0 */
-    why: [open]
-  nextincl, line 195 (1 unrun) a33ec75a
-    | case IS_PLUS_ZERO: break;
-    why: [open]
+    why: [impossible] A is channel 13 masked with BIT7: BIT7 or +0.
   nextincl, lines 206-207 (2 unrun) d9c1b805
     | case IS_PLUS_ZERO:
     | cs(ADDRESS_FIELD(MINB1314)); /* MINB1314 runs as CS 7777 */
-    why: [open]
-  dodnptr, line 282 (1 unrun) c013efa3
+    why: [impossible] A is the list word just stored in DNECADR plus
+         MINTIME2. In the AGC's adder a sum is +0 only when both numbers are
+         +0, and MINTIME2 is not.
+  dodnptr, line 283 (1 unrun) c013efa3
     | case IS_PLUS_ZERO: dosublst(); return;
-    why: [open]
-  dodnptr, line 284 (1 unrun) 0039665b
+    why: [never] DNECADR here is a word NEXTINCL or NEXTINSL has just read
+         from fixed memory, one that passes for a DNPTR (above 30000, up to
+         34000). Of the words the faithful routines read there (the lists and
+         the routines' constants: 259 in the LM, 244 in the CM), 42 and 43
+         pass. One of them, the constant PRIO34, points outside those words,
+         where the faithful routine refuses; every other points at a word
+         that is not zero. So there is no faithful run to compare a zero one
+         with.
+  dodnptr, line 285 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
-    why: [open]
-  snaploop, lines 315-318 (4 unrun) d7d14179
+    why: [never] DNECADR here is a word NEXTINCL or NEXTINSL has just read
+         from fixed memory, one that passes for a DNPTR (above 30000, up to
+         34000). Of the words the faithful routines read there (the lists and
+         the routines' constants: 259 in the LM, 244 in the CM), 42 and 43
+         pass. One of them, the constant PRIO34, points outside those words,
+         where the faithful routine refuses; every other points at a word
+         that is not zero. So there is no faithful run to compare a zero one
+         with.
+  snaploop, lines 317-320 (4 unrun) d7d14179
     | case IS_PLUS_ZERO: /* LDNPHAS2 (GENADR DNPHASE2) runs as TC DNPHASE2 */
     | tc_at(ADDRESS_OF(LDNPHAS2));
     | dnphase2();
     | return;
-    why: [open]
-  snaploop, line 320 (1 unrun) 305d26d1
+    why: [never] SNAPLOOP reads on from the DNPTR's own list, word after
+         word, to the first that is not positive. Every list pointer the
+         faithful routines read whose list is a snapshot (13 in the LM, 20 in
+         the CM) comes to a negative word of its list with no zero word on
+         the way: the only zero words those routines read are the constants
+         ZERO and NEG0. The faithful routine refuses a pointer outside those
+         words, and the +0 slot itself, so there is no faithful run to
+         compare one with.
+  snaploop, line 322 (1 unrun) 305d26d1
     | default: break;
-    why: [open]
-  nextinsl, line 361 (1 unrun) a33ec75a
-    | case IS_PLUS_ZERO: break;
-    why: [open]
-  dndump, lines 433-437 (5 unrun) 270a0086
+    why: [never] SNAPLOOP reads on from the DNPTR's own list, word after
+         word, to the first that is not positive. Every list pointer the
+         faithful routines read whose list is a snapshot (13 in the LM, 20 in
+         the CM) comes to a negative word of its list with no zero word on
+         the way: the only zero words those routines read are the constants
+         ZERO and NEG0. The faithful routine refuses a pointer outside those
+         words, and the +0 slot itself, so there is no faithful run to
+         compare one with.
+  dndump, lines 435-439 (5 unrun) 270a0086
     | case NEGATIVE: dndump1(); return;
     | case IS_MINUS_ZERO:
     | ts(ADDRESS_OF(DNTMGOTO));
     | dndump2();
     | return;
-    why: [open]
+    why: [impossible] Every way to this CCS ends in MASK PRIO34 (34000): A is
+         +0 or positive.
 
 src/entry_dap/cm_rcs.c
   getlcx, line 106 (1 unrun) 99997b53
@@ -2713,26 +2714,6 @@ src/interpreter/vectors.c
          does (tests/interpreter_fuzz.c), so there is no faithful run to
          compare a MODE of -0 with. (Entered only from V/SC's -0 slot.)
 
-src/kalcmanu_steering/kalcmanu_steering.c
-  timechk, line 175 (1 unrun) 012e9d92
-    | case IS_PLUS_ZERO:                             /* TCF +2 */
-    why: [open]
-  timechk, line 181 (1 unrun) 54ed3a79
-    | case IS_PLUS_ZERO: /* TCF MANUOFF */
-    why: [open]
-  contmanu, line 289 (1 unrun) 7a58353f
-    | case IS_PLUS_ZERO: break;      /* TCF MANUCALL */
-    why: [open]
-  goodmanu_after_spvac, line 493 (1 unrun) 683a7e17
-    | case IS_PLUS_ZERO: /* TCF +2 */
-    why: [open]
-  goodmanu_after_spvac, line 499 (1 unrun) 54ed3a79
-    | case IS_PLUS_ZERO: /* TCF MANUOFF */
-    why: [open]
-  goodmanu_after_spvac, line 617 (1 unrun) 7a58353f
-    | case IS_PLUS_ZERO: break;      /* TCF MANUCALL */
-    why: [open]
-
 src/kalman_filter/kalman_filter.c
   jet_time, lines 34-35 (2 unrun) d369bea4
     | case IS_PLUS_ZERO:
@@ -3334,47 +3315,64 @@ src/t4rupt/imu_monitor.c
 src/t4rupt/optics.c
   zoptdes, line 196 (1 unrun) 6de9c986
     | case IS_MINUS_ZERO: /* lands on the TC SETDESMD */ break;
-    why: [open]
+    why: [impossible] SETSAMP stored SWSAMPLE just before, from 33OPTMON's A:
+         +0 (manual), 17 (CSC: what CCS leaves of BIT5) or -1 (zero optics).
+         Never -0.
   cscdes, line 434 (1 unrun) 53582306
     | case IS_MINUS_ZERO: break;          /* lands on its TS ZOPTCNT, A +0 */
-    why: [open]
+    why: [impossible] SETSAMP stored SWSAMPLE just before, from 33OPTMON's A:
+         +0 (manual), 17 (CSC: what CCS leaves of BIT5) or -1 (zero optics).
+         Never -0.
   csctoman, line 456 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] 33OPTMON, which every way here passes, resumes at once
+         on an OPTIND of -0, and nothing between it and this CCS stores in
+         OPTIND (INITZOPT stores WTOPTION and OPTMODES).
   storcmd, line 801 (1 unrun) 40d8c497
     | case POSITIVE: cmdsetup(); return; /* TCF CMDSETUP: "SIGN ZONE NOT EQUAL TO SIGN COMMAND" */
-    why: [open]
+    why: [impossible] A is the exclusive or of two words masked with BIT15:
+         +0 when their signs are alike, and 40000 with its sign when they
+         differ, which is negative and not -0.
   storcmd, line 806 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] A is the exclusive or of two words masked with BIT15:
+         +0 when their signs are alike, and 40000 with its sign when they
+         differ, which is negative and not -0.
 
 src/t4rupt/t4rupt.c
-  dspoutsb, line 139 (1 unrun) 27b6e1b3
-    | case IS_PLUS_ZERO: continue;
-    why: [open]
+  dspoutsb, line 139 (1 unrun) 4416096f
+    | case IS_PLUS_ZERO: continue; /* (never: the display programs leave no DSPTAB word zero) */
+    why: [never] The binding takes no state with a DSPTAB word (0 to 10) of
+         +0 or -0 (display_kept, src/binding/t4rupt_routines.c), as the
+         faithful core does: the display programs never leave one. There is
+         no faithful run to compare one with.
   dspoutsb, line 141 (1 unrun) e031ba26
     | case IS_MINUS_ZERO: not_modelled(); return false; /* runs TABLNTH (OCT 12) as TC 12 */
     why: [not-modelled]
   dspoutsb, lines 146-147 (2 unrun) 359f159b
     | case IS_PLUS_ZERO: dsplay(); return true;
     | case NEGATIVE: not_modelled(); return false; /* runs TABLNTH: no producer */
-    why: [open]
+    why: [impossible] DSPCNT was stored just above: A plus -0, which is never
+         +0 (the listing's "TO PREVENT +0"), or TABLNTH. It is negative only
+         if it came so, and the binding takes no such state (display_kept:
+         DSPCNT 0 to 012 or -0), as the faithful core does.
   dspoutsb, line 151 (1 unrun) 524e92dc
     | case POSITIVE: not_modelled(); return false; /* runs 120MRUPT: no producer */
     why: [not-modelled]
   dspoutsb, line 156 (1 unrun) 05313dd4
     | case NEGATIVE: tc_through(Q_ADDRESS); return false;
-    why: [open]
+    why: [impossible] DSRUPTEM is the -0 stored at the routine's start or the
+         +0 its own -0 slot stores: never negative.
   proceede, lines 237-238 (2 unrun) 63c5460d
     | case NEGATIVE: break;
     | case IS_MINUS_ZERO: not_modelled(); return; /* runs the 2CADR: no producer */
-    why: [open]
-  quikdsp, line 325 (1 unrun) 84d8a361
-    | case IS_MINUS_ZERO: quikrupt(); return;
-    why: [open]
+    why: [impossible] A is BIT14 exclusive-ored with L, and L came from the
+         erasable word IMODES33, its two top bits alike. So the TS finds no
+         overflow, the MASK BIT14 runs, and A is BIT14 or +0.
   nodspy, line 366 (1 unrun) 6b708858
     | case IS_PLUS_ZERO:                                /* OCT37737 */
-    why: [open]
+    why: [impossible] DSRUPTSW has just had BIT9 added. In the AGC's adder a
+         sum is +0 only when both numbers are +0.
 
 src/t6rupt/t6rupt.c
   t6jobchk, lines 52-55 (4 unrun) f406125b

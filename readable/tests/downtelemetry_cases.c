@@ -43,6 +43,7 @@ typedef lm_dntm_io dntm_io;
 #define LISTS       6u
 #define DODOWNTM    LM_DNTM_DODOWNTM
 #define DNPHASE1    LM_DNTM_DNPHASE1
+#define DNPHASE2    LM_DNTM_DNPHASE2
 #define DNDUMPI     LM_DNTM_DNDUMPI
 #define RESUME      LM_DNTM_RESUME
 #define CONTROL(io) ((io)->control)
@@ -59,6 +60,7 @@ typedef cm_dntm_io dntm_io;
 #define LISTS      5u
 #define DODOWNTM   CM_DNTM_DODOWNTM
 #define DNPHASE1   CM_DNTM_DNPHASE1
+#define DNPHASE2   CM_DNTM_DNPHASE2
 #define DNDUMPI    CM_DNTM_DNDUMPI
 #define RESUME     CM_DNTM_RESUME
 #define CONTROL(x) ((x)->io)
@@ -235,11 +237,127 @@ static const char *where(uint16_t key)
 }
 
 static unsigned ran[16], refused[16], tried[16];
+static unsigned checks, failures, departs;
+
+/* One step from *s through both tables; the run goes on from the faithful
+ * routine's state (or the readable one's, if only it ran). False at the
+ * run's end: the DOWNRUPT has resumed, Z names no entry, or both refuse.
+ * *both says whether both ran the step. */
+static bool one_step(const agc_native_program *program, apollo_overlay_state *s, dntm_io *io,
+                     unsigned n, unsigned k, bool *both)
+{
+    apollo_overlay_state a, b, start;
+    dntm_io ia, ib, istart;
+    enum exec_status sa, sb;
+    const char *why = 0;
+    uint16_t key;
+    agc_routine f, r;
+    unsigned i;
+
+    *both = false;
+    if (s->words[5] == RESUME) return false;
+    key = agc_transfer_point(program, s, CONTROL(io).superbank);
+    f = find(&FAITHFUL, key);
+    r = find(&TABLE, key);
+    if (!f || !r) return false;
+    for (i = 0; FAITHFUL.entries[i].physical != key; ++i) {
+    }
+    a = b = start = *s;
+    ia = ib = istart = *io;
+    sa = f(program, &a, &ia);
+    downtelemetry_read_02000 = false;
+    sb = r(program, &b, &ib);
+    ++checks;
+    ++tried[i];
+    if (sa == EXEC_OK) ++ran[i];
+    *both = sa == EXEC_OK && sb == EXEC_OK;
+    if (sb != EXEC_OK) {
+        ++refused[i];
+        if (memcmp(&b, &start, sizeof b) || memcmp(&ib, &istart, sizeof ib))
+            why = "readable refusal changed the state";
+        else if (sa == EXEC_OK && downtelemetry_read_02000)
+            ++departs;
+        else if (sa == EXEC_OK)
+            why = "readable refused, faithful ran";
+    } else if (sa == EXEC_OK && (memcmp(&a, &b, sizeof a) || memcmp(&ia, &ib, sizeof ia))) {
+        if (downtelemetry_read_02000)
+            ++departs;
+        else
+            why = "different";
+    }
+    if (why && ++failures <= 8u) {
+        unsigned w;
+        printf("FAIL %s, sequence %u downrupt %u: %s (status %d, faithful %d)\n", where(key), n, k,
+               why, (int)sb, (int)sa);
+        for (w = 0; w < APOLLO_SHARED_WORDS; ++w)
+            if (a.words[w] != b.words[w])
+                printf("  word %04o: %06o, faithful %06o (start %06o)\n", w, b.words[w], a.words[w],
+                       start.words[w]);
+        if (memcmp(&ia, &ib, sizeof ia)) printf("  channels differ\n");
+    }
+    if (sa == EXEC_OK) {
+        *s = a;
+        *io = ia;
+    } else if (sb == EXEC_OK) {
+        *s = b;
+        *io = ib;
+    } else {
+        /* As a fresh start would: the downlist from its start. */
+        s->words[DNTMGOTO] = DNPHASE1;
+        s->words[DNLSTCOD] = (uint16_t)(rnd() % LISTS);
+        return false;
+    }
+    return true;
+}
+
+/* Two states made on purpose, which no disturbance reaches: DNPHASE2 with
+ * the control list's pointer, or the sublist's, at the constant ZERO, the
+ * one +0 word the routines read in fixed memory (no downlist has one).
+ * NEXTINCL and NEXTINSL then take a list word of +0, and both tables must
+ * run the step to the same end. */
+static void zero_list_words(const agc_native_program *program)
+{
+    uint16_t zero = 0;
+    unsigned i, made = 0, run = 0;
+
+    for (i = 0; i < DATA_COUNT; ++i)
+        if (DATA[i].word == 0u && DATA[i].physical >= 04000u && DATA[i].physical < 010000u)
+            zero = DATA[i].physical; /* fixed-fixed: the address itself */
+    for (i = 0; zero && i < 2u; ++i) {
+        apollo_overlay_state s;
+        dntm_io io;
+        bool both;
+
+        begin(&s, &io);
+        downrupt(&s, &io);
+        s.words[0] = sign_extended(BANK05);
+        s.words[4] = s.words[6] = BANK05;
+        s.words[5] = DNPHASE2;
+        CONTROL(&io).interrupt_enabled = 0u;
+        CONTROL(&io).superbank = 0u;
+        s.words[DNECADR] = 077776u; /* no DNADR being sent */
+        s.words[SUBLIST] = 077776u; /* no sublist in control */
+        if (i == 0u)
+            s.words[CTLIST] = zero; /* the control list's next word */
+        else
+            s.words[SUBLIST] = (uint16_t)(030000u | zero); /* the sublist's, as a DNPTR holds it */
+        ++made;
+        one_step(program, &s, &io, SEQUENCES, i, &both);
+        if (both) ++run;
+    }
+    if (made != 2u || run != made) {
+        printf("FAIL: %u states with a list word of +0 made, %u run by both\n", made, run);
+        ++failures;
+    }
+    printf(
+        "downtelemetry-cases %s: %u states made on purpose (a list word of +0), %u run by both\n",
+        MISSION, made, run);
+}
 
 int main(void)
 {
     agc_native_program program = {0, 1, 0, 0, 0, 0, AGC_TRANSFER_NONE, 0, 0, 0, 0, 0};
-    unsigned n, k, i, checks = 0, failures = 0, departs = 0;
+    unsigned n, k, i;
     apollo_overlay_state s;
     dntm_io io;
 
@@ -261,69 +379,14 @@ int main(void)
             unsigned step;
             downrupt(&s, &io);
             for (step = 0; step < 8u; ++step) {
-                apollo_overlay_state a, b, start;
-                dntm_io ia, ib, istart;
-                enum exec_status sa, sb;
-                const char *why = 0;
-                uint16_t key;
-                agc_routine f, r;
+                bool both;
 
                 if (rnd() % 24u == 0u) disturb(&s, &io);
-                if (s.words[5] == RESUME) break;
-                key = agc_transfer_point(&program, &s, CONTROL(&io).superbank);
-                f = find(&FAITHFUL, key);
-                r = find(&TABLE, key);
-                if (!f || !r) break;
-                for (i = 0; FAITHFUL.entries[i].physical != key; ++i) {
-                }
-                a = b = start = s;
-                ia = ib = istart = io;
-                sa = f(&program, &a, &ia);
-                downtelemetry_read_02000 = false;
-                sb = r(&program, &b, &ib);
-                ++checks;
-                ++tried[i];
-                if (sa == EXEC_OK) ++ran[i];
-                if (sb != EXEC_OK) {
-                    ++refused[i];
-                    if (memcmp(&b, &start, sizeof b) || memcmp(&ib, &istart, sizeof ib))
-                        why = "readable refusal changed the state";
-                    else if (sa == EXEC_OK && downtelemetry_read_02000)
-                        ++departs;
-                    else if (sa == EXEC_OK)
-                        why = "readable refused, faithful ran";
-                } else if (sa == EXEC_OK &&
-                           (memcmp(&a, &b, sizeof a) || memcmp(&ia, &ib, sizeof ia))) {
-                    if (downtelemetry_read_02000)
-                        ++departs;
-                    else
-                        why = "different";
-                }
-                if (why && ++failures <= 8u) {
-                    unsigned w;
-                    printf("FAIL %s, sequence %u downrupt %u: %s (status %d, faithful %d)\n",
-                           where(key), n, k, why, (int)sb, (int)sa);
-                    for (w = 0; w < APOLLO_SHARED_WORDS; ++w)
-                        if (a.words[w] != b.words[w])
-                            printf("  word %04o: %06o, faithful %06o (start %06o)\n", w, b.words[w],
-                                   a.words[w], start.words[w]);
-                    if (memcmp(&ia, &ib, sizeof ia)) printf("  channels differ\n");
-                }
-                if (sa == EXEC_OK) {
-                    s = a;
-                    io = ia;
-                } else if (sb == EXEC_OK) {
-                    s = b;
-                    io = ib;
-                } else {
-                    /* As a fresh start would: the downlist from its start. */
-                    s.words[DNTMGOTO] = DNPHASE1;
-                    s.words[DNLSTCOD] = (uint16_t)(rnd() % LISTS);
-                    break;
-                }
+                if (!one_step(&program, &s, &io, n, k, &both)) break;
             }
         }
     }
+    zero_list_words(&program);
     for (i = 0; i < TABLE.count; ++i) {
         printf("%s down-telemetry entry %s: %u steps, %u run by the faithful routine, %u refused "
                "by the readable one\n",

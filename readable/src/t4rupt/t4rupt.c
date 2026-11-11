@@ -136,7 +136,7 @@ static bool dspoutsb(word at)
         count_down = true;
         /* DSPSCAN: INDEX DSPCNT; CCS DSPTAB. */
         switch (ccs_at(indexed(ADDRESS_OF(DSPTAB), fetch(ADDRESS_OF(DSPCNT))))) {
-        case IS_PLUS_ZERO: continue;
+        case IS_PLUS_ZERO: continue; /* (never: the display programs leave no DSPTAB word zero) */
         case NEGATIVE: dsplay(); return true;             /* "IF DSPTAB ENTRY -, DISPLAY" */
         case IS_MINUS_ZERO: not_modelled(); return false; /* runs TABLNTH (OCT 12) as TC 12 */
         case POSITIVE: break;                             /* "IF DSPTAB ENTRY +, SKIP" */
