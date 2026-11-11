@@ -32,8 +32,19 @@ command -v x64sc >/dev/null || need+=(vice)
 if [ ${#need[@]} -gt 0 ]; then
   pkgs=(build-essential clang python3 git curl xz-utils)
   case " ${need[*]} " in *" vice "*) pkgs+=(vice) ;; esac
-  sudo_ env DEBIAN_FRONTEND=noninteractive apt-get update -qq
-  sudo_ env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends "${pkgs[@]}"
+  # GitHub's runners point apt at azure.archive.ubuntu.com, which has gone
+  # unresolvable for hours at a time. Retry, then fall back to the main
+  # Ubuntu archive for the rest of the job.
+  apt_() { sudo_ env DEBIAN_FRONTEND=noninteractive apt-get -qq -o Acquire::Retries=3 -o Acquire::http::Timeout=30 "$@"; }
+  apt_ok=0
+  for try in 1 2; do
+    if apt_ update && apt_ install -y --no-install-recommends "${pkgs[@]}"; then apt_ok=1; break; fi
+    echo "apt failed (try $try); switching to archive.ubuntu.com" >&2
+    for f in /etc/apt/sources.list /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources; do
+      if [ -f "$f" ]; then sudo_ sed -i 's#//azure\.archive\.ubuntu\.com#//archive.ubuntu.com#g' "$f"; fi
+    done
+  done
+  [ "$apt_ok" = 1 ] || { echo "apt install failed" >&2; exit 100; }
 fi
 echo "VICE $(x64sc -version 2>/dev/null | head -1 || true) (pinned $(pin "['vice']['version']"))"
 
