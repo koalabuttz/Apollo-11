@@ -2,7 +2,8 @@
 # A file is listed when every routine in it is readable C that passes the gates
 # (STYLE.md, Gates). One line per file: path, then the readable directory,
 # then no-code for a file of comments only, which counts by its lines and
-# whose words the directory's header carries (the check holds the mark).
+# whose words the directory carries, in a header's comment or (src/assembly)
+# as a table of its own (the check holds the mark).
 # A binding that still runs the faithful port's routines at keys no part has
 # written names its listing in a comment, "Partial file: <path>", and the
 # check fails if that file is listed here, or if a binding uses a faithful_
@@ -170,3 +171,7 @@ Luminary099/KALMAN_FILTER.agc                   src/kalman_filter
 Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc      src/trim_gimbal
 Luminary099/AOSTASK_AND_AOSJOB.agc              src/aostask
 Luminary099/SPS_BACK-UP_RCS_CONTROL.agc         src/sps_backup
+Luminary099/INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS.agc src/assembly no-code
+Luminary099/MAIN.agc                            src/assembly
+Comanche055/CONTRACT_AND_APPROVALS.agc          src/assembly no-code
+Comanche055/MAIN.agc                            src/assembly

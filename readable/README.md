@@ -312,6 +312,9 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Trim gimbal control | `TRIM_GIMBAL_CONTROL_SYSTEM.agc` (LM pp. 1472-1484) | [`src/trim_gimbal/`](src/trim_gimbal/) | GTS, the descent engine's trim gimbal as the Q and R axes' attitude controller: for each axis the drive that brings attitude error, rate and offset acceleration to zero together (the sign of NEGUSUM, with GTSQRT's square root), a reversal pausing the gimbal for a pass; ACDT+C12, the drive bits of channel 12 and the acceleration rates they give; TIMEGMBL, the drive times that null the offset accelerations |
 | Jet and gimbal accelerations for the DAP | `AOSTASK_AND_AOSJOB.agc` (LM pp. 1485-1506) | [`src/aostask/`](src/aostask/) | 1/ACCS, run whenever the mass, the deadband or the configuration changes: LEMMASS held between the stage's limits; the jet accelerations about P, Q and R from fits in the mass (ascent or descent), or from the docked polynomials; the coupling of Q and R and the U and V accelerations; in descent the engine's moment arm and the gimbal's ACCDOTQ and ACCDOTR; the gimbal switches; then 1/ACCONT: the P axis's reciprocal accelerations, and for the U and V axes the reciprocal net and coast accelerations, the acceleration functions and the fire and coast deadbands, sent to the DAP by GENTRAN, with ACCSOKAY set at the end |
 | Docked RCS jets | `SPS_BACK-UP_RCS_CONTROL.agc` (LM pp. 1507-1510) | [`src/sps_backup/`](src/sps_backup/) | SPSRCS, the phase-plane controller for one axis (P, U or V) in docked flight: the jets' present sense and the rate dead band, the outer rate limit, the coast zone about the line E + 4 EDOT, and the inhibition logic that holds the jets off for a few passes after a stop or a reversal; the new jet time, half a unit either way or zero, in TJP, TJU or TJV |
+| Channel bits | `INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS.agc` (LM pp. 54-60) | [`src/assembly/`](src/assembly/) | No code: what each input and output channel is and what each of its bits means, as a table, word for word |
+| Title page | `CONTRACT_AND_APPROVALS.agc` (CM p. 1) | [`src/assembly/`](src/assembly/) | No code: the program's other name (COLOSSUS 2A), its contract, and who submitted and approved it |
+| The list of files | `MAIN.agc` (both missions) | [`src/assembly/`](src/assembly/) | The listing's files in the order of their pages, each with the directory here that holds its readable C: the way from a page of the listing to its code |
 
 Beside them:
 
@@ -336,7 +339,8 @@ listing files in [`COVERAGE`](COVERAGE), whole files only, weighted by
 their source lines over all 175 files of both missions. A file of
 comments only (ENTRY_LEXICON, LUNAR_LANDMARK_SELECTION_FOR_CM) counts by
 its lines too, marked no-code there, with its words in the header of the
-directory listed; `make coverage` checks that it still holds no code.
+directory listed (or, in `src/assembly/`, as a table of its own);
+`make coverage` checks that it still holds no code.
 
 Next, one subsystem at a time: the rest of the flight program, in study
 order. A Rust edition with the same layout and the same gates
@@ -1253,6 +1257,11 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    from random states, with the axis, the jet times, the inhibition
    counters, E, EDOT, DKDB and DRIFTBIT stirred, and now and then a bank,
    a return or a latch the faithful routine refuses.
+   `make assembly-cases` checks the listing's files without routines
+   (`src/assembly/`): tests/assembly_dump.c prints each file's tables back
+   as text, and tests/assembly_cases.py compares that with the listing
+   file, every word in order (MAIN.agc line by line, with each file's
+   directory checked against COVERAGE).
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
