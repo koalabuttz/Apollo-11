@@ -51,6 +51,9 @@
 #                         that program against Virtual AGC itself, routine
 #                         by routine (tests/x86_lockstep.py; the same
 #                         toolchain)
+#   make line-coverage    which lines of src/ no test and no scenario runs,
+#                         held to tests/line_coverage.txt (needs clang with
+#                         its profile runtime; half an hour)
 #
 # The readable sources build with READABLE_CFLAGS; the faithful port's
 # sources they are tested with build with the port's own flags.
@@ -60,6 +63,22 @@ CC ?= cc
 READABLE_CFLAGS := -std=c99 -O2 -g -Wall -Wextra -Werror -pedantic
 PORT_CFLAGS := -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic
 INCLUDES := -I$(PORT)/include -I$(PORT)/src -I$(PORT)/tests
+# Line coverage (make line-coverage; tests/line_coverage.py): with
+# LINE_COVERAGE set, every target builds again under build/linecov with
+# clang's source coverage (and without the warnings, which the ordinary
+# build gives), and each test that runs writes its counts where
+# LLVM_PROFILE_FILE says. The scripts that link readable objects
+# themselves follow the same switch (tests/coverage_build.py). The port's
+# own make is not to see this compiler.
+ifdef LINE_COVERAGE
+export LINE_COVERAGE
+unexport CC
+BUILD := build/linecov
+CC := clang
+COVERAGE_FLAGS := -fprofile-instr-generate -fcoverage-mapping
+READABLE_CFLAGS := -std=c99 -O2 -g $(COVERAGE_FLAGS)
+PORT_CFLAGS := -O2 -g -std=c99 $(COVERAGE_FLAGS)
+endif
 LM := -DLUMINARY099=1
 CM := -DCOMANCHE055=1
 
@@ -295,8 +314,8 @@ HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 .PHONY: all check code-extents kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
 	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases throttle-cases llge-cases p70-cases p12-cases ascent-cases servicer-cases landing-displays-cases findcduw-cases p51-p53-cases cm-p51-p53-cases ephemerides-cases cm-p61-p67-cases cm-servicer-cases cm-reentry-cases cm-body-attitude-cases cm-p37-p70-cases cm-tvc-init-cases cm-tvc-exec-cases cm-tvc-massprop-cases cm-tvc-restarts-cases cm-tvc-daps-cases cm-tvc-stroke-cases cm-tvc-roll-cases cm-mysubs-cases cm-rcs-dap-cases cm-auto-man-cases cm-rcs-dap-exec-cases cm-jet-select-cases cm-imu-cal-cases cm-p11-cases cm-tpi-search-cases cm-entry-dap-cases constant-pool-cases lat-long-cases planetary-cases measurement-inc-cases conics-cases integration-init-cases orbital-integration-cases inflight-align-cases powered-flight-cases time-free-fall-cases self-check-cases imu-mode-switching-cases display-interface-cases update-program-cases star-tables-cases rtb-op-codes-cases dap-interface-cases dapidler-cases p-axis-cases q-r-axis-cases tjet-law-cases kalman-filter-cases trim-gimbal-cases aostask-cases sps-backup-cases assembly-cases names-check \
 	coverage x86-flight x86-link-check chan13-sites x86-objects-lm x86-objects-cm x86-scenarios-quick x86-scenarios \
-	x86-lockstep-quick x86-lockstep x86-lockstep-record format clean
-all: names-check coverage code-extents x86-link-check chan13-sites kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
+	x86-lockstep-quick x86-lockstep x86-lockstep-record line-coverage line-coverage-check format clean
+all: names-check coverage code-extents x86-link-check chan13-sites line-coverage-check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
 	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases \
@@ -473,6 +492,9 @@ INTERPRETER_SEEDS ?= $(shell seq 1 40)
 ROPES := $(PORT)/build/fixed-data/Luminary099/MAIN.agc.bin $(PORT)/build/fixed-data/Comanche055/MAIN.agc.bin
 IC_COMMON := $(PORT)/src/agc_word.c $(PORT)/src/agc_multiword.c $(PORT)/src/agc_hardware_divide.c
 IC_CFLAGS := -std=gnu99 -O2 -g -Wall -Wextra -Werror -Dexit=interp_core_fuzz_exit
+ifdef LINE_COVERAGE
+IC_CFLAGS := -std=gnu99 -O2 -g -Dexit=interp_core_fuzz_exit $(COVERAGE_FLAGS)
+endif
 
 $(BUILD)/faithful-%/interp_core.o: $(PORT)/src/%_interp_core.c
 	@mkdir -p $(dir $@)
@@ -1406,6 +1428,18 @@ x86-lockstep: $(X86_OBJECTS) $(HARNESS_ENGINE)
 x86-lockstep-record: $(X86_OBJECTS) $(HARNESS_ENGINE)
 	python3 tests/x86_lockstep.py --wrong
 	python3 tests/x86_lockstep.py --record tests/x86_lockstep_record.txt
+
+# Which lines of src/ run (tests/line_coverage.py): every target of all and
+# gate 2's scenarios, built for coverage (LINE_COVERAGE, above) and run;
+# each stretch of lines that none of them runs must stand, with its
+# reason, in tests/line_coverage.txt.
+line-coverage:
+	python3 tests/line_coverage.py
+
+# That check itself, on made-up measures and ledgers: each way a ledger can
+# be wrong is reported as that (no build, no clang).
+line-coverage-check:
+	@python3 tests/line_coverage.py --self-check
 
 format:
 	$(PORT)/deps/llvm-mos/bin/clang-format -i --style=file:$(PORT)/.clang-format $(SOURCES) $(filter %.h,$(HEADERS))

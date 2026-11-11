@@ -86,7 +86,9 @@ static unsigned pick(unsigned n)
     return (unsigned)((rnd() >> 6) % n);
 }
 
-/* A run that loops for ever: what the timer stops it with. */
+/* A run that loops for ever: what the timer stops it with. The timer counts
+ * the processor time the test itself uses, so on a busy machine a run that
+ * is only waiting its turn is not stopped. */
 #define LOOPS ((enum exec_status) - 1)
 
 static sigjmp_buf stopped;
@@ -104,9 +106,9 @@ static enum exec_status run(const agc_routine_entry *entry, agc_native_program *
     enum exec_status status;
 
     if (sigsetjmp(stopped, 1)) return LOOPS;
-    setitimer(ITIMER_REAL, &limit, NULL);
+    setitimer(ITIMER_VIRTUAL, &limit, NULL);
     status = entry->call(program, state, io);
-    setitimer(ITIMER_REAL, &off, NULL);
+    setitimer(ITIMER_VIRTUAL, &off, NULL);
     return status;
 }
 
@@ -472,7 +474,7 @@ int main(int argc, char **argv)
     basic = pairs = 0;
     memset(&on_alarm, 0, sizeof on_alarm);
     on_alarm.sa_handler = stop;
-    sigaction(SIGALRM, &on_alarm, NULL);
+    sigaction(SIGVTALRM, &on_alarm, NULL);
     failures += keys(&cm_imu_calibration_basic, &faithful_cm_imu_calibration_basic, false, &runs,
                      &basic, &loops);
     failures += keys(&cm_imu_calibration_interpretive, &faithful_cm_imu_calibration_interpretive,

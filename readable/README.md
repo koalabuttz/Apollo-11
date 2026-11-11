@@ -1498,9 +1498,45 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    link check is run on it too, with yaAGC's three objects added to what
    it may load.
 
-CI runs all three on every PR that touches `readable/`, or what it is built
-from and checked against: the faithful port's sources, tests and tools
-and the listings (`.github/workflows/readable-ci.yml`).
+**Which lines run.** The three gates say that what runs is right.
+`make line-coverage` says what runs (`tests/line_coverage.py`; it needs
+clang with its profile runtime, and takes half an hour). It builds every
+target of `make all` again with clang's source coverage and runs them,
+builds the x86 flight program the same way and flies gate 2's 86
+scenarios. Each program that ran left its counts, and a line of `src/` is
+run if any of them ran it. Of the 60,065 lines with code in them, 1,609
+(2.7%) are run by none, in 674 stretches of 219 files.
+
+Every one of those stretches stands in `tests/line_coverage.txt`, with
+its text and the reason it does not run, and the check fails on an unrun
+stretch that is not there, on one that is there and now runs, and on one
+with no reason. A stretch is known by its file, its function and its
+text, so an edit elsewhere in a file does not move it. `make all` tries
+the check itself on made-up measures and ledgers
+(`line-coverage-check`), with no build. Each reason is one of
+four kinds, and the ledger says what each means:
+
+- **refusal** (771 lines): how a binding refuses a state its routines do
+  not model. No case's state and no scenario makes those files refuse.
+- **not-modelled** (124 lines): the source marks the line
+  `not_modelled()`, an outcome that cannot come there.
+- **never** (62 lines): the comment at the line says the outcome never
+  comes, and the line is what the AGC would do if it did.
+- **open** (652 lines, 265 stretches): not looked at yet. Each is owed a
+  case that runs it or the reason none can, and the count is in the
+  ledger's head.
+
+What the measure cannot see: a line is run if it ran once, in any state,
+and a line with two branches on it is run if either was. A macro's lines
+are counted where the macro is used, not where it is defined. Three
+programs are built and not run here: the two `-core` flight programs,
+which link the same readable objects as the two that fly, and the link
+check's own link, which is made to be refused.
+
+CI runs the three gates on every PR that touches `readable/`, or what it
+is built from and checked against: the faithful port's sources, tests and
+tools and the listings (`.github/workflows/readable-ci.yml`). The line
+coverage runs nightly.
 
 ## Departures
 

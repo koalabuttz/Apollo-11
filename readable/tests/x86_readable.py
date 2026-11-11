@@ -32,6 +32,7 @@ READABLE = Path(__file__).resolve().parents[1]
 PORT = READABLE.parent / 'c64-port'
 sys.path.insert(0, str(PORT / 'tools'))
 import x86_flight_build as xb  # noqa: E402
+import coverage_build as cb  # noqa: E402
 
 # The computer under the routines: the objects of c64-port/src the readable
 # program links, each with the functions and data it defines for other
@@ -115,7 +116,7 @@ MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'g
                           'startent_after_exit', 'cm_atup', 'rtevn_after_exit', 'tvcdapon',
                           'tvcexec', 'massprop', 'redotvc', 'pitchdap', 'strktsti', 'rolldap',
                           'smallmp', 'imutest', 'satstick')}
-xb.OUT = READABLE / 'build/x86-flight'
+xb.OUT = cb.BUILD / 'x86-flight'
 
 
 def readable_objects(m):
@@ -256,9 +257,9 @@ def build(cc, m, mode, certified_only=False):
     objects += readable_objects(m)
     exe = xb.OUT / f'x86-flight-{m}{suffix}'
     link_map = xb.OUT / f'x86-flight-{m}{suffix}.map'
-    subprocess.run([cc, *objects, *xb.LINK, '-Wl,--gc-sections', f'-Wl,-Map={link_map}', '-lm', '-o',
-                    str(exe)], cwd=PORT, check=True)
-    stands_alone(exe, link_map, objects, cc)
+    subprocess.run([cb.linker(cc), *objects, *xb.LINK, *cb.LINK, '-Wl,--gc-sections', f'-Wl,-Map={link_map}',
+                    '-lm', '-o', str(exe)], cwd=PORT, check=True)
+    stands_alone(exe, link_map, objects, cb.linker(cc))
     # The readable routines must be the ones linked: theirs are present, and
     # the faithful kernel's instruction helpers (k_go and the rest) absent,
     # as is every name the earlier builds kept a faithful routine under.

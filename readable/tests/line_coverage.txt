@@ -1,0 +1,3407 @@
+# The lines of readable/src that no test and no scenario runs, and why.
+# tests/line_coverage.py --write writes this file and keeps each reason;
+# `make line-coverage` measures again and holds the tree to it.
+#
+# Measured with Ubuntu clang version 18.1.3 (1ubuntu1).
+# 433 files have lines that run; 60065 such lines; 1609 of them unrun
+# (2.68%), in 674 stretches of 219 files.
+# Built and never run: x86-flight-cm-core, x86-flight-lm-core, x86-link-check.
+#
+# By reason:
+#   never: 62 lines in 24 stretches
+#   not-modelled: 124 lines in 95 stretches
+#   open: 652 lines in 265 stretches
+#   refusal: 771 lines in 290 stretches
+#
+# A reason in brackets is one of these:
+
+[never] The comment at the line says the outcome never comes, and why. The
+    line is what the AGC would do if it did.
+[not-modelled] The line is, or leads only to, not_modelled(): the source
+    marks the outcome as one that cannot come there (a CCS outcome its word
+    never has, a value outside a switch's table). A routine that met it would
+    stop and its binding refuse the state.
+[open] Not looked at yet: owed a case that runs it, or the reason none can.
+    Item 3 of the validation plan is not done while a stretch says this.
+[refusal] Part of how a binding refuses a state its routines do not model: a
+    hook that only refuses (a channel or a fixed-memory address the file's
+    routines do not use), the jump out (leave), a key its table does not
+    have, or the lines that put the state and the io record back and answer
+    out of scope. It runs only if a routine of the file is given such a
+    state. No case's state and no scenario does.
+
+
+src/alarm/alarm.c
+  fail3, line 163 (1 unrun) b4179894
+    | case IS_MINUS_ZERO: proglarm(); return; /* never: the word after the CCS's four */
+    why: [never]
+
+src/aostask/aostask.c
+  docktest, line 175 (1 unrun) 126f7bdf
+    | default: not_modelled(); return;
+    why: [not-modelled]
+  docked_polynomial, lines 412-413 (2 unrun) 4409ad32
+    | case NEGATIVE: return false;
+    | case IS_MINUS_ZERO: not_modelled(); return false;
+    why: [open]
+  docked_polynomial, line 419 (1 unrun) 810a982d
+    | default: not_modelled(); return false;
+    why: [not-modelled]
+
+src/aotmark/aotmark.c
+  aotmark_after_ccs, line 140 (1 unrun) f4215585
+    | case IS_MINUS_ZERO: not_modelled(); return;
+    why: [not-modelled]
+  mkvac, lines 191-202 (12 unrun) da8fb7e8
+    | case NEGATIVE:
+    | if (area == VAC_AREAS) {
+    | tc_at(MKVAC + 013u);
+    | continue_at(BAILOUT1);
+    | return;
+    | }
+    | ... (6 more)
+    why: [open]
+  markchex, line 619 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  markrupt, line 756 (1 unrun) efd3f0b5
+    | case IS_MINUS_ZERO: break;            /* (on with A +0) */
+    why: [open]
+  markrupt_after_resume, line 780 (1 unrun) fb9aa481
+    | case IS_MINUS_ZERO: markrupt_after_alarm(); return;
+    why: [open]
+  key_set, line 804 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  key_set, lines 806-809 (4 unrun) a77a9a7b
+    | tc_at(at);
+    | *into_mkvac = true;
+    | mkvac(2u);
+    | return false;
+    why: [open]
+  verifymk, line 958 (1 unrun) f4215585
+    | case IS_MINUS_ZERO: not_modelled(); return;
+    why: [not-modelled]
+  surfrej, line 1069 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  after_marktype, line 1093 (1 unrun) b08570b4
+    | default: return; /* (Z holds it) */
+    why: [open]
+  marktype, line 1120 (1 unrun) d0e5c8c6
+    | after_marktype(tc_q());
+    why: [open]
+  surfend, lines 1299-1301 (3 unrun) 68695019
+    | surfagan_plus1();
+    | return;
+    | }
+    why: [open]
+
+src/binding/ags_initialization_routines.c
+  basic_at, line 86 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  code_at, line 109 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+
+src/binding/alarm_routines.c
+  run, line 229 (1 unrun) e07ad122
+    | default: return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+
+src/binding/aostask_routines.c
+  rope_word, line 52 (1 unrun) 7a17fe30
+    | not_modelled();
+    why: [refusal]
+
+src/binding/aotmark_routines.c
+  channel_out, lines 62-66 (5 unrun) a39837c9
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled(); /* AOTMARK writes no channel */
+    | }
+    why: [refusal]
+  fixed_memory, lines 75-76 (2 unrun) 3a2338fb
+    | not_modelled();
+    | return 0;
+    why: [refusal]
+  interpretive, lines 255-257 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/ascent_routines.c
+  leave, lines 49-51 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  basic_entry, line 150 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  basic, lines 188-191 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  pair, lines 233-235 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/attitude_maneuver_routines.c
+  leave, lines 49-51 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  rope_word, lines 56-61 (5 unrun) f86770db
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic, lines 131-134 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  interpretive, lines 187-189 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/binding.c
+  run, line 39 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+  run, line 47 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+  run, line 84 (1 unrun) e07ad122
+    | default: return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+
+src/binding/burn_baby_routines.c
+  channel, line 85 (1 unrun) a8aeb527
+    | default: not_modelled(); return NULL;
+    why: [refusal]
+  code_at, line 323 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+
+src/binding/cm_auto_man_routines.c
+  channel_in, line 61 (1 unrun) 76625d62
+    | default: not_modelled(); return 0u;
+    why: [refusal]
+  channel_out, lines 66-70 (5 unrun) 5ce47e1f
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled(); /* the file writes no channel */
+    | }
+    why: [refusal]
+  basic_entry, line 160 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+
+src/binding/cm_body_attitude_routines.c
+  channel_in, lines 51-55 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 58-62 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  basic_entry, line 125 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  pair, lines 214-216 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/cm_entry_dap_routines.c
+  channel, line 62 (1 unrun) a8aeb527
+    | default: not_modelled(); return NULL;
+    why: [refusal]
+  channel_in, lines 67-69 (3 unrun) 60b19c8b
+    | {
+    | return (word)*channel(number);
+    | }
+    why: [open]
+
+src/binding/cm_imu_cal_routines.c
+  channel_in, lines 74-75 (2 unrun) 3a2338fb
+    | not_modelled();
+    | return 0;
+    why: [refusal]
+  channel_out, lines 80-84 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  code_at, line 413 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  pair, lines 517-519 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/cm_jet_select_routines.c
+  channel, line 68 (1 unrun) a8aeb527
+    | default: not_modelled(); return NULL;
+    why: [refusal]
+
+src/binding/cm_mysubs_routines.c
+  run, lines 40-41 (2 unrun) 1ad5f8d0
+    | else
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+
+src/binding/cm_p11_routines.c
+  channel_in, lines 66-67 (2 unrun) 09cf72b4
+    | not_modelled(); /* the file reads no other channel */
+    | return 0;
+    why: [refusal]
+  basic_entry, line 185 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  code_at, line 214 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  pair, lines 276-278 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/cm_p20_p25_routines.c
+  channel_in, lines 76-77 (2 unrun) f45d51ff
+    | not_modelled(); /* the readable parts read no other channel */
+    | return 0;
+    why: [refusal]
+  basic_entry, line 405 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+
+src/binding/cm_p30_routines.c
+  basic_entry, line 150 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  pair, lines 243-245 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/cm_p32_routines.c
+  leave, lines 48-50 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  rope_word, lines 54-59 (5 unrun) e0ee539a
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(1u, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic_entry, line 143 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  store_spills, line 214 (1 unrun) 3705a9ac
+    | a = (a + (~agc.memory[(FIXLOC + ADDRESS_OF(X1) + kind - 1u) & 03777u] & 077777u)) % 077777u;
+    why: [open]
+  basic, lines 249-252 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  loop_back, line 272 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+  loop_back, line 274 (1 unrun) 2c4b3848
+    | return EXEC_OK;
+    why: [open]
+  pair, line 294 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+  pair, lines 301-303 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/cm_p37_p70_routines.c
+  channel_in, lines 54-58 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 61-65 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  rope_word, lines 70-75 (5 unrun) e0ee539a
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(1u, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic_entry, line 171 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  pair, lines 311-314 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+
+src/binding/cm_p40_routines.c
+  channel_in, lines 76-77 (2 unrun) f45d51ff
+    | not_modelled(); /* the readable parts read no other channel */
+    | return 0;
+    why: [refusal]
+  channel_out, lines 88-89 (2 unrun) 986c816c
+    | else
+    | not_modelled(); /* the readable parts write no other channel */
+    why: [refusal]
+  pair, lines 509-511 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/cm_p51_routines.c
+  channel_in, lines 50-54 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 57-61 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  basic_entry, line 322 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  pair, lines 541-543 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+  rtb_alone, line 617 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+  rtb_alone, lines 625-628 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+
+src/binding/cm_p61_routines.c
+  leave, lines 48-50 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  channel_in, lines 54-58 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 61-65 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  rope_word, lines 70-75 (5 unrun) e0ee539a
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(1u, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic_entry, line 200 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  run_basic, lines 291-294 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  pair, lines 347-349 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/cm_rcs_dap_exec_routines.c
+  leave, lines 43-45 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  channel_in, lines 49-53 (5 unrun) fcd01eb7
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0u;
+    | }
+    why: [refusal]
+  channel_out, lines 56-60 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  rope_word, lines 64-69 (5 unrun) e0ee539a
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(1u, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic_entry, line 115 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  run_basic, lines 126-128 (3 unrun) 0615ff78
+    | *state = before;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+
+src/binding/cm_rcs_dap_routines.c
+  channel, line 67 (1 unrun) a8aeb527
+    | default: not_modelled(); return NULL;
+    why: [refusal]
+
+src/binding/cm_reentry_routines.c
+  channel_in, lines 53-57 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 60-64 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  basic_entry, line 148 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  pair, lines 289-291 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/cm_servicer_routines.c
+  channel_in, lines 57-61 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 64-68 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  rope_word, lines 73-78 (5 unrun) e0ee539a
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(1u, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  pair, lines 260-262 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/cm_tpi_search_routines.c
+  rope_word, lines 49-54 (5 unrun) e0ee539a
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(1u, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic_entry, line 125 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  code_at, line 160 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  pair, lines 221-223 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/cm_tvc_daps_routines.c
+  channel_in, lines 59-60 (2 unrun) 04b0f839
+    | not_modelled(); /* the file uses no other channel */
+    | return 0;
+    why: [refusal]
+  channel_out, lines 67-68 (2 unrun) 57af5f03
+    | else
+    | not_modelled();
+    why: [refusal]
+
+src/binding/cm_tvc_exec_routines.c
+  channel_in, lines 56-57 (2 unrun) 09cf72b4
+    | not_modelled(); /* the file reads no other channel */
+    | return 0;
+    why: [refusal]
+  channel_out, lines 62-66 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  rope_word, lines 70-75 (5 unrun) e0ee539a
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(1u, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic_entry, line 129 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+
+src/binding/cm_tvc_init_routines.c
+  channel_in, lines 61-62 (2 unrun) 09cf72b4
+    | not_modelled(); /* the file reads no other channel */
+    | return 0;
+    why: [refusal]
+  channel_out, lines 67-71 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+
+src/binding/cm_tvc_massprop_routines.c
+  leave, lines 48-50 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  channel_in, lines 54-58 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 62-66 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  basic_sane, line 95 (1 unrun) 3fa97fd8
+    | return false;
+    why: [open]
+  run_on, lines 133-134 (2 unrun) b9317a52
+    | entry->routine();
+    | }
+    why: [open]
+  run_basic, lines 147-150 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+
+src/binding/cm_tvc_restarts_routines.c
+  channel_in, lines 60-61 (2 unrun) 04b0f839
+    | not_modelled(); /* the file uses no other channel */
+    | return 0;
+    why: [refusal]
+  channel_out, lines 70-71 (2 unrun) 57af5f03
+    | else
+    | not_modelled();
+    why: [refusal]
+
+src/binding/cm_tvc_roll_routines.c
+  leave, lines 47-49 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  channel_in, lines 56-57 (2 unrun) 09cf72b4
+    | not_modelled(); /* the file reads no other channel */
+    | return 0;
+    why: [refusal]
+  basic_entry, line 128 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  run_basic, lines 141-144 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+
+src/binding/cm_tvc_stroke_routines.c
+  channel_in, lines 59-60 (2 unrun) 04b0f839
+    | not_modelled(); /* the file uses no other channel */
+    | return 0;
+    why: [refusal]
+  channel_out, lines 67-68 (2 unrun) 57af5f03
+    | else
+    | not_modelled();
+    why: [refusal]
+  basic_entry, line 124 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+
+src/binding/conics_routines.c
+  leave, lines 57-59 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  channel_in, lines 63-67 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 70-74 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  rope_word, lines 78-83 (5 unrun) f86770db
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic_entry, line 137 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  code_at, line 158 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  run_basic, lines 252-255 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  pair, lines 299-301 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+  checkctr_alone, line 372 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+
+src/binding/dapidler_routines.c
+  leave, lines 32-34 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  channel, line 45 (1 unrun) a8aeb527
+    | default: not_modelled(); return NULL;
+    why: [refusal]
+  fixed_memory, lines 71-72 (2 unrun) 3a2338fb
+    | not_modelled();
+    | return 0;
+    why: [refusal]
+  run, lines 97-101 (5 unrun) 70aceecd
+    | *state = before;
+    | *io = kept_io;
+    | *hardware_now = kept_hardware;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+
+src/binding/display_interface_routines.c
+  channel_in, lines 74-78 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 81-85 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+
+src/binding/downtelemetry_routines.c
+  channel_out, line 113 (1 unrun) 90ee1ad2
+    | default: leave();
+    why: [refusal]
+  run, line 174 (1 unrun) e07ad122
+    | default: return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+
+src/binding/ephemerides_routines.c
+  step, lines 118-120 (3 unrun) 7f0c02e3
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+  interpretive, lines 173-175 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/extended_verbs_routines.c
+  channel_in, line 86 (1 unrun) 7a17fe30
+    | not_modelled();
+    why: [refusal]
+  fixed_memory, lines 97-101 (5 unrun) 5b28b2b2
+    | {
+    | (void)physical;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  lanec_ev_radar_dispatch, lines 667-670 (4 unrun) 2296a065
+    | (void)state;
+    | (void)io;
+    | (void)mission;
+    | return LANEC_OUT_OF_SCOPE;
+    why: [refusal]
+  lanec_ev_lmi_dispatch, lines 1017-1020 (4 unrun) bf8c5957
+    | *state = before;
+    | *io = io_before;
+    | return LANEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  lanec_ev_lmi_dispatch, lines 1033-1038 (6 unrun) 1721c7f1
+    | {
+    | (void)state;
+    | (void)io;
+    | (void)mission;
+    | return LANEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  run_part, line 1301 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+  intpret_from_the_file, lines 1333-1350 (17 unrun) 9e7300a8
+    | {
+    | device_record *record = device;
+    | uint16_t word_after_tc, i;
+    | if (!program || !state || !record) return EXEC_OUT_OF_SCOPE;
+    | memset(&record_channels, 0, sizeof record_channels);
+    | record_channels.superbank = record->control.superbank;
+    | ... (11 more)
+    why: [open]
+
+src/binding/findcduw_routines.c
+  channel_in, line 66 (1 unrun) ff46eace
+    | default: not_modelled(); return 0;
+    why: [refusal]
+  channel_out, lines 72-76 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  basic_entry, line 165 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  code_at, line 182 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+
+src/binding/fresh_start_routines.c
+  fixed_memory, lines 52-56 (5 unrun) 2519c7ff
+    | {
+    | (void)physical;
+    | leave();
+    | return 0;
+    | }
+    why: [refusal]
+  channel, line 90 (1 unrun) 922e95e4
+    | default: return NULL;
+    why: [refusal]
+  run, line 205 (1 unrun) e07ad122
+    | default: return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+
+src/binding/geometry_routines.c
+  leave, lines 82-84 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  run_basic, lines 144-145 (2 unrun) 0e0db687
+    | return false;
+    | }
+    why: [open]
+  interpretive, lines 233-235 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/gimbal_lock_routines.c
+  interpretive, lines 67-69 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/ground_track_routines.c
+  leave, lines 52-54 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  rope_word, lines 58-63 (5 unrun) f86770db
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic, lines 117-120 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+
+src/binding/imu_compensation_routines.c
+  leave, lines 25-27 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  fixed_memory, lines 31-35 (5 unrun) 5b28b2b2
+    | {
+    | (void)physical;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  as_expected, line 43 (1 unrun) 3fa97fd8
+    | return false;
+    why: [open]
+  run, lines 92-95 (4 unrun) 7a9b28f2
+    | *state = before;
+    | *io = io_before;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  run, line 99 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+
+src/binding/imu_mode_switching_routines.c
+  leave, lines 67-69 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  channel_at, line 77 (1 unrun) a8aeb527
+    | default: not_modelled(); return NULL;
+    why: [refusal]
+  run, lines 224-227 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+
+src/binding/imu_performance_routines.c
+  channel_in, lines 72-73 (2 unrun) 3a2338fb
+    | not_modelled();
+    | return 0;
+    why: [refusal]
+  channel_out, lines 77-81 (5 unrun) bf595406
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled(); /* the test writes no channel */
+    | }
+    why: [refusal]
+  rope_word, lines 84-89 (5 unrun) 5db38b7e
+    | {
+    | uint16_t value;
+    | if (physical > 0xFFFFu || !apollo_rope_read(0u, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+
+src/binding/inflight_align_routines.c
+  leave, lines 50-52 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  channel_in, lines 56-60 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 63-67 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  basic_entry, line 122 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  code_at, line 139 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  run, lines 166-169 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  pair, lines 206-208 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/integration_init_routines.c
+  channel_in, lines 76-80 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 83-87 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  move_sane, line 142 (1 unrun) 3fa97fd8
+    | return false;
+    why: [open]
+  basic_entry, line 244 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  code_at, line 270 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  pair, lines 436-438 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/interbank_tables.c
+  fixed_memory, lines 31-33 (3 unrun) 59b504ec
+    | if (!fixed_word_at(program_now, physical, &value) && program_now->fixed_data)
+    | program_now->fixed_data(program_now, (uint16_t)physical, &value);
+    | return value;
+    why: [open]
+  run, line 138 (1 unrun) e07ad122
+    | default: return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+
+src/binding/interpreter_basic.c
+  maxtest_entry, lines 48-50 (3 unrun) 61460f83
+    | {
+    | maxtest_minus((unsigned)(MAXTEST - Z));
+    | }
+    why: [open]
+  sqrtsub_entry, lines 52-54 (3 unrun) 21c48542
+    | {
+    | (void)sqrtsub();
+    | }
+    why: [open]
+  as_expected, line 172 (1 unrun) 3fa97fd8
+    | return false;
+    why: [open]
+
+src/binding/interpreter_core.c
+  code_word, line 113 (1 unrun) e51e4b7c
+    | address = 2048u + (address & 07777u) - 04000u;
+    why: [open]
+  as_expected, line 146 (1 unrun) 3fa97fd8
+    | return false;
+    why: [open]
+  order_taken, line 171 (1 unrun) 3fa97fd8
+    | return false;
+    why: [open]
+  run, line 271 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+  run, line 273 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+  run, line 297 (1 unrun) 775cc72f
+    | swreturn();
+    why: [open]
+
+src/binding/kalcmanu_steering_routines.c
+  interpretive, lines 215-217 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/kalman_filter_routines.c
+  leave, lines 31-33 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  run, lines 59-61 (3 unrun) 0615ff78
+    | *state = before;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+
+src/binding/keyrupt_routines.c
+  run, line 59 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+  run, lines 78-79 (2 unrun) 1ad5f8d0
+    | else
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+
+src/binding/lambert_aimpoint_routines.c
+  leave, lines 41-43 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  rope_word, lines 47-52 (5 unrun) 1b47c921
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(0u, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic, lines 102-105 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+
+src/binding/landing_displays_routines.c
+  leave, lines 30-32 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  latch, line 42 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [refusal]
+  latch, line 44 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  run, lines 88-91 (4 unrun) 23169ee2
+    | *state = before;
+    | *hardware_now = channels;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  run, line 95 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+
+src/binding/lat_long_routines.c
+  interpretive, lines 61-63 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/llge_routines.c
+  channel_in, lines 75-76 (2 unrun) 88506bd0
+    | case 032u: return inputs_now->channel32;
+    | case 033u: return inputs_now->channel33;
+    why: [open]
+  channel_in, line 80 (1 unrun) ff46eace
+    | default: not_modelled(); return 0;
+    why: [refusal]
+  basic_entry, line 247 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+
+src/binding/lunar_landing_routines.c
+  rope_word, lines 59-64 (5 unrun) 1b47c921
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(0u, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  channel, line 72 (1 unrun) a8aeb527
+    | default: not_modelled(); return NULL;
+    why: [refusal]
+  basic_at, line 150 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  code_at, line 167 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+
+src/binding/measurement_inc_routines.c
+  leave, lines 60-62 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  channel_in, lines 66-70 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 73-77 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  rope_word, lines 81-86 (5 unrun) f86770db
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  move_sane, line 122 (1 unrun) 3fa97fd8
+    | return false;
+    why: [open]
+  basic_entry, line 148 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  code_at, line 162 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  basic, lines 214-217 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  pair, lines 242-244 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+  measurement_inc_readable, lines 250-253 (4 unrun) 1525cab9
+    | {
+    | if (order_pair) return code_at(key / 1024u, (word)(02000u + key % 1024u)) != NULL;
+    | return basic_entry(key) != NULL;
+    | }
+    why: [open]
+
+src/binding/noun_reader_routines.c
+  leave, lines 35-37 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  apollo_noun_reader, lines 89-91 (3 unrun) d0f62799
+    | *state = before;
+    | return false;
+    | }
+    why: [open]
+
+src/binding/orbital_integration_routines.c
+  leave, lines 53-55 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  channel_in, lines 59-63 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 66-70 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  rope_word, lines 74-79 (5 unrun) f86770db
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic_entry, line 131 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  code_at, line 154 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  basic, lines 195-198 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  pair, lines 223-225 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/p12_routines.c
+  leave, lines 45-47 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  rope_word, lines 51-56 (5 unrun) 1b47c921
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(0u, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic_entry, line 125 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  basic, lines 161-164 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  pair, lines 206-208 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/p20_p25_routines.c
+  channel_in, lines 85-87 (3 unrun) 31c02b0f
+    | case 030u: return inputs_now->channel30;
+    | case 031u: return inputs_now->channel31;
+    | case 032u: return inputs_now->channel32;
+    why: [open]
+  channel_in, line 98 (1 unrun) ff46eace
+    | default: not_modelled(); return 0;
+    why: [refusal]
+  basic_entry, line 684 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+
+src/binding/p30_routines.c
+  leave, lines 42-44 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  rope_word, lines 48-53 (5 unrun) 1b47c921
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(0u, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic, lines 103-106 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+
+src/binding/p32_routines.c
+  basic_entry, line 153 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  store_spills, line 221 (1 unrun) 3705a9ac
+    | a = (a + (~agc.memory[(FIXLOC + ADDRESS_OF(X1) + kind - 1u) & 03777u] & 077777u)) % 077777u;
+    why: [open]
+  loop_back, line 268 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+  loop_back, line 270 (1 unrun) 2c4b3848
+    | return EXEC_OK;
+    why: [open]
+  pair, lines 296-298 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/p34_routines.c
+  basic_entry, line 225 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  pair, lines 342-344 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/p40_routines.c
+  latch, line 67 (1 unrun) a8aeb527
+    | default: not_modelled(); return NULL;
+    why: [refusal]
+  basic_entry, line 259 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  pair, lines 333-335 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/p51_routines.c
+  channel_in, lines 51-55 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 58-62 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  basic_entry, line 356 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  pair, lines 592-594 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+  rtb_alone, lines 652-675 (22 unrun) 8ac87a7b
+    | {
+    | apollo_overlay_state before;
+    | p66_bias_io kept;
+    | unsigned i;
+    | if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
+    | bind(program, state, io);
+    | ... (16 more)
+    why: [open]
+  rdcdus_alone, lines 679-681 (3 unrun) 77378d7c
+    | {
+    | return rtb_alone(rdcdus, RDCDUS, I_RDCDUS & 076000u, true, program, state, device);
+    | }
+    why: [open]
+
+src/binding/p70_routines.c
+  channel_out, lines 84-85 (2 unrun) 57af5f03
+    | else
+    | not_modelled();
+    why: [refusal]
+  pair, lines 292-294 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/p76_routines.c
+  leave, lines 60-62 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  rope_word, lines 66-71 (5 unrun) f86770db
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  run, lines 126-129 (4 unrun) 1384b7c3
+    | *state = before;
+    | memcpy(io, &kept, io_size);
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  code_at, line 241 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  pair, lines 264-266 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/p_axis_routines.c
+  leave, lines 42-44 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  channel, line 52 (1 unrun) a8aeb527
+    | default: not_modelled(); return NULL;
+    why: [refusal]
+  rope_word, line 83 (1 unrun) 7a17fe30
+    | not_modelled();
+    why: [refusal]
+  run, lines 116-120 (5 unrun) 70aceecd
+    | *state = before;
+    | *io = kept_io;
+    | *hardware_now = kept_hardware;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+
+src/binding/pinball_routines.c
+  pinball_step_from_bankcall, line 817 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+  request_return, lines 837-847 (10 unrun) 208d25dd
+    | {
+    | const unsigned mpac3 = ADDRESS_OF(MPAC) + 3u;
+    | (void)p;
+    | (void)device;
+    | if (!state || (state->words[LANEC_Z] & 07777u) != mpac3 || state->words[mpac3] != ENDOFJOB)
+    | return EXEC_OUT_OF_SCOPE;
+    | ... (4 more)
+    why: [open]
+
+src/binding/planetary_routines.c
+  interpretive, lines 76-78 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/powered_flight_routines.c
+  channel_in, lines 62-66 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 69-73 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  place_at, line 174 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  pair, line 273 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+  pair, lines 287-289 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/q_r_axis_routines.c
+  channel, line 57 (1 unrun) a8aeb527
+    | default: not_modelled(); return NULL;
+    why: [refusal]
+
+src/binding/r30_routines.c
+  leave, lines 48-50 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  rope_word, lines 54-59 (5 unrun) f86770db
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic, lines 110-113 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  pair, lines 247-249 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/r31_routines.c
+  leave, lines 59-61 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  run, lines 163-166 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+
+src/binding/r60_62_routines.c
+  channel_out, lines 73-77 (5 unrun) 48ddd97b
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled(); /* R60_62 writes no channel */
+    | }
+    why: [refusal]
+  interpretive, lines 268-270 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/r63_routines.c
+  leave, lines 42-44 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  rope_word, lines 48-53 (5 unrun) 1b47c921
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(0u, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic, lines 116-119 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  interpretive, lines 171-173 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/rcs_failure_monitor_routines.c
+  channel_out, lines 46-50 (5 unrun) effcf34a
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled(); /* the monitor writes no channel */
+    | }
+    why: [refusal]
+
+src/binding/restart_routines.c
+  takes, line 82 (1 unrun) 622e3586
+    | default: return false;
+    why: [open]
+
+src/binding/rtb_op_codes_routines.c
+  code_at, line 209 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  pair, lines 231-233 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/rupt_routines.c
+  run_lead_in, line 93 (1 unrun) e07ad122
+    | default: return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+  channel_out, lines 163-164 (2 unrun) 57af5f03
+    | else
+    | not_modelled();
+    why: [refusal]
+  run_t6, line 221 (1 unrun) e07ad122
+    | default: return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+
+src/binding/sband_antenna_routines.c
+  leave, lines 53-55 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  rope_word, lines 59-64 (5 unrun) f86770db
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic, lines 140-143 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  interpretive, lines 182-184 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/self_check_routines.c
+  channel_in, lines 46-50 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 53-57 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+
+src/binding/service_routines.c
+  gentran_call, line 162 (1 unrun) 3fa97fd8
+    | return false;
+    why: [open]
+  takes, line 199 (1 unrun) 622e3586
+    | default: return false;
+    why: [open]
+  run, line 232 (1 unrun) e07ad122
+    | default: return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+
+src/binding/servicer_routines.c
+  rope_word, line 82 (1 unrun) 7a17fe30
+    | not_modelled();
+    why: [refusal]
+  channel, line 90 (1 unrun) af11193e
+    | case 011u: return &io_record->chan11;
+    why: [open]
+  channel, line 94 (1 unrun) a8aeb527
+    | default: not_modelled(); return NULL;
+    why: [refusal]
+  channel_out, lines 104-106 (3 unrun) 69d05b30
+    | {
+    | *channel(number) = (agc_word)value;
+    | }
+    why: [open]
+  store_spills, line 404 (1 unrun) 09afa7d3
+    | a = (a + (~agc.memory[(FIXLOC + K_X1 + kind - 1u) & 03777u] & 077777u)) % 077777u;
+    why: [open]
+
+src/binding/sp_routines.c
+  fixed_memory, line 25 (1 unrun) f3ea7c18
+    | return PLUS_ZERO; /* never read */
+    why: [never]
+  run, lines 48-49 (2 unrun) 1ad5f8d0
+    | else
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+
+src/binding/sps_backup_routines.c
+  leave, lines 34-36 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  run, lines 78-81 (4 unrun) 0fa6f2d6
+    | *state = before;
+    | *io = kept_io;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+
+src/binding/stable_orbit_routines.c
+  rope_word, lines 65-70 (5 unrun) f86770db
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  pair, lines 265-267 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+  pending_dad, lines 295-297 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/standard_lead_routines.c
+  run_basic, line 186 (1 unrun) e07ad122
+    | default: return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+  run_standard_lead_code, lines 236-238 (3 unrun) e37f629e
+    | *state = *before;
+    | *(mission_io *)device = *io_before;
+    | }
+    why: [open]
+
+src/binding/sxtmark_routines.c
+  fixed_memory, lines 51-55 (5 unrun) 5b28b2b2
+    | {
+    | (void)physical;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+
+src/binding/t4rupt_imu_routines.c
+  channel, line 30 (1 unrun) a8aeb527
+    | default: not_modelled(); return NULL;
+    why: [refusal]
+  fixed_memory, lines 55-56 (2 unrun) 3a2338fb
+    | not_modelled();
+    | return 0;
+    why: [refusal]
+  run, line 160 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+
+src/binding/t4rupt_optics_routines.c
+  channel, line 33 (1 unrun) a8aeb527
+    | default: not_modelled(); return NULL;
+    why: [refusal]
+
+src/binding/t4rupt_routines.c
+  run, lines 85-86 (2 unrun) 19e06446
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+
+src/binding/t4rupt_rr_routines.c
+  channel, line 27 (1 unrun) a8aeb527
+    | default: not_modelled(); return NULL;
+    why: [refusal]
+  run, line 80 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+
+src/binding/throttle_routines.c
+  run, line 86 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+  run, line 106 (1 unrun) 60864340
+    | return EXEC_OUT_OF_SCOPE;
+    why: [refusal]
+
+src/binding/time_free_fall_routines.c
+  leave, lines 49-51 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  channel_in, lines 55-59 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 62-66 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  rope_word, lines 70-75 (5 unrun) f86770db
+    | {
+    | agc_word value = 0;
+    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
+    | return (word)(value & MINUS_ZERO);
+    | }
+    why: [open]
+  basic_entry, line 121 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  code_at, line 132 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  run, lines 189-192 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  pair, lines 234-236 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/tjet_law_routines.c
+  leave, lines 34-36 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  rope_word, line 45 (1 unrun) 7a17fe30
+    | not_modelled();
+    why: [refusal]
+  run, lines 71-73 (3 unrun) 0615ff78
+    | *state = before;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+
+src/binding/trim_gimbal_routines.c
+  rope_word, line 61 (1 unrun) 7a17fe30
+    | not_modelled();
+    why: [refusal]
+
+src/binding/v37_routines.c
+  fixed_memory, lines 91-95 (5 unrun) 2519c7ff
+    | {
+    | (void)physical;
+    | leave();
+    | return 0;
+    | }
+    why: [refusal]
+  channel, line 107 (1 unrun) 922e95e4
+    | default: return NULL;
+    why: [refusal]
+  channel_in, lines 135-139 (5 unrun) 7fde2fbf
+    | {
+    | (void)number;
+    | leave();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 142-146 (5 unrun) c139b48f
+    | {
+    | (void)number;
+    | (void)value;
+    | leave();
+    | }
+    why: [refusal]
+  run_bank04, line 257 (1 unrun) 90ee1ad2
+    | default: leave();
+    why: [refusal]
+  run_bank20, line 267 (1 unrun) 90ee1ad2
+    | default: leave();
+    why: [refusal]
+
+src/burn_baby/burn_baby.c
+  p42ign, line 636 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+
+src/burn_baby/clock.c
+  ignite, line 469 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+  p40a_p_after_gpn_auto, line 565 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+
+src/cm_dap/indexing.c
+  dca_indexed_in, lines 77-80 (4 unrun) 64613eea
+    | set_L(overflow_corrected(A));
+    | A = sign_extend(fetch(01777u));
+    | return;
+    | }
+    why: [open]
+  dcs_indexed_in, lines 89-92 (4 unrun) cd68e2d9
+    | set_L(negate(overflow_corrected(A)));
+    | A = sign_extend(negate(fetch(01777u)));
+    | return;
+    | }
+    why: [open]
+
+src/dapidler/dapidler.c
+  chekmore, lines 127-128 (2 unrun) e863f365
+    | case NEGATIVE: dapidler(); return;
+    | case IS_MINUS_ZERO: dapidler_plus1(); return;
+    why: [open]
+
+src/display_interface/endidle.c
+  linuschr, line 316 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+
+src/display_interface/marks.c
+  gogomark, lines 211-213 (3 unrun) dcb23f21
+    | continue_at(PRIOPLAY);
+    | return;
+    | }
+    why: [open]
+
+src/display_interface/r_displays.c
+  savelocs, lines 128-131 (4 unrun) 30836f01
+    | tc_at((word)(SAVELOCR + 1u)); /* TC MAKECADR */
+    | continue_at(MAKECADR);
+    | return;
+    | }
+    why: [open]
+  savelocs_after_makecadr, lines 185-186 (2 unrun) 8afb91e4
+    | not_modelled();
+    | }
+    why: [not-modelled]
+
+src/display_interface/sleep.c
+  xchqadd_after_upent2, line 134 (1 unrun) 197bf41e
+    | mask(BIT3);
+    why: [open]
+
+src/display_interface/starts.c
+  chkprio, line 27 (1 unrun) 197bf41e
+    | mask(BIT3);
+    why: [open]
+
+src/downtelemetry/downlink_lists.c
+  assembled, line 785 (1 unrun) dd7edb30
+    | case LABEL_ONLY: break;
+    why: [open]
+
+src/downtelemetry/downtelemetry.c
+  dodowntm, lines 97-98 (2 unrun) 8d46d754
+    | case NEGATIVE: break;               /* TCF WO1 */
+    | case IS_MINUS_ZERO: not_modelled(); /* RAND of BIT7 is never -0 */
+    why: [open]
+  nextincl, line 195 (1 unrun) a33ec75a
+    | case IS_PLUS_ZERO: break;
+    why: [open]
+  nextincl, lines 206-207 (2 unrun) d9c1b805
+    | case IS_PLUS_ZERO:
+    | cs(ADDRESS_FIELD(MINB1314)); /* MINB1314 runs as CS 7777 */
+    why: [open]
+  dodnptr, line 282 (1 unrun) c013efa3
+    | case IS_PLUS_ZERO: dosublst(); return;
+    why: [open]
+  dodnptr, line 284 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  snaploop, lines 315-318 (4 unrun) d7d14179
+    | case IS_PLUS_ZERO: /* LDNPHAS2 (GENADR DNPHASE2) runs as TC DNPHASE2 */
+    | tc_at(ADDRESS_OF(LDNPHAS2));
+    | dnphase2();
+    | return;
+    why: [open]
+  snaploop, line 320 (1 unrun) 305d26d1
+    | default: break;
+    why: [open]
+  nextinsl, line 361 (1 unrun) a33ec75a
+    | case IS_PLUS_ZERO: break;
+    why: [open]
+  dndump, lines 433-437 (5 unrun) 270a0086
+    | case NEGATIVE: dndump1(); return;
+    | case IS_MINUS_ZERO:
+    | ts(ADDRESS_OF(DNTMGOTO));
+    | dndump2();
+    | return;
+    why: [open]
+
+src/entry_dap/cm_rcs.c
+  getlcx, line 106 (1 unrun) 99997b53
+    | case IS_MINUS_ZERO: continue_at(GETLCX + 015u); break;
+    why: [open]
+
+src/entry_dap/dapon.c
+  cm_dap2c_after_waitlist, line 201 (1 unrun) bcd999b6
+    | continue_at(CM_DAP2C + 026u);
+    why: [open]
+
+src/entry_dap/dead_zone.c
+  index_a_cs, line 63 (1 unrun) a21108f2
+    | cs(at);
+    why: [open]
+
+src/executive/executive.c
+  findvac2, lines 126-131 (6 unrun) 87b07a60
+    | if (at == 014u) { /* the OCT 1201 runs as TC 1201 */
+    | tc_at((word)(FINDVAC2 + 014u));
+    | continue_at(01201u);
+    | return;
+    | }
+    | vacfound();
+    why: [open]
+  novac2, lines 168-170 (3 unrun) a653f4af
+    | tc_at((word)(NOVAC3 + 4u));
+    | continue_at(NO_CORES);
+    | return;
+    why: [open]
+  novac2, lines 197-201 (5 unrun) 19b3c054
+    | case NEGATIVE: /* the OCT 1202 runs as TC 1202 */
+    | tc_at((word)(NEXTCORE + 5u));
+    | continue_at(01202u);
+    | return;
+    | case IS_MINUS_ZERO: /* on into CHANJOB -2 */ chanjob_minus2(); return;
+    why: [open]
+  spectest, lines 244-247 (4 unrun) 37c150b6
+    | case NEGATIVE:
+    | tc_at((word)(SPECTEST + 3u)); /* TC CCSHOLE */
+    | continue_at(CCSHOLE);
+    | return;
+    why: [open]
+  waketest, lines 535-536 (2 unrun) 6739c1e7
+    | case NEGATIVE: prioch2(); return;
+    | case IS_MINUS_ZERO: prioch2_plus1(); return;
+    why: [open]
+  endofjob, lines 601-603 (3 unrun) 0ff5486b
+    | case IS_PLUS_ZERO: ts(A_ADDRESS); break;
+    | case NEGATIVE: break;
+    | case IS_MINUS_ZERO: continue_at((word)(EJSCAN + 1u)); return;
+    why: [open]
+  ejscan, lines 630-639 (8 unrun) 626123a9
+    | case IS_PLUS_ZERO:
+    | /* For core set 3 the third word is the constant -CCSPR, which
+    | * runs as an instruction; for the others it is TC CCSHOLE. */
+    | if (k == 3u) {
+    | continue_at((word)(at + 2u));
+    | return;
+    | ... (4 more)
+    why: [open]
+  ejscan, line 651 (1 unrun) a33ec75a
+    | case IS_PLUS_ZERO: break;
+    why: [open]
+  ejscan, lines 663-670 (8 unrun) 2136f7c9
+    | case POSITIVE:
+    | tc_at((word)(at + 1u));
+    | continue_at(CCSHOLE);
+    | return;
+    | case IS_PLUS_ZERO:
+    | tc_at((word)(at + 2u));
+    | ... (2 more)
+    why: [open]
+  ejscan, lines 676-678 (3 unrun) e4efb9e8
+    | case IS_MINUS_ZERO: /* CAF 0 -1 unindexed: no CCS word to read */
+    | continue_at((word)(at + 9u));
+    | return;
+    why: [open]
+  ejscan, lines 685-687 (3 unrun) 1ba75236
+    | continue_at((word)(at + 8u)); /* not a CCS word */
+    | return;
+    | }
+    why: [open]
+
+src/extended_verbs/align.c
+  rdruseck, line 880 (1 unrun) 0041ee50
+    | case POSITIVE: tc(RDRUSECK + 15u, ALM_END); return; /* "YES" */
+    why: [open]
+
+src/extended_verbs/front.c
+  testxact, lines 231-232 (2 unrun) 64c5eeba
+    | case NEGATIVE: setxtact(); return;
+    | case IS_MINUS_ZERO: setxtact_plus1(); return;
+    why: [open]
+
+src/findcduw/gimbal_angles.c
+  after_lag_angle, line 328 (1 unrun) 72d0b46c
+    | case IS_MINUS_ZERO: tcqcduw_intpret(); break;
+    why: [open]
+
+src/findcduw/subroutines.c
+  arctrgsp, line 278 (1 unrun) a33ec75a
+    | case IS_PLUS_ZERO: break;
+    why: [open]
+
+src/fresh_start/fresh_start.c
+  back_into_coarse_align, line 155 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  back_into_coarse_align, lines 157-159 (3 unrun) 59828d4b
+    | tc_at(WOR_CHAN12);
+    | continue_at(05012u);
+    | return false;
+    why: [open]
+  setinfl, lines 505-508 (4 unrun) 64eb8607
+    | case IS_MINUS_ZERO:                          /* never: the WOR's word alone, TC 5011 */
+    | tc_at(WOR_ENGINE_ON);
+    | continue_at(05011u);
+    | return;
+    why: [never]
+  nocoarse, lines 634-637 (4 unrun) 64eb8607
+    | case IS_MINUS_ZERO:                          /* never: the WOR's word alone, TC 5011 */
+    | tc_at(WOR_ENGINE_ON);
+    | continue_at(05011u);
+    | return;
+    why: [never]
+  nxtrst, line 807 (1 unrun) 7a17fe30
+    | not_modelled();
+    why: [not-modelled]
+  pinact_end, lines 854-856 (3 unrun) 11522be5
+    | case NEGATIVE: groups = POSITIVE; break;          /* on TCF ENDRSTRT */
+    | case IS_MINUS_ZERO: groups = IS_PLUS_ZERO; break; /* on CAF BIT15 */
+    | case POSITIVE: break;
+    why: [open]
+
+src/fresh_start/v37.c
+  checktab, lines 449-450 (2 unrun) 12cb6933
+    | case NEGATIVE: ca(MPAC1); break; /* never: MPAC +1 counts down */
+    | case IS_MINUS_ZERO: break;       /* never */
+    why: [never]
+  checktab, lines 452-453 (2 unrun) 2a3ce007
+    | break;
+    | case IS_PLUS_ZERO: continue;      /* TCF AGAINMM, with +0 */
+    why: [open]
+
+src/imu_calibration/drift_loop.c
+  finetime_plus1, lines 186-188 (3 unrun) 7a730130
+    | read_channel(LOSCALAR);
+    | ts(L_ADDRESS);
+    | }
+    why: [open]
+  loadstdt_plus1, lines 446-447 (2 unrun) ef032f09
+    | case NEGATIVE: alloop(); return;
+    | case IS_MINUS_ZERO: alloop_plus1(); return;
+    why: [open]
+  storedta, lines 472-473 (2 unrun) f2dfc286
+    | case NEGATIVE: loadstdt(); return;
+    | case IS_MINUS_ZERO: loadstdt_plus1(); return;
+    why: [open]
+  someerrr, lines 777-780 (4 unrun) 166d10fd
+    | {
+    | tc_at(SOMEERRR);
+    | continue_at(ALARM); /* OCT 1600 */
+    | }
+    why: [open]
+
+src/imu_calibration/imu_test.c
+  zeroing, line 695 (1 unrun) c312eafd
+    | default: not_modelled(); /* (the next words are EARTHR's) */
+    why: [not-modelled]
+
+src/imu_calibration/optical_verification.c
+  retarg_after_optstall, lines 592-593 (2 unrun) d2911b4c
+    | case NEGATIVE: ca(ADDRESS_OF(QPRET)); break;
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  retarg_after_optstall, lines 595-596 (2 unrun) 1aa86b2d
+    | retarg_mark_taken();
+    | }
+    why: [open]
+
+src/imu_compensation/imu_compensation.c
+  another_axis, lines 46-47 (2 unrun) 4ea23f65
+    | case IS_PLUS_ZERO: break;
+    | case NEGATIVE: break;
+    why: [open]
+  another_axis, lines 50-51 (2 unrun) 3b864e37
+    | not_modelled();
+    | return false;
+    why: [not-modelled]
+  irigcomp, lines 330-331 (2 unrun) 794b2d45
+    | case NEGATIVE: set_A(PRIO21); break;
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+
+src/imu_mode_switching/gyro_torquing.c
+  gselect, lines 248-252 (3 unrun) 6d1d9852
+    | case IS_PLUS_ZERO:
+    | /* The word -GYROMIN, run as an instruction: MASK 07601. (A +0
+    | * cannot come here: RUPTREG1 less one is +0 for no RUPTREG1.) */
+    | mask(fetch_fixed(ADDRESS_FIELD(MINUS_GYROMIN)));
+    | break;
+    why: [open]
+
+src/imu_mode_switching/mode_ends.c
+  modabort, lines 165-166 (2 unrun) 1c28f9d8
+    | tc_at(MODABORT); /* TC POODOO; OCT 1210 */
+    | continue_at(POODOO);
+    why: [open]
+
+src/imu_performance/imu_performance.c
+  pipachk_landing, line 356 (1 unrun) 5454f838
+    | default: not_modelled(); /* (the TS after an INDEX: not a word of its own) */
+    why: [not-modelled]
+  pipjobb_landing, line 443 (1 unrun) 2796b01e
+    | default: not_modelled(); /* (BZMF without its EXTEND) */
+    why: [not-modelled]
+  zeroing, line 779 (1 unrun) f378a0ab
+    | default: not_modelled(); /* (the next words are ERTHRVSE's) */
+    why: [not-modelled]
+  finetime_plus1, lines 928-929 (2 unrun) a4b1d5ea
+    | finetime_reread();
+    | }
+    why: [open]
+  alflt, line 1084 (1 unrun) f4215585
+    | case IS_MINUS_ZERO: not_modelled(); return;
+    why: [not-modelled]
+
+src/integration_init/intstall.c
+  intwake1_after_jobwake, line 265 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  intwake, lines 299-300 (2 unrun) 707235d9
+    | case NEGATIVE: ca(ADDRESS_OF(QPRET)); break; /* CA QPRET, unindexed */
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  intwake, lines 302-304 (3 unrun) 27a83c0b
+    | ts(ADDRESS_OF(TBASE2));
+    | tc_to((word)(INTWAKE + 7u), PHASCHNG);
+    | }
+    why: [open]
+  intexit_after_exit, line 335 (1 unrun) b3db8cb8
+    | not_modelled();            /* (the skip would run RVCON's words) */
+    why: [not-modelled]
+
+src/interbank/interbank.c
+  prio12_as_ccs, line 164 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+
+src/interpreter/arithmetic.c
+  poly2, lines 420-421 (2 unrun) 25e838e7
+    | case NEGATIVE: dpagree(); return;
+    | case IS_MINUS_ZERO: dpagree_plus1(); return;
+    why: [open]
+
+src/interpreter/dispatcher.c
+  noibnksw, lines 138-142 (5 unrun) d88c187d
+    | case NEGATIVE: continue_at(CHANG2); return; /* (never: EDOP is seven bits) */
+    | case IS_MINUS_ZERO:
+    | incr(ADDRESS_OF(LOC));
+    | continue_at(NEWOPS);
+    | return; /* (never) */
+    why: [never]
+  noibnksw, line 149 (1 unrun) f1a52d8d
+    | case IS_MINUS_ZERO: continue_at(NEWOPS + 1u); return;
+    why: [open]
+  newops, lines 164-169 (4 unrun) c0e923e8
+    | case IS_PLUS_ZERO:
+    | /* (never: a program word is never +0. The AGC would run LOW7, OCT
+    | * 177, as TC 177.) */
+    | tc_at(ADDRESS_OF(LOW7));
+    | continue_at(LOW7);
+    | return;
+    why: [never]
+  newops, line 171 (1 unrun) 6099f891
+    | case IS_MINUS_ZERO: break; /* (never: no pair is -0) */
+    why: [never]
+  diradres, line 215 (1 unrun) 8f59ce8f
+    | case IS_PLUS_ZERO:
+    why: [open]
+  diradres, line 220 (1 unrun) 5088b281
+    | case IS_MINUS_ZERO: break;                   /* (never: an address word +0) */
+    why: [never]
+  itr, lines 274-275 (2 unrun) 58644e6a
+    | else
+    | continue_at((word)to); /* (never: CYR always holds a code here) */
+    why: [never]
+  index_, line 314 (1 unrun) 67e3012c
+    | case IS_MINUS_ZERO: break; /* (never: an address word +0) */
+    why: [never]
+  opjump3, lines 437-442 (4 unrun) be2472b7
+    | case IS_MINUS_ZERO:
+    | /* (never: MODE is never -0. The AGC would run LVBUF, ADRES VBUF, as
+    | * TC VBUF.) */
+    | tc_at(ADDRESS_OF(LVBUF));
+    | continue_at(LVBUF);
+    | return;
+    why: [never]
+  indjump, line 469 (1 unrun) 8c283bb7
+    | case 015: ccall(); return;  /* computed call */
+    why: [open]
+  indjump, lines 485-487 (3 unrun) 31e274ac
+    | case 035:                   /* "AVAILABLE": TCF +0, a TCF to itself (no program uses it) */
+    | continue_at(INDJUMP + 035u);
+    | return;
+    why: [open]
+
+src/interpreter/divide.c
+  mpac_plus, lines 185-189 (3 unrun) 1e2eaa24
+    | case IS_PLUS_ZERO:
+    | /* The next word, -1/2+2 ("USED IN SQRTSUB"), is OCT 60001: it runs
+    | * as AD L, and the TCF +1 after it goes on. */
+    | ad_at(L_ADDRESS);
+    | break;
+    why: [open]
+  mpac_plus, lines 211-216 (4 unrun) cc311f21
+    | case IS_PLUS_ZERO:
+    | /* (never: the majors differed by one before the agreement. The next
+    | * word, LBUF2, ADRES BUF2, would run as TC BUF2.) */
+    | tc_at(ADDRESS_OF(LBUF2));
+    | continue_at(LBUF2);
+    | return;
+    why: [never]
+  into_maxtest, lines 314-315 (2 unrun) 65bbb2e1
+    | else
+    | continue_at(at); /* (never: no count goes outside the prologues) */
+    why: [never]
+  maxtest, lines 350-353 (4 unrun) d0a9ddb6
+    | case POSITIVE:
+    | tc_at(ADDRESS_OF(BIASHI));
+    | continue_at(BIASHI);
+    | return;
+    why: [open]
+  maxtest, line 356 (1 unrun) 9eb32197
+    | case IS_MINUS_ZERO: genddv_plus1(); return;
+    why: [open]
+
+src/interpreter/index_orders.c
+  fifteen_adrers, line 185 (1 unrun) a33ec75a
+    | case IS_PLUS_ZERO: break;
+    why: [open]
+  tagsub, line 217 (1 unrun) f91b5beb
+    | case IS_MINUS_ZERO: rtb_bhiz(); return;
+    why: [open]
+  rtb_bhiz, line 235 (1 unrun) f7aebb49
+    | case IS_PLUS_ZERO: rtb_plus1(); return;
+    why: [open]
+  rtb_bhiz, line 237 (1 unrun) 1da3aa6a
+    | case IS_MINUS_ZERO: bhiz_plus1(); return;
+    why: [open]
+  bov_b, lines 287-290 (4 unrun) ff5b5aaa
+    | case IS_PLUS_ZERO:
+    | tc_at(ADDRESS_OF(B5TOBB));
+    | continue_at(B5TOBB);
+    | return;
+    why: [open]
+  bov_b, line 292 (1 unrun) e2ebbba8
+    | case IS_MINUS_ZERO: bze_goto(); return;
+    why: [open]
+  bze_goto, line 310 (1 unrun) b070d238
+    | default: continue_at(DANZIG); return;
+    why: [open]
+  bpl_bmn, line 321 (1 unrun) 7c7699e5
+    | case IS_PLUS_ZERO: continue_at(FIVE_B10 & 07777u); return;
+    why: [open]
+  bpl_bmn, line 329 (1 unrun) 60fcb434
+    | case IS_MINUS_ZERO: continue_at(DANZIG); return;
+    why: [open]
+  call_ita, lines 352-355 (4 unrun) f2bbbfe7
+    | case IS_PLUS_ZERO:
+    | tc_at(CALL_ITA + 2u);
+    | continue_at(CCSHOLE);
+    | return;
+    why: [open]
+  call_ita, line 360 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+
+src/interpreter/load_store.c
+  store_, line 124 (1 unrun) db4e3013
+    | case IS_PLUS_ZERO: break;                     /* (never: no address gives +0) */
+    why: [never]
+  startsto, lines 153-157 (3 unrun) 6802cb93
+    | case IS_MINUS_ZERO:
+    | /* (never: MODE is never -0. VSTORE's DCA would run without its
+    | * EXTEND, as CA MPAC +4.) */
+    | ca(ADDRESS_OF(MPAC) + 4u);
+    | break;
+    why: [never]
+  pddl, line 287 (1 unrun) c2b25cf7
+    | case IS_MINUS_ZERO: break;                  /* (never: MODE -0) */
+    why: [never]
+  pdvl, lines 347-351 (5 unrun) c29b5b10
+    | case IS_MINUS_ZERO: /* (never: MODE -0. VPDVL's DCA would run as CA.) */
+    | ca(indexed(3u, ADDRWD));
+    | dxch(ADDRESS_OF(MPAC) + 3u);
+    | vpdvl_plus4();
+    | return;
+    why: [never]
+
+src/interpreter/sequence.c
+  ccall, lines 28-37 (10 unrun) e8479524
+    | {
+    | incr(ADDRESS_OF(LOC));
+    | ca(indexed(0u, LOC));       /* "GET BASE ADDRESS OF CADR LIST." */
+    | ad_at(indexed(0u, ADDRWD)); /* "ADD INCREMENT." */
+    | ts(FBANK_ADDRESS);          /* "SELECT DESIRED CADR." */
+    | mask(LOW10);
+    | ... (4 more)
+    why: [open]
+
+src/interpreter/shifts.c
+  shortt, lines 79-84 (4 unrun) 98d166fa
+    | case IS_PLUS_ZERO:
+    | /* (never: CYR holds an order code. The AGC would run the next word,
+    | * SRDDV, DEC 20, as TC 24.) */
+    | tc_at(ADDRESS_OF(SRDDV));
+    | continue_at(SRDDV);
+    | return;
+    why: [never]
+  shortt, line 86 (1 unrun) 0fb30fdc
+    | case IS_MINUS_ZERO: tssr_plus1(); return;
+    why: [open]
+  tssr_plus1, lines 99-102 (4 unrun) 6851cdb9
+    | {
+    | set_A(BIT14);
+    | tssr_plus2();
+    | }
+    why: [open]
+  tssr_plus2, line 112 (1 unrun) adf15a9d
+    | case IS_PLUS_ZERO: newmode(); return;
+    why: [open]
+  tssr_plus2, lines 114-117 (4 unrun) bc70bec6
+    | case IS_MINUS_ZERO:
+    | mp_at(MPAC_AT(2u));
+    | mpacshr_plus3();
+    | return;
+    why: [open]
+  tssl_plus2, lines 228-229 (2 unrun) f9f9f7a5
+    | case NEGATIVE: round_(); return;
+    | case IS_MINUS_ZERO: continue_at(DANZIG); return;
+    why: [open]
+  tssl_plus2, line 236 (1 unrun) 822ef9e6
+    | case IS_PLUS_ZERO:                          /* "SL LEAVES A ZERO IN CYR FOR NO ROUND." */
+    why: [open]
+  shortv, lines 270-275 (4 unrun) 9d746482
+    | case IS_PLUS_ZERO:
+    | /* (never: CYR holds an order code. The next word, OCT176, "USED IN
+    | * PROCESSED SHIFTS WITH - COUNT", would run as TC 176.) */
+    | tc_at(ADDRESS_OF(OCT176));
+    | continue_at(OCT176);
+    | return;
+    why: [never]
+  vssl, lines 350-351 (2 unrun) 9e843dda
+    | case NEGATIVE: tslc2(); return;
+    | case IS_MINUS_ZERO: tslc2_plus1(); return;
+    why: [open]
+  right, line 469 (1 unrun) bec88a41
+    | case IS_MINUS_ZERO: break;                    /* (never; would enter VRIGHT2 with A +0) */
+    why: [never]
+  vright2, lines 514-518 (5 unrun) 46cc12ac
+    | case IS_PLUS_ZERO: continue;
+    | case NEGATIVE:
+    | tc_at(ADDRESS_OF(BIASLO)); /* DEC .2974 B-1 is TC 4604 */
+    | continue_at(BIASLO);
+    | return;
+    why: [open]
+  genscr_plus4, lines 576-577 (2 unrun) 07b4fac2
+    | case NEGATIVE:
+    | lxch(SLOPEHI & 01777u); /* DEC .5884 is 22650: LXCH 650 */
+    why: [open]
+
+src/interpreter/switches.c
+  test, lines 120-123 (4 unrun) 01f21a78
+    | case IS_MINUS_ZERO:
+    | tc_at(TEST + 5u);
+    | continue_at(CCSHOLE);
+    | return;
+    why: [open]
+
+src/interpreter/trig.c
+  acosst, line 188 (1 unrun) b5f4528b
+    | case IS_PLUS_ZERO: asinex(); return;
+    why: [open]
+  acosst2, lines 235-236 (2 unrun) 722407c7
+    | case NEGATIVE: acos3_plus1(); return;
+    | case IS_MINUS_ZERO: acos3_plus2(); return;
+    why: [open]
+  tc_escape, lines 303-304 (2 unrun) 5b295392
+    | else
+    | continue_at((word)escape);
+    why: [open]
+
+src/interpreter/unit_sqrt.c
+  unit_plus16, line 85 (1 unrun) fdd5af3d
+    | case IS_MINUS_ZERO: dxch(ADDRESS_OF(LV)); break;
+    why: [open]
+  large, line 129 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  abvalabs, line 255 (1 unrun) b263ad09
+    | case IS_MINUS_ZERO: abval_plus1(); return;
+    why: [open]
+  sqrt_, line 289 (1 unrun) bd6aff35
+    | case IS_MINUS_ZERO: sqrtshft(); return; /* (A +0 passes the BZMF) */
+    why: [open]
+  push, line 361 (1 unrun) 0e8514b8
+    | case IS_MINUS_ZERO: ca(MPAC_AT(4u)); break;     /* COMPONENTS." */
+    why: [open]
+  sqrtneg, lines 504-505 (2 unrun) 461ede13
+    | case NEGATIVE: zeroans(); return false;
+    | case IS_MINUS_ZERO: fixroot(); return false;
+    why: [open]
+  arghi_plus4, lines 591-593 (3 unrun) 0a60be72
+    | set_A(POSMAX);
+    | fixroot();
+    | }
+    why: [open]
+  sqrtnorm, line 660 (1 unrun) e1034a70
+    | case IS_PLUS_ZERO: sqrtnm2(); return;
+    why: [open]
+  sqrtnorm, line 662 (1 unrun) bd78ad2f
+    | case IS_MINUS_ZERO: arglo(); return;
+    why: [open]
+  sqrtnorm, line 666 (1 unrun) b9a6f41d
+    | case IS_PLUS_ZERO: arghi(); return;   /* "YES -- NOW BETWEEN .5 AND .25." */
+    why: [open]
+  sqrtnorm, line 668 (1 unrun) c09b3a76
+    | case IS_MINUS_ZERO: cosine(); return; /* (never: runs on into COSINE) */
+    why: [never]
+
+src/interpreter/vectors.c
+  vxsc, line 135 (1 unrun) 8de27fca
+    | case IS_MINUS_ZERO: vvxsc_plus1(); break;
+    why: [open]
+  v_sc, line 446 (1 unrun) b4b22846
+    | case IS_MINUS_ZERO: vv_sc_plus1(); break;
+    why: [open]
+  vv_sc_plus1, lines 457-460 (4 unrun) a22c8877
+    | {
+    | ca(indexed(1u, ADDRWD));
+    | v_sc1();
+    | }
+    why: [open]
+  comp, line 525 (1 unrun) 71ce4b06
+    | case IS_MINUS_ZERO: cs(MPAC_AT(4u)); break;
+    why: [open]
+
+src/kalcmanu_steering/kalcmanu_steering.c
+  timechk, line 175 (1 unrun) 012e9d92
+    | case IS_PLUS_ZERO:                             /* TCF +2 */
+    why: [open]
+  timechk, line 181 (1 unrun) 54ed3a79
+    | case IS_PLUS_ZERO: /* TCF MANUOFF */
+    why: [open]
+  contmanu, line 289 (1 unrun) 7a58353f
+    | case IS_PLUS_ZERO: break;      /* TCF MANUCALL */
+    why: [open]
+  goodmanu_after_spvac, line 493 (1 unrun) 683a7e17
+    | case IS_PLUS_ZERO: /* TCF +2 */
+    why: [open]
+  goodmanu_after_spvac, line 499 (1 unrun) 54ed3a79
+    | case IS_PLUS_ZERO: /* TCF MANUOFF */
+    why: [open]
+  goodmanu_after_spvac, line 617 (1 unrun) 7a58353f
+    | case IS_PLUS_ZERO: break;      /* TCF MANUCALL */
+    why: [open]
+
+src/kalman_filter/kalman_filter.c
+  jet_time, lines 34-35 (2 unrun) d369bea4
+    | case IS_PLUS_ZERO:
+    | case IS_MINUS_ZERO: break; /* ADS of +0 */
+    why: [open]
+  jet_time, lines 41-42 (2 unrun) 1a46babc
+    | case IS_PLUS_ZERO:
+    | case IS_MINUS_ZERO: break; /* A +0 */
+    why: [open]
+  rateloop, line 82 (1 unrun) 4f04b17c
+    | default: not_modelled(); return;        /* DAPTEMP6 is never negative */
+    why: [not-modelled]
+
+src/keyrupt/keyrupt.c
+  uptest, line 169 (1 unrun) 8f59ce8f
+    | case IS_PLUS_ZERO:
+    why: [open]
+
+src/landing_displays/landing_displays.c
+  newdata, lines 228-229 (2 unrun) 6e70beb8
+    | case NEGATIVE: set_A(ZERO); /* fall through */
+    | case IS_MINUS_ZERO: ts(ADDRESS_OF(ALTSAVE) + 1u); break;
+    why: [open]
+  newdata, lines 236-237 (2 unrun) c899a662
+    | case NEGATIVE: break;
+    | case IS_MINUS_ZERO: not_modelled();
+    why: [open]
+
+src/landing_guidance/exits.c
+  unwcloop, lines 167-168 (2 unrun) 9ee49c66
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled();
+    why: [not-modelled]
+
+src/landing_guidance/indexing.h
+  das_indexed, line 77 (1 unrun) 7a17fe30
+    | not_modelled();
+    why: [not-modelled]
+
+src/landing_guidance/quadguid.c
+  cgcalc, line 178 (1 unrun) 7a17fe30
+    | not_modelled();
+    why: [not-modelled]
+  cgcalc, line 196 (1 unrun) fc32edf5
+    | case IS_MINUS_ZERO: break; /* NOOP */
+    why: [open]
+
+src/landing_guidance/redesignator.c
+  redesmon, lines 111-112 (2 unrun) 0498c6bb
+    | case NEGATIVE: count_em(); return; /* (never) */
+    | case IS_MINUS_ZERO: goto zerlina;  /* (never) */
+    why: [never]
+
+src/p20_p25/designate.c
+  stdesig1, line 458 (1 unrun) 66eecf0b
+    | case IS_MINUS_ZERO: not_modelled();
+    why: [not-modelled]
+  signlchk, line 681 (1 unrun) 59686b98
+    | default: not_modelled(); /* (MPAC +1 is 0 or 1) */
+    why: [not-modelled]
+  notp20_after_killtask, line 762 (1 unrun) f292c364
+    | case NEGATIVE: not_modelled(); return;
+    why: [not-modelled]
+
+src/p20_p25/lrs22.c
+  chexerr, lines 250-251 (2 unrun) 9ee49c66
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled();
+    why: [not-modelled]
+
+src/p20_p25/p20_p25.h
+  bit_set_in_A, line 98 (1 unrun) 810a982d
+    | default: not_modelled(); return false;
+    why: [not-modelled]
+
+src/p20_p25/programs.c
+  p20lemd1, lines 797-798 (2 unrun) 9ee49c66
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled();
+    why: [not-modelled]
+
+src/p20_p25/r22_r21.c
+  lunsfchk, lines 512-513 (2 unrun) 9ee49c66
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled();
+    why: [not-modelled]
+  r21lem5, lines 563-564 (2 unrun) 9ee49c66
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled();
+    why: [not-modelled]
+
+src/p20_p25/r29dodes.c
+  r29dvbeg, line 120 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+  gotangls_after_cos_s, line 290 (1 unrun) 66eecf0b
+    | case IS_MINUS_ZERO: not_modelled();
+    why: [not-modelled]
+
+src/p20_p25/r61.c
+  r61c_l06, lines 235-236 (2 unrun) 2232d9e9
+    | case NEGATIVE: tc_to(R61C_L06 + 5u, R61C_L06 + 7u); return; /* TC +2 */
+    | case IS_MINUS_ZERO: continue_at(R61C_L06 + 6u); return;
+    why: [open]
+
+src/p20_p25/radar_read.c
+  lrsck, line 576 (1 unrun) 126f7bdf
+    | default: not_modelled(); return;
+    why: [not-modelled]
+  dgcheck_plus1, line 628 (1 unrun) 60515a87
+    | case IS_MINUS_ZERO: tc_q(); break;
+    why: [open]
+  radlites, line 804 (1 unrun) dc0f93fa
+    | case IS_PLUS_ZERO: vlight(); break;
+    why: [open]
+
+src/p20_p25/rr_routines.c
+  rr1ax2_command, line 510 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+  rr1ax2_command, line 515 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+  count_out, line 571 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+  rroutlim, line 591 (1 unrun) 9ee7a44a
+    | case NEGATIVE: set_A(MINUS_RRLIMIT); break;
+    why: [open]
+
+src/p20_p25_cm/crs61.c
+  dapck, lines 89-90 (2 unrun) 9ee49c66
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled();
+    why: [not-modelled]
+  stktest_after_exit, lines 201-202 (2 unrun) 9ee49c66
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled();
+    why: [not-modelled]
+
+src/p20_p25_cm/p22.c
+  s22dsppa_after_knownflg, lines 443-446 (4 unrun) 26b09a7d
+    | case IS_PLUS_ZERO:               /* (never: A=2 less BIT14 is -0, not +0) */
+    | tc_at(S22DSPP + 1u);         /* TC S22DSPPA */
+    | s22dsppa_display();
+    | break;
+    why: [never]
+
+src/p20_p25_cm/r57.c
+  r57_after_exit, line 57 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+
+src/p40_p47_cm/dap_data.c
+  s41_2, line 321 (1 unrun) 2df08fb8
+    | default: not_modelled(); /* a masked word is neither */
+    why: [not-modelled]
+  s41_2, line 328 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+  s41_2, line 346 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+  s41_2, line 353 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+
+src/p51_p53/gyrotrim_surfline.c
+  initby_after_exit, line 255 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+  b2f8_plus1, line 357 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+
+src/p51_p53/indexed.c
+  indexed_dxch, line 39 (1 unrun) 7a17fe30
+    | not_modelled();
+    why: [not-modelled]
+
+src/p51_p53/p57.c
+  pack_flag, line 205 (1 unrun) 126f7bdf
+    | default: not_modelled(); return;
+    why: [not-modelled]
+  dspoptn_proceed, line 252 (1 unrun) 126f7bdf
+    | default: not_modelled(); return;
+    why: [not-modelled]
+  dspoptn_proceed, line 259 (1 unrun) 126f7bdf
+    | default: not_modelled(); return;
+    why: [not-modelled]
+  dspoptn_proceed, line 266 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+  bylmatt_after_upflag, line 397 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+  attchk_after_phaschng, line 416 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+  imuchk, line 553 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+
+src/p51_p53/planet_gvdeter.c
+  planet_after_exit, line 63 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+  prograv_after_exit, line 305 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+
+src/p51_p53_cm/advtrack_r56_planet.c
+  nosam_after_exit, line 325 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+
+src/p51_p53_cm/p51.c
+  p51, lines 47-48 (2 unrun) 03c8bf14
+    | case IS_MINUS_ZERO: p51_pooh(); break;
+    | default: not_modelled();
+    why: [open]
+
+src/p51_p53_cm/r51_r55.c
+  r51a_sighted, line 225 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+
+src/p51_p53_cm/r53_sr52_1.c
+  r53a_marked, lines 83-85 (3 unrun) 0eb43d23
+    | r53b();
+    | return;
+    | }
+    why: [open]
+  r53a_marked, lines 89-91 (3 unrun) 0eb43d23
+    | r53b();
+    | return;
+    | }
+    why: [open]
+
+src/p70_p71/contabrt.c
+  abrtjask, line 61 (1 unrun) 6e949bbf
+    | ca(address);
+    why: [open]
+
+src/p_axis/p_axis.c
+  subdivde, lines 85-86 (2 unrun) 8acb8780
+    | case IS_PLUS_ZERO:
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  selectp, lines 547-548 (2 unrun) 22de002c
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled(); /* TEMPNUM counts down from SIX */
+    why: [not-modelled]
+  manmode, line 645 (1 unrun) 66eecf0b
+    | case IS_MINUS_ZERO: not_modelled();
+    why: [not-modelled]
+
+src/phase_table/phase_table.c
+  below1, line 234 (1 unrun) 9ad67b86
+    | case POSITIVE: /* NOOP: "CAN'T GET HERE" */
+    why: [open]
+
+src/pinball/display_verbs.c
+  nountest, line 166 (1 unrun) 9fea65de
+    | case IS_MINUS_ZERO: not_modelled(); /* MASK HI5 never leaves -0 */
+    why: [not-modelled]
+  decdsp, lines 346-347 (2 unrun) 9be2d28f
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled(); /* MASK THREE leaves 0 to 3 */
+    why: [not-modelled]
+  dspdcend_plus2, line 420 (1 unrun) f0045070
+    | case IS_MINUS_ZERO: tc(DSPDCEND + 6u, DSPDCPUT); return;
+    why: [open]
+
+src/pinball/display_words.c
+  dspdecwd, lines 104-106 (3 unrun) e4995dd0
+    | dspdecwd_after_dspsign();
+    | return;
+    | }
+    why: [open]
+  dspdecnr, lines 177-179 (3 unrun) 89b3f5c9
+    | dspdecnr_after_dspsign();
+    | return;
+    | }
+    why: [open]
+  dspdc2nr, lines 195-197 (3 unrun) edf2b73a
+    | dspdc2nr_plus3();
+    | return;
+    | }
+    why: [open]
+
+src/pinball/enter.c
+  mixnoun, line 373 (1 unrun) fa9d72bc
+    | case IS_MINUS_ZERO: tc_at(MIXNOUN + 4u); break;        /* TC +1: "-0 IN USE" */
+    why: [open]
+  mixnoun, lines 409-410 (2 unrun) 6b3a09b2
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled(); /* the CCS would run MIXAD */
+    why: [not-modelled]
+
+src/pinball/input_scale.c
+  all3dec_returns, lines 563-564 (2 unrun) 3f8406f9
+    | case POSITIVE:
+    | case IS_PLUS_ZERO: not_modelled(); /* AD OCT34BAR leaves -0 or less */
+    why: [not-modelled]
+
+src/pinball/keys.c
+  mornum, lines 335-337 (3 unrun) 8657a932
+    | case IS_PLUS_ZERO: tc(MORNUM + 2u, ENDOFJOB); break;
+    | case NEGATIVE: tc(MORNUM + 3u, 022u); break;
+    | case IS_MINUS_ZERO: tc(MORNUM + 4u, 020u); break;
+    why: [open]
+  legaltst_returns, line 636 (1 unrun) 3d840b13
+    | case IS_PLUS_ZERO: tc(LEGALTST + 3u, CCSHOLE); return false;
+    why: [open]
+
+src/pinball/lights.c
+  vbtstlts, lines 55-57 (3 unrun) 1216194e
+    | {
+    | tc(VBTSTLTS, BANKCALL); /* CADR CHKPOOH */
+    | }
+    why: [open]
+  tstlts1, line 118 (1 unrun) 9d03d3f9
+    | set_A(SHOLTS);
+    why: [open]
+  tstlts3, lines 182-184 (3 unrun) ff570073
+    | cs(ADDRESS_OF(OPTMODES));
+    | mask(BIT7);
+    | ads(ADDRESS_OF(OPTMODES));
+    why: [open]
+  error_, lines 245-247 (3 unrun) ff570073
+    | cs(ADDRESS_OF(OPTMODES));
+    | mask(BIT7);
+    | ads(ADDRESS_OF(OPTMODES));
+    why: [open]
+  force_bit12, lines 304-305 (2 unrun) d6fbe208
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled(); /* the count runs 10 to 0 */
+    why: [not-modelled]
+
+src/pinball/load_verbs.c
+  put_by_decbrnch, lines 469-471 (3 unrun) 94bde98f
+    | continue_at(CHANLOAD);
+    | return;
+    | }
+    why: [open]
+
+src/pinball/monitor.c
+  monitor, lines 50-53 (4 unrun) c3002bbf
+    | case IS_PLUS_ZERO:
+    | ad_at(A_ADDRESS); /* BIT15/14, OCT 60000, run as AD A */
+    | tc_at(MONITOR + 8u);
+    | break;
+    why: [open]
+
+src/pinball/nvsub.c
+  blankdsp, lines 146-147 (2 unrun) 6c0473c7
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled(); /* CODE counts down from 7 to 10 */
+    why: [not-modelled]
+  nvsub1, lines 198-199 (2 unrun) 44e7acb7
+    | case NEGATIVE: tc(NVSUB1 + 17u, UPDATVB - 1u); return;
+    | case IS_MINUS_ZERO: continue_at(NVSUB1 + 18u); return;
+    why: [open]
+  nvsub2, lines 231-232 (2 unrun) 2ef12378
+    | case NEGATIVE: tc(NVSUB2 + 3u, UPDATNN - 1u); return;
+    | case IS_MINUS_ZERO: continue_at(NVSUB2 + 4u); return;
+    why: [open]
+  islist_returns, line 292 (1 unrun) 66eecf0b
+    | case IS_MINUS_ZERO: not_modelled();
+    why: [not-modelled]
+  blanksub_plus8, line 403 (1 unrun) 08a28db5
+    | case IS_MINUS_ZERO: blanksub_plus12(); return;
+    why: [open]
+  testbit, lines 437-438 (2 unrun) b960739c
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  testbit, lines 440-441 (2 unrun) 42a58747
+    | not_modelled(); /* the code is three bits */
+    | return false;
+    why: [not-modelled]
+  nvsbwait, lines 700-701 (2 unrun) d0cfe4cc
+    | case NEGATIVE: nvsbwt1(); return;
+    | case IS_MINUS_ZERO: continue_at(PRENVBSY); return;
+    why: [open]
+
+src/pinball/output_scale.c
+  negopt, line 174 (1 unrun) 5b760fb1
+    | case IS_PLUS_ZERO: tc(NEGOPT + 4u, CCSHOLE); return;
+    why: [open]
+  opdegout, line 197 (1 unrun) 822498e9
+    | case IS_MINUS_ZERO: ad(NEG1); break; /* "IF NEG ZERO SUBTRACT 1" */
+    why: [open]
+  m_sout_plus2, lines 611-613 (3 unrun) 21d44afe
+    | m_slimit();
+    | return;
+    | }
+    why: [open]
+
+src/pinball/special_verbs.c
+  vbrqexec, lines 103-104 (2 unrun) dad61f88
+    | case NEGATIVE: continue_at(REQEX1); return;
+    | case IS_MINUS_ZERO: reqex1_plus1(); return;
+    why: [open]
+  vbreldsp, lines 257-260 (4 unrun) 25cf0b65
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: /* into TSTLTS4 +1 and +2 */
+    | not_modelled_state("CCS A on a negative word (VBRELDSP)");
+    | return;
+    why: [open]
+
+src/pinball/subroutines.c
+  setncadr, lines 66-68 (3 unrun) a50f3b83
+    | noun_address();
+    | return;
+    | }
+    why: [open]
+  setncadr_plus1, lines 75-78 (4 unrun) 93b18894
+    | ad(OCT1400);
+    | put_noun_address();
+    | return;
+    | }
+    why: [open]
+  sfrutmix, lines 282-283 (2 unrun) 57af5f03
+    | else
+    | not_modelled();
+    why: [open]
+  leftncom, lines 378-379 (2 unrun) 890cb0ba
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled(); /* the CCS would run 2ROUND */
+    why: [not-modelled]
+
+src/pinball_noun_tables/readers.c
+  noun_table_word, lines 130-131 (2 unrun) 3a2338fb
+    | not_modelled();
+    | return 0;
+    why: [not-modelled]
+
+src/powered_flight/ax_sr_t.c
+  r_star_tl_star_star_p, line 87 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+  loop1_after_sine_product, line 136 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+  loop1_after_cosine_product, line 171 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+
+src/powered_flight/cdutrig.c
+  tr_star_gl_star_star_p_after_sine, line 159 (1 unrun) fccab479
+    | default: not_modelled();
+    why: [not-modelled]
+
+src/q_r_axis/q_r_axis.c
+  ccs_positive, line 30 (1 unrun) 810a982d
+    | default: not_modelled(); return false;
+    why: [not-modelled]
+  trygts, line 554 (1 unrun) cf9f77b2
+    | case IS_MINUS_ZERO: not_modelled(); return; /* READ CHAN5 without its EXTEND */
+    why: [not-modelled]
+  trygts, line 565 (1 unrun) 126f7bdf
+    | default: not_modelled(); return;
+    why: [not-modelled]
+
+src/r60_62/r60_62.c
+  toballc_after_g_n_auto, line 266 (1 unrun) 66eecf0b
+    | case IS_MINUS_ZERO: not_modelled();
+    why: [not-modelled]
+  chklinus, lines 329-330 (2 unrun) 7013710f
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled(); /* (a masked bit) */
+    why: [not-modelled]
+  relinus_after_priochng, lines 378-379 (2 unrun) 7013710f
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled(); /* (a masked bit) */
+    why: [not-modelled]
+  relinus_after_priochng, lines 390-391 (2 unrun) 7013710f
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled(); /* (a masked bit) */
+    why: [not-modelled]
+  g_n_auto, lines 462-463 (2 unrun) 9ee49c66
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled();
+    why: [not-modelled]
+  toballc_after_godspr, lines 745-746 (2 unrun) 7013710f
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled(); /* (a masked bit) */
+    why: [not-modelled]
+
+src/radar_leadin/radar_leadin.c
+  dorsamp2, lines 117-118 (2 unrun) 6921d51c
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled(); /* (a masked bit is never negative) */
+    why: [not-modelled]
+
+src/reentry/kep.c
+  back, lines 84-85 (2 unrun) 99658675
+    | case NEGATIVE: ts(ADDRESS_OF(TEM1B)); return;
+    | case IS_MINUS_ZERO: return;
+    why: [open]
+  back, lines 87-88 (2 unrun) ec31eb76
+    | return;
+    | case IS_PLUS_ZERO: continue; /* TCF BACK, with JJ +0 */
+    why: [open]
+
+src/restart/restarts.c
+  getpart2, lines 119-121 (3 unrun) efe058b3
+    | case IS_PLUS_ZERO: itsatbl(); return;
+    | case NEGATIVE: set_A(PRIO14); break;
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  itsavar, line 157 (1 unrun) 202f522a
+    | case IS_PLUS_ZERO: tc_rtrncadr(); return; /* "CANT GET HERE" */
+    why: [open]
+  itsatbl, line 292 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  contbl2, line 320 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+
+src/rtb_op_codes/rtb_op_codes.c
+  cduinc, line 341 (1 unrun) 62d2ee86
+    | case IS_PLUS_ZERO: break;          /* TCF +2 */
+    why: [open]
+  cduinc, line 343 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  cduinc, lines 351-353 (3 unrun) a2b86310
+    | pulseimu();
+    | return 0u;
+    | }
+    why: [open]
+
+src/service/service.c
+  delayjob, lines 224-227 (4 unrun) a007628e
+    | case IS_MINUS_ZERO:
+    | tc_at(OK2DELAY - 1u); /* OCT 1104, run as TC 1104 */
+    | continue_at(01104u);
+    | return;
+    why: [open]
+  delayjob, line 237 (1 unrun) d362fbec
+    | case IS_MINUS_ZERO: ok2delay(); return;
+    why: [open]
+  gentran_plus1, lines 333-334 (2 unrun) 24446946
+    | case NEGATIVE: b5off(); return;
+    | case IS_MINUS_ZERO: b5off_plus1(); return;
+    why: [open]
+
+src/servicer/lr_jobs.c
+  lrvjob_after_waitlist, line 37 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  endlrv, line 98 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+
+src/servicer/readaccs.c
+  readaccs, line 97 (1 unrun) c28570c8
+    | case IS_PLUS_ZERO: break;                 /* TCF +2, A +0 */
+    why: [open]
+
+src/sps_backup/sps_backup.c
+  inhibition, lines 64-65 (2 unrun) d329b9e3
+    | return;
+    | case IS_MINUS_ZERO: not_modelled(); return;
+    why: [open]
+
+src/sxtmark/sxtmark.c
+  markrupt, lines 352-356 (3 unrun) 5f8ffbd9
+    | case IS_MINUS_ZERO:
+    | /* Never: no word here has all bits set. The AGC would run the
+    | * second RAND NAVKEYIN without its EXTEND, as TC 16. */
+    | not_modelled();
+    | return;
+    why: [not-modelled]
+  difchk, line 475 (1 unrun) 1cc224b5
+    | case IS_MINUS_ZERO: tc_q(); return;
+    why: [open]
+
+src/t4rupt/imu_monitor.c
+  nxtifbit, line 133 (1 unrun) 2134de0c
+    | default: not_modelled(); break; /* 30RDMSK: bit 10 is never scanned */
+    why: [not-modelled]
+  nxtifail, lines 149-150 (2 unrun) dd70af12
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled(); return; /* the changes left are never negative */
+    why: [not-modelled]
+  nxtibt_plus1, line 461 (1 unrun) 852a95ab
+    | default: not_modelled(); break; /* past the table: channel 33 has three bits */
+    why: [not-modelled]
+  nxtfl33, lines 475-476 (2 unrun) dd70af12
+    | case NEGATIVE:
+    | case IS_MINUS_ZERO: not_modelled(); return; /* the changes left are never negative */
+    why: [not-modelled]
+
+src/t4rupt/optics.c
+  zoptdes, line 196 (1 unrun) 6de9c986
+    | case IS_MINUS_ZERO: /* lands on the TC SETDESMD */ break;
+    why: [open]
+  cscdes, line 434 (1 unrun) 53582306
+    | case IS_MINUS_ZERO: break;          /* lands on its TS ZOPTCNT, A +0 */
+    why: [open]
+  csctoman, line 456 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  storcmd, line 801 (1 unrun) 40d8c497
+    | case POSITIVE: cmdsetup(); return; /* TCF CMDSETUP: "SIGN ZONE NOT EQUAL TO SIGN COMMAND" */
+    why: [open]
+  storcmd, line 806 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+
+src/t4rupt/t4rupt.c
+  dspoutsb, line 139 (1 unrun) 27b6e1b3
+    | case IS_PLUS_ZERO: continue;
+    why: [open]
+  dspoutsb, line 141 (1 unrun) e031ba26
+    | case IS_MINUS_ZERO: not_modelled(); return false; /* runs TABLNTH (OCT 12) as TC 12 */
+    why: [not-modelled]
+  dspoutsb, lines 146-147 (2 unrun) 359f159b
+    | case IS_PLUS_ZERO: dsplay(); return true;
+    | case NEGATIVE: not_modelled(); return false; /* runs TABLNTH: no producer */
+    why: [open]
+  dspoutsb, line 151 (1 unrun) 524e92dc
+    | case POSITIVE: not_modelled(); return false; /* runs 120MRUPT: no producer */
+    why: [not-modelled]
+  dspoutsb, line 156 (1 unrun) 05313dd4
+    | case NEGATIVE: tc_through(Q_ADDRESS); return false;
+    why: [open]
+  proceede, lines 237-238 (2 unrun) 63c5460d
+    | case NEGATIVE: break;
+    | case IS_MINUS_ZERO: not_modelled(); return; /* runs the 2CADR: no producer */
+    why: [open]
+  quikdsp, line 325 (1 unrun) 84d8a361
+    | case IS_MINUS_ZERO: quikrupt(); return;
+    why: [open]
+  nodspy, line 366 (1 unrun) 6b708858
+    | case IS_PLUS_ZERO:                                /* OCT37737 */
+    why: [open]
+
+src/t6rupt/t6rupt.c
+  t6jobchk, lines 52-55 (4 unrun) f406125b
+    | case NEGATIVE: /* TC T6JOBCHK +3: this word, for ever */
+    | tc_at((word)(T6JOBCHK + 3u));
+    | continue_at((word)(T6JOBCHK + 3u));
+    | return;
+    why: [open]
+  goch56, lines 118-119 (2 unrun) 6191208d
+    | else
+    | not_modelled(); /* NXT6ADR names no writer */
+    why: [open]
+
+src/tjet_law/tjet_law.c
+  zone2_3, lines 152-155 (4 unrun) 62671ac8
+    | case NEGATIVE:                      /* "CANNOT BE BECAUSE NEG EDOT COMPLEMENTED." */
+    | tc_at(ZONE3 + 3u);
+    | continue_at(CCSHOLE);
+    | return false;
+    why: [open]
+  zone5, lines 228-231 (4 unrun) cfb823a7
+    | case IS_PLUS_ZERO:
+    | tc_at(ZONE5 + 3u);
+    | continue_at(CCSHOLE);
+    | return false;
+    why: [open]
+  zone5, line 236 (1 unrun) 29d28b4a
+    | case IS_MINUS_ZERO: ads(ADDRESS_OF(ADRSDIF2)); break;
+    why: [open]
+  ruflaw1, lines 393-394 (2 unrun) d369bea4
+    | case IS_PLUS_ZERO:
+    | case IS_MINUS_ZERO: break; /* ADS of +0 */
+    why: [open]
+
+src/trim_gimbal/trim_gimbal.c
+  gtsqrt, line 149 (1 unrun) 1bc8d0aa
+    | default: not_modelled(); return; /* a MASK of BIT13 is never negative */
+    why: [not-modelled]
+  axis_inputs, line 180 (1 unrun) 1467e5e0
+    | case IS_MINUS_ZERO: not_modelled(); return false; /* QRCNTR is 2, +-1 or 0 */
+    why: [not-modelled]
+  gts, line 419 (1 unrun) cdcaa1d6
+    | case IS_MINUS_ZERO: not_modelled(); return; /* QRCNTR is 2, +-1 or 0 */
+    why: [not-modelled]
+  timegmbl, line 559 (1 unrun) 12708606
+    | default: not_modelled(); return; /* QRNDXER is 2 or 0 */
+    why: [not-modelled]
+
+src/tvc/tvcdaps.c
+  limit, lines 244-245 (2 unrun) 815fad95
+    | case IS_PLUS_ZERO:
+    | case IS_MINUS_ZERO: break; /* (the CCS's +0) */
+    why: [open]
+
+src/tvc/tvcmassprop.c
+  store_field, line 46 (1 unrun) 7a17fe30
+    | not_modelled();
+    why: [not-modelled]
+  massprop, line 97 (1 unrun) e283af36
+    | passes_left = POSITIVE;
+    why: [open]
+  massprop_finished, lines 121-122 (2 unrun) 954fe591
+    | case NEGATIVE: mask(BIT14); break;
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+
+src/tvc/tvcrestarts.c
+  tvcdaphs, line 76 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+
+src/tvc/tvcrolldap.c
+  jetroll, line 108 (1 unrun) 8f59ce8f
+    | case IS_PLUS_ZERO:
+    why: [open]
+  newroll, lines 178-179 (2 unrun) 8acb8780
+    | case IS_PLUS_ZERO:
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+
+src/update_program/updates.c
+  upend71, line 57 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  upend72, line 91 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  upend72, line 103 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  upend72, line 112 (1 unrun) 3fb0da34
+    | case IS_MINUS_ZERO: upout_plus_2(); return;
+    why: [open]
+
+src/update_program/verbs.c
+  ckmdmore, line 59 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  ckmdmore, lines 61-62 (2 unrun) 3b864e37
+    | not_modelled();
+    | return false;
+    why: [not-modelled]
+
+src/waitlist/waitlist.c
+  wtlst5, lines 187-190 (4 unrun) 55177133
+    | tc_at((word)(WTABORT + 1u));
+    | continue_at(01203u);
+    | return;
+    | }
+    why: [open]
+  taskover, lines 349-351 (3 unrun) 6420eb87
+    | continue_at(T3RUPT2);
+    | return;
+    | }
+    why: [open]
+  longcycl, lines 518-521 (4 unrun) 2ba0c541
+    | case IS_PLUS_ZERO: /* lands on DPBIT14's words ("can't get here") */
+    | continue_at((word)ADDRESS_OF(DPBIT14));
+    | return;
+    | case NEGATIVE: continue_at((word)(ADDRESS_OF(DPBIT14) + 1u)); return;
+    why: [open]
