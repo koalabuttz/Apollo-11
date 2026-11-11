@@ -97,7 +97,7 @@ static word channel_in(unsigned channel)
 }
 
 /* The channels the program writes: 13, whose bits 12-14 set the HANDRUPT
- * traps (as yaAGC's channel write does) and are not kept, and DNTM1 and
+ * traps (which matches the faithful port) and are not kept, and DNTM1 and
  * DNTM2. */
 static void channel_out(unsigned channel, word value)
 {

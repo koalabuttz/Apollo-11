@@ -4,8 +4,8 @@
  * half of c64-port/src/resident_kernel_body.inc, one call per instruction;
  * this file says the same thing routine by routine.
  *
- * Every word of memory and every register ends as the original leaves it
- * (STYLE.md, Fidelity), including the debris the listing lists. Comments
+ * At each entry's end every word of memory and every register matches the
+ * faithful port (STYLE.md, Fidelity), including the debris the listing lists. Comments
  * quote the listing where the code follows an AGC idiom. */
 #include "executive.h"
 #include "../agc/names.h"

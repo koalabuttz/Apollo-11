@@ -9,8 +9,8 @@
  * exchanges core sets. Interpretive jobs also own a VAC area, 43 words of
  * work space.
  *
- * Each entry is called with the machine as the original's TC leaves it (A,
- * L and Q are its arguments) and returns with Z at the address the original
+ * Each entry is called with the machine as the caller's TC leaves it (A,
+ * L and Q are its arguments) and returns with Z at the address the program
  * continues at. Inline operands (the 2CADR after TC NOVAC) come in as
  * arguments, read by the binding from the program's operand table. */
 #ifndef READABLE_EXECUTIVE_H

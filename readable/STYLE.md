@@ -44,8 +44,8 @@ one place: README.md, *Departures*. A new one goes there too.
   Follow them anyway, as the original would, in as few lines as possible,
   with a comment that says they never happen and what the AGC would do.
   They are part of the program a reader is studying.
-- Two gates prove fidelity (see *Gates*). A change that fails either is not
-  readable, it is wrong.
+- Three gates prove fidelity (see *Gates*). A change that fails any of them
+  is not readable, it is wrong.
 
 ## Naming
 
@@ -186,135 +186,41 @@ so a reader sees both versions together.
 
 ## Gates
 
-Every change to `readable/` must keep both:
+Every change to `readable/` must keep all three. README.md, *Gates*,
+describes each in full, and `.github/workflows/readable-ci.yml` runs them.
 
-1. **The case tests** (`make names-check kernel-cases interbank-cases
-   phase-cases restart-cases machine-cases interpreter-cases alarm-cases
-   sp-cases service-cases downtelemetry-cases fresh-start-cases
-   v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases
-   rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases
-   extended-verbs-cases pinball-noun-tables-cases geometry-cases
-   imu-compensation-cases r63-cases attitude-maneuver-cases
-   gimbal-lock-cases`,
-   about a minute):
+1. **The case tests** (`make -j4 all`, about half an hour). The Makefile's
+   `all` is the list:
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
+   - `coverage`: which listing files are readable C
+     (`tools/readable_coverage.py`);
    - `code-extents`: every table of interpretive code begins and ends
      where the listing's code or constants do (`tools/code_extents.py`);
-   - `kernel-cases`: every case of the resident-kernel corpus (about 42,000
-     runs per pair of missions) on the readable Executive and WAITLIST,
-     each matching the original program's yaAGC digest and the faithful
-     routines' final memory word for word;
-   - `interbank-cases`: every entry of the readable inter-bank routines
-     against the faithful port's, on 100,000 random machine states each
-     (over 4 million runs): the same result, memory and channels;
-   - `phase-cases`: the faithful port's phase-table test (every caller
-     site of the original program against its yaAGC digest) on the
-     readable phase table maintenance, then the readable and faithful
-     routines side by side on 200,000 random states per entry. Where the
-     faithful routine leaves a state to the original program (refuses it),
-     the readable one may run it.
-   - `restart-cases`: the same for the restarts (RESTARTS, GETPART2,
-     PHSPART2, the CM's NEWPHASE): the faithful port's restart tests
-     against their yaAGC digests, then side by side.
-   - `machine-cases`: every instruction of the readable machine
-     (`src/agc/`) against the faithful port's, checked against yaAGC, on
-     200,000 random states;
-   - `interpreter-cases`: the readable interpreter against the faithful
-     port's interpreter core on random interpretive programs (the port's
-     own fuzz generator), pass by pass: the same status, memory and
-     channels. Operands no assembled program has, where the readable code
-     does what the AGC does and the faithful core something simpler, are
-     left out (`tests/interpreter_fuzz.c` lists them).
-   - `alarm-cases`: the faithful port's alarm tests (every alarm site and
-     entry, against their yaAGC digests) on the readable alarms and
-     aborts, then the two side by side on random states. A readable
-     routine that refuses a state must leave it as it found it.
-   - `sp-cases`: the faithful port's SPSIN and SPCOS test (its yaAGC
-     return states) on the readable routines, then the two side by side
-     on every value of A.
-   - `service-cases`: the faithful port's service routine test (every
-     flag and GENTRAN site, against yaAGC digests) on the readable service
-     routines, then the two side by side on random states.
-   - `downtelemetry-cases`: the faithful port's down-telemetry tests
-     (whole downlists and dumps, against yaAGC digests) on the readable
-     down-telemetry, then the two side by side, DOWNRUPT by DOWNRUPT. It
-     first checks the readable downlists (`DOWNLINK_LISTS.agc`) word by
-     word against the assembled listing.
-   - `fresh-start-cases`: the faithful port's fresh start tests (every
-     entry, restart groups active, inactive and corrupt, against yaAGC
-     digests) on the readable fresh start and restart, then the two side
-     by side on 65,536 states per mission.
-   - `v37-cases`: the same for verb 37 and P00, after checking V37's
-     tables (PREMM1, FCADRMM1, DNLADMM1, the CM's FLAGTABL) word by word
-     against the original program's rope.
-   - `stateup-cases`: the same for STATEUP's interpretive code, run by the
-     readable interpreter, after checking the words the listing notation
-     assembles against the original program's rope.
-   - `keyrupt-cases`: the faithful port's keyboard and uplink test (every
-     entry and uplink path, against yaAGC digests) on the readable KEYRUPT
-     and UPRUPT, then the two side by side on random states.
-   - `rupt-cases`: the faithful port's lead-in and LM T6 tests (every
-     entry, every T6JOBCHK path, and RESUME with BRUPT the word at ZRUPT -1
-     or not, against yaAGC digests) on the readable lead-ins, RESUME and
-     T6 interrupt, then the two side by side on random states.
-   - `t4rupt-cases`: the faithful port's T4RUPT core test, its LM and CM
-     IMU monitor tests, its LM radar test and its CM optics test (every
-     continuation, display path and exit, against yaAGC digests) on the readable T4RUPT
-     routines, then the two side by side on random states.
-   - `rcs-monitor-cases`: the faithful port's test of the LM's jet failure
-     monitor (its frozen cases run to their stops, against yaAGC digests)
-     on the readable RCS_FAILURE_MONITOR, then the two side by side on
-     random states.
-   - `ags-cases`: the faithful port's test of the LM's AGS initialization
-     (its frozen cases run until they leave the file, against yaAGC
-     digests) on the readable AGS_INITIALIZATION, then the two side by
-     side on random states, built as the host runs the file and as the
-     flight program does (stopping where it reaches the interpreter).
-   - `aotmark-cases`: the faithful port's test of the LM's sighting marks
-     (its frozen cases run to their stops, against yaAGC digests) on the
-     readable AOTMARK, then the two side by side at every key on random
-     states.
-   - `sxtmark-cases`: the same for the CM's sextant marks (SXTMARK).
-   - `extended-verbs-cases`: the faithful port's frozen oracle rows for
-     EXTENDED_VERBS (against Virtual AGC results) on the readable parts,
-     then readable and faithful side by side on the port's suite and at
-     every key on random states.
-   - `pinball-noun-tables-cases`: the faithful port's test of the noun
-     table readers on the readable ones, the original program's frozen
-     results, the tables' words against the ropes, then the two side by
-     side.
-   - `geometry-cases`: the faithful port's geometry test (its frozen cases
-     run to their stops, against yaAGC digests) with the readable
-     LEM_GEOMETRY and CSM_GEOMETRY, their words against the ropes, then
-     the two side by side at every key on random states.
-   - `imu-compensation-cases`: the faithful port's IMU compensation test
-     (entries and round trips, against yaAGC digests) with the readable
-     IMU_COMPENSATION_PACKAGE of both missions, then the two side by side
-     at every key on random states.
-   - `r63-cases`: the faithful port's R63 test (its frozen cases run to
-     their stops, against yaAGC digests) with the readable R63, its words
-     against the rope, then the two side by side at every key on random
-     states.
-   - `attitude-maneuver-cases`: the faithful port's attitude maneuver
-     test (its frozen cases run to their stops, against yaAGC digests)
-     with the readable LM ATTITUDE_MANEUVER_ROUTINE, its words against
-     the rope, then the two side by side at every key on random states.
-   - `gimbal-lock-cases`: the faithful port's gimbal lock test (its
-     frozen cases run to their stops, against yaAGC digests) with the
-     readable GIMBAL_LOCK_AVOIDANCE of both missions, their words against
-     the ropes, then the two side by side at every key on random states.
-
-   A subsystem without a corpus of its own gets a test of the second kind:
-   the readable routines and the faithful ones, run side by side on the
-   same states.
+   - `x86-link-check` and `chan13-sites`: two checks the x86 gates rest
+     on, each tried on what it must fail;
+   - the `*-cases` targets, over a hundred, one or more for each listing
+     file (`kernel-cases`, `interbank-cases`, ... `assembly-cases`). Each
+     is of one of two kinds, or both. The first runs the faithful port's
+     own test of the file (its frozen cases, each matching the original
+     program's yaAGC digest) on the readable routines. The second runs
+     the readable routines and the faithful ones side by side on the
+     same random machine states, at every key: the same result, memory
+     and channels. A subsystem without a corpus of its own gets a test
+     of the second kind.
 2. **The x86 exact scenario suite** (`make x86-scenarios-quick` on PRs,
-   `make x86-scenarios` for all 86 rows): the x86_64 flight program with the
-   readable routines linked in place of the faithful ones flies each
-   scenario against the harness, which runs the faithful port, and must end
-   with the same erasable memory, word for word (words 061-03777 at the
-   row's end; registers and channels are the case tests' to compare). A
-   readable PR may not lower the exact count.
+   `make x86-scenarios` for all 86 rows): the x86_64 flight program built
+   from the readable routines, with none of the faithful ones linked
+   beside them, flies each scenario against the harness, which runs the
+   faithful port, and must end with the same erasable memory, word for
+   word (words 061-03777 at the row's end). A readable PR may not lower
+   the exact count.
+3. **The x86 program against Virtual AGC** (`make x86-lockstep-quick` on
+   PRs, `make x86-lockstep` for all 117 rows): after every routine the
+   program runs, its erasable memory, channels and interrupt state must
+   agree with yaAGC's, run on the original rope from where the routine
+   started. Each row's counts are held to the run of record
+   (`tests/x86_lockstep_record.txt`).
 
 ## The faithful port
 

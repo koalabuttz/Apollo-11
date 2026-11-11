@@ -115,8 +115,8 @@ static word channel_in(unsigned number)
     return (word)*word_there;
 }
 
-/* As yaAGC writes a channel: channel 13's bits 12-14 set the HANDRUPT
- * traps and are not kept. */
+/* A channel write matches the faithful port's: channel 13's bits 12-14 set
+ * the HANDRUPT traps and are not kept. */
 static void channel_out(unsigned number, word value)
 {
     agc_word *word_there = channel(number);

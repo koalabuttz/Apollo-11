@@ -10,8 +10,8 @@
  * full address is a CADR: its bank in the upper bits, its address within
  * the bank in the low ten.
  *
- * Each entry is called with the machine as the original's TC leaves it and
- * returns with Z at the address the original continues at. A CADR that
+ * Each entry is called with the machine as the caller's TC leaves it and
+ * returns with Z at the address the program continues at. A CADR that
  * follows the TC (TC BANKCALL; CADR X) is read from memory with
  * read_word(), which reaches the rope through the binding. */
 #ifndef READABLE_INTERBANK_H

@@ -22,8 +22,8 @@
  * (CCSHOLE is 1103, CURTAINS 217).
  *
  * Each routine is entered with the machine as the caller's TC leaves it,
- * and leaves with Z at the address the original goes on to. Where the
- * original calls out (BANKCALL, SUPERSW, DOWNFLAG, POSTJUMP) or returns
+ * and leaves with Z at the address the program goes on to. Where the
+ * program calls out (BANKCALL, SUPERSW, DOWNFLAG, POSTJUMP) or returns
  * into this file through MULTEXIT, the routine ends there, and the place
  * it comes back to is a routine of its own (its name says what it
  * follows). */

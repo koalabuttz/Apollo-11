@@ -7,8 +7,8 @@
  * reads its CADR with CAF 0 in the LM and CA 0 in the CM: the same
  * instruction word, 030000.)
  *
- * Every word of memory and every register ends as the original leaves it
- * (STYLE.md, Fidelity), so the routines below keep the original's order of
+ * At each entry's end every word of memory and every register matches the
+ * faithful port (STYLE.md, Fidelity), so the routines below keep the listing's order of
  * exchanges: A, L and Q carry the caller's values through each one, and
  * the exchanges are how they are kept. */
 #include "interbank.h"

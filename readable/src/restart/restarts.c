@@ -21,8 +21,8 @@
  * task's banks to read its delta time, are in fixed-fixed memory ("THIS
  * MUST BE IN FIXED FIXED").
  *
- * Every word of memory and every register ends as the original leaves it
- * (STYLE.md, Fidelity). Each entry ends where the faithful port's routine
+ * At each entry's end every word of memory and every register matches the
+ * faithful port (STYLE.md, Fidelity). Each entry ends where the faithful port's routine
  * does: at TC GOLOC -1, at the display job's TC FINDVAC, or at SWRETURN. */
 #include "restart.h"
 #include "../agc/names.h"

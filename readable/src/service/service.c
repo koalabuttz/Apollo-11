@@ -9,7 +9,7 @@
  * TRFAILON.
  *
  * The binding (src/binding/service_routines.c) hands these routines the
- * states the original's callers make: return addresses and data words, so
+ * states the program's callers make: return addresses and data words, so
  * no TS here stores an overflow and skips unless the code says so. */
 #include "service.h"
 #include "../interbank/interbank.h"
