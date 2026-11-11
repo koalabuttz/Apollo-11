@@ -1373,10 +1373,14 @@ x86-flight: $(X86_OBJECTS)
 x86-link-check:
 	@python3 tests/x86_link_check.py
 
+# The scenarios fly the program x86-flight builds, and so run its link
+# check on a real link it must fail first (CI's gate 2 is these targets).
 x86-scenarios-quick: $(X86_OBJECTS) $(HARNESS_ENGINE)
+	$(MAKE) x86-flight
 	python3 tests/x86_readable.py scenarios --quick
 
 x86-scenarios: $(X86_OBJECTS) $(HARNESS_ENGINE)
+	$(MAKE) x86-flight
 	python3 tests/x86_readable.py scenarios
 
 # The readable program against Virtual AGC, routine by routine
