@@ -4,8 +4,8 @@
  * The faithful C is the WAITLIST half of
  * c64-port/src/resident_kernel_body.inc.
  *
- * Every word of memory and every register ends as the original leaves it
- * (STYLE.md, Fidelity). The time arithmetic below is the original's, in
+ * At each entry's end every word of memory and every register matches the
+ * faithful port (STYLE.md, Fidelity). The time arithmetic below is the listing's, in
  * the 16-bit accumulator: it depends on overflow, and the comments give the
  * listing's own account of it. */
 #include "waitlist.h"

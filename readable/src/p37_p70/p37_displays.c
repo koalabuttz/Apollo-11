@@ -355,14 +355,14 @@ void p370gofr_terminate(void)
     continue_at(GOTOPOOH);
 }
 
-/* P370GOFR +5: "PROCEED", on at the fourth word after the TCR (TCF +3;
+/* P370GOFR +5: "PROCEED", on at the fifth word after the TCR (TCF +3;
  * INDEX RTENCKEX; TCF 0 +4). */
 void p370gofr_proceed(void)
 {
     tcf_past_return_in(ADDRESS_OF(RTENCKEX), 4u);
 }
 
-/* P370GOFR +6: "RECYCLE", on at the third (TCF +4; INDEX RTENCKEX; TCF 0
+/* P370GOFR +6: "RECYCLE", on at the fourth (TCF +4; INDEX RTENCKEX; TCF 0
  * +3). */
 void p370gofr_recycle(void)
 {

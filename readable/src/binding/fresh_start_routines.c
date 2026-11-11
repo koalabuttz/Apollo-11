@@ -103,8 +103,8 @@ static word channel_in(unsigned number)
     return (word)*word_there;
 }
 
-/* As yaAGC writes a channel: channel 13's bits 12-14 set the HANDRUPT
- * traps and are not kept. In the CM a write to channel 33 sets its latched
+/* A channel write matches the faithful port's: channel 13's bits 12-14 set
+ * the HANDRUPT traps and are not kept. In the CM a write to channel 33 sets its latched
  * bits 11-15 again, but bit 14 (the AGC warning) stays 0 while the warning
  * lasts. */
 static void channel_out(unsigned number, word value)

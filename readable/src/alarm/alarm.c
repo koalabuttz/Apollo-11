@@ -13,7 +13,7 @@
  * in A and L. ABORT is WHIMPER in the LM and BAILOUT in the CM.
  *
  * The binding (src/binding/alarm_routines.c) hands these routines only
- * states the original's callers make: a return address and an alarm code
+ * states the program's callers make: a return address and an alarm code
  * are words, so no TS here stores an overflow and skips. */
 #include "alarm.h"
 #include "../agc/names.h"

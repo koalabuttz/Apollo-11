@@ -10,8 +10,8 @@
  * ...), so that after a restart it carries on from its last safe point.
  * The listing's long comment on p. 1295 (LM) describes the phase words.
  *
- * Each entry is called with the machine as the original's TC leaves it and
- * returns with Z at the address the original continues at. Words after
+ * Each entry is called with the machine as the caller's TC leaves it and
+ * returns with Z at the address the program continues at. Words after
  * the TC are read with read_word(). */
 #ifndef READABLE_PHASE_TABLE_H
 #define READABLE_PHASE_TABLE_H

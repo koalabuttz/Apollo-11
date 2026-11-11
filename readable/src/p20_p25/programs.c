@@ -351,7 +351,7 @@ void prog20a_after_norrmon(void)
     tc_to(PROG20A + 020u, DOWNFLAG); /* ADRES LOSCMFLG */
 }
 
-/* PROG20A +022 -- CLRADMOD (part 4) clears RADMODES' bits 10 and 15, and
+/* PROG20A +022 -- CLRADMOD (part 3) clears RADMODES' bits 10 and 15, and
  * comes back to P20LEM1. */
 void prog20a_after_loscmflg(void)
 {
@@ -374,7 +374,7 @@ void p20lem1_after_phaschng(void)
     intpret();
 }
 
-/* P20LEM1 +5 -- LPS20.1 (part 7) works out the line of sight to the CSM
+/* P20LEM1 +5 -- LPS20.1 (part 8) works out the line of sight to the CSM
  * at the present time (TDEC1), and LPS20.2, the "TEST RANGE R/UTINE",
  * leaves MPAC 0 within 400 nautical miles, else 1. */
 static const word p20lem1_words[] = {

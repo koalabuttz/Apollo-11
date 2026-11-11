@@ -101,8 +101,8 @@ void cgoto(void);
 void swbranch(void);
 
 /* BRANCH: which way MPAC's triple-precision sign sent the caller, which
- * TC BRANCH continues at L +1, L +2 or L +3 (Z and Q as the original
- * leaves them). */
+ * TC BRANCH continues at L +1, L +2 or L +3 (Z and Q match the faithful
+ * port). */
 enum branch { BRANCH_POSITIVE, BRANCH_ZERO, BRANCH_NEGATIVE };
 enum branch branch(void);
 void branch_plus4(void);

@@ -14,7 +14,7 @@
  * the uplink (UPLOCKFL) until the ground sends ERROR RESET.
  *
  * The binding (src/binding/keyrupt_routines.c) hands these routines the
- * states the original's lead-ins and callers make: inside the interrupt,
+ * states the program's lead-ins and callers make: inside the interrupt,
  * no overflow in A at an entry, so no TS here skips unless the code says
  * so. */
 #include "keyrupt.h"

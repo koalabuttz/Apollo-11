@@ -14,8 +14,8 @@
  * 2CADR to start in GOLOC; the call returns to GOLOC +2, which goes on to
  * the next group (SWRETURN) or to the second part (PHSPART2, GETPART2).
  *
- * Each entry is called with the machine as the original's TC leaves it and
- * returns with Z at the address the original continues at. */
+ * Each entry is called with the machine as the caller's TC leaves it and
+ * returns with Z at the address the program continues at. */
 #ifndef READABLE_RESTART_H
 #define READABLE_RESTART_H
 

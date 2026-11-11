@@ -281,9 +281,9 @@ static const word posn17c_words[] = {
 const struct interpretive_code POSN17C_CODE = {033u, POSN17C + 5u, COUNT(posn17c_words),
                                                posn17c_words};
 
-/* ---- The gyrocompassing's filter: ALWAYSG -- pp. 443-444 ---- */
+/* ---- The gyrocompassing's filter: ALWAYSG -- pp. 444-445 ---- */
 
-/* ALWAYSG -- p. 443, the "JOB DONE EVERY ITERATION THROUGH COMPASS
+/* ALWAYSG -- p. 444, the "JOB DONE EVERY ITERATION THROUGH COMPASS
  * PROGRAM.SET BY TASK ALLOOP": "COMPASS AND ERECT". For each axis (TIX,1
  * steps X1 down), FILDELV1 follows the PIPA counts DPIPAY by the gain
  * GEOCONS1, INTVEC1 sums FILDELV1, and (FILDELV1 + GEOCONS2 INTVEC1)

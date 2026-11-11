@@ -10,8 +10,8 @@
  * An empty place holds ENDTASK's task, SVCT3, which comes round every 81.93
  * seconds.
  *
- * Each entry is called with the machine as the original's TC leaves it and
- * returns with Z at the address the original continues at. */
+ * Each entry is called with the machine as the caller's TC leaves it and
+ * returns with Z at the address the program continues at. */
 #ifndef READABLE_WAITLIST_H
 #define READABLE_WAITLIST_H
 

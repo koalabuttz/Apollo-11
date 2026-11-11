@@ -9,8 +9,8 @@
  * routines after it are back in fixed-fixed: with the caller's bank put
  * back for the moment, they can read the words after the TC PHASCHNG.
  *
- * Every word of memory and every register ends as the original leaves it
- * (STYLE.md, Fidelity). Each entry ends where the faithful port's routine
+ * At each entry's end every word of memory and every register matches the
+ * faithful port (STYLE.md, Fidelity). Each entry ends where the faithful port's routine
  * does: at BANKJUMP, at NOVAC, or at a DTCB. */
 #include "phase_table.h"
 #include "../agc/names.h"

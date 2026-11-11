@@ -1,13 +1,13 @@
 /* SPDX-License-Identifier: MIT */
 /* The machine the readable routines run on: the AGC's erasable memory, its
- * central registers and the few I/O channels the Executive and WAITLIST
- * touch, with the one's complement arithmetic of its adder.
+ * central registers and its I/O channels, with the one's complement
+ * arithmetic of its adder.
  *
  * Every AGC name keeps its listing spelling (STYLE.md, Naming): A, L, Q and
  * Z are the central registers, NEWJOB or LST1(3) an erasable word, NOVAC
  * the fixed address of a routine and EXECBANK a constant in fixed memory.
- * This header defines the registers; erasable.h and the mission's labels
- * define the rest. */
+ * This header defines the registers; names.h and the mission's labels
+ * (<m>_names.inc) define the rest. */
 #ifndef READABLE_AGC_H
 #define READABLE_AGC_H
 
@@ -183,7 +183,7 @@ unsigned erasable_index(unsigned address);
 word fetch(unsigned address);
 void store(unsigned address, word value);
 
-/* The erasable word itself, for named variables (erasable.h). */
+/* The erasable word itself, for named variables (names.h). */
 #define ERASABLE(address) (agc.memory[erasable_index(address)])
 
 /* XCH, LXCH and DXCH: A, L, or A and L as a pair (the high word at the
@@ -441,7 +441,7 @@ void wand_dsalmout(void);
  *   - WAND, WOR: A and'ed (or'ed) with the channel, and the result written
  *     back to the channel too.
  * Channels 1 and 2 (LCHAN, QCHAN) are registers L and Q: rxor_lchan() and
- * the like below. */
+ * the like above. */
 void read_channel(unsigned channel);
 void write_channel(unsigned channel);
 void rand_channel(unsigned channel);

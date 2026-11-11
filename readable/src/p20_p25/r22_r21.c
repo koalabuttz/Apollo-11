@@ -5,9 +5,9 @@
  * UPDATE THE STATE VECTOR OF EITHER LM OR CSM AS DEFINED IN THE RENDEZVOUS
  * NAVIGATION PROGRAM (P20)". Each pass, while the rendezvous and track
  * flags stay set and the radar is still in auto track: read the radar
- * (LRS22.1, part 7), check the line of sight is within 30 degrees of +Z
+ * (LRS22.1, part 9), check the line of sight is within 30 degrees of +Z
  * (LRS22.2, in orbit), and give the mark to the state vector (LSR22.3,
- * part 8), asking the crew first if the update is too big (verb 06 noun
+ * part 10), asking the crew first if the update is too big (verb 06 noun
  * 49). Then hold the preferred tracking attitude (R65LEM) and go round
  * again, or on the surface wait 2 seconds. "R22 WILL CONTINUE TO RECYCLE,
  * UPDATING STATE VECTORS WITH RADAR DATA UNTIL P20 CEASES TO OPERATE
@@ -276,7 +276,7 @@ void r22lem3(void)
     intpret();
 }
 
-/* R22LEM3 +013 -- LSR22.3 (part 8) ends at R22LEM93, the "NORMAL EXIT FROM
+/* R22LEM3 +013 -- LSR22.3 (part 10) ends at R22LEM93, the "NORMAL EXIT FROM
  * LSR22.3", or at R22LEM96 when the update is too big to take unasked. */
 static const word r22lem3_words[] = {
     ORDER(GOTO),
