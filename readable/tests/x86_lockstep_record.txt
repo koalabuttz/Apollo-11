@@ -1,6 +1,6 @@
 # The readable x86 program against Virtual AGC: the run of record.
 # Written by readable/tests/x86_lockstep.py --record (make x86-lockstep-record).
-# Tree: commit 3e1ee264.
+# Tree: commit db314cba.
 # Date: 2026-11-11.
 # Columns: row, centiseconds flown, routines and core slots checked, yaAGC instructions
 # run, points that differ.
@@ -122,4 +122,11 @@ lm-rendezvous-tpm-wait                71000    2558270    70447594   0
 lm-stable-orbit-wait                  67000    1986876    69431340   0
 lm-stable-orbit-lm-wait               67000    1988329    69423692   0
 # Total: 117 rows, 217219619 routines and core slots, 4304649939 yaAGC instructions, 0 points that differ, 0 rows failed.
-# Left out: lm-p52-watchman: its job loops in GOTOERS until the night watchman restarts the AGC, and the lockstep tool cannot follow either. A step of the loop ends where it started (in the readable interpreter at the GOTO order after 63 hops, with A and the erasable bank as the hops left them: README, Departures, an endless GOTO chain), and yaAGC, looping inside GOTOERS, does not come back there. And the tool has no case for the watchman's restart (the step reports it as trap 3; the tool treats trap 2, the TC trap's). The row fails the same way with the faithful routines: measured, 173 steps at 2 points with them, 174 steps at 2 points with the readable ones, all in the loop or at the restart.
+# One run under two names (a check row and a scenario, alike in all the x86 program reads), counted twice: lm-v69-compiled = lm-v69, cm-v69-compiled = cm-v69.
+# Left out: lm-p52-watchman: its job loops in GOTOERS until the night watchman restarts the AGC, and the lockstep tool cannot follow either. A step of the loop ends where it started (in the readable interpreter at the GOTO order after 63 hops, with A and the erasable bank as the hops left them: README, Departures, an endless GOTO chain), and yaAGC, looping inside GOTOERS, does not come back there. And the tool has no case for the watchman's restart (the step reports it as trap 3; the tool treats trap 2, the TC trap's). The row fails the same way with the faithful routines: measured, 173 steps at 2 points with them, 174 steps at 2 points with the readable ones, all in the loop or at the restart. Flown: 527785 routines and core slots, 2 points that differ.
+# Not flown, by gate 2 or by this check (10 rows of the harness): the x86 program has no model of one of their inputs. lm-uplink-reject (FLIGHT_UPLINK); lm-uplink-accept (FLIGHT_UPLINK); cm-uplink-accept (FLIGHT_UPLINK); cm-uplink-reject (FLIGHT_UPLINK); lm-p52-cage-torque (FLIGHT_GYRO); lm-p52-coarse (FLIGHT_ISS); cm-p52-optics (FLIGHT_GYRO, FLIGHT_OPTICS); lm-p63-overload (FLIGHT_STEAL); cm-entry-overload (FLIGHT_STEAL); lm-p63-overload-nomon (FLIGHT_STEAL).
+# Not compared with yaAGC by this check, whose clock is frozen and whose interrupt requests are
+# cleared at each load: which interrupts are pending, the night watchman, the rupt lock and the
+# TC trap (the step's own), the HANDRUPT traps' firing, T6's disabling, the timers' counting
+# and the entry to an interrupt. Of channel 10 the last word written is compared, not the word
+# of each relay row. Channel 16 is loaded and not compared.
