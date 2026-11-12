@@ -66,7 +66,7 @@ void cm_dapon_after_flushjet(void); /* CM/DAPON +015 */
 void cm_dapon_plus4_tc(void);       /* CM/DAPON +020 */
 void notyet(void);                  /* NOTYET */
 void notyet_bankcall(void);         /* NOTYET +1 */
-void notyet_plus4(void);            /* NOTYET +3, the listing's "+4" */
+void notyet_plus3(void);            /* NOTYET +3, the listing's "+4" */
 void notyet_alfacom(void);          /* NOTYET +020 */
 void cm_dapic(void);                /* CM/DAPIC */
 void cm_dap2c_jetem(void);          /* CM/DAP2C +5 */
@@ -122,7 +122,7 @@ void exdap(void);                /* EXDAP */
 void exdap_tcf(void);            /* EXDAP +3 */
 void exdap_ad_c45lim(void);      /* EXDAP +4 */
 void exdap_ts_a(void);           /* EXDAP +5 */
-void exdap_p63_plus0(void);      /* EXDAP +013 */
+void exdap_plus013(void);        /* EXDAP +013 */
 void exdap_p63_negative(void);   /* EXDAP +014 */
 void exdap_phaschng(void);       /* EXDAP +015 */
 void exdap_after_phaschng(void); /* EXDAP +017 */
@@ -143,7 +143,7 @@ void setjtag(void);            /* SETJTAG */
 void setjtag_taskover(void);   /* SETJTAG +6 */
 void cm_rcs(void);             /* CM/RCS */
 void cm_rcs_vt_positive(void); /* GETLCX +012 */
-void cm_rcs_vt_plus0(void);    /* GETLCX +013 */
+void getlcx_plus013(void);     /* GETLCX +013 */
 void cm_rcs_vt_negative(void); /* GETLCX +014 */
 void cm_rcs_shortest(void);    /* GETLCX +015 */
 void cm_rcs_cs_pos1_2(void);   /* GETLCX +027 */

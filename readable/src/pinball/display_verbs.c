@@ -237,7 +237,8 @@ void dspa(void)
     dspcom1();
 }
 
-/* DSPCOM1: the first word into BUF, and on to show them. */
+/* DSPCOM1 -- LM p. 414, CM p. 331: the first word into BUF, and on to show
+ * them. */
 static void dspcom1(void)
 {
     xch(ADDRESS_OF(BUF));
@@ -296,8 +297,8 @@ static void dspcom2_plus2(void)
     tc(DSPCOM3 + 6u, DSPOCTWD);
 }
 
-/* DSPCOM3 +7, where DSPOCTWD comes back: the count back into A, and round
- * again (TC DSPCOM2 +2). */
+/* DSPCOM3 +7 -- LM p. 414, CM p. 331, where DSPOCTWD comes back: the count
+ * back into A, and round again (TC DSPCOM2 +2). */
 void dspcom3_after_dspoctwd(void)
 {
     xch(ADDRESS_OF(DISTEM));
@@ -409,8 +410,9 @@ void dspdcend(void)
     tc(DSPDCEND, BANKCALL); /* CADR DSPDECWD */
 }
 
-/* DSPDCEND +2, where DSPDECWD comes back (and 2INTOUT and M/SOUT go):
- * "MORE TO DISPLAY" while DECOUNT counts down, else the verb is done. */
+/* DSPDCEND +2 -- LM p. 417, CM p. 334, where DSPDECWD comes back (and
+ * 2INTOUT and M/SOUT go): "MORE TO DISPLAY" while DECOUNT counts down, else
+ * the verb is done. */
 void dspdcend_plus2(void)
 {
     switch (ccs_at(ADDRESS_OF(DECOUNT))) {
@@ -425,12 +427,12 @@ void dspdcend_plus2(void)
 
 /* ---- Verb 07 (LM p. 424, CM pp. 341-342) ---- */
 
-/* DSPDPDEC -- "THIS IS A SPECIAL PURPOS VERB FOR DISPLAYING A DOUBLE
- * PRECISION AGC WORD AS 10 DECIMAL DIGITS ON THE AGC DISPLAY PANEL. IT
- * CAN BE USED WITH ANY NOUN, EXCEPT MIXED NOUNS." The double word NOUNADD
- * points at into MPAC, made to agree in sign (TPAGREE), for DSP2DEC in R1
- * and R2. The faithful port's step ends at TPAGREE, and so does this
- * one. */
+/* DSPDPDEC -- LM p. 424, CM p. 341: "THIS IS A SPECIAL PURPOS VERB FOR
+ * DISPLAYING A DOUBLE PRECISION AGC WORD AS 10 DECIMAL DIGITS ON THE AGC
+ * DISPLAY PANEL. IT CAN BE USED WITH ANY NOUN, EXCEPT MIXED NOUNS." The
+ * double word NOUNADD points at into MPAC, made to agree in sign (TPAGREE),
+ * for DSP2DEC in R1 and R2. The faithful port's step ends at TPAGREE, and so
+ * does this one. */
 void dspdpdec(void)
 {
     if (mixed_noun(DSPDPDEC + 1u)) {
@@ -448,13 +450,15 @@ void dspdpdec(void)
     tc(DSPDPDEC + 014u, TPAGREE); /* "MAKE DP DATA AGREE" */
 }
 
-/* DSPDPDEC +13, where TPAGREE (INTERPRETER.agc) comes back. */
-void dspdpdec_plus13(void)
+/* DSPDPDEC +015 -- LM p. 424, CM p. 342, where TPAGREE (INTERPRETER.agc)
+ * comes back. */
+void dspdpdec_plus015(void)
 {
     tc(DSPDPDEC + 015u, DSP2DEC);
 }
 
-/* ENDDPDEC, where DSP2DEC comes back: the verb is done. */
+/* ENDDPDEC -- LM p. 424, CM p. 342, where DSP2DEC comes back: the verb is
+ * done. */
 void enddpdec(void)
 {
     tc(ENDDPDEC, ADDRESS_OF(ENTRET)); /* TC ENTEXIT */

@@ -179,6 +179,24 @@ so a reader sees both versions together.
   Pages are the `# Page NNNN` markers of the transcribed listings. A routine
   from another file names it: `INTRSM -- INTERPRETER.agc, LM p. 1002, CM
   p. 1107.`
+
+  The page is the page of the word the function stands at, which is the
+  place its key names in the tables of places. A function that begins some
+  words into a routine names that word and its page (`CKSTALL +7 -- LM
+  p. 208`), and one keyed at a jump says so (`EXBRAK +5 -- p. 812, after
+  the EXIT (TCF STEER?)`). A file of one mission writes `p. 812` alone. A
+  function that covers several pages gives them all (`pp. 1332-1333`). A
+  helper that is an idiom of the listing written once, at no one place, has
+  no page.
+
+  `make style-check` holds every header to this (tools/header_pages.py):
+  it reads each word's page from the assembled listing and fails on a
+  header without the page of its place, one that names another place than
+  its key, or an offset in decimal without a D. It also compares the page
+  of every label in the assembled transcription with this repository's
+  marks. They agree but for page 531 of Comanche, which
+  `Comanche055/STABLE_ORBIT.agc` has no mark for: PREC/TT and INTRPVP are
+  on page 531.
 - Then say **what it does, in plain words**, before how.
 - Quote the listing's own comments in double quotes
   (`"negative LOC shows job = interpretive"`).

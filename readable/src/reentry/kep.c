@@ -58,12 +58,12 @@ const struct interpretive_code KEP_CODE = {025u, KEP, COUNT(kep_words), kep_word
 
 /* ---- PREDICT3's basic code -- pp. 870-871 ---- */
 
-/* BACK, down the VREFER table from its end ("HIGHEST VREF AT END OF
- * TABLE."): JJ from 12, one less each time ("DECREMENT JJ, JJ CANNOT BE
- * ZERO"), while "IF VREF-V POS LOOP BACK". The entry found, V less its
- * VREF in TEM1B, "V-VREF IN TEM1B (MUST BE POSITIVE NUM)"; a V of a VREF
- * exactly makes VREF - V -0, and TEM1B +0. The cases a CCS never meets
- * (VREF - V +0, JJ run out) go on as the AGC's would. */
+/* BACK -- p. 870, down the VREFER table from its end ("HIGHEST VREF AT END
+ * OF TABLE."): JJ from 12, one less each time ("DECREMENT JJ, JJ CANNOT BE
+ * ZERO"), while "IF VREF-V POS LOOP BACK". The entry found, V less its VREF
+ * in TEM1B, "V-VREF IN TEM1B (MUST BE POSITIVE NUM)"; a V of a VREF exactly
+ * makes VREF - V -0, and TEM1B +0. The cases a CCS never meets (VREF - V +0,
+ * JJ run out) go on as the AGC's would. */
 static void back(void)
 {
     for (;;) {
@@ -93,12 +93,12 @@ static void back(void)
     }
 }
 
-/* BACK2: the six other columns of the table at the same place, each
- * "FX = AK + GRAD (AK+1 - AK)", MM from 5 to 0 (FX +5 to FX), JJ 13 on
- * each time. Its CCS MM: on (TCF BACK2) while positive; at +0 on to the
- * end, "ZERO FX +1 AND GET DREFR". (A TS FX that overflows skips the CCS,
- * back to BACK2 with A +1 or -1; a negative MM skips the XCH, a -0 the AD
- * D too: none happens in flight.) The result: how the end goes on. */
+/* BACK2 -- p. 871: the six other columns of the table at the same place,
+ * each "FX = AK + GRAD (AK+1 - AK)", MM from 5 to 0 (FX +5 to FX), JJ 13 on
+ * each time. Its CCS MM: on (TCF BACK2) while positive; at +0 on to the end,
+ * "ZERO FX +1 AND GET DREFR". (A TS FX that overflows skips the CCS, back to
+ * BACK2 with A +1 or -1; a negative MM skips the XCH, a -0 the AD D too:
+ * none happens in flight.) The result: how the end goes on. */
 static enum sign back2(void)
 {
     enum sign mm;
@@ -119,8 +119,8 @@ static enum sign back2(void)
     }
 }
 
-/* PREDICT3 +5, after the EXIT: "PRECAUTIONARY." EBANK; BACK, and GRAD,
- * "GRAD = (V-VREF)/(VK+1 - VK)"; BACK2 to the other columns. Then the
+/* PREDICT3 +5 -- p. 870, after the EXIT: "PRECAUTIONARY." EBANK; BACK, and
+ * GRAD, "GRAD = (V-VREF)/(VK+1 - VK)"; BACK2 to the other columns. Then the
  * range the reference trajectory predicts from here: "MPAC = F1(D-DREF)",
  * plus F2 times RDOTREF - RDOT ("SCALE UP BY 8 FOR THIS PHASE."), plus
  * RTOGO: PREDANG. "L/D = LOD + (THETA- PREDANG)/ Y", back in the

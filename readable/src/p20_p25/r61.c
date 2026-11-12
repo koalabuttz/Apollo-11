@@ -44,7 +44,7 @@ void r61lem_after_upflag(void)
     tc_to(R61LEM + 4u, R61C_L01);
 }
 
-/* R65LEM -- the same, with the R61 flag reset. */
+/* R65LEM -- p. 517: the same, with the R61 flag reset. */
 void r65lem(void)
 {
     tc_to(R65LEM, MAKECADR);
@@ -56,8 +56,8 @@ void r65lem_after_makecadr(void)
     tc_to(R65LEM + 2u, DOWNFLAG); /* "RESET R61 FLAG" */
 }
 
-/* R61C+L01 -- "TRACKFLAG": "NOT SET", P20LEMWT (R65WAIT). Else the LOS
- * and the angles (R61C_L03_WORDS). */
+/* R61C+L01 -- p. 517: "TRACKFLAG": "NOT SET", P20LEMWT (R65WAIT). Else the
+ * LOS and the angles (R61C_L03_WORDS). */
 void r61c_l01(void)
 {
     set_A(TRACKBIT);
@@ -94,14 +94,14 @@ static const word r61c_l03_words[] = {
     ORDER(EXIT),
 };
 
-/* R61LEM1 +015 -- restart group 2 at P20LEM1. */
+/* R61LEM1 +015 -- p. 518: restart group 2 at P20LEM1. */
 void r61lem1_after_exit(void)
 {
     tc_to(R61LEM1 + 015u, PHASCHNG); /* OCT 04022 */
 }
 
-/* R61LEM1 +017 -- "IS TRACK FLAG SET": not, R65WAIT. Else "CHECK FOR AUTO
- * MODE" (G+N,AUTO). */
+/* R61LEM1 +017 -- p. 518: "IS TRACK FLAG SET": not, R65WAIT. Else "CHECK FOR
+ * AUTO MODE" (G+N,AUTO). */
 void r61lem1_after_phaschng(void)
 {
     set_A(TRACKBIT);
@@ -113,8 +113,8 @@ void r61lem1_after_phaschng(void)
     tc_to(R61LEM1 + 023u, BANKCALL); /* CADR G+N,AUTO */
 }
 
-/* R61LEM1 +025 -- G+N,AUTO's answer in A: positive, "NOT IN AUTO", the
- * angles on the FDAI (R61C+L04); +0, in auto (R61LEM1_AUTO_WORDS). Not
+/* R61LEM1 +025 -- p. 518: G+N,AUTO's answer in A: positive, "NOT IN AUTO",
+ * the angles on the FDAI (R61C+L04); +0, in auto (R61LEM1_AUTO_WORDS). Not
  * modelled: a negative answer, which runs interpretive words as basic
  * code. */
 void r61lem1_after_auto_check(void)
@@ -150,7 +150,7 @@ static const word r61lem1_auto_words[] = {
     ADDRESS(R61CPL05),
 };
 
-/* R61LEM2 +2 -- within 15 degrees: the final angles straight to the
+/* R61LEM2 +2 -- p. 518: within 15 degrees: the final angles straight to the
  * desired CDUs (CDUXD, CDUYD, CDUZD in E bank 6), with interrupts held,
  * then E bank 7 again and R61C+L06. (A, an EBANK constant or a word from
  * memory, does not overflow: no TS skips.) */
@@ -174,7 +174,7 @@ static const word r61c_l05_words[] = {
     ORDER(EXIT),
 };
 
-/* R61C+L05 +1 -- ZATTEROR, and SETMINDB: "REDUCE ATTITUDE ERROR". */
+/* R61C+L05 +1 -- p. 518: ZATTEROR, and SETMINDB: "REDUCE ATTITUDE ERROR". */
 void r61c_l05_after_exit(void)
 {
     inhint();
@@ -186,7 +186,8 @@ void r61c_l05_after_zatteror(void)
     tc_to(R61C_L05 + 4u, IBNKCALL); /* FCADR SETMINDB */
 }
 
-/* R61C+L05 +6 -- 3AXISFLG reset; "SET PRIORITY DISPLAY FLAG"; R60. */
+/* R61C+L05 +6 -- p. 519: 3AXISFLG reset; "SET PRIORITY DISPLAY FLAG";
+ * R60. */
 void r61c_l05_after_setmindb(void)
 {
     tc_to(R61C_L05 + 6u, DOWNFLAG); /* ADRES 3AXISFLG */
@@ -202,28 +203,28 @@ void r61c_l05_after_upflag(void)
     tc_to(R61C_L05 + 012u, BANKCALL); /* CADR R60LEM */
 }
 
-/* R61C+L05 +014 -- the astronaut's deadband back (RESTORDB). */
+/* R61C+L05 +014 -- p. 519: the astronaut's deadband back (RESTORDB). */
 void r61c_l05_after_r60lem(void)
 {
     inhint();
     tc_to(R61C_L05 + 015u, IBNKCALL); /* FCADR RESTORDB */
 }
 
-/* R61C+L05 +017 -- restart group 2 at P20LEM1. */
+/* R61C+L05 +017 -- p. 519: restart group 2 at P20LEM1. */
 void r61c_l05_after_restordb(void)
 {
     tc_to(R61C_L05 + 017u, PHASCHNG); /* OCT 04022 */
 }
 
-/* R61C+L05 +021 -- "RESET PRIORITY DISPLAY FLAG". */
+/* R61C+L05 +021 -- p. 519: "RESET PRIORITY DISPLAY FLAG". */
 void r61c_l05_after_phaschng(void)
 {
     tc_to(R61C_L05 + 021u, DOWNFLAG); /* ADRES PDSPFLAG */
 }
 
-/* R61C+L06 -- the R61 flag set: R61C+L4, return. Else (R65) count R65CNTR
- * down: at +0, "R65CNTR = 0 - EXIT ROUTINE"; else again in 6 seconds,
- * R61C+L2 by TWIDDLE. (After MASK, A is +0 or the flag's bit.) */
+/* R61C+L06 -- p. 519: the R61 flag set: R61C+L4, return. Else (R65) count
+ * R65CNTR down: at +0, "R65CNTR = 0 - EXIT ROUTINE"; else again in 6
+ * seconds, R61C+L2 by TWIDDLE. (After MASK, A is +0 or the flag's bit.) */
 void r61c_l06(void)
 {
     ca(ADDRESS_OF(FLAGWRD1));
@@ -236,7 +237,7 @@ void r61c_l06(void)
     }
 }
 
-/* R61C+L06 +4 -- CCS R65CNTR. */
+/* R61C+L06 +4 -- p. 519: CCS R65CNTR. */
 void r61c_l06_r65(void)
 {
     switch (ccs_at(ADDRESS_OF(R65CNTR))) {
@@ -250,13 +251,14 @@ void r61c_l06_r65(void)
     }
 }
 
-/* R61C+L06 +6 -- "R65CNTR = 0 - EXIT ROUTINE". */
+/* R61C+L06 +6 -- p. 519: "R65CNTR = 0 - EXIT ROUTINE". */
 void r61c_l06_count_out(void)
 {
     tc_to(R61C_L06 + 6u, R61C_L4);
 }
 
-/* R61C+L06 +7 -- the count back to R65CNTR, and again in 6 seconds. */
+/* R61C+L06 +7 -- p. 519: the count back to R65CNTR, and again in 6
+ * seconds. */
 void r61c_l06_again(void)
 {
     if (!ts(ADDRESS_OF(R65CNTR))) set_A(SIX_SEC);
@@ -268,7 +270,7 @@ void r61c_l06_after_twiddle(void)
     tc_to(R61C_L06 + 013u, ENDOFJOB);
 }
 
-/* R61C+L2 -- the task TWIDDLE starts: R61C+L01 as a job. */
+/* R61C+L2 -- p. 519: the task TWIDDLE starts: R61C+L01 as a job. */
 void r61c_l2(void)
 {
     set_A(PRIO26);
@@ -280,13 +282,13 @@ void r61c_l2_after_findvac(void)
     tc_to(R61C_L2 + 4u, TASKOVER);
 }
 
-/* R61C+L04 +2 -- after BALLANGS. */
+/* R61C+L04 +2 -- p. 519: after BALLANGS. */
 void r61c_l04_after_ballangs(void)
 {
     tc_to(R61C_L04 + 2u, R61C_L06);
 }
 
-/* R61C+L4 -- "EXIT R61": to the CADR in GENRET. */
+/* R61C+L4 -- p. 519: "EXIT R61": to the CADR in GENRET. */
 void r61c_l4(void)
 {
     ca(ADDRESS_OF(GENRET)); /* CAE GENRET */
@@ -297,7 +299,7 @@ void r61c_l4(void)
  * not written here: nothing in the program refers to R61C+L1, and the
  * TCF BANKJUMP before it never falls through, so no key reaches it.) */
 
-/* R65WAIT -- P20LEMWT. */
+/* R65WAIT -- p. 519: P20LEMWT. */
 void r65wait(void)
 {
     tc_to(R65WAIT, POSTJUMP); /* CADR P20LEMWT */

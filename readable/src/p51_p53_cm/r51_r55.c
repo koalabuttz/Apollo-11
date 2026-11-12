@@ -41,8 +41,8 @@ static const word r51_words[] = {
 
 const struct interpretive_code R51_CODE = {014u, R51, COUNT(r51_words), r51_words};
 
-/* R51, after the EXIT: STARIND and MARKINDX 1, the first star. (A is
- * BIT1: TS does not skip.) */
+/* R51 +1 -- p. 756, after the EXIT: STARIND and MARKINDX 1, the first star.
+ * (A is BIT1: TS does not skip.) */
 void r51_after_exit(void)
 {
     set_A(BIT1);
@@ -68,9 +68,10 @@ void r51_3_after_exit(void)
     tc_to(R51_3 + 4u, PHASCHNG); /* OCT 05024, OCT 13000 */
 }
 
-/* The star's code: BESTI (by STARIND) holds the star's place in the
- * catalog, its code times 6; times 1/6TH, the code, to STARCODE. (MP
- * leaves A small and positive: TS does not skip.) Then R51DSP. */
+/* R51.3 +7 -- p. 756: The star's code: BESTI (by STARIND) holds the star's
+ * place in the catalog, its code times 6; times 1/6TH, the code, to
+ * STARCODE. (MP leaves A small and positive: TS does not skip.) Then
+ * R51DSP. */
 void r51_3_restart(void)
 {
     ca(indexed_ca(ADDRESS_OF(BESTI), fetch(ADDRESS_OF(STARIND)))); /* INDEX STARIND */
@@ -79,10 +80,10 @@ void r51_3_restart(void)
     r51dsp();
 }
 
-/* R51DSP: the code flashed (V01N70, GOFLASHR); the job goes on at once
- * (+3): R2 and R3 blanked (BLANKET, SIX), and ENDOFJOB. The crew answers
- * later: terminate, proceed (CHKSCODE checks the code) or enter (flash it
- * again, with a code keyed in). */
+/* R51DSP -- p. 756: the code flashed (V01N70, GOFLASHR); the job goes on at
+ * once (+3): R2 and R3 blanked (BLANKET, SIX), and ENDOFJOB. The crew
+ * answers later: terminate, proceed (CHKSCODE checks the code) or enter
+ * (flash it again, with a code keyed in). */
 static void r51dsp(void)
 {
     set_A(V01N70);
@@ -118,8 +119,8 @@ void r51dsp_after_blanket(void)
     continue_at(ENDOFJOB); /* TCF ENDOFJOB */
 }
 
-/* CHKSCODE's return (+0): a code over 50 or below 0. The operator error
- * light (FALTON), and the code flashed again. */
+/* R51DSP +012 -- p. 756: CHKSCODE's return (+0): a code over 50 or below 0.
+ * The operator error light (FALTON), and the code flashed again. */
 void r51dsp_bad_code(void)
 {
     tc_to(R51DSP + 012u, FALTON);
@@ -131,8 +132,8 @@ void r51dsp_after_falton(void)
     r51dsp();
 }
 
-/* CHKSCODE's return (+2): a code 0 to 50 (0 a planet; 46 to 50 the sun,
- * the earth and the moon). */
+/* R51DSP +014 -- p. 756: CHKSCODE's return (+2): a code 0 to 50 (0 a planet;
+ * 46 to 50 the sun, the earth and the moon). */
 void r51dsp_code_good(void)
 {
     tc_at(R51DSP + 014u);
@@ -161,8 +162,8 @@ static const word r51_star_words[] = {
 const struct interpretive_code R51_STAR_CODE = {014u, R51DSP + 015u, COUNT(r51_star_words),
                                                 r51_star_words};
 
-/* R51ST, after the EXIT: "IS THIS P54" (MODREG 54, the sum -0)? R56
- * marks the star then (R51B); else R52 points the optics at it ("AOP
+/* R51ST +2 -- p. 757, after the EXIT: "IS THIS P54" (MODREG 54, the sum -0)?
+ * R56 marks the star then (R51B); else R52 points the optics at it ("AOP
  * WILL MAKE CALLS TO SIGHTING"). */
 void r51st_after_exit(void)
 {
@@ -210,9 +211,9 @@ static const word r51a_planet_words[] = {
 const struct interpretive_code R51A_PLANET_CODE = {014u, R51A + 7u, COUNT(r51a_planet_words),
                                                    r51a_planet_words};
 
-/* STARIND 1, the first star: R51.4 keeps it and sights the second. +0,
- * both sighted. (STARIND is never negative here: the words for it are
- * interpretive code.) */
+/* R51A +013 -- p. 757: STARIND 1, the first star: R51.4 keeps it and sights
+ * the second. +0, both sighted. (STARIND is never negative here: the words
+ * for it are interpretive code.) */
 void r51a_sighted(void)
 {
     switch (ccs_at(ADDRESS_OF(STARIND))) {
@@ -262,8 +263,8 @@ static const word r51_torque_words[] = {
 const struct interpretive_code R51_TORQUE_CODE = {014u, R51A + 016u, COUNT(r51_torque_words),
                                                   r51_torque_words};
 
-/* R51K: V50N25, option 14 (GOPERF1): terminate, proceed ("V33": align
- * again, P52C) or enter (on to ENDP50S). */
+/* R51K +1 -- p. 757: V50N25, option 14 (GOPERF1): terminate, proceed ("V33":
+ * align again, P52C) or enter (on to ENDP50S). */
 void r51k_after_exit(void)
 {
     set_A(OCT14);
@@ -306,8 +307,8 @@ static const word r51k_done_words[] = {
 const struct interpretive_code R51K_DONE_CODE = {014u, R51K + 012u, COUNT(r51k_done_words),
                                                  r51k_done_words};
 
-/* R51.4: the first star's vector in the desired axes (by REFSMMAT) to
- * PLANVEC, its marked direction (STARSAV2) to STARSAV1; STARIND 0, and
+/* R51.4 -- p. 758: the first star's vector in the desired axes (by REFSMMAT)
+ * to PLANVEC, its marked direction (STARSAV2) to STARSAV1; STARIND 0, and
  * the second star (R51.3). */
 static void r51_4(void)
 {
@@ -330,7 +331,7 @@ static const word r51_4_words[] = {
 
 const struct interpretive_code R51_4_CODE = {014u, R51_4 + 1u, COUNT(r51_4_words), r51_4_words};
 
-/* R51B, in P54: R56 marks the star; then R51A. */
+/* R51B -- p. 758, in P54: R56 marks the star; then R51A. */
 static void r51b(void)
 {
     tc_at(R51B);
@@ -348,10 +349,10 @@ const struct interpretive_code R51B_CODE = {014u, R51B + 1u, COUNT(r51b_words), 
 
 /* ---- CHKSCODE -- p. 773 (bank 14) ---- */
 
-/* CHKSCODE ("KEEP IN SAME BANK AS R51 AND R53"): STARCODE 0 to 50 (-0
- * too) goes on at the caller's +2 (INDEX Q; TC 00002: Q is the caller's
- * return), and true; any other code, false: TC Q, back to the caller's
- * +0 (Z, with Q 3), whose words the caller runs. */
+/* CHKSCODE -- p. 773 ("KEEP IN SAME BANK AS R51 AND R53"): STARCODE 0 to 50
+ * (-0 too) goes on at the caller's +2 (INDEX Q; TC 00002: Q is the caller's
+ * return), and true; any other code, false: TC Q, back to the caller's +0
+ * (Z, with Q 3), whose words the caller runs. */
 bool chkscode(void)
 {
     bool good;
@@ -387,8 +388,8 @@ static const word r55_words[] = {
 
 const struct interpretive_code R55_CODE = {015u, R55, COUNT(r55_words), r55_words};
 
-/* R55.1: the angles flashed (V06N93): terminate, proceed (torque, R55.2)
- * or enter (no torque, R55RET). */
+/* R55.1 -- p. 759: the angles flashed (V06N93): terminate, proceed (torque,
+ * R55.2) or enter (no torque, R55RET). */
 void r55_1(void)
 {
     set_A(V06N93);
@@ -412,8 +413,8 @@ void r55_enter(void)
     r55ret();
 }
 
-/* R55.2: a restart point (PHASCHNG, 00314); then IMUPULSE torques the
- * gyros (OGC, R55CDR) and IMUSTALL waits (CURTAINS when it fails); then
+/* R55.2 -- p. 759: a restart point (PHASCHNG, 00314); then IMUPULSE torques
+ * the gyros (OGC, R55CDR) and IMUSTALL waits (CURTAINS when it fails); then
  * a restart point again (05024). */
 void r55_2(void)
 {
@@ -441,7 +442,7 @@ void r55_torqued(void)
     tc_to(R55_2 + 010u, PHASCHNG); /* OCT 05024, OCT 13000 */
 }
 
-/* R55RET: back to the caller (QMIN). */
+/* R55RET -- p. 759: back to the caller (QMIN). */
 void r55ret(void)
 {
     tc_at(R55RET);

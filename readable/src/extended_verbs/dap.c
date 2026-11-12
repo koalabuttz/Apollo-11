@@ -115,7 +115,7 @@ void mskdatr1_after_enter(void)
     continue_at(CHKDATA1); /* TCF CHKDATA1 */
 }
 
-/* MSKDATR1 +8 -- LM p. 292: GOXDSPFR's immediate return, with the display
+/* MSKDATR1 +010 -- LM p. 292: GOXDSPFR's immediate return, with the display
  * up: "BLANKS R2 & R3" (REVCNT, bits 2 and 3) and end the job. */
 void mskdatr1_immediate_return(void)
 {
@@ -123,7 +123,7 @@ void mskdatr1_immediate_return(void)
     tc(MSKDATR1 + 011u, BLANKET);
 }
 
-/* MSKDATR1 +10 -- LM p. 292. */
+/* MSKDATR1 +012 -- LM p. 292. */
 void mskdatr1_after_blanket(void)
 {
     continue_at(ENDOFJOB); /* TCF ENDOFJOB */
@@ -262,7 +262,7 @@ void dapdata2_immediate_return(void)
     tc(DAPDATA2 + 7u, BLANKET);
 }
 
-/* DAPDATA2 +8 -- LM p. 294. */
+/* DAPDATA2 +010 -- LM p. 294. */
 void dapdata2_after_blanket(void)
 {
     continue_at(ENDOFJOB); /* TCF ENDOFJOB */
@@ -361,27 +361,27 @@ void dapdata3_after_terminate(void)
     tc(DAPDATA3 + 7u, ENDEXT);
 }
 
-/* DAPDATA3 +8 -- LM p. 295: V33, proceed: "GO DO TRIM (WAITLIST TO
+/* DAPDATA3 +010 -- LM p. 295: V33, proceed: "GO DO TRIM (WAITLIST TO
  * TRIMGIMB)". */
 void dapdata3_after_proceed(void)
 {
     continue_at(DPDAT3); /* TCF DPDAT3 */
 }
 
-/* DAPDATA3 +9 -- LM p. 295: "LOAD NEW DATA AND RECYCLE". */
+/* DAPDATA3 +011 -- LM p. 295: "LOAD NEW DATA AND RECYCLE". */
 void dapdata3_after_enter(void)
 {
     continue_at(DAPDATA3 + 4u); /* TCF -5 */
 }
 
-/* DAPDATA3 +10 -- LM p. 295: the immediate return: "BLANK R3". */
+/* DAPDATA3 +012 -- LM p. 295: the immediate return: "BLANK R3". */
 void dapdata3_immediate_return(void)
 {
     set_A(BIT3);
     tc(DAPDATA3 + 013u, BLANKET);
 }
 
-/* DAPDATA3 +12 -- LM p. 295. */
+/* DAPDATA3 +014 -- LM p. 295. */
 void dapdata3_after_blanket(void)
 {
     continue_at(ENDOFJOB); /* TCF ENDOFJOB */
@@ -434,7 +434,7 @@ void trimdone_immediate_return(void)
     tc(TRIMDONE + 7u, BLANKET);
 }
 
-/* TRIMDONE +8 -- LM p. 295. */
+/* TRIMDONE +010 -- LM p. 295. */
 void trimdone_after_blanket(void)
 {
     continue_at(ENDOFJOB); /* TCF ENDOFJOB */
@@ -575,7 +575,7 @@ void donoun47_plus6(void)
     tc(DONOUN47 + 017u, IBNKCALL); /* CADR MASSPROP */
 }
 
-/* DONOUN47 +17 -- CM p. 254: "UPON PROCEED RESPONSE EXECUTE S40.14":
+/* DONOUN47 +021 -- CM p. 254: "UPON PROCEED RESPONSE EXECUTE S40.14":
  * "COMPUTE RCS DAP STUFF". */
 void donoun47_after_ibnkcall(void)
 {

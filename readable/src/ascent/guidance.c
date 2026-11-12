@@ -329,9 +329,9 @@ const struct interpretive_code ASCENT_CODE = {030u, ASCENT, COUNT(ascent_words),
 
 /* ---- ASCTERM -- p. 850 ---- */
 
-/* After ASCTERM's EXIT: in the RCS trim (FLRCS), the job ends (ASCTERM3);
- * else the attitude commands (ASCTERM_CALL_CODE). (After MASK, A is +0 or
- * the flag's bit.) */
+/* ASCTERM +1 -- p. 850: After ASCTERM's EXIT: in the RCS trim (FLRCS), the
+ * job ends (ASCTERM3); else the attitude commands (ASCTERM_CALL_CODE).
+ * (After MASK, A is +0 or the flag's bit.) */
 void ascterm_after_exit(void)
 {
     ca(ADDRESS_OF(FLAGWRD9));
@@ -356,9 +356,9 @@ static const word ascterm_call_words[] = {
 const struct interpretive_code ASCTERM_CALL_CODE = {030u, ASCTERM + 6u, COUNT(ascterm_call_words),
                                                     ascterm_call_words};
 
-/* ASCTERM1 +1: "INSURE THAT THE NOUN 63 DISPLAY IS BYPASSED IF WE ARE IN
- * THE RCS TRIMMING MODE OF OPERATION" (FLRCS), and "BYPASS DISPLAYS IF
- * ENGINE FAILURE IS INDICATED." (FLUNDISP); else verb 06 noun 63 (GODSPR,
+/* ASCTERM1 +1 -- p. 850: "INSURE THAT THE NOUN 63 DISPLAY IS BYPASSED IF WE
+ * ARE IN THE RCS TRIMMING MODE OF OPERATION" (FLRCS), and "BYPASS DISPLAYS
+ * IF ENGINE FAILURE IS INDICATED." (FLUNDISP); else verb 06 noun 63 (GODSPR,
  * through BANKCALL). (After each MASK, A is +0 or the flag's bit.) */
 void ascterm1_after_exit(void)
 {
@@ -378,7 +378,7 @@ void ascterm1_after_exit(void)
     tc_to(ASCTERM1 + 012u, BANKCALL); /* CADR GODSPR */
 }
 
-/* GODSPR's return: ASCTERM3. */
+/* ASCTERM1 +014 -- p. 850: GODSPR's return: ASCTERM3. */
 void ascterm1_after_godspr(void)
 {
     ascterm3();
@@ -392,7 +392,7 @@ static const word ascterm2_words[] = {
 const struct interpretive_code ASCTERM2_CODE = {030u, ASCTERM2, COUNT(ascterm2_words),
                                                 ascterm2_words};
 
-/* ASCTERM3: the cycle's job ends (ENDOFJOB). */
+/* ASCTERM3 -- p. 850: the cycle's job ends (ENDOFJOB). */
 void ascterm3(void)
 {
     continue_at(ENDOFJOB);
@@ -406,15 +406,15 @@ static const word ascterm4_words[] = {
 const struct interpretive_code ASCTERM4_CODE = {030u, ASCTERM4, COUNT(ascterm4_words),
                                                 ascterm4_words};
 
-/* ... "NO GUIDANCE THIS CYCLE -- HENCE ZERO THE DAP COMMANDED ERRORS."
- * (ZATTEROR, through IBNKCALL, interrupts held), ... */
+/* ASCTERM4 +1 -- p. 850: ... "NO GUIDANCE THIS CYCLE -- HENCE ZERO THE DAP
+ * COMMANDED ERRORS." (ZATTEROR, through IBNKCALL, interrupts held), ... */
 void ascterm4_after_exit(void)
 {
     inhint();
     tc_to(ASCTERM4 + 2u, IBNKCALL); /* CADR ZATTEROR */
 }
 
-/* ... and ASCTERM1 +1, the display. */
+/* ASCTERM4 +4 -- p. 850: ... and ASCTERM1 +1, the display. */
 void ascterm4_after_zatteror(void)
 {
     ascterm1_after_exit();

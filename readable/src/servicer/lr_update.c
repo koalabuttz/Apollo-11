@@ -27,9 +27,9 @@ static bool fixloc_at_a_vac_area(void)
 
 /* ---- UPDATCHK, POSUPDAT -- pp. 884-885 ---- */
 
-/* UPDATCHK: "SEE IF LR UPDATE INHIBITED." (NOLRRBIT of FLGWRD11): "IT IS
- * -- NO LR UPDATE" (CONTSERV). Else with no RNGEDBIT, "NO ALT MEAS THIS
- * CYCLE -- CHECK FOR VEL" (VMEASCHK); else POSUPDAT. */
+/* UPDATCHK -- p. 884: "SEE IF LR UPDATE INHIBITED." (NOLRRBIT of FLGWRD11):
+ * "IT IS -- NO LR UPDATE" (CONTSERV). Else with no RNGEDBIT, "NO ALT MEAS
+ * THIS CYCLE -- CHECK FOR VEL" (VMEASCHK); else POSUPDAT. */
 void updatchk(void)
 {
     set_A(NOLRRBIT);
@@ -47,7 +47,7 @@ void updatchk(void)
     posupdat();
 }
 
-/* POSUPDAT: "SET PUSHLIST TO ZERO", and to the interpreter. */
+/* POSUPDAT -- p. 884: "SET PUSHLIST TO ZERO", and to the interpreter. */
 void posupdat(void)
 {
     ca(ADDRESS_OF(FIXLOC));
@@ -75,8 +75,9 @@ static const word posupdat_words[] = {
 const struct interpretive_code POSUPDAT_CODE = {033u, POSUPDAT + 3u, COUNT(posupdat_words),
                                                 posupdat_words};
 
-/* After the EXIT: "TEST LR ALTITUDE SCALE FACTOR" (ALTSCBIT of FLGWRD12):
- * "RESCALE IF LOW SCALE" (SKALSKAL, by SHORTMP); ... */
+/* POSUPDAT +015 -- p. 884: After the EXIT: "TEST LR ALTITUDE SCALE FACTOR"
+ * (ALTSCBIT of FLGWRD12): "RESCALE IF LOW SCALE" (SKALSKAL, by SHORTMP);
+ * ... */
 void posupdat_after_exit(void)
 {
     cs(ADDRESS_OF(FLGWRD12));
@@ -89,7 +90,7 @@ void posupdat_after_exit(void)
     tc_to(POSUPDAT + 022u, SHORTMP);
 }
 
-/* ... and to the interpreter. */
+/* POSUPDAT +023 -- p. 884: ... and to the interpreter. */
 void posupdat_after_shortmp(void)
 {
     tc_at(POSUPDAT + 023u);
@@ -115,8 +116,9 @@ static const word posupdat_2_words[] = {
 const struct interpretive_code POSUPDAT_2_CODE = {033u, POSUPDAT + 024u, COUNT(posupdat_2_words),
                                                   posupdat_2_words};
 
-/* After it: "DO NOT PERFORM DATA REASONABLENESS TEST" "UNTIL AFTER HIGATE"
- * (PSTHIBIT): NOREASON. Else to the interpreter, for the test. */
+/* POSUPDAT +036 -- p. 884: After it: "DO NOT PERFORM DATA REASONABLENESS
+ * TEST" "UNTIL AFTER HIGATE" (PSTHIBIT): NOREASON. Else to the interpreter,
+ * for the test. */
 void posupdat_after_second_exit(void)
 {
     ca(ADDRESS_OF(FLGWRD11));
@@ -142,14 +144,16 @@ static const word posupdat_3_words[] = {
 const struct interpretive_code POSUPDAT_3_CODE = {033u, POSUPDAT + 043u, COUNT(posupdat_3_words),
                                                   posupdat_3_words};
 
-/* After it: LRLCTR counted, and BRANCH on the difference in MPAC: ... */
+/* POSUPDAT +050 -- p. 885: After it: LRLCTR counted, and BRANCH on the
+ * difference in MPAC: ... */
 void posupdat_after_third_exit(void)
 {
     incr(ADDRESS_OF(LRLCTR));
     tc_to(POSUPDAT + 051u, BRANCH);
 }
 
-/* ... positive or +0, "DELTA H TOO LARGE" (HFAIL); ... */
+/* POSUPDAT +052 -- p. 885: ... positive or +0, "DELTA H TOO LARGE" (HFAIL);
+ * ... */
 void posupdat_after_branch(void)
 {
     hfail();
@@ -160,14 +164,15 @@ void posupdat_after_branch_zero(void)
     hfail();
 }
 
-/* ... negative: "TURN OFF ALT FAIL LAMP" (HFLSHFLG), on to NOREASON. */
+/* POSUPDAT +054 -- p. 885: ... negative: "TURN OFF ALT FAIL LAMP"
+ * (HFLSHFLG), on to NOREASON. */
 void posupdat_after_branch_negative(void)
 {
     tc_to(POSUPDAT + 054u, DOWNFLAG); /* ADRES HFLSHFLG */
 }
 
-/* NOREASON: with LRINHBIT set, "UPDATE INHIBITED -- TEST VELOCITY ANYWAY"
- * (VMEASCHK). Else "DO POSITION UPDATE": to the interpreter. */
+/* NOREASON -- p. 885: with LRINHBIT set, "UPDATE INHIBITED -- TEST VELOCITY
+ * ANYWAY" (VMEASCHK). Else "DO POSITION UPDATE": to the interpreter. */
 void noreason(void)
 {
     cs(ADDRESS_OF(FLGWRD11));
@@ -190,8 +195,8 @@ static const word noreason_words[] = {
 const struct interpretive_code NOREASON_CODE = {033u, NOREASON + 5u, COUNT(noreason_words),
                                                 noreason_words};
 
-/* After it: "STORE DELTAH IN MPAC AND" "BRING HCALC INTO A,L", and its
- * signs agreed (ALSIGNAG); ... */
+/* NOREASON +010 -- p. 885: After it: "STORE DELTAH IN MPAC AND" "BRING HCALC
+ * INTO A,L", and its signs agreed (ALSIGNAG); ... */
 void noreason_after_exit(void)
 {
     dca(ADDRESS_OF(DELTAH));
@@ -199,11 +204,11 @@ void noreason_after_exit(void)
     tc_to(NOREASON + 013u, ALSIGNAG);
 }
 
-/* ... "IF HIGH PART OF HCALC IS NON-ZERO, THEN" "HCALC > HMAX," "SO UPDATE
- * IS BYPASSED" (VMEASCHK). Else "FOR LATER SHORTMP" +0 in MPAC +2, and
- * with "HMAX - H" (LRHMAX less the low part) +0 or less, "IF H >HMAX,
- * BYPASS UPDATE"; else "WH(1 - H/HMAX)" (LRWH, LRHMAX) times DELTAH:
- * "DELTAH (WH)(1 - H/HMAX) IN MPAC" (SHORTMP2). */
+/* NOREASON +014 -- p. 885: ... "IF HIGH PART OF HCALC IS NON-ZERO, THEN"
+ * "HCALC > HMAX," "SO UPDATE IS BYPASSED" (VMEASCHK). Else "FOR LATER
+ * SHORTMP" +0 in MPAC +2, and with "HMAX - H" (LRHMAX less the low part) +0
+ * or less, "IF H >HMAX, BYPASS UPDATE"; else "WH(1 - H/HMAX)" (LRWH, LRHMAX)
+ * times DELTAH: "DELTAH (WH)(1 - H/HMAX) IN MPAC" (SHORTMP2). */
 void noreason_after_alsignag(void)
 {
     if (!A_is_zero()) {
@@ -223,7 +228,7 @@ void noreason_after_alsignag(void)
     tc_to(NOREASON + 031u, SHORTMP2);
 }
 
-/* To the interpreter: "MODE IS DP FROM ABOVE". */
+/* NOREASON +032 -- p. 885: To the interpreter: "MODE IS DP FROM ABOVE". */
 void noreason_after_shortmp2(void)
 {
     tc_at(NOREASON + 032u);
@@ -245,21 +250,21 @@ static const word noreason_2_words[] = {
 const struct interpretive_code NOREASON_2_CODE = {033u, NOREASON + 033u, COUNT(noreason_2_words),
                                                   noreason_2_words};
 
-/* After it: the restart point (QUIKFAZ5), ... */
+/* NOREASON +042 -- p. 886: After it: the restart point (QUIKFAZ5), ... */
 void noreason_after_second_exit(void)
 {
     tc_to(NOREASON + 042u, QUIKFAZ5);
 }
 
-/* ... A +0, ... */
+/* NOREASON +043 -- p. 886: ... A +0, ... */
 void noreason_after_quikfaz5(void)
 {
     set_A(ZERO);
     rupdated();
 }
 
-/* ... and RUPDATED: the new position into R1S (GNURVST), which returns to
- * VMEASCHK. */
+/* RUPDATED -- p. 886: ... and RUPDATED: the new position into R1S (GNURVST),
+ * which returns to VMEASCHK. */
 void rupdated(void)
 {
     tc_to(RUPDATED, GNURVST);
@@ -267,13 +272,14 @@ void rupdated(void)
 
 /* ---- VMEASCHK, VELUPDAT -- pp. 886-888 ---- */
 
-/* VMEASCHK: "RESTART AT NEXT LOCATION" (QUIKFAZ5); ... */
+/* VMEASCHK -- p. 886: "RESTART AT NEXT LOCATION" (QUIKFAZ5); ... */
 void vmeaschk(void)
 {
     tc_to(VMEASCHK, QUIKFAZ5);
 }
 
-/* ... "IS V READING AVAILABLE?" (VELDABIT): "NO:  SEE IF V READING TO BE
+/* VMEASCHK +1 -- p. 886: ... "IS V READING AVAILABLE?" (VELDABIT): "NO:  SEE
+ * IF V READING TO BE
  * TAKEN" (VALTCHK); yes: VELUPDAT. */
 void vmeaschk_after_quikfaz5(void)
 {
@@ -286,11 +292,11 @@ void vmeaschk_after_quikfaz5(void)
     velupdat();
 }
 
-/* VELUPDAT: "PROCESS VELOCITY DATA". From VSELECT, the beam: "X1 = -6
- * VSELECT, X2 = -2 VSELECT" (INDEX FIXLOC, the work area's index
- * registers); the landing radar's CDUs (LRYCDU, LRZCDU, LRXCDU, from E
- * bank 4) "IN CDUSPOTS", and "GET SINES AND COSINES FOR NBSM" (QUICTRIG,
- * through BANKCALL). */
+/* VELUPDAT -- p. 886: "PROCESS VELOCITY DATA". From VSELECT, the beam: "X1 =
+ * -6 VSELECT, X2 = -2 VSELECT" (INDEX FIXLOC, the work area's index
+ * registers); the landing radar's CDUs (LRYCDU, LRZCDU, LRXCDU, from E bank
+ * 4) "IN CDUSPOTS", and "GET SINES AND COSINES FOR NBSM" (QUICTRIG, through
+ * BANKCALL). */
 void velupdat(void)
 {
     cs(ADDRESS_OF(VSELECT));
@@ -311,7 +317,8 @@ void velupdat(void)
     tc_to(VELUPDAT + 017u, BANKCALL); /* CADR QUICTRIG */
 }
 
-/* After QUICTRIG: "SET PD TO ZERO", and to the interpreter. */
+/* VELUPDAT +021 -- p. 886: After QUICTRIG: "SET PD TO ZERO", and to the
+ * interpreter. */
 void velupdat_after_quictrig(void)
 {
     ca(ADDRESS_OF(FIXLOC));
@@ -338,9 +345,9 @@ static const word velupdat_words[] = {
 const struct interpretive_code VELUPDAT_CODE = {033u, VELUPDAT + 024u, COUNT(velupdat_words),
                                                 velupdat_words};
 
-/* After it: "CHANGE STORE MODE TO VECTOR"; "STORE DELV IN MPAC" (PIPTEM,
- * the PIPAs RDGIMS read, each a vector component's high word); "RESTORE
- * EBANK 7"; to the interpreter. */
+/* VELUPDAT +035 -- p. 886: After it: "CHANGE STORE MODE TO VECTOR"; "STORE
+ * DELV IN MPAC" (PIPTEM, the PIPAs RDGIMS read, each a vector component's
+ * high word); "RESTORE EBANK 7"; to the interpreter. */
 void velupdat_after_exit(void)
 {
     set_A(negate(ONE));
@@ -391,14 +398,16 @@ static const word velupdat_2_words[] = {
 const struct interpretive_code VELUPDAT_2_CODE = {033u, VELUPDAT + 053u, COUNT(velupdat_2_words),
                                                   velupdat_2_words};
 
-/* After it: LRMCTR counted, and BRANCH on the difference: ... */
+/* VELUPDAT +0100 -- p. 887: After it: LRMCTR counted, and BRANCH on the
+ * difference: ... */
 void velupdat_after_second_exit(void)
 {
     incr(ADDRESS_OF(LRMCTR));
     tc_to(VELUPDAT + 0101u, BRANCH);
 }
 
-/* ... positive or +0, "DELTA V TOO LARGE.	ALARM" (VFAIL); ... */
+/* VELUPDAT +0102 -- p. 887: ... positive or +0, "DELTA V TOO LARGE.
+ * ALARM" (VFAIL); ... */
 void velupdat_after_branch(void)
 {
     vfail();
@@ -409,14 +418,15 @@ void velupdat_after_branch_zero(void)
     vfail();
 }
 
-/* ... negative: "TURN OFF VEL FAIL LAMP" (VFLSHFLG); ... */
+/* VELUPDAT +0104 -- p. 887: ... negative: "TURN OFF VEL FAIL LAMP"
+ * (VFLSHFLG); ... */
 void velupdat_after_branch_negative(void)
 {
     tc_to(VELUPDAT + 0104u, DOWNFLAG); /* ADRES VFLSHFLG */
 }
 
-/* ... "IF VX INHIBIT RESET, INCORPORATE DATA." (VUPDAT); else "RESET VX
- * INHIBIT" (VXINH), ... */
+/* VELUPDAT +0106 -- p. 887: ... "IF VX INHIBIT RESET, INCORPORATE DATA."
+ * (VUPDAT); else "RESET VX INHIBIT" (VXINH), ... */
 void velupdat_after_vflshflg(void)
 {
     ca(ADDRESS_OF(FLGWRD11));
@@ -428,8 +438,8 @@ void velupdat_after_vflshflg(void)
     tc_to(VELUPDAT + 0112u, DOWNFLAG); /* ADRES VXINH */
 }
 
-/* ... and "IF VSELECT = 2 (X AXIS)." "BYPASS UPDATE" (ENDVDAT); else
- * VUPDAT. */
+/* VELUPDAT +0114 -- p. 888: ... and "IF VSELECT = 2 (X AXIS)." "BYPASS
+ * UPDATE" (ENDVDAT); else VUPDAT. */
 void velupdat_after_vxinh(void)
 {
     ca(ADDRESS_OF(VSELECT));
@@ -443,11 +453,11 @@ void velupdat_after_vxinh(void)
 
 /* ---- VUPDAT, USEVF, WSTOR -- pp. 888-889 ---- */
 
-/* VUPDAT: with LRINHBIT set, "UPDATE INHIBITED" (VALTCHK). Else +0 in MPAC
- * +1; "STORE E7 ERASABLES NEEDED IN TEMPS" (ABVEL*, VSELECT*), and to E bank
- * 5 for the weights. "IF V < VF, USE WVF" (USEVF); "IF V > VMAX, W = 0"; else
- * the beam's weight (LRWVZ, by VSELECT*) times "WV( 1 - V/VMAX )". On to
- * WSTOR. */
+/* VUPDAT -- p. 888: with LRINHBIT set, "UPDATE INHIBITED" (VALTCHK). Else +0
+ * in MPAC +1; "STORE E7 ERASABLES NEEDED IN TEMPS" (ABVEL*, VSELECT*), and
+ * to E bank 5 for the weights. "IF V < VF, USE WVF" (USEVF); "IF V > VMAX, W
+ * = 0"; else the beam's weight (LRWVZ, by VSELECT*) times "WV( 1 - V/VMAX
+ * )". On to WSTOR. */
 void vupdat(void)
 {
     cs(ADDRESS_OF(FLGWRD11));
@@ -482,7 +492,8 @@ void vupdat(void)
     wstor();
 }
 
-/* USEVF: "USE APPROPRIATE CONSTANT WEIGHT" (LRWVFZ, by VSELECT*). */
+/* USEVF -- p. 888: "USE APPROPRIATE CONSTANT WEIGHT" (LRWVFZ, by
+ * VSELECT*). */
 void usevf(void)
 {
     if (fetch(ADDRESS_OF(VSELECT_STAR)) > 2u) not_modelled();
@@ -490,9 +501,9 @@ void usevf(void)
     wstor();
 }
 
-/* WSTOR: the weight to MPAC; "IF IN P65,P66,P67, USE ANOTHER CONSTANT"
- * (LRWVFF, with MODREG over 64); "CHANGE EBANKS" back to 7, and to the
- * interpreter. (A TS that overflows, entered here with A so, skips the
+/* WSTOR -- p. 888: the weight to MPAC; "IF IN P65,P66,P67, USE ANOTHER
+ * CONSTANT" (LRWVFF, with MODREG over 64); "CHANGE EBANKS" back to 7, and to
+ * the interpreter. (A TS that overflows, entered here with A so, skips the
  * CS BIT7.) */
 void wstor(void)
 {
@@ -520,21 +531,21 @@ static const word wstor_words[] = {
 
 const struct interpretive_code WSTOR_CODE = {033u, WSTOR + 012u, COUNT(wstor_words), wstor_words};
 
-/* After it: "DO NOT RE-UPDATE" (QUIKFAZ5); ... */
+/* WSTOR +017 -- p. 889: After it: "DO NOT RE-UPDATE" (QUIKFAZ5); ... */
 void wstor_after_exit(void)
 {
     tc_to(WSTOR + 017u, QUIKFAZ5);
 }
 
-/* ... A six, ... */
+/* WSTOR +020 -- p. 889: ... A six, ... */
 void wstor_after_quikfaz5(void)
 {
     set_A(SIX);
     vupdated();
 }
 
-/* ... and VUPDATED: "STORE NEW VELOCITY VECTOR" (GNURVST), which returns
- * to VALTCHK. */
+/* VUPDATED -- p. 889: ... and VUPDATED: "STORE NEW VELOCITY VECTOR"
+ * (GNURVST), which returns to VALTCHK. */
 void vupdated(void)
 {
     tc_to(VUPDATED, GNURVST);
@@ -542,13 +553,14 @@ void vupdated(void)
 
 /* ---- VALTCHK, READV, GNURVST, QUIKFAZ5 -- pp. 889-890 ---- */
 
-/* VALTCHK: "DO NOT REPEAT ABOVE" (QUIKFAZ5); ... */
+/* VALTCHK -- p. 889: "DO NOT REPEAT ABOVE" (QUIKFAZ5); ... */
 void valtchk(void)
 {
     tc_to(VALTCHK, QUIKFAZ5);
 }
 
-/* ... "TEST READVEL TO SEE IF VELOCITY READING" "IS DESIRED." (READVBIT):
+/* VALTCHK +1 -- p. 889: ... "TEST READVEL TO SEE IF VELOCITY READING" "IS
+ * DESIRED." (READVBIT):
  * "YES -- READ VELOCITY" (READV). Else with ABVEL over 2KFT/SEC, "V > 2000
  * FT/SEC  DO NOT READ VEL" (CONTSERV); else "V < 2000 FT/SEC  SET READVEL
  * AND READ." */
@@ -569,21 +581,22 @@ void valtchk_after_quikfaz5(void)
     tc_to(VALTCHK + 011u, UPFLAG); /* ADRES READVEL */
 }
 
-/* READV: "SET UP JOB TO READ VELOCITY BEAMS." (NOVAC, LRVJOB); ... */
+/* READV -- p. 889: "SET UP JOB TO READ VELOCITY BEAMS." (NOVAC, LRVJOB);
+ * ... */
 void readv(void)
 {
     set_A(PRIO32);
     tc_to(READV + 1u, NOVAC); /* 2CADR LRVJOB */
 }
 
-/* ... "CONTINUE WITH SERVICER". */
+/* READV +4 -- p. 889: ... "CONTINUE WITH SERVICER". */
 void readv_after_novac(void)
 {
     contserv();
 }
 
-/* GNURVST: "STORE GNUR (=GNUV) IN R1S OR V1S": "A = 0 FOR R, A = 6 FOR V"
- * (in BUF, the index); back to the caller. */
+/* GNURVST -- p. 889: "STORE GNUR (=GNUV) IN R1S OR V1S": "A = 0 FOR R, A = 6
+ * FOR V" (in BUF, the index); back to the caller. */
 void gnurvst(void)
 {
     unsigned i;
@@ -597,9 +610,9 @@ void gnurvst(void)
     return_to_q();
 }
 
-/* QUIKFAZ5: the restart point of group 5 moved to the caller's return:
- * "SET EBANK 3", "Q TO A, A TO L", the return in PHSNAME5, the E bank
- * restored, and back (TC A). (A Q with overflow is not modelled: the TS
+/* QUIKFAZ5 -- p. 890: the restart point of group 5 moved to the caller's
+ * return: "SET EBANK 3", "Q TO A, A TO L", the return in PHSNAME5, the E
+ * bank restored, and back (TC A). (A Q with overflow is not modelled: the TS
  * would skip the LXCH, and TC A go to +1 or -1.) */
 void quikfaz5(void)
 {
@@ -613,8 +626,8 @@ void quikfaz5(void)
 
 /* ---- HFAIL, NORLITE, VFAIL, NOLITE -- pp. 890-891 ---- */
 
-/* HFAIL: "IF R = 0, DO NOT TURN ON TRK FAIL" (LRRCTR +0: NORLITE). R is
- * the count L (LRLCTR) had at the last failure: with L less R 4 or more
+/* HFAIL -- p. 890: "IF R = 0, DO NOT TURN ON TRK FAIL" (LRRCTR +0: NORLITE).
+ * R is the count L (LRLCTR) had at the last failure: with L less R 4 or more
  * (MASK NEG3 not +0), NORLITE; with it under 4, a failure among the last
  * readings before this one, "SET BIT TO TURN ON TRACKER FAIL LITE"
  * (HFLSHFLG), on to NORLITE. */
@@ -634,7 +647,7 @@ void hfail(void)
     tc_to(HFAIL + 010u, UPFLAG); /* ADRES HFLSHFLG */
 }
 
-/* NORLITE: "SET R = L", and VMEASCHK. */
+/* NORLITE -- p. 890: "SET R = L", and VMEASCHK. */
 void norlite(void)
 {
     ca(ADDRESS_OF(LRLCTR));
@@ -642,7 +655,7 @@ void norlite(void)
     vmeaschk();
 }
 
-/* VFAIL: "DELTA Q LARGE". "IF S = 0, DO NOT TURN ON TRACKER FAIL"
+/* VFAIL -- p. 890: "DELTA Q LARGE". "IF S = 0, DO NOT TURN ON TRACKER FAIL"
  * (LRSCTR +0: NOLITE). "TEST FOR M-S > 3" (LRMCTR less LRSCTR, MASK
  * NEG3): if so, NOLITE; if not, "TWO OR MORE OF THE" "LAST FOUR V READINGS
  * WERE BAD,": "SET BIT TO TURN ON TRACKER FAIL LITE" (VFLSHFLG), on to
@@ -663,11 +676,11 @@ void vfail(void)
     tc_to(VFAIL + 010u, UPFLAG); /* ADRES VFLSHFLG */
 }
 
-/* NOLITE: "SET S = M"; "TEST FOR Z COMPONENT" (VSELECT): "NOT Z, DO NOT
- * SET VX INHIBIT" (ENDVDAT). Z (+0): "Z COMPONENT - SET FLAG TO SKIP X"
- * (VXINH), as "ERROR MAY BE DUE TO CROSS" "LOBE LOCK UP NOT DETECTED ON X
- * AXIS.", then ENDVDAT. (A negative VSELECT, which the program never
- * holds, skips onto the ADRES: not modelled.) */
+/* NOLITE -- p. 891: "SET S = M"; "TEST FOR Z COMPONENT" (VSELECT): "NOT Z,
+ * DO NOT SET VX INHIBIT" (ENDVDAT). Z (+0): "Z COMPONENT - SET FLAG TO SKIP
+ * X" (VXINH), as "ERROR MAY BE DUE TO CROSS" "LOBE LOCK UP NOT DETECTED ON X
+ * AXIS.", then ENDVDAT. (A negative VSELECT, which the program never holds,
+ * skips onto the ADRES: not modelled.) */
 void nolite(void)
 {
     ca(ADDRESS_OF(LRMCTR));

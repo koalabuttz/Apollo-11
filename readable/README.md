@@ -1393,7 +1393,11 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    know by their form (tools/style_check.py) and holds each directory of
    src/ to tests/style_owed.txt, the list of what the whole-tree review
    (issue #1334) found and is still to fix. A new break fails, and the
-   list only gets shorter.
+   list only gets shorter. It also holds each function's header to the
+   listing page of the word the function stands at
+   (tools/header_pages.py): the page is read from the assembled listing
+   for the place the function's key names, and a header without it, one
+   that names another place than its key, or an offset in decimal fails.
 2. **x86 exact scenarios.** The x86_64 flight program is built from the
    readable routines alone (`tests/x86_readable.py`): under them are the
    faithful port's step and main (`c64-port/platform/x86`) and its model

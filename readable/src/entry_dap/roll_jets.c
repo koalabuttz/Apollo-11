@@ -38,21 +38,21 @@ static void jetcall_outtag(void);
 
 /* ---- GETOFF -- pp. 1085-1086 ---- */
 
-/* GETOFF: "TON2 / 4T" complemented, */
+/* GETOFF -- p. 1085: "TON2 / 4T" complemented, */
 void getoff(void)
 {
     cs(ADDRESS_OF(TON2));
     getoff_mp();
 }
 
-/* GETOFF +1: times "VDT/180, OR VT/180, OR VMT/180.", */
+/* GETOFF +1 -- p. 1085: times "VDT/180, OR VT/180, OR VMT/180.", */
 void getoff_mp(void)
 {
     mp_at(ADDRESS_OF(VDT_180)); /* EXTEND; MP VDT/180 */
     getoff_ts();
 }
 
-/* GETOFF +3: to XD/360, "USE AS TEMP" (an overflow skips the CS
+/* GETOFF +3 -- p. 1085: to XD/360, "USE AS TEMP" (an overflow skips the CS
  * VDT/180: A +1 or -1); "OMIT THE DIVIDE IF DEN = 0." (BZF TOFFOVFL);
  * else -VT/180 added, */
 void getoff_ts(void)
@@ -66,10 +66,10 @@ void getoff_ts(void)
     getoff_mp_ton1();
 }
 
-/* GETOFF +010: times "TON1 /4T", plus the temporary, "TEMP = -VDT/180 / 2
- * TON2", and LCX/360: the numerator, to L (ZL; XCH L). "TEST THE DIVIDE"
- * (DV VDT/180 of +0 and it): a quotient of +0, "DIVIDE OK" (GETOFF2);
- * else TOFFOVFL. */
+/* GETOFF +010 -- p. 1085: times "TON1 /4T", plus the temporary, "TEMP =
+ * -VDT/180 / 2 TON2", and LCX/360: the numerator, to L (ZL; XCH L). "TEST
+ * THE DIVIDE" (DV VDT/180 of +0 and it): a quotient of +0, "DIVIDE OK"
+ * (GETOFF2); else TOFFOVFL. */
 void getoff_mp_ton1(void)
 {
     mp_at(ADDRESS_OF(TON1)); /* EXTEND; MP TON1 */
@@ -85,7 +85,8 @@ void getoff_mp_ton1(void)
     toffovfl();
 }
 
-/* TOFFOVFL: "OVFL, USE  2T  FOR CONVENIENCE." (2JETT, 4SECS); on at
+/* TOFFOVFL -- p. 1085: "OVFL, USE  2T  FOR CONVENIENCE." (2JETT, 4SECS); on
+ * at
  * TIMSCAL. */
 void toffovfl(void)
 {
@@ -93,8 +94,8 @@ void toffovfl(void)
     timscal();
 }
 
-/* GETOFF2: "GET NUMERATOR." (XCH L), over VDT/180, "C(A) = TOFF / 2T";
- * times 2JETT, */
+/* GETOFF2 -- p. 1086: "GET NUMERATOR." (XCH L), over VDT/180, "C(A) = TOFF /
+ * 2T"; times 2JETT, */
 static void getoff2(void)
 {
     xch(L_ADDRESS);
@@ -103,7 +104,7 @@ static void getoff2(void)
     timscal();
 }
 
-/* TIMSCAL: TOFF, "IN CS"; and 4JETT, */
+/* TIMSCAL -- p. 1086: TOFF, "IN CS"; and 4JETT, */
 static void timscal(void)
 {
     ts(ADDRESS_OF(TOFF));
@@ -111,7 +112,8 @@ static void timscal(void)
     timscal_ton1();
 }
 
-/* TIMSCAL +2: times "C(TON1) = TON1 / 4T", TON1 "IN CS", and the same for
+/* TIMSCAL +2 -- p. 1086: times "C(TON1) = TON1 / 4T", TON1 "IN CS", and the
+ * same for
  * TON2. "CANNOT REDO AFTER TIMETST.  TUSED GONE": JETAG +0, "SET +0 TO
  * SHOW ROLL DAP CALLED."; SW/NDX 1: "CAUSE THE TM OF BODY RATES VIA UPBUFF
  * TO BE" "INITIALIZED. ALSO CAUSE NEEDLES TO BE DONE ON EXIT" "AND ON
@@ -132,13 +134,14 @@ void timscal_ton1(void)
 
 /* ---- TIMETST -- pp. 1087-1088 ---- */
 
-/* TIMETST: TIME1, "CORRECT FOR POSSIBLE TIME1 OVFL." (POS1/2 twice, "OVFL
- * GUARANTEED."), added to TUSED, "B(TUSED) =-TUSED =-OLTIME1"; then -T-3,
- * "=-T +2 -5 (SEE SETJTAG)": "TUSED = TIME(K)-TIME(K-1)-T+2". TON1 less
- * 2, "USE 2 SINCE TIME3 UNCERTAIN TO 1": not positive, TIMETST1. Else its
- * jets (INDEX JNDX; CAF P/RJCODE) to T1BITS, and TON1 added to TUSED: not
- * positive (it ends in time), TOFFTEST; else TON1 +0 and the others -1
- * (on at TIMETST3, a key of another of the faithful port's parts). */
+/* TIMETST -- p. 1087: TIME1, "CORRECT FOR POSSIBLE TIME1 OVFL." (POS1/2
+ * twice, "OVFL GUARANTEED."), added to TUSED, "B(TUSED) =-TUSED =-OLTIME1";
+ * then -T-3, "=-T +2 -5 (SEE SETJTAG)": "TUSED = TIME(K)-TIME(K-1)-T+2".
+ * TON1 less 2, "USE 2 SINCE TIME3 UNCERTAIN TO 1": not positive, TIMETST1.
+ * Else its jets (INDEX JNDX; CAF P/RJCODE) to T1BITS, and TON1 added to
+ * TUSED: not positive (it ends in time), TOFFTEST; else TON1 +0 and the
+ * others -1 (on at TIMETST3, a key of another of the faithful port's
+ * parts). */
 static void timetst(void)
 {
     ca(ADDRESS_OF(TIME1));
@@ -165,7 +168,7 @@ static void timetst(void)
     continue_at(TIMETST3);
 }
 
-/* TIMETST1: TON1 -1, done; */
+/* TIMETST1 -- p. 1087: TON1 -1, done; */
 static void timetst1(void)
 {
     set_A(negate(ONE)); /* CS ONE */
@@ -173,9 +176,9 @@ static void timetst1(void)
     tofftest();
 }
 
-/* TOFFTEST: the same for TOFF (TIMETST2: -1, done): TOFF added to TUSED,
- * not positive, on at TON2TEST; else TOFF +0 and TON2 -1 (TIMETST4). Each
- * way on at a key of another of the faithful port's parts. */
+/* TOFFTEST -- p. 1087: the same for TOFF (TIMETST2: -1, done): TOFF added to
+ * TUSED, not positive, on at TON2TEST; else TOFF +0 and TON2 -1 (TIMETST4).
+ * Each way on at a key of another of the faithful port's parts. */
 static void tofftest(void)
 {
     set_A(negate(TWO)); /* CS TWO */
@@ -196,7 +199,7 @@ static void tofftest(void)
     continue_at(TIMETST4);
 }
 
-/* TON2TEST: and for TON2: not past 2 cs, TIMETST5 (-1); */
+/* TON2TEST -- p. 1087: and for TON2: not past 2 cs, TIMETST5 (-1); */
 void ton2test(void)
 {
     set_A(negate(TWO)); /* CS TWO */
@@ -208,8 +211,8 @@ void ton2test(void)
     ton2test_t2bits();
 }
 
-/* TON2TEST +4: else its jets (INDEX JNDX1; CAF P/RJCODE) to T2BITS, and
- * TON2 added to TUSED: not positive, JETCALL1; */
+/* TON2TEST +4 -- p. 1088: else its jets (INDEX JNDX1; CAF P/RJCODE) to
+ * T2BITS, and TON2 added to TUSED: not positive, JETCALL1; */
 void ton2test_t2bits(void)
 {
     index_ca(ADDRESS_OF(JNDX1), P_RJCODE); /* INDEX JNDX1; CAF P/RJCODE */
@@ -223,21 +226,23 @@ void ton2test_t2bits(void)
     ton2test_zero();
 }
 
-/* TON2TEST +013: else TON2 +0 (CA ZERO; TCF TIMETST5 +1). */
+/* TON2TEST +013 -- p. 1088: else TON2 +0 (CA ZERO; TCF TIMETST5 +1). */
 void ton2test_zero(void)
 {
     set_A(ZERO);
     ton2_ts();
 }
 
-/* TIMETST3: TON1 (an overflow skips the CS ONE: A +1 or -1); TOFF -1, */
+/* TIMETST3 -- p. 1088: TON1 (an overflow skips the CS ONE: A +1 or -1); TOFF
+ * -1, */
 void timetst3(void)
 {
     if (!ts(ADDRESS_OF(TON1))) set_A(negate(ONE)); /* CS ONE */
     timetst4();
 }
 
-/* TIMETST4: TOFF (an overflow skips TIMETST5's CS ONE); TON2 -1, */
+/* TIMETST4 -- p. 1088: TOFF (an overflow skips TIMETST5's CS ONE); TON2
+ * -1, */
 void timetst4(void)
 {
     if (!ts(ADDRESS_OF(TOFF))) {
@@ -247,14 +252,14 @@ void timetst4(void)
     ton2_ts();
 }
 
-/* TIMETST5: TON2 -1, */
+/* TIMETST5 -- p. 1088: TON2 -1, */
 void timetst5(void)
 {
     set_A(negate(ONE)); /* CS ONE */
     ton2_ts();
 }
 
-/* TIMETST5 +1: to TON2; on at JETCALL1. */
+/* TIMETST5 +1 -- p. 1088: to TON2; on at JETCALL1. */
 static void ton2_ts(void)
 {
     ts(ADDRESS_OF(TON2));
@@ -263,8 +268,8 @@ static void ton2_ts(void)
 
 /* ---- JETCALL -- pp. 1088-1089 ---- */
 
-/* JETCALL1: OUTTAG, NUJET and TBITS +0; TON1 and T1BITS to A and L (DXCH),
- * and CCS A: positive, "CALL WTLST" (JETCALL2); +0, its bits taken
+/* JETCALL1 -- p. 1088: OUTTAG, NUJET and TBITS +0; TON1 and T1BITS to A and
+ * L (DXCH), and CCS A: positive, "CALL WTLST" (JETCALL2); +0, its bits taken
  * (JETCALL3); -1 or less, done (JETCALL3 +1); -0, JETCALL3 +2. */
 void jetcall1(void)
 {
@@ -281,24 +286,24 @@ void jetcall1(void)
     }
 }
 
-/* JETCALL3: "WTLST ENTRIES COME HERE FROM JETCALL": the bits to NUJET
- * (LXCH), */
+/* JETCALL3 -- p. 1088: "WTLST ENTRIES COME HERE FROM JETCALL": the bits to
+ * NUJET (LXCH), */
 void jetcall3(void)
 {
     lxch(ADDRESS_OF(NUJET));
     jetcall3_cs();
 }
 
-/* JETCALL3 +1: -1 (CS ONE) and, */
+/* JETCALL3 +1 -- p. 1088: -1 (CS ONE) and, */
 void jetcall3_cs(void)
 {
     set_A(negate(ONE));
     jetcall3_toff();
 }
 
-/* JETCALL3 +2: exchanged with TOFF and TBITS, which -1 marks done; CCS A
- * on TOFF the same way: positive, "CALL WTLST"; +0, its bits to NUJET;
- * -0 skips the CS ONE; then TON2. */
+/* JETCALL3 +2 -- p. 1088: exchanged with TOFF and TBITS, which -1 marks
+ * done; CCS A on TOFF the same way: positive, "CALL WTLST"; +0, its bits to
+ * NUJET; -0 skips the CS ONE; then TON2. */
 void jetcall3_toff(void)
 {
     dxch(ADDRESS_OF(TOFF));
@@ -314,9 +319,9 @@ void jetcall3_toff(void)
     ton2_interval();
 }
 
-/* JETCALL3 +7: TON2 and T2BITS, CCS A: positive or -0, "CALL WTLST"; +0,
- * its bits to NUJET; then (and for -1 or less) "C(A) = +0" (TC JETACTN,
- * the list done). */
+/* JETCALL3 +7 -- p. 1088: TON2 and T2BITS, CCS A: positive or -0, "CALL
+ * WTLST"; +0, its bits to NUJET; then (and for -1 or less) "C(A) = +0" (TC
+ * JETACTN, the list done). */
 static void ton2_interval(void)
 {
     dxch(ADDRESS_OF(TON2));
@@ -330,9 +335,10 @@ static void ton2_interval(void)
     jetactn();
 }
 
-/* JETCALL2: "SAVE JET BITS FOR AFTER WTLST CALL" (added to NUJET); the
- * time, less 1 from the CCS, "RESTORE FOR CCS" (AD ONE), to WAITLIST:
- * JETCALL in that many centiseconds (2CADR JETCALL); back at JETACTN. */
+/* JETCALL2 -- p. 1088: "SAVE JET BITS FOR AFTER WTLST CALL" (added to
+ * NUJET); the time, less 1 from the CCS, "RESTORE FOR CCS" (AD ONE), to
+ * WAITLIST: JETCALL in that many centiseconds (2CADR JETCALL); back at
+ * JETACTN. */
 void jetcall2(void)
 {
     xch(L_ADDRESS);
@@ -342,17 +348,17 @@ void jetcall2(void)
     tc_to(JETCALL2 + 4u, WAITLIST);
 }
 
-/* JETACTN: "COME HERE WHEN DESIRED JET CODE IS KNOWN" (NUJET), */
+/* JETACTN -- p. 1088: "COME HERE WHEN DESIRED JET CODE IS KNOWN" (NUJET), */
 void jetactn(void)
 {
     ca(ADDRESS_OF(NUJET));
     jetactn_write();
 }
 
-/* JETACTN +1: "NO NEED TO SAVE OLD CODES", "SET RCHAN TO NEW BIT CONFIG."
- * (WRITE ROLLJETS). CCS OUTTAG: positive (a WAITLIST task's), the task
- * ends (TASKOVER); +0, ROLLDUMP; negative, on at JETCALL; -0, JETCALL +1
- * with A +0. */
+/* JETACTN +1 -- p. 1089: "NO NEED TO SAVE OLD CODES", "SET RCHAN TO NEW BIT
+ * CONFIG." (WRITE ROLLJETS). CCS OUTTAG: positive (a WAITLIST task's), the
+ * task ends (TASKOVER); +0, ROLLDUMP; negative, on at JETCALL; -0, JETCALL
+ * +1 with A +0. */
 static void jetactn_write(void)
 {
     write_channel(CHAN6); /* EXTEND; WRITE ROLLJETS */
@@ -364,20 +370,23 @@ static void jetactn_write(void)
     }
 }
 
-/* ROLLDUMP: TC CM/FDAIR (a key of another of the faithful port's parts). */
+/* ROLLDUMP -- p. 1089: TC CM/FDAIR (a key of another of the faithful port's
+ * parts). */
 void rolldump(void)
 {
     tc_to(ROLLDUMP, CM_FDAIR);
 }
 
-/* JETCALL: "WAITLIST ENTRIES COME HERE.": BIT2, "CM/DSTBY =103D BIT2", */
+/* JETCALL -- p. 1089: "WAITLIST ENTRIES COME HERE.": BIT2, "CM/DSTBY =103D
+ * BIT2", */
 void jetcall(void)
 {
     set_A(BIT2); /* CAF BIT2 */
     jetcall_outtag();
 }
 
-/* JETCALL +1: to OUTTAG, "SIGNIFY WTLST ENTRY"; "IS SYSTEM DISABLED  $"
+/* JETCALL +1 -- p. 1089: to OUTTAG, "SIGNIFY WTLST ENTRY"; "IS SYSTEM
+ * DISABLED  $"
  * (MASK CM/FLAGS): "YES, QUENCH ROLL JETS, IF ON AND EXIT." (BZF JETACTN
  * +1, A +0); "NO, CONTINUE." (ZL), "C(A) POS, C(L) = +0": JETCALL3. */
 static void jetcall_outtag(void)
@@ -394,9 +403,10 @@ static void jetcall_outtag(void)
 
 /* ---- DZCALL -- p. 1089 ---- */
 
-/* DZCALL: "DEAD ZONE ENTRIES COME HERE.": "POSSIBLE VALUES OF CMDAPMOD: -1,
- * +0, -0." Its complement's bit 1 to L: "C(L)=0 FOR -0: C(L)=1 FOR -1 OR
- * +0."; on at DZCALL +3 (a key of another of the faithful port's parts). */
+/* DZCALL -- p. 1089: "DEAD ZONE ENTRIES COME HERE.": "POSSIBLE VALUES OF
+ * CMDAPMOD: -1, +0, -0." Its complement's bit 1 to L: "C(L)=0 FOR -0: C(L)=1
+ * FOR -1 OR +0."; on at DZCALL +3 (a key of another of the faithful port's
+ * parts). */
 void dzcall(void)
 {
     cs(ADDRESS_OF(CMDAPMOD));

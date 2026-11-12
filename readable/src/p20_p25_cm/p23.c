@@ -47,13 +47,14 @@ void p23(void)
     tc_to(P23, DOWNFLAG); /* ADRES RNDVZFLG */
 }
 
-/* P23 +2: "LEAVE GROUP 4", "ENTER GROUP 2" (OCT 00004, OCT 00012). */
+/* P23 +2 -- p. 619: "LEAVE GROUP 4", "ENTER GROUP 2" (OCT 00004, OCT
+ * 00012). */
 void p23_after_downflag(void)
 {
     tc_to(P23 + 2u, TWO_PHSCHNG);
 }
 
-/* P23 +5: group 2's priority, PRIO13, in PHSPRDT2 (a CAF leaves no
+/* P23 +5 -- p. 619: group 2's priority, PRIO13, in PHSPRDT2 (a CAF leaves no
  * overflow for the TS to skip on), and TC INTPRET, */
 void p23_after_2phschng(void)
 {
@@ -86,7 +87,7 @@ static const word p23_words[] = {
     SWITCH(CLEAR, V94FLAG),
 };
 
-/* P23.00 -- after the EXIT: TC INTPRET, */
+/* P23.00 -- p. 619: after the EXIT: TC INTPRET, */
 void p23_00(void)
 {
     tc_at(P23_00);
@@ -116,7 +117,7 @@ static const word p23_00_words[] = {
     SWITCH(CLEAR, SAVECFLG),
 };
 
-/* P23.06 -- after the EXIT: verb 05 noun 70 flashed by GOFLASH
+/* P23.06 -- p. 620: after the EXIT: verb 05 noun 70 flashed by GOFLASH
  * ("IDENTIFICATION:  STAR, HOR  IDENT."). */
 void p23_06(void)
 {
@@ -124,27 +125,28 @@ void p23_06(void)
     tc_to(P23_06 + 1u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* P23.06 +3: "TERMINATE". */
+/* P23.06 +3 -- p. 620: "TERMINATE". */
 void p23_06_terminate(void)
 {
     tc_to(P23_06 + 3u, GOTOPOOH);
 }
 
-/* P23.06 +4: proceed, TC P23.15. */
+/* P23.06 +4 -- p. 620: proceed, TC P23.15. */
 void p23_06_proceed(void)
 {
     tc_at(P23_06 + 4u);
     p23_15();
 }
 
-/* P23.06 +5: "REDISPLAY", TC -5. */
+/* P23.06 +5 -- p. 620: "REDISPLAY", TC -5. */
 void p23_06_redisplay(void)
 {
     tc_at(P23_06 + 5u);
     p23_06();
 }
 
-/* P23.15: "IF C=2, LUNAFLAG=1.  IF C=1, LUNAFLAG=0": no landmark code,
+/* P23.15 -- p. 620: "IF C=2, LUNAFLAG=1.  IF C=1, LUNAFLAG=0": no landmark
+ * code,
  * P23.151; a landmark and a horizon code both, R23.10 ("OPERATOR DSKY
  * ERROR"); the landmark's alone, its digit C at P23.152. */
 void p23_15(void)
@@ -163,7 +165,7 @@ void p23_15(void)
     r23_10();
 }
 
-/* P23.15 +7: the landmark's code, TC P23.152. */
+/* P23.15 +7 -- p. 620: the landmark's code, TC P23.152. */
 void p23_15_landmark(void)
 {
     ca(ADDRESS_OF(LANDMARK));
@@ -171,7 +173,7 @@ void p23_15_landmark(void)
     p23_152();
 }
 
-/* P23.151: neither code, R23.10; the horizon's, P23.152. */
+/* P23.151 -- p. 620: neither code, R23.10; the horizon's, P23.152. */
 void p23_151(void)
 {
     ca(ADDRESS_OF(HORIZON));
@@ -182,8 +184,8 @@ void p23_151(void)
     p23_152();
 }
 
-/* P23.152: "IS C EQUAL TO 1 OR 2": 1 (0100 less NEG100's 0100), P23.16,
- * LUNAFLAG reset; 2, LUNAFLAG set; anything else, R23.10. */
+/* P23.152 -- p. 620: "IS C EQUAL TO 1 OR 2": 1 (0100 less NEG100's 0100),
+ * P23.16, LUNAFLAG reset; 2, LUNAFLAG set; anything else, R23.10. */
 static void p23_152(void)
 {
     mask(BITS7_9);
@@ -201,26 +203,27 @@ static void p23_152(void)
     r23_10();
 }
 
-/* P23.152 +010: the moon. */
+/* P23.152 +010 -- p. 620: the moon. */
 void p23_152_moon(void)
 {
     tc_to(P23_152 + 010u, UPFLAG); /* ADRES LUNAFLAG */
 }
 
-/* P23.152 +012: TCF +3, the star code. */
+/* P23.152 +012 -- p. 620: TCF +3, the star code. */
 void p23_152_after_upflag(void)
 {
     p23_starcode();
 }
 
-/* P23.16: the earth. */
+/* P23.16 -- p. 620: the earth. */
 static void p23_16(void)
 {
     tc_to(P23_16, DOWNFLAG); /* ADRES LUNAFLAG */
 }
 
-/* P23.16 +2: "IS STARCODE GREATER THAN OR" "EQUAL TO 0 AND LESS THAN 37":
- * 0, no star, P23.176; negative, or 37 or more, R23.10; else TC INTPRET. */
+/* P23.16 +2 -- p. 620: "IS STARCODE GREATER THAN OR" "EQUAL TO 0 AND LESS
+ * THAN 37": 0, no star, P23.176; negative, or 37 or more, R23.10; else TC
+ * INTPRET. */
 void p23_starcode(void)
 {
     ca(ADDRESS_OF(STARCODE));
@@ -272,8 +275,8 @@ static const word p23_17_words[] = {
     ORDER(EXIT),
 };
 
-/* P23.176 -- after the EXIT: no horizon code, the landmark (P23.20). The
- * horizon's third digit (BITS4-6): 1 (010 less 010), P23.18, NORFHOR
+/* P23.176 -- p. 621: after the EXIT: no horizon code, the landmark (P23.20).
+ * The horizon's third digit (BITS4-6): 1 (010 less 010), P23.18, NORFHOR
  * reset; 2, NORFHOR set; anything else, R23.10. */
 void p23_176(void)
 {
@@ -297,33 +300,33 @@ void p23_176(void)
     r23_10();
 }
 
-/* P23.176 +013: the far horizon. */
+/* P23.176 +013 -- p. 621: the far horizon. */
 void p23_176_far(void)
 {
     tc_to(P23_176 + 013u, UPFLAG); /* ADRES NORFHOR */
 }
 
-/* P23.176 +015: TC P23.30. */
+/* P23.176 +015 -- p. 621: TC P23.30. */
 void p23_176_after_upflag(void)
 {
     tc_at(P23_176 + 015u);
     p23_30();
 }
 
-/* P23.18: the near horizon. */
+/* P23.18 -- p. 621: the near horizon. */
 void p23_18(void)
 {
     tc_to(P23_18, DOWNFLAG); /* ADRES NORFHOR */
 }
 
-/* P23.18 +2: TC P23.30. */
+/* P23.18 +2 -- p. 621: TC P23.30. */
 void p23_18_after_downflag(void)
 {
     tc_at(P23_18 + 2u);
     p23_30();
 }
 
-/* P23.20: a landmark: TC INTPRET, */
+/* P23.20 -- p. 621: a landmark: TC INTPRET, */
 void p23_20(void)
 {
     tc_at(P23_20);
@@ -337,7 +340,7 @@ static const word p23_20_words[] = {
     ORDER(EXIT),
 };
 
-/* P23.30 -- after the EXIT: TC INTPRET, */
+/* P23.30 -- p. 621: after the EXIT: TC INTPRET, */
 void p23_30(void)
 {
     tc_at(P23_30);
@@ -356,7 +359,7 @@ static const word p23_30_words[] = {
     ADDRESS(P23_85),
 };
 
-/* P23.31 +3 -- after the EXIT: verb 50 noun 25 (V50N25P) by GOPERF1
+/* P23.31 +3 -- p. 621: after the EXIT: verb 50 noun 25 (V50N25P) by GOPERF1
  * ("GOPERF1 BLANKS OUT R2 AND R3"). */
 void p23_31_after_exit(void)
 {
@@ -364,20 +367,20 @@ void p23_31_after_exit(void)
     tc_to(P23_30 + 010u, BANKCALL); /* CADR GOPERF1 */
 }
 
-/* P23.30 +012: terminate. */
+/* P23.30 +012 -- p. 621: terminate. */
 void p23_30_terminate(void)
 {
     tc_to(P23_30 + 012u, GOTOPOOH);
 }
 
-/* P23.30 +013: "PROCEED.  AUTOCONTROL CMC": TC V94ENTER. */
+/* P23.30 +013 -- p. 621: "PROCEED.  AUTOCONTROL CMC": TC V94ENTER. */
 void p23_30_proceed(void)
 {
     tc_at(P23_30 + 013u);
     v94enter();
 }
 
-/* P23.55: enter: TC INTPRET, */
+/* P23.55 -- p. 621: enter: TC INTPRET, */
 void p23_55(void)
 {
     tc_at(P23_55);
@@ -416,14 +419,15 @@ static const word v94enter_words[] = {
     ORDER(EXIT),
 };
 
-/* V94ENTER +013 -- after the EXIT: "CLEAR AND GO TO VECPOINT IN R60". */
+/* V94ENTER +013 -- p. 622: after the EXIT: "CLEAR AND GO TO VECPOINT IN
+ * R60". */
 void v94enter_after_exit(void)
 {
     tc_to(V94ENTER + 013u, DOWNFLAG); /* ADRES 3AXISFLG ("BIT 6 FLAG 5") */
 }
 
-/* V94ENTER +015: R60ADRS (R60CALL +3) in TEMPFLSH, and a restart point
- * (OCT 00012). (A CAF leaves no overflow for the TS to skip on.) */
+/* V94ENTER +015 -- p. 622: R60ADRS (R60CALL +3) in TEMPFLSH, and a restart
+ * point (OCT 00012). (A CAF leaves no overflow for the TS to skip on.) */
 void v94enter_after_downflag(void)
 {
     set_A(R60ADRS);
@@ -431,19 +435,19 @@ void v94enter_after_downflag(void)
     tc_to(V94ENTER + 017u, PHASCHNG);
 }
 
-/* R60CALL: the maneuver, R60CSM. */
+/* R60CALL -- p. 622: the maneuver, R60CSM. */
 void r60call(void)
 {
     tc_to(R60CALL, BANKCALL); /* CADR R60CSM */
 }
 
-/* R60CALL +2: a restart point (OCT 04022). */
+/* R60CALL +2 -- p. 622: a restart point (OCT 04022). */
 void r60call_after_r60csm(void)
 {
     tc_to(R60CALL + 2u, PHASCHNG);
 }
 
-/* R60CALL +4: TC INTPRET, */
+/* R60CALL +4 -- p. 622: TC INTPRET, */
 void r60call_after_phaschng(void)
 {
     tc_at(R60CALL + 4u);
@@ -480,7 +484,7 @@ static void r23_10(void)
     tc_to(R23_10, FALTON);
 }
 
-/* R23.10 +1: and TC P23.06, the display again. */
+/* R23.10 +1 -- p. 627: and TC P23.06, the display again. */
 void r23_10_after_falton(void)
 {
     tc_at(R23_10 + 1u);

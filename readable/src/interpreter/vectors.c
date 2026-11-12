@@ -136,8 +136,8 @@ void vxsc(void)
     }
 }
 
-/* VVXSC: each component of MPAC in turn is rotated into MPAC, multiplied
- * and rounded. */
+/* VVXSC -- LM p. 1040, CM p. 1145: each component of MPAC in turn is rotated
+ * into MPAC, multiplied and rounded. */
 static void vvxsc(void)
 {
     tc_at(VVXSC);
@@ -329,8 +329,8 @@ void alsignag(void)
     }
 }
 
-/* UPPOS: the lower word plus one (HALF + HALF) overflows unless it was
- * negative; then the upper keeps its unit back. */
+/* UPPOS -- LM p. 1043, CM p. 1148: the lower word plus one (HALF + HALF)
+ * overflows unless it was negative; then the upper keeps its unit back. */
 static void uppos(void)
 {
     xch(L_ADDRESS); /* "SAVE DECREMENTED UPPER PART." */
@@ -460,7 +460,8 @@ static void vv_sc_plus1(void)
     v_sc1();
 }
 
-/* V/SC1: "IN BOTH CASES, VECTOR IS NOW IN MPAC AND SCALAR IN BUF." */
+/* V/SC1 -- LM p. 1045, CM p. 1150: "IN BOTH CASES, VECTOR IS NOW IN MPAC AND
+ * SCALAR IN BUF." */
 static void v_sc1(void)
 {
     dxch(ADDRESS_OF(BUF));
@@ -469,7 +470,8 @@ static void v_sc1(void)
     v_sc2();
 }
 
-/* DV/SC: the vector at X into MPAC, the scalar there into BUF. */
+/* DV/SC -- LM p. 1045, CM p. 1150: the vector at X into MPAC, the scalar
+ * there into BUF. */
 static void dv_sc(void)
 {
     dca(indexed(2u, ADDRWD));
@@ -532,7 +534,7 @@ void comp(void)
     continue_at(DANZIG);
 }
 
-/* DCOMP: a scalar's third word. */
+/* DCOMP -- LM p. 1046, CM p. 1151: a scalar's third word. */
 void dcomp(void)
 {
     cs(MPAC_AT(2u));

@@ -33,12 +33,12 @@
 
 #if COMANCHE055
 
-/* P23.60 +1 -- after the EXIT: with interrupts inhibited, the mark data's
- * address (MASK LOW10) to MARKDATA; INDEX MARKDATA, DCA 0 and DXCH: its
- * first two words to MARKTIME; INDEX MARKDATA, CA 5 and XCH: its word 5
- * to TRUNION. Not modelled: mark data that runs into fixed memory
- * (MARKDATA 01773 or more). (A MASK leaves no overflow for a TS to skip
- * on, and an index under 02000 leaves the DCA and the CA as they are.) */
+/* P23.60 +1 -- p. 622: after the EXIT: with interrupts inhibited, the mark
+ * data's address (MASK LOW10) to MARKDATA; INDEX MARKDATA, DCA 0 and DXCH:
+ * its first two words to MARKTIME; INDEX MARKDATA, CA 5 and XCH: its word 5
+ * to TRUNION. Not modelled: mark data that runs into fixed memory (MARKDATA
+ * 01773 or more). (A MASK leaves no overflow for a TS to skip on, and an
+ * index under 02000 leaves the DCA and the CA as they are.) */
 void p23_60_after_exit(void)
 {
     word data;
@@ -72,34 +72,35 @@ static const word p23_60_words[] = {
     ORDER(EXIT),
 };
 
-/* P23.60 +025 -- after the EXIT: verb 05 noun 71 flashed by GOFLASH. */
+/* P23.60 +025 -- p. 623: after the EXIT: verb 05 noun 71 flashed by
+ * GOFLASH. */
 void p23_60_display(void)
 {
     set_A(V05N71);
     tc_to(P23_60 + 026u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* P23.60 +030: "TERMINATE". */
+/* P23.60 +030 -- p. 623: "TERMINATE". */
 void p23_60_terminate(void)
 {
     tc_to(P23_60 + 030u, GOTOPOOH);
 }
 
-/* P23.60 +031: "STORE DATA": TC P23.65. */
+/* P23.60 +031 -- p. 623: "STORE DATA": TC P23.65. */
 void p23_60_proceed(void)
 {
     tc_at(P23_60 + 031u);
     p23_65();
 }
 
-/* P23.60 +032: "REDISPLAY": TC -5. */
+/* P23.60 +032 -- p. 623: "REDISPLAY": TC -5. */
 void p23_60_redisplay(void)
 {
     tc_at(P23_60 + 032u);
     p23_60_display();
 }
 
-/* P23.65: TC INTPRET, */
+/* P23.65 -- p. 623: TC INTPRET, */
 void p23_65(void)
 {
     tc_at(P23_65);
@@ -112,7 +113,8 @@ static const word p23_65_words[] = {
     SWITCH(SET, SAVECFLG),
 };
 
-/* P23.65 +3 -- after the EXIT: TC P23.15, the codes checked again. */
+/* P23.65 +3 -- p. 623: after the EXIT: TC P23.15, the codes checked
+ * again. */
 void p23_65_after_exit(void)
 {
     tc_at(P23_65 + 3u);
@@ -155,13 +157,13 @@ static const word p23_85_words[] = {
     ORDER(EXIT),
 };
 
-/* R23.2 +4 -- after the EXIT: a restart point. */
+/* R23.2 +4 -- p. 623: after the EXIT: a restart point. */
 void r23_2_after_exit(void)
 {
     tc_to(R23_2 + 4u, PHASCHNG); /* OCT 04022 */
 }
 
-/* R23.2 +6: TC INTPRET, */
+/* R23.2 +6 -- p. 623: TC INTPRET, */
 void r23_2_after_phaschng(void)
 {
     tc_at(R23_2 + 6u);

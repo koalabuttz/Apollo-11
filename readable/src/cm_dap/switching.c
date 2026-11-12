@@ -27,10 +27,10 @@ static void signck4(void);
 
 /* ---- JETS, JLOOP -- p. 1030 ---- */
 
-/* JETS: T5TEMP "ADB+AF", the dead zone and the "FLAT REGION = .044 DEG",
- * then the loop from the yaw axis, SPNDX 2. (TS T5TEMP overflows only for
- * an ADB at the top of the range, and skips the CAF TWO: A is then +1 or
- * -1.) */
+/* JETS -- p. 1030: T5TEMP "ADB+AF", the dead zone and the "FLAT REGION =
+ * .044 DEG", then the loop from the yaw axis, SPNDX 2. (TS T5TEMP overflows
+ * only for an ADB at the top of the range, and skips the CAF TWO: A is then
+ * +1 or -1.) */
 void jets(void)
 {
     ca(ADDRESS_OF(ADB));
@@ -39,12 +39,12 @@ void jets(void)
     jloop();
 }
 
-/* JLOOP: the axis in SPNDX, twice it in DPNDX, and the axis' body rate
- * ADOT into EDOT; "HOLDFLAG = +0 MEANS THAT DAP IS IN ATTITUDE HOLD AND
- * RATE DAMPING IS OVER": otherwise the commanded rate WBODY taken off. (A
- * TS that overflows skips the next word: past the DOUBLE, A is +1 or -1;
- * past the EXTEND, the DCA runs unextended, as CA of its address field,
- * ADOT +1, indexed.) */
+/* JLOOP -- p. 1030: the axis in SPNDX, twice it in DPNDX, and the axis' body
+ * rate ADOT into EDOT; "HOLDFLAG = +0 MEANS THAT DAP IS IN ATTITUDE HOLD AND
+ * RATE DAMPING IS OVER": otherwise the commanded rate WBODY taken off. (A TS
+ * that overflows skips the next word: past the DOUBLE, A is +1 or -1; past
+ * the EXTEND, the DCA runs unextended, as CA of its address field, ADOT +1,
+ * indexed.) */
 void jloop(void)
 {
     if (!ts(ADDRESS_OF(SPNDX))) double_A();
@@ -63,9 +63,9 @@ void jloop(void)
     continue_at(INHOLD);
 }
 
-/* INHOLD: the axis' attitude error, "AERR = BIAS + AK", and the sign of
- * the rate error EDOT, its upper word or, that +0 or -0, its lower one:
- * POSVEL for + (or both zero), NEGVEL for -. */
+/* INHOLD -- p. 1030: the axis' attitude error, "AERR = BIAS + AK", and the
+ * sign of the rate error EDOT, its upper word or, that +0 or -0, its lower
+ * one: POSVEL for + (or both zero), NEGVEL for -. */
 void inhold(void)
 {
     ca(maneuver_index_read(ADDRESS_OF(ERRORX), spndx()));
@@ -77,7 +77,7 @@ void inhold(void)
     }
 }
 
-/* SIGNCK1: the lower word's sign (+0 counts as +). */
+/* SIGNCK1 -- p. 1030: the lower word's sign (+0 counts as +). */
 void signck1(void)
 {
     enum sign sign = ccs_at(ADDRESS_OF(EDOT) + 1u);
@@ -88,9 +88,9 @@ void signck1(void)
         negvel();
 }
 
-/* POSVEL: the rate error positive: EDOTVEL, ADBVEL and AERRVEL the rate
- * error, "+(ADB+AF)" and the attitude error as they are; J6. is called
- * by TC (Q the word after it, NEGVEL, and nothing returns there). */
+/* POSVEL -- p. 1030: the rate error positive: EDOTVEL, ADBVEL and AERRVEL
+ * the rate error, "+(ADB+AF)" and the attitude error as they are; J6. is
+ * called by TC (Q the word after it, NEGVEL, and nothing returns there). */
 void posvel(void)
 {
     dca(ADDRESS_OF(EDOT));
@@ -103,7 +103,8 @@ void posvel(void)
     j6();
 }
 
-/* NEGVEL: the rate error negative: all three turned, "-(ADB+AF)". */
+/* NEGVEL -- p. 1030: the rate error negative: all three turned,
+ * "-(ADB+AF)". */
 void negvel(void)
 {
     dcs(ADDRESS_OF(EDOT));
@@ -117,10 +118,10 @@ void negvel(void)
 
 /* ---- J6., J7, J8, the regions -- p. 1031 ---- */
 
-/* J6.: the attitude error (AERRVEL, in A) at most ADB less WLH/SLOP, "=
- * WL+H/SLOPE = .83333 DEG": J8. Past ADB+AF: J7. Otherwise, with the
- * error plus the rate error over the switch line's SLOPE at least ADB,
- * J18; less, J23. */
+/* J6. -- p. 1030: the attitude error (AERRVEL, in A) at most ADB less
+ * WLH/SLOP, "= WL+H/SLOPE = .83333 DEG": J8. Past ADB+AF: J7. Otherwise,
+ * with the error plus the rate error over the switch line's SLOPE at least
+ * ADB, J18; less, J23. */
 static void j6(void)
 {
     su_at(ADDRESS_OF(ADB));
@@ -145,8 +146,8 @@ static void j6(void)
         continue_at(J23);
 }
 
-/* J7: the attitude error past ADB+AF by no more than WL-H/SLP, "= WL-H/SLOPE
- * = .5 DEG": J20; further: J21. */
+/* J7 -- p. 1031: the attitude error past ADB+AF by no more than WL-H/SLP, "=
+ * WL-H/SLOPE = .5 DEG": J20; further: J21. */
 static void j7(void)
 {
     set_A(negate(WL_H_SLP)); /* CS */
@@ -158,8 +159,8 @@ static void j7(void)
         continue_at(J21);
 }
 
-/* J8: the rate error less WLH, "= WL+H = 0.5 DEG/SEC", in WTEMP: +
- * (its upper word, or that +0 or -0, its lower one +), J22; -, NJ22. */
+/* J8 -- p. 1031: the rate error less WLH, "= WL+H = 0.5 DEG/SEC", in WTEMP:
+ * + (its upper word, or that +0 or -0, its lower one +), J22; -, NJ22. */
 static void j8(void)
 {
     dcs(ADDRESS_OF(WLH));
@@ -173,7 +174,7 @@ static void j8(void)
     }
 }
 
-/* SIGNCK2: the lower word's sign (+0 counts as +). */
+/* SIGNCK2 -- p. 1031: the lower word's sign (+0 counts as +). */
 static void signck2(void)
 {
     enum sign sign = ccs_at(ADDRESS_OF(WTEMP) + 1u);
@@ -184,8 +185,8 @@ static void signck2(void)
         nj22();
 }
 
-/* NJ22: the rate error, on at NJ22 +2 (EXTEND; DV SLOPE), a key of the
- * faithful port's next part. */
+/* NJ22 -- p. 1031: the rate error, on at NJ22 +2 (EXTEND; DV SLOPE), a key
+ * of the faithful port's next part. */
 static void nj22(void)
 {
     dca(ADDRESS_OF(EDOTVEL));
@@ -194,10 +195,10 @@ static void nj22(void)
 
 /* ---- NJ22, NJ23, the regions R22 to R24 -- pp. 1031-1032 ---- */
 
-/* NJ22 +2: the rate error over SLOPE, plus ADB+AF, plus the attitude error:
- * not negative, J23. Negative: the rate error less WLMH ("WL - H") in
- * WTEMP, and with that + (its upper word, or that +0 or -0, its lower one
- * +), J23 again; -, NJ23. */
+/* NJ22 +2 -- p. 1031: the rate error over SLOPE, plus ADB+AF, plus the
+ * attitude error: not negative, J23. Negative: the rate error less WLMH ("WL
+ * - H") in WTEMP, and with that + (its upper word, or that +0 or -0, its
+ * lower one +), J23 again; -, NJ23. */
 void nj22_slope(void)
 {
     dv_at(ADDRESS_OF(SLOPE));
@@ -218,13 +219,13 @@ void nj22_slope(void)
     }
 }
 
-/* SIGNCK3 -1: TCF NJ23. */
+/* SIGNCK3 -1 -- p. 1032: TCF NJ23. */
 void tcf_nj23(void)
 {
     nj23();
 }
 
-/* SIGNCK3: the lower word's sign (+0 counts as +). */
+/* SIGNCK3 -- p. 1032: the lower word's sign (+0 counts as +). */
 void signck3(void)
 {
     enum sign sign = ccs_at(ADDRESS_OF(WTEMP) + 1u);
@@ -235,8 +236,8 @@ void signck3(void)
         nj23();
 }
 
-/* NJ23: the attitude error plus ADB+AF plus WL-H/SLP: + (or +0), J24;
- * - (or -0), J22. */
+/* NJ23 -- p. 1032: the attitude error plus ADB+AF plus WL-H/SLP: + (or +0),
+ * J24; - (or -0), J22. */
 static void nj23(void)
 {
     ca(ADDRESS_OF(AERRVEL));
@@ -251,7 +252,8 @@ static void nj23(void)
 
 /* ---- The rotation commands, in KMPAC -- pp. 1032-1033 ---- */
 
-/* J18: KMPAC = -EDOT, the change that takes the rate error to zero. */
+/* J18 -- p. 1032: KMPAC = -EDOT, the change that takes the rate error to
+ * zero. */
 void j18(void)
 {
     dcs(ADDRESS_OF(EDOT));
@@ -259,8 +261,8 @@ void j18(void)
     continue_at(JTIME);
 }
 
-/* J20: the rate on the hysteresis slope for the attitude error, ADBVEL -
- * AERR times SLOPE2 ("= 0.8 DEG/SEC/DEG"), less the rate error. */
+/* J20 -- p. 1032: the rate on the hysteresis slope for the attitude error,
+ * ADBVEL - AERR times SLOPE2 ("= 0.8 DEG/SEC/DEG"), less the rate error. */
 void j20(void)
 {
     cs(ADDRESS_OF(AERR));
@@ -272,8 +274,8 @@ void j20(void)
     continue_at(JTIME);
 }
 
-/* J21: by the rate error's sign (its upper word, or that +0 or -0, its
- * lower one; +0 counts as +), JP for +, JN for -. */
+/* J21 -- p. 1032: by the rate error's sign (its upper word, or that +0 or
+ * -0, its lower one; +0 counts as +), JP for +, JN for -. */
 void j21(void)
 {
     switch (ccs_at(ADDRESS_OF(EDOT))) {
@@ -283,7 +285,7 @@ void j21(void)
     }
 }
 
-/* SIGNCK4: the lower word's sign. */
+/* SIGNCK4 -- p. 1032: the lower word's sign. */
 static void signck4(void)
 {
     enum sign sign = ccs_at(ADDRESS_OF(EDOT) + 1u);
@@ -294,8 +296,8 @@ static void signck4(void)
         jn();
 }
 
-/* JN: KMPAC = WL - EDOT, the change that leaves the rate error at WL (0.4
- * degrees a second). */
+/* JN -- p. 1033: KMPAC = WL - EDOT, the change that leaves the rate error at
+ * WL (0.4 degrees a second). */
 void jn(void)
 {
     dcs(ADDRESS_OF(EDOT));
@@ -305,7 +307,7 @@ void jn(void)
     continue_at(JTIME);
 }
 
-/* JP: KMPAC = -WL - EDOT, the change that leaves it at -WL. */
+/* JP -- p. 1033: KMPAC = -WL - EDOT, the change that leaves it at -WL. */
 void jp(void)
 {
     dcs(ADDRESS_OF(EDOT));
@@ -315,9 +317,9 @@ void jp(void)
     continue_at(JTIME);
 }
 
-/* J22: by the rate error's sign, JN for + and JP for -. CCS goes on at the
- * word 1, 2, 3 or 4 after it, by the sign: those words (TCF JN, TCF
- * SIGNCK5, TCF JP, and SIGNCK5 itself, for -0) start the faithful port's
+/* J22 -- p. 1033: by the rate error's sign, JN for + and JP for -. CCS goes
+ * on at the word 1, 2, 3 or 4 after it, by the sign: those words (TCF JN,
+ * TCF SIGNCK5, TCF JP, and SIGNCK5 itself, for -0) start the faithful port's
  * next part, where its run stops. */
 void j22(void)
 {
@@ -329,7 +331,8 @@ void j22(void)
     }
 }
 
-/* TCF JN and TCF JP, J22's and SIGNCK5's words. */
+/* J22 +1 and SIGNCK5 +1 and SIGNCK5 +2 -- p. 1033: TCF JN and TCF JP, J22's
+ * and SIGNCK5's words. */
 void tcf_jn(void)
 {
     continue_at(JN);
@@ -340,13 +343,14 @@ void tcf_jp(void)
     continue_at(JP);
 }
 
-/* J22 +2: TCF SIGNCK5. */
+/* J22 +2 -- p. 1033: TCF SIGNCK5. */
 void tcf_signck5(void)
 {
     signck5();
 }
 
-/* SIGNCK5: the lower word's sign: JN for + (or +0), JP for - (or -0). */
+/* SIGNCK5 -- p. 1033: the lower word's sign: JN for + (or +0), JP for - (or
+ * -0). */
 void signck5(void)
 {
     enum sign sign = ccs_at(ADDRESS_OF(EDOT) + 1u);
@@ -359,9 +363,9 @@ void signck5(void)
 
 /* ---- J23, J24 -- pp. 1033-1034 ---- */
 
-/* J23: "RESET RATE DAMPING FLAG", the axis' bit of RCSFLAGS (BIT13 less
- * SPNDX: "BIT13 FOR ROLL", BIT12 pitch, BIT11 yaw). "IS THERE TO BE A
- * FORCED FIRING ON THIS AXIS" (the axis' bits of OCT01400, OCT00060 or
+/* J23 -- p. 1033: "RESET RATE DAMPING FLAG", the axis' bit of RCSFLAGS
+ * (BIT13 less SPNDX: "BIT13 FOR ROLL", BIT12 pitch, BIT11 yaw). "IS THERE TO
+ * BE A FORCED FIRING ON THIS AXIS" (the axis' bits of OCT01400, OCT00060 or
  * OCT00300 in RCSFLAGS): "NO, GO TO DOJET +2 AND DO NOTHING"; "YES, GO TO
  * J18 AND FORCE A FIRING". */
 void j23(void)
@@ -378,8 +382,8 @@ void j23(void)
     continue_at(J18);
 }
 
-/* J24: the rate on the hysteresis slope the other way, -(AERR + ADBVEL)
- * times SLOPE2, less the rate error. */
+/* J24 -- p. 1033: the rate on the hysteresis slope the other way, -(AERR +
+ * ADBVEL) times SLOPE2, less the rate error. */
 void j24(void)
 {
     cs(ADDRESS_OF(AERR));
@@ -388,7 +392,7 @@ void j24(void)
     j24_kmpac();
 }
 
-/* J24 +5: DXCH KMPAC, and the rate error taken off. */
+/* J24 +5 -- p. 1033: DXCH KMPAC, and the rate error taken off. */
 void j24_kmpac(void)
 {
     dxch(ADDRESS_OF(KMPAC));

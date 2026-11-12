@@ -53,9 +53,9 @@ void rest(void)
     }
 }
 
-/* RESTSLEP +4, where UPENT2 returns: NVSUBUSY puts the job to sleep until
- * the DSKY is free, then wakes it at the kind's NVCADR (REDOPRIO,
- * MARKPLAY, PLAYJUM1): "BUSY OR ABORT IF ILLEGAL". */
+/* RESTSLEP +4 -- LM p. 1368, CM p. 1479, where UPENT2 returns: NVSUBUSY puts
+ * the job to sleep until the DSKY is free, then wakes it at the kind's
+ * NVCADR (REDOPRIO, MARKPLAY, PLAYJUM1): "BUSY OR ABORT IF ILLEGAL". */
 void restslep_after_upent2(void)
 {
     ca(indexed(ADDRESS_OF(NVCADR), display_kind()));
@@ -70,9 +70,9 @@ void flashsub(void)
     continue_at(FLASHON);
 }
 
-/* FLASHSUB +1, where FLASHON returns: "COPINDEX DESTROYED BY ENDIDLE"
- * (kept in COPMPAC), and the kind's ENDIDLE bits up (UPENT2; ITISMASK,
- * "ENDIDLE ALLOW"). */
+/* FLASHSUB +1 -- LM p. 1368, CM p. 1479, where FLASHON returns: "COPINDEX
+ * DESTROYED BY ENDIDLE" (kept in COPMPAC), and the kind's ENDIDLE bits up
+ * (UPENT2; ITISMASK, "ENDIDLE ALLOW"). */
 void flashsub_plus1(void)
 {
     ca(ADDRESS_OF(COPINDEX));
@@ -83,13 +83,15 @@ void flashsub_plus1(void)
     continue_at(UPENT2);
 }
 
-/* CLEANEND +4, where FINDVAC returns: TCF FLASHSUB +1. */
+/* CLEANEND +4 -- LM p. 1367, CM p. 1478, where FINDVAC returns: TCF FLASHSUB
+ * +1. */
 void cleanend_after_findvac(void)
 {
     flashsub_plus1();
 }
 
-/* ITISMASK +012: TC ENDIDLE, the astronaut's answer. */
+/* ITISMASK +012 -- LM p. 1368, CM p. 1479: TC ENDIDLE, the astronaut's
+ * answer. */
 void goidle(void)
 {
     tc_at((word)(IDLERET1 - 1u));
@@ -109,9 +111,10 @@ void unsetr1(void)
     continue_at(SUPERSW);
 }
 
-/* ITISMASK +1, where UPENT2 returns: "IS THIS A REPEAT AND RETURN DISPLAY"
- * (R1SAVE's bit for the kind): "YES", UNSETR1. "SEE IF SOMEONE ALREADY IN
- * ENDIDLE" (CADRSTOR): if so ISITPRIO, if not ENDIDLE. */
+/* ITISMASK +1 -- LM p. 1368, CM p. 1479, where UPENT2 returns: "IS THIS A
+ * REPEAT AND RETURN DISPLAY" (R1SAVE's bit for the kind): "YES", UNSETR1.
+ * "SEE IF SOMEONE ALREADY IN ENDIDLE" (CADRSTOR): if so ISITPRIO, if not
+ * ENDIDLE. */
 void itismask_after_upent2(void)
 {
     word kind = display_kind();
@@ -182,14 +185,16 @@ void idleret1(void)
     termate();
 }
 
-/* IDLERET1 +1: "ENDIDLE RETURNS HERE ON PROCEED". */
+/* IDLERET1 +1 -- LM p. 1368, CM p. 1479: "ENDIDLE RETURNS HERE ON
+ * PROCEED". */
 void idleret1_plus1(void)
 {
     proceed();
 }
 
-/* IDLERET1 +2: an enter, or a load verb: "V21 OR V22 OR V23 ON DSKY" (the
- * verb less LOWLOAD, 22, then DIM, is zero): LOADITIS; else OKTOENT. */
+/* IDLERET1 +2 -- LM p. 1368, CM p. 1479: an enter, or a load verb: "V21 OR
+ * V22 OR V23 ON DSKY" (the verb less LOWLOAD, 22, then DIM, is zero):
+ * LOADITIS; else OKTOENT. */
 void idleret1_plus2(void)
 {
     set_A(negate(LOWLOAD));
@@ -209,9 +214,10 @@ void normwake(void)
     continue_at(WAKEPLAY);
 }
 
-/* ENDRET +4: back to the user at the kind's CADRFLSH plus the answer (in
- * MPAC +3), the kind's ENDIDLE and pinbranch bits down: "REMOVE ENDIDLE
- * AND PINBRANCH BITS". (An overflow in A skips the CA.) */
+/* ENDRET +4 -- LM p. 1369, CM p. 1480: back to the user at the kind's
+ * CADRFLSH plus the answer (in MPAC +3), the kind's ENDIDLE and pinbranch
+ * bits down: "REMOVE ENDIDLE AND PINBRANCH BITS". (An overflow in A skips
+ * the CA.) */
 void endret_plus4(void)
 {
     word kind = fetch(ADDRESS_OF(COPMPAC));
@@ -236,8 +242,8 @@ void endret(void)
     endret_plus4();
 }
 
-/* PINIDMSK +1, where DOWNENT2 returns: "BLANK EVERYTHING EXCEPT MM"
- * (NVSUB). */
+/* PINIDMSK +1 -- LM p. 1369, CM p. 1480, where DOWNENT2 returns: "BLANK
+ * EVERYTHING EXCEPT MM" (NVSUB). */
 void pinidmsk_after_downent2(void)
 {
     set_A(negate(THREE));
@@ -254,13 +260,15 @@ void endit(void)
     continue_at(PRIOCHNG);
 }
 
-/* PINIDMSK +3, where NVSUB returns: TCF +1, ENDIT. */
+/* PINIDMSK +3 -- LM p. 1369, CM p. 1480, where NVSUB returns: TCF +1,
+ * ENDIT. */
 void pinidmsk_after_nvsub(void)
 {
     endit();
 }
 
-/* ENDIT +3, where PRIOCHNG returns: to the user, at MPAC +3 (BANKJUMP). */
+/* ENDIT +3 -- LM p. 1369, CM p. 1480, where PRIOCHNG returns: to the user,
+ * at MPAC +3 (BANKJUMP). */
 void endit_after_priochng(void)
 {
     ca(ADDRESS_OF(MPAC) + 3u);
@@ -274,8 +282,8 @@ void immedret(void)
     continue_at(BANKJUMP);
 }
 
-/* UNSETR1 +6 (IMMEDRET -1), where SUPERSW returns: "RETURN TO USER" at the
- * immediate return, the call CADR +4. */
+/* UNSETR1 +6 -- LM p. 1370, CM p. 1481 (IMMEDRET -1), where SUPERSW returns:
+ * "RETURN TO USER" at the immediate return, the call CADR +4. */
 void unsetr1_after_supersw(void)
 {
     set_A(THREE);
@@ -354,15 +362,16 @@ void markover(void)
     normret();
 }
 
-/* NORMRET +024, where NOVAC returns: TCF ENDRET. */
+/* NORMRET +024 -- LM p. 1371, CM p. 1482, where NOVAC returns: TCF
+ * ENDRET. */
 void normret_after_novac(void)
 {
     endret();
 }
 
-/* NORMRET +014: a NORMAL display waits in NVSAVE: a job (NOVAC, priority
- * 15) to start it at PLAYJUM1. ENDRET. */
-void normret_plus12(void)
+/* NORMRET +014 -- LM p. 1371, CM p. 1482: a NORMAL display waits in NVSAVE:
+ * a job (NOVAC, priority 15) to start it at PLAYJUM1. ENDRET. */
+void normret_plus014(void)
 {
     ca(ADDRESS_OF(NVSAVE));
     if (A_is_zero()) {
@@ -375,9 +384,10 @@ void normret_plus12(void)
     continue_at(NOVAC);
 }
 
-/* NORMRET +010: "NO, WAS IT A FLASH REQUEST" "OR A GODSPRET" (EBANKTEM's
- * bits 6 and 4): "YES", ENDRET; if not NORMRET +014. */
-void normret_plus8(void)
+/* NORMRET +010 -- LM p. 1371, CM p. 1482: "NO, WAS IT A FLASH REQUEST" "OR A
+ * GODSPRET" (EBANKTEM's bits 6 and 4): "YES", ENDRET; if not NORMRET
+ * +014. */
+void normret_plus010(void)
 {
     ca(ADDRESS_OF(EBANKTEM));
     mask(OCT50);
@@ -385,11 +395,11 @@ void normret_plus8(void)
         endret();
         return;
     }
-    normret_plus12();
+    normret_plus014();
 }
 
-/* NORMRET +4: "IS NORMAL INTERRUPTED OR WAITING": "YES", NORMWAKE; if not
- * NORMRET +010. */
+/* NORMRET +4 -- LM p. 1371, CM p. 1482: "IS NORMAL INTERRUPTED OR WAITING":
+ * "YES", NORMWAKE; if not NORMRET +010. */
 void normret_plus4(void)
 {
     ca(ADDRESS_OF(FLAGWRD4));
@@ -398,7 +408,7 @@ void normret_plus4(void)
         normwake();
         return;
     }
-    normret_plus8();
+    normret_plus010();
 }
 
 /* NORMRET -- LM p. 1371, CM p. 1482. "LASTPLAY CHECKS TO SEE IF (1) THE
@@ -456,7 +466,7 @@ void eraser(void)
     continue_at(NVSUB);
 }
 
-/* ERASER +2 and +3, NVSUB's returns: ENDOFJOB. */
+/* ERASER +2 and +3 -- LM p. 1372, CM p. 1482, NVSUB's returns: ENDOFJOB. */
 void eraser_after_nvsub(void)
 {
     continue_at(ENDOFJOB);

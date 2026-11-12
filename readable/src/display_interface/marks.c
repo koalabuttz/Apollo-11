@@ -36,7 +36,8 @@ void endmark(void)
     continue_at(POSTJUMP);
 }
 
-/* CLEARMRK +2: the extended verb display bit down in FLAGWRD4 (bit 1). */
+/* CLEARMRK +2 -- LM p. 1354, CM p. 1465: the extended verb display bit down
+ * in FLAGWRD4 (bit 1). */
 void clearmrk_plus2(void)
 {
     inhint();

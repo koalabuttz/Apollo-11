@@ -11,7 +11,7 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-/* TTF/8CL: the time to go is the root of a cubic in TTF/8 whose
+/* TTF/8CL -- p. 807: the time to go is the root of a cubic in TTF/8 whose
  * coefficients, to TABLTTF, come from the phase's targets (through X1,
  * INTPRETX: the jerk JDG, the acceleration ADG, the velocity VDG and the
  * position RDG) and the state (VGU, RGU), their components 2:
@@ -53,9 +53,9 @@ static const word ttf_8cl_words[] = {
 const struct interpretive_code TTF_8CL_CODE = {031u, TTF_8CL + 1u, COUNT(ttf_8cl_words),
                                                ttf_8cl_words};
 
-/* After the EXIT: "FRACTIONAL PRECISION FOR TTF TO TABLE" (BIT8 to
- * TABLTTF +10), "TTF/8 (INITIAL GUESS)" to MPAC, the degree less one (two)
- * to L and the table's address (TABLTTFL) to A, and ROOTPSRS
+/* TTF/8CL +021 -- p. 807: After the EXIT: "FRACTIONAL PRECISION FOR TTF TO
+ * TABLE" (BIT8 to TABLTTF +10), "TTF/8 (INITIAL GUESS)" to MPAC, the degree
+ * less one (two) to L and the table's address (TABLTTFL) to A, and ROOTPSRS
  * (rootpsrs.c), which "YIELDS TTF/8 IN MPAC". (No TS skips: A is a
  * constant.) */
 void ttf_8cl_after_exit(void)
@@ -71,15 +71,15 @@ void ttf_8cl_after_exit(void)
     rootpsrs();
 }
 
-/* ROOTPSRS's return when the root would not converge: the phase's
- * WHATALM word. */
+/* TTF/8CL +032 -- p. 807: ROOTPSRS's return when the root would not
+ * converge: the phase's WHATALM word. */
 void ttf_8cl_bad_root(void)
 {
     tcf_by_phase(WHATALM, ADDRESS_OF(WCHPHASE));
 }
 
-/* Its "GOOD RETURN": the "CORRECTED TTF/8", TDISPSET (subroutines.c),
- * and on into QUADGUID (quadguid.c), the word after. */
+/* TTF/8CL +034 -- p. 807: Its "GOOD RETURN": the "CORRECTED TTF/8", TDISPSET
+ * (subroutines.c), and on into QUADGUID (quadguid.c), the word after. */
 void ttf_8cl_good_root(void)
 {
     dca(ADDRESS_OF(MPAC));
@@ -89,20 +89,21 @@ void ttf_8cl_good_root(void)
     quadguid(); /* "CONTINUE TO QUADGUID" */
 }
 
-/* 1406P00, the ignition algorithm's: alarm 1406 and the end of the
+/* 1406P00 -- p. 826, the ignition algorithm's: alarm 1406 and the end of the
  * program (POODOO). */
 void p00_1406(void)
 {
     tc_to(P00_1406, POODOO); /* OCT 01406 */
 }
 
-/* 1406ALM, the braking and approach phases': alarm 1406 (ALARM), ... */
+/* 1406ALM -- p. 826, the braking and approach phases': alarm 1406 (ALARM),
+ * ... */
 void alm1406(void)
 {
     tc_to(ALM1406, ALARM); /* OCT 01406 */
 }
 
-/* ... and RATESTOP (exits.c). */
+/* 1406ALM +2 -- p. 826: ... and RATESTOP (exits.c). */
 void alm1406_after_alarm(void)
 {
     ratestop();

@@ -46,15 +46,15 @@ static void jet_time(void)
 
 /* ---- RATELOOP -- LM pp. 1470-1471 ---- */
 
-/* RATELOOP: DAPTEMP6 counts the axes down, 2, 1, 0 (V, U, P), and Q holds
- * twice it, the axis's pair of DOWNTORK counters. LOOPRATE: the torque,
- * the time times the axis's jet count, is the "SIGNED TORQUE AT 1
+/* RATELOOP -- LM p. 1470: DAPTEMP6 counts the axes down, 2, 1, 0 (V, U, P),
+ * and Q holds twice it, the axis's pair of DOWNTORK counters. LOOPRATE: the
+ * torque, the time times the axis's jet count, is the "SIGNED TORQUE AT 1
  * JET-SEC FOR FILTER"; MP BIT10 "RESCALE TO 32; ONE BIT ABOUT 2 JET-MSEC";
- * and STORTORK adds its magnitude to the axis's positive counter, or, for
- * a negative torque (NEGTORK), to the next one: "INCREMENT DOWNLIST
- * REGISTER." ("NOTE: NOT INITIALIZED; OVERFLOWS."). Then ROTORQUE: the
- * jet rates about R and Q, from the sum and the difference of the U and V
- * torques, and TCF BACKP. */
+ * and STORTORK adds its magnitude to the axis's positive counter, or, for a
+ * negative torque (NEGTORK), to the next one: "INCREMENT DOWNLIST REGISTER."
+ * ("NOTE: NOT INITIALIZED; OVERFLOWS."). Then ROTORQUE: the jet rates about
+ * R and Q, from the sum and the difference of the U and V torques, and TCF
+ * BACKP. */
 void rateloop(void)
 {
     bool more = true;

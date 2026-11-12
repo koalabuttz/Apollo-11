@@ -10,7 +10,7 @@
  * R02
  * ====================================================================== */
 
-/* R02ZERO -- LM p. 1333, CM p. 1444: the IMUSE flag up (UPFLAG), and
+/* R02ZERO -- LM pp. 1332-1333, CM p. 1444: the IMUSE flag up (UPFLAG), and
  * SWRETURN. P51-P53 call it through BANKCALL as well. */
 void r02zero(void)
 {
@@ -18,7 +18,8 @@ void r02zero(void)
     continue_at(UPFLAG);
 }
 
-/* R02ZERO +2, where UPFLAG returns: TCF SWRETURN. */
+/* R02ZERO +2 -- LM p. 1333, CM p. 1444, where UPFLAG returns: TCF
+ * SWRETURN. */
 void r02zero_after_upflag(void)
 {
     continue_at(SWRETURN);
@@ -51,7 +52,8 @@ void r02both(void)
     continue_at(VARALARM);
 }
 
-/* R02BOTH +013, where VARALARM returns: TC GOTOPOOH. */
+/* R02BOTH +013 -- LM p. 1332, CM p. 1443, where VARALARM returns: TC
+ * GOTOPOOH. */
 void r02both_after_varalarm(void)
 {
     tc_at((word)(R02BOTH + 013u));
@@ -91,15 +93,16 @@ void prestand(void)
     scalprep();
 }
 
-/* PRESTAND +5, SCALPREP's L+1: "T1,T2,SCALER NOT COMPATIBLE". Again. */
+/* PRESTAND +5 -- LM p. 1335, CM p. 1446, SCALPREP's L+1: "T1,T2,SCALER NOT
+ * COMPATIBLE". Again. */
 void prestand_retry(void)
 {
     tc_at((word)(PRESTAND + 5u)); /* TC PRESTAND */
     prestand();
 }
 
-/* PRESTAND +6, SCALPREP's L+2: "T1,T2 AND SCALER OK". "STORE SCALER",
- * and RNDREFDR: "REFSMM, DRIFT, TRACK FLAGS DOWN". */
+/* PRESTAND +6 -- LM p. 1335, CM p. 1446, SCALPREP's L+2: "T1,T2 AND SCALER
+ * OK". "STORE SCALER", and RNDREFDR: "REFSMM, DRIFT, TRACK FLAGS DOWN". */
 void prestand_compatible(void)
 {
     dxch(ADDRESS_OF(MPAC));
@@ -109,23 +112,25 @@ void prestand_compatible(void)
     continue_at(BANKCALL);
 }
 
-/* PRESTAND +013, where RNDREFDR returns: "IMUSE DOWN". */
+/* PRESTAND +013 -- LM p. 1335, CM p. 1446, where RNDREFDR returns: "IMUSE
+ * DOWN". */
 void prestand_after_rndrefdr(void)
 {
     tc_at((word)(PRESTAND + 013u)); /* TC DOWNFLAG; ADRES IMUSE */
     continue_at(DOWNFLAG);
 }
 
-/* PRESTAND +015, where DOWNFLAG returns: "RNDVZFLG DOWN". */
+/* PRESTAND +015 -- LM p. 1335, CM p. 1446, where DOWNFLAG returns: "RNDVZFLG
+ * DOWN". */
 void prestand_after_downflag(void)
 {
     tc_at((word)(PRESTAND + 015u)); /* TC DOWNFLAG; ADRES RNDVZFLG */
     continue_at(DOWNFLAG);
 }
 
-/* PRESTAND +017, where DOWNFLAG returns: "SET STANDBY ENABLE BIT"
- * (channel 13 bit 11), and "SET RESTART TO POSTAND WHEN STANDBY
- * RECOVERS". */
+/* PRESTAND +017 -- LM p. 1335, CM p. 1446, where DOWNFLAG returns: "SET
+ * STANDBY ENABLE BIT" (channel 13 bit 11), and "SET RESTART TO POSTAND WHEN
+ * STANDBY RECOVERS". */
 void prestand_after_downflag2(void)
 {
     set_A(BIT11);
@@ -134,8 +139,8 @@ void prestand_after_downflag2(void)
     continue_at(PHASCHNG);
 }
 
-/* PRESTAND +027, where PHASCHNG returns: GOPERF1 with OCT62 ("DEC 50"),
- * again whichever of its three returns comes back. */
+/* PRESTAND +027 -- LM p. 1335, CM p. 1446, where PHASCHNG returns: GOPERF1
+ * with OCT62 ("DEC 50"), again whichever of its three returns comes back. */
 void prestand_after_phaschng(void)
 {
     set_A(OCT62);
@@ -143,16 +148,17 @@ void prestand_after_phaschng(void)
     continue_at(BANKCALL);
 }
 
-/* PRESTAND +032 to +034, GOPERF1's returns: TCF -3, TCF -4, TCF -5. */
+/* PRESTAND +032 -- LM p. 1335, CM p. 1446 to +034, GOPERF1's returns: TCF
+ * -3, TCF -4, TCF -5. */
 void prestand_after_goperf1(void)
 {
     prestand_after_phaschng();
 }
 
-/* SCALPREP +3, where FINETIME returns, with the scaler in A,L.
- * "ADD 5 MS TO THE SCALER READING." and "SET LOW 5 BITS OF (SCALER+5MS)
- * TO ZERO AND STORE RESULTS IN MPAC,+1." "IS IT 1ST INTERVAL AFTER T1
- * INCREMENT": if not, the caller's L+2, if so L+1 (TC MPAC +2). */
+/* SCALPREP +3 -- LM p. 1336, CM p. 1447, where FINETIME returns, with the
+ * scaler in A,L. "ADD 5 MS TO THE SCALER READING." and "SET LOW 5 BITS OF
+ * (SCALER+5MS) TO ZERO AND STORE RESULTS IN MPAC,+1." "IS IT 1ST INTERVAL
+ * AFTER T1 INCREMENT": if not, the caller's L+2, if so L+1 (TC MPAC +2). */
 void scalprep_after_finetime(void)
 {
     relint();
@@ -191,16 +197,17 @@ void postand(void)
     postand_plus3();
 }
 
-/* POSTAND +010, SCALPREP's L+1: "T1,T2,SCALER NOT COMPATIBLE". Again. */
+/* POSTAND +010 -- LM p. 1336, CM p. 1447, SCALPREP's L+1: "T1,T2,SCALER NOT
+ * COMPATIBLE". Again. */
 void postand_retry(void)
 {
     tc_at((word)(POSTAND + 010u)); /* TC POSTAND +3 */
     postand_plus3();
 }
 
-/* POSTAND +011, SCALPREP's L+2: "FORM DP DIFFERENCE OF POSTSTANDBY SCALER"
- * "MINUS PRESTANDBY SCALER AND SHIFT RIGHT 5 TO ALIGN BITS WITH
- * TIME1TIME2." (SHORTMP by BIT10). */
+/* POSTAND +011 -- LM p. 1336, CM p. 1447, SCALPREP's L+2: "FORM DP
+ * DIFFERENCE OF POSTSTANDBY SCALER" "MINUS PRESTANDBY SCALER AND SHIFT RIGHT
+ * 5 TO ALIGN BITS WITH TIME1TIME2." (SHORTMP by BIT10). */
 void postand_compatible(void)
 {
     dcs(ADDRESS_OF(SCALSAVE));
@@ -210,8 +217,8 @@ void postand_compatible(void)
     continue_at(SHORTMP);
 }
 
-/* POSTAND +016, where SHORTMP returns: "MAKE DP DIFF AGREE" (TPAGREE,
- * MPAC +2 "NEEDED FOR TP AGREE"). */
+/* POSTAND +016 -- LM p. 1337, CM p. 1448, where SHORTMP returns: "MAKE DP
+ * DIFF AGREE" (TPAGREE, MPAC +2 "NEEDED FOR TP AGREE"). */
 void postand_after_shortmp(void)
 {
     set_A(ZERO);
@@ -231,7 +238,7 @@ static void postcom(void)
     continue_at(TPAGREE);
 }
 
-/* POSTAND +021, where TPAGREE returns.
+/* POSTAND +021 -- LM p. 1337, CM p. 1448, where TPAGREE returns.
  * "IF DP DIFF NET +, NO SCALER OVERFLOW BETWEEN PRE AND POST STANDBY."
  * "IF DP DIFF NET -, SCALER OVERFLOWED. ADD BIT 10 TO HIGH DIFF TO
  * CORRECT." */
@@ -251,8 +258,8 @@ void postand_after_tpagree(void)
     postcom();
 }
 
-/* POSTCOM +4, where TPAGREE returns: the "UPDATED VALUE FOR T1,T2." added
- * into TIME2, TIME1, and "CLEAR NODOFLAG". */
+/* POSTCOM +4 -- LM p. 1337, CM p. 1448, where TPAGREE returns: the "UPDATED
+ * VALUE FOR T1,T2." added into TIME2, TIME1, and "CLEAR NODOFLAG". */
 void postcom_after_tpagree(void)
 {
     dxch(ADDRESS_OF(MPAC));
@@ -261,7 +268,8 @@ void postcom_after_tpagree(void)
     continue_at(DOWNFLAG);
 }
 
-/* POSTCOM +010, where DOWNFLAG returns: TC GOTOPOOH. */
+/* POSTCOM +010 -- LM p. 1337, CM p. 1448, where DOWNFLAG returns: TC
+ * GOTOPOOH. */
 void postcom_after_downflag(void)
 {
     tc_at((word)(POSTCOM + 010u));

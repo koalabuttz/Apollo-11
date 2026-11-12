@@ -38,15 +38,15 @@ static void coarstyp(void);
 
 /* ---- PROG52 -- pp. 927-928 ---- */
 
-/* PROG52: "IMU STATUS CHECK" (R02BOTH, through BANKCALL). */
+/* PROG52 -- p. 927: "IMU STATUS CHECK" (R02BOTH, through BANKCALL). */
 void prog52(void)
 {
     tc_to(PROG52, BANKCALL); /* CADR R02BOTH */
 }
 
-/* PROG52 +2: "IS PFRATFLG SET?" YES: TC P52A, option 1 (preferred); NO:
- * option 2 (nominal). (After the MASK, A is +0 or the bit: CCS takes its
- * first two ways only.) */
+/* PROG52 +2 -- p. 927: "IS PFRATFLG SET?" YES: TC P52A, option 1
+ * (preferred); NO: option 2 (nominal). (After the MASK, A is +0 or the bit:
+ * CCS takes its first two ways only.) */
 void prog52_after_r02both(void)
 {
     set_A(PFRATBIT);
@@ -59,7 +59,7 @@ void prog52_after_r02both(void)
     }
 }
 
-/* PROG52 +6, P52A's return: "NO": option 2, TC P52A +1. */
+/* PROG52 +6 -- p. 928, P52A's return: "NO": option 2, TC P52A +1. */
 void prog52_no_preferred(void)
 {
     set_A(BIT2);
@@ -67,21 +67,22 @@ void prog52_no_preferred(void)
     p52a_plus1();
 }
 
-/* P52A: option 1. */
+/* P52A -- p. 928: option 1. */
 void p52a(void)
 {
     set_A(BIT1);
     p52a_plus1();
 }
 
-/* P52A +1: the option to OPTION2. (A is a word: TS does not skip.) */
+/* P52A +1 -- p. 928: the option to OPTION2. (A is a word: TS does not
+ * skip.) */
 static void p52a_plus1(void)
 {
     ts(ADDRESS_OF(OPTION2));
     p52b();
 }
 
-/* P52B: "FLASH OPTION CODE AND ORIENTATION CODE" (GOPERF4R, "FLASH
+/* P52B -- p. 928: "FLASH OPTION CODE AND ORIENTATION CODE" (GOPERF4R, "FLASH
  * V04N06"). */
 static void p52b(void)
 {
@@ -89,41 +90,42 @@ static void p52b(void)
     tc_to(P52B + 1u, BANKCALL); /* CADR GOPERF4R */
 }
 
-/* P52B +3: terminate. */
+/* P52B +3 -- p. 928: terminate. */
 void p52b_terminate(void)
 {
     tc_to(P52B + 3u, GOTOPOOH);
 }
 
-/* P52B +4: "V33 -- PROCEED" (TCF +5). */
+/* P52B +4 -- p. 928: "V33 -- PROCEED" (TCF +5). */
 void p52b_proceed(void)
 {
     p52_option();
 }
 
-/* P52B +5: "NEW CODE -- NEW ORIENTATION CODE INPUT": flash it again. */
+/* P52B +5 -- p. 928: "NEW CODE -- NEW ORIENTATION CODE INPUT": flash it
+ * again. */
 void p52b_enter(void)
 {
     tc_at(P52B + 5u); /* TC P52B */
     p52b();
 }
 
-/* P52B +6: "DISPLAY RETURN": PHASCHNG, OCT 00014. */
+/* P52B +6 -- p. 928: "DISPLAY RETURN": PHASCHNG, OCT 00014. */
 void p52b_immediate_return(void)
 {
     tc_to(P52B + 6u, PHASCHNG);
 }
 
-/* P52B +010: PHASCHNG's return. */
+/* P52B +010 -- p. 928: PHASCHNG's return. */
 void p52b_after_phaschng(void)
 {
     tc_to(P52B + 010u, ENDOFJOB);
 }
 
-/* P52B +011: the option's last two bits pick one of four words (INDEX A;
- * TC +1): "OPTION 4 LANDING SITE", "OPTION 1 PREFERRED", "OPTION 2
- * NOMINAL" or, P52E, "OPTION 3 REFSMMAT". The TC leaves Q at the first
- * of them. */
+/* P52B +011 -- p. 928: the option's last two bits pick one of four words
+ * (INDEX A; TC +1): "OPTION 4 LANDING SITE", "OPTION 1 PREFERRED", "OPTION 2
+ * NOMINAL" or, P52E, "OPTION 3 REFSMMAT". The TC leaves Q at the first of
+ * them. */
 static void p52_option(void)
 {
     ca(ADDRESS_OF(OPTION2));
@@ -137,13 +139,13 @@ static void p52_option(void)
     }
 }
 
-/* The option table's first word, TCF OPT4. */
+/* P52B +015 -- p. 928: The option table's first word, TCF OPT4. */
 void p52_option4(void)
 {
     opt4();
 }
 
-/* P52E: option 3 ("GO DO R51"). */
+/* P52E -- p. 928: option 3 ("GO DO R51"). */
 static void p52e(void)
 {
     tc_at(P52E);
@@ -157,15 +159,15 @@ static const word p52e_words[] = {
 
 const struct interpretive_code P52E_CODE = {015u, P52E + 1u, COUNT(p52e_words), p52e_words};
 
-/* OPT4: "IF OPTION 4 DISPLAY TLAND". */
+/* OPT4 -- p. 928: "IF OPTION 4 DISPLAY TLAND". */
 static void opt4(void)
 {
     dca(ADDRESS_OF(TLAND));
     p52t_plus2();
 }
 
-/* P52T: the align time, +0 to begin with (DCA NEG0: -0 and +0), flashed
- * with V06N34*. */
+/* P52T -- p. 928: the align time, +0 to begin with (DCA NEG0: -0 and +0),
+ * flashed with V06N34*. */
 static void p52t(void)
 {
     dca(ADDRESS_OF(NEG0));
@@ -184,28 +186,28 @@ static void p52t_display(void)
     tc_to(P52T + 4u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* P52T +6: terminate. */
+/* P52T +6 -- p. 928: terminate. */
 void p52t_terminate(void)
 {
     tc_to(P52T + 6u, GOTOPOOH);
 }
 
-/* P52T +7: proceed (TC +2). */
+/* P52T +7 -- p. 928: proceed (TC +2). */
 void p52t_proceed(void)
 {
     tc_at(P52T + 7u);
     p52t_time();
 }
 
-/* P52T +010: enter, the time loaded: flash it again (TC -5). */
+/* P52T +010 -- p. 928: enter, the time loaded: flash it again (TC -5). */
 void p52t_enter(void)
 {
     tc_at(P52T + 010u);
     p52t_display();
 }
 
-/* P52T +011: the time to TALIGN: "IF TIME ZERO OR NEG USE TIME2", the
- * present time. */
+/* P52T +011 -- p. 928: the time to TALIGN: "IF TIME ZERO OR NEG USE TIME2",
+ * the present time. */
 void p52t_time(void)
 {
     dxch(ADDRESS_OF(DSPTEM1));
@@ -214,8 +216,8 @@ void p52t_time(void)
     p52v();
 }
 
-/* P52V: options 2 and 4 by OPTION2's bit 2: 2 to P52W; "OPTION 4 -- GET LS
- * ORIENTATION" (P52LS). (After the MASK, A is +0 or the bit.) */
+/* P52V -- p. 928: options 2 and 4 by OPTION2's bit 2: 2 to P52W; "OPTION 4
+ * -- GET LS ORIENTATION" (P52LS). (After the MASK, A is +0 or the bit.) */
 static void p52v(void)
 {
     ca(ADDRESS_OF(OPTION2));
@@ -228,7 +230,7 @@ static void p52v(void)
     }
 }
 
-/* P52V +4, P52W's return. */
+/* P52V +4 -- p. 929, P52W's return. */
 void p52v_option4(void)
 {
     tc_at(P52V + 4u);
@@ -244,9 +246,9 @@ const struct interpretive_code P52V_CODE = {015u, P52V + 5u, COUNT(p52v_words), 
 
 /* ---- P52W to P52OUT -- p. 930 ---- */
 
-/* P52W: "PICK UP ALIGN TIME" and the "COMPUTED NOMINAL IMU ORIENTATION"
- * (S52.3); P52D: "READ VEHICLE ATTITUDE AND COMPUTE GIMBAL ANGLES"
- * (S52.2), and on in basic code. */
+/* P52W -- p. 930: "PICK UP ALIGN TIME" and the "COMPUTED NOMINAL IMU
+ * ORIENTATION" (S52.3); P52D: "READ VEHICLE ATTITUDE AND COMPUTE GIMBAL
+ * ANGLES" (S52.2), and on in basic code. */
 static void p52w(void)
 {
     tc_at(P52W);
@@ -264,26 +266,26 @@ static const word p52w_words[] = {
 
 const struct interpretive_code P52W_CODE = {015u, P52W + 1u, COUNT(p52w_words), p52w_words};
 
-/* P52D +3: "DISPLAY GIMBAL ANGLES" (V06N22, GOFLASH). */
+/* P52D +3 -- p. 930: "DISPLAY GIMBAL ANGLES" (V06N22, GOFLASH). */
 void p52d_after_exit(void)
 {
     set_A(V06N22);
     tc_to(P52D + 4u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* P52D +6: terminate. */
+/* P52D +6 -- p. 930: terminate. */
 void p52d_terminate(void)
 {
     tc_to(P52D + 6u, GOTOPOOH);
 }
 
-/* P52D +7: "V33 -- PROCEED, SEE IF GYRO TORQUE COARSE". */
+/* P52D +7 -- p. 930: "V33 -- PROCEED, SEE IF GYRO TORQUE COARSE". */
 void p52d_proceed(void)
 {
     coarstyp();
 }
 
-/* P52H: option 1, the preferred orientation, straight to P52D. */
+/* P52H -- p. 930: option 1, the preferred orientation, straight to P52D. */
 static void p52h(void)
 {
     tc_at(P52H);
@@ -297,8 +299,8 @@ static const word p52h_words[] = {
 
 const struct interpretive_code P52H_CODE = {015u, P52H + 1u, COUNT(p52h_words), p52h_words};
 
-/* REGCOARS: "DO COARSE ALIGN ROUTINE" (CAL53A); COARSRET: REFSMFLG set,
- * PFRATFLG clear; P52F: R51, the fine alignment; P52OUT: on in basic
+/* REGCOARS -- p. 930: "DO COARSE ALIGN ROUTINE" (CAL53A); COARSRET: REFSMFLG
+ * set, PFRATFLG clear; P52F: R51, the fine alignment; P52OUT: on in basic
  * code. */
 void regcoars(void)
 {
@@ -320,7 +322,7 @@ static const word regcoars_words[] = {
 const struct interpretive_code REGCOARS_CODE = {015u, REGCOARS + 1u, COUNT(regcoars_words),
                                                 regcoars_words};
 
-/* P52OUT +1. */
+/* P52OUT +1 -- p. 930. */
 void p52out_after_exit(void)
 {
     tc_to(P52OUT + 1u, GOTOPOOH);
@@ -328,27 +330,27 @@ void p52out_after_exit(void)
 
 /* ---- COARSTYP -- p. 931 ---- */
 
-/* COARSTYP: "CHECK FOR GYRO TORQUE COARSE ALIGNMENT": "DISPLAY V 50N25
- * WITH COARSE ALIGN OPTION" (OCT13, GOPERF1). */
+/* COARSTYP -- p. 931: "CHECK FOR GYRO TORQUE COARSE ALIGNMENT": "DISPLAY V
+ * 50N25 WITH COARSE ALIGN OPTION" (OCT13, GOPERF1). */
 static void coarstyp(void)
 {
     set_A(OCT13);
     tc_to(COARSTYP + 1u, BANKCALL); /* CADR GOPERF1 */
 }
 
-/* COARSTYP +3: "V34 -- TERMIN&OE". */
+/* COARSTYP +3 -- p. 931: "V34 -- TERMIN&OE". */
 void coarstyp_terminate(void)
 {
     continue_at(GOTOPOOH);
 }
 
-/* COARSTYP +4: "V33 -- NORMAL COARSE". */
+/* COARSTYP +4 -- p. 931: "V33 -- NORMAL COARSE". */
 void coarstyp_normal(void)
 {
     regcoars();
 }
 
-/* COARSTYP +5: "V32 -- GYRO TORQUE COARSE". */
+/* COARSTYP +5 -- p. 931: "V32 -- GYRO TORQUE COARSE". */
 void coarstyp_gyro_torque(void)
 {
     tc_at(COARSTYP + 5u);
@@ -438,27 +440,27 @@ static const word n89disp_words[] = {
 
 const struct interpretive_code N89DISP_CODE = {014u, N89DISP, COUNT(n89disp_words), n89disp_words};
 
-/* LSDISP: "DISPLAY LAT,LONG/2,ALT" (V06N89*, GOFLASH). */
+/* LSDISP -- p. 933: "DISPLAY LAT,LONG/2,ALT" (V06N89*, GOFLASH). */
 void lsdisp(void)
 {
     set_A(V06N89_STAR);
     tc_to(LSDISP + 1u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* LSDISP +3: "V34 -- TERMINATE -- EXIT P57". */
+/* LSDISP +3 -- p. 933: "V34 -- TERMINATE -- EXIT P57". */
 void lsdisp_terminate(void)
 {
     continue_at(GOTOPOOH);
 }
 
-/* LSDISP +4: "V33 -- PROCEED -- ACCEPT LS DATA" (TCF +2). */
+/* LSDISP +4 -- p. 933: "V33 -- PROCEED -- ACCEPT LS DATA" (TCF +2). */
 void lsdisp_proceed(void)
 {
     tc_at(LSDISP + 6u);
     intpret();
 }
 
-/* LSDISP +5: "V32 OR E -- LOOK AGAIN AND/OR LOAD NEW LS". */
+/* LSDISP +5 -- p. 933: "V32 OR E -- LOOK AGAIN AND/OR LOAD NEW LS". */
 void lsdisp_enter(void)
 {
     lsdisp();

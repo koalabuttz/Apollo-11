@@ -83,10 +83,10 @@ static const word intwakeu_words[] = {
 const struct interpretive_code INTWAKEU_CODE = {
     CODE_BANK(I_INTWAKEU), (word)(CODE_Z(I_INTWAKEU) + 4u), COUNT(intwakeu_words), intwakeu_words};
 
-/* After INTWAKUP's EXIT: group 2's phase (OCT 04026), and back by the
- * word in INTWAKUQ, the caller's return, which runs as an instruction (a
- * TC; anything else, which no program leaves, is not modelled): Q gets
- * the word after INTWAKUQ. */
+/* INTWAKUP +5 -- LM p. 1226, CM p. 1333: After INTWAKUP's EXIT: group 2's
+ * phase (OCT 04026), and back by the word in INTWAKUQ, the caller's return,
+ * which runs as an instruction (a TC; anything else, which no program
+ * leaves, is not modelled): Q gets the word after INTWAKUQ. */
 void intwakup_after_exit(void)
 {
     tc_to((word)(INTWAKUP + 5u), PHASCHNG); /* OCT 04026 */
@@ -115,8 +115,8 @@ static const word grp2pc_words[] = {
 const struct interpretive_code GRP2PC_CODE = {CODE_BANK(I_UPMNSVCD), CODE_Z(I_UPMNSVCD),
                                               COUNT(grp2pc_words), grp2pc_words};
 
-/* After GRP2PC's EXIT: group 2's phase (OCT 04022), and back into the
- * interpreter, to the return. */
+/* GRP2PC +2 -- LM p. 1226, CM p. 1333: After GRP2PC's EXIT: group 2's phase
+ * (OCT 04022), and back into the interpreter, to the return. */
 void grp2pc_after_exit(void)
 {
     tc_to((word)(GRP2PC + 2u), PHASCHNG); /* OCT 04022 */

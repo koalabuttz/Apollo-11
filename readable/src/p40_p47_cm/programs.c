@@ -54,13 +54,13 @@ static void tc_q(void)
 
 /* ---- P40CSM -- pp. 684-685 ---- */
 
-/* P40CSM: ENG2FLAG clear (DOWNFLAG), the SPS. */
+/* P40CSM -- p. 684: ENG2FLAG clear (DOWNFLAG), the SPS. */
 void p40csm(void)
 {
     tc_to(P40CSM, DOWNFLAG); /* ADRES ENG2FLAG */
 }
 
-/* P40CSM +2: to the interpreter, for P40CSM_CODE. */
+/* P40CSM +2 -- p. 684: to the interpreter, for P40CSM_CODE. */
 void p40csm_after_downflag(void)
 {
     tc_at(P40CSM + 2u);
@@ -89,13 +89,14 @@ static const word p40csm_words[] = {
     ORDER(EXIT),
 };
 
-/* After the EXIT: "IMU STATUS CHECK" (BANKCALL, CADR R02BOTH). */
+/* P40CSM +017 -- p. 684: After the EXIT: "IMU STATUS CHECK" (BANKCALL, CADR
+ * R02BOTH). */
 void p40csm_after_exit(void)
 {
     tc_to(P40CSM_EXIT + 1u, BANKCALL); /* CADR R02BOTH */
 }
 
-/* P40PVA: to the interpreter, for P40PVA_CODE. */
+/* P40PVA -- p. 684: to the interpreter, for P40PVA_CODE. */
 void p40pva(void)
 {
     tc_at(P40PVA);
@@ -110,10 +111,10 @@ static const word p40pva_words[] = {
     ORDERS(SET, EXIT), SWITCH(SET, PFRATFLG),
 };
 
-/* SETMINDB -1 and SETMINDB: "ROUTINE FOR SETTING THE MINIMUM DEADBAND IN
- * AUTOPILOT", "SHOULD BE CALLED UNDER INTERRUPT INHIBITED": the attitude
- * to hold (THETADX, and THETADY and THETADZ, from CDUX, CDUY and CDUZ),
- * ADB the narrow deadband (MINDB), and bit 4 of DAPDATR1 clear. */
+/* SETMINDB -1 -- p. 687 and SETMINDB: "ROUTINE FOR SETTING THE MINIMUM
+ * DEADBAND IN AUTOPILOT", "SHOULD BE CALLED UNDER INTERRUPT INHIBITED": the
+ * attitude to hold (THETADX, and THETADY and THETADZ, from CDUX, CDUY and
+ * CDUZ), ADB the narrow deadband (MINDB), and bit 4 of DAPDATR1 clear. */
 static void set_minimum_deadband(void)
 {
     ca(ADDRESS_OF(CDUX));
@@ -137,7 +138,7 @@ static void tcr_setmindb(word at)
     tc_q();
 }
 
-/* P40SXTY, after P40PVA_CODE's EXIT: "NARROW DEADBAND FOR MANEUVER
+/* P40SXTY -- p. 684, after P40PVA_CODE's EXIT: "NARROW DEADBAND FOR MANEUVER
  * (EBANK6)" (TCR SETMINDB -1); "ATTITUDE MANEUVER" (R60CSM). */
 void p40sxty(void)
 {
@@ -145,15 +146,15 @@ void p40sxty(void)
     p40sxty_after_setmindb();
 }
 
-/* P40SXTY +1, SETMINDB's return: RELINT, and R60CSM. */
+/* P40SXTY +1 -- p. 684, SETMINDB's return: RELINT, and R60CSM. */
 void p40sxty_after_setmindb(void)
 {
     relint();
     tc_to(P40SXTY + 2u, BANKCALL); /* CADR R60CSM */
 }
 
-/* P40SXTY +4: NBRCYCLS -1 "FOR UPDATEVG"; "ALLOW CLOCKTASK" (UPFLAG,
- * TIMRFLAG). */
+/* P40SXTY +4 -- p. 684: NBRCYCLS -1 "FOR UPDATEVG"; "ALLOW CLOCKTASK"
+ * (UPFLAG, TIMRFLAG). */
 void p40sxty_after_r60csm(void)
 {
     set_A(negate(ONE));
@@ -161,8 +162,8 @@ void p40sxty_after_r60csm(void)
     tc_to(P40SXTY + 6u, UPFLAG); /* ADRES TIMRFLAG */
 }
 
-/* P41/P40: "P41EXITS AT CALL LOC +1", "P40 EXITS AT CALL LOC +2" (bit 1
- * of MODREG: 41 odd, 40 even). True for P40. */
+/* P41/P40 -- p. 688: "P41EXITS AT CALL LOC +1", "P40 EXITS AT CALL LOC +2"
+ * (bit 1 of MODREG: 41 odd, 40 even). True for P40. */
 static bool p41_p40(word at)
 {
     tc_at(at);
@@ -173,8 +174,8 @@ static bool p41_p40(word at)
     return Z == (word)(at + 2u);
 }
 
-/* P41/DSP: "SET UP FOR NONFLASH V 06 N85 BY CLOCKJOB" (NVWORD1); to the
- * interpreter, for P41_DSP_CODE. */
+/* P41/DSP -- p. 688: "SET UP FOR NONFLASH V 06 N85 BY CLOCKJOB" (NVWORD1);
+ * to the interpreter, for P41_DSP_CODE. */
 static void p41_dsp(void)
 {
     set_A(V06N85B);
@@ -183,8 +184,8 @@ static void p41_dsp(void)
     intpret();
 }
 
-/* P40TTOG: "INITIALIZE FOR CLOCKTASK WHICH IS CALLED" below (NVWORD1,
- * verb 06 noun 40); to the interpreter, for P40TTOG_CODE. */
+/* P40TTOG -- p. 684: "INITIALIZE FOR CLOCKTASK WHICH IS CALLED" below
+ * (NVWORD1, verb 06 noun 40); to the interpreter, for P40TTOG_CODE. */
 void p40ttog(void)
 {
     set_A(V06N40);
@@ -193,15 +194,15 @@ void p40ttog(void)
     intpret();
 }
 
-/* P40SXTY +011, where P41/P40 comes back in P41: TC P41/DSP. */
+/* P40SXTY +011 -- p. 684, where P41/P40 comes back in P41: TC P41/DSP. */
 void p40sxty_p41(void)
 {
     tc_at(P40SXTY + 011u);
     p41_dsp();
 }
 
-/* P40SXTY +010: TC P41/P40, which comes back to the TC P41/DSP (P41) or
- * to P40TTOG (P40). */
+/* P40SXTY +010 -- p. 684: TC P41/P40, which comes back to the TC P41/DSP
+ * (P41) or to P40TTOG (P40). */
 void p40sxty_after_upflag(void)
 {
     if (p41_p40(P40SXTY + 010u))
@@ -216,16 +217,17 @@ static const word p40ttog_words[] = {
     ADDRESS_PLUS_ONE(VGTIG), STODL(VGDISP), ADDRESS_PLUS_ONE(HI6ZEROS), STORE(DVTOTAL), ORDER(EXIT),
 };
 
-/* P40GMB: "(4.1 PROTECTION)": verb 50 noun 25, checklist 204 (P40CKLS2),
- * the gimbal drive test (GOPERF1). */
+/* P40GMB -- p. 685: "(4.1 PROTECTION)": verb 50 noun 25, checklist 204
+ * (P40CKLS2), the gimbal drive test (GOPERF1). */
 static void p40gmb(void)
 {
     set_A(P40CKLS2);
     tc_to(P40GMB + 1u, BANKCALL); /* CADR GOPERF1 */
 }
 
-/* After P40TTOG_CODE's EXIT: "SET FOR UPDATEVG AND TEST FOR STEERING AFTER
- * AVERAGE G" (AVEGEXIT gets STEERADS's 2CADR), and P40GMB. */
+/* P40TTOG +011 -- p. 685: After P40TTOG_CODE's EXIT: "SET FOR UPDATEVG AND
+ * TEST FOR STEERING AFTER AVERAGE G" (AVEGEXIT gets STEERADS's 2CADR), and
+ * P40GMB. */
 void p40ttog_after_exit(void)
 {
     dca(STEERADS); /* EXTEND */
@@ -233,8 +235,8 @@ void p40ttog_after_exit(void)
     p40gmb();
 }
 
-/* POST41: SERVICER's exit back to its own (AVEGEXIT gets SERVCADR's
- * 2CADR); the program ends (TCF GOTOPOOH). */
+/* POST41 -- p. 687: SERVICER's exit back to its own (AVEGEXIT gets
+ * SERVCADR's 2CADR); the program ends (TCF GOTOPOOH). */
 void post41(void)
 {
     dca(SERVCADR); /* EXTEND */
@@ -242,15 +244,15 @@ void post41(void)
     continue_at(GOTOPOOH);
 }
 
-/* P40GMB +3, "V34": POST41. */
+/* P40GMB +3 -- p. 685, "V34": POST41. */
 void p40gmb_terminate(void)
 {
     post41();
 }
 
-/* TRIMONLY +1, where TST,TRIM comes in with A +1: "SET MRKRTEMP FOR GIMBAL
- * TRIM" (MRKRTMP); CNTR "+0 FOR RESTART LOGIC IN S40.6", "+0 SAYS NORMAL
- * ENTRY"; S40.6 in 10 ms (WAITLIST, 2CADR S40.6). */
+/* TRIMONLY +1 -- p. 685, where TST,TRIM comes in with A +1: "SET MRKRTEMP
+ * FOR GIMBAL TRIM" (MRKRTMP); CNTR "+0 FOR RESTART LOGIC IN S40.6", "+0 SAYS
+ * NORMAL ENTRY"; S40.6 in 10 ms (WAITLIST, 2CADR S40.6). */
 static void trimonly_plus_1(void)
 {
     ts(ADDRESS_OF(MRKRTMP));
@@ -260,24 +262,24 @@ static void trimonly_plus_1(void)
     tc_to(TRIMONLY + 5u, WAITLIST); /* 2CADR S40.6 */
 }
 
-/* P40GMB +4, "V33": TST,TRIM, "SET UP FOR GIMB DRIVE TEST AND TRIM (+1)",
- * on at TRIMONLY +1. */
+/* P40GMB +4 -- p. 685, "V33": TST,TRIM, "SET UP FOR GIMB DRIVE TEST AND TRIM
+ * (+1)", on at TRIMONLY +1. */
 void p40gmb_proceed(void)
 {
     set_A(BIT1); /* TST,TRIM: CAF BIT1 */
     trimonly_plus_1();
 }
 
-/* TRIMONLY: MRKRTMP -1, "FOR GIMBAL TRIM". */
+/* TRIMONLY -- p. 685: MRKRTMP -1, "FOR GIMBAL TRIM". */
 void trimonly(void)
 {
     set_A(negate(BIT1));
     trimonly_plus_1();
 }
 
-/* TRIMONLY +010: "TEST TO FIND TIME TO WAIT FOR GIMBAL TEST": "PLUS, DELAY
- * FOR 18 SECONDS" (18SEC); minus, "DELAY FOR TRIM ONLY TASK" (5SEC); a
- * zero leaves +0 in A (the +0 one by "HOLE", TCF +2). DELAYJOB. */
+/* TRIMONLY +010 -- p. 685: "TEST TO FIND TIME TO WAIT FOR GIMBAL TEST":
+ * "PLUS, DELAY FOR 18 SECONDS" (18SEC); minus, "DELAY FOR TRIM ONLY TASK"
+ * (5SEC); a zero leaves +0 in A (the +0 one by "HOLE", TCF +2). DELAYJOB. */
 void trimonly_after_waitlist(void)
 {
     switch (ccs_at(ADDRESS_OF(MRKRTMP))) {
@@ -289,23 +291,23 @@ void trimonly_after_waitlist(void)
     tc_to(TRIMONLY + 014u, BANKCALL); /* CADR DELAYJOB */
 }
 
-/* TRIMONLY +016: restart groups 6 and 4 (2PHSCHNG, OCT 40026, "6.2 =
- * PRE40.6(-0CS), CLOKTASK(100CS)", and OCT 00234, "4.23 = P40S/SV
+/* TRIMONLY +016 -- p. 685: restart groups 6 and 4 (2PHSCHNG, OCT 40026, "6.2
+ * = PRE40.6(-0CS), CLOKTASK(100CS)", and OCT 00234, "4.23 = P40S/SV
  * (PRIO12)"). */
 void trimonly_after_delayjob(void)
 {
     tc_to(TRIMONLY + 016u, TWO_PHSCHNG);
 }
 
-/* P40S/RS: CLOKTASK in 10 ms (WAITLIST, 2CADR CLOKTASK). */
+/* P40S/RS -- p. 685: CLOKTASK in 10 ms (WAITLIST, 2CADR CLOKTASK). */
 void p40s_rs(void)
 {
     set_A(ONE);
     tc_to(P40S_RS + 1u, WAITLIST); /* 2CADR CLOKTASK */
 }
 
-/* P40S/SV: a job, which "4.23 PRETECTS": EBANK 7 (TCR E7SETTER); to the
- * interpreter, for P40S_SV_CODE. */
+/* P40S/SV -- p. 685: a job, which "4.23 PRETECTS": EBANK 7 (TCR E7SETTER);
+ * to the interpreter, for P40S_SV_CODE. */
 void p40s_sv(void)
 {
     tc_at(P40S_SV); /* TCR E7SETTER */
@@ -313,14 +315,14 @@ void p40s_sv(void)
     p40s_sv_after_e7setter();
 }
 
-/* P40S/SV +1, E7SETTER's return: to the interpreter. */
+/* P40S/SV +1 -- p. 686, E7SETTER's return: to the interpreter. */
 void p40s_sv_after_e7setter(void)
 {
     tc_at(P40S_SV + 1u);
     intpret();
 }
 
-/* P40S/RS +4: RELINT, and P40S/SV. */
+/* P40S/RS +4 -- p. 685: RELINT, and P40S/SV. */
 void p40s_rs_after_waitlist(void)
 {
     relint();
@@ -335,8 +337,8 @@ static const word p40s_sv_words[] = {
     ADDRESS(MIDTOAV1),
 };
 
-/* P40SET: "DELTA TIME TO PREREAD (INT.INIT.)" (MPAC) less 5 seconds
- * (5SECDP) "FOR TIGBLNK", in P40TMP; TIGBLNK then (LONGCALL, 2CADR
+/* P40SET -- p. 686: "DELTA TIME TO PREREAD (INT.INIT.)" (MPAC) less 5
+ * seconds (5SECDP) "FOR TIGBLNK", in P40TMP; TIGBLNK then (LONGCALL, 2CADR
  * TIGBLNK). */
 void p40set(void)
 {
@@ -348,15 +350,15 @@ void p40set(void)
     tc_to(P40SET + 010u, LONGCALL); /* 2CADR TIGBLNK */
 }
 
-/* P40S/SV +010, MIDTOAV1's return in basic: TCF +2, P40SET. */
+/* P40S/SV +010 -- p. 686, MIDTOAV1's return in basic: TCF +2, P40SET. */
 void p40s_sv_after_midtoav1(void)
 {
     p40set();
 }
 
-/* P40S/SV +011, "INTEGRATION TIME GREATER THAN ALLOWED": TC P40SNEWM, "SET
- * NEW TIG FOR 06 40" (PIPTIME1 plus SEC29.96), and P40SET "FOR LONGCALL
- * OF TIG-30 (OR -35)". */
+/* P40S/SV +011 -- p. 686, "INTEGRATION TIME GREATER THAN ALLOWED": TC
+ * P40SNEWM, "SET NEW TIG FOR 06 40" (PIPTIME1 plus SEC29.96), and P40SET
+ * "FOR LONGCALL OF TIG-30 (OR -35)". */
 void p40s_sv_after_midtoav1_fail(void)
 {
     tc_at(P40S_SV + 011u);
@@ -367,26 +369,26 @@ void p40s_sv_after_midtoav1_fail(void)
     p40set(); /* TCF P40SET */
 }
 
-/* P40SET +013: restart group 4 (PHASCHNG, OCT 20214, "4.21 = TIGBLNK
- * (P40TMP CS)"). */
+/* P40SET +013 -- p. 686: restart group 4 (PHASCHNG, OCT 20214, "4.21 =
+ * TIGBLNK (P40TMP CS)"). */
 void p40set_after_longcall(void)
 {
     tc_to(P40SET + 013u, PHASCHNG);
 }
 
-/* P40SET +015: the job ends (TCF ENDOFJOB). */
+/* P40SET +015 -- p. 686: the job ends (TCF ENDOFJOB). */
 void p40set_after_phaschng(void)
 {
     continue_at(ENDOFJOB);
 }
 
-/* P40BLNKR: "REMOVE RESIDUE" (BANKCALL, CADR CLEANDSP). */
+/* P40BLNKR -- p. 686: "REMOVE RESIDUE" (BANKCALL, CADR CLEANDSP). */
 void p40blnkr(void)
 {
     tc_to(P40BLNKR, BANKCALL); /* CADR CLEANDSP */
 }
 
-/* P40BLNKR +2: the job ends. */
+/* P40BLNKR +2 -- p. 686: the job ends. */
 void p40blnkr_after_cleandsp(void)
 {
     continue_at(ENDOFJOB);
@@ -394,22 +396,22 @@ void p40blnkr_after_cleandsp(void)
 
 /* ---- After the burn -- pp. 686-687 ---- */
 
-/* POSTBURN: verb 16 noun 40, flashing (BANKCALL, CADR REFLASH). */
+/* POSTBURN -- p. 686: verb 16 noun 40, flashing (BANKCALL, CADR REFLASH). */
 void postburn(void)
 {
     set_A(V16N40);
     tc_to(POSTBURN + 1u, BANKCALL); /* CADR REFLASH */
 }
 
-/* POSTBURN +3, "V34 GO FINISH": POST41. */
+/* POSTBURN +3 -- p. 686, "V34 GO FINISH": POST41. */
 void postburn_terminate(void)
 {
     post41();
 }
 
-/* P40RCS, where "V99N40 ENTERS HERE ON A P40 BYPASS SPS": SERVICER's exit
- * to CALCN85 (ACADN85), "WAIT FOR CALCN85 VIA AVEGEXIT" (DELAYJOB,
- * 2SECS). */
+/* P40RCS -- p. 686, where "V99N40 ENTERS HERE ON A P40 BYPASS SPS":
+ * SERVICER's exit to CALCN85 (ACADN85), "WAIT FOR CALCN85 VIA AVEGEXIT"
+ * (DELAYJOB, 2SECS). */
 void p40rcs(void)
 {
     dca(ACADN85); /* EXTEND */
@@ -418,74 +420,76 @@ void p40rcs(void)
     tc_to(P40RCS + 4u, BANKCALL); /* CADR DELAYJOB */
 }
 
-/* POSTBURN +4, "PROCEED": P40RCS. */
+/* POSTBURN +4 -- p. 686, "PROCEED": P40RCS. */
 void postburn_proceed(void)
 {
     p40rcs();
 }
 
-/* POSTBURN +5, "RECYCLE": POSTBURN. */
+/* POSTBURN +5 -- p. 686, "RECYCLE": POSTBURN. */
 void postburn_recycle(void)
 {
     postburn();
 }
 
-/* TIGNOW: "TYPE C GROUP 4 BELOW FOR NOUN 85" (PHASCHNG, OCT 05024, OCT
- * 20000, "PRIO 20"). */
+/* TIGNOW -- p. 687: "TYPE C GROUP 4 BELOW FOR NOUN 85" (PHASCHNG, OCT 05024,
+ * OCT 20000, "PRIO 20"). */
 void tignow(void)
 {
     tc_to(TIGNOW, PHASCHNG);
 }
 
-/* P40MINDB, DELAYJOB's return: TCR SETMINDB -1, RELINT, TIGNOW. */
+/* P40MINDB -- p. 687, DELAYJOB's return: TCR SETMINDB -1, RELINT, TIGNOW. */
 void p40mindb(void)
 {
     tcr_setmindb(P40MINDB);
     p40mindb_after_setmindb();
 }
 
-/* P40MINDB +1, SETMINDB's return: RELINT, TIGNOW. */
+/* P40MINDB +1 -- p. 687, SETMINDB's return: RELINT, TIGNOW. */
 void p40mindb_after_setmindb(void)
 {
     relint();
     tignow();
 }
 
-/* TIGNOW +3: verb 16 noun 85, flashing (BANKCALL, CADR REFLASH). */
+/* TIGNOW +3 -- p. 687: verb 16 noun 85, flashing (BANKCALL, CADR
+ * REFLASH). */
 void tignow_after_phaschng(void)
 {
     set_A(V16N85B);
     tc_to(TIGNOW + 4u, BANKCALL); /* CADR REFLASH */
 }
 
-/* TIGNOW +6: "FINISH P40/P41" (POST41). */
+/* TIGNOW +6 -- p. 687: "FINISH P40/P41" (POST41). */
 void tignow_terminate(void)
 {
     post41();
 }
 
-/* TIGNOW +7, "V03 PROCEED WITH REST OF THE CLEAN-UP": POST41. */
+/* TIGNOW +7 -- p. 687, "V03 PROCEED WITH REST OF THE CLEAN-UP": POST41. */
 void tignow_proceed(void)
 {
     post41();
 }
 
-/* TIGNOW +010, "V32 NOT GSOP RESPONSE BUT REDISPLAY N85": TIGNOW. */
+/* TIGNOW +010 -- p. 687, "V32 NOT GSOP RESPONSE BUT REDISPLAY N85":
+ * TIGNOW. */
 void tignow_recycle(void)
 {
     tignow();
 }
 
-/* SETMINDB: the deadband (above), and TC Q. */
+/* SETMINDB -- p. 687: the deadband (above), and TC Q. */
 void setmindb(void)
 {
     set_minimum_deadband();
     tc_q();
 }
 
-/* SETMAXDB: "ROUTINE FOR SETTING THE MAXIMUM DEADBAND IN AUTOPILOT" (ADB
- * MAXDB, bit 4 of DAPDATR1 set), "SHOULD BE CALLED UNDER INTERRUPT
- * INHIBITED"; TC Q. */
+/* SETMAXDB -- p. 687: "ROUTINE FOR SETTING THE MAXIMUM DEADBAND IN
+ * AUTOPILOT" (ADB MAXDB, bit 4 of DAPDATR1 set), "SHOULD BE CALLED UNDER
+ * INTERRUPT INHIBITED"; TC Q. */
 void setmaxdb(void)
 {
     set_A(MAXDB); /* CA MAXDB */
@@ -496,7 +500,7 @@ void setmaxdb(void)
     tc_q(); /* "EBANK = E6" */
 }
 
-/* SETMAXDB -1: INHINT, and SETMAXDB. */
+/* SETMAXDB -1 -- p. 687: INHINT, and SETMAXDB. */
 void setmaxdb_inhint(void)
 {
     inhint();
@@ -505,21 +509,21 @@ void setmaxdb_inhint(void)
 
 /* ---- P41 -- pp. 688-690 ---- */
 
-/* TTG/0: a "TASK (4.4 PROTECTS IN P41)": TIGNOW as a job (NOVAC, PRIO20,
- * 2CADR TIGNOW). */
+/* TTG/0 -- p. 688: a "TASK (4.4 PROTECTS IN P41)": TIGNOW as a job (NOVAC,
+ * PRIO20, 2CADR TIGNOW). */
 void ttg_0(void)
 {
     set_A(PRIO20);
     tc_to(TTG_0 + 1u, NOVAC); /* 2CADR TIGNOW */
 }
 
-/* P40CLK: TIMRFLAG clear (DOWNFLAG). */
+/* P40CLK -- p. 688: TIMRFLAG clear (DOWNFLAG). */
 void p40clk(void)
 {
     tc_to(P40CLK, DOWNFLAG); /* ADRES TIMRFLAG */
 }
 
-/* P40CLK +2: the task ends (TCF TASKOVER). */
+/* P40CLK +2 -- p. 688: the task ends (TCF TASKOVER). */
 void p40clk_after_downflag(void)
 {
     continue_at(TASKOVER);
@@ -532,9 +536,10 @@ static const word p41_dsp_words[] = {
     ORDER(EXIT),
 };
 
-/* After P41_DSP_CODE's EXIT: "DO CONTROL COORD CALCULATION AFTER AVEG"
- * (AVEGEXIT gets ACADN85's 2CADR); restart groups 6 and 4 (2PHSCHNG, OCT
- * 40036, "6.3=CLOKTASK(100CS)", and OCT 234, "4.23=P40S/SV(PRIO12)"). */
+/* P41/DSP +6 -- p. 689: After P41_DSP_CODE's EXIT: "DO CONTROL COORD
+ * CALCULATION AFTER AVEG" (AVEGEXIT gets ACADN85's 2CADR); restart groups 6
+ * and 4 (2PHSCHNG, OCT 40036, "6.3=CLOKTASK(100CS)", and OCT 234,
+ * "4.23=P40S/SV(PRIO12)"). */
 void p41_dsp_after_exit(void)
 {
     dca(ACADN85); /* EXTEND */
@@ -542,20 +547,20 @@ void p41_dsp_after_exit(void)
     tc_to(P41_DSP_EXIT + 4u, TWO_PHSCHNG);
 }
 
-/* P41/DSP +014: TCF P40S/RS. */
+/* P41/DSP +014 -- p. 689: TCF P40S/RS. */
 void p41_dsp_after_2phschng(void)
 {
     p40s_rs();
 }
 
-/* TTGPHS: restart group 4 (NEWPHASE, OCT 4), with A as the phase: "ENTRY
- * FROM P41REDSP (P41) WITH A=-4, OR FROM TIGON (P47) WITH A=-1". */
+/* TTGPHS -- p. 693: restart group 4 (NEWPHASE, OCT 4), with A as the phase:
+ * "ENTRY FROM P41REDSP (P41) WITH A=-4, OR FROM TIGON (P47) WITH A=-1". */
 void ttgphs(void)
 {
     tc_to(TTGPHS, NEWPHASE);
 }
 
-/* P41REDSP +6: A -4 (CS BIT3), TCF TTGPHS. */
+/* P41REDSP +6 -- p. 689: A -4 (CS BIT3), TCF TTGPHS. */
 void p41redsp_after_waitlist(void)
 {
     set_A(negate(BIT3));
@@ -572,8 +577,8 @@ static const word p40cnv85_words[] = {
     ADDRESS(QTEMP1),
 };
 
-/* CALCN85: SERVICER's exit (AVEGEXIT) in P41 and after the burn; to the
- * interpreter, for CALCN85_CODE. */
+/* CALCN85 -- p. 689: SERVICER's exit (AVEGEXIT) in P41 and after the burn;
+ * to the interpreter, for CALCN85_CODE. */
 void calcn85(void)
 {
     tc_at(CALCN85);
@@ -588,20 +593,20 @@ static const word calcn85_words[] = {
     ORDER(EXIT),
 };
 
-/* SERVXT: back to SERVICER (POSTJUMP, CADR SERVEXIT). */
+/* SERVXT -- p. 701: back to SERVICER (POSTJUMP, CADR SERVEXIT). */
 void servxt(void)
 {
     tc_to(SERVXT, POSTJUMP); /* CADR SERVEXIT */
 }
 
-/* After CALCN85_CODE's EXIT: TC SERVXT. */
+/* CALCN85 +6 -- p. 689: After CALCN85_CODE's EXIT: TC SERVXT. */
 void calcn85_after_exit(void)
 {
     tc_at(CALCN85_EXIT + 1u);
     servxt();
 }
 
-/* TIGBLNK: "CALL TIGAVEG IN FIVE SEC AT TIG-30" (WAITLIST, 2CADR
+/* TIGBLNK -- p. 690: "CALL TIGAVEG IN FIVE SEC AT TIG-30" (WAITLIST, 2CADR
  * TIGAVEG). */
 void tigblnk(void)
 {
@@ -609,8 +614,9 @@ void tigblnk(void)
     tc_to(TIGBLNK + 1u, WAITLIST); /* 2CADR TIGAVEG */
 }
 
-/* TIGBLNK +4: NVWORD1 +0, "DISABLE HERE, NOT IN P40BLNKR"; P40BLNKR as a
- * job (NOVAC, PRIO14), "DON'T PROTECT -- RESTARTS BLANK DSKY". */
+/* TIGBLNK +4 -- p. 690: NVWORD1 +0, "DISABLE HERE, NOT IN P40BLNKR";
+ * P40BLNKR as a job (NOVAC, PRIO14), "DON'T PROTECT -- RESTARTS BLANK
+ * DSKY". */
 void tigblnk_after_waitlist(void)
 {
     set_A(ZERO);
@@ -619,15 +625,15 @@ void tigblnk_after_waitlist(void)
     tc_to(TIGBLNK + 7u, NOVAC); /* 2CADR P40BLNKR */
 }
 
-/* TIGBLNK +012: "4.37 = TIGAVEG (500CS)" (CS OCT37), P40TSK: restart group
- * 4 (NEWPHASE, OCT 4). */
+/* TIGBLNK +012 -- p. 690: "4.37 = TIGAVEG (500CS)" (CS OCT37), P40TSK:
+ * restart group 4 (NEWPHASE, OCT 4). */
 void tigblnk_after_novac(void)
 {
     set_A(negate(OCT37));
     tc_to(P40TSK, NEWPHASE);
 }
 
-/* P40TSK +2: the task ends (TC TASKOVER). */
+/* P40TSK +2 -- p. 690: the task ends (TC TASKOVER). */
 void p40tsk_after_newphase(void)
 {
     tc_to(P40TSK + 2u, TASKOVER);
@@ -635,13 +641,13 @@ void p40tsk_after_newphase(void)
 
 /* ---- P41CSM -- p. 688 ---- */
 
-/* P41CSM: "SET FOR RCS" (UPFLAG, ENG2FLAG). */
+/* P41CSM -- p. 688: "SET FOR RCS" (UPFLAG, ENG2FLAG). */
 void p41csm(void)
 {
     tc_to(P41CSM, UPFLAG); /* ADRES ENG2FLAG */
 }
 
-/* P41CSM +2: to the interpreter, for P41CSM_CODE. */
+/* P41CSM +2 -- p. 688: to the interpreter, for P41CSM_CODE. */
 void p41csm_after_upflag(void)
 {
     tc_at(P41CSM + 2u);
@@ -666,14 +672,14 @@ static const word p41csm_words[] = {
 
 /* ---- P47CSM -- pp. 691-692 ---- */
 
-/* P47CSM, the thrust monitor: "IMU STATUS CHECK" (BANKCALL, CADR
+/* P47CSM -- p. 691, the thrust monitor: "IMU STATUS CHECK" (BANKCALL, CADR
  * R02BOTH), */
 void p47csm(void)
 {
     tc_to(P47CSM, BANKCALL); /* CADR R02BOTH */
 }
 
-/* then to the interpreter, for P47CSM_CODE. */
+/* P47CSM +2 -- p. 691: then to the interpreter, for P47CSM_CODE. */
 void p47csm_after_r02both(void)
 {
     tc_at(P47CSM + 2u);
@@ -687,8 +693,9 @@ static const word p47csm_words[] = {
     ADDRESS(MIDTOAV2),
 };
 
-/* MIDTOAV2's return: the "DELTA TIME TO RPEREAD" to P40TMP, and TIGON
- * after it (WAITLIST), "REQUIRED TO MATHCHTAT AND AVEG". */
+/* P47CSM +5 -- p. 691: MIDTOAV2's return: the "DELTA TIME TO RPEREAD" to
+ * P40TMP, and TIGON after it (WAITLIST), "REQUIRED TO MATHCHTAT AND
+ * AVEG". */
 void p47csm_after_midtoav2(void)
 {
     ca(ADDRESS_OF(MPAC) + 1u);
@@ -696,21 +703,21 @@ void p47csm_after_midtoav2(void)
     tc_to(P47CSM + 7u, WAITLIST); /* 2CADR TIGON */
 }
 
-/* P47CSM +012: restart group 4 (PHASCHNG, OCT 40574, "4.57 = TIGON (P40TMP
- * CS)"), */
+/* P47CSM +012 -- p. 691: restart group 4 (PHASCHNG, OCT 40574, "4.57 = TIGON
+ * (P40TMP CS)"), */
 void p47csm_after_waitlist(void)
 {
     tc_to(P47CSM + 012u, PHASCHNG);
 }
 
-/* and the job ends (TCF ENDOFJOB). */
+/* P47CSM +014 -- p. 691: and the job ends (TCF ENDOFJOB). */
 void p47csm_after_phaschng(void)
 {
     continue_at(ENDOFJOB);
 }
 
-/* TIGON, a task: SERVICER's exit to CALCN83 (AVEGEXIT gets ACADN83's
- * 2CADR); "FORCE ZEROING OF N83 BEFORE SERVICER": P47BODY as a job
+/* TIGON -- p. 691, a task: SERVICER's exit to CALCN83 (AVEGEXIT gets
+ * ACADN83's 2CADR); "FORCE ZEROING OF N83 BEFORE SERVICER": P47BODY as a job
  * (NOVAC, PRIO30). */
 void tigon(void)
 {
@@ -720,15 +727,15 @@ void tigon(void)
     tc_to(TIGON + 4u, NOVAC); /* 2CADR P47BODY */
 }
 
-/* TIGON +7: "4.2 = PRECHECK (-0CS), P47BODY (PRIO30)" (CS BIT2), TCF
- * TTGPHS. */
+/* TIGON +7 -- p. 691: "4.2 = PRECHECK (-0CS), P47BODY (PRIO30)" (CS BIT2),
+ * TCF TTGPHS. */
 void tigon_after_novac(void)
 {
     set_A(negate(BIT2));
     ttgphs();
 }
 
-/* CALCN83: SERVICER's exit, each pass; to the interpreter, for
+/* CALCN83 -- p. 691: SERVICER's exit, each pass; to the interpreter, for
  * CALCN83_CODE. */
 void calcn83(void)
 {
@@ -753,27 +760,29 @@ static const word calcn83_words[] = {
     ORDER(EXIT),
 };
 
-/* After the EXIT: restart group 1 (PHASCHNG, OCT 10035), */
+/* CALCN83 +014 -- p. 691: After the EXIT: restart group 1 (PHASCHNG, OCT
+ * 10035), */
 void calcn83_after_exit(void)
 {
     tc_to(CALCN83_EXIT + 1u, PHASCHNG);
 }
 
-/* the copy cycle: DV47TEMP to DELVCTL, six words (GENTRAN, A five), */
+/* CALCN83 +016 -- p. 692: the copy cycle: DV47TEMP to DELVCTL, six words
+ * (GENTRAN, A five), */
 void calcn83_after_phaschng(void)
 {
     set_A(FIVE);
     tc_to(CALCN83_EXIT + 4u, GENTRAN); /* ADRES DV47TEMP, ADRES DELVCTL */
 }
 
-/* and back to SERVICER (TC SERVXT). */
+/* CALCN83 +022 -- p. 692: and back to SERVICER (TC SERVXT). */
 void calcn83_after_gentran(void)
 {
     tc_at(CALCN83_EXIT + 7u);
     servxt();
 }
 
-/* P47BODY: to the interpreter, for P47BODY_CODE. */
+/* P47BODY -- p. 692: to the interpreter, for P47BODY_CODE. */
 void p47body(void)
 {
     tc_at(P47BODY);
@@ -786,29 +795,30 @@ static const word p47body_words[] = {
     ORDER(VLOAD), ADDRESS_PLUS_ONE(HI6ZEROS), STORE(DELVIMU), STORE(DELVCTL), ORDER(EXIT),
 };
 
-/* P47BOD, after the EXIT: priority 15 (PRIOCHNG), "LOWER PRIO THAN CALCN83
- * (20)", */
+/* P47BOD -- p. 692, after the EXIT: priority 15 (PRIOCHNG), "LOWER PRIO THAN
+ * CALCN83 (20)", */
 void p47bod(void)
 {
     set_A(PRIO15);
     tc_to(P47BOD + 1u, PRIOCHNG);
 }
 
-/* restart group 4 (PHASCHNG, OCT 05024, "TYPE C GROUP 4 BELOW FOR NOUN
- * 83"), */
+/* P47BOD +2 -- p. 692: restart group 4 (PHASCHNG, OCT 05024, "TYPE C GROUP 4
+ * BELOW FOR NOUN 83"), */
 void p47bod_after_priochng(void)
 {
     tc_to(P47BOD + 2u, PHASCHNG);
 }
 
-/* P47/DSP: verb 16 noun 83, flashed (GOFLASH). */
+/* P47/DSP -- p. 692: verb 16 noun 83, flashed (GOFLASH). */
 void p47_dsp(void)
 {
     set_A(V1683);
     tc_to(P47_DSP + 1u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* GOFLASH's returns: terminate and proceed end the program (GOTOPOOH), */
+/* P47/DSP +3 -- p. 692: GOFLASH's returns: terminate and proceed end the
+ * program (GOTOPOOH), */
 void p47_dsp_terminate(void)
 {
     tc_to(P47_DSP + 3u, GOTOPOOH);
@@ -819,7 +829,8 @@ void p47_dsp_proceed(void)
     tc_to(P47_DSP + 4u, GOTOPOOH);
 }
 
-/* and enter, "RECYCLE -- CLEAR ACCUMULATED VELOCITY" (TCF P47BODY). */
+/* P47/DSP +5 -- p. 692: and enter, "RECYCLE -- CLEAR ACCUMULATED VELOCITY"
+ * (TCF P47BODY). */
 void p47_dsp_recycle(void)
 {
     p47body();
@@ -827,9 +838,9 @@ void p47_dsp_recycle(void)
 
 /* ---- TIG-30 -- p. 693 ---- */
 
-/* P41REDSP: "ENTER FROM P41 SIDE OF TIGAVEG", "REDISPLAY NONFLASHING"
- * (NVWORD1, verb 16 noun 85); TTG/0 at ignition, 29.96 seconds on
- * (WAITLIST). */
+/* P41REDSP -- p. 689: "ENTER FROM P41 SIDE OF TIGAVEG", "REDISPLAY
+ * NONFLASHING" (NVWORD1, verb 16 noun 85); TTG/0 at ignition, 29.96 seconds
+ * on (WAITLIST). */
 static void p41redsp(void)
 {
     set_A(V16N85B);
@@ -838,14 +849,14 @@ static void p41redsp(void)
     tc_to(P41REDSP + 3u, WAITLIST); /* 2CADR TTG/0 */
 }
 
-/* TIGAVEG +1, where P41/P40 comes back in P41: TCF P41REDSP. */
+/* TIGAVEG +1 -- p. 693, where P41/P40 comes back in P41: TCF P41REDSP. */
 void tigaveg_p41(void)
 {
     p41redsp();
 }
 
-/* TIGAVEG +2, where it comes back in P40: "UNBLANK DISPLAY" (NVWORD1,
- * verb 06 noun 40); TIG-5 in 24.96 seconds (WAITLIST). */
+/* TIGAVEG +2 -- p. 693, where it comes back in P40: "UNBLANK DISPLAY"
+ * (NVWORD1, verb 06 noun 40); TIG-5 in 24.96 seconds (WAITLIST). */
 void tigaveg_p40(void)
 {
     set_A(V06N40);
@@ -854,8 +865,8 @@ void tigaveg_p40(void)
     tc_to(TIGAVEG + 5u, WAITLIST); /* 2CADR TIG-5 */
 }
 
-/* TIGAVEG, a "TASK (4.37 PROTECTS)", 30 seconds before ignition: P41 or
- * P40 (TC P41/P40). */
+/* TIGAVEG -- p. 693, a "TASK (4.37 PROTECTS)", 30 seconds before ignition:
+ * P41 or P40 (TC P41/P40). */
 void tigaveg(void)
 {
     if (p41_p40(TIGAVEG))
@@ -864,19 +875,19 @@ void tigaveg(void)
         tigaveg_p41();
 }
 
-/* TIGAVEG +010: "4.6 = TIG-5 (2496CS), PRECHECK (-0CS)" (CS SIX), TTGPHS:
- * restart group 4. */
+/* TIGAVEG +010 -- p. 693: "4.6 = TIG-5 (2496CS), PRECHECK (-0CS)" (CS SIX),
+ * TTGPHS: restart group 4. */
 void tigaveg_after_waitlist(void)
 {
     set_A(negate(SIX));
     ttgphs();
 }
 
-/* PRECHECK, after TTGPHS: "HAS SERVICER BEEN RESTARTED" (PHASE5, CCS):
- * "YES, DON'T START ANOTHER ONE" (TCF TASKOVER); no (+0), SERVICER's
- * PREREAD (POSTJUMP). PHASE5 negative runs the CADR as an instruction,
- * which the faithful port takes as a MASK of A, and so does this; -0, the
- * listing runs on into TIG-5 (whose CAF leaves the MASK's A unseen). */
+/* PRECHECK -- p. 693, after TTGPHS: "HAS SERVICER BEEN RESTARTED" (PHASE5,
+ * CCS): "YES, DON'T START ANOTHER ONE" (TCF TASKOVER); no (+0), SERVICER's
+ * PREREAD (POSTJUMP). PHASE5 negative runs the CADR as an instruction, which
+ * the faithful port takes as a MASK of A, and so does this; -0, the listing
+ * runs on into TIG-5 (whose CAF leaves the MASK's A unseen). */
 void precheck(void)
 {
     switch (ccs_at(ADDRESS_OF(PHASE5))) {

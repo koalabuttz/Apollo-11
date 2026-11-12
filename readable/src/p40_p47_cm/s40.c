@@ -386,14 +386,14 @@ static const word s40_8_words[] = {
     ORDER(EXIT),
 };
 
-/* After the EXIT: restart group 5 (PHASCHNG, OCT 10035, "TYPE B RESTART
- * RESTART BELOW AND 5.3 REREADAC"), */
+/* S40.8 +014 -- p. 719: After the EXIT: restart group 5 (PHASCHNG, OCT
+ * 10035, "TYPE B RESTART RESTART BELOW AND 5.3 REREADAC"), */
 void s40_8_after_exit(void)
 {
     tc_to(S40_8 + 014u, PHASCHNG);
 }
 
-/* and to the interpreter, for LOTHRUST_TEST_CODE. */
+/* S40.8 +016 -- p. 719: and to the interpreter, for LOTHRUST_TEST_CODE. */
 void s40_8_after_phaschng(void)
 {
     tc_at(S40_8 + 016u);
@@ -421,9 +421,9 @@ static const word lothrust_test_words[] = {
     ADDRESS(LOTHRUST),
 };
 
-/* After the EXIT: "ENABLE TVCDAP CG TRACKING", REPFRAC from EREPFRAC by
- * bit 14 of DAPDATR1 (CCS A, INDEX A: "LM-OFF, LM-ON VALUE"); to the
- * interpreter, for TGOCALC_CODE. */
+/* TGOCALC -010 -- p. 720: After the EXIT: "ENABLE TVCDAP CG TRACKING",
+ * REPFRAC from EREPFRAC by bit 14 of DAPDATR1 (CCS A, INDEX A: "LM-OFF,
+ * LM-ON VALUE"); to the interpreter, for TGOCALC_CODE. */
 void lothrust_test_after_exit(void)
 {
     ca(ADDRESS_OF(DAPDATR1)); /* CAE: "ENABLE TVCDAP CG TRACKING" */
@@ -505,8 +505,8 @@ static const word s40_81_words[] = {
     ORDER(EXIT),
 };
 
-/* After the EXIT: CNTR POSMAX, "INHIBIT SWITCHOVER/TVC EG TRACKING"; to
- * the interpreter, for S40_81_END_CODE. */
+/* S40.81 +5 -- p. 721: After the EXIT: CNTR POSMAX, "INHIBIT SWITCHOVER/TVC
+ * EG TRACKING"; to the interpreter, for S40_81_END_CODE. */
 void s40_81_after_exit(void)
 {
     set_A(POSMAX); /* "INHIBIT SWITCHOVER/TVC EG TRACKING" */
@@ -528,13 +528,13 @@ static const word incrsvg_words[] = {
     ORDER(EXIT),
 };
 
-/* After the EXIT: alarm 1407 (TC ALARM, OCT 01407), */
+/* INCRSVG +1 -- p. 722: After the EXIT: alarm 1407 (TC ALARM, OCT 01407), */
 void incrsvg_after_exit(void)
 {
     tc_to(INCRSVG + 1u, ALARM);
 }
 
-/* and to the interpreter, for INCRSVG_END_CODE. */
+/* INCRSVG +3 -- p. 722: and to the interpreter, for INCRSVG_END_CODE. */
 void incrsvg_after_alarm(void)
 {
     tc_at(INCRSVG + 3u);
@@ -558,10 +558,10 @@ static const word lothrust_words[] = {
     ORDER(EXIT),
 };
 
-/* After the EXIT: -0 (CS ZERO) to VCNTR, "KILL CSMMASS UPDATING", to
- * VCNTRTMP, to REPFRAC, "KILL TVCDAP CG TRIM TRACKING", and to NVWORD1,
- * "SET UP ENGINE-FAIL V97FLASH (CLOCKJOB)"; to the interpreter, for
- * LOTHRUST_END_CODE. */
+/* LOTHRUST +6 -- p. 722: After the EXIT: -0 (CS ZERO) to VCNTR, "KILL
+ * CSMMASS UPDATING", to VCNTRTMP, to REPFRAC, "KILL TVCDAP CG TRIM
+ * TRACKING", and to NVWORD1, "SET UP ENGINE-FAIL V97FLASH (CLOCKJOB)"; to
+ * the interpreter, for LOTHRUST_END_CODE. */
 void lothrust_after_exit(void)
 {
     cs(ZERO_ADDRESS);

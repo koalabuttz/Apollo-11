@@ -49,10 +49,10 @@ void s40_6(void);
 static void gimtrim(void);
 static void gimtrim_plus_2(void);
 
-/* PRE40.6, the "RESTART ENTRY TO S40.6": under the TVC autopilot (bits
- * 15 and 14 of FLAGWRD6 1 and 0) the task ends (TASKOVER), as "REDOTVC
- * WILL REESTABLISH INTERFACE"; under RCS, "GIMTRIM ONLY" (MRKRTMP -1),
- * CNTR +1 "TO INDICATE A RESTART ENTRY", and S40.6. */
+/* PRE40.6 -- p. 729, the "RESTART ENTRY TO S40.6": under the TVC autopilot
+ * (bits 15 and 14 of FLAGWRD6 1 and 0) the task ends (TASKOVER), as "REDOTVC
+ * WILL REESTABLISH INTERFACE"; under RCS, "GIMTRIM ONLY" (MRKRTMP -1), CNTR
+ * +1 "TO INDICATE A RESTART ENTRY", and S40.6. */
 void pre40_6(void)
 {
     cs(ADDRESS_OF(FLAGWRD6));
@@ -68,9 +68,9 @@ void pre40_6(void)
     s40_6();
 }
 
-/* S40.6: OPTIND -0, "INHIBIT OPTICS ACTIVITY"; channel 12 bit 2 off (the
- * optics error counters), bits 8 and 11 on ("TVC ENABLE", OCT02200);
- * "60MS PROCEDURAL DELAY" (FIXDELAY, DEC 6), */
+/* S40.6 -- p. 730: OPTIND -0, "INHIBIT OPTICS ACTIVITY"; channel 12 bit 2
+ * off (the optics error counters), bits 8 and 11 on ("TVC ENABLE",
+ * OCT02200); "60MS PROCEDURAL DELAY" (FIXDELAY, DEC 6), */
 void s40_6(void)
 {
     cs(ZERO_ADDRESS); /* "INHIBIT OPTICS ACTIVITY" */
@@ -82,8 +82,8 @@ void s40_6(void)
     tc_to(S40_6 + 010u, FIXDELAY);
 }
 
-/* then bit 2 on, "ENABLE OPTICS ERROR COUNTERS", and "20MS PROCEDURAL
- * DELAY" (FIXDELAY, DEC 2), */
+/* S40.6 +012 -- p. 730: then bit 2 on, "ENABLE OPTICS ERROR COUNTERS", and
+ * "20MS PROCEDURAL DELAY" (FIXDELAY, DEC 2), */
 void s40_6_after_fixdelay(void)
 {
     set_A(BIT2);         /* "ENABLE OPTICS ERROR COUNTERS" */
@@ -93,9 +93,9 @@ void s40_6_after_fixdelay(void)
 
 static void gdtsetup(void);
 
-/* and RSTRTST, "CHECK FOR RESTART ENTRY (PRE40.6)": CNTR positive, the
- * trim at once (GIMTRIM +2); else CNTR from MRKRTMP, and the trim only
- * (GIMTRIM) or the test first (GDTSETUP) by its sign. */
+/* RSTRTST -- p. 730: and RSTRTST, "CHECK FOR RESTART ENTRY (PRE40.6)": CNTR
+ * positive, the trim at once (GIMTRIM +2); else CNTR from MRKRTMP, and the
+ * trim only (GIMTRIM) or the test first (GDTSETUP) by its sign. */
 void rstrtst(void)
 {
     switch (ccs_at(ADDRESS_OF(CNTR))) {
@@ -117,7 +117,8 @@ void rstrtst(void)
 
 static void output(void);
 
-/* GIMDTEST: "GIMBAL DRIVE TEST, 1ST INCREMENT", +2ACTDEG (TC OUTPUT), */
+/* GIMDTEST -- p. 730: "GIMBAL DRIVE TEST, 1ST INCREMENT", +2ACTDEG (TC
+ * OUTPUT), */
 static void gimdtest(void)
 {
     set_A(P2ACTDEG);
@@ -125,7 +126,8 @@ static void gimdtest(void)
     output();
 }
 
-/* GDTSETUP: "GIMBAL DRIVE TEST SETUP, FOR PITCH" (CNTR -0), GIMDTEST. */
+/* GDTSETUP -- p. 730: "GIMBAL DRIVE TEST SETUP, FOR PITCH" (CNTR -0),
+ * GIMDTEST. */
 static void gdtsetup(void)
 {
     cs(ZERO_ADDRESS);
@@ -133,7 +135,7 @@ static void gdtsetup(void)
     gimdtest();
 }
 
-/* GIMDTEST +2: "2ND INCREMENT (LEAVES GIMBAL AT -2)", -4ACTDEG, */
+/* GIMDTEST +2 -- p. 730: "2ND INCREMENT (LEAVES GIMBAL AT -2)", -4ACTDEG, */
 void gimdtest_second(void)
 {
     set_A(M4ACTDEG);
@@ -141,7 +143,7 @@ void gimdtest_second(void)
     output();
 }
 
-/* GIMDTEST +4: "3RD INCREMENT (LEAVES GIMBAL AT -0)", +2ACTDEG, */
+/* GIMDTEST +4 -- p. 730: "3RD INCREMENT (LEAVES GIMBAL AT -0)", +2ACTDEG, */
 void gimdtest_third(void)
 {
     set_A(P2ACTDEG);
@@ -149,8 +151,8 @@ void gimdtest_third(void)
     output();
 }
 
-/* GIMDTEST +6: "CHECK FOR COMPLETION OF YAW TEST." (CNTR -1): done,
- * GIMTRIM; else "SET UP YAW TEST" (CNTR -1) and GIMDTEST again. */
+/* GIMDTEST +6 -- p. 730: "CHECK FOR COMPLETION OF YAW TEST." (CNTR -1):
+ * done, GIMTRIM; else "SET UP YAW TEST" (CNTR -1) and GIMDTEST again. */
 void gimdtest_check(void)
 {
     cs(ADDRESS_OF(CNTR));
@@ -167,9 +169,10 @@ void gimdtest_check(void)
     gimdtest(); /* TCF: "FOR YAW TEST" */
 }
 
-/* OUTPUT: "OUTPUT THE INCREMENT....SAVE Q" (QXCH TEMPR60): the increment to
- * TVCPITCH or TVCYAW, its counter released (bit 11 or 12 of channel 14),
- * and "WAIT 2SEC, WHILE ASTRONAUT VERIFIES" (FIXDELAY, DEC 200), */
+/* OUTPUT -- p. 731: "OUTPUT THE INCREMENT....SAVE Q" (QXCH TEMPR60): the
+ * increment to TVCPITCH or TVCYAW, its counter released (bit 11 or 12 of
+ * channel 14), and "WAIT 2SEC, WHILE ASTRONAUT VERIFIES" (FIXDELAY, DEC
+ * 200), */
 static void output(void)
 {
     unsigned to;
@@ -189,9 +192,9 @@ static void output(void)
     tc_to(OUTPUT + 010u, FIXDELAY);
 }
 
-/* then back to GIMDTEST (TC TEMPR60: the word there, a TC, runs, so Z
- * gets its address and Q the word after TEMPR60). Not modelled: a word
- * that is no TC. */
+/* OUTPUT +012 -- p. 731: then back to GIMDTEST (TC TEMPR60: the word there,
+ * a TC, runs, so Z gets its address and Q the word after TEMPR60). Not
+ * modelled: a word that is no TC. */
 void output_after_fixdelay(void)
 {
     word at = fetch(ADDRESS_OF(TEMPR60));
@@ -201,15 +204,16 @@ void output_after_fixdelay(void)
     Z = at;
 }
 
-/* GIMTRIM: "WAIT 4 SECONDS BEFORE GIMBAL TRIM" (FIXDELAY, DEC 400), */
+/* GIMTRIM -- p. 731: "WAIT 4 SECONDS BEFORE GIMBAL TRIM" (FIXDELAY, DEC
+ * 400), */
 static void gimtrim(void)
 {
     tc_to(GIMTRIM, FIXDELAY);
 }
 
-/* GIMTRIM +2: "PICK UP TRIM VALUES AND OUTPUT THEM" (-0 plus PACTOFF and
- * YACTOFF, "(AVOID +0)"), "RELEASE THE COUNTERS, BITS 11,12" (PRIO6 to
- * channel 14), and ENDS40.6: the task ends (TCF TASKOVER). */
+/* GIMTRIM +2 -- p. 731: "PICK UP TRIM VALUES AND OUTPUT THEM" (-0 plus
+ * PACTOFF and YACTOFF, "(AVOID +0)"), "RELEASE THE COUNTERS, BITS 11,12"
+ * (PRIO6 to channel 14), and ENDS40.6: the task ends (TCF TASKOVER). */
 static void gimtrim_plus_2(void)
 {
     cs(ZERO_ADDRESS); /* "PICK UP TRIM VALUES AND OUTPUT THEM" */
@@ -223,7 +227,7 @@ static void gimtrim_plus_2(void)
     continue_at(TASKOVER);
 }
 
-/* GIMTRIM +2, after GIMTRIM's FIXDELAY. */
+/* GIMTRIM +2 -- p. 731, after GIMTRIM's FIXDELAY. */
 void gimtrim_after_fixdelay(void)
 {
     gimtrim_plus_2();
@@ -231,18 +235,17 @@ void gimtrim_after_fixdelay(void)
 
 /* ---- S41.2 -- pp. 731-733 ---- */
 
-/* S41.2, from verb 48's noun 46 (DONOUN46) or FRESHDAP: RATEINDX, twice
- * the rate (bits 1-2 of DAPDATR1). Under INHINT, bit 2 of FLAGWRD7 set
- * if the LM is attached (bits 14 and 13 of DAPDATR1 1 and 0: "ATTACHED,
- * SET FLAG FOR INTEGRATION"), else cleared. ADB, the deadband: DEC 46
- * "NARROW DB", or with bit 4 DEC 455 "WIDE DB". XTRANS, the quads for +X
- * translation: +1 for quads B and D (bit 7), -1 for A and C (bit 10), 0
- * for both or none. Under INHINT, NJETSFLG (bit 15 of FLAGWRD1) set "FOR
- * 2 JET ULLAGE (AC OR BD)", else cleared. ACORBD from bit 13 of
- * DAPDATR2, "MINUS FOR A-C, PLUS FOR B-D"; RACFAIL from its bits 10 and
- * 4 (quads A and C) and RBDFAIL from bits 7 and 1 (quads B and D): +1
- * with the first bit clear, -1 with only the second clear, else +0.
- * TC Q. */
+/* S41.2 -- p. 731, from verb 48's noun 46 (DONOUN46) or FRESHDAP: RATEINDX,
+ * twice the rate (bits 1-2 of DAPDATR1). Under INHINT, bit 2 of FLAGWRD7 set
+ * if the LM is attached (bits 14 and 13 of DAPDATR1 1 and 0: "ATTACHED, SET
+ * FLAG FOR INTEGRATION"), else cleared. ADB, the deadband: DEC 46 "NARROW
+ * DB", or with bit 4 DEC 455 "WIDE DB". XTRANS, the quads for +X
+ * translation: +1 for quads B and D (bit 7), -1 for A and C (bit 10), 0 for
+ * both or none. Under INHINT, NJETSFLG (bit 15 of FLAGWRD1) set "FOR 2 JET
+ * ULLAGE (AC OR BD)", else cleared. ACORBD from bit 13 of DAPDATR2, "MINUS
+ * FOR A-C, PLUS FOR B-D"; RACFAIL from its bits 10 and 4 (quads A and C) and
+ * RBDFAIL from bits 7 and 1 (quads B and D): +1 with the first bit clear, -1
+ * with only the second clear, else +0. TC Q. */
 void s41_2(void)
 {
     ca(ADDRESS_OF(DAPDATR1));
@@ -354,10 +357,10 @@ void s41_2(void)
 static void nodapup(void);
 static void rcsdapup(void);
 
-/* DAPFIG, a job from verb 46 (STABLISH, by POSTJUMP): channel 12 bit 9
- * off, "TURN OFF SIVB TAKEOVER"; then by the configuration (bits 13-14
- * of DAPDATR1, "RIGHT SHIFT 4 OCTAL DIGITS"): the CM alone, NODAPUP; the
- * CSM or CSM and LM, RCSDAPUP; else SATSTKON (POSTJUMP). */
+/* DAPFIG -- p. 734, a job from verb 46 (STABLISH, by POSTJUMP): channel 12
+ * bit 9 off, "TURN OFF SIVB TAKEOVER"; then by the configuration (bits 13-14
+ * of DAPDATR1, "RIGHT SHIFT 4 OCTAL DIGITS"): the CM alone, NODAPUP; the CSM
+ * or CSM and LM, RCSDAPUP; else SATSTKON (POSTJUMP). */
 void dapfig(void)
 {
     set_A(negate(BIT9));                     /* "TURN OFF SIVB TAKEOVER" */
@@ -373,8 +376,8 @@ void dapfig(void)
     }
 }
 
-/* RCSDAPUP: "CALL TO ACTIVATE RCSDAP, AND RETURN" (INHINT; IBNKCALL,
- * CADR RCSDAPON), */
+/* RCSDAPUP -- p. 734: "CALL TO ACTIVATE RCSDAP, AND RETURN" (INHINT;
+ * IBNKCALL, CADR RCSDAPON), */
 static void rcsdapup(void)
 {
     inhint();
@@ -383,14 +386,14 @@ static void rcsdapup(void)
 
 static void endfig(void);
 
-/* then RELINT and ENDFIG. */
+/* RCSDAPUP +3 -- p. 734: then RELINT and ENDFIG. */
 void rcsdapup_after_ibnkcall(void)
 {
     relint();
     endfig();
 }
 
-/* NODAPUP: "T5 IDLE FOR NODAP" (T5LOC from T5IDLDAP), and "RESET
+/* NODAPUP -- p. 734: "T5 IDLE FOR NODAP" (T5LOC from T5IDLDAP), and "RESET
  * T5-USAGE FLAGS FOR NODAP" (DOWNFLAG, DAPBIT1), */
 static void nodapup(void)
 {
@@ -399,20 +402,22 @@ static void nodapup(void)
     tc_to(NODAPUP + 3u, DOWNFLAG); /* "RESET T5-USAGE FLAGS FOR NODAP" */
 }
 
-/* (DOWNFLAG, DAPBIT2), */
+/* NODAPUP +5 -- p. 734: (DOWNFLAG, DAPBIT2), */
 void nodapup_after_dapbit1(void)
 {
     tc_to(NODAPUP + 5u, DOWNFLAG);
 }
 
-/* "ZERO JET CHANNELS IN 14 MS" (INHINT; IBNKCALL, CADR ZEROJET), */
+/* NODAPUP +7 -- p. 734: "ZERO JET CHANNELS IN 14 MS" (INHINT; IBNKCALL, CADR
+ * ZEROJET), */
 void nodapup_after_dapbit2(void)
 {
     inhint();
     tc_to(NODAPUP + 010u, IBNKCALL); /* "ZERO JET CHANNELS IN 14 MS AND THEN" */
 }
 
-/* then RELINT, HOLDFLAG +1, "KILL KALCMANU JOB", and ENDFIG. */
+/* NODAPUP +012 -- p. 734: then RELINT, HOLDFLAG +1, "KILL KALCMANU JOB", and
+ * ENDFIG. */
 void nodapup_after_zerojet(void)
 {
     relint();
@@ -421,7 +426,8 @@ void nodapup_after_zerojet(void)
     endfig();
 }
 
-/* ENDFIG: "CAME IN VIA V46, GO OUT VIA GOPIN" (POSTJUMP, CADR GOPIN). */
+/* ENDFIG -- p. 734: "CAME IN VIA V46, GO OUT VIA GOPIN" (POSTJUMP, CADR
+ * GOPIN). */
 static void endfig(void)
 {
     tc_to(ENDFIG, POSTJUMP);
@@ -429,8 +435,8 @@ static void endfig(void)
 
 /* ---- S40.14 -- p. 735 ---- */
 
-/* S40.14, from verb 48's noun 47 (DONOUN47) or FRESHDAP: J/M, J/M1 and
- * J/M2 from IXX and IAVG times CONTONE ("2PI/M"); KMJ, KMJ1 and KMJ2,
+/* S40.14 -- p. 735, from verb 48's noun 47 (DONOUN47) or FRESHDAP: J/M, J/M1
+ * and J/M2 from IXX and IAVG times CONTONE ("2PI/M"); KMJ, KMJ1 and KMJ2,
  * CONTTWO over IXX and IAVG. TC Q. */
 void s40_14(void)
 {
@@ -453,8 +459,8 @@ void s40_14(void)
 
 /* ---- RCSUP and RCSDAPON -- p. 736 ---- */
 
-/* RCSUP, a T5 interrupt's routine: BANKRUPT and QRUPT kept, RCSDAPON
- * (TCR), "ACTIVATE RCS DAP", */
+/* RCSUP -- p. 736, a T5 interrupt's routine: BANKRUPT and QRUPT kept,
+ * RCSDAPON (TCR), "ACTIVATE RCS DAP", */
 void rcsup(void)
 {
     lxch(ADDRESS_OF(BANKRUPT));
@@ -463,13 +469,13 @@ void rcsup(void)
     rcsdapon();
 }
 
-/* and the interrupt's end (TCF RESUME). */
+/* RCSUP +4 -- p. 736: and the interrupt's end (TCF RESUME). */
 void rcsup_after_rcsdapon(void)
 {
     continue_at(RESUME);
 }
 
-/* RCSDAPON, under INHINT: TIME5 to 0.6 seconds, which "ALLOWS
+/* RCSDAPON -- p. 736, under INHINT: TIME5 to 0.6 seconds, which "ALLOWS
  * TVCEXEC/ROLLDAP TO DIE", and on at +1. */
 void rcsdapon(void)
 {
@@ -477,7 +483,7 @@ void rcsdapon(void)
     rcsdapon_plus_1();
 }
 
-/* RCSDAPON +1, "ENTRY FROM R00TOP00": A to TIME5 and, unless it
+/* RCSDAPON +1 -- p. 736, "ENTRY FROM R00TOP00": A to TIME5 and, unless it
  * overflows, T5PHASE ("WILL CAUSE FRESHDAP (+1)"); bit 3 of RCSFLAGS set
  * "TO REINITIALIZE FDAI ERROR"; T5LOC from RCSADDR (RCSATT); bits 15 and
  * 14 of FLAGWRD6 0 and 1, "T5 TAKEOVER BY RCSDAP"; "RETURN TO CALLER"

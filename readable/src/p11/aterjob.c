@@ -30,7 +30,7 @@ static void satout(void);
 
 /* ---- ATERJOB -- pp. 542-543 ---- */
 
-/* NOPOLY: "COMES HERE IF ATTITUDE HOLD": the interpretive code at
+/* NOPOLY -- p. 547: "COMES HERE IF ATTITUDE HOLD": the interpretive code at
  * NOPOLYM. */
 void nopoly(void)
 {
@@ -47,12 +47,12 @@ static const word nopoly_words[] = {
 
 const struct interpretive_code NOPOLY_CODE = {034u, NOPOLY + 1u, COUNT(nopoly_words), nopoly_words};
 
-/* ATTDISP: the time since RPSTART; until then, or past POLYSTOP, or once
- * TIME1 has overflowed into TIME2 (the display "IS DISABLED UPON OVFLO OF
- * TIME1"), "ATTITUDE HOLD". Else MPAC, "TIME1-RPSTART", saved in SPOLYARG
- * "FOR USE IN ROLL CALCULATION", and the pitch polynomial evaluated
- * (POWRSERS, "SCALED TO 32 REVOLUTIONS"). (An overflow in the TS MPAC
- * skips the TS SPOLYARG.) */
+/* ATTDISP -- p. 542: the time since RPSTART; until then, or past POLYSTOP,
+ * or once TIME1 has overflowed into TIME2 (the display "IS DISABLED UPON
+ * OVFLO OF TIME1"), "ATTITUDE HOLD". Else MPAC, "TIME1-RPSTART", saved in
+ * SPOLYARG "FOR USE IN ROLL CALCULATION", and the pitch polynomial evaluated
+ * (POWRSERS, "SCALED TO 32 REVOLUTIONS"). (An overflow in the TS MPAC skips
+ * the TS SPOLYARG.) */
 static void attdisp(void)
 {
     cs(ADDRESS_OF(RPSTART));
@@ -80,8 +80,8 @@ static void attdisp(void)
     tc_to(ATTDISP + 021u, POWRSERS);
 }
 
-/* ATTDISP +022: "RETURN WITH PITCH(32REV) STORED MPAC, MPAC +1"; MODE
- * +0, double precision; then the interpretive code. */
+/* ATTDISP +022 -- p. 542: "RETURN WITH PITCH(32REV) STORED MPAC, MPAC +1";
+ * MODE +0, double precision; then the interpretive code. */
 void attdisp_after_powrsers(void)
 {
     set_A(ZERO);
@@ -195,9 +195,9 @@ static const word attdisp1_words[] = {
 const struct interpretive_code ATTDISP1_CODE = {037u, ATTDISP1, COUNT(attdisp1_words),
                                                 attdisp1_words};
 
-/* STRSAT, with the S/C control of Saturn switch on: "CHECK IF NEEDLER HAS
- * BEEN INITIALIZED" (SATSW +0 or negative): "YES - CONTINUE"; else
- * ATRESET. */
+/* STRSAT -- p. 546, with the S/C control of Saturn switch on: "CHECK IF
+ * NEEDLER HAS BEEN INITIALIZED" (SATSW +0 or negative): "YES - CONTINUE";
+ * else ATRESET. */
 static void strsat(void)
 {
     ca(ADDRESS_OF(SATSW));
@@ -208,10 +208,10 @@ static void strsat(void)
     atreset();
 }
 
-/* ATERJOB: with FLAGWRD6's bits 14 and 15 set, "SATURN STICK ON - KILL
- * JOB". Else "CHECK IF S/C CONTROL OF SATURN PANEL SWITCH IS ON" (channel
- * 30's bit 10 +0): "IT IS - GO STEER" (STRSAT). "IT IS NOT - WAS IT ON
- * LAST CYCLE": SATSW positive, "NO - CONTINUE"; +0 or negative, "YES -
+/* ATERJOB -- p. 542: with FLAGWRD6's bits 14 and 15 set, "SATURN STICK ON -
+ * KILL JOB". Else "CHECK IF S/C CONTROL OF SATURN PANEL SWITCH IS ON"
+ * (channel 30's bit 10 +0): "IT IS - GO STEER" (STRSAT). "IT IS NOT - WAS IT
+ * ON LAST CYCLE": SATSW positive, "NO - CONTINUE"; +0 or negative, "YES -
  * REINITIALIZE NEEDLER" (ATRESET); -0, ATTDISP too (with no TC). */
 void aterjob(void)
 {
@@ -246,13 +246,13 @@ void aterjob(void)
 
 /* ---- After the attitude errors -- pp. 545-546 ---- */
 
-/* SATOUT: "DISPLAY ATTITUDE ERRORS ON FDAI VIA NEEDLER". */
+/* SATOUT -- p. 545: "DISPLAY ATTITUDE ERRORS ON FDAI VIA NEEDLER". */
 static void satout(void)
 {
     tc_to(SATOUT, BANKCALL); /* CADR NEEDLER */
 }
 
-/* ATERSET: "DELAY .25 SEC" (DELAYJOB; "EXECUTION + DELAY =.56SEC
+/* ATERSET -- p. 545: "DELAY .25 SEC" (DELAYJOB; "EXECUTION + DELAY =.56SEC
  * APPROX"). */
 void aterset(void)
 {
@@ -260,15 +260,15 @@ void aterset(void)
     tc_to(ATERSET + 1u, BANKCALL); /* CADR DELAYJOB */
 }
 
-/* ATERSET +3: "END OF ATT ERROR DISPLAY CYCLE": the next. */
+/* ATERSET +3 -- p. 545: "END OF ATT ERROR DISPLAY CYCLE": the next. */
 void aterset_after_delayjob(void)
 {
     tc_at(ATERSET + 3u);
     aterjob();
 }
 
-/* RESCALES: "RESCALE AK S FOR NEW HARDWARE SCALING FOR STEERING SATURN":
- * A times SATSCALE, doubled twice; TC Q, back to the TS after the
+/* RESCALES -- p. 547: "RESCALE AK S FOR NEW HARDWARE SCALING FOR STEERING
+ * SATURN": A times SATSCALE, doubled twice; TC Q, back to the TS after the
  * caller's TC. */
 static void rescales(void)
 {
@@ -278,7 +278,7 @@ static void rescales(void)
     tc_at(Q_ADDRESS);
 }
 
-/* STEERSAT +6, after "AKS = AKS - STORED BIAS": each rescaled. An
+/* STEERSAT +6 -- p. 545, after "AKS = AKS - STORED BIAS": each rescaled. An
  * overflow in a TS skips the next word: the CA of the next error, or
  * after AK2, SATOUT's TC BANKCALL, so that its CADR NEEDLER runs as an
  * instruction (CS 2420, a word of ATTDISP2's) and ATERSET follows. */
@@ -301,7 +301,8 @@ void steersat_after_exit(void)
     aterset();
 }
 
-/* STEERSAT: "STEER L/V" (the interpretive code: the bias taken off). */
+/* STEERSAT -- p. 545: "STEER L/V" (the interpretive code: the bias taken
+ * off). */
 static void steersat(void)
 {
     tc_at(STEERSAT);
@@ -317,7 +318,7 @@ static const word steersat_words[] = {
 const struct interpretive_code STEERSAT_CODE = {034u, STEERSAT + 1u, COUNT(steersat_words),
                                                 steersat_words};
 
-/* AKLOAD: "STORE AKS INTO BIAS COMPLEMENTED"; SATSW -1, "SET SW TO
+/* AKLOAD -- p. 545: "STORE AKS INTO BIAS COMPLEMENTED"; SATSW -1, "SET SW TO
  * STEER"; "GO STEER". */
 static void akload(void)
 {
@@ -351,9 +352,9 @@ static const word attdisp2_words[] = {
 const struct interpretive_code ATTDISP2_CODE = {034u, ATTDISP2, COUNT(attdisp2_words),
                                                 attdisp2_words};
 
-/* ATTDISP2 +030, after the attitude errors' EXIT: "CHK TAKEOVER STATUS":
- * SATSW positive, "DISPLAY ONLY" (SATOUT); +0, "STORE BIAS" (AKLOAD);
- * negative, "STEER L/V" (STEERSAT). SATSW -0 would run STEERSAT's
+/* ATTDISP2 +030 -- p. 545, after the attitude errors' EXIT: "CHK TAKEOVER
+ * STATUS": SATSW positive, "DISPLAY ONLY" (SATOUT); +0, "STORE BIAS"
+ * (AKLOAD); negative, "STEER L/V" (STEERSAT). SATSW -0 would run STEERSAT's
  * interpretive words as instructions: not modelled. */
 void attdisp2_after_exit(void)
 {
@@ -372,7 +373,7 @@ void attdisp2_after_exit(void)
     }
 }
 
-/* TAKEON: "ENABLE SIVB TAKEOVER" (channel 12's bit 9); SATSW +0,
+/* TAKEON -- p. 546: "ENABLE SIVB TAKEOVER" (channel 12's bit 9); SATSW +0,
  * "INDICATE NEEDLER WAS INITIALIZED". */
 static void takeon(void)
 {
@@ -384,8 +385,8 @@ static void takeon(void)
     satout();
 }
 
-/* ATRESET: RCSFLAGS' bit 3 set, the "INITIALIZATION SW FOR NEEDLER", "AND
- * GO DO IT". */
+/* ATRESET -- p. 546: RCSFLAGS' bit 3 set, the "INITIALIZATION SW FOR
+ * NEEDLER", "AND GO DO IT". */
 static void atreset(void)
 {
     cs(ADDRESS_OF(RCSFLAGS));
@@ -394,17 +395,18 @@ static void atreset(void)
     tc_to(ATRESET + 3u, BANKCALL); /* CADR NEEDLER */
 }
 
-/* ATRESET +5: "60 MS -WAIT TILL IMUERRCNTR ZEROED" (DELAYJOB, REVCNT). */
+/* ATRESET +5 -- p. 546: "60 MS -WAIT TILL IMUERRCNTR ZEROED" (DELAYJOB,
+ * REVCNT). */
 void atreset_after_needler(void)
 {
     set_A(REVCNT);
     tc_to(ATRESET + 6u, BANKCALL); /* CADR DELAYJOB */
 }
 
-/* ATRESET +010: "CHECK SW STATUS": SATSW positive, "STEER INIT." (TAKEON);
- * else "RETURN TO DISPLAY": SATSW +1, "SW = DISPLAY ON", and "DISABLE SIVB
- * TAKEOVER" (channel 12's bit 9). (SATSW -0 skips to the TS with A +0:
- * SATSW +0.) */
+/* ATRESET +010 -- p. 546: "CHECK SW STATUS": SATSW positive, "STEER INIT."
+ * (TAKEON); else "RETURN TO DISPLAY": SATSW +1, "SW = DISPLAY ON", and
+ * "DISABLE SIVB TAKEOVER" (channel 12's bit 9). (SATSW -0 skips to the TS
+ * with A +0: SATSW +0.) */
 void atreset_after_delayjob(void)
 {
     switch (ccs_at(ADDRESS_OF(SATSW))) {
@@ -470,7 +472,7 @@ static unsigned work_area(unsigned n)
     return (unsigned)at;
 }
 
-/* DELSTOR, an RTB routine: "STORE DELTACDU INTO PDL 0,2,4": the
+/* DELSTOR -- p. 546, an RTB routine: "STORE DELTACDU INTO PDL 0,2,4": the
  * difference of BOOSTEMP's CDU angles and MPAC's (single precision, MSU);
  * then the pair goes on (DANZIG). */
 void delstor(void)
@@ -485,10 +487,10 @@ void delstor(void)
     continue_at(DANZIG);
 }
 
-/* RLTST, an RTB routine: "DETERMINE IF ROLLOUT IS COMPLETED": the roll
- * angle (MPAC) and the roll rate (SATRLRT +1) of "UNLIKE SIGNS STILL
- * ROLLING"; else "ROLLOUT COMPLETED", MPAC +0: "ZERO OUT ROLL
- * CONTRIBUTION" (the two +0 words of MBDYTCTL +2). */
+/* RLTST -- p. 547, an RTB routine: "DETERMINE IF ROLLOUT IS COMPLETED": the
+ * roll angle (MPAC) and the roll rate (SATRLRT +1) of "UNLIKE SIGNS STILL
+ * ROLLING"; else "ROLLOUT COMPLETED", MPAC +0: "ZERO OUT ROLL CONTRIBUTION"
+ * (the two +0 words of MBDYTCTL +2). */
 void rltst(void)
 {
     ca(ADDRESS_OF(MPAC));

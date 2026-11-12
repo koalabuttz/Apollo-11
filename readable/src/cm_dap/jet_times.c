@@ -30,9 +30,9 @@ static unsigned table(unsigned field, unsigned jets)
 
 /* ---- Pitch -- pp. 1050-1051 ---- */
 
-/* PITCHTIM: "PITCH JET ON-TIME CALCULATION". With no pitch command, DFT1
- * +0 and on to PBYPASS; a negative one turns NPJETS's sign (PTAUNEG), so
- * the on-time comes out positive. */
+/* PITCHTIM -- p. 1050: "PITCH JET ON-TIME CALCULATION". With no pitch
+ * command, DFT1 +0 and on to PBYPASS; a negative one turns NPJETS's sign
+ * (PTAUNEG), so the on-time comes out positive. */
 void pitchtim(void)
 {
     switch (ccs_at(ADDRESS_OF(TAU1))) {
@@ -49,10 +49,10 @@ void pitchtim(void)
     }
 }
 
-/* PTAUPOS: BLAST1, TAU1 over the number of jets. Over .1 s: DFT1 from
- * DFTMAX, TAU1 less it ("UPDATE TAU1"), and BLAST1 .1 s; else AD14MSP.
- * (At exactly .1 s the sum with =-.1SEC is -0, which BZMF takes; a sum
- * with a word that is not +0 is never +0. So for YTAUPOS and RBLAST.) */
+/* PTAUPOS -- p. 1050: BLAST1, TAU1 over the number of jets. Over .1 s: DFT1
+ * from DFTMAX, TAU1 less it ("UPDATE TAU1"), and BLAST1 .1 s; else AD14MSP.
+ * (At exactly .1 s the sum with =-.1SEC is -0, which BZMF takes; a sum with
+ * a word that is not +0 is never +0. So for YTAUPOS and RBLAST.) */
 static void ptaupos(void)
 {
     ca(ADDRESS_OF(TAU1));
@@ -72,9 +72,9 @@ static void ptaupos(void)
     continue_at(ASMBLWP);
 }
 
-/* AD14MSP: BLAST1 at least 14 ms ("MINIMUM IMPULSE TIME"). PBLASTOK: "THE
- * PITCH COMMANDS WILL BE COMPLETED" within the cycle: DFT1 the
- * on-time by the number of jets, "FOR USE IN UPDATING RATE FILTER", and
+/* AD14MSP -- p. 1050: BLAST1 at least 14 ms ("MINIMUM IMPULSE TIME").
+ * PBLASTOK: "THE PITCH COMMANDS WILL BE COMPLETED" within the cycle: DFT1
+ * the on-time by the number of jets, "FOR USE IN UPDATING RATE FILTER", and
  * TAU1 zeroed (the product's top word, +0). */
 static void ad14msp(void)
 {
@@ -93,8 +93,8 @@ static void ad14msp(void)
 
 /* ---- Yaw -- p. 1052 ---- */
 
-/* YAWTIME: "YAW JET ON-TIME CALCULATION", as PITCHTIM's with TAU2,
- * NYJETS, BLAST2 and DFT2, on to YBYPASS or ASMBLWY. Its CCS's four
+/* YAWTIME -- p. 1052: "YAW JET ON-TIME CALCULATION", as PITCHTIM's with
+ * TAU2, NYJETS, BLAST2 and DFT2, on to YBYPASS or ASMBLWY. Its CCS's four
  * words, and the TS DFT2 after them, are keys of their own (below). */
 void yawtime(void)
 {
@@ -105,27 +105,27 @@ void yawtime(void)
     }
 }
 
-/* YAWTIME +1: TCF YTAUPOS. */
+/* YAWTIME +1 -- p. 1052: TCF YTAUPOS. */
 void yawtime_to_ytaupos(void)
 {
     ytaupos();
 }
 
-/* YAWTIME +2: TCF +2, to the TS DFT2. */
+/* YAWTIME +2 -- p. 1052: TCF +2, to the TS DFT2. */
 void yawtime_to_dft2(void)
 {
     yawtime_dft2();
 }
 
-/* YAWTIME +3: TCF YTAUNEG. */
+/* YAWTIME +3 -- p. 1052: TCF YTAUNEG. */
 void yawtime_to_ytauneg(void)
 {
     ytauneg();
 }
 
-/* YAWTIME +4: DFT2 +0, "NO YAW ROTATION COMMANDS", and on to YBYPASS.
- * (From the CCS, A is +0; an overflow in A at the key skips the TCF, to
- * YTAUNEG.) */
+/* YAWTIME +4 -- p. 1052: DFT2 +0, "NO YAW ROTATION COMMANDS", and on to
+ * YBYPASS. (From the CCS, A is +0; an overflow in A at the key skips the
+ * TCF, to YTAUNEG.) */
 void yawtime_dft2(void)
 {
     if (ts(ADDRESS_OF(DFT2))) {
@@ -135,7 +135,7 @@ void yawtime_dft2(void)
     continue_at(YBYPASS);
 }
 
-/* YTAUNEG: NYJETS's sign turned. */
+/* YTAUNEG -- p. 1052: NYJETS's sign turned. */
 static void ytauneg(void)
 {
     cs(ADDRESS_OF(NYJETS));
@@ -143,7 +143,7 @@ static void ytauneg(void)
     ytaupos();
 }
 
-/* YTAUPOS: BLAST2, TAU2 over the number of jets; over .1 s on at
+/* YTAUPOS -- p. 1052: BLAST2, TAU2 over the number of jets; over .1 s on at
  * YTAUPOS +010, else AD14MSY. */
 void ytaupos(void)
 {
@@ -157,8 +157,8 @@ void ytaupos(void)
         ytaupos_dftmax();
 }
 
-/* YTAUPOS +010: "YAW COMMANDS WILL LAST LONGER THAN .1SEC": DFT2 from
- * DFTMAX, TAU2 less it ("DECREMENT TAU2"), and BLAST2 .1 s. */
+/* YTAUPOS +010 -- p. 1052: "YAW COMMANDS WILL LAST LONGER THAN .1SEC": DFT2
+ * from DFTMAX, TAU2 less it ("DECREMENT TAU2"), and BLAST2 .1 s. */
 void ytaupos_dftmax(void)
 {
     ca(table(ADDRESS_OF(DFTMAX), ADDRESS_OF(NYJETS)));
@@ -170,7 +170,7 @@ void ytaupos_dftmax(void)
     continue_at(ASMBLWY);
 }
 
-/* AD14MSY: BLAST2 at least 14 ms. YBLASTOK: "YAW COMMANDS WILL BE
+/* AD14MSY -- p. 1052: BLAST2 at least 14 ms. YBLASTOK: "YAW COMMANDS WILL BE
  * COMPLETED WITHIN THE T5CYCLE TIME": DFT2, and TAU2 zeroed. */
 void ad14msy(void)
 {
@@ -189,10 +189,10 @@ void ad14msy(void)
 
 /* ---- Roll -- pp. 1053-1054 ---- */
 
-/* ROLLTIME: "ROLL ON-TIME CALCULATION". With no roll command, DFT from
- * DFTMAX all the same ("UPDATE DFT EVEN THO NO ROLL COMMANDS ARE
- * PRESENT": a translation's roll jets) and on to RBYPASS. Either sign
- * goes to RBLAST, NRJETS carrying the sign of the net roll. */
+/* ROLLTIME -- p. 1053: "ROLL ON-TIME CALCULATION". With no roll command, DFT
+ * from DFTMAX all the same ("UPDATE DFT EVEN THO NO ROLL COMMANDS ARE
+ * PRESENT": a translation's roll jets) and on to RBYPASS. Either sign goes
+ * to RBLAST, NRJETS carrying the sign of the net roll. */
 void rolltime(void)
 {
     switch (ccs_at(ADDRESS_OF(TAU))) {
@@ -206,8 +206,8 @@ void rolltime(void)
     }
 }
 
-/* RBLAST: BLAST ("AN INTERMEDIATE VARIABLE USED IN DETERMINING THE JET
- * ON-TIMES"), TAU over the net number of roll jets. At most .1 s,
+/* RBLAST -- p. 1053: BLAST ("AN INTERMEDIATE VARIABLE USED IN DETERMINING
+ * THE JET ON-TIMES"), TAU over the net number of roll jets. At most .1 s,
  * AD14MSR; over, DFT from DFTMAX and TAU less it, and on at RBLAST +015
  * (BLAST .1 s). */
 static void rblast(void)

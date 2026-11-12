@@ -19,8 +19,8 @@
 
 /* ---- The flight path's turn -- pp. 1071-1072 ---- */
 
-/* BODYRATE +0100: "PREL TCDU/180=(P-SALF SR GAMDOT)TCDU/180" (ADS PREL);
- * then the cosine of ROLL/180, */
+/* BODYRATE +0100 -- p. 1071: "PREL TCDU/180=(P-SALF SR GAMDOT)TCDU/180" (ADS
+ * PREL); then the cosine of ROLL/180, */
 void bodyrate_trim_prel(void)
 {
     ads(ADDRESS_OF(PREL));
@@ -28,8 +28,8 @@ void bodyrate_trim_prel(void)
     tc_to(BODYRATE + 0102u, SPCOS);
 }
 
-/* BODYRATE +0103: "QREL TCDU/180=(Q-CR GAMDOT) TCDU/180"; and "B( ) = -SR
- * GAMDOT" times COSTRIM, "COS(-20)", "RREL TCDU/180=(R+CALF SR
+/* BODYRATE +0103 -- p. 1072: "QREL TCDU/180=(Q-CR GAMDOT) TCDU/180"; and "B(
+ * ) = -SR GAMDOT" times COSTRIM, "COS(-20)", "RREL TCDU/180=(R+CALF SR
  * GAMDOT)TCDU/180"; on at NOGAMDUT. */
 void bodyrate_trim_qrel(void)
 {
@@ -44,10 +44,10 @@ void bodyrate_trim_qrel(void)
 
 /* ---- NOGAMDUT -- p. 1072 ---- */
 
-/* NOGAMDUT: CMDAPARM ("CMDAPARM = 93D BIT 12") clear, "DAP NOT ARMED."
- * (STBYDUMP: EXTEND; BZF TASKOVER). Armed: "PICK UP AT ATTRATES IN 10 MS
- * OR SO." (POSMAX to TIME5, ATDOTCAD's 2CADR ATTRATES to T5LOC), and the
- * task ends. */
+/* NOGAMDUT -- p. 1072: CMDAPARM ("CMDAPARM = 93D BIT 12") clear, "DAP NOT
+ * ARMED." (STBYDUMP: EXTEND; BZF TASKOVER). Armed: "PICK UP AT ATTRATES IN
+ * 10 MS OR SO." (POSMAX to TIME5, ATDOTCAD's 2CADR ATTRATES to T5LOC), and
+ * the task ends. */
 void nogamdut(void)
 {
     set_A(BIT12);
@@ -65,10 +65,11 @@ void nogamdut(void)
 
 /* ---- ATTRATES -- pp. 1073-1074 ---- */
 
-/* ATTRATES: "CONTINUE HERE VIA T5", "TASK MAY BE SKIPPED AT RESTART.": the
- * interrupted program's BBANK and Q kept (LXCH BANKRUPT, QXCH QRUPT) and
- * SR, doubled, in CM/SAVE. Then ALFA/180 with QREL added, its overflow
- * corrected (ANGOVCOR). (An overflow at TS CM/SAVE skips the CA QREL.) */
+/* ATTRATES -- p. 1073: "CONTINUE HERE VIA T5", "TASK MAY BE SKIPPED AT
+ * RESTART.": the interrupted program's BBANK and Q kept (LXCH BANKRUPT, QXCH
+ * QRUPT) and SR, doubled, in CM/SAVE. Then ALFA/180 with QREL added, its
+ * overflow corrected (ANGOVCOR). (An overflow at TS CM/SAVE skips the CA
+ * QREL.) */
 void attrates(void)
 {
     lxch(ADDRESS_OF(BANKRUPT));
@@ -80,8 +81,8 @@ void attrates(void)
     tc_to(ATTRATES + 010u, ANGOVCOR);
 }
 
-/* ATTRATES +011: into ALFA/180, and its cosine. (An overflow skips the TC
- * SPCOS: on at ATTRATES +013 with +1 or -1.) */
+/* ATTRATES +011 -- p. 1073: into ALFA/180, and its cosine. (An overflow
+ * skips the TC SPCOS: on at ATTRATES +013 with +1 or -1.) */
 void attrates_alfa(void)
 {
     if (ts(ADDRESS_OF(ALFA_180))) {
@@ -91,9 +92,9 @@ void attrates_alfa(void)
     tc_to(ATTRATES + 012u, SPCOS);
 }
 
-/* ATTRATES +013: CALFA, and PHIDOT. "CA PREL" into PHIDOT, "CA RREL" into
- * BETADOT; then the sine of ALFA/180. (An overflow at TS CALFA skips the
- * TS PHIDOT.) */
+/* ATTRATES +013 -- p. 1073: CALFA, and PHIDOT. "CA PREL" into PHIDOT, "CA
+ * RREL" into BETADOT; then the sine of ALFA/180. (An overflow at TS CALFA
+ * skips the TS PHIDOT.) */
 void attrates_calfa(void)
 {
     if (!ts(ADDRESS_OF(CALFA))) ts(ADDRESS_OF(PHIDOT));
@@ -105,10 +106,11 @@ void attrates_calfa(void)
     tc_to(ATTRATES + 024u, SPSIN);
 }
 
-/* ATTRATES +025: "SIN(ALFA)" (SALFA); "SA RREL" added into PHIDOT, "CB
- * PHIDOT, SAVED."; -SALFA times PREL added into BETADOT, "SAVE BETADOT
- * TCDU/180", and into BETA/180, "BETA DONE."; then the sine of BETA/180.
- * (An overflow at TS SALFA skips the EXTEND: MP RREL runs as MASK RREL.) */
+/* ATTRATES +025 -- p. 1073: "SIN(ALFA)" (SALFA); "SA RREL" added into
+ * PHIDOT, "CB PHIDOT, SAVED."; -SALFA times PREL added into BETADOT, "SAVE
+ * BETADOT TCDU/180", and into BETA/180, "BETA DONE."; then the sine of
+ * BETA/180. (An overflow at TS SALFA skips the EXTEND: MP RREL runs as MASK
+ * RREL.) */
 void attrates_salfa(void)
 {
     if (ts(ADDRESS_OF(SALFA)))
@@ -123,8 +125,8 @@ void attrates_salfa(void)
     tc_to(ATTRATES + 036u, SPSIN);
 }
 
-/* ATTRATES +037: times PHIDOT, "NEGLECT CB IN CB PHIDOT", added to
- * ALFA/180, its overflow corrected. */
+/* ATTRATES +037 -- p. 1073: times PHIDOT, "NEGLECT CB IN CB PHIDOT", added
+ * to ALFA/180, its overflow corrected. */
 void attrates_sb_phidot(void)
 {
     mp_at(ADDRESS_OF(PHIDOT)); /* EXTEND; MP */
@@ -132,7 +134,7 @@ void attrates_sb_phidot(void)
     tc_to(ATTRATES + 042u, ANGOVCOR);
 }
 
-/* ATTRATES +043: "ALFA DONE." (ALFA/180); its error from ALFACOM,
+/* ATTRATES +043 -- p. 1073: "ALFA DONE." (ALFA/180); its error from ALFACOM,
  * corrected, "JUST IN CASE ...". (An overflow at the TS skips the COM.) */
 void attrates_alfa_done(void)
 {
@@ -141,7 +143,7 @@ void attrates_alfa_done(void)
     tc_to(ATTRATES + 046u, ANGOVCOR);
 }
 
-/* ATTRATES +047: AK1, and QAXERR, "FOR PITCH FDAI AND EDIT." Then
+/* ATTRATES +047 -- p. 1074: AK1, and QAXERR, "FOR PITCH FDAI AND EDIT." Then
  * "PHIDOT TCDU/180, NEGLECTING CB" added to ROLL/180, corrected. (An
  * overflow at TS AK1 skips the TS QAXERR.) */
 void attrates_ak1(void)
@@ -152,7 +154,8 @@ void attrates_ak1(void)
     tc_to(ATTRATES + 053u, ANGOVCOR);
 }
 
-/* ATTRATES +054: "ROLL/180 FOR TM." (ROLLTM), "ROLL DONE." (ROLL/180).
+/* ATTRATES +054 -- p. 1074: "ROLL/180 FOR TM." (ROLLTM), "ROLL DONE."
+ * (ROLL/180).
  * The yaw error, BETACOM less BETA/180, in RAXERR: "IF IN ATM, SAVE
  * 'RAXERR' FOR TM DNLST." Then .05GSW ("SW=0, LESS .05G"): clear, on at
  * EXDAP, "IF G LESS THAN .05"; set, -1 (CS ONE) and on at ATTRATES +066,

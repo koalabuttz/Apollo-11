@@ -46,18 +46,19 @@ void intpret(void)
     intpret_plus3();
 }
 
-/* INTPRET +2: the QXCH's word, reached by TCF INTPRET +2 (E/CALL's return,
- * in SYSTEM_TEST_STANDARD_LEAD_INS) with no EXTEND before it. Unextended,
- * the same instruction word is LXCH LOC: the new LOC comes from L. */
+/* INTPRET +2 -- LM p. 1002, CM p. 1107: the QXCH's word, reached by TCF
+ * INTPRET +2 (E/CALL's return, in SYSTEM_TEST_STANDARD_LEAD_INS) with no
+ * EXTEND before it. Unextended, the same instruction word is LXCH LOC: the
+ * new LOC comes from L. */
 void intpret_plus2(void)
 {
     lxch(ADDRESS_OF(LOC));
     intpret_plus3();
 }
 
-/* INTPRET +3 -- "INTERPRETIVE BRANCHES FINISH HERE." The program's bank
- * becomes the job's (BANKSET), and its superbank bit is kept in INTBIT15
- * for the addresses its orders give. */
+/* INTPRET +3 -- LM p. 1002, CM p. 1107: "INTERPRETIVE BRANCHES FINISH HERE."
+ * The program's bank becomes the job's (BANKSET), and its superbank bit is
+ * kept in INTBIT15 for the addresses its orders give. */
 void intpret_plus3(void)
 {
     ca(BBANK_ADDRESS);

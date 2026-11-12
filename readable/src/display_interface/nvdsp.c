@@ -38,8 +38,8 @@ void pinbrnch(void)
     normbnch();
 }
 
-/* NORMBNCH +2, where UPFLAG returns: "PRIO INTERRUPTED": KEEPPRIO, else
- * PLAYJUM1. */
+/* NORMBNCH +2 -- LM p. 1365, CM p. 1476, where UPFLAG returns: "PRIO
+ * INTERRUPTED": KEEPPRIO, else PLAYJUM1. */
 void normbnch_after_upflag(void)
 {
 #if LUMINARY099
@@ -78,10 +78,11 @@ void nvdsp1(void)
     nv50dsp();
 }
 
-/* NVDSP +023: "IN CASE MARKPLAY AWAKENED AFTER SLEEPING", the mark's verb
- * and noun back in MARKNV, and a V05 (V06 for a decimal mark perform,
- * TEM1's bit 8) with its noun. (An overflow in A skips the MASK.) */
-void nvdsp_mark_plus1(void)
+/* NVDSP +023 -- LM p. 1365, CM p. 1476: "IN CASE MARKPLAY AWAKENED AFTER
+ * SLEEPING", the mark's verb and noun back in MARKNV, and a V05 (V06 for a
+ * decimal mark perform, TEM1's bit 8) with its noun. (An overflow in A skips
+ * the MASK.) */
+void nvdsp_plus023(void)
 {
     if (!ts(ADDRESS_OF(MARKNV))) mask(LOW7);
     ad(V05N00M1);
@@ -89,18 +90,20 @@ void nvdsp_mark_plus1(void)
     nvdsp1();
 }
 
-/* NVDSP +022: a complemented verb and noun (a mark perform). */
+/* NVDSP +022 -- LM p. 1365, CM p. 1476: a complemented verb and noun (a mark
+ * perform). */
 void nvdsp_mark(void)
 {
     cs(ADDRESS_OF(MARKNV));
-    nvdsp_mark_plus1();
+    nvdsp_plus023();
 }
 
-/* NVDSP +1, where COPYPACS returns, with TEMPOR2 the kind's flags. "SET UP
- * BLANK BITS FOR NVMONOPT IN CASE USER REQUESTS BLANKING MONITOR" (L);
- * bit 13 down in DSPFLG (the first part of a perform); "BIT8 SET IF DEC
- * MARK PERFORM DISPLAY" to TEM1; MPAC +2 saved. By the kind's NVWORD:
- * NVDSP1, CLEANEND for none, or a mark perform's complemented word. */
+/* NVDSP +1 -- LM p. 1365, CM p. 1476, where COPYPACS returns, with TEMPOR2
+ * the kind's flags. "SET UP BLANK BITS FOR NVMONOPT IN CASE USER REQUESTS
+ * BLANKING MONITOR" (L); bit 13 down in DSPFLG (the first part of a
+ * perform); "BIT8 SET IF DEC MARK PERFORM DISPLAY" to TEM1; MPAC +2 saved.
+ * By the kind's NVWORD: NVDSP1, CLEANEND for none, or a mark perform's
+ * complemented word. */
 void nvdsp_after_copypacs(void)
 {
     word kind = display_kind();
@@ -120,47 +123,51 @@ void nvdsp_after_copypacs(void)
     case POSITIVE: nvdsp1(); return;
     case IS_PLUS_ZERO: continue_at(CLEANEND); return;
     case NEGATIVE: nvdsp_mark(); return;
-    case IS_MINUS_ZERO: nvdsp_mark_plus1(); return;
+    case IS_MINUS_ZERO: nvdsp_plus023(); return;
     }
 }
 
-/* NV50DSP +1, NVMONOPT's return when the DSKY is busy: REST. */
+/* NV50DSP +1 -- LM p. 1365, CM p. 1476, NVMONOPT's return when the DSKY is
+ * busy: REST. */
 void nv50dsp_busy(void)
 {
     continue_at(REST);
 }
 
-/* NV50DSP +2, where NVMONOPT returns: FLASHOFF, "IN CASE OF EXTENDED VERB
- * NON-FLASH". */
+/* NV50DSP +2 -- LM p. 1366, CM p. 1476, where NVMONOPT returns: FLASHOFF,
+ * "IN CASE OF EXTENDED VERB NON-FLASH". */
 void nv50dsp_after_nvmonopt(void)
 {
     tc_at((word)(NV50DSP + 2u));
     continue_at(FLASHOFF);
 }
 
-/* NV50DSP +3, where FLASHOFF returns: COPYTOGO, "MPACS DESTROYED BY
- * NVSUB". */
+/* NV50DSP +3 -- LM p. 1366, CM p. 1476, where FLASHOFF returns: COPYTOGO,
+ * "MPACS DESTROYED BY NVSUB". */
 void nv50dsp_after_flashoff(void)
 {
     tc_at((word)(NV50DSP + 3u));
     continue_at(COPYTOGO);
 }
 
-/* NV50DSP +4, where COPYTOGO returns: "UNSET SLEEPING BITS", MRKNVFLG. */
+/* NV50DSP +4 -- LM p. 1366, CM p. 1476, where COPYTOGO returns: "UNSET
+ * SLEEPING BITS", MRKNVFLG. */
 void nv50dsp_after_copytogo(void)
 {
     tc_at((word)(NV50DSP + 4u)); /* TC DOWNFLAG; ADRES MRKNVFLG */
     continue_at(DOWNFLAG);
 }
 
-/* NV50DSP +6, where DOWNFLAG returns: NRMNVFLG down. */
+/* NV50DSP +6 -- LM p. 1366, CM p. 1477, where DOWNFLAG returns: NRMNVFLG
+ * down. */
 void nv50dsp_after_downflag(void)
 {
     tc_at((word)(NV50DSP + 6u)); /* TC DOWNFLAG; ADRES NRMNVFLG */
     continue_at(DOWNFLAG);
 }
 
-/* NV50DSP +010, where DOWNFLAG returns: PRONVFLG down. */
+/* NV50DSP +010 -- LM p. 1366, CM p. 1477, where DOWNFLAG returns: PRONVFLG
+ * down. */
 void nv50dsp_after_downflag2(void)
 {
     tc_at((word)(NV50DSP + 010u)); /* TC DOWNFLAG; ADRES PRONVFLG */
@@ -176,15 +183,16 @@ void blankchk(void)
     continue_at(BLANKSUB);
 }
 
-/* BLANKCHK +2, BLANKSUB's return when the DSKY is busy: NVDSP again. */
+/* BLANKCHK +2 -- LM p. 1366, CM p. 1477, BLANKSUB's return when the DSKY is
+ * busy: NVDSP again. */
 void blankchk_after_blanksub(void)
 {
     nvdsp();
 }
 
-/* GOANIDLE +010: not a GODSPRET, flash or paste: back to the user at
- * the kind's CADRFLSH (ENDIT, by MPAC +3). */
-void goanidle_plus8(void)
+/* GOANIDLE +010 -- LM p. 1366, CM p. 1477: not a GODSPRET, flash or paste:
+ * back to the user at the kind's CADRFLSH (ENDIT, by MPAC +3). */
+void goanidle_plus010(void)
 {
     ca(indexed(ADDRESS_OF(CADRFLSH), display_kind()));
     ts(ADDRESS_OF(MPAC) + 3u);
@@ -205,7 +213,8 @@ void isitn00(void)
     continue_at(ENDOFJOB);
 }
 
-/* GOANIDLE +4: "IS THIS A GODSPRET" (bit 6): if not ISITN00. */
+/* GOANIDLE +4 -- LM p. 1366, CM p. 1477: "IS THIS A GODSPRET" (bit 6): if
+ * not ISITN00. */
 void goanidle_plus4(void)
 {
     cs(ADDRESS_OF(TEMPOR2));
@@ -214,7 +223,7 @@ void goanidle_plus4(void)
         isitn00();
         return;
     }
-    goanidle_plus8();
+    goanidle_plus010();
 }
 
 /* GOANIDLE -- LM p. 1366, CM p. 1477: a flashing display (bit 4) waits in
@@ -238,9 +247,10 @@ void v50paste(void)
     nv50dsp();
 }
 
-/* 1STOR2ND +4: the first part done (bit 13 up in DSPFLG). "IS IT MARK"
- * (bit 15): "YES", MARKPERF. A V99PASTE (bit 12): "NVOWRD1= -0 IS V97.
- * NVWORD1= -400 IS V99" (a paste of V97 or V99); else V50PASTE. */
+/* 1STOR2ND +4 -- LM p. 1366, CM p. 1477: the first part done (bit 13 up in
+ * DSPFLG). "IS IT MARK" (bit 15): "YES", MARKPERF. A V99PASTE (bit 12):
+ * "NVOWRD1= -0 IS V97. NVWORD1= -400 IS V99" (a paste of V97 or V99); else
+ * V50PASTE. */
 void first_or_second_plus4(void)
 {
     word kind = display_kind();

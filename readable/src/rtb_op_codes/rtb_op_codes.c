@@ -103,7 +103,7 @@ void sgnagree(void)
     tc_to(SGNAGREE, TPAGREE);
 }
 
-/* SGNAGREE +1, where TPAGREE returns. */
+/* SGNAGREE +1 -- LM p. 1397, CM p. 1509, where TPAGREE returns. */
 void sgnagree_after_tpagree(void)
 {
     continue_at(DANZIG); /* TCF DANZIG */
@@ -120,8 +120,8 @@ void one_sto2s(void)
     one_sto2s_plus1();
 }
 
-/* 1STO2S +1, where 1TO2SUB returns: MPAC +1 gets +0, and NEWMODE sets the
- * mode to double precision (A +0). */
+/* 1STO2S +1 -- LM p. 1397, CM p. 1509, where 1TO2SUB returns: MPAC +1 gets
+ * +0, and NEWMODE sets the mode to double precision (A +0). */
 void one_sto2s_plus1(void)
 {
     set_A(ZERO); /* CAF ZERO */
@@ -359,7 +359,8 @@ void pulseimu(void)
     tc_to(PULSEIMU + 2u, BANKCALL);                         /* CADR IMUPULSE */
 }
 
-/* PULSEIMU +4, where IMUPULSE returns: back to DANZIG. */
+/* PULSEIMU +4 -- LM p. 1400, CM p. 1512, where IMUPULSE returns: back to
+ * DANZIG. */
 void pulseimu_after_imupulse(void)
 {
     continue_at(DANZIG); /* TCF DANZIG */
@@ -475,12 +476,12 @@ static bool upper_half_zero(unsigned address)
 
 static void offtunit_minus2(void);
 
-/* NORMUNIT +5, where VECAGREE returns: if the upper halves of all three
- * components are zero, each is shifted "LEFT 13" (times BIT14, added back
- * in by DAS, which "GAINS A LITTLE ACCURACY") and the shift count is 13;
- * else (NOSHIFT) +0. "IF NORMUNIT IS USED AND THE UPPER ORDER HALVES OF
- * ALL COMPONENTS ARE ZERO, THE MAGNITUDE RETURNED IN 36D WILL BE TOO LARGE
- * BY A FACTOR OF 2(13)". */
+/* NORMUNIT +5 -- LM p. 1401, CM p. 1514, where VECAGREE returns: if the
+ * upper halves of all three components are zero, each is shifted "LEFT 13"
+ * (times BIT14, added back in by DAS, which "GAINS A LITTLE ACCURACY") and
+ * the shift count is 13; else (NOSHIFT) +0. "IF NORMUNIT IS USED AND THE
+ * UPPER ORDER HALVES OF ALL COMPONENTS ARE ZERO, THE MAGNITUDE RETURNED IN
+ * 36D WILL BE TOO LARGE BY A FACTOR OF 2(13)". */
 void normunit_after_vecagree(void)
 {
     if (!upper_half_zero(MPAC_AT(0u)) || !upper_half_zero(MPAC_AT(3u)) ||
@@ -502,9 +503,9 @@ void normunit_after_vecagree(void)
     offtunit_minus2();
 }
 
-/* OFFTUNIT -2: the count to 37D of the work area kept in MPAC +2 (INDEX
- * MPAC +2; TS 37D), and UNIT +1 by POSTJUMP, past the TC VECAGREE UNIT
- * starts with, done already. */
+/* OFFTUNIT -2 -- LM p. 1402, CM p. 1515: the count to 37D of the work area
+ * kept in MPAC +2 (INDEX MPAC +2; TS 37D), and UNIT +1 by POSTJUMP, past the
+ * TC VECAGREE UNIT starts with, done already. */
 static void offtunit_minus2(void)
 {
     if (ts_indexed(indexed_by(MPAC_AT(2u), TS_37D))) not_modelled();
@@ -519,7 +520,7 @@ void vecsgnag(void)
     tc_to(VECSGNAG, BANKCALL); /* CADR VECAGREE */
 }
 
-/* VECSGNAG +2: back to DANZIG (TC DANZIG). */
+/* VECSGNAG +2 -- LM p. 1402, CM p. 1515: back to DANZIG (TC DANZIG). */
 void vecsgnag_after_vecagree(void)
 {
     tc_to(VECSGNAG + 2u, DANZIG);

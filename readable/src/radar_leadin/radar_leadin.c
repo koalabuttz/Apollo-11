@@ -42,7 +42,8 @@ void radsamp(void)
     }
 }
 
-/* RADSAMP +6 -- the sample itself, a job: DORSAMP at priority 25. */
+/* RADSAMP +6 -- LM p. 490: the sample itself, a job: DORSAMP at priority
+ * 25. */
 void radsamp_after_waitlist(void)
 {
     set_A(PRIO25);
@@ -50,9 +51,9 @@ void radsamp_after_waitlist(void)
     continue_at(NOVAC); /* 2CADR DORSAMP */
 }
 
-/* RADSAMP +012 -- "FOR CYCLIC SAMPLING, RTSTDEX = RTSTLOC/2 + RTSTBASE",
- * RTSTBASE "0 FOR RR, 2 FOR LR": the CAF BIT14 and MP halve RTSTLOC. An
- * overflow at the TS skips the TCF TASKOVER into DORSAMP. */
+/* RADSAMP +012 -- LM p. 490: "FOR CYCLIC SAMPLING, RTSTDEX = RTSTLOC/2 +
+ * RTSTBASE", RTSTBASE "0 FOR RR, 2 FOR LR": the CAF BIT14 and MP halve
+ * RTSTLOC. An overflow at the TS skips the TCF TASKOVER into DORSAMP. */
 void radsamp_after_novac(void)
 {
     set_A(BIT14);
@@ -73,15 +74,15 @@ void dorsamp(void)
     varadar();
 }
 
-/* DORSAMP +1 -- RADSTALL waits for the reading. */
+/* DORSAMP +1 -- LM p. 490: RADSTALL waits for the reading. */
 void dorsamp_after_varadar(void)
 {
     tc_at(DORSAMP + 1u);
     continue_at(BANKCALL); /* CADR RADSTALL */
 }
 
-/* DORSAMP +3 -- RADSTALL's bad return: "ADVANCE FAIL COUNTER BUT ACCEPT BAD
- * DATA". */
+/* DORSAMP +3 -- LM p. 490: RADSTALL's bad return: "ADVANCE FAIL COUNTER BUT
+ * ACCEPT BAD DATA". */
 void dorsamp_bad_return(void)
 {
     incr(ADDRESS_OF(RFAILCNT));

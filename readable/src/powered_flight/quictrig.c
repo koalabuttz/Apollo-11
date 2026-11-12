@@ -21,8 +21,8 @@
 #include "../single_precision/single_precision.h"
 #include "../agc/names.h"
 
-/* QUICTRIG +4: the next angle's offset into ITEMP2, and the angle into A
- * for SPSIN. */
+/* QUICTRIG +4 -- LM p. 1261, CM p. 1367: the next angle's offset into
+ * ITEMP2, and the angle into A for SPSIN. */
 static void next_angle(void)
 {
     mask(SIX);
@@ -31,8 +31,8 @@ static void next_angle(void)
     tc_at(QUICTRIG + 010u); /* TC SPSIN */
 }
 
-/* QUICTRIG: interrupts off, the return into ITEMP1, the first angle
- * (CDUSPOT +4). */
+/* QUICTRIG -- LM p. 1261, CM p. 1367: interrupts off, the return into
+ * ITEMP1, the first angle (CDUSPOT +4). */
 static void start(void)
 {
     inhint();

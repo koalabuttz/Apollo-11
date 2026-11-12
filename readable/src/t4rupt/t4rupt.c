@@ -197,7 +197,8 @@ static void hang20(void)
     hang20_plus1();
 }
 
-/* HANG20 +1: DSPOUT's CCS NOUT comes here with NOUT -0 (A +0). */
+/* HANG20 +1 -- LM p. 157, CM p. 135: DSPOUT's CCS NOUT comes here with NOUT
+ * -0 (A +0). */
 static void hang20_plus1(void)
 {
     ads(ADDRESS_OF(DSRUPTSW));

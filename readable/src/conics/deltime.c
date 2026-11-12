@@ -28,16 +28,17 @@ static const word deltime_words[] = {
 const struct interpretive_code DELTIME_CODE = {I_DELTIME >> 10, DELTIME, COUNT(deltime_words),
                                                deltime_words};
 
-/* After the EXIT, TC POLY: S(XI), the polynomial whose degree and
- * coefficients are the words after the TC (DEC 8, then ten 2DECs, from
- * .083333334, 1/12, on); POLY returns past them, to DELTIME +027. */
+/* DELTIME +1 -- LM p. 1180, CM p. 1283: After the EXIT, TC POLY: S(XI), the
+ * polynomial whose degree and coefficients are the words after the TC (DEC
+ * 8, then ten 2DECs, from .083333334, 1/12, on); POLY returns past them, to
+ * DELTIME +027. */
 void deltime_after_exit(void)
 {
     tc_to(DELTIME + 1u, POLY);
 }
 
-/* DELTIME +027: the series' value in MPAC, and the interpreter again
- * (DELTIME_S_CODE). */
+/* DELTIME +027 -- LM p. 1180, CM p. 1283: the series' value in MPAC, and the
+ * interpreter again (DELTIME_S_CODE). */
 void deltime_after_poly(void)
 {
     tc_at(DELTIME + 027u);
@@ -55,15 +56,16 @@ static const word deltime_s_words[] = {
 const struct interpretive_code DELTIME_S_CODE = {I_DELTIME >> 10, DELTIME + 030u,
                                                  COUNT(deltime_s_words), deltime_s_words};
 
-/* After the EXIT, TC POLY: C(XI) (DEC 8 and ten 2DECs again, from
- * .031250001, 1/32, on); POLY returns to DELTIME +061. */
+/* DELTIME +033 -- LM p. 1180, CM p. 1283: After the EXIT, TC POLY: C(XI)
+ * (DEC 8 and ten 2DECs again, from .031250001, 1/32, on); POLY returns to
+ * DELTIME +061. */
 void deltime_after_second_exit(void)
 {
     tc_to(DELTIME + 033u, POLY);
 }
 
-/* DELTIME +061: C(XI) in MPAC, and the interpreter again
- * (DELTIME_C_CODE). */
+/* DELTIME +061 -- LM p. 1180, CM p. 1283: C(XI) in MPAC, and the interpreter
+ * again (DELTIME_C_CODE). */
 void deltime_after_second_poly(void)
 {
     tc_at(DELTIME + 061u);

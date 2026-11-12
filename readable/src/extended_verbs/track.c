@@ -99,13 +99,13 @@ void trmtrak1_after_third_downflag(void)
     tc(TRMTRAK1 + 6u, INTPRET);
 }
 
-/* TRMTRAK1 +10 -- LM p. 288: "KILL GROUP 2 TO HALT P20 ACTIVITY". */
+/* TRMTRAK1 +012 -- LM p. 288: "KILL GROUP 2 TO HALT P20 ACTIVITY". */
 void trmtrak1_after_exit(void)
 {
     tc(TRMTRAK1 + 012u, PHASCHNG); /* OCT 2 */
 }
 
-/* TRMTRAK1 +12 -- LM p. 288: with interrupts held, "ZERO THE COMMANDED
+/* TRMTRAK1 +014 -- LM p. 288: with interrupts held, "ZERO THE COMMANDED
  * RATES TO STOP MANEUVER". */
 void trmtrak1_after_phaschng(void)
 {
@@ -113,19 +113,19 @@ void trmtrak1_after_phaschng(void)
     tc(TRMTRAK1 + 015u, IBNKCALL); /* CADR STOPRATE */
 }
 
-/* TRMTRAK1 +15 -- LM p. 288: the DAP's deadband back. */
+/* TRMTRAK1 +017 -- LM p. 288: the DAP's deadband back. */
 void trmtrak1_after_ibnkcall(void)
 {
     tc(TRMTRAK1 + 017u, IBNKCALL); /* CADR RESTORDB */
 }
 
-/* TRMTRAK1 +17 -- LM p. 288: "CLEAR BITS 10 + 15 OF RADMODES". */
+/* TRMTRAK1 +021 -- LM p. 288: "CLEAR BITS 10 + 15 OF RADMODES". */
 void trmtrak1_after_second_ibnkcall(void)
 {
     tc(TRMTRAK1 + 021u, CLRADMOD);
 }
 
-/* TRMTRAK1 +18 -- LM p. 288: "DISABLE LOCKON" (channel 12's bit 14), and
+/* TRMTRAK1 +022 -- LM p. 288: "DISABLE LOCKON" (channel 12's bit 14), and
  * GOPROG2: "CAUSE RESTART". */
 void trmtrak1_after_clradmod(void)
 {
@@ -162,7 +162,7 @@ void tracktrm_after_downflag(void)
     tc(TRACKTRM + 012u, DOWNFLAG); /* ADRES TRACKFLG */
 }
 
-/* TRACKTRM +12 and +14 -- CM p. 259: UPDATFLG and IMUSE down. */
+/* TRACKTRM +014 and +016 -- CM p. 259: UPDATFLG and IMUSE down. */
 void tracktrm_after_second_downflag(void)
 {
     tc(TRACKTRM + 014u, DOWNFLAG); /* ADRES UPDATFLG */
@@ -173,7 +173,7 @@ void tracktrm_after_third_downflag(void)
     tc(TRACKTRM + 016u, DOWNFLAG); /* ADRES IMUSE */
 }
 
-/* TRACKTRM +16 -- CM p. 259: E-bank 6, and with interrupts held the
+/* TRACKTRM +020 -- CM p. 259: E-bank 6, and with interrupts held the
  * commanded rates stopped. */
 void tracktrm_after_fourth_downflag(void)
 {
@@ -183,7 +183,7 @@ void tracktrm_after_fourth_downflag(void)
     tc(TRACKTRM + 023u, STOPRATE);
 }
 
-/* TRACKTRM +20 -- CM p. 259: OPTIND -1, and "DONT INTERRUPT INTEGRATION"
+/* TRACKTRM +024 -- CM p. 259: OPTIND -1, and "DONT INTERRUPT INTEGRATION"
  * (TRACKTRM_CODE, below). */
 void tracktrm_after_stoprate(void)
 {
@@ -192,7 +192,7 @@ void tracktrm_after_stoprate(void)
     tc(TRACKTRM + 026u, INTPRET);
 }
 
-/* TRACKTRM +26 -- CM pp. 259-260: "KILL GROUP 2 TO HALT P20 ACTIVITY",
+/* TRACKTRM +032 -- CM pp. 259-260: "KILL GROUP 2 TO HALT P20 ACTIVITY",
  * "ALSO KILL GROUP 1"; 2PHSCHNG returns to CLEANOUT. */
 void tracktrm_after_exit(void)
 {
@@ -254,7 +254,7 @@ void attachit(void)
     tc(ATTACHIT, INTPRET);
 }
 
-/* ATTACHIT +10 -- LM p. 297, CM p. 264: "OUR STATE VECTOR INTO OTHER VIA
+/* ATTACHIT +012 -- LM p. 297, CM p. 264: "OUR STATE VECTOR INTO OTHER VIA
  * GENTRAN". */
 void attachit_after_exit(void)
 {
@@ -262,7 +262,7 @@ void attachit_after_exit(void)
 }
 
 #if LUMINARY099
-/* ATTACHIT +14 -- LM p. 297: "UPDATE R-OTHER, V-OTHER", in
+/* ATTACHIT +016 -- LM p. 297: "UPDATE R-OTHER, V-OTHER", in
  * ATTACHIT_CODE_2 (below). */
 void attachit_after_gentran(void)
 {
@@ -270,7 +270,7 @@ void attachit_after_gentran(void)
     tc(ATTACHIT + 017u, INTPRET);
 }
 
-/* ATTACHIT +22 -- LM p. 297. */
+/* ATTACHIT +026 -- LM p. 297. */
 void attachit_after_second_exit(void)
 {
     back_to_pinball(ATTACHIT + 026u);
@@ -285,7 +285,7 @@ void tachexit(void)
     tc(TACHEXIT + 1u, INTPRET);
 }
 
-/* TACHEXIT +10 -- CM p. 265. */
+/* TACHEXIT +012 -- CM p. 265. */
 void tachexit_after_exit(void)
 {
     back_to_pinball(TACHEXIT + 012u);
@@ -315,13 +315,13 @@ void lmtocm(void)
     tc(LMTOCM, INTPRET);
 }
 
-/* LMTOCM +10 -- CM p. 265: "LM STATE VECTOR INTO CM VIA GENTRAN". */
+/* LMTOCM +012 -- CM p. 265: "LM STATE VECTOR INTO CM VIA GENTRAN". */
 void lmtocm_after_exit(void)
 {
     gentran_from(LMTOCM + 012u);
 }
 
-/* LMTOCM +14 -- CM p. 265. */
+/* LMTOCM +016 -- CM p. 265. */
 void lmtocm_after_gentran(void)
 {
     continue_at(TACHEXIT); /* TCF TACHEXIT */
@@ -355,7 +355,7 @@ void dsprrlos_after_priochng(void)
     tc(DSPRRLOS + 7u, BANKCALL); /* CADR GOMARKFR */
 }
 
-/* DSPRRLOS +9, +10 and +11 -- LM p. 299: terminate, proceed, and enter
+/* DSPRRLOS +011, +012 and +013 -- LM p. 299: terminate, proceed, and enter
  * or recycle each end it: B5OFF, extended verb bit 5 off, which RRLOSDSP
  * watches. */
 void dsprrlos_after_terminate(void)
@@ -373,7 +373,7 @@ void dsprrlos_after_enter(void)
     tc(DSPRRLOS + 013u, B5OFF);
 }
 
-/* DSPRRLOS +12 -- LM p. 299: GOMARKFR's immediate return, with the
+/* DSPRRLOS +014 -- LM p. 299: GOMARKFR's immediate return, with the
  * display up: blank R3 (BIT3) and end the job. */
 void dsprrlos_immediate_return(void)
 {
@@ -381,7 +381,7 @@ void dsprrlos_immediate_return(void)
     tc(DSPRRLOS + 015u, BLANKET);
 }
 
-/* DSPRRLOS +14 -- LM p. 299. */
+/* DSPRRLOS +016 -- LM p. 299. */
 void dsprrlos_after_blanket(void)
 {
     tc(DSPRRLOS + 016u, ENDOFJOB);
@@ -398,14 +398,14 @@ void rrlosdsp(void)
     tc(RRLOSDSP + 3u, INTPRET);
 }
 
-/* RRLOSDSP +39 -- LM p. 300: a second's wait. */
+/* RRLOSDSP +047 -- LM p. 300: a second's wait. */
 void rrlosdsp_after_exit(void)
 {
     set_A(ONE_SEC);                /* CA 1SEC */
     tc(RRLOSDSP + 050u, BANKCALL); /* CADR DELAYJOB */
 }
 
-/* RRLOSDSP +42 -- LM p. 300: again while the display is up (extended verb
+/* RRLOSDSP +052 -- LM p. 300: again while the display is up (extended verb
  * bit 5, BIT5 of EXTVBACT); else the display is released. */
 void rrlosdsp_after_delayjob(void)
 {

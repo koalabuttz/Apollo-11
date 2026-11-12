@@ -16,41 +16,42 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-/* RODTASK: the second's task, which starts RODCOMP as a job (FINDVAC,
- * priority 22, "EBANK= DVCNTR", 2CADR RODCOMP), */
+/* RODTASK -- p. 816: the second's task, which starts RODCOMP as a job
+ * (FINDVAC, priority 22, "EBANK= DVCNTR", 2CADR RODCOMP), */
 void rodtask(void)
 {
     set_A(PRIO22);
     tc_to(RODTASK + 1u, FINDVAC);
 }
 
-/* and ends (TCF TASKOVER). */
+/* RODTASK +4 -- p. 816: and ends (TCF TASKOVER). */
 void rodtask_after_findvac(void)
 {
     continue_at(TASKOVER);
 }
 
-/* P66VERTA: "TERMINATE GROUP 3." (PHASCHNG, OCT 00003), */
+/* P66VERTA -- p. 816: "TERMINATE GROUP 3." (PHASCHNG, OCT 00003), */
 void p66verta(void)
 {
     tc_to(P66VERTA, PHASCHNG);
 }
 
-/* and RODTASK in a second (TWIDDLE, ADRES RODTASK). */
+/* P66VERTA +2 -- p. 816: and RODTASK in a second (TWIDDLE, ADRES
+ * RODTASK). */
 void p66verta_after_phaschng(void)
 {
     set_A(ONE_SEC);
     tc_to(P66VERTA + 3u, TWIDDLE);
 }
 
-/* RODCOMP, with interrupts held: the switch's clicks since the last pass
- * (RODCOUNT, cleared) times RODSCAL1, "UPDATE DESIRED ALTITUDE RATE." The
- * PIPAs: "SET OLDPIPAX,Y,Z = PIPAX,Y,Z" and "SET RUPTREG1,2,3 = OLDPIPAX,Y,Z"
- * (the last pass's), and "SNAPSHOT TIME OF PIPA READING." (THISTPIP).
- * MPAC gets the counts since READACCS (PIPA + PIPATMP), DELVROD those since
- * the last pass (TEMX, Y and Z, READACCS's, cleared "SO WE WILL KNOW WHEN
- * READACCS CHANGES THEM."). A TS that overflows skips the word after it,
- * and leaves A +1 or -1 for the next sum. Then the velocity's
+/* RODCOMP -- p. 816, with interrupts held: the switch's clicks since the
+ * last pass (RODCOUNT, cleared) times RODSCAL1, "UPDATE DESIRED ALTITUDE
+ * RATE." The PIPAs: "SET OLDPIPAX,Y,Z = PIPAX,Y,Z" and "SET RUPTREG1,2,3 =
+ * OLDPIPAX,Y,Z" (the last pass's), and "SNAPSHOT TIME OF PIPA READING."
+ * (THISTPIP). MPAC gets the counts since READACCS (PIPA + PIPATMP), DELVROD
+ * those since the last pass (TEMX, Y and Z, READACCS's, cleared "SO WE WILL
+ * KNOW WHEN READACCS CHANGES THEM."). A TS that overflows skips the word
+ * after it, and leaves A +1 or -1 for the next sum. Then the velocity's
  * interpretive code (ITRPNT1_CODE). */
 void rodcomp(void)
 {
@@ -213,15 +214,16 @@ static const word itrpnt1_words[] = {
     /* ITRPNT2 */ ORDER(EXIT),
 };
 
-/* After the EXIT: "MPAC = MEASURED ACCELERATION." for THROTTLE +3, which
- * throttles the engine to /AFC/ (BANKCALL, CADR THROTTLE +3), */
+/* ITRPNT2 +1 -- p. 819: After the EXIT: "MPAC = MEASURED ACCELERATION." for
+ * THROTTLE +3, which throttles the engine to /AFC/ (BANKCALL, CADR THROTTLE
+ * +3), */
 void itrpnt2_after_exit(void)
 {
     dxch(ADDRESS_OF(MPAC));
     tc_to(ITRPNT2 + 2u, BANKCALL);
 }
 
-/* then the horizontal velocity (VHORCOMP_CODE). */
+/* ITRPNT2 +4 -- p. 819: then the horizontal velocity (VHORCOMP_CODE). */
 void itrpnt2_after_throttle(void)
 {
     tc_at(ITRPNT2 + 4u);
@@ -246,8 +248,8 @@ static const word vhorcomp_words[] = {
     ORDER(EXIT),
 };
 
-/* After the EXIT: "PUT UP V06N60 DISPLAY BUT AVOID PHASCHNG" (BANKCALL,
- * CADR DISPEXIT +3). */
+/* VHORCOMP +012 -- p. 819: After the EXIT: "PUT UP V06N60 DISPLAY BUT AVOID
+ * PHASCHNG" (BANKCALL, CADR DISPEXIT +3). */
 void vhorcomp_after_exit(void)
 {
     tc_to(VHORCOMP + 012u, BANKCALL);

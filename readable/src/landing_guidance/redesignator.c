@@ -15,9 +15,9 @@
 
 /* ---- REDESIGNATOR TRAP -- p. 820 ---- */
 
-/* PITFALL: the hand controller's interrupt. BANKRUPT and QRUPT keep the
- * interrupted program's FB and Q, and CHECKMM asks whether this is P64:
- * "IF NOT IN P64, NO REASON TO CONTINUE". */
+/* PITFALL -- p. 820: the hand controller's interrupt. BANKRUPT and QRUPT
+ * keep the interrupted program's FB and Q, and CHECKMM asks whether this is
+ * P64: "IF NOT IN P64, NO REASON TO CONTINUE". */
 void pitfall(void)
 {
     xch(ADDRESS_OF(BANKRUPT));
@@ -25,16 +25,18 @@ void pitfall(void)
     tc_to(PITFALL + 3u, CHECKMM); /* DEC 64 */
 }
 
-/* Not P64: back to the interrupted program (TCF RESUME). */
+/* PITFALL +5 -- p. 820: Not P64: back to the interrupted program (TCF
+ * RESUME). */
 void pitfall_not_p64(void)
 {
     continue_at(RESUME);
 }
 
-/* P64: ELVIRA gets the controller's four pulse bits that are on (channel
- * 31 reads a deflection as 0, so COM; ALL4BITS: + and - pitch, + and -
- * yaw), ZERLINA counts two quiet passes, and REDESMON runs as a task 50
- * ms from now (TWIDDLE). (A masked word never overflows: no TS skips.) */
+/* PITFALL +6 -- p. 820: P64: ELVIRA gets the controller's four pulse bits
+ * that are on (channel 31 reads a deflection as 0, so COM; ALL4BITS: + and -
+ * pitch, + and - yaw), ZERLINA counts two quiet passes, and REDESMON runs as
+ * a task 50 ms from now (TWIDDLE). (A masked word never overflows: no TS
+ * skips.) */
 void pitfall_in_p64(void)
 {
     read_channel(CHAN31);
@@ -47,14 +49,14 @@ void pitfall_in_p64(void)
     tc_to(PITFALL + 016u, TWIDDLE); /* ADRES REDESMON */
 }
 
-/* TWIDDLE's return: TCF RESUME. */
+/* PITFALL +020 -- p. 820: TWIDDLE's return: TCF RESUME. */
 void pitfall_after_twiddle(void)
 {
     continue_at(RESUME);
 }
 
-/* PREMON1 and PREMON2: REDESMON again in 70 ms (VARDELAY), PREMON1 with
- * ZERLINA one less. */
+/* PREMON1 -- p. 820 and PREMON2: REDESMON again in 70 ms (VARDELAY), PREMON1
+ * with ZERLINA one less. */
 static void premon2(void)
 {
     set_A(SEVEN);
@@ -69,8 +71,8 @@ static void premon1(void)
 
 static void count_em(void);
 
-/* RESETRPT: "RESET RUPT. TERMINATE": channel 13 bit 12 enables the hand
- * controller's interrupt again, and the task ends (TASKOVER). */
+/* RESETRPT -- p. 821: "RESET RUPT. TERMINATE": channel 13 bit 12 enables the
+ * hand controller's interrupt again, and the task ends (TASKOVER). */
 static void resetrpt(void)
 {
     set_A(BIT12);
@@ -78,14 +80,14 @@ static void resetrpt(void)
     continue_at(TASKOVER);
 }
 
-/* REDESMON: the controller's bits now go to ELVIRA, and the last pass's to
- * L. While any bit is on, the monitor goes on ("CONTINUE MONITOR"). Once
- * none is, the last pass's are the pulse to count (COUNT'EM); if that pass
- * had none either, ZERLINA counts down to 0, and then the interrupt is
- * reset. Every CCS here is a word of four masked bits but two: CCS L, of
- * the last pass's ELVIRA, and CCS ZERLINA, which the faithful port takes
- * of any word. The outcomes no monitor sees (ELVIRA or L or ZERLINA
- * negative) are followed as the AGC would; the CCS table is
+/* REDESMON -- p. 820: the controller's bits now go to ELVIRA, and the last
+ * pass's to L. While any bit is on, the monitor goes on ("CONTINUE
+ * MONITOR"). Once none is, the last pass's are the pulse to count
+ * (COUNT'EM); if that pass had none either, ZERLINA counts down to 0, and
+ * then the interrupt is reset. Every CCS here is a word of four masked bits
+ * but two: CCS L, of the last pass's ELVIRA, and CCS ZERLINA, which the
+ * faithful port takes of any word. The outcomes no monitor sees (ELVIRA or L
+ * or ZERLINA negative) are followed as the AGC would; the CCS table is
  *
  *       CCS ELVIRA        CCS L             CCS ZERLINA
  *       TCF PREMON2       TCF COUNT'EM      TCF PREMON1
@@ -129,7 +131,7 @@ zerlina:
     }
 }
 
-/* TC 5013's return: TCF TASKOVER. */
+/* RESETRPT +3 -- p. 821: TC 5013's return: TCF TASKOVER. */
 void resetrpt_taskover(void)
 {
     continue_at(TASKOVER);
@@ -145,9 +147,9 @@ static void add_if(word bit, word step, unsigned increment)
     ads(increment);
 }
 
-/* COUNT'EM: "ARE WE IN ATTITUDE-HOLD?" (channel 31 bit 13 off): then
- * "SKIP REDESIGNATION LOGIC". Else each of the last pass's bits moves the
- * site: azimuth 2 degrees (AZEACH), elevation half a degree (ELEACH),
+/* COUNT'EM -- p. 821: "ARE WE IN ATTITUDE-HOLD?" (channel 31 bit 13 off):
+ * then "SKIP REDESIGNATION LOGIC". Else each of the last pass's bits moves
+ * the site: azimuth 2 degrees (AZEACH), elevation half a degree (ELEACH),
  * -AZBIT and -ELBIT down, +AZBIT and +ELBIT up ("THESE EQUIVALENCES ARE
  * BASED ON GSOP CHAPTER 4, REVISION 16 OF P64LM"); then RESETRPT. */
 static void count_em(void)
@@ -167,10 +169,10 @@ static void count_em(void)
 
 /* ---- R.O.D. TRAP -- p. 822 ---- */
 
-/* DESCBITS: "COME HERE FROM MARKRUPT CODING WITH BIT 7 OR 6 OF CHANNEL 16
- * IN A; BIT 7 MEANS - RATE INCREMENT, BIT 6 + INCREMENT." RODCOUNT gets
- * -1 or +1 (CS TWO, AD ONE; or, with bit 7 off, AD ONE alone). "TRAP IS
- * RESET WHEN SWITCH IS RELEASED". */
+/* DESCBITS -- p. 822: "COME HERE FROM MARKRUPT CODING WITH BIT 7 OR 6 OF
+ * CHANNEL 16 IN A; BIT 7 MEANS - RATE INCREMENT, BIT 6 + INCREMENT."
+ * RODCOUNT gets -1 or +1 (CS TWO, AD ONE; or, with bit 7 off, AD ONE alone).
+ * "TRAP IS RESET WHEN SWITCH IS RELEASED". */
 void descbits(void)
 {
     mask(BIT7);

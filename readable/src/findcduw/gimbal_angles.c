@@ -78,10 +78,10 @@ const struct interpretive_code AFTRFLTR_CODE = {030u, AFTRFLTR, COUNT(aftrfltr_w
 
 /* ---- The middle gimbal angle -- p. 914 ---- */
 
-/* "LIMIT THE MIDDLE GIMBAL ANGLE": NB2CDUSP's angles are in MPAC, MPAC +1
- * and MPAC +2 (X, Y, Z); the middle one, Z, to within CDUZDLIM, "70 DEG
- * LIMIT FOR MGA" (LIMITSUB; "CAN'T LXCH: NEED UNLIMITED MGA FOR ALARM").
- * (A is a word: TS L does not skip.) */
+/* MGARET -012 -- p. 914: "LIMIT THE MIDDLE GIMBAL ANGLE": NB2CDUSP's angles
+ * are in MPAC, MPAC +1 and MPAC +2 (X, Y, Z); the middle one, Z, to within
+ * CDUZDLIM, "70 DEG LIMIT FOR MGA" (LIMITSUB; "CAN'T LXCH: NEED UNLIMITED
+ * MGA FOR ALARM"). (A is a word: TS L does not skip.) */
 void limit_mga(void)
 {
     ca(MPAC_AT(2u));
@@ -92,10 +92,10 @@ void limit_mga(void)
     limit_mga_after_limitsub();
 }
 
-/* LIMITSUB's return: the limited angle to MPAC +2, and the difference
- * from the unlimited one: "THIS BETTER YIELD ZERO", else alarm 00401
- * (ALARMMGA), which comes back to MGARET. ("1 BIT ERROR POSSIBLE BECAUSE
- * USING 2'S COMP. WHO CARES?") */
+/* MGARET -6 -- p. 914: LIMITSUB's return: the limited angle to MPAC +2, and
+ * the difference from the unlimited one: "THIS BETTER YIELD ZERO", else
+ * alarm 00401 (ALARMMGA), which comes back to MGARET. ("1 BIT ERROR POSSIBLE
+ * BECAUSE USING 2'S COMP. WHO CARES?") */
 void limit_mga_after_limitsub(void)
 {
     xch(MPAC_AT(2u));
@@ -107,15 +107,15 @@ void limit_mga_after_limitsub(void)
     mgaret();
 }
 
-/* MGARET: "COMPUTE THE UNLIMITED GIMBAL ANGLE CHGS", Z, Y, X (TEM2 2, 1,
- * 0), interrupts inhibited ("RELINT AT TC INTPRET AFTER TCQCDUW"). Each
- * angle goes to CPHI ("OUTPUTS TO NOUN22"), and its change from the
+/* MGARET -- p. 914: "COMPUTE THE UNLIMITED GIMBAL ANGLE CHGS", Z, Y, X (TEM2
+ * 2, 1, 0), interrupts inhibited ("RELINT AT TC INTPRET AFTER TCQCDUW").
+ * Each angle goes to CPHI ("OUTPUTS TO NOUN22"), and its change from the
  * commanded one (MSU CDUXD: "NO MATTER THAT THESE SLIGHTLY DIFFERENT FROM
- * WHEN WE INITIALLY FETCHED THEM"), negated, to -DELGMB: "-UNLIMITED
- * GIMBAL ANGLE CHGS, 1'S, PI". "TO PREVENT FALSE STARTS ABOUT X, ZERO
- * FLAGOODW IF DELGMBZ OR Y TOO BIG": the last change (in L) squared plus
- * HI5, "WITHIN 1 BIT OF -(45 DEG SQUARED)", above zero. (TEM2 is 2, 1 or
- * 0 here, and A a word at each TS: none skips.)
+ * WHEN WE INITIALLY FETCHED THEM"), negated, to -DELGMB: "-UNLIMITED GIMBAL
+ * ANGLE CHGS, 1'S, PI". "TO PREVENT FALSE STARTS ABOUT X, ZERO FLAGOODW IF
+ * DELGMBZ OR Y TOO BIG": the last change (in L) squared plus HI5, "WITHIN 1
+ * BIT OF -(45 DEG SQUARED)", above zero. (TEM2 is 2, 1 or 0 here, and A a
+ * word at each TS: none skips.)
  *
  * Then the "BRANCHES TO NOATTCNT": "NO PNGCS AUTO" (FLPAUTNO), or "ENGINE
  * NOT ON" (ENGONFLG): NOATTCNT +2, a STOPRATE and no commands. CCS
@@ -169,10 +169,10 @@ void mgaret(void)
 
 /* ---- The attitude angle changes -- p. 916 ---- */
 
-/* LIMITSUB's return: "-DELGMBZ"; then Y: -DELGMB +1 times COS(CDUZD),
- * "-DELATTYPRIME/2 UNLIMITED", to DAY/2MAX. (An A that overflows skips
- * the CA: MP then takes -DELGMBZ's +1 or -1. A product never overflows:
- * TS L does not skip.) */
+/* MGARET +043 -- p. 916: LIMITSUB's return: "-DELGMBZ"; then Y: -DELGMB +1
+ * times COS(CDUZD), "-DELATTYPRIME/2 UNLIMITED", to DAY/2MAX. (An A that
+ * overflows skips the CA: MP then takes -DELGMBZ's +1 or -1. A product never
+ * overflows: TS L does not skip.) */
 void limit_attitude_after_z(void)
 {
     if (!ts(MINUS_DELGMB_AT(2u))) ca(MINUS_DELGMB_AT(1u));
@@ -184,11 +184,11 @@ void limit_attitude_after_z(void)
     limit_attitude_after_y();
 }
 
-/* LIMITSUB's return: divided by COS(CDUZD) back, "-DELGMBY, FETCHING
- * UNLIMITED VALUE"; then X: "+DELATTX UNLIMITD, MAG < 180 DEG. BASED ON
- * UNLIMITED DELGMBV" (twice the unlimited -DELGMBY times SIN(CDUZD),
- * negated, less -DELGMB; "ONE BIT ERROR IF OPERANDS IN MSU OF MIXED
- * SIGNS. WHO CARES?"), to DAXMAX. (MSU gives a word: TS L does not
+/* MGARET +053 -- p. 916: LIMITSUB's return: divided by COS(CDUZD) back,
+ * "-DELGMBY, FETCHING UNLIMITED VALUE"; then X: "+DELATTX UNLIMITD, MAG <
+ * 180 DEG. BASED ON UNLIMITED DELGMBV" (twice the unlimited -DELGMBY times
+ * SIN(CDUZD), negated, less -DELGMB; "ONE BIT ERROR IF OPERANDS IN MSU OF
+ * MIXED SIGNS. WHO CARES?"), to DAXMAX. (MSU gives a word: TS L does not
  * skip.) */
 void limit_attitude_after_y(void)
 {
@@ -205,7 +205,8 @@ void limit_attitude_after_y(void)
     limit_attitude_after_x();
 }
 
-/* LIMITSUB's return: "SAVE LIMITED +DELATTX"; "FETCH IT BACK CHGING SIGN
+/* MGARET +070 -- p. 916: LIMITSUB's return: "SAVE LIMITED +DELATTX"; "FETCH
+ * IT BACK CHGING SIGN
  * IF WINDOW GOOD" (FLAGOODW), "OTHERWISE USE ZERO FOR -DELATTX"; and the
  * "-CNTRIB TO -DELATTX FROM -DELGMBY" (twice -DELGMBY times SIN(CDUZD))
  * added in: "-DELGMBX. NO OVERFLOW SINCE LIMITED TO
@@ -271,8 +272,8 @@ void limit_attitude_after_x(void)
 
 /* ---- The final transfer -- p. 918 ---- */
 
-/* CDUWXFR, for Z, Y, X (TEM2 2, 1, 0): each -DELGMB times DT/DELT, the
- * "RATIO OF DAP INTERVAL TO CDUW INTERVAL", in two's complement
+/* CDUWXFR -- p. 918, for Z, Y, X (TEM2 2, 1, 0): each -DELGMB times DT/DELT,
+ * the "RATIO OF DAP INTERVAL TO CDUW INTERVAL", in two's complement
  * (ONESTO2S), to DELCDUX, "ANGLE INTERFACE"; then the lag angle. */
 static void cduwxfr_step(void)
 {
@@ -328,7 +329,7 @@ static bool after_lag_angle(void)
     return false;
 }
 
-/* CDUWXFR, with the index in A. */
+/* CDUWXFR -- p. 918, with the index in A. */
 static void cduwxfr(void)
 {
     do {
@@ -348,7 +349,7 @@ void cduwxfr_after_limitsub(void)
     if (after_lag_angle()) cduwxfr();
 }
 
-/* TCQCDUW: "RETURN USER'S EBANK", and the interpreter: "NORMAL AND
+/* TCQCDUW -- p. 918: "RETURN USER'S EBANK", and the interpreter: "NORMAL AND
  * ABNORMAL RETURN TO USER" (QCDUWUSR), the push-down list back to its
  * start (SETPD 0). (A is a word: TS EBANK does not skip.) */
 void tcqcduw(void)
@@ -375,16 +376,16 @@ const struct interpretive_code TCQCDUW_CODE = {030u, TCQCDUW + 3u, COUNT(tcqcduw
 
 /* ---- NOATTCNT and ALARMMGA -- p. 924 ---- */
 
-/* NOATTCNT: alarm 00402, "NO ATTITUDE CONTROL" (the commands would not
- * unitize). */
+/* NOATTCNT -- p. 924: alarm 00402, "NO ATTITUDE CONTROL" (the commands would
+ * not unitize). */
 void noattcnt(void)
 {
     tc_to(NOATTCNT, ALARM);
 }
 
-/* NOATTCNT +2: "COME HERE FOR NOATTCNT WITHOUT ALARM": STOPRATE (through
- * IBNKCALL; "RELINT AT TC INTPRET AFTER TCQCDUW"), then "RETURN TO USER
- * SKIPPING AUTOPILOT CMDS". */
+/* NOATTCNT +2 -- p. 924: "COME HERE FOR NOATTCNT WITHOUT ALARM": STOPRATE
+ * (through IBNKCALL; "RELINT AT TC INTPRET AFTER TCQCDUW"), then "RETURN TO
+ * USER SKIPPING AUTOPILOT CMDS". */
 void noattcnt_plus2(void)
 {
     inhint();
@@ -396,9 +397,9 @@ void noattcnt_after_stoprate(void)
     tcqcduw();
 }
 
-/* ALARMMGA: alarm 00401, the middle gimbal angle limited ("FINDCDUW
- * DRIVES CDUXD AND CDUYD TO THE RQD VALUES, BUT DRIVES CDUZD ONLY TO THE
- * GIMBAL LOCK CONE"); its return goes on at MGARET. */
+/* ALARMMGA +2 -- p. 924: alarm 00401, the middle gimbal angle limited
+ * ("FINDCDUW DRIVES CDUXD AND CDUYD TO THE RQD VALUES, BUT DRIVES CDUZD ONLY
+ * TO THE GIMBAL LOCK CONE"); its return goes on at MGARET. */
 void alarmmga_after_alarm(void)
 {
     mgaret();

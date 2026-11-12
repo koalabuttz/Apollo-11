@@ -27,11 +27,11 @@ static void return_to_q(void)
 
 /* ---- PIPASR -- pp. 832-833 ---- */
 
-/* PIPASR: the time of the reading (TIME2, TIME1) into PIPTIME1, the
- * "CURRENT TIME POSITIVE VALUE"; TEMX, TEMY and TEMZ -0 ("INITIALIZE THESE
- * AT NEG ZERO."), DELV +0 (DELVX's high word is written by the reading:
- * "LOW ORDER DELV'S ARE ZEROED FOR TM"), and PIPAGE +0: "SHOW PIPA READING
- * IN PROGRESS"; ... */
+/* PIPASR -- p. 832: the time of the reading (TIME2, TIME1) into PIPTIME1,
+ * the "CURRENT TIME POSITIVE VALUE"; TEMX, TEMY and TEMZ -0 ("INITIALIZE
+ * THESE AT NEG ZERO."), DELV +0 (DELVX's high word is written by the
+ * reading: "LOW ORDER DELV'S ARE ZEROED FOR TM"), and PIPAGE +0: "SHOW PIPA
+ * READING IN PROGRESS"; ... */
 void pipasr(void)
 {
     dca(ADDRESS_OF(TIME2));
@@ -83,11 +83,11 @@ static void dodelvz(void)
 
 /* ---- REREADAC -- pp. 833-834 ---- */
 
-/* REREADAC: the "LAST PASS CHECK": with PHASE5 +0 (group 5 off), the
- * task's end. Else 1/PIPADT two seconds, as LASTBIAS would have left it:
- * "RESTART MAY HAVE WIPED OUT LASTBIAS, AN UNPROTECTED NOVAC FROM
- * PREREAD,"; "(PRIO31 IS 2.0SEC SC.AT B+8CS)". (A PHASE5 of -0 skips the
- * CAF: 1/PIPADT gets the +0 the CCS leaves.) */
+/* REREADAC -- p. 833: the "LAST PASS CHECK": with PHASE5 +0 (group 5 off),
+ * the task's end. Else 1/PIPADT two seconds, as LASTBIAS would have left it:
+ * "RESTART MAY HAVE WIPED OUT LASTBIAS, AN UNPROTECTED NOVAC FROM PREREAD,";
+ * "(PRIO31 IS 2.0SEC SC.AT B+8CS)". (A PHASE5 of -0 skips the CAF: 1/PIPADT
+ * gets the +0 the CCS leaves.) */
 void rereadac(void)
 {
     switch (ccs_at(ADDRESS_OF(PHASE5))) {
@@ -141,9 +141,9 @@ void rereadac(void)
     dodelvz();
 }
 
-/* CHKTEMX: TEMX -0, unchanged: X and Y not read (REPIP1). Else ("YES")
- * their counts are the complements of TEMX and TEMY (+0 for TEMX +0, as
- * the CCS leaves it), into DELVX and DELVY; "ZERO X AND Y PIPS" (-0 and
+/* CHKTEMX -- p. 834: TEMX -0, unchanged: X and Y not read (REPIP1). Else
+ * ("YES") their counts are the complements of TEMX and TEMY (+0 for TEMX +0,
+ * as the CCS leaves it), into DELVX and DELVY; "ZERO X AND Y PIPS" (-0 and
  * the +0 left in L: "L STILL ZERO FROM ABOVE"), and Z (REPIP3). */
 static void chktemx(void)
 {

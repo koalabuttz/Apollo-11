@@ -127,7 +127,7 @@ static const word rvboth_words[] = {
 
 const struct interpretive_code RVBOTH_CODE = {033u, RVBOTH, COUNT(rvboth_words), rvboth_words};
 
-/* ... the restart point (QUIKFAZ5), ... */
+/* RVBOTH +020 -- p. 882: ... the restart point (QUIKFAZ5), ... */
 void rvboth_after_exit(void)
 {
     tc_to(RVBOTH + 020u, QUIKFAZ5);
@@ -154,7 +154,8 @@ static const word rvboth_2_words[] = {
 const struct interpretive_code RVBOTH_2_CODE = {033u, RVBOTH + 022u, COUNT(rvboth_2_words),
                                                 rvboth_2_words};
 
-/* ... the restart point again, and on to MUNRVG for the LM. */
+/* RVBOTH +032 -- p. 882: ... the restart point again, and on to MUNRVG for
+ * the LM. */
 void rvboth_after_second_exit(void)
 {
     tc_to(RVBOTH + 032u, QUIKFAZ5);

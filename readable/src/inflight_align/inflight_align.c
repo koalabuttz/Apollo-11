@@ -187,8 +187,9 @@ static const word calcgta_words[] = {
 const struct interpretive_code CALCGTA_CODE = {CODE_BANK(I_CALCGTA), CODE_Z(I_CALCGTA),
                                                COUNT(calcgta_words), calcgta_words};
 
-/* After GIMLOCK1's EXIT: alarm 401, GLOKFAIL set ("GIMBAL LOCK HAS
- * OCCURRED"), and back into the interpreter. */
+/* GIMLOCK1 +1 -- LM p. 1254, CM p. 1360: After GIMLOCK1's EXIT: alarm 401,
+ * GLOKFAIL set ("GIMBAL LOCK HAS OCCURRED"), and back into the
+ * interpreter. */
 void gimlock1_after_exit(void)
 {
     tc_to((word)(GIMLOCK1 + 1u), ALARM); /* OCT 00401 */

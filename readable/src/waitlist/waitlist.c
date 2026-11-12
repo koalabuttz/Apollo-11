@@ -82,7 +82,8 @@ static void waitlist_after_inhint(const word task[2])
     dly2();
 }
 
-/* DLY2 -1: DELAYJOB's entry (TS WAITADR, then DLY2). */
+/* DLY2 -1 -- LM p. 1119, CM p. 1223: DELAYJOB's entry (TS WAITADR, then
+ * DLY2). */
 void dly2_minus1(void)
 {
     ts(ADDRESS_OF(WAITADR));
@@ -435,13 +436,13 @@ void svct3(void)
     continue_at(NOVAC);
 }
 
-/* SVCT3 +15: TCF TASKOVER after the NOVAC. */
+/* SVCT3 +15 -- LM p. 1121, CM p. 1225: TCF TASKOVER after the NOVAC. */
 void svct3_after_novac(void)
 {
     continue_at(TASKOVER);
 }
 
-/* SVCT3X +2: TC SVCT3 after the FIXDELAY. */
+/* SVCT3X +2 -- LM p. 1121, CM p. 1225: TC SVCT3 after the FIXDELAY. */
 void svct3x_after_fixdelay(void)
 {
     tc_at((word)(SVCT3X + 2u));

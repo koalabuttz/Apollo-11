@@ -26,22 +26,22 @@
 
 /* ---- P30 -- LM pp. 614-615 ---- */
 
-/* P30: "SET UPDATE FLAG" (UPFLAG, ADRES UPDATFLG). */
+/* P30 -- LM p. 614: "SET UPDATE FLAG" (UPFLAG, ADRES UPDATFLG). */
 void p30(void)
 {
     tc_at(P30);
     continue_at(UPFLAG); /* ADRES UPDATFLG */
 }
 
-/* P30 +2: "SET TRACK FLAG" (UPFLAG, ADRES TRACKFLG). */
+/* P30 +2 -- LM p. 614: "SET TRACK FLAG" (UPFLAG, ADRES TRACKFLG). */
 void p30_after_updatflg(void)
 {
     tc_at(P30 + 2u);
     continue_at(UPFLAG); /* ADRES TRACKFLG */
 }
 
-/* P30N33: "T OF IGN", verb 06 noun 33. VNPOOH "RETURNS ON PROCEED, POOH ON
- * TERMINATE". */
+/* P30N33 -- LM p. 614: "T OF IGN", verb 06 noun 33. VNPOOH "RETURNS ON
+ * PROCEED, POOH ON TERMINATE". */
 void p30n33(void)
 {
     set_A(V06N33);
@@ -49,8 +49,8 @@ void p30n33(void)
     continue_at(VNPOOH);
 }
 
-/* P30N33 +2: "DISPLAY DELTA V (LV)", verb 06 noun 81 ("REDISPLAY ON
- * RECYCLE"). */
+/* P30N33 +2 -- LM p. 614: "DISPLAY DELTA V (LV)", verb 06 noun 81
+ * ("REDISPLAY ON RECYCLE"). */
 void p30_after_v06n33(void)
 {
     set_A(V06N81);
@@ -58,14 +58,14 @@ void p30_after_v06n33(void)
     continue_at(VNPOOH);
 }
 
-/* P30N33 +4: "RESET UPDATE FLAG" (DOWNFLAG, ADRES UPDATFLG). */
+/* P30N33 +4 -- LM p. 614: "RESET UPDATE FLAG" (DOWNFLAG, ADRES UPDATFLG). */
 void p30_after_v06n81(void)
 {
     tc_at(P30N33 + 4u);
     continue_at(DOWNFLAG); /* ADRES UPDATFLG */
 }
 
-/* P30N33 +6: to the interpreter, for P30_CODE. */
+/* P30N33 +6 -- LM p. 614: to the interpreter, for P30_CODE. */
 void p30_after_downflag(void)
 {
     tc_at(P30N33 + 6u);
@@ -80,8 +80,8 @@ static const word p30_words[] = {
     SWITCH(SET, UPDATFLG),
 };
 
-/* PARAM30, after the EXIT: "DISPLAY APOGEE,PERIGEE ,DELTA V", verb 06 noun
- * 42. */
+/* PARAM30 -- LM p. 614, after the EXIT: "DISPLAY APOGEE,PERIGEE ,DELTA V",
+ * verb 06 noun 42. */
 void param30(void)
 {
     set_A(V06N42);
@@ -89,7 +89,7 @@ void param30(void)
     continue_at(VNPOOH);
 }
 
-/* PARAM30 +2: to the interpreter, for PARAM30_CODE. */
+/* PARAM30 +2 -- LM p. 615: to the interpreter, for PARAM30_CODE. */
 void param30_after_v06n42(void)
 {
     tc_at(PARAM30 + 2u);

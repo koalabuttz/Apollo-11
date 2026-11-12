@@ -153,21 +153,22 @@ void latazchk_display(void)
     continue_at(BANKCALL); /* CADR GOFLASH */
 }
 
-/* LATAZCHK +013: GOFLASH's return on V34, terminate. */
+/* LATAZCHK +013 -- p. 373: GOFLASH's return on V34, terminate. */
 void latazchk_after_terminate(void)
 {
     tc_at(LATAZCHK + 013u);
     continue_at(ENDTEST1);
 }
 
-/* LATAZCHK +014: on V33, proceed. TC +2. */
+/* LATAZCHK +014 -- p. 373: on V33, proceed. TC +2. */
 void latazchk_after_proceed(void)
 {
     tc_at(LATAZCHK + 014u);
     continue_at(LATAZCHK + 016u);
 }
 
-/* LATAZCHK +015: on enter, new values. TC -5: display them again. */
+/* LATAZCHK +015 -- p. 373: on enter, new values. TC -5: display them
+ * again. */
 void latazchk_after_enter(void)
 {
     tc_at(LATAZCHK + 015u);
@@ -293,7 +294,7 @@ void goestims(void)
     continue_at(JOBWAKE);
 }
 
-/* GOESTIMS +2: the task ends. */
+/* GOESTIMS +2 -- p. 374: the task ends. */
 void goestims_after_jobwake(void)
 {
     tc_at(GOESTIMS + 2u);
@@ -396,7 +397,7 @@ void startpip(void)
     continue_at(FINDVAC); /* 2CADR PIPJOBB */
 }
 
-/* STARTPIP +4: the task ends. */
+/* STARTPIP +4 -- p. 375: the task ends. */
 void startpip_after_findvac(void)
 {
     tc_at(STARTPIP + 4u);
@@ -414,9 +415,9 @@ void pipjobb(void)
     continue_at((word)(PIPJOBB + 2u + index));
 }
 
-/* PIPJOBB +2 -- p. 375, where the TC lands, or EARTHR* returns to. Unless
- * LENGTHOT has run out, the job ends; else catch the closing pulse, its
- * time into DATAPL +5 (RESULTCT 5). */
+/* PIPJOBB +2 -- pp. 375-376, where the TC lands, or EARTHR* returns to.
+ * Unless LENGTHOT has run out, the job ends; else catch the closing pulse,
+ * its time into DATAPL +5 (RESULTCT 5). */
 void pipjobb_landing(void)
 {
     switch ((word)(Z - PIPJOBB)) {
@@ -443,7 +444,7 @@ void pipjobb_landing(void)
     }
 }
 
-/* PIPJOBB +012 -- p. 375. The pulses counted, double precision, into
+/* PIPJOBB +012 -- p. 376. The pulses counted, double precision, into
  * DATAPL +4: 17 overflows of the PIPA counter (signed as the PIPA counts:
  * the first pulse's count, DATAPL +1; +0 there is a CCSHOLE) and the
  * closing count (DATAPL +5) less the first. */
@@ -566,7 +567,7 @@ void vertdrft_plus1(void)
     }
 }
 
-/* PON +1 -- p. 376. "ALLOW ONLY SOUTH GYRO EARTH RATE COMPENS": clear
+/* PON +1 -- p. 377. "ALLOW ONLY SOUTH GYRO EARTH RATE COMPENS": clear
  * ERVECTOR's first two words. GUESS1: TORQNDX and TORQNDX +1 at POSMAX
  * mark the vertical drift test; LOSVEC keeps CDUX. Then ESTIMS. */
 void pon_after_earthr_star(void)
@@ -927,7 +928,8 @@ void finetime_plus1(void)
     finetime_reread();
 }
 
-/* FINETIME +010: the scaler moved between the two reads; read it again. */
+/* FINETIME +010 -- p. 381: the scaler moved between the two reads; read it
+ * again. */
 void finetime_reread(void)
 {
     read_channel(LOSCALAR);
@@ -1045,7 +1047,7 @@ void alloop_after_twiddle(void)
     alloop_read_pipas();
 }
 
-/* ALLOOP +024: XCH: the PIPAs read and cleared at once. */
+/* ALLOOP +024 -- p. 384: XCH: the PIPAs read and cleared at once. */
 void alloop_read_pipas(void)
 {
     xch(ADDRESS_OF(PIPAX));
@@ -1061,7 +1063,7 @@ void alloop_read_pipas(void)
     continue_at(FINDVAC); /* 2CADR ALFLT: "START THE JOB" */
 }
 
-/* SPECSTS +4: the task ends. */
+/* SPECSTS +4 -- p. 384: the task ends. */
 void specsts_after_findvac(void)
 {
     tc_at(SPECSTS + 4u);
@@ -1257,7 +1259,7 @@ static void setuper1(void)
     intpret();
 }
 
-/* PERFERAS +011 -- p. 388. LOSVEC +1 keeps CDUX, "FOR TROUBLESHOOTING VD
+/* PERFERAS +011 -- p. 387. LOSVEC +1 keeps CDUX, "FOR TROUBLESHOOTING VD
  * POSNS 2$4". */
 static void keep_cdux(void)
 {
@@ -1266,7 +1268,7 @@ static void keep_cdux(void)
     setuper1();
 }
 
-/* PERFERAS +4 -- p. 388. LENGTHOT left: this job ends (SLEEPIE). Run out:
+/* PERFERAS +4 -- p. 387. LENGTHOT left: this job ends (SLEEPIE). Run out:
  * the drift test is over, and SETUPER1 torques the platform; first, but
  * for TORQNDX +0, LOSVEC +1 keeps CDUX. */
 void perferas_after_atiginc(void)

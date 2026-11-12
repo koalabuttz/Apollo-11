@@ -42,7 +42,7 @@
 
 /* ---- V82CALL -- LM pp. 713-714, CM pp. 515-516 ---- */
 
-/* V82CALL: to the interpreter, for V82CALL_CODE. */
+/* V82CALL -- LM p. 713, CM p. 515: to the interpreter, for V82CALL_CODE. */
 void v82call(void)
 {
     tc_to(V82CALL, INTPRET);
@@ -55,8 +55,8 @@ static const word v82call_words[] = {
     /* V82GOFF */ ORDER(EXIT), /* "ALLOW ASTRONAUT TO SELECT VEHICLE" */
 };
 
-/* "DESIRED FOR ORBITAL PARAMETERS CALCULATION AND DISPLAY": OPTIONX 2
- * and OPTIONX +1 1 (this vehicle), */
+/* V82GOFF +1 -- LM p. 713, CM p. 515: "DESIRED FOR ORBITAL PARAMETERS
+ * CALCULATION AND DISPLAY": OPTIONX 2 and OPTIONX +1 1 (this vehicle), */
 void v82goff_options(void)
 {
     set_A(TWO);
@@ -73,46 +73,48 @@ void v82goff_display(void)
     tc_to(V82GOFF + 6u, BANKCALL);
 }
 
-/* GOXDSPF's returns: terminate (TC ENDEXT), */
+/* V82GOFF +010 -- LM p. 713, CM p. 515: GOXDSPF's returns: terminate (TC
+ * ENDEXT), */
 void v82goff_terminate(void)
 {
     tc_to(V82GOFF + 010u, ENDEXT);
 }
 
-/* proceed (TC +2), */
+/* V82GOFF +011 -- LM p. 713, CM p. 515: proceed (TC +2), */
 void v82goff_proceed(void)
 {
     tc_at(V82GOFF + 011u);
     v82goff_ticktest();
 }
 
-/* and "DATA IN. OPTION1+1 = 1 FOR THIS VEHICLE. UNEQ 1 FOR OTHER
- * VEHICLE." (TC -5): flash again. */
+/* V82GOFF +012 -- LM p. 713, CM p. 515: and "DATA IN. OPTION1+1 = 1 FOR THIS
+ * VEHICLE. UNEQ 1 FOR OTHER VEHICLE." (TC -5): flash again. */
 void v82goff_recycle(void)
 {
     tc_at(V82GOFF + 012u);
     v82goff_display();
 }
 
-/* On proceed, TICKTEST in "80 MS" (WAITLIST, 2CADR TICKTEST), */
+/* V82GOFF +013 -- LM p. 713, CM p. 515: On proceed, TICKTEST in "80 MS"
+ * (WAITLIST, 2CADR TICKTEST), */
 void v82goff_ticktest(void)
 {
     set_A(BIT4); /* "80 MS" */
     tc_to(V82GOFF + 014u, WAITLIST);
 }
 
-/* then RELINT and on into V82GOFLP. */
+/* V82GOFF +017 -- LM p. 713, CM p. 515: then RELINT and on into V82GOFLP. */
 void v82goflp_relint(void)
 {
     relint();
     v82goflp();
 }
 
-/* V82GOFLP, the "MAJOR RECYCLE LOOP ENTRY": EBANK TFF's, V82FLAGS +0
- * ("ZERO FLAGS FOR TICKTEST. INHIBITS DECREMENTING OF TFF AND -TPER"), and
- * a job at V82GOFF1, priority 7, which "WILL EXECUTE STATE VECTOR UPDATE
- * AND ORBIT CALCULATIONS FOR SELECTED VEHICLE ABOUT PROPER BODY" (FINDVAC,
- * 2CADR V82GOFF1). */
+/* V82GOFLP -- LM p. 713, CM p. 515, the "MAJOR RECYCLE LOOP ENTRY": EBANK
+ * TFF's, V82FLAGS +0 ("ZERO FLAGS FOR TICKTEST. INHIBITS DECREMENTING OF TFF
+ * AND -TPER"), and a job at V82GOFF1, priority 7, which "WILL EXECUTE STATE
+ * VECTOR UPDATE AND ORBIT CALCULATIONS FOR SELECTED VEHICLE ABOUT PROPER
+ * BODY" (FINDVAC, 2CADR V82GOFF1). */
 void v82goflp(void)
 {
     set_A(TFFBANK);
@@ -123,16 +125,18 @@ void v82goflp(void)
     tc_to(V82GOFLP + 5u, FINDVAC);
 }
 
-/* Then RELINT and on into V82STALL. */
+/* V82GOFLP +010 -- LM p. 713, CM p. 516: Then RELINT and on into
+ * V82STALL. */
 void v82stall_relint(void)
 {
     relint();
     v82stall();
 }
 
-/* V82STALL: "STALL IN THIS LOOP AND WITHOLD V 16 N 44 UNTIL STATE VECTOR
- * UPDATE SETS ONE OF OUR FLAG BITS" (CCS A on bits 1 and 2 of V82FLAGS):
- * either, and FLAGGON "EXIT FROM STALL LOOP" (TC FLAGGON); */
+/* V82STALL -- LM p. 713, CM p. 516: "STALL IN THIS LOOP AND WITHOLD V 16 N
+ * 44 UNTIL STATE VECTOR UPDATE SETS ONE OF OUR FLAG BITS" (CCS A on bits 1
+ * and 2 of V82FLAGS): either, and FLAGGON "EXIT FROM STALL LOOP" (TC
+ * FLAGGON); */
 void v82stall(void)
 {
     set_A(THREE);
@@ -145,42 +149,44 @@ void v82stall(void)
     v82stall_wait();
 }
 
-/* neither, and the job sleeps a second (BANKCALL, CADR DELAYJOB), */
+/* V82STALL +4 -- LM p. 714, CM p. 516: neither, and the job sleeps a second
+ * (BANKCALL, CADR DELAYJOB), */
 void v82stall_wait(void)
 {
     set_A(ONE_SEC);
     tc_to(V82STALL + 5u, BANKCALL);
 }
 
-/* and looks again (TC V82STALL). */
+/* V82STALL +7 -- LM p. 714, CM p. 516: and looks again (TC V82STALL). */
 void v82stall_again(void)
 {
     tc_at(V82STALL + 7u);
     v82stall();
 }
 
-/* FLAGGON: "MONITOR HAPO,HPER,TFF", verb 16 noun 44 (BANKCALL, CADR
- * GOXDSPF). */
+/* FLAGGON -- LM p. 714, CM p. 516: "MONITOR HAPO,HPER,TFF", verb 16 noun 44
+ * (BANKCALL, CADR GOXDSPF). */
 void flaggon(void)
 {
     set_A(V16N44);
     tc_to(FLAGGON + 1u, BANKCALL);
 }
 
-/* Its returns: terminate, "THIS TELLS TICKTEST TO KILL ITSELF" (B5OFF:
- * bit 5 of EXTVBACT clear), */
+/* FLAGGON +3 -- LM p. 714, CM p. 516: Its returns: terminate, "THIS TELLS
+ * TICKTEST TO KILL ITSELF" (B5OFF: bit 5 of EXTVBACT clear), */
 void flaggon_terminate(void)
 {
     tc_to(FLAGGON + 3u, B5OFF);
 }
 
-/* proceed, "DITTO", */
+/* FLAGGON +4 -- LM p. 714, CM p. 516: proceed, "DITTO", */
 void flaggon_proceed(void)
 {
     tc_to(FLAGGON + 4u, B5OFF);
 }
 
-/* and recycle, "RECOMPUTE STATE VECT + DISPLAY" (TC V82GOFLP). */
+/* FLAGGON +5 -- LM p. 714, CM p. 516: and recycle, "RECOMPUTE STATE VECT +
+ * DISPLAY" (TC V82GOFLP). */
 void flaggon_recycle(void)
 {
     tc_at(FLAGGON + 5u);
@@ -189,7 +195,8 @@ void flaggon_recycle(void)
 
 /* ---- V82GOFF1 -- LM pp. 714-716, CM pp. 516-518 ---- */
 
-/* V82GOFF1, the job: to the interpreter, for V82GOFF1_CODE. */
+/* V82GOFF1 -- LM p. 714, CM p. 516, the job: to the interpreter, for
+ * V82GOFF1_CODE. */
 void v82goff1(void)
 {
     tc_to(V82GOFF1, INTPRET);
@@ -203,8 +210,9 @@ static const word v82goff1_words[] = {
     ORDER(EXIT),
 };
 
-/* OPTIONX +1 "1 FOR THIS VEHICLE, NOT 1 FOR OTHER": THISSHIP's or
- * OTHSHIP's update (EXTEND; BZF THISSHIP), each in interpretive code. */
+/* V82GOFF1 +6 -- LM p. 714, CM p. 516: OPTIONX +1 "1 FOR THIS VEHICLE, NOT 1
+ * FOR OTHER": THISSHIP's or OTHSHIP's update (EXTEND; BZF THISSHIP), each in
+ * interpretive code. */
 void v82goff1_vehicle(void)
 {
     cs(ADDRESS_OF(OPTIONX) + 1u);
@@ -287,8 +295,8 @@ static const word earthpad_words[] = {
 };
 
 #if !LUMINARY099
-/* BOTHPAD +3: in P00 (MODREG +0), "YES, DO DELRSPL" (CANDEL); else on at
- * SPLRET1, each in interpretive code. */
+/* BOTHPAD +3 -- CM p. 517: in P00 (MODREG +0), "YES, DO DELRSPL" (CANDEL);
+ * else on at SPLRET1, each in interpretive code. */
 void bothpad_modreg(void)
 {
     ca(ADDRESS_OF(MODREG)); /* "ARE WE IN POO" */
@@ -316,8 +324,8 @@ static const word splret1_words[] = {
 };
 #endif
 
-/* After TICKTPER: "INFORMS TICKTEST TO INCREMENT ONLY -TPER" (V82FLAGS bit
- * 1), and the job ends (TC ENDOFJOB). */
+/* TICKTPER +5 -- LM p. 715, CM p. 518: After TICKTPER: "INFORMS TICKTEST TO
+ * INCREMENT ONLY -TPER" (V82FLAGS bit 1), and the job ends (TC ENDOFJOB). */
 void tickpart_tper(void)
 {
     set_A(BIT1);
@@ -336,8 +344,8 @@ static const word ticktff_words[] = {
     ORDER(EXIT),
 };
 
-/* After TICKTFF: "INFORMS TICKTEST TO INCREMENT ONLY TFF" (bit 2), and the
- * job ends. */
+/* TICKTFF +5 -- LM p. 715, CM p. 518: After TICKTFF: "INFORMS TICKTEST TO
+ * INCREMENT ONLY TFF" (bit 2), and the job ends. */
 void tickpart_tff(void)
 {
     set_A(BIT2);
@@ -347,8 +355,9 @@ void tickpart_tff(void)
 
 /* ---- TICKTEST -- LM p. 716, CM p. 518 ---- */
 
-/* TICKTEST: "THIS WAITLIST PROGRAM PERPETUATES ITSELF ONCE A SEC UNTIL BIT
- * 5 OF EXTVBACT =0" (CCS A): set, DOTICK (TC DOTICK); */
+/* TICKTEST -- LM p. 716, CM p. 518: "THIS WAITLIST PROGRAM PERPETUATES
+ * ITSELF ONCE A SEC UNTIL BIT 5 OF EXTVBACT =0" (CCS A): set, DOTICK (TC
+ * DOTICK); */
 void ticktest(void)
 {
     set_A(BIT5);
@@ -361,21 +370,22 @@ void ticktest(void)
     ticktest_end();
 }
 
-/* clear, "TERMINATE V 82. CANT CALL ENDEXT IN RUPT" (NOVAC, 2CADR ENDEXT,
- * priority 25), */
+/* TICKTEST +4 -- LM p. 716, CM p. 518: clear, "TERMINATE V 82. CANT CALL
+ * ENDEXT IN RUPT" (NOVAC, 2CADR ENDEXT, priority 25), */
 void ticktest_end(void)
 {
     set_A(PRIO25);
     tc_to(TICKTEST + 5u, NOVAC);
 }
 
-/* and the task ends (TC TASKOVER). */
+/* TICKTEST +010 -- LM p. 716, CM p. 518: and the task ends (TC TASKOVER). */
 void ticktest_taskover(void)
 {
     tc_to(TICKTEST + 010u, TASKOVER);
 }
 
-/* DOTICK: "RE-REQUEST TICKTEST" in a second (WAITLIST, 2CADR TICKTEST), */
+/* DOTICK -- LM p. 716, CM p. 518: "RE-REQUEST TICKTEST" in a second
+ * (WAITLIST, 2CADR TICKTEST), */
 void dotick(void)
 {
     set_A(ONE_SEC);
@@ -408,7 +418,8 @@ void dotick_taskover(void)
     tc_to(DOTICK + 010u, TASKOVER);
 }
 
-/* TFFTICK: TFF one second on (DAS TFF, with the second in L). */
+/* TFFTICK -- LM p. 716, CM p. 518: TFF one second on (DAS TFF, with the
+ * second in L). */
 void tfftick(void)
 {
     set_A(ONE_SEC);
@@ -423,7 +434,7 @@ static void tfftick_ts_l(void)
     tc_to(TFFTICK + 4u, TASKOVER);
 }
 
-/* TPERTICK: -TPER one second on. */
+/* TPERTICK -- LM p. 716, CM p. 518: -TPER one second on. */
 void tpertick(void)
 {
     set_A(ONE_SEC);
@@ -441,17 +452,18 @@ static const word v82gon_words[] = {
     ORDER(EXIT), /* "AVERAGE G ON." */
 };
 
-/* V82GON +1: a job at V82GON1, priority 7, "LESS THAN LAMBERT", which
- * "WILL PERFORM ORBIT CALCULATIONS ABOUT PROPER BODY APPROX ONCE PER SEC"
- * (FINDVAC, 2CADR V82GON1), */
+/* V82GON +1 -- LM p. 717, CM p. 519: a job at V82GON1, priority 7, "LESS
+ * THAN LAMBERT", which "WILL PERFORM ORBIT CALCULATIONS ABOUT PROPER BODY
+ * APPROX ONCE PER SEC" (FINDVAC, 2CADR V82GON1), */
 void v82gon_findvac(void)
 {
     set_A(PRIO7); /* "LESS THAN LAMBERT" */
     tc_to(V82GON + 2u, FINDVAC);
 }
 
-/* then RELINT, and "WITHOLD V16 N44 UNTIL FIRST ORBIT CALC IS DONE" (CCS
- * NEWJOB): a job waiting, CHANG1 lets it run first; else the display. */
+/* V82GON +5 -- LM p. 717, CM p. 519: then RELINT, and "WITHOLD V16 N44 UNTIL
+ * FIRST ORBIT CALC IS DONE" (CCS NEWJOB): a job waiting, CHANG1 lets it run
+ * first; else the display. */
 void v82gon_relint(void)
 {
     relint();
@@ -462,35 +474,36 @@ void v82gon_relint(void)
     v82redsp();
 }
 
-/* V82REDSP: "MONITOR HAPO, HPER, TFF", verb 16 noun 44 (BANKCALL, CADR
- * GOXDSPF). */
+/* V82REDSP -- LM p. 717, CM p. 519: "MONITOR HAPO, HPER, TFF", verb 16 noun
+ * 44 (BANKCALL, CADR GOXDSPF). */
 void v82redsp(void)
 {
     set_A(V16N44);
     tc_to(V82REDSP + 1u, BANKCALL);
 }
 
-/* Its returns: terminate, "THIS TELLS V82GON1 TO KILL ITSELF" (B5OFF), */
+/* V82REDSP +3 -- LM p. 717, CM p. 519: Its returns: terminate, "THIS TELLS
+ * V82GON1 TO KILL ITSELF" (B5OFF), */
 void v82redsp_terminate(void)
 {
     tc_to(V82REDSP + 3u, B5OFF);
 }
 
-/* proceed, "DITTO", */
+/* V82REDSP +4 -- LM p. 717, CM p. 519: proceed, "DITTO", */
 void v82redsp_proceed(void)
 {
     tc_to(V82REDSP + 4u, B5OFF);
 }
 
-/* and recycle (TC V82REDSP). */
+/* V82REDSP +5 -- LM p. 717, CM p. 519: and recycle (TC V82REDSP). */
 void v82redsp_recycle(void)
 {
     tc_at(V82REDSP + 5u);
     v82redsp();
 }
 
-/* V82GON1, the job that "PERPETUATES ITSELF ONCE A SEC UNTIL BIT 5 OF
- * EXTVBACT =0": to the interpreter, for V82GON1_CODE. */
+/* V82GON1 -- LM p. 717, CM p. 519, the job that "PERPETUATES ITSELF ONCE A
+ * SEC UNTIL BIT 5 OF EXTVBACT =0": to the interpreter, for V82GON1_CODE. */
 void v82gon1(void)
 {
     tc_to(V82GON1, INTPRET);
@@ -539,20 +552,21 @@ static const word v82gon1_words[] = {
 };
 
 #if !LUMINARY099
-/* V82GON2 +3: in P11 (CHECKMM, DEC 11) CANDEL, */
+/* V82GON2 +3 -- CM p. 520: in P11 (CHECKMM, DEC 11) CANDEL, */
 void v82gon2_checkmm(void)
 {
     tc_to(V82GON2 + 3u, CHECKMM);
 }
 
-/* "NOT IN MODE 11", V82GON3 (TC V82GON3). */
+/* V82GON2 +5 -- CM p. 520: "NOT IN MODE 11", V82GON3 (TC V82GON3). */
 void v82gon2_not_11(void)
 {
     tc_at(V82GON2 + 5u);
     v82gon3();
 }
 
-/* CANDEL, "IN MODE 11 OR 00": to the interpreter, for CANDEL_CODE. */
+/* CANDEL -- CM p. 520, "IN MODE 11 OR 00": to the interpreter, for
+ * CANDEL_CODE. */
 void candel(void)
 {
     tc_to(CANDEL, INTPRET);
@@ -569,8 +583,8 @@ static const word candel_words[] = {
     /* SPLRET */ ORDER(EXIT),
 };
 
-/* SPLRET +1: from P00 (MODREG +0) on at SPLRET1, for the time and -TPER;
- * else V82GON3. */
+/* SPLRET +1 -- CM p. 520: from P00 (MODREG +0) on at SPLRET1, for the time
+ * and -TPER; else V82GON3. */
 void splret_modreg(void)
 {
     ca(ADDRESS_OF(MODREG));
@@ -582,10 +596,10 @@ void splret_modreg(void)
 }
 #endif
 
-/* V82GON3: "SEE IF ASTRONAUT HAS SIGNALLED TERMINATE" (bit 5 of EXTVBACT
- * clear): "YES, TERMINATE VB 82 LOOP" (BZF ENDEXT); else "WAIT ONE SECOND
- * BEFORE REPEATING ORBITAL PARAMETER COMPUTATION" (BANKCALL, CADR
- * DELAYJOB), */
+/* V82GON3 -- LM p. 718, CM p. 520: "SEE IF ASTRONAUT HAS SIGNALLED
+ * TERMINATE" (bit 5 of EXTVBACT clear): "YES, TERMINATE VB 82 LOOP" (BZF
+ * ENDEXT); else "WAIT ONE SECOND BEFORE REPEATING ORBITAL PARAMETER
+ * COMPUTATION" (BANKCALL, CADR DELAYJOB), */
 void v82gon3(void)
 {
     set_A(BIT5);
@@ -598,7 +612,7 @@ void v82gon3(void)
     tc_to(V82GON3 + 5u, BANKCALL); /* "WAIT ONE SECOND BEFORE REPEATING" */
 }
 
-/* and again (TC V82GON1). */
+/* V82GON3 +7 -- LM p. 718, CM p. 520: and again (TC V82GON1). */
 void v82gon3_again(void)
 {
     tc_at(V82GON3 + 7u);

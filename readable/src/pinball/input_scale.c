@@ -89,11 +89,12 @@ void testofuf(void)
 
 /* ---- Degrees (LM pp. 431-432, CM pp. 349-350) ---- */
 
-/* DEGINSF -- "DEGINSF APPLIES 1000/180 = 5.55555(10) = 5.43434(8)": "SF
- * ROUTINE FOR DEC DEGREES", "MULT BY 5.5 5(10)X2EXP-3" (DMP by DEGCON1),
- * then "THIS ROUNDS OFF MPAC+1 BEFORE SHIFT LEFT 3, AND CAUSES 360.00 TO
- * OF/UF WHEN SHIFTED LEFT AND ALARM." (half of the low bits shifted out,
- * by sign, through 2ROUND +2), and left 3 by TPSL1 (DEGINSF2). */
+/* DEGINSF -- LM p. 431, CM p. 349: "DEGINSF APPLIES 1000/180 = 5.55555(10) =
+ * 5.43434(8)": "SF ROUTINE FOR DEC DEGREES", "MULT BY 5.5 5(10)X2EXP-3" (DMP
+ * by DEGCON1), then "THIS ROUNDS OFF MPAC+1 BEFORE SHIFT LEFT 3, AND CAUSES
+ * 360.00 TO OF/UF WHEN SHIFTED LEFT AND ALARM." (half of the low bits
+ * shifted out, by sign, through 2ROUND +2), and left 3 by TPSL1
+ * (DEGINSF2). */
 void deginsf(void)
 {
     tc_at(DEGINSF);
@@ -171,7 +172,7 @@ void signfix(void)
     endscale_minus1();
 }
 
-/* ENDSCALE -1: the angle into MPAC. */
+/* ENDSCALE -1 -- LM p. 432, CM p. 350: the angle into MPAC. */
 static void endscale_minus1(void)
 {
     ts(ADDRESS_OF(MPAC));
@@ -215,7 +216,8 @@ void endscale(void)
     tc(SFNORCAL, BANKCALL); /* CADR SFRUTNOR */
 }
 
-/* SFMIXCAL +2 and SFNORCAL +2, where SFRUTMIX and SFRUTNOR come back. */
+/* SFMIXCAL +2 -- LM p. 432 and SFNORCAL +2, where SFRUTMIX and SFRUTNOR come
+ * back. */
 void sfmixcal_plus2(void)
 {
     tc_at(SFMIXCAL + 2u);
@@ -229,8 +231,8 @@ void sfnorcal_plus2(void)
     norback();
 }
 
-/* NORBACK: routine 2 is CDU degrees; any other (13, "TESTS AT END FOR
- * 360-CDU") has 360-CDU (output_scale.c) replace the angle. */
+/* NORBACK -- LM p. 432: routine 2 is CDU degrees; any other (13, "TESTS AT
+ * END FOR 360-CDU") has 360-CDU (output_scale.c) replace the angle. */
 static void norback(void)
 {
     cs(A_ADDRESS);
@@ -251,10 +253,10 @@ void endscale(void)
 
 /* ---- Fractions and whole numbers (LM pp. 432-433, CM p. 350) ---- */
 
-/* ARTHINSF -- "SCALES MPAC, +1 BY SFTEMP1, SFTEMP2. ASSUMES POINT BETWEEN
- * HI AND LO PARTS OF SFCON. SHIFTS RESULTS LEFT BY 14. (BY TAKING RESULTS
- * FROM MPAC+1, MPAC+2)". A high word left over is "TOO LARGE A LOAD.
- * ALARM AND RECYCLE." */
+/* ARTHINSF -- LM p. 432, CM p. 350: "SCALES MPAC, +1 BY SFTEMP1, SFTEMP2.
+ * ASSUMES POINT BETWEEN HI AND LO PARTS OF SFCON. SHIFTS RESULTS LEFT BY 14.
+ * (BY TAKING RESULTS FROM MPAC+1, MPAC+2)". A high word left over is "TOO
+ * LARGE A LOAD. ALARM AND RECYCLE." */
 void arthinsf(void)
 {
     tc_at(ARTHINSF);
@@ -269,8 +271,8 @@ void arthinsf(void)
     binround();
 }
 
-/* BINROUND -- MPAC +2 rounded into MPAC +1 (2ROUND), "RETURNS IF NO
- * OF/UF". */
+/* BINROUND -- LM p. 432, CM p. 350: MPAC +2 rounded into MPAC +1 (2ROUND),
+ * "RETURNS IF NO OF/UF". */
 void binround(void)
 {
     tc_at(BINROUND);
@@ -323,12 +325,12 @@ void opdegin2(void)
 
 /* ---- Double words (LM p. 433, CM p. 351) ---- */
 
-/* DPINSF -- "SCALES MPAC, MPAC +1 BY SFTEMP1, SFTEMP. STORES LOW PART OF
- * RESULT IN (E SUBK) +1 OR E+1": the low word doubled (an overflow of the
- * TS skips CAF ZERO and carries into MPAC +1), rounded, and "RETURNS IF NO
- * OF/UF"; then the low part goes where the high part's address says, one
- * on, and the high part back through PUTCOM2. DPINSF2 and DPINSF4 enter at
- * DPINSF +2. */
+/* DPINSF -- LM p. 433, CM p. 351: "SCALES MPAC, MPAC +1 BY SFTEMP1, SFTEMP.
+ * STORES LOW PART OF RESULT IN (E SUBK) +1 OR E+1": the low word doubled (an
+ * overflow of the TS skips CAF ZERO and carries into MPAC +1), rounded, and
+ * "RETURNS IF NO OF/UF"; then the low part goes where the high part's
+ * address says, one on, and the high part back through PUTCOM2. DPINSF2 and
+ * DPINSF4 enter at DPINSF +2. */
 void dpinsf(void)
 {
     tc_at(DPINSF);
@@ -346,14 +348,14 @@ void dpinsf_plus2(void)
     two_round_plus2();
     tc_at(DPINSF + 010u);
     if (!testofuf_returns()) return;
-    dpinsf_plus9();
+    dpinsf_plus011();
 }
 
 static void dpincom(void);
 
-/* DPINSF +9 (Comanche055's DPFRACIN): "MIXED" NOUNADD +DECOUNT is E SUBK,
- * "NORMAL" NOUNADD (DPINORM) is E. */
-void dpinsf_plus9(void)
+/* DPINSF +011 -- LM p. 433, CM p. 351 (Comanche055's DPFRACIN): "MIXED"
+ * NOUNADD +DECOUNT is E SUBK, "NORMAL" NOUNADD (DPINORM) is E. */
+void dpinsf_plus011(void)
 {
     if (mixed_noun(DPINSF + 012u)) {
         ca(ADDRESS_OF(DECOUNT)); /* "MIXED NOUN" */
@@ -409,14 +411,14 @@ static bool mpactst_returns(void);
 static bool sizetst_returns(void);
 static bool all3dec_returns(void);
 
-/* HMSIN -- "IF ALL 3 WORDS WERE NOT LOADED, ALARM." Hours (XREG, XREGLP,
- * already in MPAC, MPAC +1), minutes (YREG) and seconds (ZREG), each times
- * WHOLECON, "(10EXP5/2EXP14)2EXP14", rounded to a whole number (RND/TST),
- * and checked: hours "G/ 745", minutes over 59, seconds over 59.99 alarm.
- * Hours times HRCON ("1 HOUR IN CENTI-SEC"), minutes times MINCON ("1
- * MINUTE IN CENTI-SEC"), and seconds in centiseconds added up in HITEMIN
- * and MPAC, made to agree in sign (TPAGREE), into the noun's double word;
- * then LOADLV. */
+/* HMSIN -- LM p. 434, CM p. 352: "IF ALL 3 WORDS WERE NOT LOADED, ALARM."
+ * Hours (XREG, XREGLP, already in MPAC, MPAC +1), minutes (YREG) and seconds
+ * (ZREG), each times WHOLECON, "(10EXP5/2EXP14)2EXP14", rounded to a whole
+ * number (RND/TST), and checked: hours "G/ 745", minutes over 59, seconds
+ * over 59.99 alarm. Hours times HRCON ("1 HOUR IN CENTI-SEC"), minutes times
+ * MINCON ("1 MINUTE IN CENTI-SEC"), and seconds in centiseconds added up in
+ * HITEMIN and MPAC, made to agree in sign (TPAGREE), into the noun's double
+ * word; then LOADLV. */
 void hmsin(void)
 {
     tc_at(HMSIN);

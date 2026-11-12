@@ -110,9 +110,9 @@ void putxyz_plus11(void)
     tc(PUTXYZ + 016u, PUTCOM);
 }
 
-/* PUTXYZ +15, where PUTCOM comes back the third time. "IF NOUN 7 HAS JUST
- * BEEN LOADED, SET FLAG BITS AS SPECIFIED." */
-void putxyz_plus15(void)
+/* PUTXYZ +017 -- LM p. 425, CM p. 343, where PUTCOM comes back the third
+ * time. "IF NOUN 7 HAS JUST BEEN LOADED, SET FLAG BITS AS SPECIFIED." */
+void putxyz_plus017(void)
 {
     if (ts(indexed_erasable(2u, fetch(ADDRESS_OF(NOUNADD))))) not_modelled();
     set_A(negate(SEVEN));
@@ -121,15 +121,15 @@ void putxyz_plus15(void)
         tc(PUTXYZ + 025u, LOADLV);
         return;
     }
-    putxyz_plus22();
+    putxyz_plus026();
 }
 
-/* PUTXYZ +22, BITSOFF and BITSOFF1: noun 07. XREG is the "ECADR OF FLAG
- * WORD" (SETNCADR +1 sets EBANK and NOUNADD), YREG the "BITS TO BE
- * PROCESSED", ZREG "ZERO TO RESET BITS, NON-ZERO TO SET BITS". With
- * interrupts held off, the bits are set (ADS of the ones not yet set) or
- * reset (MASK with their complement). */
-void putxyz_plus22(void)
+/* PUTXYZ +026 -- LM p. 426, CM p. 344, BITSOFF and BITSOFF1: noun 07. XREG
+ * is the "ECADR OF FLAG WORD" (SETNCADR +1 sets EBANK and NOUNADD), YREG the
+ * "BITS TO BE PROCESSED", ZREG "ZERO TO RESET BITS, NON-ZERO TO SET BITS".
+ * With interrupts held off, the bits are set (ADS of the ones not yet set)
+ * or reset (MASK with their complement). */
+void putxyz_plus026(void)
 {
     ca(ADDRESS_OF(XREG));
     tc_at(PUTXYZ + 027u);

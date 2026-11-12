@@ -16,8 +16,8 @@
 
 /* ---- SATSTKON -- p. 549, bank 43 ---- */
 
-/* SATSTKON: T5 to REDOSAT; TIME5 POSMAX, so that it comes due at the next
- * count; FLAGWRD6's bits 15 and 14 "SATSTICK CONTROL OF T5"; then
+/* SATSTKON -- p. 549: T5 to REDOSAT; TIME5 POSMAX, so that it comes due at
+ * the next count; FLAGWRD6's bits 15 and 14 "SATSTICK CONTROL OF T5"; then
  * ZEROJET, "ZERO JET CHANNELS IN 14 MS AND THEN LEAVE THE T6 CLOCK
  * DISABLED". */
 void satstkon(void)
@@ -33,7 +33,7 @@ void satstkon(void)
     tc_to(SATSTKON + 011u, IBNKCALL); /* CADR ZEROJET */
 }
 
-/* SATSTKON +013: "EXIT THUS BECAUSE WE CAME VIA V46" (GOPIN). */
+/* SATSTKON +013 -- p. 549: "EXIT THUS BECAUSE WE CAME VIA V46" (GOPIN). */
 void satstkon_after_zerojet(void)
 {
     relint();
@@ -50,8 +50,8 @@ static void t5_task(void)
     qxch(ADDRESS_OF(QRUPT));
 }
 
-/* REDOSAT: "TURN ON BIT3 OF RCSFLAGX FOR NEEDLER INITIALIZATION" and
- * NEEDLER, "DISABLE IMU ERR COUNTERS ETC.". */
+/* REDOSAT -- p. 549: "TURN ON BIT3 OF RCSFLAGX FOR NEEDLER INITIALIZATION"
+ * and NEEDLER, "DISABLE IMU ERR COUNTERS ETC.". */
 void redosat(void)
 {
     t5_task();
@@ -61,8 +61,8 @@ void redosat(void)
     tc_to(REDOSAT + 6u, IBNKCALL); /* CADR NEEDLER */
 }
 
-/* REDOSAT +010: "SIVB TAKEOVER ENABLE" (channel 12's bit 9); "SET UP T5
- * CYCLE", SATSTICK "IN 100 MSECS"; "END OF SATURN STICK
+/* REDOSAT +010 -- p. 549: "SIVB TAKEOVER ENABLE" (channel 12's bit 9); "SET
+ * UP T5 CYCLE", SATSTICK "IN 100 MSECS"; "END OF SATURN STICK
  * INITIALIZATION". */
 void redosat_after_needler(void)
 {
@@ -75,10 +75,10 @@ void redosat_after_needler(void)
     continue_at(RESUME);
 }
 
-/* SATSTICK, "EXECUTED EVERY 100 MSECS": itself again in 100 ms ("LO
- * ORDER LOC SET"); then "CHECK IF MAN ROT BITS SAME" (channel 31's
- * rotation bits, inverted) and STICKCHK, "SET RATE INDICES FOR PITCH YAW
- * AND ROLL". */
+/* SATSTICK -- p. 550, "EXECUTED EVERY 100 MSECS": itself again in 100 ms
+ * ("LO ORDER LOC SET"); then "CHECK IF MAN ROT BITS SAME" (channel 31's
+ * rotation bits, inverted) and STICKCHK, "SET RATE INDICES FOR PITCH YAW AND
+ * ROLL". */
 void satstick(void)
 {
     t5_task();
@@ -105,9 +105,9 @@ static void satrate(unsigned index_address)
     ca((unsigned)at);
 }
 
-/* SATSTICK +015: "SET SATURN RATES": roll, pitch and yaw from SATRATE by
- * RMANNDX, PMANNDX and YMANNDX; then NEEDLER, "FOR SATURN INTERFACE AND
- * FDAI DISPLAY". */
+/* SATSTICK +015 -- p. 550: "SET SATURN RATES": roll, pitch and yaw from
+ * SATRATE by RMANNDX, PMANNDX and YMANNDX; then NEEDLER, "FOR SATURN
+ * INTERFACE AND FDAI DISPLAY". */
 void satstick_after_stickchk(void)
 {
     satrate(ADDRESS_OF(RMANNDX));
@@ -119,7 +119,7 @@ void satstick_after_stickchk(void)
     tc_to(SATSTICK + 026u, IBNKCALL); /* CADR NEEDLER */
 }
 
-/* SATSTICK +030: "END OF SATURN STICK CONTROL". */
+/* SATSTICK +030 -- p. 550: "END OF SATURN STICK CONTROL". */
 void satstick_after_needler(void)
 {
     continue_at(RESUME);

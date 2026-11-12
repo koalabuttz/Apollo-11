@@ -20,7 +20,7 @@
 
 /* ---- S40.13 -- pp. 773-775 ---- */
 
-/* S40.13: to the interpreter, for S40_13_CODE. */
+/* S40.13 -- p. 773: to the interpreter, for S40_13_CODE. */
 void s40_13(void)
 {
     tc_at(S40_13);
@@ -89,15 +89,15 @@ static const word s40_13_words[] = {
     SWITCH(SET, IMPULSW),
 };
 
-/* S40.132*: the time to burn in MPAC, its two words made to agree in sign
- * (TPAGREE), */
+/* S40.132* -- p. 774: the time to burn in MPAC, its two words made to agree
+ * in sign (TPAGREE), */
 void s40_132_star(void)
 {
     tc_to(S40_132_STAR, TPAGREE);
 }
 
-/* to TGO (CA MPAC, XCH L, CA ZERO, DXCH TGO: the low word, as a DP
- * number); on at S40.134 (TCF). */
+/* S40.132* +1 -- p. 774: to TGO (CA MPAC, XCH L, CA ZERO, DXCH TGO: the low
+ * word, as a DP number); on at S40.134 (TCF). */
 void s40_132_star_after_tpagree(void)
 {
     ca(ADDRESS_OF(MPAC));
@@ -135,14 +135,14 @@ static const word s40_13d_words[] = {
     ORDER(EXIT),
 };
 
-/* S40.134 (S40.133 +1, after the EXIT): the restart group 3 at its phase
- * (PHASCHNG, OCT 00003), */
+/* S40.134 -- p. 775 (S40.133 +1, after the EXIT): the restart group 3 at its
+ * phase (PHASCHNG, OCT 00003), */
 void s40_134(void)
 {
     tc_to(S40_134, PHASCHNG);
 }
 
-/* and the job ends (TC ENDOFJOB). */
+/* S40.134 +2 -- p. 775: and the job ends (TC ENDOFJOB). */
 void s40_134_after_phaschng(void)
 {
     tc_to(S40_134 + 2u, ENDOFJOB);
@@ -156,8 +156,8 @@ static const word s40_130v_words[] = {
     STORE(TGO),         ORDER(EXIT),
 };
 
-/* S40.130V +5, after the EXIT: "REJOIN COMMON CODING FOR RESTART PROTECT"
- * (TCF S40.134). */
+/* S40.130V +5 -- p. 775, after the EXIT: "REJOIN COMMON CODING FOR RESTART
+ * PROTECT" (TCF S40.134). */
 void s40_130v_after_exit(void)
 {
     s40_134();
@@ -178,7 +178,7 @@ static const word s40_138_words[] = {
     ORDER(EXIT),
 };
 
-/* STORETGO +2, after the EXIT: on at S40.132* (TCF). */
+/* STORETGO +2 -- p. 775, after the EXIT: on at S40.132* (TCF). */
 void storetgo_after_exit(void)
 {
     s40_132_star();
@@ -193,7 +193,7 @@ static const word apstgo_words[] = {
 
 /* ---- S40.9 -- p. 776 ---- */
 
-/* S40.9: to the interpreter, for S40_9_CODE. */
+/* S40.9 -- p. 776: to the interpreter, for S40_9_CODE. */
 void s40_9(void)
 {
     tc_at(S40_9);
@@ -222,14 +222,14 @@ static const word s40_9_words[] = {
     ORDER(EXIT),
 };
 
-/* ENDS40.9 +1, after the EXIT: the restart group 2 at its phase
+/* ENDS40.9 +1 -- p. 776, after the EXIT: the restart group 2 at its phase
  * (PHASCHNG, OCT 2), */
 void ends40_9_after_exit(void)
 {
     tc_to(ENDS40_9 + 1u, PHASCHNG);
 }
 
-/* and the job ends (TCF ENDOFJOB). */
+/* ENDS40.9 +3 -- p. 776: and the job ends (TCF ENDOFJOB). */
 void ends40_9_after_phaschng(void)
 {
     continue_at(ENDOFJOB);

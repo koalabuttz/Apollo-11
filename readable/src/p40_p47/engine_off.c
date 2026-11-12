@@ -19,7 +19,7 @@
 
 /* ---- IMPLBURN -- pp. 759-760 ---- */
 
-/* IMPLBURN: the time to go (TGO +1) as a delay of at least a
+/* IMPLBURN -- p. 759: the time to go (TGO +1) as a delay of at least a
  * centisecond (GETDT), */
 void implburn(void)
 {
@@ -29,49 +29,50 @@ void implburn(void)
     implburn_after_getdt();
 }
 
-/* and ENGOFTSK after it (TWIDDLE). */
+/* IMPLBURN +2 -- p. 759: and ENGOFTSK after it (TWIDDLE). */
 void implburn_after_getdt(void)
 {
     tc_to(IMPLBURN + 2u, TWIDDLE); /* ADRES ENGOFTSK */
 }
 
-/* "TURN OFF IGNFLAG", */
+/* IMPLBURN +4 -- p. 759: "TURN OFF IGNFLAG", */
 void implburn_after_twiddle(void)
 {
     tc_to(IMPLBURN + 4u, DOWNFLAG); /* ADRES IGNFLAG */
 }
 
-/* "TURN OFF ASTNFLG", */
+/* IMPLBURN +6 -- p. 759: "TURN OFF ASTNFLG", */
 void implburn_after_ignflag(void)
 {
     tc_to(IMPLBURN + 6u, DOWNFLAG); /* ADRES ASTNFLAG */
 }
 
-/* "TURN OFF IMPULSW", */
+/* IMPLBURN +010 -- p. 759: "TURN OFF IMPULSW", */
 void implburn_after_astnflag(void)
 {
     tc_to(IMPLBURN + 010u, DOWNFLAG); /* ADRES IMPULSW */
 }
 
-/* "RESTART PROTECT ENGOFTSK (ENGINOFF)" (PHASCHNG, OCT 40114), */
+/* IMPLBURN +012 -- p. 759: "RESTART PROTECT ENGOFTSK (ENGINOFF)" (PHASCHNG,
+ * OCT 40114), */
 void implburn_after_impulsw(void)
 {
     tc_to(IMPLBURN + 012u, PHASCHNG);
 }
 
-/* "WAIT HALF A SECOND" (FIXDELAY, DEC 50), */
+/* IMPLBURN +014 -- p. 759: "WAIT HALF A SECOND" (FIXDELAY, DEC 50), */
 void implburn_after_phaschng(void)
 {
     tc_to(IMPLBURN + 014u, FIXDELAY);
 }
 
-/* "TURN OFF ULLAGE" (NOULLAGE), */
+/* IMPLBURN +016 -- p. 760: "TURN OFF ULLAGE" (NOULLAGE), */
 void implburn_after_fixdelay(void)
 {
     tc_to(IMPLBURN + 016u, NOULLAGE);
 }
 
-/* and the task ends. */
+/* IMPLBURN +017 -- p. 760: and the task ends. */
 void implburn_after_noullage(void)
 {
     tc_to(IMPLBURN + 017u, TASKOVER);
@@ -79,19 +80,19 @@ void implburn_after_noullage(void)
 
 /* ---- ENGOFTSK and ENGINOFF -- pp. 760-761 ---- */
 
-/* ENGOFTSK: ENGINOFF (IBNKCALL), */
+/* ENGOFTSK -- p. 760: ENGINOFF (IBNKCALL), */
 void engoftsk(void)
 {
     tc_to(ENGOFTSK, IBNKCALL); /* CADR ENGINOFF */
 }
 
-/* and the task ends. */
+/* ENGOFTSK +2 -- p. 760: and the task ends. */
 void engoftsk_after_enginoff(void)
 {
     tc_to(ENGOFTSK + 2u, TASKOVER);
 }
 
-/* ENGINOFF: POSTBURN as a job, "MUST BE LOWER PRIO THAN CLOCKJOB"
+/* ENGINOFF -- p. 760: POSTBURN as a job, "MUST BE LOWER PRIO THAN CLOCKJOB"
  * (PRIO12, the number the instruction TCF 10000 is). FINDVAC comes back
  * at ENGINOF2. */
 void enginoff(void)
@@ -100,16 +101,16 @@ void enginoff(void)
     tc_to(ENGINOFF + 1u, FINDVAC); /* 2CADR POSTBURN */
 }
 
-/* ENGINOF2: COASTSET as a task in a centisecond (WAITLIST, BIT1), which
- * comes back at ENGINOF1. */
+/* ENGINOF2 -- p. 760: COASTSET as a task in a centisecond (WAITLIST, BIT1),
+ * which comes back at ENGINOF1. */
 void enginof2(void)
 {
     set_A(BIT1);
     tc_to(ENGINOF2 + 1u, WAITLIST); /* 2CADR COASTSET */
 }
 
-/* ENGINOF1: "SET THE IDLE BIT." (IDLEFLAG, FLAGWRD7), and the ullage off
- * (NOULLAGE), which comes back at ENGINOF4. */
+/* ENGINOF1 -- p. 760: "SET THE IDLE BIT." (IDLEFLAG, FLAGWRD7), and the
+ * ullage off (NOULLAGE), which comes back at ENGINOF4. */
 void enginof1(void)
 {
     cs(ADDRESS_OF(FLAGWRD7));
@@ -118,7 +119,7 @@ void enginof1(void)
     tc_to(ENGINOF1 + 3u, NOULLAGE);
 }
 
-/* ENGINOF4: the time now in TEVENT, and on at ENGINOF3. */
+/* ENGINOF4 -- p. 760: the time now in TEVENT, and on at ENGINOF3. */
 void enginof4(void)
 {
     dca(ADDRESS_OF(TIME2)); /* EXTEND; DCA */
@@ -126,8 +127,8 @@ void enginof4(void)
     enginof3();
 }
 
-/* ENGINOF3: "INSURE ENGONFLG IS CLEAR." (FLAGWRD5); "TURN OFF THE ENGINE
- * -- DPS OR APS" (DSALMOUT: bit 13, engine on, clear; bit 14, engine
+/* ENGINOF3 -- p. 760: "INSURE ENGONFLG IS CLEAR." (FLAGWRD5); "TURN OFF THE
+ * ENGINE -- DPS OR APS" (DSALMOUT: bit 13, engine on, clear; bit 14, engine
  * off, set); "TURN OFF TRIM GIMBAL" (USEQRJTS of DAPBOOLS set); "ZERO
  * AUTO-THROTTLE WHENEVER THE ENGINE IS TURNED OFF." (THRUST, and bit 4 of
  * channel 14); then back to the caller (ISWRETRN). "ENGINOF3 IS USED AS A
@@ -151,13 +152,13 @@ void enginof3(void)
     tc_to(ENGINOF3 + 021u, ISWRETRN);
 }
 
-/* COASTSET: "DO DAP COASTING INITIALIZATION" (ALLCOAST), */
+/* COASTSET -- p. 761: "DO DAP COASTING INITIALIZATION" (ALLCOAST), */
 void coastset(void)
 {
     tc_to(COASTSET, IBNKCALL); /* CADR ALLCOAST */
 }
 
-/* and the task ends. */
+/* COASTSET +2 -- p. 761: and the task ends. */
 void coastset_after_allcoast(void)
 {
     tc_to(COASTSET + 2u, TASKOVER);

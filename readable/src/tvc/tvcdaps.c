@@ -84,7 +84,7 @@ static void multiply(unsigned into, unsigned x, unsigned c, bool negated)
 
 /* ---- PITCHDAP and YAWDAP -- pp. 963-967 ---- */
 
-/* PSTROKER, YSTROKER: "CHECK FOR STROKE TEST" (STROKER): positive,
+/* PSTROKER -- p. 963, YSTROKER: "CHECK FOR STROKE TEST" (STROKER): positive,
  * "TEST-START OR TEST-IN-PROGRESS", negative, "TEST-IN-PROGRESS": TC
  * HACK, the stroke test's waveform (true). +0, "NO-TEST", and -0: on. */
 static bool stroke_test(word stroker)
@@ -98,8 +98,8 @@ static bool stroke_test(word stroker)
     return false;
 }
 
-/* PITCHDAP, the T5 interrupt: BANKRUPT and QRUPT kept; YAWDAP next by T5
- * (T5LOC YAWT5; TIME5 T5TVCDT); the stroke test; then PCDUDOTS. */
+/* PITCHDAP -- p. 963, the T5 interrupt: BANKRUPT and QRUPT kept; YAWDAP next
+ * by T5 (T5LOC YAWT5; TIME5 T5TVCDT); the stroke test; then PCDUDOTS. */
 void pitchdap(void)
 {
     lxch(ADDRESS_OF(BANKRUPT));
@@ -111,14 +111,14 @@ void pitchdap(void)
     if (!stroke_test(PSTROKER)) pcdudots();
 }
 
-/* PITCHDAP +011, after the first TC HACK: TCF +2, PCDUDOTS. */
+/* PITCHDAP +011 -- p. 963, after the first TC HACK: TCF +2, PCDUDOTS. */
 void pitchdap_after_hack(void)
 {
     pcdudots();
 }
 
-/* RLIMTEST: "TEST FOR EXCESSIVE CDU RATES (GREATER" "THAN 2.33 DEG IN ONE
- * SAMPLE PERIOD)": the difference in A (TTMP1) times 1/RTLIM; not +0,
+/* RLIMTEST -- p. 963: "TEST FOR EXCESSIVE CDU RATES (GREATER" "THAN 2.33 DEG
+ * IN ONE SAMPLE PERIOD)": the difference in A (TTMP1) times 1/RTLIM; not +0,
  * the rate +0. */
 static void rlimtest(void)
 {
@@ -142,15 +142,16 @@ static void cdu_rate(unsigned cdu, unsigned past)
     rlimtest();
 }
 
-/* PCDUDOTS: "COMPUTE CDUYDOT (USED BY PITCH AND YAW)" (MCDUYDOT), then
- * CDUZDOT. */
+/* PCDUDOTS -- p. 963: "COMPUTE CDUYDOT (USED BY PITCH AND YAW)" (MCDUYDOT),
+ * then CDUZDOT. */
 void pcdudots(void)
 {
     cdu_rate(ADDRESS_OF(CDUY), ADDRESS_OF(PCDUYPST));
     pcdudots_ydot();
 }
 
-/* PCDUDOTS +5, where RLIMTEST returns: MCDUYDOT; then "COMPUTE CDUZDOT". */
+/* PCDUDOTS +5 -- p. 963, where RLIMTEST returns: MCDUYDOT; then "COMPUTE
+ * CDUZDOT". */
 void pcdudots_ydot(void)
 {
     ts(ADDRESS_OF(MCDUYDOT));
@@ -158,7 +159,7 @@ void pcdudots_ydot(void)
     pcdudots_zdot();
 }
 
-/* PCDUDOTS +013, where RLIMTEST returns: MCDUZDOT. Then PINTEGRL:
+/* PCDUDOTS +013 -- p. 963, where RLIMTEST returns: MCDUZDOT. Then PINTEGRL:
  * "COMPUTE INTEGRAL OF BODY-AXIS PITCH-RATE" "ERROR, SC.AT B-1 REVS":
  * PERRB plus OMEGAYC, less OMEGAYB, the "BODY-AXIS PITCH RATE" from the
  * CDU rates (-COSCDUZ COSCDUX MCDUYDOT less MCDUZDOT SINCDUX, each
@@ -185,8 +186,8 @@ void pcdudots_zdot(void)
     dap_pass(&pitch);
 }
 
-/* YAWDAP, the T5 interrupt: BANKRUPT and QRUPT kept; PITCHDAP next by T5
- * (T5LOC PITCHT5; TIME5 T5TVCDT); the stroke test; then YINTEGRL. */
+/* YAWDAP -- p. 967, the T5 interrupt: BANKRUPT and QRUPT kept; PITCHDAP next
+ * by T5 (T5LOC PITCHT5; TIME5 T5TVCDT); the stroke test; then YINTEGRL. */
 void yawdap(void)
 {
     lxch(ADDRESS_OF(BANKRUPT));
@@ -198,16 +199,16 @@ void yawdap(void)
     if (!stroke_test(YSTROKER)) yintegrl();
 }
 
-/* YAWDAP +011, after the first TC HACK: TCF +2, YINTEGRL. */
+/* YAWDAP +011 -- p. 967, after the first TC HACK: TCF +2, YINTEGRL. */
 void yawdap_after_hack(void)
 {
     yintegrl();
 }
 
-/* YINTEGRL: "USE BODY RATES FROM PITCHDAP (PCDUDOTS)". "COMPUTE INTEGRAL
- * OF BODY-AXIS YAW-RATE" "ERROR": YERRB plus OMEGAZC, less OMEGAZB
- * (COSCDUZ SINCDUX MCDUYDOT less MCDUZDOT COSCDUX, each product
- * doubled); then the pass. */
+/* YINTEGRL -- p. 967: "USE BODY RATES FROM PITCHDAP (PCDUDOTS)". "COMPUTE
+ * INTEGRAL OF BODY-AXIS YAW-RATE" "ERROR": YERRB plus OMEGAZC, less OMEGAZB
+ * (COSCDUZ SINCDUX MCDUYDOT less MCDUZDOT COSCDUX, each product doubled);
+ * then the pass. */
 void yintegrl(void)
 {
     dca(yaw.errb);
@@ -247,8 +248,8 @@ static void limit(unsigned address, word limit_word)
     ts(address);
 }
 
-/* ERRORLIM: "CHECK FOR INPUT-ERROR LIMIT" of ERRBTMP, the "FILTER INPUT
- * LIMIT", ERRLIM; "CHECKS UPPER WORD ONLY". */
+/* ERRORLIM -- p. 971: "CHECK FOR INPUT-ERROR LIMIT" of ERRBTMP, the "FILTER
+ * INPUT LIMIT", ERRLIM; "CHECKS UPPER WORD ONLY". */
 static void errorlim(void)
 {
     ca(ADDRESS_OF(ERRBTMP));
@@ -256,9 +257,9 @@ static void errorlim(void)
     limit(ADDRESS_OF(ERRBTMP), ERRLIM);
 }
 
-/* ACTLIM: "ROUND UP FOR OUTPUT": CMDTMP +1 doubled to L, then CMDTMP
- * (an overflow at the TS L skips the CAF ZERO, so CMDTMP is added to the
- * +1 or -1 it leaves in A: the round up). Then "CHECK FOR ACTUATOR
+/* ACTLIM -- p. 971: "ROUND UP FOR OUTPUT": CMDTMP +1 doubled to L, then
+ * CMDTMP (an overflow at the TS L skips the CAF ZERO, so CMDTMP is added to
+ * the +1 or -1 it leaves in A: the round up). Then "CHECK FOR ACTUATOR
  * COMMAND LIMIT", ACTSAT, of CMDTMP itself. */
 static void actlim(void)
 {
@@ -281,7 +282,7 @@ static void forward_cascade(unsigned output, unsigned input, unsigned gain, unsi
     das(output);
 }
 
-/* FWDFLTR, "FILTER COMPUTATIONS FOR PRESENT OUTPUT": DAP1 to DAP3,
+/* FWDFLTR -- p. 972, "FILTER COMPUTATIONS FOR PRESENT OUTPUT": DAP1 to DAP3,
  * CMDTMP and DELBRTMP +0; the first and second cascades (N10, N20 at N10
  * +5); "TEST FOR LEM ON OR OFF" (bit 14 of DAPDATR1): on, the third
  * cascade (N30 at N10 +10D); off, DAP3 is DAP2. Then OPTVARK, the
@@ -340,8 +341,8 @@ static void precompute_cascade(unsigned input, unsigned output, unsigned c, unsi
     das(node + 2u);
 }
 
-/* PRECOMP, "FILTER PRECOMPUTATIONS FOR NEXT PASS": the "FIRST CASCADE
- * FILTER" (TMP1, TMP2) and the "SECOND CASCADE FILTER" (TMP3, TMP4);
+/* PRECOMP -- p. 973, "FILTER PRECOMPUTATIONS FOR NEXT PASS": the "FIRST
+ * CASCADE FILTER" (TMP1, TMP2) and the "SECOND CASCADE FILTER" (TMP3, TMP4);
  * then "EXIT IF LEM OFF" (bit 13 of DAPDATR1); on, the "THIRD CASCADE
  * FILTER" (TMP5, TMP6). */
 static void precomp(void)
@@ -369,12 +370,12 @@ static void prepare_nodes(const struct axis *axis, unsigned first)
     }
 }
 
-/* PCOPY +1, YCOPY +1, the copycycle after its "RESTART-PROTECT" (INCR
- * TVCPHASE, 1 or 3): the six nodes back to the axis's; ERRBTMP, the
- * "RATE-ERROR INTEGRATOR", to PERRB or YERRB, its upper word to the
- * needles' AK1 or AK2; CMDTMP to PCMD or YCMD; DELBRTMP to DELPBAR or
- * DELYBAR. Then "PITCH COPYCYCLE COMPLETED" (INCR TVCPHASE, 2), or the
- * yaw one's, "RESET TVCPHASE" (+0). */
+/* PCOPY +1 -- p. 966, YCOPY +1, the copycycle after its "RESTART-PROTECT"
+ * (INCR TVCPHASE, 1 or 3): the six nodes back to the axis's; ERRBTMP, the
+ * "RATE-ERROR INTEGRATOR", to PERRB or YERRB, its upper word to the needles'
+ * AK1 or AK2; CMDTMP to PCMD or YCMD; DELBRTMP to DELPBAR or DELYBAR. Then
+ * "PITCH COPYCYCLE COMPLETED" (INCR TVCPHASE, 2), or the yaw one's, "RESET
+ * TVCPHASE" (+0). */
 static void copycycle(const struct axis *axis)
 {
     unsigned node;
@@ -408,8 +409,8 @@ static void dap_pass(const struct axis *axis)
     forward(axis);
 }
 
-/* PFORWARD, YFORWARD: the odd nodes, and FWDFLTR, "GO COMPUTE PRESENT
- * OUTPUT". */
+/* PFORWARD -- p. 964, YFORWARD: the odd nodes, and FWDFLTR, "GO COMPUTE
+ * PRESENT OUTPUT". */
 static void forward(const struct axis *axis)
 {
     prepare_nodes(axis, 0);
@@ -417,8 +418,8 @@ static void forward(const struct axis *axis)
     offset(axis);
 }
 
-/* POFFSET, YOFFSET: the CG offset added, "NOW SCALED AT B+0 ASCREV";
- * ACTLIM. */
+/* POFFSET -- p. 964, YOFFSET: the CG offset added, "NOW SCALED AT B+0
+ * ASCREV"; ACTLIM. */
 static void offset(const struct axis *axis)
 {
     dca(axis->deloff);
@@ -427,8 +428,8 @@ static void offset(const struct axis *axis)
     out(axis);
 }
 
-/* POUT, YOUT: the "INCREMENTAL" command (CMDTMP less PCMD or YCMD) added
- * to the outcounter, released (WOR channel 14); the even nodes, and
+/* POUT -- p. 964, YOUT: the "INCREMENTAL" command (CMDTMP less PCMD or YCMD)
+ * added to the outcounter, released (WOR channel 14); the even nodes, and
  * PRECOMP. */
 static void out(const struct axis *axis)
 {
@@ -442,9 +443,9 @@ static void out(const struct axis *axis)
     delbar(axis);
 }
 
-/* DELBARP, DELBARY: the "OFFSET-TRACKER-FILTER", DELBRTMP, the old one
- * times E(-AT) plus CMDTMP times 1-E(-AT); the copycycle, PCOPY or YCOPY;
- * then PDAPEND or YDAPEND. */
+/* DELBARP -- p. 965, DELBARY: the "OFFSET-TRACKER-FILTER", DELBRTMP, the old
+ * one times E(-AT) plus CMDTMP times 1-E(-AT); the copycycle, PCOPY or
+ * YCOPY; then PDAPEND or YDAPEND. */
 static void delbar(const struct axis *axis)
 {
     multiply(ADDRESS_OF(DELBRTMP), axis->delbar, ADDRESS_OF(E_MINUS_AT), false);
@@ -457,13 +458,13 @@ static void delbar(const struct axis *axis)
     dapend();
 }
 
-/* PDAPEND, YDAPEND: "DAP COMPLETED", RESUME. */
+/* PDAPEND -- pp. 965 and 969, YDAPEND: "DAP COMPLETED", RESUME. */
 void dapend(void)
 {
     continue_at(RESUME);
 }
 
-/* The steps, as the words they start at. */
+/* PFORWARD -- p. 964: The steps, as the words they start at. */
 void pforward(void)
 {
     forward(&pitch);
@@ -512,15 +513,15 @@ static void copycycle_return(void)
     tc_q();
 }
 
-/* PCOPY +1, where the "TVC RESTART PACKAGE" (FINCOPY) re-enters the
- * pitch copycycle: the copycycle, TC Q. */
+/* PCOPY +1 -- p. 966, where the "TVC RESTART PACKAGE" (FINCOPY) re-enters
+ * the pitch copycycle: the copycycle, TC Q. */
 void pcopy_reentry(void)
 {
     copycycle(&pitch);
     copycycle_return();
 }
 
-/* YCOPY +1, the yaw copycycle re-entered: the copycycle, TC Q. */
+/* YCOPY +1 -- p. 970, the yaw copycycle re-entered: the copycycle, TC Q. */
 void ycopy_reentry(void)
 {
     copycycle(&yaw);
@@ -529,10 +530,10 @@ void ycopy_reentry(void)
 
 /* ---- DAPINIT -- p. 970 ---- */
 
-/* DAPINIT, the T5 interrupt TVCINIT4 calls: BANKRUPT kept; PITCHDAP by T5
- * "IN TVCDT SECS" (TIME5 -1 plus T5TVCDT twice plus NEGMAX, "(T5TVCDT =
- * POSMAX - TVCDT/2 +1)"; T5LOC PITCHT5: an overflow at the TS TIME5
- * skips the CAF PITCHT5, so T5LOC takes the +1 or -1 it leaves in A);
+/* DAPINIT -- p. 971, the T5 interrupt TVCINIT4 calls: BANKRUPT kept;
+ * PITCHDAP by T5 "IN TVCDT SECS" (TIME5 -1 plus T5TVCDT twice plus NEGMAX,
+ * "(T5TVCDT = POSMAX - TVCDT/2 +1)"; T5LOC PITCHT5: an overflow at the TS
+ * TIME5 skips the CAF PITCHT5, so T5LOC takes the +1 or -1 it leaves in A);
  * the "CDUS FOR DIFFERENTIATOR" "PAST-VALUES"; NOQRSM. */
 void dapinit(void)
 {

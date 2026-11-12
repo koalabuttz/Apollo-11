@@ -87,7 +87,7 @@ static const word r23_55_words[] = {
     ORDER(EXIT),
 };
 
-/* R23.55 +045 -- after the EXIT: "PUT FIXED INTO ERASABLE FOR MSU"
+/* R23.55 +045 -- p. 625: after the EXIT: "PUT FIXED INTO ERASABLE FOR MSU"
  * ("INSTRUCTION COMING UP"): VARSUBL, +0, to L; "TRUNION (2'S)-00000
  * CONVERTS TRUNION TO" "1'S.", to MPAC. (Neither the CA of +0 nor the
  * MSU, which leaves A sign-extended, leaves an overflow for a TS to skip
@@ -154,52 +154,52 @@ static const word r23_55_trunnion_words[] = {
     ORDER(EXIT),
 };
 
-/* R23.6 -- after the EXIT: verb 06 noun 49 flashed by GOFLASHR. */
+/* R23.6 -- p. 626: after the EXIT: verb 06 noun 49 flashed by GOFLASHR. */
 void r23_6(void)
 {
     set_A(V6N49);
     tc_to(R23_6 + 1u, BANKCALL); /* CADR GOFLASHR */
 }
 
-/* R23.6 +3: terminate. */
+/* R23.6 +3 -- p. 626: terminate. */
 void r23_6_terminate(void)
 {
     tc_to(R23_6 + 3u, GOTOPOOH);
 }
 
-/* R23.6 +4: "INCORPORATE DATA": TC R23.7. */
+/* R23.6 +4 -- p. 626: "INCORPORATE DATA": TC R23.7. */
 void r23_6_proceed(void)
 {
     tc_at(R23_6 + 4u);
     r23_7();
 }
 
-/* R23.6 +5: enter. */
+/* R23.6 +5 -- p. 626: enter. */
 void r23_6_enter(void)
 {
     tc_to(R23_6 + 5u, GOTOPOOH);
 }
 
-/* R23.6 +6, with the display up: "BLAN OUT R3". */
+/* R23.6 +6 -- p. 626, with the display up: "BLAN OUT R3". */
 void r23_6_blank(void)
 {
     set_A(BIT3);
     tc_to(R23_6 + 7u, BLANKET);
 }
 
-/* R23.6 +010: a restart point. */
+/* R23.6 +010 -- p. 626: a restart point. */
 void r23_6_after_blanket(void)
 {
     tc_to(R23_6 + 010u, PHASCHNG); /* OCT 00012 */
 }
 
-/* R23.6 +012: and the job ends. */
+/* R23.6 +012 -- p. 626: and the job ends. */
 void r23_6_after_phaschng(void)
 {
     tc_to(R23_6 + 012u, ENDOFJOB);
 }
 
-/* R23.7: TC INTPRET, */
+/* R23.7 -- p. 626: TC INTPRET, */
 static void r23_7(void)
 {
     tc_at(R23_7);
@@ -214,7 +214,7 @@ static const word r23_8_words[] = {
     ORDER(EXIT),
 };
 
-/* R23.END -- after the EXIT: P23 ends. */
+/* R23.END -- p. 626: after the EXIT: P23 ends. */
 void r23_end(void)
 {
     tc_to(R23_END, GOTOPOOH);

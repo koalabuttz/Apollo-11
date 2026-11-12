@@ -101,15 +101,16 @@ void switches(void)
     }
 }
 
-/* SWSTORE: "NEW SWITCH WORD." */
+/* SWSTORE -- LM p. 1093, CM p. 1198: "NEW SWITCH WORD." */
 static void swstore(void)
 {
     ts(indexed(ADDRESS_OF(STATE), SWWORD));
 }
 
-/* TEST: the switch bit of the word as it was (complemented for "BRANCH IF
- * ON"): zero branches, otherwise skip the branch address. (Negative "HERE
- * ONLY ON BIT 15"; -0 never: that slot is TC CCSHOLE.) */
+/* TEST -- LM p. 1094, CM p. 1199: the switch bit of the word as it was
+ * (complemented for "BRANCH IF ON"): zero branches, otherwise skip the
+ * branch address. (Negative "HERE ONLY ON BIT 15"; -0 never: that slot is TC
+ * CCSHOLE.) */
 static void test(void)
 {
     mask_at(ADDRESS_OF(SWBIT));
@@ -124,7 +125,8 @@ static void test(void)
     }
 }
 
-/* SWSKIP: past the branch address, to the next pair. */
+/* SWSKIP -- LM p. 1094, CM p. 1199: past the branch address, to the next
+ * pair. */
 static void swskip(void)
 {
     incr(ADDRESS_OF(LOC));

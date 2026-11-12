@@ -39,15 +39,15 @@ static void p57opt3(void);
 
 /* ---- P57 -- p. 975 ---- */
 
-/* P57: "IS ISS ON -- IF NOT, IMUCHK WILL SEND" alarm 210 (IMUCHK, by
- * BANKCALL). */
+/* P57 -- p. 975: "IS ISS ON -- IF NOT, IMUCHK WILL SEND" alarm 210 (IMUCHK,
+ * by BANKCALL). */
 void p57(void)
 {
     tc_to(P57, BANKCALL); /* CADR IMUCHK */
 }
 
-/* P57 +2, IMUCHK's return: "JAM REFSMMAT OPTION 3 FOR INITIAL DISP."
- * (A is a constant: TS does not skip.) */
+/* P57 +2 -- p. 975, IMUCHK's return: "JAM REFSMMAT OPTION 3 FOR INITIAL
+ * DISP." (A is a constant: TS does not skip.) */
 void p57_after_imuchk(void)
 {
     set_A(THREE);
@@ -55,7 +55,7 @@ void p57_after_imuchk(void)
     p57opt();
 }
 
-/* P57OPT: "FLASH V04N06 FOR ALIGNMENT CODE" (GOPERF4R). */
+/* P57OPT -- p. 975: "FLASH V04N06 FOR ALIGNMENT CODE" (GOPERF4R). */
 static void p57opt(void)
 {
     set_A(BIT1);
@@ -77,8 +77,8 @@ void p57opt_recycle(void)
     p57opt(); /* TCF P57OPT */
 }
 
-/* P57OPT +6: the display's immediate return, a restart point (PHASCHNG,
- * 00014), then ENDOFJOB. */
+/* P57OPT +6 -- p. 975: the display's immediate return, a restart point
+ * (PHASCHNG, 00014), then ENDOFJOB. */
 void p57opt_immediate_return(void)
 {
     tc_to(P57OPT + 6u, PHASCHNG); /* OCT 00014 */
@@ -89,8 +89,8 @@ void p57opt_after_phaschng(void)
     tc_to(P57OPT + 010u, ENDOFJOB);
 }
 
-/* ALIGNOPT: the option's last two bits pick one of four words (INDEX A;
- * TCF +1): "OPTION 4 LS ORIENTATION" (TDISP), "OPTION 1 PREFERRED"
+/* ALIGNOPT -- p. 975: the option's last two bits pick one of four words
+ * (INDEX A; TCF +1): "OPTION 4 LS ORIENTATION" (TDISP), "OPTION 1 PREFERRED"
  * (PACKOPTN), option 2 ("INVALID IN P57, RECYCLE") or "OPTION 3
  * REFSMMAT". */
 static void alignopt(void)
@@ -120,7 +120,7 @@ static const word alignopt_refsmmat_words[] = {
 const struct interpretive_code ALIGNOPT_REFSMMAT_CODE = {
     015u, ALIGNOPT + 010u, COUNT(alignopt_refsmmat_words), alignopt_refsmmat_words};
 
-/* TDISP: "LOAD ASCENT TIME FOR DISPLAY" (TIG) to DSPTEM1. */
+/* TDISP -- p. 975: "LOAD ASCENT TIME FOR DISPLAY" (TIG) to DSPTEM1. */
 static void tdisp(void)
 {
     tc_at(TDISP);
@@ -136,7 +136,7 @@ static const word tdisp_words[] = {
 
 const struct interpretive_code TDISP_CODE = {015u, TDISP + 1u, COUNT(tdisp_words), tdisp_words};
 
-/* P57AA: "DISPLAY TALIGN" (V06N34*, from DSPTEM1). */
+/* P57AA -- p. 975: "DISPLAY TALIGN" (V06N34*, from DSPTEM1). */
 void p57aa(void)
 {
     set_A(V06N34_STAR);
@@ -206,8 +206,8 @@ static void pack_flag(word flag_bit, unsigned flagword, word display_bit)
     ads(ADDRESS_OF(OPTION1) + 2u);
 }
 
-/* PACKOPTN: "PACK FLAG BITS FOR OPTION DISPLAY": REFSMFLG (bit 7) and
- * ATTFLG (bit 4), and "JAM 00010 IN OPTION1 FOR CHECK LIST". (A is +0 or
+/* PACKOPTN -- p. 976: "PACK FLAG BITS FOR OPTION DISPLAY": REFSMFLG (bit 7)
+ * and ATTFLG (bit 4), and "JAM 00010 IN OPTION1 FOR CHECK LIST". (A is +0 or
  * a constant: TS does not skip.) */
 static void packoptn(void)
 {
@@ -226,7 +226,7 @@ void packoptn_after_exit(void)
     packoptn();
 }
 
-/* DSPOPTN: "DISPLAY OPTION CODE AND FLAG BITS" (V05N06). */
+/* DSPOPTN -- p. 976: "DISPLAY OPTION CODE AND FLAG BITS" (V05N06). */
 static void dspoptn(void)
 {
     set_A(VB05N06);
@@ -238,9 +238,9 @@ void dspoptn_terminate(void)
     continue_at(GOTOPOOH); /* "VB34 -- TERMINATE" */
 }
 
-/* DSPOPTN +4, proceed (TCF +2): REFSMFLG set, "GO COMPUTE LM ATTITUDE"
- * (GETLMATT); else with an attitude stored (ATTFLG) or option 2 or 3,
- * BYLMATT; else "OPTION INCONSISTENT WITH FLAGS -- ALARM 701". */
+/* DSPOPTN +4 -- p. 976, proceed (TCF +2): REFSMFLG set, "GO COMPUTE LM
+ * ATTITUDE" (GETLMATT); else with an attitude stored (ATTFLG) or option 2 or
+ * 3, BYLMATT; else "OPTION INCONSISTENT WITH FLAGS -- ALARM 701". */
 void dspoptn_proceed(void)
 {
     set_A(REFSMBIT);
@@ -271,8 +271,8 @@ void dspoptn_recycle(void)
     dspoptn(); /* TCF DSPOPTN */
 }
 
-/* DSPOPTN +024, ALARM's return: "DISPLAY ALARM FOR ACTION" (V05N09);
- * proceed or recycle, the option display again. */
+/* DSPOPTN +024 -- p. 977, ALARM's return: "DISPLAY ALARM FOR ACTION"
+ * (V05N09); proceed or recycle, the option display again. */
 void dspoptn_after_alarm(void)
 {
     set_A(VB05N09);
@@ -361,8 +361,8 @@ const struct interpretive_code REFMF_CODE = {015u, REFMF, COUNT(refmf_words), re
 
 /* ---- The alignment option -- p. 980 ---- */
 
-/* GETLMATT: "GO TRANSFORM TO MF IN YNBSAV, ZNBSAV" (REFMF), then on to
- * BYLMATT. */
+/* GETLMATT -- p. 980: "GO TRANSFORM TO MF IN YNBSAV, ZNBSAV" (REFMF), then
+ * on to BYLMATT. */
 static void getlmatt(void)
 {
     tc_at(GETLMATT);
@@ -378,14 +378,14 @@ static const word getlmatt_words[] = {
 const struct interpretive_code GETLMATT_CODE = {015u, GETLMATT + 1u, COUNT(getlmatt_words),
                                                 getlmatt_words};
 
-/* BYLMATT: "SET INITIAL ALIGN FLAG" (INITALGN). */
+/* BYLMATT -- p. 980: "SET INITIAL ALIGN FLAG" (INITALGN). */
 void bylmatt(void)
 {
     tc_to(BYLMATT, UPFLAG); /* ADRES INITALGN */
 }
 
-/* BYLMATT +2, UPFLAG's return: options 1 and 3 (bit 1) get gravity first
- * (GVDETER); else ATTCHK. */
+/* BYLMATT +2 -- p. 980, UPFLAG's return: options 1 and 3 (bit 1) get gravity
+ * first (GVDETER); else ATTCHK. */
 void bylmatt_after_upflag(void)
 {
     set_A(BIT1);
@@ -397,14 +397,15 @@ void bylmatt_after_upflag(void)
     }
 }
 
-/* ATTCHK: a restart point (PHASCHNG, 04024), then "CHECK ATTFLAG". */
+/* ATTCHK -- p. 980: a restart point (PHASCHNG, 04024), then "CHECK
+ * ATTFLAG". */
 void attchk(void)
 {
     tc_to(ATTCHK, PHASCHNG); /* OCT 04024 */
 }
 
-/* ATTCHK +2: an attitude stored (ATTFLG), "GET ALIGNMENT VECS FOR OPTION
- * 0"; else P57JUMP. */
+/* ATTCHK +2 -- p. 980: an attitude stored (ATTFLG), "GET ALIGNMENT VECS FOR
+ * OPTION 0"; else P57JUMP. */
 void attchk_after_phaschng(void)
 {
     set_A(ATTFLBIT);
@@ -416,8 +417,8 @@ void attchk_after_phaschng(void)
     }
 }
 
-/* P57JUMP: a restart point (PHASCHNG, 04024), then "BRANCH ON OPTION
- * CODE". */
+/* P57JUMP -- p. 980: a restart point (PHASCHNG, 04024), then "BRANCH ON
+ * OPTION CODE". */
 void p57jump(void)
 {
     tc_to(P57JUMP, PHASCHNG); /* OCT 04024 */
@@ -428,8 +429,8 @@ void p57jump_after_phaschng(void)
     tc_to(P57JUMP + 2u, DOWNFLAG); /* ADRES INITALGN */
 }
 
-/* P57JUMP +4, DOWNFLAG's return: the option's last two bits pick one of
- * four words (INDEX A; TCF +1): options 0 to 3. */
+/* P57JUMP +4 -- p. 980, DOWNFLAG's return: the option's last two bits pick
+ * one of four words (INDEX A; TCF +1): options 0 to 3. */
 void p57jump_after_downflag(void)
 {
     set_A(THREE);
@@ -444,7 +445,7 @@ void p57jump_after_downflag(void)
 
 /* ---- The options -- pp. 981-982 ---- */
 
-/* P57OPT0: "OPTION 0, GET TWO ATTITUDE VECS": the stored attitude
+/* P57OPT0 -- p. 981: "OPTION 0, GET TWO ATTITUDE VECS": the stored attitude
  * (YNBSAV, ZNBSAV) to VEC1 and VEC2, and the navigation base's Y and Z
  * axes in the present stable member (CDUTRIG, CALCSMSC) to STARSAV1 and
  * STARSAV2 (SAMETYP); VEC1 and VEC2 to the reference frame (MFREF), then
@@ -477,10 +478,10 @@ static const word p57opt0_words[] = {
 const struct interpretive_code P57OPT0_CODE = {015u, P57OPT0 + 1u, COUNT(p57opt0_words),
                                                p57opt0_words};
 
-/* P57OPT1: "OPTION 1, GET LANDING SITE AND Z-ATTITUDE VEC": the landing
- * site (RLS) and the stored Z axis (ZNBSAV) to VEC1 and VEC2; gravity
- * (GSAV) in the present stable member (CDU*NBSM) for STARSAV1, and the Z
- * axis for STARSAV2: "NOW DO SAME AS OPTION 0" (SAMETYP). */
+/* P57OPT1 -- p. 981: "OPTION 1, GET LANDING SITE AND Z-ATTITUDE VEC": the
+ * landing site (RLS) and the stored Z axis (ZNBSAV) to VEC1 and VEC2;
+ * gravity (GSAV) in the present stable member (CDU*NBSM) for STARSAV1, and
+ * the Z axis for STARSAV2: "NOW DO SAME AS OPTION 0" (SAMETYP). */
 static void p57opt1(void)
 {
     tc_at(P57OPT1);
@@ -506,8 +507,8 @@ static const word p57opt1_words[] = {
 const struct interpretive_code P57OPT1_CODE = {015u, P57OPT1 + 1u, COUNT(p57opt1_words),
                                                p57opt1_words};
 
-/* P57OPT3: "OPTION 3, GET LANDING SITE VEC AND ONE STAR SIGHTING": the
- * landing site (RLS) to VEC1, and to VEC2 for now ("DUMMY VEC2 FOR 2ND
+/* P57OPT3 -- p. 982: "OPTION 3, GET LANDING SITE VEC AND ONE STAR SIGHTING":
+ * the landing site (RLS) to VEC1, and to VEC2 for now ("DUMMY VEC2 FOR 2ND
  * CATALOG STAR"); gravity in the present stable member (CDU*NBSM) to
  * STARSAV1; VEC1 to the reference frame (MFREF); then the one star
  * (1STAR). */
@@ -540,8 +541,9 @@ void p57opt3_after_exit(void)
 
 /* ---- IMUCHK -- p. 983 ---- */
 
-/* IMUCHK: "CHECK IMODES30 TO VERIFY IMU IS ON" (bit 9 clear): "SET IMUSE
- * FLAG" and back (SWRETURN); "NO, SEND ALARM AND EXIT" (210, GOTOPOOH). */
+/* IMUCHK -- p. 983: "CHECK IMODES30 TO VERIFY IMU IS ON" (bit 9 clear): "SET
+ * IMUSE FLAG" and back (SWRETURN); "NO, SEND ALARM AND EXIT" (210,
+ * GOTOPOOH). */
 void imuchk(void)
 {
     cs(ADDRESS_OF(IMODES30));

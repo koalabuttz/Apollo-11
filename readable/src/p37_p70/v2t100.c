@@ -94,8 +94,8 @@ static const word v2t100_words[] = {
 
 const struct interpretive_code V2T100_CODE = {032u, V2T100, COUNT(v2t100_words), v2t100_words};
 
-/* V2TERROR +1, after the EXIT: the program's abort with alarm 610 (TC
- * POODOO, OCT 00610): "NO SOLUTION IF LAMBDA LESS THAN 1". */
+/* V2TERROR +1 -- p. 918, after the EXIT: the program's abort with alarm 610
+ * (TC POODOO, OCT 00610): "NO SOLUTION IF LAMBDA LESS THAN 1". */
 void v2terror_after_exit(void)
 {
     tc_to(V2TERROR + 1u, POODOO); /* OCT 00610 */

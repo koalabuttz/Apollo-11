@@ -110,7 +110,7 @@ static void one_accfix(void)
     continue_at(NOVAC);
 }
 
-/* 1/ACCFIX +4, where NOVAC returns: TCF RCSMONEX ("EXIT"). */
+/* 1/ACCFIX +4 -- LM p. 192, where NOVAC returns: TCF RCSMONEX ("EXIT"). */
 void one_accfix_after_novac(void)
 {
     continue_at(RCSMONEX);

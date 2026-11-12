@@ -41,7 +41,8 @@ static void ts_temreg_protected(void)
 
 /* ---- The jets -- pp. 994-996 ---- */
 
-/* T6ENABL: channel 13's bit 15 enables T6; RDAPEND, "EXIT ROLL DAP". */
+/* T6ENABL -- p. 996: channel 13's bit 15 enables T6; RDAPEND, "EXIT ROLL
+ * DAP". */
 static void t6enabl(void)
 {
     set_A(BIT15);
@@ -49,8 +50,9 @@ static void t6enabl(void)
     continue_at(TASKOVER);
 }
 
-/* +TORQUE: the positive roll jets, pairs 9-11 and 13-15 in turn ("WHAT WAS
- * THE LAST +TORQUE COMBINATION"), bit 1 of ROLLWORD naming the last. */
+/* +TORQUE -- p. 995: the positive roll jets, pairs 9-11 and 13-15 in turn
+ * ("WHAT WAS THE LAST +TORQUE COMBINATION"), bit 1 of ROLLWORD naming the
+ * last. */
 static void plus_torque(void)
 {
     ca(ADDRESS_OF(ROLLWORD));
@@ -69,7 +71,8 @@ static void plus_torque(void)
     t6enabl();
 }
 
-/* -TORQUE: the negative roll jets, pairs 12-10 and 16-14, by bit 2. */
+/* -TORQUE -- p. 995: the negative roll jets, pairs 12-10 and 16-14, by bit
+ * 2. */
 static void minus_torque(void)
 {
     ca(ADDRESS_OF(ROLLWORD));
@@ -88,8 +91,8 @@ static void minus_torque(void)
     t6enabl();
 }
 
-/* JETROLL: NOROLL1 as the T6 task, TEMREG (the firing time, or -0) into
- * TIME6. "I=0 IF MOREROLL,KEEP SAME JETS ON" (SAMEJETS); otherwise the
+/* JETROLL -- p. 994: NOROLL1 as the T6 task, TEMREG (the firing time, or -0)
+ * into TIME6. "I=0 IF MOREROLL,KEEP SAME JETS ON" (SAMEJETS); otherwise the
  * jets of ROLLFIRE's sign, or none. */
 static void jetroll(void)
 {
@@ -110,8 +113,8 @@ static void jetroll(void)
     }
 }
 
-/* NOROLL, "COAST....(NEG ZERO FOR TIME6)": ROLLFIRE and TEMREG -0 ("NOTE,
- * JETS CAN FIRE NEXT PASS"). */
+/* NOROLL -- p. 994, "COAST....(NEG ZERO FOR TIME6)": ROLLFIRE and TEMREG -0
+ * ("NOTE, JETS CAN FIRE NEXT PASS"). */
 static void noroll(void)
 {
     set_A(negate(ZERO)); /* CS ZERO */
@@ -120,10 +123,10 @@ static void noroll(void)
     jetroll();
 }
 
-/* NOMXFIRE: ROLLFIRE POSMAX or NEGMAX, "FOR TORQUE SIGN" (TEMREG is not
- * zero here), and TEMREG its magnitude. FIRELOOK: "IS IT MOREROLL"; if so,
- * FIREPLUG, "CHECK FOR EXTENDED FIRING": "IF EXTENSION WANTED, DONT, EXIT
- * ROLL DAP" (EXTENTST), as "JET FIRINGS MAY NOT BE EXTENDED, ONLY
+/* NOMXFIRE -- p. 994: ROLLFIRE POSMAX or NEGMAX, "FOR TORQUE SIGN" (TEMREG
+ * is not zero here), and TEMREG its magnitude. FIRELOOK: "IS IT MOREROLL";
+ * if so, FIREPLUG, "CHECK FOR EXTENDED FIRING": "IF EXTENSION WANTED, DONT,
+ * EXIT ROLL DAP" (EXTENTST), as "JET FIRINGS MAY NOT BE EXTENDED, ONLY
  * SHORTENED". */
 static void nomxfire(void)
 {
@@ -151,8 +154,8 @@ static void nomxfire(void)
     jetroll();
 }
 
-/* MAXTFIRE: "PROCEED WITH NEW FIRING BUT NOT LONGER THAN TMAXFIRE" (MP by
- * 1/TMXFIR is not zero from 2.56 seconds on: MAXTST). */
+/* MAXTFIRE -- p. 994: "PROCEED WITH NEW FIRING BUT NOT LONGER THAN TMAXFIRE"
+ * (MP by 1/TMXFIR is not zero from 2.56 seconds on: MAXTST). */
 static void maxtfire(void)
 {
     ca(ADDRESS_OF(TEMREG));
@@ -167,8 +170,8 @@ static void maxtfire(void)
     nomxfire();
 }
 
-/* NEWROLL: "START NEW FIRING BUT CHECK IF GREATER THAN MIN FIRE TIME":
- * TMINFIRE less the magnitude of TEMREG ("CALL THIS T6FIRE"); "IF NOT
+/* NEWROLL -- p. 993: "START NEW FIRING BUT CHECK IF GREATER THAN MIN FIRE
+ * TIME": TMINFIRE less the magnitude of TEMREG ("CALL THIS T6FIRE"); "IF NOT
  * GREATER THAN TMINFIRE" (MINTST), no firing. */
 static void newroll(void)
 {
@@ -188,13 +191,13 @@ static void newroll(void)
     maxtfire();
 }
 
-/* ROLLSET, with the desired OGARATE in A: the jet firing time, the change
- * in rate times T6SCALE and 1/CONACC ("JET FIRE TIME AT 625 MICROSEC/BIT",
- * "POS MEANS POSITIVE ROLL TORQUE"), each step overflow protected. None:
- * NOROLL. Otherwise by its sign against ROLLFIRE's (MP ROLLFIRE; CCS A):
- * MOREROLL, "CONTINUE FIRING WITH PRESENT POLARITY" (I +0, "USE TEMP. AS
- * MOREROLL SWITCH"); NEWROLL, "START NEW FIRING NOW" (the jets now off);
- * or NOROLL, "TERMINATE OLD FIRING, NEW SIGN REQUESTED". */
+/* ROLLSET -- p. 993, with the desired OGARATE in A: the jet firing time, the
+ * change in rate times T6SCALE and 1/CONACC ("JET FIRE TIME AT 625
+ * MICROSEC/BIT", "POS MEANS POSITIVE ROLL TORQUE"), each step overflow
+ * protected. None: NOROLL. Otherwise by its sign against ROLLFIRE's (MP
+ * ROLLFIRE; CCS A): MOREROLL, "CONTINUE FIRING WITH PRESENT POLARITY" (I +0,
+ * "USE TEMP. AS MOREROLL SWITCH"); NEWROLL, "START NEW FIRING NOW" (the jets
+ * now off); or NOROLL, "TERMINATE OLD FIRING, NEW SIGN REQUESTED". */
 static void rollset(void)
 {
     ts(ADDRESS_OF(TEMREG)); /* "STORE DESIRED OGARATE" */
@@ -226,12 +229,11 @@ static void rollset(void)
 
 /* ---- The desired rate -- pp. 991-993 ---- */
 
-/* ONROLL, with DELOGART in A: "SOLVE STRAIGHT LINES SIMULTANEOUSLY TO
- * OBTAIN DESIRED OGARATE", DOGADOT = NUM/DEN, the denominator in TEMREG
- * (RATEDEN) and the numerator in A (RATENUM). The division by TEMREG
- * first divides +0,NUM, whose quotient is not zero only when NUM/TEMREG
- * overflows (MINLIMAP: then POSMAX of the overflow's sign); DVOK divides
- * NUM,+0. */
+/* ONROLL -- p. 992, with DELOGART in A: "SOLVE STRAIGHT LINES SIMULTANEOUSLY
+ * TO OBTAIN DESIRED OGARATE", DOGADOT = NUM/DEN, the denominator in TEMREG
+ * (RATEDEN) and the numerator in A (RATENUM). The division by TEMREG first
+ * divides +0,NUM, whose quotient is not zero only when NUM/TEMREG overflows
+ * (MINLIMAP: then POSMAX of the overflow's sign); DVOK divides NUM,+0. */
 static void onroll(void)
 {
     mp_at(ADDRESS_OF(1_CONACC));
@@ -268,7 +270,7 @@ static void onroll(void)
     rollset(); /* "RESULT OF DIVISION IS DESIRED OGARATE" */
 }
 
-/* REGION6: "USE ACTUAL OPERATING POINT FOR TANGENT". */
+/* REGION6 -- p. 991: "USE ACTUAL OPERATING POINT FOR TANGENT". */
 static void region6(void)
 {
     ca(ADDRESS_OF(OGA)); /* CAE */
@@ -278,8 +280,8 @@ static void region6(void)
     onroll();
 }
 
-/* ROLLON, region 1: the dummy operating point, OGAERROR = DELOGA + DB
- * SGN(DELOGA) and OGARATE = -LMCRATE SGN(DELOGA) ("EVALUATE STATE FOR
+/* ROLLON -- p. 991, region 1: the dummy operating point, OGAERROR = DELOGA +
+ * DB SGN(DELOGA) and OGARATE = -LMCRATE SGN(DELOGA) ("EVALUATE STATE FOR
  * INDIRECT LINE"). */
 static void rollon(void)
 {
@@ -291,7 +293,7 @@ static void rollon(void)
     onroll();
 }
 
-/* RATELIM, region 3: "IF I = CA, DESIRED RATE IS -MAXLIM". */
+/* RATELIM -- p. 992, region 3: "IF I = CA, DESIRED RATE IS -MAXLIM". */
 static void ratelim(void)
 {
     set_A(negate(MAXLIM)); /* CS */
@@ -301,13 +303,12 @@ static void ratelim(void)
 
 /* ---- ROLLDAP -- pp. 989-991 ---- */
 
-/* ROLLOGIC: TEMREG "DB-(1/2 CONACC) (OGARATE)SQ", SGNRT the sign of
- * OGARATE ("LET SGN(0) BE NEGATIVE"), DELOGA the distance from the switch
- * parabola ("PLUS TO RIGHT OF C-PARAB") and I the CA or CS of its sign.
- * Then the regions in turn. (An overflow at TS TEMREG skips the CA
- * OGARATE, and the sign is the +1 or -1 it leaves. One at DELOGAC skips
- * the EXTEND: BZMF +3 runs as an AD, which CAF PRIO30 then overwrites, so
- * I is CA.) */
+/* ROLLOGIC -- p. 989: TEMREG "DB-(1/2 CONACC) (OGARATE)SQ", SGNRT the sign
+ * of OGARATE ("LET SGN(0) BE NEGATIVE"), DELOGA the distance from the switch
+ * parabola ("PLUS TO RIGHT OF C-PARAB") and I the CA or CS of its sign. Then
+ * the regions in turn. (An overflow at TS TEMREG skips the CA OGARATE, and
+ * the sign is the +1 or -1 it leaves. One at DELOGAC skips the EXTEND: BZMF
+ * +3 runs as an AD, which CAF PRIO30 then overwrites, so I is CA.) */
 static void rollogic(void)
 {
     cs(ADDRESS_OF(OGARATE));
@@ -375,10 +376,10 @@ static void rollogic(void)
     region6();
 }
 
-/* ROLLDAP, the "OGA RATE ESTIMATOR...SIMPLE FIRST-ORDER" "DIFFERENCE
- * (SAMPLE TIME = 1/2 SEC)": OGARATE (OGANOW - OGAPAST) / 16. Then
- * DURATION, "EXAMINE DURATION OF LAST JET FIRING IF JETS ARE NOW ON": on
- * to ROLLOGIC if they are, or if TEMREG is zero; otherwise "JETS HAVE NOT
+/* ROLLDAP -- p. 989, the "OGA RATE ESTIMATOR...SIMPLE FIRST-ORDER"
+ * "DIFFERENCE (SAMPLE TIME = 1/2 SEC)": OGARATE (OGANOW - OGAPAST) / 16.
+ * Then DURATION, "EXAMINE DURATION OF LAST JET FIRING IF JETS ARE NOW ON":
+ * on to ROLLOGIC if they are, or if TEMREG is zero; otherwise "JETS HAVE NOT
  * BEEN OFF FOR 1/2 SEC. WAIT" (TEMREG +0; WAIT1/2). */
 void rolldap(void)
 {
@@ -400,8 +401,8 @@ void rolldap(void)
     rollogic();
 }
 
-/* NOROLL1, "THIS T6 TASK SHUTS OFF ALL ROLL JETS": ROLLFIRE +0, "ZERO
- * INDICATES JETS NOW OFF", and channel 6 +0 (KILLJETS); NOQRSM. */
+/* NOROLL1 -- p. 997, "THIS T6 TASK SHUTS OFF ALL ROLL JETS": ROLLFIRE +0,
+ * "ZERO INDICATES JETS NOW OFF", and channel 6 +0 (KILLJETS); NOQRSM. */
 void noroll1(void)
 {
     lxch(ADDRESS_OF(BANKRUPT));

@@ -231,9 +231,9 @@ static const word ckmid2_words[] = {
 const struct interpretive_code CKMID2_CODE = {CODE_BANK(I_CKMID2), CODE_Z(I_CKMID2),
                                               COUNT(ckmid2_words), ckmid2_words};
 
-/* After NOTIME's EXIT: the caller's return one on ("SET ERROR EXIT"),
- * alarm 1703 ("INSUFFICIENT TIME FOR INTEGRATION"), and back into the
- * interpreter. */
+/* NOTIME +2 -- LM p. 1225, CM p. 1331: After NOTIME's EXIT: the caller's
+ * return one on ("SET ERROR EXIT"), alarm 1703 ("INSUFFICIENT TIME FOR
+ * INTEGRATION"), and back into the interpreter. */
 void notime_after_exit(void)
 {
     incr(ADDRESS_OF(IRETURN1));        /* "SET ERROR EXIT" */

@@ -16,9 +16,9 @@
 
 /* ---- T5PHASE2 -- p. 1016 ---- */
 
-/* T5PHASE2: "IF (+) INITIALIZE RATE ESTIMATE" (KALUPDT). If not, TIME5
- * gets DELTATT2, "RESET FOR PHASE3 IN 20 MS (JET SELECTION LOGIC)", the
- * old TIME5 added into T5TIME "TO COMPENSATE FOR DELAYS IN T5RUPT", and
+/* T5PHASE2 -- p. 1016: "IF (+) INITIALIZE RATE ESTIMATE" (KALUPDT). If not,
+ * TIME5 gets DELTATT2, "RESET FOR PHASE3 IN 20 MS (JET SELECTION LOGIC)",
+ * the old TIME5 added into T5TIME "TO COMPENSATE FOR DELAYS IN T5RUPT", and
  * ATTKALMN -1 for "A HIGH RATE AUTO MANEUVER" (bit 15 of RCSFLAGS), +0
  * otherwise. */
 void t5phase2(void)
@@ -38,20 +38,20 @@ void t5phase2(void)
         t5phase2_hiauto();
 }
 
-/* NOHIAUTO -1: CS ONE. */
+/* NOHIAUTO -1 -- p. 1016: CS ONE. */
 void t5phase2_hiauto(void)
 {
     set_A(negate(ONE));
     nohiauto();
 }
 
-/* NOHIAUTO: TS ATTKALMN, then "RESET FORCED FIRING BITS (BITS 10 TO 5 OF
- * RCSFLAGS) TO ZERO". Channel 31's rotation bits (MANROT) are compared
- * with CH31TEMP, the last ones seen: on a change, "SAVE CONTENTS OF
- * CHANNEL 31 IN CH31TEMP", "SET FORCED FIRING BITS FOR AXES WITH CHANGES
- * IN COMMAND" (the changed bits, times BIT5, in L) and "SET RATE DAMPING
- * FLAGS". (TS ATTKALMN overflows only for an A that holds an overflow,
- * and skips the CS OCT01760: A is then +1 or -1. The channel's word,
+/* NOHIAUTO -- p. 1016: TS ATTKALMN, then "RESET FORCED FIRING BITS (BITS 10
+ * TO 5 OF RCSFLAGS) TO ZERO". Channel 31's rotation bits (MANROT) are
+ * compared with CH31TEMP, the last ones seen: on a change, "SAVE CONTENTS OF
+ * CHANNEL 31 IN CH31TEMP", "SET FORCED FIRING BITS FOR AXES WITH CHANGES IN
+ * COMMAND" (the changed bits, times BIT5, in L) and "SET RATE DAMPING
+ * FLAGS". (TS ATTKALMN overflows only for an A that holds an overflow, and
+ * skips the CS OCT01760: A is then +1 or -1. The channel's word,
  * sign-extended, leaves TS CH31TEMP no overflow.) */
 void nohiauto(void)
 {
@@ -77,8 +77,8 @@ void nohiauto(void)
     nohiauto_damping();
 }
 
-/* NOHIAUTO +025: MASK OCT16000; ADS RCSFLAGS: the rate damping flags,
- * "BITS 13,12,AND 11 OF RCSFLAGS", set. */
+/* NOHIAUTO +025 -- p. 1017: MASK OCT16000; ADS RCSFLAGS: the rate damping
+ * flags, "BITS 13,12,AND 11 OF RCSFLAGS", set. */
 void nohiauto_damping(void)
 {
     mask(OCT16000);
@@ -88,7 +88,7 @@ void nohiauto_damping(void)
 
 /* ---- NOCHANGE, the RHC out of detent -- pp. 1017-1018 ---- */
 
-/* NOCHANGE: "IF NO MANUAL COMMANDS, GO TO AHFNOROT". If any, "SET
+/* NOCHANGE -- p. 1017: "IF NO MANUAL COMMANDS, GO TO AHFNOROT". If any, "SET
  * HOLDFLAG +" and call STICKCHK, which sets PMANNDX, YMANNDX and RMANNDX
  * "TO 0, 1, OR 2 FOR NO, +, OR - ROTATION". */
 void nochange(void)
@@ -103,13 +103,13 @@ void nochange(void)
     tc_to(NOCHANGE + 5u, STICKCHK);
 }
 
-/* NOCHANGE +6, after STICKCHK: "SET STIKFLAG TO INFORM STEERING PROGRAMS
- * (P20) THAT ASTRONAUT HAS ASSUMED ROTATIONAL CONTROL OF SPACECRAFT" (bit
- * 14 of FLAGWRD1). With bit 14 of channel 31 clear, FREEFUNC (free
- * mode). With the rate filter not yet initialized (bit 14 of RCSFLAGS
- * set), the "TILT, RECYCLE TO INITIALIZE FILTER": REINIT. Then ATTKALMN -1
- * "IF MANUAL MANEUVER IS AT HIGH RTE" (RATEINDX above 5), and SETWBODY for
- * the three axes, SPNDX 2, 1 and 0. */
+/* NOCHANGE +6 -- p. 1018, after STICKCHK: "SET STIKFLAG TO INFORM STEERING
+ * PROGRAMS (P20) THAT ASTRONAUT HAS ASSUMED ROTATIONAL CONTROL OF
+ * SPACECRAFT" (bit 14 of FLAGWRD1). With bit 14 of channel 31 clear,
+ * FREEFUNC (free mode). With the rate filter not yet initialized (bit 14 of
+ * RCSFLAGS set), the "TILT, RECYCLE TO INITIALIZE FILTER": REINIT. Then
+ * ATTKALMN -1 "IF MANUAL MANEUVER IS AT HIGH RTE" (RATEINDX above 5), and
+ * SETWBODY for the three axes, SPNDX 2, 1 and 0. */
 void nochange_after_stickchk(void)
 {
     cs(ADDRESS_OF(FLAGWRD1));
@@ -139,16 +139,17 @@ void nochange_after_stickchk(void)
 
 /* ---- SETWBODY, each axis' commanded rate -- pp. 1018-1019 ---- */
 
-/* SETWBODY: the axis in SPNDX, twice it in DPNDX. (TS SPNDX overflows only
- * for an A that holds an overflow, and skips the DOUBLE: A is then +1 or
- * -1, and TS DPNDX does not overflow.) */
+/* SETWBODY -- p. 1018: the axis in SPNDX, twice it in DPNDX. (TS SPNDX
+ * overflows only for an A that holds an overflow, and skips the DOUBLE: A is
+ * then +1 or -1, and TS DPNDX does not overflow.) */
 void setwbody(void)
 {
     if (!ts(ADDRESS_OF(SPNDX))) double_A();
     setwbody_dpndx();
 }
 
-/* SETWBODY +2: TS DPNDX, which skips the INDEX SPNDX when it overflows. */
+/* SETWBODY +2 -- p. 1018: TS DPNDX, which skips the INDEX SPNDX when it
+ * overflows. */
 void setwbody_dpndx(void)
 {
     if (ts(ADDRESS_OF(DPNDX)))
@@ -179,24 +180,24 @@ static void commanded_rate(void)
     setwbody_wbody();
 }
 
-/* SETWBODY +3: INDEX SPNDX; CA RMANNDX ("RMANNDX = 0 NO ROTATION", "= 1 +
- * ROTATION", "= 2 - ROTATION", and PMANNDX and YMANNDX the same, in the
- * words after it). */
+/* SETWBODY +3 -- p. 1018: INDEX SPNDX; CA RMANNDX ("RMANNDX = 0 NO
+ * ROTATION", "= 1 + ROTATION", "= 2 - ROTATION", and PMANNDX and YMANNDX the
+ * same, in the words after it). */
 void setwbody_rmanndx(void)
 {
     ca(index_read(ADDRESS_OF(RMANNDX), spndx()));
     commanded_rate();
 }
 
-/* SETWBODY +4: CA RMANNDX, not indexed. */
+/* SETWBODY +4 -- p. 1018: CA RMANNDX, not indexed. */
 void setwbody_rmanndx_unindexed(void)
 {
     ca(ADDRESS_OF(RMANNDX));
     commanded_rate();
 }
 
-/* SETWBODY +015: INDEX DPNDX; DXCH WBODY, then the test of the rate
- * damping flags. */
+/* SETWBODY +015 -- p. 1018: INDEX DPNDX; DXCH WBODY, then the test of the
+ * rate damping flags. */
 void setwbody_wbody(void)
 {
     dxch_indexed(ADDRESS_OF(WBODY), dpndx());
@@ -208,7 +209,7 @@ void setwbody_wbody(void)
         zeroer();
 }
 
-/* ZEROER: "ZEROER ZEROS MERRORS", the axis' MERRORX. */
+/* ZEROER -- p. 1019: "ZEROER ZEROS MERRORS", the axis' MERRORX. */
 void zeroer(void)
 {
     set_A(ZERO);
@@ -217,8 +218,8 @@ void zeroer(void)
     continue_at(SPNDXCHK);
 }
 
-/* NORATE: "ZERO WBODY FOR THIS AXIS". "IS RATE DAMPING COMPLETED": if so,
- * "KEEP CURRENT MERRORX", and if not, ZEROER. */
+/* NORATE -- p. 1019: "ZERO WBODY FOR THIS AXIS". "IS RATE DAMPING
+ * COMPLETED": if so, "KEEP CURRENT MERRORX", and if not, ZEROER. */
 void norate(void)
 {
     zl();
@@ -231,10 +232,10 @@ void norate(void)
         zeroer();
 }
 
-/* MERUPDAT: "MERRORX=MERRORX+MEASURED CHANGE IN ANGLE -COMMANDED CHANGE IN
- * ANGLE"; the measured change is already in ("HAS ALREADY BEEN DONE IN THE
- * RATE FILTER"), and the commanded change, "WBODY TIMES .1SEC = MANTABLE
- * ENTRY TIMES 2 TO THE -8", is taken off. */
+/* MERUPDAT -- p. 1019: "MERRORX=MERRORX+MEASURED CHANGE IN ANGLE -COMMANDED
+ * CHANGE IN ANGLE"; the measured change is already in ("HAS ALREADY BEEN
+ * DONE IN THE RATE FILTER"), and the commanded change, "WBODY TIMES .1SEC =
+ * MANTABLE ENTRY TIMES 2 TO THE -8", is taken off. */
 void merupdat(void)
 {
     cs(index_read(ADDRESS_OF(MANTABLE) - 1u, overflow_corrected(Q)));
@@ -258,8 +259,8 @@ static void next_axis(void)
     }
 }
 
-/* SPNDXCHK: "ERRORX = HIGH ORDER WORD OF MERRORX". (The CA leaves A no
- * overflow, so TS ERRORX does not skip. An index that has the CA read A
+/* SPNDXCHK -- p. 1019: "ERRORX = HIGH ORDER WORD OF MERRORX". (The CA leaves
+ * A no overflow, so TS ERRORX does not skip. An index that has the CA read A
  * or Q itself, which can hold one, does not come up in the program; the
  * faithful port goes on to CCS SPNDX then too, and so does this.) */
 void spndxchk(void)
@@ -269,8 +270,8 @@ void spndxchk(void)
     next_axis();
 }
 
-/* SPNDXCHK +2: INDEX SPNDX; TS ERRORX, which skips to TCF SETWBODY when
- * it overflows. */
+/* SPNDXCHK +2 -- p. 1019: INDEX SPNDX; TS ERRORX, which skips to TCF
+ * SETWBODY when it overflows. */
 void spndxchk_errorx(void)
 {
     if (ts(index_ts(ADDRESS_OF(ERRORX), spndx()))) {
@@ -282,11 +283,11 @@ void spndxchk_errorx(void)
 
 /* ---- FREEFUNC and STICKCHK -- pp. 1019-1021 ---- */
 
-/* FREEFUNC, with the RHC in free mode (bit 14 of channel 31 clear): the
- * acceleration commands, each axis' jet firing time from FREETAU by its
- * index ("0 SEC", "+0.10 SEC", "-0.10 SEC", "(+3) 0 SEC") in TAU, TAU1 and
- * TAU2, then T6PROGM. (Each CA reads a word with no overflow, but for an
- * index that has it read A or Q itself, which does not come up in the
+/* FREEFUNC -- p. 1019, with the RHC in free mode (bit 14 of channel 31
+ * clear): the acceleration commands, each axis' jet firing time from FREETAU
+ * by its index ("0 SEC", "+0.10 SEC", "-0.10 SEC", "(+3) 0 SEC") in TAU,
+ * TAU1 and TAU2, then T6PROGM. (Each CA reads a word with no overflow, but
+ * for an index that has it read A or Q itself, which does not come up in the
  * program; the faithful port goes on past the TS then too, and so does
  * this.) */
 void freefunc(void)
@@ -300,8 +301,9 @@ void freefunc(void)
     t6progm();
 }
 
-/* T6PROGM: the attitude errors zeroed "FOR MANUAL ROTATIONS", and T6PROG
- * (AUTOMATIC_MANEUVERS.agc) to fire the jets for TAU, TAU1 and TAU2. */
+/* T6PROGM -- p. 1020: the attitude errors zeroed "FOR MANUAL ROTATIONS", and
+ * T6PROG (AUTOMATIC_MANEUVERS.agc) to fire the jets for TAU, TAU1 and
+ * TAU2. */
 void t6progm(void)
 {
     set_A(ZERO);
@@ -311,8 +313,8 @@ void t6progm(void)
     continue_at(T6PROG);
 }
 
-/* STICKCHK: the "INDICES FOR MANUAL ROTATION" from the RHC's bits in A
- * (CH31TEMP's, complemented), two to an axis: "MAN RATE 0 0 RATE (DP)",
+/* STICKCHK -- p. 1021: the "INDICES FOR MANUAL ROTATION" from the RHC's bits
+ * in A (CH31TEMP's, complemented), two to an axis: "MAN RATE 0 0 RATE (DP)",
  * "+1 +RATE (DP)", "+2 -RATE (DP)", "(+3) 0 RATE (DP)". Bits 2-1 go to
  * PMANNDX, and MP QUARTER shifts the rest down two bits for YMANNDX, then
  * RMANNDX. (TS T5TEMP overflows only for an A that holds an overflow, and
@@ -334,7 +336,8 @@ void stickchk(void)
 
 /* ---- KALUPDT, the rate filter started -- pp. 1021-1022 ---- */
 
-/* KALUPDT: from T5PHASE2's CCS ATTKALMN, A is ATTKALMN less one, kept as
+/* KALUPDT -- p. 1021: from T5PHASE2's CCS ATTKALMN, A is ATTKALMN less one,
+ * kept as
  * the count of passes: the "INITIALIZATION OF ATTITUDE RATES USING KALMAN
  * FILTER TAKES 1.1 SEC". The next T5 interrupt comes in DELTATT's "80MS
  * (TIME5)" (the comment here reads "=1SEC - 80MS") "+ DELAYS" (T5TIME);
@@ -354,9 +357,9 @@ void kalupdt(void)
     continue_at(KRESUME2 + 1u);
 }
 
-/* KRESUME2 +1: T5PHASE -0, "RESET FOR PHASE1", and "RESUME INTERRUPTED
- * PROGRAM". (TS T5PHASE overflows only for an A that holds an overflow,
- * and skips the TCF RESUME: on to FDAIDSP2.) */
+/* KRESUME2 +1 -- p. 1022: T5PHASE -0, "RESET FOR PHASE1", and "RESUME
+ * INTERRUPTED PROGRAM". (TS T5PHASE overflows only for an A that holds an
+ * overflow, and skips the TCF RESUME: on to FDAIDSP2.) */
 void kresume2_t5phase(void)
 {
     if (ts(ADDRESS_OF(T5PHASE)))

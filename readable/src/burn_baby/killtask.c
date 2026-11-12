@@ -21,9 +21,10 @@ static word list_word(word offset)
     return (word)(ADDRESS_OF(LST2) + offset + L);
 }
 
-/* KILLTASK: "MUST BE IN FIXED-FIXED". INDEX Q; CA 0 reads the CADR after
- * the caller's TC ("GET CADR"), and LXCH BBANK switches to bank 27 with
- * the caller's BBANK in L. Not modelled: a Q that is not a fixed address. */
+/* KILLTASK -- p. 750: "MUST BE IN FIXED-FIXED". INDEX Q; CA 0 reads the CADR
+ * after the caller's TC ("GET CADR"), and LXCH BBANK switches to bank 27
+ * with the caller's BBANK in L. Not modelled: a Q that is not a fixed
+ * address. */
 void killtask(void)
 {
     set_A(KILLBB);
@@ -35,11 +36,11 @@ void killtask(void)
     killtsk2();
 }
 
-/* KILLTSK2: "SAVE CALLER'S BBANK" and "RETURN 2CADR IN ITEMP1,ITEMP2" (Q
- * + 1, past the CADR). The CADR splits into the task's GENADR (its low
- * ten bits in the 02000 window, AD BIT11) and its FBANK. Not modelled: a
- * CADR with overflow in A (KILLTASK's CA leaves none), which the TS would
- * skip on. */
+/* KILLTSK2 -- p. 750: "SAVE CALLER'S BBANK" and "RETURN 2CADR IN
+ * ITEMP1,ITEMP2" (Q + 1, past the CADR). The CADR splits into the task's
+ * GENADR (its low ten bits in the 02000 window, AD BIT11) and its FBANK. Not
+ * modelled: a CADR with overflow in A (KILLTASK's CA leaves none), which the
+ * TS would skip on. */
 void killtsk2(void)
 {
     lxch(ADDRESS_OF(ITEMP2));
@@ -56,8 +57,8 @@ void killtsk2(void)
     adrscan();
 }
 
-/* ADRSCAN: "COMPARE GENADRS" of the 2CADR at LST2 +L; "IF THEY MATCH,
- * COMPARE FBANKS". */
+/* ADRSCAN -- p. 751: "COMPARE GENADRS" of the 2CADR at LST2 +L; "IF THEY
+ * MATCH, COMPARE FBANKS". */
 void adrscan(void)
 {
     cs(list_word(0u));
@@ -68,8 +69,8 @@ void adrscan(void)
         letitliv();
 }
 
-/* LETITLIV: "ARE WE DONE?" after L 16, the ninth 2CADR: "YES - DONE, SO
- * RETURN". Otherwise "CONTINUE LOOP" with the next 2CADR. */
+/* LETITLIV -- p. 751: "ARE WE DONE?" after L 16, the ninth 2CADR: "YES -
+ * DONE, SO RETURN". Otherwise "CONTINUE LOOP" with the next 2CADR. */
 void letitliv(void)
 {
     set_A(negate(LSTLIM));
@@ -83,15 +84,16 @@ void letitliv(void)
     adrscan();
 }
 
-/* DEAD: back to the caller's L+2 in the caller's bank (DXCH ITEMP1; DTCB). */
+/* DEAD -- p. 751: back to the caller's L+2 in the caller's bank (DXCH
+ * ITEMP1; DTCB). */
 void dead(void)
 {
     dxch(ADDRESS_OF(ITEMP1));
     dtcb((word)(DEAD + 1u));
 }
 
-/* TSTFBANK: "COMPARE FBANKS ONLY" (the BBCON's bank bits): "MATCH - KILL
- * IT", or "NO MATCH - CONTINUE". */
+/* TSTFBANK -- p. 751: "COMPARE FBANKS ONLY" (the BBCON's bank bits): "MATCH
+ * - KILL IT", or "NO MATCH - CONTINUE". */
 void tstfbank(void)
 {
     set_A(negate(LOW10));
@@ -103,8 +105,8 @@ void tstfbank(void)
         letitliv();
 }
 
-/* KILLDEAD: "REMOVE TASK BY INSERTING TASKOVER" (TCTSKOVR's TC TASKOVER in
- * the GENADR's place). */
+/* KILLDEAD -- p. 751: "REMOVE TASK BY INSERTING TASKOVER" (TCTSKOVR's TC
+ * TASKOVER in the GENADR's place). */
 void killdead(void)
 {
     set_A(TCTSKOVR);

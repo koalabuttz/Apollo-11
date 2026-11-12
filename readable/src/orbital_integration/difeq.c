@@ -135,8 +135,9 @@ static const word difeq_words[] = {
 const struct interpretive_code DIFEQ_CODE = {CODE_BANK(I_DIFEQP0), CODE_Z(I_DIFEQP0),
                                              COUNT(difeq_words), difeq_words};
 
-/* After ENDSTATE's EXIT: group 2's phase (OCT 04022, "PHASE 1"), REINTFLG
- * set, and back into the interpreter. */
+/* ENDSTATE +014 -- LM p. 1242, CM p. 1349: After ENDSTATE's EXIT: group 2's
+ * phase (OCT 04022, "PHASE 1"), REINTFLG set, and back into the
+ * interpreter. */
 void endstate_after_exit(void)
 {
     tc_to((word)(ENDSTATE + 014u), PHASCHNG); /* OCT 04022 */
@@ -220,7 +221,8 @@ static const word amoved_words[] = {
 const struct interpretive_code AMOVED_CODE = {
     CODE_BANK(I_ENDSTATE), (word)(CODE_Z(I_ENDSTATE) + 021u), COUNT(amoved_words), amoved_words};
 
-/* After WMATEND's EXIT: alarm 421, and back into the interpreter. */
+/* WMATEND +7 -- LM p. 1243, CM p. 1350: After WMATEND's EXIT: alarm 421, and
+ * back into the interpreter. */
 void wmatend_after_exit(void)
 {
     tc_to((word)(WMATEND + 7u), ALARM); /* OCT 421 */

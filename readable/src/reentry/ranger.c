@@ -120,9 +120,9 @@ const struct interpretive_code RANGER_CODE = {025u, RANGER, COUNT(ranger_words),
 
 /* ---- SIDETRAK -- p. 861 ---- */
 
-/* ... to wait out the hunt's next pass at a lower priority: "DROP GRP 5
- * RESTART PRIO TO 1 LESS THAN" "GRP 4." (PRIO16 in PHSPRDT5), and
- * "RESTART GRP 4 AT PRE-HUNT." (PHASCHNG, OCT 00474); ... */
+/* SIDETRAK +1 -- p. 861: ... to wait out the hunt's next pass at a lower
+ * priority: "DROP GRP 5 RESTART PRIO TO 1 LESS THAN" "GRP 4." (PRIO16 in
+ * PHSPRDT5), and "RESTART GRP 4 AT PRE-HUNT." (PHASCHNG, OCT 00474); ... */
 void sidetrak_after_exit(void)
 {
     set_A(EBENTRY);
@@ -132,17 +132,17 @@ void sidetrak_after_exit(void)
     tc_to(SIDETRAK + 5u, PHASCHNG);
 }
 
-/* ... "CONTINUE GRP 5 AT LOWER PRIO THAN EITHER" "GRP 4 OR SERVICER."
- * (PRIOCHNG); ... */
+/* SIDETRAK +7 -- p. 861: ... "CONTINUE GRP 5 AT LOWER PRIO THAN EITHER" "GRP
+ * 4 OR SERVICER." (PRIOCHNG); ... */
 void sidetrak_after_phaschng(void)
 {
     set_A(PRIO16);
     tc_to(SIDETRAK + 010u, PRIOCHNG);
 }
 
-/* ... and "SIDETRACK NEXT PASS UNTIL THIS ONE DONE.": GOTOADDR ENDEXIT
- * (ADENDEXT), so the two-second pass leaves at once until this one is
- * through. Back in the interpreter, ... */
+/* SIDETRAK +011 -- p. 861: ... and "SIDETRACK NEXT PASS UNTIL THIS ONE
+ * DONE.": GOTOADDR ENDEXIT (ADENDEXT), so the two-second pass leaves at once
+ * until this one is through. Back in the interpreter, ... */
 void sidetrak_after_priochng(void)
 {
     set_A(ADENDEXT);
@@ -219,8 +219,8 @@ const struct interpretive_code SIDETRAK_CODE = {025u, SIDETRAK + 014u, COUNT(sid
 
 /* ---- PRE-HUNT, FOREHUNT -- p. 863 ---- */
 
-/* PRE-HUNT: "COME TO PRE-HUNT WHEN RESTART OCCURS AFTER" "HUNTEST IS
- * SIDE-TRACKED AT SIDETRAK." Into the interpreter, ... */
+/* PRE-HUNT -- p. 863: "COME TO PRE-HUNT WHEN RESTART OCCURS AFTER" "HUNTEST
+ * IS SIDE-TRACKED AT SIDETRAK." Into the interpreter, ... */
 void pre_hunt(void)
 {
     tc_at(PRE_HUNT);

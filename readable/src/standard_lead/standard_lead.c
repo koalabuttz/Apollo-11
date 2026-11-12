@@ -61,16 +61,16 @@ static void e_switch(void)
     dtcb(E_SWITCH + 1u);
 }
 
-/* E/BKCALL +11: "TX Q, V34, OR BAD STALL RETURN." (TC +4): to the word
- * after the CADR. */
+/* E/BKCALL +11 -- LM p. 370, CM p. 420: "TX Q, V34, OR BAD STALL RETURN."
+ * (TC +4): to the word after the CADR. */
 void e_bkcall_bad_return(void)
 {
     tc_at(E_BKCALL + 011u);
     e_switch();
 }
 
-/* E/BKCALL +12: "PROCEED OR GOOD STALL RETURN." (TC +2, into the second
- * INCR): one word further. */
+/* E/BKCALL +12 -- LM p. 370, CM p. 420: "PROCEED OR GOOD STALL RETURN." (TC
+ * +2, into the second INCR): one word further. */
 void e_bkcall_proceed_return(void)
 {
     tc_at(E_BKCALL + 012u);
@@ -78,7 +78,8 @@ void e_bkcall_proceed_return(void)
     e_switch();
 }
 
-/* E/BKCALL +13: "ENTER OR RECYCLE RETURN.": two words further. */
+/* E/BKCALL +13 -- LM p. 370, CM p. 420: "ENTER OR RECYCLE RETURN.": two
+ * words further. */
 void e_bkcall_enter_return(void)
 {
     incr(ADDRESS_OF(EBUF2));
@@ -128,9 +129,10 @@ const struct interpretive_code STANDARD_LEAD_CODE = {013u, E_CALL + 7u, COUNT(st
                                                      standard_lead_words};
 #endif
 
-/* E/CALL +12, after the EXIT: the caller's interpretive code goes on after
- * its CADR. TCF INTPRET +2 lands on INTPRET's QXCH LOC with no EXTEND
- * before it, so it runs as LXCH LOC: LOC gets L. */
+/* E/CALL +12 -- LM p. 371, CM p. 421, after the EXIT: the caller's
+ * interpretive code goes on after its CADR. TCF INTPRET +2 lands on
+ * INTPRET's QXCH LOC with no EXTEND before it, so it runs as LXCH LOC: LOC
+ * gets L. */
 void e_call_after_exit(void)
 {
     lxch(ADDRESS_OF(EBUF2) + 1u); /* "PICK UP RETURN." */

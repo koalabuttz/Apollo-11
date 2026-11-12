@@ -317,7 +317,8 @@ static void decend(void)
     endall();
 }
 
-/* MORNUM +1: DSPCOUNT gets A; then the job ends ("TC ENDOFJOB"). */
+/* MORNUM +1 -- LM p. 401, CM p. 318: DSPCOUNT gets A; then the job ends ("TC
+ * ENDOFJOB"). */
 static void mornum_plus1(void)
 {
     ts(ADDRESS_OF(DSPCOUNT));
@@ -459,8 +460,8 @@ static bool sgncom_returns(void)
     return true;
 }
 
-/* +ON: the register's - sign bit (SGNTAB, by INREL: SGNTAB -2 is R1's)
- * off, the + bit, one higher, on. */
+/* +ON -- LM p. 402, CM p. 319: the register's - sign bit (SGNTAB, by INREL:
+ * SGNTAB -2 is R1's) off, the + bit, one higher, on. */
 static bool plus_on_returns(void)
 {
     lxch(Q_ADDRESS);
@@ -473,7 +474,7 @@ static bool plus_on_returns(void)
     return sgncom_returns();
 }
 
-/* -ON: the - bit on, the + bit off. */
+/* -ON -- LM p. 403, CM p. 320: the - bit on, the + bit off. */
 static bool minus_on_returns(void)
 {
     lxch(Q_ADDRESS);
@@ -606,7 +607,8 @@ static void clpashi(void)
     tc(CLPASHI + 011u, BANKCALL); /* CADR UPDATVB */
 }
 
-/* CLPASHI +11, after UPDATVB: INREL back ("RESTORE INREL"), then CLEAR1. */
+/* CLPASHI +013 -- LM p. 404, CM p. 321, after UPDATVB: INREL back ("RESTORE
+ * INREL"), then CLEAR1. */
 void clpashi_after_updatvb(void)
 {
     ca(ADDRESS_OF(MIXTEMP));
@@ -658,12 +660,12 @@ static bool five_blank_returns(void)
     return five_blank_plus2_returns();
 }
 
-/* 5BLANK +2: the register, its low word and CODE zeroed; DECBRNCH's sign
- * bit for the register and low two bits cleared ("ZERO PERTINENT DEC COMP
- * BIT. PROTECT OTHERS", BRNCHCON "ZERO LOW 2 BITS"); the register's odd
- * first character "BLANK ISOLATED CHAR SEPARATELY" (SINBLANK, DSPIN), then
- * its other four two by two (5BLANK1: DOUBLK, 2BLANK twice); DSPCOUNT at
- * its first digit. */
+/* 5BLANK +2 -- LM p. 404, CM p. 321: the register, its low word and CODE
+ * zeroed; DECBRNCH's sign bit for the register and low two bits cleared
+ * ("ZERO PERTINENT DEC COMP BIT. PROTECT OTHERS", BRNCHCON "ZERO LOW 2
+ * BITS"); the register's odd first character "BLANK ISOLATED CHAR
+ * SEPARATELY" (SINBLANK, DSPIN), then its other four two by two (5BLANK1:
+ * DOUBLK, 2BLANK twice); DSPCOUNT at its first digit. */
 static bool five_blank_plus2_returns(void)
 {
     word inrel = fetch(ADDRESS_OF(INREL));

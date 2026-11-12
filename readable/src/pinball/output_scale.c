@@ -37,17 +37,17 @@ static void scoutend(void)
 
 static void degoutsf_plus1(void);
 
-/* DEGOUTSF -- "DEGOUTSF SCALES BY .18 THE LOW 14 BITS OF ANGLE, ADDING .18
- * FOR NUMBERS IN THE NEGATIVE (AGC) RANGE." MPAC +2 is the index into
- * DEGTAB: 0 for .18, "SET INDEX FOR FULL SCALE." */
+/* DEGOUTSF -- LM p. 418, CM p. 335: "DEGOUTSF SCALES BY .18 THE LOW 14 BITS
+ * OF ANGLE, ADDING .18 FOR NUMBERS IN THE NEGATIVE (AGC) RANGE." MPAC +2 is
+ * the index into DEGTAB: 0 for .18, "SET INDEX FOR FULL SCALE." */
 void degoutsf(void)
 {
     set_A(ZERO);
     degoutsf_plus1();
 }
 
-/* FIXRANGE -- "IF MPAC IS + RETURN TO L+1. IF MPAC IS - RETURN TO L+2
- * AFTER MASKING OUT THE SIGN BIT". True for L+2. */
+/* FIXRANGE -- LM p. 418, CM p. 335: "IF MPAC IS + RETURN TO L+1. IF MPAC IS
+ * - RETURN TO L+2 AFTER MASKING OUT THE SIGN BIT". True for L+2. */
 static bool fixrange(void)
 {
     word back;
@@ -66,8 +66,8 @@ static bool fixrange(void)
     return true;
 }
 
-/* SETAUG -- "LOADS SFTEMP1 AND SFTEMP2 WITH THE DP AUGMENTER CONSTANT"
- * (DEGTAB +MPAC +2). */
+/* SETAUG -- LM p. 418, CM p. 335: "LOADS SFTEMP1 AND SFTEMP2 WITH THE DP
+ * AUGMENTER CONSTANT" (DEGTAB +MPAC +2). */
 static void setaug(void)
 {
     dca(indexed_by(ADDRESS_OF(DEGTAB), fetch(MPAC_PLUS(2u))));
@@ -75,8 +75,8 @@ static void setaug(void)
     tc_return(Q_ADDRESS);
 }
 
-/* DEGCOM -- "LOADS MULTIPLIER, DOES SHORTMP, AND ADDS AUGMENTER." DEGTAB
- * holds .18 and .45, double words. */
+/* DEGCOM -- LM p. 419, CM p. 336: "LOADS MULTIPLIER, DOES SHORTMP, AND ADDS
+ * AUGMENTER." DEGTAB holds .18 and .45, double words. */
 static void degcom(void)
 {
     dca(indexed_by(ADDRESS_OF(DEGTAB), fetch(MPAC_PLUS(2u))));
@@ -89,9 +89,9 @@ static void degcom(void)
     scoutend();
 }
 
-/* DEGOUTSF +1: the DEGTAB index in A. A negative angle has its sign bit
- * masked out and the augmenter added; a positive one adds nothing
- * ("SFTEMP1 AND 2 ARE 0"). */
+/* DEGOUTSF +1 -- LM p. 418, CM p. 335: the DEGTAB index in A. A negative
+ * angle has its sign bit masked out and the augmenter added; a positive one
+ * adds nothing ("SFTEMP1 AND 2 ARE 0"). */
 static void degoutsf_plus1(void)
 {
     ts(MPAC_PLUS(2u));
@@ -205,8 +205,9 @@ void opdegout(void)
 
 static void l14_out(void);
 
-/* ARTOUTSF -- "ASSUMES POINT AT LEFT OF DP SFCON": the word times the
- * constant, by PRSHRTMP ("IF C(A) = -0, SHORTMP FAILS TO GIVE -0."). */
+/* ARTOUTSF -- LM p. 419, CM p. 336: "ASSUMES POINT AT LEFT OF DP SFCON": the
+ * word times the constant, by PRSHRTMP ("IF C(A) = -0, SHORTMP FAILS TO GIVE
+ * -0."). */
 void artoutsf(void)
 {
     dxch(ADDRESS_OF(SFTEMP1));
@@ -216,8 +217,9 @@ void artoutsf(void)
     scoutend();
 }
 
-/* AROUT1SF -- "ASSUMES POINT BETWEEN HI AND LO PARTS OF DP SFCON. SHIFTS
- * RESULTS LEFT 14, BY TAKING RESULTS FROM MPAC+1, MPAC+2." */
+/* AROUT1SF -- LM p. 419, CM p. 336: "ASSUMES POINT BETWEEN HI AND LO PARTS
+ * OF DP SFCON. SHIFTS RESULTS LEFT 14, BY TAKING RESULTS FROM MPAC+1,
+ * MPAC+2." */
 void arout1sf(void)
 {
     dxch(ADDRESS_OF(SFTEMP1));
@@ -247,8 +249,8 @@ static void dpout(void)
     tc_return(MPAC_PLUS(6u));
 }
 
-/* DP1OUTSF and L14/OUT -- "SCALES MPAC, MPAC +1 BY DP SCALE FACTOR IN
- * SFTEMP1, SFTEMP2. THEN SCALE RESULT BY B14". */
+/* DP1OUTSF -- LM p. 419, CM p. 336 and L14/OUT -- "SCALES MPAC, MPAC +1 BY
+ * DP SCALE FACTOR IN SFTEMP1, SFTEMP2. THEN SCALE RESULT BY B14". */
 void dp1outsf(void)
 {
     tc_at(DP1OUTSF);
@@ -265,7 +267,8 @@ static void l14_out(void)
     scoutend();
 }
 
-/* DP2OUTSF -- "SCALES MPAC, MPAC +1 BY DP SCALE FACTOR". */
+/* DP2OUTSF -- LM p. 419, CM p. 336: "SCALES MPAC, MPAC +1 BY DP SCALE
+ * FACTOR". */
 void dp2outsf(void)
 {
     tc_at(DP2OUTSF);
@@ -274,8 +277,9 @@ void dp2outsf(void)
     scoutend();
 }
 
-/* DP3OUTSF -- "ASSUMES POINT BETWEEN BITS 7-8 OF HIGH ... LEFT BY 7, ROUNDS
- * MPAC+2 INTO MPAC+1.": the product shifted left 7 (TPLEFTN with 6). */
+/* DP3OUTSF -- LM p. 419, CM p. 336: "ASSUMES POINT BETWEEN BITS 7-8 OF HIGH
+ * ... LEFT BY 7, ROUNDS MPAC+2 INTO MPAC+1.": the product shifted left 7
+ * (TPLEFTN with 6). */
 void dp3outsf(void)
 {
     tc_at(DP3OUTSF);
@@ -300,12 +304,12 @@ void dpfracot(void)
 
 /* ---- Two integers (LM p. 420, CM p. 337) ---- */
 
-/* 2INTOUT -- "THE FOLLOWING ROUTINE DISPLAYS TWO CONTIGUOUS SP POSITIVE
- * INTEGERS AS TWO POSITIVE DECIMAL INTEGERS IN RXD1-RXD2 AND RXD4-RXD5
- * (RXD3 IS BLANKED). THE INTEGER IN THE LOWER NUMBERED ADDRESS IS
- * DISPLAYED IN RXD1-RXD2." Each step is a call that comes back to the
- * next: 5BLANK "TO BLANK RXD3", +ON "TURN ON + SIGN", DSPDECVN for each
- * integer "(LIKE VERB AND NOUN)". */
+/* 2INTOUT -- LM p. 420, CM p. 337: "THE FOLLOWING ROUTINE DISPLAYS TWO
+ * CONTIGUOUS SP POSITIVE INTEGERS AS TWO POSITIVE DECIMAL INTEGERS IN
+ * RXD1-RXD2 AND RXD4-RXD5 (RXD3 IS BLANKED). THE INTEGER IN THE LOWER
+ * NUMBERED ADDRESS IS DISPLAYED IN RXD1-RXD2." Each step is a call that
+ * comes back to the next: 5BLANK "TO BLANK RXD3", +ON "TURN ON + SIGN",
+ * DSPDECVN for each integer "(LIKE VERB AND NOUN)". */
 void two_intout(void)
 {
     tc(TWO_INTOUT, FIVE_BLANK);
@@ -340,11 +344,12 @@ void two_intout_plus11(void)
 
 /* ---- READLO (LM pp. 420-421, CM pp. 337-338) ---- */
 
-/* READLO, READLO1 and RDLONOR -- "READLO PICKS UP FRESHDATA FOR BOTH HI AND
- * LO AND LEAVES IT IN MPAC, MPAC+1. THIS IS NEEDED FOR TIME DISPLAY. IT
- * ZEROES MPAC+2, BUT DOES NOT FORCE TPAGREE." The word at NOUNADD for a
- * normal noun; for a mixed one the component's own address, an ECADR from
- * IDAD1TEM +DECOUNT ("E SUBK", SETEBANK). The return in TEM4. */
+/* READLO -- LM p. 420, CM p. 337, READLO1 and RDLONOR -- "READLO PICKS UP
+ * FRESHDATA FOR BOTH HI AND LO AND LEAVES IT IN MPAC, MPAC+1. THIS IS NEEDED
+ * FOR TIME DISPLAY. IT ZEROES MPAC+2, BUT DOES NOT FORCE TPAGREE." The word
+ * at NOUNADD for a normal noun; for a mixed one the component's own address,
+ * an ECADR from IDAD1TEM +DECOUNT ("E SUBK", SETEBANK). The return in
+ * TEM4. */
 void readlo(void)
 {
     xch(Q_ADDRESS);
@@ -370,7 +375,7 @@ void readlo(void)
 
 /* ---- Hours, minutes and seconds (LM pp. 421-424, CM pp. 338-341) ---- */
 
-/* SEPSECNR -- LM pp. 423-424, CM pp. 340-341. "THIS ENTRY AVOIDS ROUNDING
+/* SEPSECNR +1 -- LM pp. 423-424, CM pp. 340-341. "THIS ENTRY AVOIDS ROUNDING
  * BY .5 SEC". The time, in centiseconds, times 2EXP12/6000 (SECON1): the
  * whole minutes and hours kept in HITEMOUT, LOTEMOUT ("SAVE MINUTES AND
  * HOURS"), and the product shifted left 2 (TPSL1 twice) "GIVES FRACT
@@ -446,9 +451,9 @@ void hmsout(void)
     tc(HMSOUT, BANKCALL); /* CADR READLO */
 }
 
-/* HMSOUT +2: "MAKE DP DATA AGREE.", "LEAVE FRACT SEC/60 IN MPAC, MPAC+1.
- * LEAVE WHOLE MIN IN BIT13 OF LOTEMOUT AND ABOVE" (SEPSECNR, which comes
- * back to HMSOUT +4). */
+/* HMSOUT +2 -- LM p. 421, CM p. 338: "MAKE DP DATA AGREE.", "LEAVE FRACT
+ * SEC/60 IN MPAC, MPAC+1. LEAVE WHOLE MIN IN BIT13 OF LOTEMOUT AND ABOVE"
+ * (SEPSECNR, which comes back to HMSOUT +4). */
 void hmsout_plus2(void)
 {
     tc_at(HMSOUT + 2u);
@@ -457,8 +462,8 @@ void hmsout_plus2(void)
     sepsecnr();
 }
 
-/* HMSOUT +4: "USE ONLY FRACT SEC/60 MOD 60", "MULT BY .06" (SECON2):
- * "GIVES CENTI-SEC/10EXP5 MOD 60", for R3. */
+/* HMSOUT +4 -- LM p. 421, CM p. 338: "USE ONLY FRACT SEC/60 MOD 60", "MULT
+ * BY .06" (SECON2): "GIVES CENTI-SEC/10EXP5 MOD 60", for R3. */
 void hmsout_plus4(void)
 {
     tc_at(HMSOUT + 4u);
@@ -473,11 +478,11 @@ void hmsout_plus8(void)
     tc(HMSOUT + 010u, BANKCALL); /* CADR DSPDECWD: "DISPLAY SEC MOD 60" */
 }
 
-/* HMSOUT +10: "REMOVE REST OF SECONDS" (SEPMIN). "LEAVE FRACT MIN/60 IN
- * MPAC+1. LEAVE WHOLE HOURS IN MPAC.": the hours saved in HITEMOUT, and
- * the minutes "MULT BY .0006" (MINCON2): "GIVE MIN/10EXP5 MOD 60", for
- * R2. */
-void hmsout_plus10(void)
+/* HMSOUT +012 -- LM p. 421, CM p. 338: "REMOVE REST OF SECONDS" (SEPMIN).
+ * "LEAVE FRACT MIN/60 IN MPAC+1. LEAVE WHOLE HOURS IN MPAC.": the hours
+ * saved in HITEMOUT, and the minutes "MULT BY .0006" (MINCON2): "GIVE
+ * MIN/10EXP5 MOD 60", for R2. */
+void hmsout_plus012(void)
 {
     tc_at(HMSOUT + 012u);
     sepmin();
@@ -498,9 +503,10 @@ void hmsout_plus19(void)
     tc(HMSOUT + 023u, BANKCALL); /* CADR DSPDECWD: "DISPLAY MIN MOD 60" */
 }
 
-/* HMSOUT +21: "MINUTES, SECONDS HAVE BEEN REMOVED": the whole hours "MULT
- * BY .16384" (HRCON1): "GIVES HOURS/10EXP5", for R1. */
-void hmsout_plus21(void)
+/* HMSOUT +025 -- LM p. 421, CM p. 338: "MINUTES, SECONDS HAVE BEEN REMOVED":
+ * the whole hours "MULT BY .16384" (HRCON1): "GIVES HOURS/10EXP5", for
+ * R1. */
+void hmsout_plus025(void)
 {
     dca(ADDRESS_OF(HRCON1));
     dxch(ADDRESS_OF(MPAC));
@@ -539,9 +545,9 @@ static void to_m_snorm(word at)
     sepsec();
 }
 
-/* M/SLIMIT, +LIMIT and LIMITCOM: "FORCE MPAC, MPAC+1 TO +/- 59M59.5S"
- * ("WILL DISPLAY 59M59S IN DSPDECNR"), and SEPSECNR without the rounding,
- * back at M/SNORM +1 (NORMADR). */
+/* M/SLIMIT -- LM p. 422, CM p. 339, +LIMIT and LIMITCOM: "FORCE MPAC, MPAC+1
+ * TO +/- 59M59.5S" ("WILL DISPLAY 59M59S IN DSPDECNR"), and SEPSECNR without
+ * the rounding, back at M/SNORM +1 (NORMADR). */
 static void m_slimit(void)
 {
     switch (ccs_at(ADDRESS_OF(MPAC))) { /* "MPAC CANNOT BE +/- 0 AT THIS POINT." */
@@ -595,10 +601,10 @@ static word limit_test(unsigned word_address, word b, word con)
     return limit_ccs(b);
 }
 
-/* M/SOUT +2: "MAKE DP DATA AGREE", and "IF MAG OF (MPAC, MPAC+1) G/ 59 M
- * 59 S. DISPLAY 59B59, WITH PROPER SIGN.": the high word against
- * M/SCON1 and, if the same, the low word against M/SCON2. Above or at
- * the limit, M/SLIMIT; below it, M/SNORM. */
+/* M/SOUT +2 -- LM p. 422, CM p. 339: "MAKE DP DATA AGREE", and "IF MAG OF
+ * (MPAC, MPAC+1) G/ 59 M 59 S. DISPLAY 59B59, WITH PROPER SIGN.": the high
+ * word against M/SCON1 and, if the same, the low word against M/SCON2. Above
+ * or at the limit, M/SLIMIT; below it, M/SNORM. */
 void m_sout_plus2(void)
 {
     word at;
@@ -619,9 +625,9 @@ void m_sout_plus2(void)
     to_m_snorm(at); /* "L/ 59M58.5S" */
 }
 
-/* M/SNORM +1: "USE ONLY FRACT SEC/60 MOD 60", "MULT BY .6 + 2EXP-14"
- * (HISECON): "GIVES SEC/100 MOD 60", for the register's last two digits
- * ("DSPCOUNT ALREADY SET TO RXD1"). */
+/* M/SNORM +1 -- LM p. 422, CM p. 339: "USE ONLY FRACT SEC/60 MOD 60", "MULT
+ * BY .6 + 2EXP-14" (HISECON): "GIVES SEC/100 MOD 60", for the register's
+ * last two digits ("DSPCOUNT ALREADY SET TO RXD1"). */
 void m_snorm_plus1(void)
 {
     set_A(HISECON);
@@ -637,7 +643,8 @@ void m_snorm_plus5(void)
     tc(M_SNORM + 5u, BANKCALL); /* CADR DSPDC2NR: "DISPLAY SEC MOD 60 IN D4D5." */
 }
 
-/* M/SNORM +7: "BLANK MIDDLE CHAR" (RXD3) by DSPIN. */
+/* M/SNORM +7 -- LM p. 422, CM p. 340: "BLANK MIDDLE CHAR" (RXD3) by
+ * DSPIN. */
 void m_snorm_plus7(void)
 {
     set_A(ZERO);
@@ -648,10 +655,10 @@ void m_snorm_plus7(void)
     tc(M_SNORM + 015u, BANKCALL); /* CADR DSPIN */
 }
 
-/* M/SNORM +15: "REMOVE REST OF SECONDS" (SEPMIN), "LEAVE FRACT MIN/60 IN
- * MPAC+1", "MULT BY .6 + 2EXP-7" (HIMINCON): "GIVES MIN/100 MOD 60", for
- * the first two digits (RXD1). */
-void m_snorm_plus15(void)
+/* M/SNORM +017 -- LM p. 423, CM p. 340: "REMOVE REST OF SECONDS" (SEPMIN),
+ * "LEAVE FRACT MIN/60 IN MPAC+1", "MULT BY .6 + 2EXP-7" (HIMINCON): "GIVES
+ * MIN/100 MOD 60", for the first two digits (RXD1). */
+void m_snorm_plus017(void)
 {
     tc_at(M_SNORM + 017u);
     sepmin();

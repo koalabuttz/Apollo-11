@@ -90,17 +90,17 @@ static void monit2(void)
     }
 }
 
-/* MONIT2 +13, where RELDSP1 returns: interrupts held off while MONSAVE is
- * read and written. */
-void monit2_plus13(void)
+/* MONIT2 +015 -- LM p. 438, CM p. 356, where RELDSP1 returns: interrupts
+ * held off while MONSAVE is read and written. */
+void monit2_plus015(void)
 {
     inhint();
     continue_at(MONIT2 + 016u);
 }
 
-/* MONIT2 +14. "IF MONSAVE WAS +, NO REQUEST"; "IF MONSAVE WAS 0, REQUEST
- * MONREQ" in 10 ms (WAITLIST, 2CADR MONREQ). */
-void monit2_plus14(void)
+/* MONIT2 +016 -- LM p. 438, CM p. 356. "IF MONSAVE WAS +, NO REQUEST"; "IF
+ * MONSAVE WAS 0, REQUEST MONREQ" in 10 ms (WAITLIST, 2CADR MONREQ). */
+void monit2_plus016(void)
 {
     switch (ccs_at(ADDRESS_OF(MONSAVE))) {
     case POSITIVE:
@@ -116,10 +116,11 @@ void monit2_plus14(void)
     }
 }
 
-/* MONIT2 +20, where WAITLIST returns. "PLACE MONITOR VERB AND NOUN INTO
- * MONSAVE", the address into MONSAVE1 ("ZERO THE KILL MONITOR BIT", "SET
- * UP EXTERNAL MONITOR BIT"), and back through ENTRET. */
-void monit2_plus20(void)
+/* MONIT2 +024 -- LM p. 438, CM p. 356, where WAITLIST returns. "PLACE
+ * MONITOR VERB AND NOUN INTO MONSAVE", the address into MONSAVE1 ("ZERO THE
+ * KILL MONITOR BIT", "SET UP EXTERNAL MONITOR BIT"), and back through
+ * ENTRET. */
+void monit2_plus024(void)
 {
     dxch(ADDRESS_OF(MPAC));
     dxch(ADDRESS_OF(MONSAVE));
@@ -188,11 +189,11 @@ void mondo(void)
     tc(MONDO + 011u, UPDATNN - 1u); /* "PLACE NOUN INTO NOUNREG AND DISPLAY IT" */
 }
 
-/* MONDO +10, where UPDATNN returns. "CHANGE MONITOR VERB TO DISPLAY VERB":
- * the verb, in bits 8-14, less ten, right seven by EDOP, into VERBREG;
- * ENTRET to "RETURN TO PASTEVB AFTER DATA DISPLAY"; the address into MPAC
- * +2 for INTMCTBS; and the display by TESTNN. */
-void mondo_plus10(void)
+/* MONDO +012 -- LM p. 439, CM p. 357, where UPDATNN returns. "CHANGE MONITOR
+ * VERB TO DISPLAY VERB": the verb, in bits 8-14, less ten, right seven by
+ * EDOP, into VERBREG; ENTRET to "RETURN TO PASTEVB AFTER DATA DISPLAY"; the
+ * address into MPAC +2 for INTMCTBS; and the display by TESTNN. */
+void mondo_plus012(void)
 {
     set_A(MID7);
     mask_at(ADDRESS_OF(MONSAVE));
@@ -218,9 +219,9 @@ void monbusy(void)
 
 /* ---- PASTEVB (LM p. 439, CM p. 357) ---- */
 
-/* PASTEVB and PASTEOPT. "PASTE MONITOR VERB" back into VERBREG and the
- * verb lights, or, with an NVMONOPT paste option (MONSAVE2 bits 8-14),
- * "PASTE PLEASE VERB". */
+/* PASTEVB -- LM p. 439, CM p. 357 and PASTEOPT. "PASTE MONITOR VERB" back
+ * into VERBREG and the verb lights, or, with an NVMONOPT paste option
+ * (MONSAVE2 bits 8-14), "PASTE PLEASE VERB". */
 void pastevb(void)
 {
     set_A(MID7);
@@ -235,8 +236,9 @@ void pastevb(void)
     tc(PASTEOPT + 2u, BANKCALL); /* CADR UPDATVB -1 */
 }
 
-/* PASTEOPT +4, where UPDATVB returns. "ZERO REQRET SO THAT PASTED VERBS CAN
- * BE EXECUTED BY OPERATOR", and the NVMONOPT blank option (BLANKSUB). */
+/* PASTEOPT +4 -- LM p. 439, CM p. 357, where UPDATVB returns. "ZERO REQRET
+ * SO THAT PASTED VERBS CAN BE EXECUTED BY OPERATOR", and the NVMONOPT blank
+ * option (BLANKSUB). */
 void pasteopt_plus4(void)
 {
     set_A(ZERO);
@@ -245,8 +247,9 @@ void pasteopt_plus4(void)
     tc(PASTEOPT + 7u, BLANKSUB);
 }
 
-/* PASTEOPT +8, where BLANKSUB returns when the DSKY is busy. */
-void pasteopt_plus8(void)
+/* PASTEOPT +010 -- LM p. 439, CM p. 357, where BLANKSUB returns when the
+ * DSKY is busy. */
+void pasteopt_plus010(void)
 {
     tc_at(PASTEOPT + 010u); /* TC +1 */
     continue_at(ENDPASTE);
@@ -259,10 +262,10 @@ void endpaste(void)
 
 /* ---- DSPFMEM (LM p. 440, CM p. 358) ---- */
 
-/* DSPFMEM -- "USED TO DISPLAY (IN OCTAL) ANY FIXED REGISTER", verb 27 with
- * noun 01: the word at the FCADR in NOUNCADR, with the superbank bits
- * "PRELOADED INTO 3RD COMPONENT OF NOUN 26" (DSPTEM1 +2), fetched by
- * SUPDACAL and shown in R1. */
+/* DSPFMEM -- LM p. 440, CM p. 358: "USED TO DISPLAY (IN OCTAL) ANY FIXED
+ * REGISTER", verb 27 with noun 01: the word at the FCADR in NOUNCADR, with
+ * the superbank bits "PRELOADED INTO 3RD COMPONENT OF NOUN 26" (DSPTEM1 +2),
+ * fetched by SUPDACAL and shown in R1. */
 void dspfmem(void)
 {
     set_A(R1D1);
@@ -278,7 +281,7 @@ void dspfmem_plus6(void)
     tc(DSPFMEM + 6u, DSPOCTWD);
 }
 
-/* ENDSPF, where DSPOCTWD returns. */
+/* ENDSPF -- LM p. 440, CM p. 358, where DSPOCTWD returns. */
 void endspf(void)
 {
     tc(ENDSPF, ENDOFJOB);
@@ -286,7 +289,8 @@ void endspf(void)
 
 /* ---- The alarms (LM p. 446, CM p. 364) ---- */
 
-/* PREDSPAL -- R1 the register for the alarm's display (CS VD1). */
+/* PREDSPAL -- LM p. 446, CM p. 364: R1 the register for the alarm's display
+ * (CS VD1). */
 void predspal(void)
 {
     set_A(negate(VD1));
@@ -294,10 +298,10 @@ void predspal(void)
     continue_at(DSPALARM);
 }
 
-/* DSPALARM -- "FINDS TC NVSUBEND IN ENTRET FOR NVSUB INITIATED ROUTINES",
- * which "ABORT WITH 01501"; "IF THIS IS A MONITOR, KILL IT" (ENTRET TC
- * PASTEVB): KILMONON, OPR ERR, and the monitor verb back (PASTEVB);
- * otherwise CHARALRM. */
+/* DSPALARM -- LM p. 446, CM p. 364: "FINDS TC NVSUBEND IN ENTRET FOR NVSUB
+ * INITIATED ROUTINES", which "ABORT WITH 01501"; "IF THIS IS A MONITOR, KILL
+ * IT" (ENTRET TC PASTEVB): KILMONON, OPR ERR, and the monitor verb back
+ * (PASTEVB); otherwise CHARALRM. */
 void dspalarm(void)
 {
     set_A(negate(NVSBENDL));
@@ -319,7 +323,8 @@ void dspalarm(void)
     tc(DSPALARM + 013u, PASTEVB); /* "PUT MONITOR VERB BACK IN VERBREG" */
 }
 
-/* CHARALRM -- "NOT NVSUB INITIATED. TURN ON OPR ERROR". */
+/* CHARALRM -- LM p. 446, CM p. 364: "NOT NVSUB INITIATED. TURN ON OPR
+ * ERROR". */
 void charalrm(void)
 {
     tc_at(CHARALRM);
@@ -329,8 +334,8 @@ void charalrm(void)
 
 /* ---- Fixed-fixed services (KILMONON LM p. 454, CM p. 372; LODSAMPT LM p. 462, CM p. 380) ---- */
 
-/* KILMONON -- "THIS IS THE KILL MONITOR BIT" (BIT15) into MONSAVE1, which
- * turns off bit 14, "THE EXTERNAL MONITOR BIT". */
+/* KILMONON -- LM p. 454, CM p. 372: "THIS IS THE KILL MONITOR BIT" (BIT15)
+ * into MONSAVE1, which turns off bit 14, "THE EXTERNAL MONITOR BIT". */
 void kilmonon(void)
 {
     set_A(BIT15);
@@ -338,7 +343,8 @@ void kilmonon(void)
     tc_return(Q_ADDRESS);
 }
 
-/* LODSAMPT -- the time (TIME2, TIME1) into SAMPTIME, noun 65's. */
+/* LODSAMPT -- LM p. 462, CM p. 380: the time (TIME2, TIME1) into SAMPTIME,
+ * noun 65's. */
 void lodsampt(void)
 {
     dca(ADDRESS_OF(TIME2));

@@ -49,8 +49,8 @@ static unsigned store_field(unsigned field, unsigned index_address)
 
 /* ---- MASSPROP -- pp. 952-953 ---- */
 
-/* DXTEST, for DAPDATR1 negative ("IF NEG, BIT15 IS 1, LEM DSCNT STAGE
- * OFF"): VARST0 +8 and +9 added into VARST0 +1 and +2 (by DXCH, the
+/* DXTEST -- p. 953, for DAPDATR1 negative ("IF NEG, BIT15 IS 1, LEM DSCNT
+ * STAGE OFF"): VARST0 +8 and +9 added into VARST0 +1 and +2 (by DXCH, the
  * pair's old words to A,L, then DAS), and DXITFIX into VARST0 +7. With
  * DAPDATR1 -0, the CCS leaves +0 in A for the DAS (and L as it was);
  * positive or +0, on to FIXCW as it is. */
@@ -65,14 +65,14 @@ static void dxtest(void)
     ads(ADDRESS_OF(VARST0) + 7u);
 }
 
-/* MASSPROP: the breakpoint values and slopes, VARST0 to VARST0 +9, in
- * "TEN PASSES" from PHI333 9 down. "LEM NOT ATTACHED" (bit 13 of
- * DAPDATR1 set), each is NOLEMVAL's; "LEM IS ATTACHED", INTVALUE's plus
- * SLOPEVAL's times the LM's mass (LEMMASS, doubled; DDOUBL the product).
- * An overflow at the TS VARST0 skips the CCS PHI333, so the TCF MASSPROP
- * +1 stores the +1 or -1 it leaves in A as PHI333. "ARE ALL TEN PASSES
- * COMPLETED": PHI333 +0, DXTEST, then FIXCW; negative or -0, FIXCW (the
- * TCF FIXCW's at DXTEST +1 and +2). */
+/* MASSPROP -- p. 953: the breakpoint values and slopes, VARST0 to VARST0 +9,
+ * in "TEN PASSES" from PHI333 9 down. "LEM NOT ATTACHED" (bit 13 of DAPDATR1
+ * set), each is NOLEMVAL's; "LEM IS ATTACHED", INTVALUE's plus SLOPEVAL's
+ * times the LM's mass (LEMMASS, doubled; DDOUBL the product). An overflow at
+ * the TS VARST0 skips the CCS PHI333, so the TCF MASSPROP +1 stores the +1
+ * or -1 it leaves in A as PHI333. "ARE ALL TEN PASSES COMPLETED": PHI333 +0,
+ * DXTEST, then FIXCW; negative or -0, FIXCW (the TCF FIXCW's at DXTEST +1
+ * and +2). */
 void massprop(void)
 {
     enum sign passes_left;
@@ -126,13 +126,13 @@ static bool massprop_finished(void)
     return !ts(ADDRESS_OF(WEIGHT_G)); /* "SCALED AT B+16 KILOGRAMS" */
 }
 
-/* FIXCW, "COMPUTATION PHASE BEGINS HERE": "THREE PASSES" from PHI333 and
- * PSI333 2. TEMP333 the "DELTA CSM WEIGHT" (CSMMASS plus NEGBPW, doubled),
- * whose sign "DETERMINES" the "SLOPE LOCATIONS": PHI333 -2, the slopes
- * above the breakpoint, for a positive one. (An overflow at the TS TEMP333
- * skips the EXTEND, so the BZMF's word runs as AD PEGGY, whose sum the CAF
- * NEG2 replaces: the slopes above.) PEGGY, each pass: the output IXX +
- * PSI333, its breakpoint value plus the slope (VARST5 + PHI333) times
+/* FIXCW -- p. 953, "COMPUTATION PHASE BEGINS HERE": "THREE PASSES" from
+ * PHI333 and PSI333 2. TEMP333 the "DELTA CSM WEIGHT" (CSMMASS plus NEGBPW,
+ * doubled), whose sign "DETERMINES" the "SLOPE LOCATIONS": PHI333 -2, the
+ * slopes above the breakpoint, for a positive one. (An overflow at the TS
+ * TEMP333 skips the EXTEND, so the BZMF's word runs as AD PEGGY, whose sum
+ * the CAF NEG2 replaces: the slopes above.) PEGGY, each pass: the output IXX
+ * + PSI333, its breakpoint value plus the slope (VARST5 + PHI333) times
  * TEMP333, doubled. An overflow at the TS skips the CCS PSI333, on to
  * BOKKEP2 with +1 or -1 in A. BOKKEP2: PSI333 one less ("REDUCE PSI BY
  * ONE"), PHI333 one nearer +0 (DIM). Then ENDMASSP, TC Q. */

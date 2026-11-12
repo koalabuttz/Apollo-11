@@ -39,15 +39,15 @@ void begdes29(void)
     tc_to(BEGDES29 + 1u, NOVAC); /* 2CADR R29DODES */
 }
 
-/* R29DLOOP: half a second on. */
+/* R29DLOOP -- p. 599: half a second on. */
 void r29dloop(void)
 {
     set_A(HALF_SEC);
     tc_to(R29DLOOP + 1u, VARDELAY);
 }
 
-/* R29DLOOP +2: "QUIT IF DESIGNATION IS CALLED OFF." (RADMODES bit 10).
- * "BRANCH IF SETUP29D'S SUPPLYING NEW DATA." (LOSCMFLG set): "WAIT A
+/* R29DLOOP +2 -- p. 599: "QUIT IF DESIGNATION IS CALLED OFF." (RADMODES bit
+ * 10). "BRANCH IF SETUP29D'S SUPPLYING NEW DATA." (LOSCMFLG set): "WAIT A
  * CENTISECOND FOR NEW DATA." Else "SET LOSCMFLG: SHOW THAT DES. LOOP IS
  * ON.", and BEGDES29 again. */
 void r29dloop_after_vardelay(void)
@@ -144,11 +144,11 @@ void r29dodes_after_unit(void)
     tc_to(R29DODES + 040u, MPACVBUF);
 }
 
-/* R29DODES +041: "GET CDU ANGLES ONLY AFTER 1ST PASS." (TANG +0 goes to
- * GOTANGLS). "ENSURE CONSISTENT CDU READINGS." (TANG -0 skips the INHINT,
- * as the listing runs it): the trunnion and shaft angles to SAVECDUT, and
- * the IMU's "IN FUNNY ORDER FOR AX*SR*T." (Y, Z, X) to CDUSPOT; then "GET
- * SINES AND COSINES OF CDU ANGLES." (QUICTRIG). */
+/* R29DODES +041 -- p. 601: "GET CDU ANGLES ONLY AFTER 1ST PASS." (TANG +0
+ * goes to GOTANGLS). "ENSURE CONSISTENT CDU READINGS." (TANG -0 skips the
+ * INHINT, as the listing runs it): the trunnion and shaft angles to
+ * SAVECDUT, and the IMU's "IN FUNNY ORDER FOR AX*SR*T." (Y, Z, X) to
+ * CDUSPOT; then "GET SINES AND COSINES OF CDU ANGLES." (QUICTRIG). */
 void r29dodes_after_mpacvbuf(void)
 {
     switch (ccs_at(ADDRESS_OF(TANG))) {
@@ -167,7 +167,7 @@ void r29dodes_after_mpacvbuf(void)
     tc_to(R29DODES + 056u, BANKCALL); /* CADR QUICTRIG */
 }
 
-/* GOTANGLS: "TRANSFORM UNIT LOS TO NB AXES (ULOSNB)." */
+/* GOTANGLS -- p. 601: "TRANSFORM UNIT LOS TO NB AXES (ULOSNB)." */
 void gotangls(void)
 {
     set_A(negate(THREE));
@@ -247,8 +247,9 @@ void gotangls_after_cos_t(void)
     tc_to(GOTANGLS + 014u, SPSIN);
 }
 
-/* GOTANGLS +015: "MODE = -SIN T.", "FORM - SIN T ULOSNBY." in MPAC; then
- * sin S. Not modelled: an A that overflows, where the TS would skip. */
+/* GOTANGLS +015 -- p. 602: "MODE = -SIN T.", "FORM - SIN T ULOSNBY." in
+ * MPAC; then sin S. Not modelled: an A that overflows, where the TS would
+ * skip. */
 void gotangls_after_sin_t(void)
 {
     if (ts(ADDRESS_OF(MODE))) not_modelled();
@@ -258,8 +259,8 @@ void gotangls_after_sin_t(void)
     tc_to(GOTANGLS + 022u, SPSIN);
 }
 
-/* GOTANGLS +023: "SAVECDUT NOW = SIN S.", "FORM SIN S COS T ULOSNBX." added
- * in; then cos S. Not modelled: an A that overflows. */
+/* GOTANGLS +023 -- p. 602: "SAVECDUT NOW = SIN S.", "FORM SIN S COS T
+ * ULOSNBX." added in; then cos S. Not modelled: an A that overflows. */
 void gotangls_after_sin_s(void)
 {
     if (ts(ADDRESS_OF(SAVECDUT))) not_modelled();
@@ -270,12 +271,12 @@ void gotangls_after_sin_s(void)
     tc_to(GOTANGLS + 032u, SPCOS);
 }
 
-/* GOTANGLS +033: "SAVECDUT +1 NOW = COS S.", "FORM COS S COS T ULOSNBZ.":
- * "COS(ERROR) = ULOSNB . (SIN S COS T, -SIN T, COS S COS T)." TESTCOS
- * doubles it ("ULOSNB IN VBUF WAS A HALF-UNIT VECTOR"), and "TEST FOR +
- * OVERFLOW, NONE, OR MINUS.": "IF PLUS OVERFLOW, SET SELFTRACK ENABLE."
- * "MAKE 2ND PASS THRU VECTOR LOOP." (R29DVBEG -1). Not modelled: an A that
- * overflows at the TS. */
+/* GOTANGLS +033 -- p. 602: "SAVECDUT +1 NOW = COS S.", "FORM COS S COS T
+ * ULOSNBZ.": "COS(ERROR) = ULOSNB . (SIN S COS T, -SIN T, COS S COS T)."
+ * TESTCOS doubles it ("ULOSNB IN VBUF WAS A HALF-UNIT VECTOR"), and "TEST
+ * FOR + OVERFLOW, NONE, OR MINUS.": "IF PLUS OVERFLOW, SET SELFTRACK
+ * ENABLE." "MAKE 2ND PASS THRU VECTOR LOOP." (R29DVBEG -1). Not modelled: an
+ * A that overflows at the TS. */
 void gotangls_after_cos_s(void)
 {
     if (ts(ADDRESS_OF(SAVECDUT) + 1u)) not_modelled();
@@ -298,7 +299,7 @@ void gotangls_after_cos_s(void)
 
 /* ---- R29LOKON and END29DOD ---- */
 
-/* DGOOD? +010: after RROUT, END29DOD. */
+/* DGOOD? +010 -- p. 604: after RROUT, END29DOD. */
 void r29dpas2_after_rrout(void)
 {
     continue_at(END29DOD); /* TCF END29DOD */
@@ -332,8 +333,8 @@ void r29lokon(void)
     tc_to(R29LOKON + 013u, WAITLIST); /* 2CADR R29READ */
 }
 
-/* END29DOD: "ALWAYS CLEAR LOSCMFLG." (the TS does not skip), and the job
- * ends. */
+/* END29DOD -- p. 604: "ALWAYS CLEAR LOSCMFLG." (the TS does not skip), and
+ * the job ends. */
 void end29dod(void)
 {
     set_A(negate(LOSCMBIT));

@@ -86,14 +86,15 @@ void r29(void)
     tc_to(R29 + 017u, BANKCALL); /* CADR SETRRECR */
 }
 
-/* SETPRPOS: "TASK TO SET TRUNNION ANGLE TO 180 DEG." (PREPOS29). */
+/* SETPRPOS -- p. 596: "TASK TO SET TRUNNION ANGLE TO 180 DEG."
+ * (PREPOS29). */
 static void setprpos(void)
 {
     set_A(ONE);
     tc_to(SETPRPOS + 1u, WAITLIST); /* 2CADR PREPOS29 */
 }
 
-/* R29 +021: "TEST RR MODE BIT.": "MODE 2." SETPRPOS; "MODE 1: MUST
+/* R29 +021 -- p. 596: "TEST RR MODE BIT.": "MODE 2." SETPRPOS; "MODE 1: MUST
  * REMODE.", R29REM0J, which "NEEDS OWN JOB TO RADSTALL IN.". */
 void r29_after_setrrecr(void)
 {
@@ -107,9 +108,9 @@ void r29_after_setrrecr(void)
     tc_to(R29 + 026u, NOVAC); /* 2CADR R29REM0J */
 }
 
-/* R29 +031: "CLEAR DESIGNATE FLAG IN RADMODES BEFORE CALLING REMODE" (the
- * TS does not skip), "SHOW THAT REMODING IS ON.", and "CONTINUE SERVICER
- * FUNCTIONS." */
+/* R29 +031 -- p. 596: "CLEAR DESIGNATE FLAG IN RADMODES BEFORE CALLING
+ * REMODE" (the TS does not skip), "SHOW THAT REMODING IS ON.", and "CONTINUE
+ * SERVICER FUNCTIONS." */
 void r29_after_novac(void)
 {
     set_A(negate(DESIGBIT));
@@ -120,7 +121,7 @@ void r29_after_novac(void)
     continue_at(NOR29NOW);     /* TCF NOR29NOW */
 }
 
-/* SETPRPOS +4: "SHOW THAT REPOSITIONING IS ON.", and NOR29NOW. */
+/* SETPRPOS +4 -- p. 596: "SHOW THAT REPOSITIONING IS ON.", and NOR29NOW. */
 void setprpos_after_waitlist(void)
 {
     set_A(REPOSBIT);
@@ -161,8 +162,8 @@ void prepos29(void)
     rrtonly(); /* "DRIVE TRUNNION CDU." */
 }
 
-/* PREPOS29 +2: "SHOW THAT REPOSITIONING IS OFF." (the TS does not skip),
- * and the task ends. */
+/* PREPOS29 +2 -- p. 597: "SHOW THAT REPOSITIONING IS OFF." (the TS does not
+ * skip), and the task ends. */
 void prepos29_after_rrtonly(void)
 {
     set_A(negate(REPOSBIT));
@@ -185,7 +186,7 @@ static const word r29_los_words[] = {
     SWITCH(BOFSET, LOSCMFLG), ADDRESS(SETUP29D),
 };
 
-/* R29.LOS +026: "IF DES. LOOP IS ON, LET IT USE OLD DATA." */
+/* R29.LOS +026 -- p. 598: "IF DES. LOOP IS ON, LET IT USE OLD DATA." */
 void r29_los_after_exit(void)
 {
     continue_at(NOR29NOW); /* TCF NOR29NOW */
@@ -204,7 +205,7 @@ static const word setup29d_words[] = {
     SWITCH(CLEAR, LOSCMFLG), /* "LET R29DLOOP USE NEW DATA." */
 };
 
-/* SETUP29D +7: "BRANCH IF R29 DES. LOOP IS REQUESTED." (NOR29NOW).
+/* SETUP29D +7 -- p. 598: "BRANCH IF R29 DES. LOOP IS REQUESTED." (NOR29NOW).
  * "OTHERWISE REQUEST IT NOW.", and "SEE IF TASK SHOULD BE OFFSET ONE
  * SECOND." by PIPCTR: positive, "-96D +100D = 4." centiseconds; +0, "0
  * +100D = 100D."; negative, the CCS's |PIPCTR| - 1. "START BEGDES29 TASK
@@ -231,7 +232,7 @@ void setup29d_after_exit(void)
     tc_to(SETUP29D + 020u, WAITLIST); /* 2CADR BEGDES29 */
 }
 
-/* SETUP29D +023: "RELINT AND CONTINUE SERVICER FUNCTIONS." */
+/* SETUP29D +023 -- p. 598: "RELINT AND CONTINUE SERVICER FUNCTIONS." */
 void setup29d_after_waitlist(void)
 {
     continue_at(NOR29NOW); /* TCF NOR29NOW */

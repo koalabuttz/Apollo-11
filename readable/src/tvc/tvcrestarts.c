@@ -40,11 +40,12 @@ static unsigned read_field(unsigned field, unsigned index_address)
 
 /* ---- REDOTVC -- p. 957 ---- */
 
-/* REDOTVC, the T5 interrupt: BANKRUPT and QRUPT kept. EXECPHS: "CHECK
- * TVCEXECUTIVE PHASE". TVCEXPHS +0, "NO NEED TO RESTART TVCEXECUTIVE":
- * TVCDAPHS. Otherwise EXRSTRT by WAITLIST in nine centiseconds, the "9CS
- * DELAY TO FORCE EXRSTRT TO OCCUR" "BEFORE PITCHDAP, AFTER CMDSOUT"
- * (TVCEXPHS -0 skips the CAF NINE: the delay the CCS's +0). */
+/* REDOTVC -- p. 958, the T5 interrupt: BANKRUPT and QRUPT kept. EXECPHS:
+ * "CHECK TVCEXECUTIVE PHASE". TVCEXPHS +0, "NO NEED TO RESTART
+ * TVCEXECUTIVE": TVCDAPHS. Otherwise EXRSTRT by WAITLIST in nine
+ * centiseconds, the "9CS DELAY TO FORCE EXRSTRT TO OCCUR" "BEFORE PITCHDAP,
+ * AFTER CMDSOUT" (TVCEXPHS -0 skips the CAF NINE: the delay the CCS's
+ * +0). */
 void redotvc(void)
 {
     lxch(ADDRESS_OF(BANKRUPT));
@@ -58,10 +59,10 @@ void redotvc(void)
     tc_to(REDOTVC + 7u, WAITLIST); /* 2CADR EXRSTRT */
 }
 
-/* TVCDAPHS, after the WAITLIST: "CHECK BITS 15 AND 1 OF TVCPHASE TO SEE"
- * the "DAP RESTART LOCATION (-1,1,2,3)". Bit 1 alone (1 or 3), "FINISH
- * THE COPYCYCLE FIRST": FINCOPY. Neither (2, or +0), "JUST PREPARE THE
- * OUTCOUNTERS AND GO": ENABL1. Bit 15 (negative): "TEST FOR TVCPHASE =
+/* TVCDAPHS -- p. 958, after the WAITLIST: "CHECK BITS 15 AND 1 OF TVCPHASE
+ * TO SEE" the "DAP RESTART LOCATION (-1,1,2,3)". Bit 1 alone (1 or 3),
+ * "FINISH THE COPYCYCLE FIRST": FINCOPY. Neither (2, or +0), "JUST PREPARE
+ * THE OUTCOUNTERS AND GO": ENABL1. Bit 15 (negative): "TEST FOR TVCPHASE =
  * -2" (bit 2 of its complement +0), a restart "DURING CSM/LM V46
  * SWITCH-OVER": ENABL1; -1, "RSTRT WAS IN TVCINIT": TRIM/CMD. (The MASK
  * leaves bits 15 and 1 at most, never -0.) */
@@ -82,22 +83,24 @@ void tvcdaphs(void)
         enabl1();
 }
 
-/* FINCOPY: "PICK UP THE APPROPRIATE COPYCYCLE" (TVCCADR + TVCPHASE: PCOPY
- * +1 or YCOPY +1) and "RE-ENTER THE COPYCYCLE, RETURN AT END" (TCR
- * ISWCALL). */
+/* FINCOPY -- p. 959: "PICK UP THE APPROPRIATE COPYCYCLE" (TVCCADR +
+ * TVCPHASE: PCOPY +1 or YCOPY +1) and "RE-ENTER THE COPYCYCLE, RETURN AT
+ * END" (TCR ISWCALL). */
 static void fincopy(void)
 {
     ca(read_field(ADDRESS_OF(TVCCADR), ADDRESS_OF(TVCPHASE)));
     tc_to(FINCOPY + 2u, ISWCALL);
 }
 
-/* FINCOPY +3, after the copycycle: "NOW PREPARE THE OUTCOUNTERS". */
+/* FINCOPY +3 -- p. 959, after the copycycle: "NOW PREPARE THE
+ * OUTCOUNTERS". */
 void fincopy_after_copycycle(void)
 {
     enabl1();
 }
 
-/* TRIM/CMD: "TVCDAPON INITIALIZATION NOT COMPLETED," "EG.  P,YCMD MAY NOT
+/* TRIM/CMD -- p. 959: "TVCDAPON INITIALIZATION NOT COMPLETED," "EG.  P,YCMD
+ * MAY NOT
  * BE SET": PCMD and YCMD from PACTOFF and YACTOFF; then ENABL1. */
 static void trim_cmd(void)
 {
@@ -108,9 +111,9 @@ static void trim_cmd(void)
 
 /* ---- The outcounters -- pp. 957-958 ---- */
 
-/* ENABL1: "TVC ENABLE, FOLLOWED BY 40 MS (MIN) WAIT" (bit 8 of channel
- * 12), with the "BIT FOR OPTICS-DAC-ENABLE ALSO" (bit 11); then ENABL2 in
- * a T5 interrupt in 60 ms (T5LOC TVCADDR, the GENADR ENABL2; TIME5
+/* ENABL1 -- p. 958: "TVC ENABLE, FOLLOWED BY 40 MS (MIN) WAIT" (bit 8 of
+ * channel 12), with the "BIT FOR OPTICS-DAC-ENABLE ALSO" (bit 11); then
+ * ENABL2 in a T5 interrupt in 60 ms (T5LOC TVCADDR, the GENADR ENABL2; TIME5
  * TVCADDR +4, OCT 37772), and RESUME. */
 static void enabl1(void)
 {
@@ -124,7 +127,7 @@ static void enabl1(void)
     continue_at(RESUME);
 }
 
-/* ENABL2, the T5 interrupt: BANKRUPT kept; the "OPTICS ERROR CNTR
+/* ENABL2 -- p. 958, the T5 interrupt: BANKRUPT kept; the "OPTICS ERROR CNTR
  * ENABLE" (bit 2 of channel 12), "4MS MIN WAIT"; then CMDSOUT in a T5
  * interrupt in 20 ms (T5LOC TVCADDR +2, the GENADR CMDSOUT; TIME5
  * OCT37776), and NOQRSM. */
@@ -140,15 +143,15 @@ void enabl2(void)
     continue_at(NOQRSM);
 }
 
-/* CMDSOUT, the T5 interrupt: BANKRUPT and QRUPT kept; the "MOST RECENT
- * ACTUATOR COMMANDS", PCMD and YCMD less -0 ("AVOID +0"), to the
- * outcounters TVCPITCH and TVCYAW; "RELEASE THE COUNTERS (BITS 11,12)"
- * of channel 14 (PRIO6). (A sum with -0 never overflows, so neither TS
- * skips.) Then PHSCHK2: TVCPHASE positive or +0, CHKSTRK. Negative, "A
- * CONTAINS THE DIMINISHED ABSOLUTE OF" "TVCPHASE (-2 BECOMES +1, -1
- * BECOMES +0)": -1, PHSCHK2 +5; -2 or less, and -0, TC +3 to "REPEAT
- * CSM/LM V46 SWITCH-OVER" (IBNKCALL, CADR SWICHOVR +5, whose TC sets Q
- * again), "RETURN TO CHECK FOR STROKE TEST". */
+/* CMDSOUT -- p. 959, the T5 interrupt: BANKRUPT and QRUPT kept; the "MOST
+ * RECENT ACTUATOR COMMANDS", PCMD and YCMD less -0 ("AVOID +0"), to the
+ * outcounters TVCPITCH and TVCYAW; "RELEASE THE COUNTERS (BITS 11,12)" of
+ * channel 14 (PRIO6). (A sum with -0 never overflows, so neither TS skips.)
+ * Then PHSCHK2: TVCPHASE positive or +0, CHKSTRK. Negative, "A CONTAINS THE
+ * DIMINISHED ABSOLUTE OF" "TVCPHASE (-2 BECOMES +1, -1 BECOMES +0)": -1,
+ * PHSCHK2 +5; -2 or less, and -0, TC +3 to "REPEAT CSM/LM V46 SWITCH-OVER"
+ * (IBNKCALL, CADR SWICHOVR +5, whose TC sets Q again), "RETURN TO CHECK FOR
+ * STROKE TEST". */
 void cmdsout(void)
 {
     lxch(ADDRESS_OF(BANKRUPT));
@@ -175,8 +178,8 @@ void cmdsout(void)
     tc_to(CMDSOUT + 023u, IBNKCALL);
 }
 
-/* PHSCHK2 +5: "REPEAT TVC INITIALIZATION" (POSTJUMP, CADR MRCLEAN; "DO
- * NOT RETURN"). */
+/* PHSCHK2 +5 -- p. 959: "REPEAT TVC INITIALIZATION" (POSTJUMP, CADR MRCLEAN;
+ * "DO NOT RETURN"). */
 void phschk2_mrclean(void)
 {
     tc_to(CMDSOUT + 021u, POSTJUMP);
@@ -184,11 +187,11 @@ void phschk2_mrclean(void)
 
 /* ---- The stroke test and EXRSTRT -- pp. 958-959 ---- */
 
-/* CHKSTRK: "CHECK FOR STROKE TEST IN PROGRESS" (STROKER positive or
- * negative): "YES, KILL IT", TSTINITJ, STROKER +0 to "DISABLE STROKE
- * TEST" ("+0 MEANS NEW V68 REQUIRED FOR STARTUP"). Then (+0, or -0,
- * which "SHOWS PRIOR V68", as they are) "RESTART AT" "TVCINIT4 (ZEROS
- * TVCPHASE, AND" "CALLS TVC DAPS VIA DAPINIT)" (POSTJUMP). */
+/* CHKSTRK -- p. 959: "CHECK FOR STROKE TEST IN PROGRESS" (STROKER positive
+ * or negative): "YES, KILL IT", TSTINITJ, STROKER +0 to "DISABLE STROKE
+ * TEST" ("+0 MEANS NEW V68 REQUIRED FOR STARTUP"). Then (+0, or -0, which
+ * "SHOWS PRIOR V68", as they are) "RESTART AT" "TVCINIT4 (ZEROS TVCPHASE,
+ * AND" "CALLS TVC DAPS VIA DAPINIT)" (POSTJUMP). */
 void chkstrk(void)
 {
     enum sign stroker = ccs_at(ADDRESS_OF(STROKER));
@@ -200,7 +203,7 @@ void chkstrk(void)
     tc_to(CHKSTRK + 4u, POSTJUMP); /* CADR TVCINIT4 */
 }
 
-/* EXRSTRT, the WAITLIST task: "TVCEXECUTIVE RESTARTS....GO TO" the
+/* EXRSTRT -- p. 960, the WAITLIST task: "TVCEXECUTIVE RESTARTS....GO TO" the
  * "APPROPRIATE RESTART POINT", TVCEXADR + TVCEXPHS (INDEX A; TCF 0: on
  * at the word A names). Not modelled (the faithful port refuses them
  * too): a word outside 02000-07777, which the INDEX makes another order

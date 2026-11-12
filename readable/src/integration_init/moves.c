@@ -7,9 +7,9 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-/* SETBANK, from the TC SETBANK at "at": BBANK from INTBANK ("BBCON
- * INTEGRV": the integration's F-bank and its E-bank, RRECT's), A 41
- * (FORTYONE), and back (TC Q). */
+/* SETBANK -- LM p. 1213, CM p. 1317, from the TC SETBANK at "at": BBANK from
+ * INTBANK ("BBCON INTEGRV": the integration's F-bank and its E-bank,
+ * RRECT's), A 41 (FORTYONE), and back (TC Q). */
 static void setbank(word at)
 {
     tc_at(at);
@@ -38,27 +38,29 @@ static void move(word at, unsigned from, unsigned to)
     continue_at(DANZIG);
 }
 
-/* MOVEACSM: "TRANSFERS RRECT TO RRECT +41 TO RRECTCSM TO RRECTCSM +41". */
+/* MOVEACSM -- LM p. 1211, CM p. 1315: "TRANSFERS RRECT TO RRECT +41 TO
+ * RRECTCSM TO RRECTCSM +41". */
 void moveacsm(void)
 {
     move(MOVEACSM, ADDRESS_OF(RRECT), ADDRESS_OF(RRECTCSM));
 }
 
-/* MOVEPCSM: RRECTCSM to RRECT ("PTOACSM TRANSFERS RRECTCSM TO RRECTCSM +41
- * TO RRECT TO RRECT +41"). */
+/* MOVEPCSM -- LM p. 1211, CM p. 1315: RRECTCSM to RRECT ("PTOACSM TRANSFERS
+ * RRECTCSM TO RRECTCSM +41 TO RRECT TO RRECT +41"). */
 void movepcsm(void)
 {
     move(MOVEPCSM, ADDRESS_OF(RRECTCSM), ADDRESS_OF(RRECT));
 }
 
-/* MOVEALEM: "TRANSFERS RRECT TO RRECT +41 TO RRECTLEM TO RRECTLEM +41". */
+/* MOVEALEM -- LM p. 1212, CM p. 1316: "TRANSFERS RRECT TO RRECT +41 TO
+ * RRECTLEM TO RRECTLEM +41". */
 void movealem(void)
 {
     move(MOVEALEM, ADDRESS_OF(RRECT), ADDRESS_OF(RRECTLEM));
 }
 
-/* MOVEPLEM: RRECTLEM to RRECT ("PTOALEM TRANSFERS RRECTLEM TO RRECTLEM +41
- * TO RRECT TO RRECT +41"). */
+/* MOVEPLEM -- LM p. 1212, CM p. 1316: RRECTLEM to RRECT ("PTOALEM TRANSFERS
+ * RRECTLEM TO RRECTLEM +41 TO RRECT TO RRECT +41"). */
 void moveplem(void)
 {
     move(MOVEPLEM, ADDRESS_OF(RRECTLEM), ADDRESS_OF(RRECT));

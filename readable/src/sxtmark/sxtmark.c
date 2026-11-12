@@ -52,7 +52,7 @@ static void termp03(void);
 static void jamit(void);
 static void mkvb51_plus3(void);
 static void markdif_plus7(void);
-static void markdif_plus11(void);
+static void markdif_plus011(void);
 static void mkacpt(void);
 static void tc_q(void);
 
@@ -131,17 +131,17 @@ void sxtmark(void)
         sxtmark_plus2();
 }
 
-/* SXTMARK +2, where P51-P53 enter (CADR SXTMARK +2). */
+/* SXTMARK +2 -- CM p. 222, where P51-P53 enter (CADR SXTMARK +2). */
 void sxtmark_plus2(void)
 {
     set_A(SIX);
     sxtmark_plus3();
 }
 
-/* SXTMARK +3. EXTVBACT's "BIT2 = MARKING SYSTEM IN USE", "BIT3 = EXTENDED
- * VERB IN PROGRESS": "SET THEREFORE ABORT". "NOT SET": set bit 2 ("RESET
- * IN ENDMARK") and find a VAC area. CCS of the masked word is + or +0;
- * after the overflow, A was -1, and a negative word skips the CAF BIT2
+/* SXTMARK +3 -- CM p. 222. EXTVBACT's "BIT2 = MARKING SYSTEM IN USE", "BIT3
+ * = EXTENDED VERB IN PROGRESS": "SET THEREFORE ABORT". "NOT SET": set bit 2
+ * ("RESET IN ENDMARK") and find a VAC area. CCS of the masked word is + or
+ * +0; after the overflow, A was -1, and a negative word skips the CAF BIT2
  * (CCS leaves it less one, which the ADS adds), -0 the ADS too. */
 static void sxtmark_plus3(void)
 {
@@ -232,22 +232,22 @@ void mkvacfnd(void)
     continue_at(CHECKMM);
 }
 
-/* MKVACFND +011, CHECKMM's return when not in P53: TCF +2; TC CHECKMM;
- * MM 54. */
+/* MKVACFND +011 -- CM p. 223, CHECKMM's return when not in P53: TCF +2; TC
+ * CHECKMM; MM 54. */
 void mkvacfnd_after_checkmm53_no(void)
 {
     tc_at(MKVACFND + 013u);
     continue_at(CHECKMM);
 }
 
-/* MKVACFND +012, in P53: TCF SWRETURN. */
+/* MKVACFND +012 -- CM p. 223, in P53: TCF SWRETURN. */
 void mkvacfnd_after_checkmm53_yes(void)
 {
     continue_at(SWRETURN);
 }
 
-/* MKVACFND +015, not in P54 either: "DESIRED NUMBER OF MARKS IN 12-14"
- * (MP BIT12 leaves RUPTREG1 times BIT12 in L) added to MARKSTAT, and
+/* MKVACFND +015 -- CM p. 223, not in P54 either: "DESIRED NUMBER OF MARKS IN
+ * 12-14" (MP BIT12 leaves RUPTREG1 times BIT12 in L) added to MARKSTAT, and
  * "ENTER MARK JOB", MKVB51. */
 void mkvacfnd_after_checkmm54_no(void)
 {
@@ -260,14 +260,14 @@ void mkvacfnd_after_checkmm54_no(void)
     continue_at(NOVAC);
 }
 
-/* MKVACFND +016, in P54: TCF SWRETURN. */
+/* MKVACFND +016 -- CM p. 223, in P54: TCF SWRETURN. */
 void mkvacfnd_after_checkmm54_yes(void)
 {
     continue_at(SWRETURN);
 }
 
-/* MKVACFND +030, MKVB51's job started: back to SXTMARK's caller,
- * "SAME AS MODEEXIT". */
+/* MKVACFND +030 -- CM p. 223, MKVB51's job started: back to SXTMARK's
+ * caller, "SAME AS MODEEXIT". */
 void mkvacfnd_after_novac(void)
 {
     relint();
@@ -382,7 +382,7 @@ static void keycall(void)
     continue_at(POSTJUMP);
 }
 
-/* KEYCALL +011, after the alarm: TC RESUME. */
+/* KEYCALL +011 -- CM p. 226, after the alarm: TC RESUME. */
 void keycall_after_alarm(void)
 {
     tc_at(KEYCALL + 011u);
@@ -401,7 +401,7 @@ static void markit(void)
     continue_at(WAITLIST);
 }
 
-/* MARKIT +010, MARKDIF's task set: TCF RESUME. */
+/* MARKIT +010 -- CM p. 234, MARKDIF's task set: TCF RESUME. */
 void markit_after_waitlist(void)
 {
     continue_at(RESUME);
@@ -428,7 +428,7 @@ void markdif(void)
     difchk();
 }
 
-/* MARKDIF +7: the Y CDU. */
+/* MARKDIF +7 -- CM p. 234: the Y CDU. */
 static void markdif_plus7(void)
 {
     ca(ADDRESS_OF(MKCDUY));
@@ -436,8 +436,8 @@ static void markdif_plus7(void)
     difchk();
 }
 
-/* MARKDIF +011: the Z CDU. */
-static void markdif_plus11(void)
+/* MARKDIF +011 -- CM p. 234: the Z CDU. */
+static void markdif_plus011(void)
 {
     ca(ADDRESS_OF(MKCDUZ));
     tc_at(MARKDIF + 012u); /* TC DIFCHK */
@@ -483,7 +483,7 @@ void difchk(void)
     continue_at(ALARM);
 }
 
-/* DIFCHK +016, after the alarm: TCF TASKOVER. */
+/* DIFCHK +016 -- CM p. 235, after the alarm: TCF TASKOVER. */
 void difchk_after_alarm(void)
 {
     continue_at(TASKOVER);
@@ -514,7 +514,7 @@ static void tc_q(void)
     switch (Z) { /* the words of bank 10 that go on here */
     case MARKDIF: markdif(); return;
     case MARKDIF + 7u: markdif_plus7(); return;
-    case MARKDIF + 011u: markdif_plus11(); return;
+    case MARKDIF + 011u: markdif_plus011(); return;
     case MKACPT: mkacpt(); return;
     case DIFCHK: difchk(); return;
     case DIFCHK + 016u: difchk_after_alarm(); return;
@@ -547,7 +547,7 @@ static void markit1(void)
     continue_at(GENTRAN);
 }
 
-/* MARKIT1 +4. */
+/* MARKIT1 +4 -- CM p. 228. */
 void markit1_after_gentran_mrkbuf2(void)
 {
     set_A(SIX);
@@ -555,7 +555,7 @@ void markit1_after_gentran_mrkbuf2(void)
     continue_at(GENTRAN);
 }
 
-/* MARKIT1 +010: TCF TASKOVER. */
+/* MARKIT1 +010 -- CM p. 228: TCF TASKOVER. */
 void markit1_after_gentran_mrkbuf1(void)
 {
     continue_at(TASKOVER);
@@ -599,7 +599,8 @@ static void market(void)
     continue_at(NOVAC);
 }
 
-/* MARKET +016, MARKDISP's job started: "TRANSFER MARK DATE TO MARKDOWN". */
+/* MARKET +016 -- CM p. 228, MARKDISP's job started: "TRANSFER MARK DATE TO
+ * MARKDOWN". */
 void market_after_novac(void)
 {
     set_A(SIX);
@@ -607,8 +608,8 @@ void market_after_novac(void)
     continue_at(GENTRAN);
 }
 
-/* MARKET +022: and to MRKBUF1, "FOR SPECIAL DISPLAY OF SHAFT AND
- * TRUNNION IF V59 ACTING". */
+/* MARKET +022 -- CM p. 228: and to MRKBUF1, "FOR SPECIAL DISPLAY OF SHAFT
+ * AND TRUNNION IF V59 ACTING". */
 void market_after_gentran_markdown(void)
 {
     set_A(SIX);
@@ -616,7 +617,7 @@ void market_after_gentran_markdown(void)
     continue_at(GENTRAN);
 }
 
-/* MARKET +026: TCF TASKOVER. */
+/* MARKET +026 -- CM p. 228: TCF TASKOVER. */
 void market_after_gentran_mrkbuf1(void)
 {
     continue_at(TASKOVER);
@@ -629,7 +630,7 @@ static void market3(void)
     continue_at(ALARM);
 }
 
-/* MARKET3 +2: TCF TASKOVER. */
+/* MARKET3 +2 -- CM p. 228: TCF TASKOVER. */
 void market3_after_alarm(void)
 {
     continue_at(TASKOVER);
@@ -642,7 +643,7 @@ static void hundred14_alm(void)
     continue_at(ALARM);
 }
 
-/* 114ALM +2: TCF TASKOVER. */
+/* 114ALM +2 -- CM p. 228: TCF TASKOVER. */
 void hundred14_alm_after_alarm(void)
 {
     continue_at(TASKOVER);
@@ -691,7 +692,7 @@ static void vacstor(void)
     vacstor_plus2();
 }
 
-/* VACSTOR +2: INDEX ITEMP2; DXCH 0 on. */
+/* VACSTOR +2 -- CM p. 229: INDEX ITEMP2; DXCH 0 on. */
 static void vacstor_plus2(void)
 {
     dxch_indexed(0u, ITEMP2);
@@ -716,7 +717,7 @@ static void vacstor_plus2(void)
     continue_at(NOVAC);
 }
 
-/* VACSTOR +034, MKVB50's job started: TCF TASKOVER. */
+/* VACSTOR +034 -- CM p. 229, MKVB50's job started: TCF TASKOVER. */
 void vacstor_after_novac(void)
 {
     continue_at(TASKOVER);
@@ -762,7 +763,7 @@ static void mrkrejct(void)
     }
 }
 
-/* MRKREJCT +4, after the alarm: TC RESUME. */
+/* MRKREJCT +4 -- CM p. 230, after the alarm: TC RESUME. */
 void mrkrejct_after_alarm(void)
 {
     tc_at(MRKREJCT + 4u);
@@ -788,7 +789,7 @@ static void reject2(void)
     continue_at(ALARM);
 }
 
-/* REJECT2 +010, after the alarm: TC RESUME. */
+/* REJECT2 +010 -- CM p. 231, after the alarm: TC RESUME. */
 void reject2_after_alarm(void)
 {
     tc_at(REJECT2 + 010u);
@@ -821,7 +822,7 @@ static void reject3(void)
     continue_at(NOVAC);
 }
 
-/* REJECT3 +020, MKVB51's job started: TC RESUME. */
+/* REJECT3 +020 -- CM p. 231, MKVB51's job started: TC RESUME. */
 void reject3_after_novac(void)
 {
     tc_at(REJECT3 + 020u);
@@ -840,33 +841,34 @@ void mkvb51(void)
     continue_at(BANKCALL);
 }
 
-/* MKVB51 +2. */
+/* MKVB51 +2 -- CM p. 232. */
 void mkvb51_after_kleenex(void)
 {
     set_A(VB51);
     mkvb51_plus3();
 }
 
-/* MKVB51 +3, with the verb and noun in A (MKVB50's way in too). */
+/* MKVB51 +3 -- CM p. 232, with the verb and noun in A (MKVB50's way in
+ * too). */
 static void mkvb51_plus3(void)
 {
     tc_at(MKVB51 + 3u); /* TC BANKCALL; CADR GOMARK4 */
     continue_at(BANKCALL);
 }
 
-/* MKVB51 +5: TCF TERMSXT. */
+/* MKVB51 +5 -- CM p. 232: TCF TERMSXT. */
 void mkvb51_after_terminate(void)
 {
     termsxt();
 }
 
-/* MKVB51 +6: TCF ENTANSWR. */
+/* MKVB51 +6 -- CM p. 232: TCF ENTANSWR. */
 void mkvb51_after_proceed(void)
 {
     entanswr();
 }
 
-/* MKVB51 +7: TCF MKVB5X. */
+/* MKVB51 +7 -- CM p. 232: TCF MKVB5X. */
 void mkvb51_after_enter(void)
 {
     mkvb5x();
@@ -880,21 +882,21 @@ static void termsxt(void)
     continue_at(CLEARMRK);
 }
 
-/* TERMSXT +1. */
+/* TERMSXT +1 -- CM p. 232. */
 void termsxt_after_clearmrk(void)
 {
     tc_at(TERMSXT + 1u); /* TC CHECKMM; MM 03 */
     continue_at(CHECKMM);
 }
 
-/* TERMSXT +3, not in P03: TCF +2; TC POSTJUMP; CADR TERM52. */
+/* TERMSXT +3 -- CM p. 232, not in P03: TCF +2; TC POSTJUMP; CADR TERM52. */
 void termsxt_after_checkmm03_no(void)
 {
     tc_at(TERMSXT + 5u);
     continue_at(POSTJUMP);
 }
 
-/* TERMSXT +4, in P03: TC TERMP03. */
+/* TERMSXT +4 -- CM p. 232, in P03: TC TERMP03. */
 void termsxt_after_checkmm03_yes(void)
 {
     tc_at(TERMSXT + 4u);
@@ -942,7 +944,7 @@ static void jamit(void)
     continue_at(WAITLIST);
 }
 
-/* JAMIT +7, the task set: TC ENDMARK. */
+/* JAMIT +7 -- CM p. 233, the task set: TC ENDMARK. */
 void jamit_after_waitlist(void)
 {
     tc_at(JAMIT + 7u);

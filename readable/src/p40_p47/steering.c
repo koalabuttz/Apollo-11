@@ -61,7 +61,7 @@ static const word updatevg_words[] = {
     ORDER(EXIT),
 };
 
-/* 180SETUP +1, after the EXIT: with restart group 2 active (PHASE2
+/* 180SETUP +1 -- p. 761, after the EXIT: with restart group 2 active (PHASE2
  * positive), straight on at NO.9. Otherwise S40.9, "LAMBERT VTOGAIN", as
  * a job of priority 10 (FINDVAC). A negative PHASE2 comes into the INHINT
  * with A |PHASE2| - 1, and -0 into the TC FINDVAC, as CCS goes on. */
@@ -79,14 +79,14 @@ void updatevg_after_exit(void)
     tc_to(ONE_EIGHTY_SETUP + 5u, FINDVAC); /* 2CADR S40.9 */
 }
 
-/* 180SETUP +010: "2.17SPOT FOR S40.9", and "HERE AND REREADAC AFTER
- * RESTART" (2PHSCHNG, OCT 00172, OCT 10035). */
+/* 180SETUP +010 -- p. 761: "2.17SPOT FOR S40.9", and "HERE AND REREADAC
+ * AFTER RESTART" (2PHSCHNG, OCT 00172, OCT 10035). */
 void updatevg_after_findvac(void)
 {
     tc_to(ONE_EIGHTY_SETUP + 010u, TWO_PHSCHNG);
 }
 
-/* ENDSTEER: to the interpreter, for ENDSTEER_CODE. */
+/* ENDSTEER -- p. 761: to the interpreter, for ENDSTEER_CODE. */
 void endsteer(void)
 {
     tc_at(ENDSTEER);
@@ -120,7 +120,7 @@ static const word no_9_words[] = {
 
 /* ---- STEERING and NSTEER -- p. 762 ---- */
 
-/* STEERING: to the interpreter, for STEERING_CODE. */
+/* STEERING -- p. 762: to the interpreter, for STEERING_CODE. */
 void steering(void)
 {
     tc_at(STEERING);
@@ -134,13 +134,12 @@ static const word steering_words[] = {
     ORDER(EXIT),
 };
 
-/* NSTEER, after the EXIT: "CHECK IMPULSE SWITCH. IT IS SET EITHER BY
- * S40.13 IF TBURN<6 SECS OR BY S40.8 IF STEERING IS ALMOST DONE." With
+/* NSTEER -- p. 762, after the EXIT: "CHECK IMPULSE SWITCH. IT IS SET EITHER
+ * BY S40.13 IF TBURN<6 SECS OR BY S40.8 IF STEERING IS ALMOST DONE." With
  * IMPULSW clear, back to SERVICER (POSTJUMP, CADR SERVEXIT). With it set,
- * the idle flag: "DVMON OFF --> IMPULSW ON VIA S40.13 --> EXIT"; "DVMON
- * ON --> THRUSTING --> IMPULSW VIA S40.8": the rates stopped (STOPRATE).
- * MASK leaves A positive or +0: those are the two ways each CCS goes on
- * here. */
+ * the idle flag: "DVMON OFF --> IMPULSW ON VIA S40.13 --> EXIT"; "DVMON ON
+ * --> THRUSTING --> IMPULSW VIA S40.8": the rates stopped (STOPRATE). MASK
+ * leaves A positive or +0: those are the two ways each CCS goes on here. */
 void nsteer(void)
 {
     inhint();
@@ -159,20 +158,20 @@ void nsteer(void)
     tc_to(NSTEER + 013u, POSTJUMP); /* CADR SERVEXIT */
 }
 
-/* NSTEER +017: "TURN OFF IMPULSW", */
+/* NSTEER +017 -- p. 762: "TURN OFF IMPULSW", */
 void nsteer_after_stoprate(void)
 {
     tc_to(NSTEER + 017u, DOWNFLAG); /* ADRES IMPULSW */
 }
 
-/* "TURN OFF DVMON" (IDLEFLAG set), */
+/* NSTEER +021 -- p. 762: "TURN OFF DVMON" (IDLEFLAG set), */
 void nsteer_after_impulsw(void)
 {
     tc_to(NSTEER + 021u, UPFLAG); /* ADRES IDLEFLAG */
 }
 
-/* the time to ignition from now (TIG less TIME2, in MPAC; TPAGREE makes
- * its two words agree in sign), */
+/* NSTEER +023 -- p. 762: the time to ignition from now (TIG less TIME2, in
+ * MPAC; TPAGREE makes its two words agree in sign), */
 void nsteer_after_idleflag(void)
 {
     inhint();
@@ -183,7 +182,7 @@ void nsteer_after_idleflag(void)
     tc_to(NSTEER + 032u, TPAGREE);
 }
 
-/* as a delay of at least a centisecond (GETDT), */
+/* NSTEER +033 -- p. 762: as a delay of at least a centisecond (GETDT), */
 void nsteer_after_tpagree(void)
 {
     ca(ADDRESS_OF(MPAC) + 1u); /* CAE */
@@ -192,20 +191,20 @@ void nsteer_after_tpagree(void)
     nsteer_after_getdt();
 }
 
-/* for ENGOFTSK (TWIDDLE); */
+/* NSTEER +035 -- p. 762: for ENGOFTSK (TWIDDLE); */
 void nsteer_after_getdt(void)
 {
     tc_to(NSTEER + 035u, TWIDDLE); /* ADRES ENGOFTSK */
 }
 
-/* "ENGOFTSK (ENGINOFF)", "SERVICER -- REREADAC" (2PHSCHNG, OCT 40114,
- * OCT 00035), */
+/* NSTEER +037 -- p. 762: "ENGOFTSK (ENGINOFF)", "SERVICER -- REREADAC"
+ * (2PHSCHNG, OCT 40114, OCT 00035), */
 void nsteer_after_twiddle(void)
 {
     tc_to(NSTEER + 037u, TWO_PHSCHNG);
 }
 
-/* and the job ends. */
+/* NSTEER +042 -- p. 763: and the job ends. */
 void nsteer_after_2phschng(void)
 {
     continue_at(ENDOFJOB);
@@ -213,8 +212,8 @@ void nsteer_after_2phschng(void)
 
 /* ---- GETDT -- p. 763 ---- */
 
-/* GETDT: the time in A (centiseconds) as a delay of at least one: A if
- * positive, 1 for +0, -0 or a negative A. TGO gets it as a DP number,
+/* GETDT -- p. 763: the time in A (centiseconds) as a delay of at least one:
+ * A if positive, 1 for +0, -0 or a negative A. TGO gets it as a DP number,
  * and A again; back to the caller (TC Q). */
 void getdt(void)
 {

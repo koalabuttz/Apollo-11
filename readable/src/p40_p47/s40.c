@@ -247,14 +247,14 @@ static const word s40_8_words[] = {
     ORDER(EXIT),
 };
 
-/* ALARMIT, after the EXIT: alarm 1407 (TC ALARM, OCT 01407), */
+/* ALARMIT +1 -- p. 772, after the EXIT: alarm 1407 (TC ALARM, OCT 01407), */
 void alarmit_after_exit(void)
 {
     tc_at(ALARMIT + 1u);
     continue_at(ALARM);
 }
 
-/* and back to the interpreter, for ALARMIT_CODE. */
+/* ALARMIT +3 -- p. 772: and back to the interpreter, for ALARMIT_CODE. */
 void alarmit_after_alarm(void)
 {
     tc_at(ALARMIT + 3u);

@@ -322,7 +322,7 @@ void gop00fix_after_downflag_ullagflg(void)
 }
 #endif
 
-/* GOP00FIX, after CLEARMRK -- LM p. 225, CM p. 194.
+/* GOP00FIX, after CLEARMRK -- LM pp. 224-225, CM p. 194.
  * Flash V37 N99 (GOFLASH). Whatever the astronaut keys (terminate, proceed
  * or enter: TCF -3, -4 or -5), it flashes again, until a V37 comes. */
 void gop00fix_after_clearmrk(void)
@@ -331,7 +331,7 @@ void gop00fix_after_clearmrk(void)
     tc_out(TC_GOFLASH, BANKCALL); /* CADR GOFLASH */
 }
 
-/* GOP00FIX, after GOFLASH -- LM p. 225, CM p. 194. */
+/* GOP00FIX, after GOFLASH -- LM pp. 224-225, CM p. 194. */
 void gop00fix_after_goflash(void)
 {
     gop00fix_after_clearmrk();
@@ -733,8 +733,8 @@ static void gogoprog(void)
     tc_out(TC_POSTJUMP_PROG2, POSTJUMP); /* CADR GOPROG2 */
 }
 
-/* P00FIZZ and the like: CAF V37QCAD; TS TEMPFLSH: the "RESTART POINT FOR
- * V37XEQ", then GOGOPROG. */
+/* P00FIZZ -- LM p. 231, CM p. 201 and the like: CAF V37QCAD; TS TEMPFLSH:
+ * the "RESTART POINT FOR V37XEQ", then GOGOPROG. */
 static void p00fizz(void)
 {
     set_A(V37QCAD);
@@ -1163,7 +1163,7 @@ void vac5stor(void)
     tc_out(TC_GENTRAN, GENTRAN); /* ADRES PHSNAME1; ADRES VAC5 +21D */
 }
 
-/* VAC5STOR, after GENTRAN -- CM p. 205.
+/* VAC5STOR, after GENTRAN -- CM pp. 204-205.
  * The phase table's six PHASEn words (V5LOOP2), then MPAC +3, NEWLOC,
  * NEWJOB and NEWPRIO; back through SWRETURN. */
 void vac5stor_after_gentran(void)

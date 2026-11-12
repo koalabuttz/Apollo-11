@@ -10,7 +10,7 @@
 
 /* ---- CM/POSE -- p. 883 ---- */
 
-/* CM/POSE: "COME HERE VIA AVEGEXIT.", into the interpreter. */
+/* CM/POSE -- p. 883: "COME HERE VIA AVEGEXIT.", into the interpreter. */
 void cm_pose(void)
 {
     tc_at(CM_POSE);

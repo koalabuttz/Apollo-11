@@ -28,12 +28,12 @@
 static void p61_4(void);
 static void p61_2(void);
 static void p62_2_separation(void);
-static void p62_2_plus3(void);
+static void p62_2_plus012(void);
 
 /* ---- P61 -- pp. 789-791 ---- */
 
-/* P61: "LOCK OUT EXTENDED VERBS SO CAN USE TFF ROUTINES" (EXTVBACT gets
- * BIT14); HEADSUP preloaded to -1, lift up; then S61.1, "CHECK STATE
+/* P61 -- p. 789: "LOCK OUT EXTENDED VERBS SO CAN USE TFF ROUTINES" (EXTVBACT
+ * gets BIT14); HEADSUP preloaded to -1, lift up; then S61.1, "CHECK STATE
  * VECTOR AND IMU ORIENTATION". (A is a constant: neither TS skips.) */
 void p61(void)
 {
@@ -44,8 +44,8 @@ void p61(void)
     s61_1(P61 + 4u);
 }
 
-/* P61 +5, S61.1's return (TC 60GENRET): the splash point and the lift
- * direction flashed for the crew to load (V06N61, GOFLASHR). */
+/* P61 +5 -- p. 789, S61.1's return (TC 60GENRET): the splash point and the
+ * lift direction flashed for the crew to load (V06N61, GOFLASHR). */
 void p61_display(void)
 {
     set_A(V06N61);
@@ -57,22 +57,22 @@ void p61_terminate(void)
     tc_to(P61 + 010u, GOTOPOOH);
 }
 
-/* P61 +011: proceed (TC P61.4). */
+/* P61 +011 -- p. 790: proceed (TC P61.4). */
 void p61_proceed(void)
 {
     tc_at(P61 + 011u);
     p61_4();
 }
 
-/* P61 +012: the crew loaded new data (TC -5): flash it again. */
+/* P61 +012 -- p. 790: the crew loaded new data (TC -5): flash it again. */
 void p61_enter(void)
 {
     tc_at(P61 + 012u);
     p61_display();
 }
 
-/* P61.3: the display's immediate return: a restart point (PHASCHNG, OCT
- * 00014), then ENDOFJOB. P62 and P65.1 come here too. */
+/* P61.3 -- p. 790: the display's immediate return: a restart point
+ * (PHASCHNG, OCT 00014), then ENDOFJOB. P62 and P65.1 come here too. */
 void p61_3(void)
 {
     tc_to(P61_3, PHASCHNG); /* OCT 00014 */
@@ -83,12 +83,11 @@ void p61_3_after_phaschng(void)
     tc_to(P61_3 + 2u, ENDOFJOB);
 }
 
-/* P61.4: ROLLC for S62.3, "GIM ANG AT .05G": "IF HEADSUP POS,ROLLC =180
- * DEG.(LIFT DWN)" (BIT14, a half revolution), "IF HEADSUP NEG,ROLLC =0
- * (LIFT UP)" (CCS leaves +0 in A); L, the second word, +0 (ZL). With
- * HEADSUP +0, CCS also leaves +0 (the NOOP's way); with -0 it skips the
- * DXCH, and ROLLC is left as it was. Then the interpretive code at
- * NEWRNVN. */
+/* P61.4 -- p. 790: ROLLC for S62.3, "GIM ANG AT .05G": "IF HEADSUP POS,ROLLC
+ * =180 DEG.(LIFT DWN)" (BIT14, a half revolution), "IF HEADSUP NEG,ROLLC =0
+ * (LIFT UP)" (CCS leaves +0 in A); L, the second word, +0 (ZL). With HEADSUP
+ * +0, CCS also leaves +0 (the NOOP's way); with -0 it skips the DXCH, and
+ * ROLLC is left as it was. Then the interpretive code at NEWRNVN. */
 static void p61_4(void)
 {
     enum sign headsup;
@@ -133,8 +132,8 @@ static const word newrnvn_words[] = {
 const struct interpretive_code NEWRNVN_CODE = {026u, P61_4 + 6u, COUNT(newrnvn_words),
                                                newrnvn_words};
 
-/* P61.1: S61.2's return: the marks cleared (CLEARMRK); GMAX, VPRED and
- * GAMMAEI flashed (V06N60, GOFLASH). */
+/* P61.1 -- p. 790: S61.2's return: the marks cleared (CLEARMRK); GMAX, VPRED
+ * and GAMMAEI flashed (V06N60, GOFLASH). */
 void p61_1(void)
 {
     tc_to(P61_1, CLEARMRK);
@@ -151,22 +150,22 @@ void p61_1_terminate(void)
     tc_to(P61_1 + 4u, GOTOPOOH);
 }
 
-/* P61.1 +5: proceed (TC P61.2). */
+/* P61.1 +5 -- p. 790: proceed (TC P61.2). */
 void p61_1_proceed(void)
 {
     tc_at(P61_1 + 5u);
     p61_2();
 }
 
-/* P61.1 +6: recycle (TC -5): flash it again. */
+/* P61.1 +6 -- p. 790: recycle (TC -5): flash it again. */
 void p61_1_enter(void)
 {
     tc_at(P61_1 + 6u);
     p61_1_display();
 }
 
-/* P61.2: "CORRECT TTE FOR TIME LAPSE DURING ABOVE DISPLAY": TTE is the
- * time from now (LOADTIME, "CURRENT TIME.") less PIPTIME (in MM), plus
+/* P61.2 -- p. 790: "CORRECT TTE FOR TIME LAPSE DURING ABOVE DISPLAY": TTE is
+ * the time from now (LOADTIME, "CURRENT TIME.") less PIPTIME (in MM), plus
  * TTE1, the "NEGATIVE OF FREE FALL TIME." */
 static void p61_2(void)
 {
@@ -186,7 +185,7 @@ static const word p61_2_words[] = {
 
 const struct interpretive_code P61_2_CODE = {026u, P61_2 + 1u, COUNT(p61_2_words), p61_2_words};
 
-/* P61.2 +010: RTGO, VIO and TTE flashed (V06N63, GOFLASH). */
+/* P61.2 +010 -- p. 791: RTGO, VIO and TTE flashed (V06N63, GOFLASH). */
 void p61_2_display(void)
 {
     set_A(V06N63);
@@ -198,15 +197,15 @@ void p61_2_terminate(void)
     tc_to(P61_2 + 013u, GOTOPOOH);
 }
 
-/* P61.2 +014: proceed (TC +2), ".... THEN FALL INTO P62": the major mode
- * changed to 62 (NEWMODEX, MM 62). */
+/* P61.2 +014 -- p. 791: proceed (TC +2), ".... THEN FALL INTO P62": the
+ * major mode changed to 62 (NEWMODEX, MM 62). */
 void p61_2_proceed(void)
 {
     tc_at(P61_2 + 014u);
     tc_to(P62 - 4u, NEWMODEX); /* MM 62 */
 }
 
-/* P61.2 +015: "REDO" (TC P61.2). */
+/* P61.2 +015 -- p. 791: "REDO" (TC P61.2). */
 void p61_2_redo(void)
 {
     tc_at(P61_2 + 015u);
@@ -215,8 +214,8 @@ void p61_2_redo(void)
 
 /* ---- P62 -- pp. 792-794 ---- */
 
-/* P62 -2, NEWMODEX's return: the downlist code to 1 (DNLSTCOD), and P62.
- * (A is a constant: TS does not skip.) */
+/* P62 -2 -- p. 792, NEWMODEX's return: the downlist code to 1 (DNLSTCOD),
+ * and P62. (A is a constant: TS does not skip.) */
 void p62_from_p61(void)
 {
     set_A(ONE);
@@ -224,7 +223,7 @@ void p62_from_p61(void)
     p62();
 }
 
-/* P62: S61.1, "CHECK STATE VECTOR AND IMU ORIENTATION." */
+/* P62 -- p. 792: S61.1, "CHECK STATE VECTOR AND IMU ORIENTATION." */
 void p62(void)
 {
     s61_1(P62);
@@ -248,8 +247,8 @@ static const word p62_words[] = {
 
 const struct interpretive_code P62_CODE = {026u, P62 + 2u, COUNT(p62_words), p62_words};
 
-/* P62.2: "CONTINUE WITH CM/POSE AFTER AV G." (POSECADR to AVEGEXIT); then
- * "REQUEST SEPARATION" (GOPERF1R, code 41). */
+/* P62.2 -- p. 792: "CONTINUE WITH CM/POSE AFTER AV G." (POSECADR to
+ * AVEGEXIT); then "REQUEST SEPARATION" (GOPERF1R, code 41). */
 void p62_2(void)
 {
     dca_2cadr(POSECADR);
@@ -268,74 +267,73 @@ void p62_2_terminate(void)
     tc_to(P62_2 + 6u, GOTOPOOH);
 }
 
-/* P62.2 +7: proceed (TC +3). */
+/* P62.2 +7 -- p. 792: proceed (TC +3). */
 void p62_2_proceed(void)
 {
     tc_at(P62_2 + 7u);
-    p62_2_plus3();
+    p62_2_plus012();
 }
 
-/* P62.2 +010: enter (TC -5): ask again. */
+/* P62.2 +010 -- p. 793: enter (TC -5): ask again. */
 void p62_2_enter(void)
 {
     tc_at(P62_2 + 010u);
     p62_2_separation();
 }
 
-/* P62.2 +011: the immediate return, "FOR PHASCHNG AND ENDOFJOB" (TC
- * P61.3). */
+/* P62.2 +011 -- p. 793: the immediate return, "FOR PHASCHNG AND ENDOFJOB"
+ * (TC P61.3). */
 void p62_2_immediate_return(void)
 {
     tc_at(P62_2 + 011u);
     p61_3();
 }
 
-/* P62.2 +012 (+3): CM/DAPON, to "DISABLE RCS DAP, ENABLE ENTRY DAP AND DO
- * ATTITUDE HOLD." (POSTJUMP); it goes on at P62.1. */
-static void p62_2_plus3(void)
+/* P62.2 +012 -- p. 793 (+3): CM/DAPON, to "DISABLE RCS DAP, ENABLE ENTRY DAP
+ * AND DO ATTITUDE HOLD." (POSTJUMP); it goes on at P62.1. */
+static void p62_2_plus012(void)
 {
     tc_to(P62_2 + 012u, POSTJUMP); /* CADR CM/DAPON */
 }
 
-/* P62.1: the splash point and the lift direction flashed again (V06N61,
- * GOFLASH). */
+/* P62.1 -- p. 793: the splash point and the lift direction flashed again
+ * (V06N61, GOFLASH). */
 void p62_1(void)
 {
     set_A(V06N61);
     tc_to(P62_1 + 1u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* P62.1 +3: terminate (TC -3): flash it again. */
+/* P62.1 +3 -- p. 793: terminate (TC -3): flash it again. */
 void p62_1_terminate(void)
 {
     tc_at(P62_1 + 3u);
     p62_1();
 }
 
-/* P62.1 +4: proceed (TC +2): a restart point (PHASCHNG, OCT 04024): "USE
- * ENTRYVN FOR DISPLAY BELOW." */
+/* P62.1 +4 -- p. 793: proceed (TC +2): a restart point (PHASCHNG, OCT
+ * 04024): "USE ENTRYVN FOR DISPLAY BELOW." */
 void p62_1_proceed(void)
 {
     tc_at(P62_1 + 4u);
     tc_to(P62_1 + 6u, PHASCHNG); /* OCT 04024 */
 }
 
-/* P62.1 +5: enter (TC -5): flash it again. */
+/* P62.1 +5 -- p. 793: enter (TC -5): flash it again. */
 void p62_1_enter(void)
 {
     tc_at(P62_1 + 5u);
     p62_1();
 }
 
-/* P62.1 +010: "TERMINATE ATTITUDE HOLD. SET UP COMMANDS: ROLLC, ALFACOM,
- * BETACOM. BEGIN MANEUVER TO ENTRY ATTITUDE." ROLLC: "IF HEADSUP POS,
- * ROLLC=180 DEG (LIFT DWN)" (BIT14), "IF HEADSUP NEG, ROLLC=0 DEG (LIFT
- * UP)" (+0 from CCS, as is HEADSUP +0's); with -0 the TS is skipped.
- * ALFACOM gets ALFAPAD, the "NOMINAL ALFATRIM PAD LOADED", and BETACOM
- * +0; P63FLAG +1, which "STARTS UP P63." (EXDAP2 changes it); ENTRYVN
- * V06N22, the "DISPLAY FOR CDU DESIRED VALUES"; then "TURN ON ENTRY
- * DISPLAY" (UPFLAG ENTRYDSP). (No TS here finds an overflow in A: none
- * skips.) */
+/* P62.1 +010 -- p. 793: "TERMINATE ATTITUDE HOLD. SET UP COMMANDS: ROLLC,
+ * ALFACOM, BETACOM. BEGIN MANEUVER TO ENTRY ATTITUDE." ROLLC: "IF HEADSUP
+ * POS, ROLLC=180 DEG (LIFT DWN)" (BIT14), "IF HEADSUP NEG, ROLLC=0 DEG (LIFT
+ * UP)" (+0 from CCS, as is HEADSUP +0's); with -0 the TS is skipped. ALFACOM
+ * gets ALFAPAD, the "NOMINAL ALFATRIM PAD LOADED", and BETACOM +0; P63FLAG
+ * +1, which "STARTS UP P63." (EXDAP2 changes it); ENTRYVN V06N22, the
+ * "DISPLAY FOR CDU DESIRED VALUES"; then "TURN ON ENTRY DISPLAY" (UPFLAG
+ * ENTRYDSP). (No TS here finds an overflow in A: none skips.) */
 void p62_1_after_phaschng(void)
 {
     enum sign headsup = ccs_at(ADDRESS_OF(HEADSUP));
@@ -352,10 +350,10 @@ void p62_1_after_phaschng(void)
     tc_to(P62_1 + 023u, UPFLAG); /* ADRES ENTRYDSP */
 }
 
-/* P62.1 +025: "GO DIRECTLY TO P63 IF BODY ATTITUDE IS SUCH THAT THE DELAY
- * TASK: WAKEP62 WILL BE OMITTED.": bit 1 of CMDAPMOD's complement clear
- * (BZF) goes to P63.1, which ends the job; "(I.E., CONTINUE IF CMDAPMOD =
- * -1, OR +0)" to P63. */
+/* P62.1 +025 -- p. 794: "GO DIRECTLY TO P63 IF BODY ATTITUDE IS SUCH THAT
+ * THE DELAY TASK: WAKEP62 WILL BE OMITTED.": bit 1 of CMDAPMOD's complement
+ * clear (BZF) goes to P63.1, which ends the job; "(I.E., CONTINUE IF
+ * CMDAPMOD = -1, OR +0)" to P63. */
 void p62_1_after_upflag(void)
 {
     cs(ADDRESS_OF(CMDAPMOD));
@@ -368,8 +366,8 @@ void p62_1_after_upflag(void)
     p63();
 }
 
-/* WAKEP62, "CALLED FROM ENTRY DAP": the task that starts P63 as a job
- * (NOVAC, priority 13). */
+/* WAKEP62 -- p. 794, "CALLED FROM ENTRY DAP": the task that starts P63 as a
+ * job (NOVAC, priority 13). */
 void wakep62(void)
 {
     set_A(PRIO13);

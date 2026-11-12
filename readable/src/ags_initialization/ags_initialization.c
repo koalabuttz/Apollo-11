@@ -46,7 +46,7 @@ void agsinit(void)
     continue_at(ALARM);
 }
 
-/* AGSINIT +6, where ALARM returns: TC ENDEXT. */
+/* AGSINIT +6 -- LM p. 207, where ALARM returns: TC ENDEXT. */
 void agsinit_after_alarm(void)
 {
     tc_at((word)(AGSINIT + 6u));
@@ -62,8 +62,8 @@ static void newags(void)
     redsptem_minus1();
 }
 
-/* REDSPTEM -1 (NEWAGS's DXCH AGSK): A,L become AGSK. The enter return
- * comes here with the time the crew keyed in. */
+/* REDSPTEM -1 -- LM p. 207 (NEWAGS's DXCH AGSK): A,L become AGSK. The enter
+ * return comes here with the time the crew keyed in. */
 static void redsptem_minus1(void)
 {
     dxch(ADDRESS_OF(AGSK));
@@ -185,21 +185,21 @@ static void ckstall(void)
     continue_at(BANKCALL);
 }
 
-/* CKSTALL +7, where DELAYJOB returns: TCF CKSTALL. */
+/* CKSTALL +7 -- LM p. 208, where DELAYJOB returns: TCF CKSTALL. */
 void ckstall_after_delayjob(void)
 {
     ckstall();
 }
 
-/* CKSTALL +012, where IMUZERO returns: "WAIT 3 SEC FOR COUNTERS TO
- * INCREMENT" (IMUSTALL). */
+/* CKSTALL +012 -- LM p. 208, where IMUZERO returns: "WAIT 3 SEC FOR COUNTERS
+ * TO INCREMENT" (IMUSTALL). */
 void ckstall_after_imuzero(void)
 {
     tc_at((word)(CKSTALL + 012u)); /* TC BANKCALL; CADR IMUSTALL */
     continue_at(BANKCALL);
 }
 
-/* CKSTALL +014, where IMUSTALL returns: TC AGSEND. */
+/* CKSTALL +014 -- LM p. 208, where IMUSTALL returns: TC AGSEND. */
 void ckstall_after_imustall(void)
 {
     tc_at((word)(CKSTALL + 014u));
@@ -213,7 +213,8 @@ void agsend(void)
     continue_at(DOWNFLAG);
 }
 
-/* AGSEND +2, where DOWNFLAG returns: display V50N16 through GOMARK3. */
+/* AGSEND +2 -- LM p. 208, where DOWNFLAG returns: display V50N16 through
+ * GOMARK3. */
 void agsend_after_downflag(void)
 {
     set_A(V50N16);              /* CAF V50N16 */
@@ -221,8 +222,8 @@ void agsend_after_downflag(void)
     continue_at(BANKCALL);
 }
 
-/* AGSEND +5, +6 and +7, GOMARK3's terminate, proceed and enter returns:
- * each ends the extended verb. */
+/* AGSEND +5, +6 and +7 -- LM p. 208, GOMARK3's terminate, proceed and enter
+ * returns: each ends the extended verb. */
 void agsend_after_terminate(void)
 {
     continue_at(ENDEXT); /* TCF ENDEXT */

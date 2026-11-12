@@ -31,7 +31,7 @@ void stateint_after_findvac(void)
     tc_to((word)(STATEINT + 6u), TASKOVER);
 }
 
-/* STATINT1: the job, into the interpreter. */
+/* STATINT1 -- LM p. 1209, CM p. 1313: the job, into the interpreter. */
 void statint1(void)
 {
     tc_at(STATINT1); /* TC INTPRET */
@@ -76,9 +76,9 @@ static const word statint1_words[] = {
 const struct interpretive_code STATINT1_CODE = {
     CODE_BANK(I_STATINT1), (word)(CODE_Z(I_STATINT1) + 1u), COUNT(statint1_words), statint1_words};
 
-/* ENDINT +2, after its EXIT: group 2's phase (OCT 20032), and STATEINT
- * again in ten minutes (LONGCALL with 600SECS); the job ends
- * (ENDOFJOB). */
+/* ENDINT +2 -- LM p. 1210, CM p. 1314, after its EXIT: group 2's phase (OCT
+ * 20032), and STATEINT again in ten minutes (LONGCALL with 600SECS); the job
+ * ends (ENDOFJOB). */
 void endint_after_exit(void)
 {
     tc_to((word)(ENDINT + 2u), PHASCHNG); /* OCT 20032 */
@@ -114,8 +114,8 @@ static const word setiflgs_words[] = {
 const struct interpretive_code SETIFLGS_CODE = {CODE_BANK(I_SETIFLGS), CODE_Z(I_SETIFLGS),
                                                 COUNT(setiflgs_words), setiflgs_words};
 
-/* NOINT +1, after its EXIT: group 2's phase (OCT 00002), QUITFLAG cleared
- * (DOWNFLAG) and the job ends. */
+/* NOINT +1 -- LM p. 1210, CM p. 1314, after its EXIT: group 2's phase (OCT
+ * 00002), QUITFLAG cleared (DOWNFLAG) and the job ends. */
 void noint_after_exit(void)
 {
     tc_to((word)(NOINT + 1u), PHASCHNG); /* OCT 00002 */

@@ -208,10 +208,10 @@ void reqadd(void)
     tc(REQADD + 6u, INTMCTBS);
 }
 
-/* REQADD +8, where the loaded address comes back (ACCEPTWD's TC REQRET):
- * "ALARM AND RECYCLE IF DECIMAL USED FOR MCTBS." "OCTAL USED OK", "BLOCK
- * NUM CHAR IN"; "EXTERNAL MCTBS DISPLAY WILL LEAVE FLASH ON IF ENDIDLE
- * NOT = +0." (CADRSTOR), then USEADD. */
+/* REQADD +010 -- LM p. 407, CM p. 324, where the loaded address comes back
+ * (ACCEPTWD's TC REQRET): "ALARM AND RECYCLE IF DECIMAL USED FOR MCTBS."
+ * "OCTAL USED OK", "BLOCK NUM CHAR IN"; "EXTERNAL MCTBS DISPLAY WILL LEAVE
+ * FLASH ON IF ENDIDLE NOT = +0." (CADRSTOR), then USEADD. */
 void reqadd_after_reqdatz(void)
 {
     switch (ccs_at(ADDRESS_OF(DECBRNCH))) {
@@ -288,9 +288,9 @@ void intmctbs_after_dspoctwd(void)
     tc(INTMCTBS + 012u, VERBFAN);
 }
 
-/* VERBFAN -2: TESTNN's normal noun, its ECADR from NOUNCADR (NNADTEM, one
- * less) into NOUNCADR. SETNCADR comes back to VERBFAN, where the faithful
- * port's step ends. */
+/* VERBFAN -2 -- LM p. 408, CM p. 325: TESTNN's normal noun, its ECADR from
+ * NOUNCADR (NNADTEM, one less) into NOUNCADR. SETNCADR comes back to
+ * VERBFAN, where the faithful port's step ends. */
 void verbfan_minus2(void)
 {
     ad(ONE);
@@ -320,7 +320,7 @@ void verbfan(void)
     tc(VERBFAN + 7u, RELDSP); /* "RELEASE DISPLAY SYST" */
 }
 
-/* VERBFAN +8, where RELDSP returns. */
+/* VERBFAN +010 -- LM p. 408, CM p. 325, where RELDSP returns. */
 void verbfan_after_reldsp(void)
 {
     tc(VERBFAN + 010u, POSTJUMP); /* CADR GOEXTVB */
@@ -522,7 +522,8 @@ static void updat1(void)
     tc(UPDAT1, POSTJUMP); /* CADR GOVNUPDT */
 }
 
-/* UPDAT1 +2, where GOVNUPDT comes back: the return in UPDATRET. */
+/* UPDAT1 +2 -- LM p. 412, CM p. 329, where GOVNUPDT comes back: the return
+ * in UPDATRET. */
 void updat1_plus2(void)
 {
     tc(UPDAT1 + 2u, ADDRESS_OF(UPDATRET));

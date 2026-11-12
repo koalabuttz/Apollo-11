@@ -25,15 +25,16 @@ static void p51e(void);
 
 /* ---- P51 -- pp. 949-951 ---- */
 
-/* P51: "IS ISS ON" (IMUCHK, which alarms and goes to GOTOPOOH if not). */
+/* P51 -- p. 950: "IS ISS ON" (IMUCHK, which alarms and goes to GOTOPOOH if
+ * not). */
 void p51(void)
 {
     tc_to(P51, BANKCALL); /* CADR IMUCHK */
 }
 
-/* P51 +2: V50N25 with option 15 (GOPERF1, OCT15): terminate, proceed
- * (V33: on to the sightings, P51B) or enter (a coarse alignment to zero
- * gimbal angles first, then this flash again). */
+/* P51 +2 -- p. 950: V50N25 with option 15 (GOPERF1, OCT15): terminate,
+ * proceed (V33: on to the sightings, P51B) or enter (a coarse alignment to
+ * zero gimbal angles first, then this flash again). */
 void p51_plus2(void)
 {
     set_A(OCT15);
@@ -50,15 +51,15 @@ void p51_proceed(void)
     p51b(); /* TCF P51B, "V33" */
 }
 
-/* The coarse alignment, after a restart point (04024). */
+/* P51 +7 -- p. 950: The coarse alignment, after a restart point (04024). */
 void p51_enter(void)
 {
     tc_to(P51 + 7u, PHASCHNG); /* OCT 04024 */
 }
 
-/* "ZERO THE GIMBALS": the desired angles (THETAD) to zero, shown with
- * V06N22, then "NOW DISPLAY COARSE ALIGN VERB 41". (A is +0: TS does not
- * skip.) */
+/* P51 +011 -- p. 950: "ZERO THE GIMBALS": the desired angles (THETAD) to
+ * zero, shown with V06N22, then "NOW DISPLAY COARSE ALIGN VERB 41". (A is
+ * +0: TS does not skip.) */
 void p51_zero_gimbals(void)
 {
     set_A(ZERO);
@@ -75,7 +76,7 @@ void p51_display_v41(void)
     tc_to(P51 + 021u, BANKCALL); /* CADR GODSPRET */
 }
 
-/* The coarse alignment itself (COARSE). */
+/* P51 +023 -- p. 950: The coarse alignment itself (COARSE). */
 void p51_coarse(void)
 {
     tc_at(P51 + 023u);
@@ -90,7 +91,8 @@ static const word p51_words[] = {
 
 const struct interpretive_code P51_CODE = {014u, P51 + 024u, COUNT(p51_words), p51_words};
 
-/* A restart point (04024), then back to the flash (TCF P51 +2). */
+/* P51 +027 -- p. 950: A restart point (04024), then back to the flash (TCF
+ * P51 +2). */
 void p51_after_coarse(void)
 {
     tc_to(P51 + 027u, PHASCHNG); /* OCT 04024 */
@@ -101,8 +103,8 @@ void p51_again(void)
     p51_plus2(); /* TCF P51 +2 */
 }
 
-/* P51B: a restart point (00014), then NCOARSE, which zeroes the drift
- * terms; STARIND, "INDEX -- STAR 1 OR 2", to 0, the first star. */
+/* P51B -- p. 950: a restart point (00014), then NCOARSE, which zeroes the
+ * drift terms; STARIND, "INDEX -- STAR 1 OR 2", to 0, the first star. */
 static void p51b(void)
 {
     tc_to(P51B, PHASCHNG); /* OCT 00014 */
@@ -122,8 +124,8 @@ static const word p51b_words[] = {
 
 const struct interpretive_code P51B_CODE = {014u, P51B + 3u, COUNT(p51b_words), p51b_words};
 
-/* P51C +1: a star sighted: a restart point (04024); AOTMARK (R53), the
- * marks, and AOTSTALL waits for them (CURTAINS when it fails). */
+/* P51C +1 -- p. 950: a star sighted: a restart point (04024); AOTMARK (R53),
+ * the marks, and AOTSTALL waits for them (CURTAINS when it fails). */
 void p51c_plus1(void)
 {
     tc_to(P51C + 1u, PHASCHNG); /* OCT 04024 */
@@ -144,9 +146,9 @@ void p51c_failed(void)
     tc_to(P51C + 7u, CURTAINS);
 }
 
-/* The first star (STARIND +0): its line of sight (STARAD +6) to STARSAV1.
- * The second (+1) goes on at P51D +1. (STARIND is 0 or 1: CCS takes its
- * first two ways only.) */
+/* P51C +010 -- p. 950: The first star (STARIND +0): its line of sight
+ * (STARAD +6) to STARSAV1. The second (+1) goes on at P51D +1. (STARIND is 0
+ * or 1: CCS takes its first two ways only.) */
 void p51c_star(void)
 {
     switch (ccs_at(ADDRESS_OF(STARIND))) {
@@ -168,10 +170,10 @@ static const word p51c_words[] = {
 
 const struct interpretive_code P51C_CODE = {014u, P51C + 013u, COUNT(p51c_words), p51c_words};
 
-/* P51D +1: a restart point (04024); then the second star on to P51E, the
- * first to a restart point again and the planet's direction (PLANET at
- * the sighting time, TSIGHT, to PLANVEC). (STARIND is 0 or 1; a -0 would
- * take the fourth way, to the TC INTPRET.) */
+/* P51D +1 -- p. 951: a restart point (04024); then the second star on to
+ * P51E, the first to a restart point again and the planet's direction
+ * (PLANET at the sighting time, TSIGHT, to PLANVEC). (STARIND is 0 or 1; a
+ * -0 would take the fourth way, to the TC INTPRET.) */
 void p51d_plus1(void)
 {
     tc_to(P51D + 1u, PHASCHNG); /* OCT 04024 */
@@ -203,7 +205,8 @@ static const word p51d_words[] = {
 
 const struct interpretive_code P51D_CODE = {014u, P51D + 010u, COUNT(p51d_words), p51d_words};
 
-/* STARIND to 1: "DO SECOND STAR". (A is 1: TS does not skip.) */
+/* P51D +015 -- p. 951: STARIND to 1: "DO SECOND STAR". (A is 1: TS does not
+ * skip.) */
 void p51d_second_star(void)
 {
     set_A(BIT1);
@@ -211,10 +214,10 @@ void p51d_second_star(void)
     p51c_plus1(); /* TCF P51C +1 */
 }
 
-/* P51E: the second star: a restart point (04024); the planet's direction
- * again; the two catalog vectors (PLANVEC and STARSAV1, to 12D and 6D)
- * and the two sightings (STARSAV2 and STARAD +6, to STARAD and STARAD +6)
- * to CHKSDATA, which checks the angles between them. */
+/* P51E -- p. 951: the second star: a restart point (04024); the planet's
+ * direction again; the two catalog vectors (PLANVEC and STARSAV1, to 12D and
+ * 6D) and the two sightings (STARSAV2 and STARAD +6, to STARAD and STARAD
+ * +6) to CHKSDATA, which checks the angles between them. */
 static void p51e(void)
 {
     tc_to(P51E, PHASCHNG); /* OCT 04024 */
@@ -245,7 +248,8 @@ static const word p51e_words[] = {
 
 const struct interpretive_code P51E_CODE = {014u, P51E + 3u, COUNT(p51e_words), p51e_words};
 
-/* FREEFLAG clear (the crew marks again): back to the flash (TC P51 +2). */
+/* P51E +021 -- p. 951: FREEFLAG clear (the crew marks again): back to the
+ * flash (TC P51 +2). */
 void p51e_again(void)
 {
     tc_at(P51E + 021u);

@@ -14,22 +14,22 @@
 
 /* ---- P63: THE LUNAR LANDING, BRAKING PHASE -- p. 785 ---- */
 
-/* P63LM: group 4 restarts here (TC PHASCHNG, OCT 04024), */
+/* P63LM -- p. 785: group 4 restarts here (TC PHASCHNG, OCT 04024), */
 void p63lm(void)
 {
     tc_to(P63LM, PHASCHNG);
 }
 
-/* and the IMU status check, R02. */
+/* P63LM +2 -- p. 785: and the IMU status check, R02. */
 void p63lm_after_phaschng(void)
 {
     tc_to(P63LM + 2u, BANKCALL); /* CADR R02BOTH */
 }
 
-/* BURNBABY's table for P63 (WHICH), the delta V monitor's threshold and
- * count (DVTHRUSH, DVCNTR), WCHPHASE -1 and FLPASS0 +0 for the guidance;
- * the track-enable discrete (channel 12 bit 14) off; and to the
- * interpreter, for IGNALG_CODE. */
+/* P63LM +4 -- p. 785: BURNBABY's table for P63 (WHICH), the delta V
+ * monitor's threshold and count (DVTHRUSH, DVCNTR), WCHPHASE -1 and FLPASS0
+ * +0 for the guidance; the track-enable discrete (channel 12 bit 14) off;
+ * and to the interpreter, for IGNALG_CODE. */
 void p63lm_after_r02both(void)
 {
     set_A(P63ADRES); /* "INITIALIZE WHICH FOR BURNBABY" */
@@ -111,9 +111,9 @@ static const word ignalg_words[] = {
 
 /* ---- DDUMCALC -- pp. 786-788 ---- */
 
-/* DDUMCALC: ?GUIDSUB's pass count (NIGNLOOP), and to the interpreter for
- * DDUMCALC_CODE. Not modelled: overflow in A, where TS NIGNLOOP would skip
- * into the order words (no caller leaves it). */
+/* DDUMCALC -- p. 787: ?GUIDSUB's pass count (NIGNLOOP), and to the
+ * interpreter for DDUMCALC_CODE. Not modelled: overflow in A, where TS
+ * NIGNLOOP would skip into the order words (no caller leaves it). */
 void ddumcalc(void)
 {
     if (ts(ADDRESS_OF(NIGNLOOP))) not_modelled();
@@ -196,22 +196,23 @@ static const word ddumcalc_words[] = {
     ORDER(EXIT),
 };
 
-/* IGNALGRT: group 4's restart point moves on (TC PHASCHNG, OCT 04024),
- * "PREVENT REPEATING IGNALG", */
+/* IGNALGRT -- p. 788: group 4's restart point moves on (TC PHASCHNG, OCT
+ * 04024), "PREVENT REPEATING IGNALG", */
 void ignalgrt(void)
 {
     tc_to(IGNALGRT, PHASCHNG);
 }
 
-/* ASTNCLOK: and the countdown clock starts (STCLOK2 with -ASTNDEX); */
+/* ASTNCLOK -- p. 788: and the countdown clock starts (STCLOK2 with
+ * -ASTNDEX); */
 void astnclok(void)
 {
     set_A(negate(ASTNDEX));
     tc_to(ASTNCLOK + 1u, BANKCALL); /* CADR STCLOK2 */
 }
 
-/* this job ends: the clock goes on in a job of its own, at ASTNRET
- * ("RETURN IN NEW JOB AND IN EBANK FIVE"). */
+/* ASTNCLOK +3 -- p. 788: this job ends: the clock goes on in a job of its
+ * own, at ASTNRET ("RETURN IN NEW JOB AND IN EBANK FIVE"). */
 void astnclok_after_stclok2(void)
 {
     continue_at(ENDOFJOB);
@@ -219,7 +220,7 @@ void astnclok_after_stclok2(void)
 
 /* ---- ASTNRET and the burn attitude -- pp. 788-789 ---- */
 
-/* ASTNRET: to the interpreter, for P63SPOT2_CODE. */
+/* ASTNRET -- p. 788: to the interpreter, for P63SPOT2_CODE. */
 void astnret(void)
 {
     tc_to(ASTNRET, INTPRET);
@@ -242,7 +243,8 @@ static const word p63spot2_words[] = {
     ORDER(EXIT),
 };
 
-/* After the EXIT: EBANK 7, and PFLITEDB with interrupts off, */
+/* P63SPOT2 +6 -- p. 788: After the EXIT: EBANK 7, and PFLITEDB with
+ * interrupts off, */
 void p63spot2_after_exit(void)
 {
     set_A(EBANK7);
@@ -251,21 +253,22 @@ void p63spot2_after_exit(void)
     tc_to(P63SPOT2 + 011u, IBNKCALL); /* CADR PFLITEDB */
 }
 
-/* the maneuver to the burn attitude (R60LEM), */
+/* P63SPOT2 +013 -- p. 789: the maneuver to the burn attitude (R60LEM), */
 void p63spot2_after_pflitedb(void)
 {
     relint();
     tc_to(P63SPOT2 + 014u, BANKCALL); /* CADR R60LEM */
 }
 
-/* and group 4's restart point moves on: "PREVENT RECALLING R60". */
+/* P63SPOT2 +016 -- p. 789: and group 4's restart point moves on: "PREVENT
+ * RECALLING R60". */
 void p63spot2_after_r60lem(void)
 {
     tc_to(P63SPOT2 + 016u, PHASCHNG);
 }
 
-/* P63SPOT3: "IS THE LR ANTENNA IN POSITION 1 YET" (channel 33 bit 6
- * clear). If not, the crew is asked to turn it (GOPERF1 with CODE500). */
+/* P63SPOT3 -- p. 789: "IS THE LR ANTENNA IN POSITION 1 YET" (channel 33 bit
+ * 6 clear). If not, the crew is asked to turn it (GOPERF1 with CODE500). */
 void p63spot3(void)
 {
     set_A(BIT6);
@@ -283,20 +286,20 @@ void p63spot3_terminate(void)
     continue_at(GOTOPOOH);
 }
 
-/* PROCEED: "SEE IF HE'S LYING". */
+/* P63SPOT3 +011 -- p. 789: PROCEED: "SEE IF HE'S LYING". */
 void p63spot3_proceed(void)
 {
     p63spot3();
 }
 
-/* P63SPOT4 (and GOPERF1's ENTER): the landing radar's position 1
+/* P63SPOT4 -- p. 789 (and GOPERF1's ENTER): the landing radar's position 1
  * (SETPOS1), */
 void p63spot4(void)
 {
     tc_to(P63SPOT4, BANKCALL); /* CADR SETPOS1 */
 }
 
-/* and BURNBABY: "OFF TO SEE THE WIZARD..." */
+/* P63SPOT4 +2 -- p. 789: and BURNBABY: "OFF TO SEE THE WIZARD..." */
 void p63spot4_after_setpos1(void)
 {
     tc_to(P63SPOT4 + 2u, POSTJUMP); /* CADR BURNBABY */
@@ -304,26 +307,28 @@ void p63spot4_after_setpos1(void)
 
 /* ---- P68: LANDING CONFIRMATION -- pp. 791-792 ---- */
 
-/* LANDJUNK: group 4 restarts here (TC PHASCHNG, OCT 04024), */
+/* LANDJUNK -- p. 791: group 4 restarts here (TC PHASCHNG, OCT 04024), */
 void landjunk(void)
 {
     tc_to(LANDJUNK, PHASCHNG);
 }
 
-/* the attitude error zeroed (ZATTEROR, with interrupts off), */
+/* LANDJUNK +2 -- p. 791: the attitude error zeroed (ZATTEROR, with
+ * interrupts off), */
 void landjunk_after_phaschng(void)
 {
     inhint();
     tc_to(LANDJUNK + 3u, BANKCALL); /* CADR ZATTEROR */
 }
 
-/* the 5 degree deadband (SETMAXDB), */
+/* LANDJUNK +5 -- p. 791: the 5 degree deadband (SETMAXDB), */
 void landjunk_after_zatteror(void)
 {
     tc_to(LANDJUNK + 5u, BANKCALL); /* CADR SETMAXDB */
 }
 
-/* and to the interpreter for LANDJUNK_CODE, "AS TIME IS NOT CRITICAL". */
+/* LANDJUNK +7 -- p. 791: and to the interpreter for LANDJUNK_CODE, "AS TIME
+ * IS NOT CRITICAL". */
 void landjunk_after_setmaxdb(void)
 {
     tc_to(LANDJUNK + 7u, INTPRET);
@@ -356,7 +361,8 @@ static const word landjunk_words[] = {
     ORDER(EXIT),
 };
 
-/* After the EXIT: V06N43*, "NOW LOOK WHERE YOU ENDED UP" (GOFLASH). */
+/* LANDJUNK +034 -- p. 791: After the EXIT: V06N43*, "NOW LOOK WHERE YOU
+ * ENDED UP" (GOFLASH). */
 void landjunk_after_exit(void)
 {
     set_A(V06N43_STAR);
@@ -368,13 +374,14 @@ void landjunk_terminate(void)
     continue_at(GOTOPOOH);
 }
 
-/* PROCEED (TCF +2): to the interpreter for GSAV_CODE. */
+/* LANDJUNK +040 -- p. 791: PROCEED (TCF +2): to the interpreter for
+ * GSAV_CODE. */
 void landjunk_proceed(void)
 {
     tc_to(LANDJUNK + 042u, INTPRET);
 }
 
-/* RECYCLE (TCF -5): the display again. */
+/* LANDJUNK +041 -- p. 791: RECYCLE (TCF -5): the display again. */
 void landjunk_recycle(void)
 {
     landjunk_after_exit();
@@ -385,7 +392,8 @@ static const word gsav_words[] = {
     ORDER(VLOAD), ADDRESS_PLUS_ONE(UNITX), STCALL(GSAV), ADDRESS(REFMF), ORDER(EXIT),
 };
 
-/* After the EXIT: "ASTRONAUT:  PLEASE SELECT P57". */
+/* LANDJUNK +050 -- p. 792: After the EXIT: "ASTRONAUT:  PLEASE SELECT P57".
+ * */
 void landjunk_after_refmf_exit(void)
 {
     continue_at(GOTOPOOH);

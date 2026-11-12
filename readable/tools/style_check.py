@@ -56,9 +56,10 @@ The rules, each named as the ledger names it:
 
 `make style-check`, part of `make all`. What it cannot see is everything
 else in STYLE.md: names, comments, whether the C says what the listing
-does. A person reads those. Two more findings of issue #1334 are not
-counted here yet: a function header without its page, and a name the
-listing does not have.
+does. A person reads those. A function header without its page is
+tools/header_pages.py's to find (the same target runs it). One more
+finding of issue #1334 is not counted yet: a name the listing does not
+have.
 """
 import collections
 import re
@@ -197,7 +198,9 @@ def breaks(file, text, routines=(), labels=()):
     for found in CONTINUE.finditer(code):
         label, sign, digits = found.group(1).lower(), found.group(2), found.group(3)
         value = int(digits, 8 if digits.startswith('0') else 10)
-        named = {f"{label}_{'plus' if sign == '+' else 'minus'}{number}" for number in (f'{value:o}', str(value))}
+        # (the name has the digits as its header writes them: +12, +012, or 10 for +10D)
+        named = {f"{label}_{'plus' if sign == '+' else 'minus'}{number}"
+                 for number in (f'{value:o}', f'0{value:o}', str(value))}
         line = line_of(code, found.start())
         never = NEVER.search('\n'.join(lines[max(line - 2, 0):line]))
         if label in routines and not named & set(routines) and not never:
@@ -341,6 +344,8 @@ def self_check():
            '/* never */\n\ncontinue_at(GETLCX + 1u);\n', [('continue-offset', 7)], {'getlcx'})
     expect('at a place a function is named for', 'continue_at(GETLCX + 012u);\ncontinue_at((word)(GETLCX - 2u));\n',
            [], {'getlcx', 'getlcx_plus12', 'getlcx_minus2'})
+    expect('at a place a function is named for with its leading 0', 'continue_at(GETLCX + 012u);\n',
+           [], {'getlcx', 'getlcx_plus012'})
     expect('a jump to an offset of a routine of another', 'continue_at((word)(POODOO + 014u));\ncontinue_at(GETLCX);\n',
            [], {'getlcx'})
     expect('a COUNT of its own', '#define COUNT(a) (sizeof(a) / sizeof((a)[0]))\n', [('own-helper', 1)])

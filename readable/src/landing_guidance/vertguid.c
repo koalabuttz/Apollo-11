@@ -12,8 +12,8 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-/* VERTGUID: WCHVERT "POSITIVE NON-ZERO ---> P67", +0 P66, negative P65.
- * Not modelled: WCHVERT -0 (P65's interpretive code would run as basic
+/* VERTGUID -- p. 815: WCHVERT "POSITIVE NON-ZERO ---> P67", +0 P66, negative
+ * P65. Not modelled: WCHVERT -0 (P65's interpretive code would run as basic
  * code). */
 void vertguid(void)
 {
@@ -25,7 +25,7 @@ void vertguid(void)
     }
 }
 
-/* P65VERT. As the listing has it,
+/* P65VERT -- p. 815. As the listing has it,
  *
  *     ACG = (V2FG - VGU) / TAUVERT
  *
@@ -48,19 +48,19 @@ static const word p65vert_words[] = {
 const struct interpretive_code P65VERT_CODE = {031u, P65VERT + 1u, COUNT(p65vert_words),
                                                p65vert_words};
 
-/* P66VERT: "GUIDANCE FOR P66", P66VERTA in bank 32 (POSTJUMP). */
+/* P66VERT -- p. 816: "GUIDANCE FOR P66", P66VERTA in bank 32 (POSTJUMP). */
 void p66vert(void)
 {
     tc_to(P66VERT, POSTJUMP);
 }
 
-/* P67VERT: "TERMINATE GROUP 3." */
+/* P67VERT -- p. 816: "TERMINATE GROUP 3." */
 void p67vert(void)
 {
     tc_to(P67VERT, PHASCHNG);
 }
 
-/* PHASCHNG's return: TC INTPRET. */
+/* P67VERT +2 -- p. 816: PHASCHNG's return: TC INTPRET. */
 void p67vert_after_phaschng(void)
 {
     tc_at(P67VERT + 2u);

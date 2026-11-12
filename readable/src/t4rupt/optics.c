@@ -269,8 +269,8 @@ static void ztocsc(void)
     }
 }
 
-/* ZTOCSC +4, where ALARM returns: "CANCEL ZOPT", then MANTOCSC ("ZERO
- * CNT-LOOK FOR COARS OPT RETURN"). */
+/* ZTOCSC +4 -- CM p. 161, where ALARM returns: "CANCEL ZOPT", then MANTOCSC
+ * ("ZERO CNT-LOOK FOR COARS OPT RETURN"). */
 void ztocsc_after_alarm(void)
 {
     tc_at((word)(ZTOCSC + 4u)); /* TC CANZOPT */
@@ -513,8 +513,8 @@ static void setzoend(void)
     continue_at(WAITLIST);
 }
 
-/* SETZOEND +7, where WAITLIST returns: "SHOW ZOPTICS TASK WORKING"
- * (OPTMODES bit 1), and SETDESMD. */
+/* SETZOEND +7 -- CM p. 163, where WAITLIST returns: "SHOW ZOPTICS TASK
+ * WORKING" (OPTMODES bit 1), and SETDESMD. */
 void setzoend_after_waitlist(void)
 {
     cs(ADDRESS_OF(OPTMODES));

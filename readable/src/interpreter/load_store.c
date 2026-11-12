@@ -105,7 +105,7 @@ static void store_2(void)
     prestore();
 }
 
-/* PRESTORE: "RESULTANT ADDRESS IS IN ERASABLE." */
+/* PRESTORE -- LM p. 1016, CM p. 1121: "RESULTANT ADDRESS IS IN ERASABLE." */
 static void prestore(void)
 {
     ads(ADDRESS_OF(ADDRWD));
@@ -218,7 +218,7 @@ void tload_plus6(void)
     tmode();
 }
 
-/* TMODE: "DECLARE TRIPLE PRECISION MODE." */
+/* TMODE -- LM p. 1019, CM p. 1124: "DECLARE TRIPLE PRECISION MODE." */
 void tmode(void)
 {
     set_A(ONE);
@@ -258,7 +258,7 @@ static void endvload_plus4(void)
     vmode();
 }
 
-/* VMODE: "DECLARE VECTOR MODE." */
+/* VMODE -- LM p. 1019, CM p. 1124: "DECLARE VECTOR MODE." */
 void vmode(void)
 {
     set_A(negate(ONE));
@@ -289,7 +289,8 @@ void pddl(void)
     endvpush();
 }
 
-/* ENDVPUSH: "PUSH DOWN THE REST OF THE VECTOR HERE." */
+/* ENDVPUSH -- LM p. 1020, CM p. 1125: "PUSH DOWN THE REST OF THE VECTOR
+ * HERE." */
 static void endvpush(void)
 {
     ts(ADDRESS_OF(MPAC) + 2u);
@@ -300,15 +301,16 @@ static void endvpush(void)
     continue_at(DANZIG);
 }
 
-/* ENDDPUSH: "SET MPAC +2 TO ZERO AND EXIT ON DP." */
+/* ENDDPUSH -- LM p. 1020, CM p. 1125: "SET MPAC +2 TO ZERO AND EXIT ON
+ * DP." */
 static void enddpush(void)
 {
     ts(ADDRESS_OF(MPAC) + 2u);
     continue_at(DANZIG);
 }
 
-/* ENDTPUSH: "ON TRIPLE, SET MPAC +2 TO ZERO, PUSHING DOWN THE OLD
- * CONTENTS". */
+/* ENDTPUSH -- LM p. 1020, CM p. 1125: "ON TRIPLE, SET MPAC +2 TO ZERO,
+ * PUSHING DOWN THE OLD CONTENTS". */
 static void endtpush(void)
 {
     ts(ADDRESS_OF(MODE));
@@ -356,7 +358,7 @@ void pdvl(void)
     vpdvl_plus4();
 }
 
-/* VPDVL +4: push the old Y and Z down, load Z. */
+/* VPDVL +4 -- LM p. 1021, CM p. 1126: push the old Y and Z down, load Z. */
 static void vpdvl_plus4(void)
 {
     dxch(PUSHED(4u));
@@ -376,7 +378,8 @@ void ssp(void)
     store1();
 }
 
-/* STORE1: "SOME INDEX AND MISCELLANEOUS OPS END HERE." */
+/* STORE1 -- LM p. 1021, CM p. 1126: "SOME INDEX AND MISCELLANEOUS OPS END
+ * HERE." */
 void store1(void)
 {
     ts(indexed(0u, ADDRWD));

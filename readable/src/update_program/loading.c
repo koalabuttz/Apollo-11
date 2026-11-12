@@ -32,21 +32,23 @@ static void flash(word verb_noun, word at)
     tc_to(at, BANKCALL); /* CADR GOXDSPF */
 }
 
-/* OHWELL1 +2: "REQUEST USER TO SEND NUMBER ... OF COMPONENTS
- * PARAMETER(II)." MPAC +2 holds the ECADR where PINBALL puts it, UPBUFF. */
+/* OHWELL1 +2 -- LM p. 1389, CM p. 1501: "REQUEST USER TO SEND NUMBER ... OF
+ * COMPONENTS PARAMETER(II)." MPAC +2 holds the ECADR where PINBALL puts it,
+ * UPBUFF. */
 static void ohwell1_request(void)
 {
     flash(UPLOADNV, (word)(OHWELL1 + 3u));
 }
 
-/* OHWELL2 +3: "REQUEST DATA." into the ECADR at MPAC +2. */
+/* OHWELL2 +3 -- LM p. 1390, CM p. 1501: "REQUEST DATA." into the ECADR at
+ * MPAC +2. */
 static void ohwell2_request(void)
 {
     flash(UPLOADNV, (word)(OHWELL2 + 4u));
 }
 
-/* OHWELL2 +2, with A an ECADR in UPBUFF: "PLACE ECADR INTO R3.", and ask
- * for the component. */
+/* OHWELL2 +2 -- LM p. 1390, CM p. 1501, with A an ECADR in UPBUFF: "PLACE
+ * ECADR INTO R3.", and ask for the component. */
 static void ohwell2_at(void)
 {
     ts_no_overflow(ADDRESS_OF(MPAC) + 2u);
@@ -125,22 +127,23 @@ void uppart2_after_newmodex(void)
     ohwell2_at();
 }
 
-/* OHWELL1 +5: "V34 TERMINATE UPDATE(P27) RETURN" (UPOUT4). */
+/* OHWELL1 +5 -- LM p. 1390, CM p. 1501: "V34 TERMINATE UPDATE(P27) RETURN"
+ * (UPOUT4). */
 void ohwell1_terminate(void)
 {
     upout4();
 }
 
-/* OHWELL1 +6: V33 asks again. */
+/* OHWELL1 +6 -- LM p. 1390, CM p. 1501: V33 asks again. */
 void ohwell1_proceed(void)
 {
     ohwell1_request();
 }
 
-/* OHWELL1 +7: "DATA OR V32 RETURN". "IS II(NUMBER OF COMPONENTS
- * PARAMETER) .GE. 3 AND .LE. 20D." (UP21 is 21: "MAX NO OF COMPONENTS
- * +1"). If not, ask again; if so, "SAVE II IN COMPNUMB", and on to the
- * first component. */
+/* OHWELL1 +7 -- LM p. 1390, CM p. 1501: "DATA OR V32 RETURN". "IS II(NUMBER
+ * OF COMPONENTS PARAMETER) .GE. 3 AND .LE. 20D." (UP21 is 21: "MAX NO OF
+ * COMPONENTS +1"). If not, ask again; if so, "SAVE II IN COMPNUMB", and on
+ * to the first component. */
 void ohwell1_data(void)
 {
     tc_at((word)(OHWELL1 + 7u)); /* TC CK4V32 */
@@ -165,21 +168,23 @@ void ohwell1_data(void)
     ohwell2_next();
 }
 
-/* OHWELL2 +6: "V34 TERMINATE UPDATE(P27) RETURN." */
+/* OHWELL2 +6 -- LM p. 1390, CM p. 1501: "V34 TERMINATE UPDATE(P27)
+ * RETURN." */
 void ohwell2_terminate(void)
 {
     upout4();
 }
 
-/* OHWELL2 +7: "V33 PROCEED RETURN", asking for the component again. */
+/* OHWELL2 +7 -- LM p. 1390, CM p. 1501: "V33 PROCEED RETURN", asking for the
+ * component again. */
 void ohwell2_proceed(void)
 {
     ohwell2_request();
 }
 
-/* OHWELL2 +010: "DATA OR V32 RETURN". "HAVE WE FINISHED RECEIVING ALL THE
- * DATA WE EXPECTED.": "YES- GO TO VERIFICATION SEQUENCE", "NO- REQUEST
- * ADDITIONAL DATA." */
+/* OHWELL2 +010 -- LM p. 1390, CM p. 1501: "DATA OR V32 RETURN". "HAVE WE
+ * FINISHED RECEIVING ALL THE DATA WE EXPECTED.": "YES- GO TO VERIFICATION
+ * SEQUENCE", "NO- REQUEST ADDITIONAL DATA." */
 void ohwell2_data(void)
 {
     tc_at((word)(OHWELL2 + 010u)); /* TC CK4V32 */
@@ -195,23 +200,26 @@ void ohwell2_data(void)
         ohwell2_next();
 }
 
-/* UPVERIFY +5: "V34 TERMINATE UPDATE(P27) RETURN" */
+/* UPVERIFY +5 -- LM p. 1390, CM p. 1502: "V34 TERMINATE UPDATE(P27)
+ * RETURN" */
 void upverify_terminate(void)
 {
     upout4();
 }
 
-/* UPVERIFY +6: "V33 DATA SENT IS GOOD. GO STORE IT." */
+/* UPVERIFY +6 -- LM p. 1390, CM p. 1502: "V33 DATA SENT IS GOOD. GO STORE
+ * IT." */
 void upverify_proceed(void)
 {
     upstore();
 }
 
-/* UPVERIFY +7: "COMPONENT NO. INDEX OR V32 RETURN". "DOES THE COMPONENT
- * NO. INDEX JUST SENT SPECIFY A LEGAL COMPONENT NUMBER?" Not if "IT IS NOT
- * POSITIVE NONZERO", nor above COMPNUMB: verify again. If so, "BASED ON
- * THE COMPONENT NO. INDEX CALCULATE THE ECADR OF LOCATION IN UPBUFF WHICH
- * USER WANTS TO CHANGE." and ask for it (OHWELL2 +2). */
+/* UPVERIFY +7 -- LM p. 1390, CM p. 1502: "COMPONENT NO. INDEX OR V32
+ * RETURN". "DOES THE COMPONENT NO. INDEX JUST SENT SPECIFY A LEGAL COMPONENT
+ * NUMBER?" Not if "IT IS NOT POSITIVE NONZERO", nor above COMPNUMB: verify
+ * again. If so, "BASED ON THE COMPONENT NO. INDEX CALCULATE THE ECADR OF
+ * LOCATION IN UPBUFF WHICH USER WANTS TO CHANGE." and ask for it (OHWELL2
+ * +2). */
 void upverify_data(void)
 {
     tc_at((word)(UPVERIFY + 7u)); /* TC CK4V32 */

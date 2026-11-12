@@ -24,14 +24,14 @@
 
 /* ---- P31 -- LM pp. 652-653 ---- */
 
-/* P31: P20's update and track flags set (P20FLGON). */
+/* P31 -- LM p. 652: P20's update and track flags set (P20FLGON). */
 void p31(void)
 {
     tc_at(P31);
     continue_at(P20FLGON);
 }
 
-/* P31 +1: "TIG", verb 06 noun 33, through VNPOOH. */
+/* P31 +1 -- LM p. 652: "TIG", verb 06 noun 33, through VNPOOH. */
 void p31_after_p20flgon(void)
 {
     set_A(V06N33);
@@ -39,7 +39,7 @@ void p31_after_p20flgon(void)
     continue_at(VNPOOH);
 }
 
-/* P31 +3: to the interpreter, for P31_CODE. */
+/* P31 +3 -- LM p. 652: to the interpreter, for P31_CODE. */
 void p31_after_v06n33(void)
 {
     tc_at(P31 + 3u);
@@ -109,7 +109,7 @@ static const word p31_words[] = {
     ORDER(EXIT),
 };
 
-/* P31 +63, after the EXIT: "DELVLVC", verb 06 noun 81. */
+/* P31 +63 -- LM p. 653, after the EXIT: "DELVLVC", verb 06 noun 81. */
 void p31_after_exit(void)
 {
     set_A(V06N81);
@@ -117,7 +117,7 @@ void p31_after_exit(void)
     continue_at(VNPOOH);
 }
 
-/* P31 +65: "HAPO, HPER, VGDISP", verb 06 noun 42. */
+/* P31 +65 -- LM p. 653: "HAPO, HPER, VGDISP", verb 06 noun 42. */
 void p31_after_v06n81(void)
 {
     set_A(V06N42);
@@ -125,7 +125,7 @@ void p31_after_v06n81(void)
     continue_at(VNPOOH);
 }
 
-/* P31 +67: to the interpreter, for REVN1645_CODE. */
+/* P31 +67 -- LM p. 653: to the interpreter, for REVN1645_CODE. */
 void p31_after_v06n42(void)
 {
     tc_at(P31 + 067u);

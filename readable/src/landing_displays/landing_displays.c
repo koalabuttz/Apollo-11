@@ -43,12 +43,12 @@ static void tc_ladqsave(word at)
 
 /* ---- LANDISP -- p. 898 ---- */
 
-/* LANDISP: "UPDATE TBASE2 AND PIPCTR SIMULTANEOUSLY" (-TIME1 and PIPCTR1,
- * the word DISINDAT keeps its return in, as LADQSAVE). Then "IS LANDING
- * ANALOG DISPLAYS FLAG SET?" (FLAGWRD7's SWANDBIT): no, DISPRSET. Yes:
- * IMODES33 "BIT 7 = 0 (DO ALTRATE), =1 (DO ALT.)". (A MASK of a positive
- * bit is never negative, so each CCS A goes on at its first or second
- * word.) */
+/* LANDISP -- p. 898: "UPDATE TBASE2 AND PIPCTR SIMULTANEOUSLY" (-TIME1 and
+ * PIPCTR1, the word DISINDAT keeps its return in, as LADQSAVE). Then "IS
+ * LANDING ANALOG DISPLAYS FLAG SET?" (FLAGWRD7's SWANDBIT): no, DISPRSET.
+ * Yes: IMODES33 "BIT 7 = 0 (DO ALTRATE), =1 (DO ALT.)". (A MASK of a
+ * positive bit is never negative, so each CCS A goes on at its first or
+ * second word.) */
 void landisp(void)
 {
     lxch(ADDRESS_OF(PIPCTR1));
@@ -70,19 +70,19 @@ void landisp(void)
 
 /* ---- The altitude rate -- pp. 898-899 ---- */
 
-/* ALTROUT: "CHECK MODE SELECT SWITCH AND DIDFLG." DISINDAT comes back to
- * ALTROUT +1 through LADQSAVE, after SPEEDRUN and VMONITOR. */
+/* ALTROUT -- p. 898: "CHECK MODE SELECT SWITCH AND DIDFLG." DISINDAT comes
+ * back to ALTROUT +1 through LADQSAVE, after SPEEDRUN and VMONITOR. */
 static void altrout(void)
 {
     tc_at(ALTROUT);
     disindat();
 }
 
-/* ALTROUT +1: "ALTERNATE ALTITUDE RATE WITH ALTITUDE" (IMODES33 bit 7
- * set), and channel 14 bit 2 for the meter: "ALTRATE (BIT2 = 1), ALTITUDE
- * (BIT2 = 0)". Then ARCOMP: "COMPUTE ALTRATE=RUNIT.VVECT M/CS *2(-6)",
- * "CONVERT ALTRATE TO BIT UNITS (.5FPS/BIT)", and add the "ALTITUDE RATE
- * COMPENSATION FACTOR", DALTRATE, times DT. To the meter goes -ALTRATE
+/* ALTROUT +1 -- p. 898: "ALTERNATE ALTITUDE RATE WITH ALTITUDE" (IMODES33
+ * bit 7 set), and channel 14 bit 2 for the meter: "ALTRATE (BIT2 = 1),
+ * ALTITUDE (BIT2 = 0)". Then ARCOMP: "COMPUTE ALTRATE=RUNIT.VVECT M/CS
+ * *2(-6)", "CONVERT ALTRATE TO BIT UNITS (.5FPS/BIT)", and add the "ALTITUDE
+ * RATE COMPENSATION FACTOR", DALTRATE, times DT. To the meter goes -ALTRATE
  * when ALTRATE is negative ("SEND POS. PULSES TO ALTM REG."), otherwise
  * ALTRATE with "SIGN BIT = 1": "*DO NOT SEND +0*". (An overflow at TS
  * ALTRATE skips the CS, and BZMF tests the +1 or -1 it leaves.) */
@@ -119,10 +119,10 @@ static void altrout_plus1(void)
     dataout();
 }
 
-/* DATAOUT: "ACTIVATE THE LANDING ANALOG DISPLAYS": the word to ALTM, and
- * channel 14 bit 3, "BIT3 DRIVES THE ALT/ALTRATE METER." (An overflow at
- * TS ALTM skips the CAF, and the +1 or -1 it leaves goes to channel 14.)
- * The pass ends: TCF TASKOVER. */
+/* DATAOUT -- p. 899: "ACTIVATE THE LANDING ANALOG DISPLAYS": the word to
+ * ALTM, and channel 14 bit 3, "BIT3 DRIVES THE ALT/ALTRATE METER." (An
+ * overflow at TS ALTM skips the CAF, and the +1 or -1 it leaves goes to
+ * channel 14.) The pass ends: TCF TASKOVER. */
 static void dataout(void)
 {
     if (!ts(ADDRESS_OF(ALTM))) set_A(BIT3);
@@ -132,14 +132,15 @@ static void dataout(void)
 
 /* ---- The altitude -- pp. 899-900 ---- */
 
-/* ALTOUT: "CHECK MODE SELECT SWITCH AND DIDFLG.", back at ALTOUT +1. */
+/* ALTOUT -- p. 899: "CHECK MODE SELECT SWITCH AND DIDFLG.", back at ALTOUT
+ * +1. */
 static void altout(void)
 {
     tc_at(ALTOUT);
     disindat();
 }
 
-/* ALTOUT +1: IMODES33 bit 7 clear ("ALTERNATE ALTITUDE RATE WITH
+/* ALTOUT +1 -- p. 899: IMODES33 bit 7 clear ("ALTERNATE ALTITUDE RATE WITH
  * ALTITUDE"), channel 14 bit 2 clear for the altitude. ALTBITS "=-1 IF OLD
  * ALT. DATA TOBE EXTRAPOLATED.": OLDDATA. Otherwise ALTBITS +1 holds a new
  * altitude: ALTBITS gets -1 "FOR SWITCH USE NEXT PASS", the altitude goes
@@ -175,13 +176,13 @@ static void altout_plus1(void)
     olddata_plus1(); /* "RATE APPLIES FOR DT CS." */
 }
 
-/* OLDDATA +1: "EXTRAPOLATE WITH ALTITUDE RATE." into the double word
- * ALTSAVE, then "FORCE SIGN AGREEMENT ASSUMING A NON-NEGATIVE ALTSAVE.":
- * POSMAX + 1 added to the low word and POSMAX to the high word overflow
- * only for a non-negative altitude, and the overflow at TS ALTSAVE skips
- * to NEWDATA. "IF ALTSAVE IS NEGATIVE, ZERO ALTSAVE AND ALTSAVE +1 AT
- * ZERODATA." (An overflow at TS ALTSAVE +1 skips the CAF ZERO, leaving
- * its carry, +1 or -1, for the high word.) */
+/* OLDDATA +1 -- p. 899: "EXTRAPOLATE WITH ALTITUDE RATE." into the double
+ * word ALTSAVE, then "FORCE SIGN AGREEMENT ASSUMING A NON-NEGATIVE
+ * ALTSAVE.": POSMAX + 1 added to the low word and POSMAX to the high word
+ * overflow only for a non-negative altitude, and the overflow at TS ALTSAVE
+ * skips to NEWDATA. "IF ALTSAVE IS NEGATIVE, ZERO ALTSAVE AND ALTSAVE +1 AT
+ * ZERODATA." (An overflow at TS ALTSAVE +1 skips the CAF ZERO, leaving its
+ * carry, +1 or -1, for the high word.) */
 static void olddata_plus1(void)
 {
     mp_at(ADDRESS_OF(ALTRATE));
@@ -208,12 +209,12 @@ static void olddata_plus1(void)
     newdata();
 }
 
-/* NEWDATA: "SET NEGATIVE ALTSAVE +1 TO +0." and "PROVIDE A 15 BIT UNSIGNED
- * OUTPUT.": "THE HI-ORDER PART IS +1 OR +0.", so a high word of +1 sets
- * bit 15 over the low word. Then DATAOUT, "DISPATCH UNSIGNED BITS TO ALTM
- * REG." (OLDDATA and ZERODATA leave ALTSAVE +0 or positive; the CCS's
- * negative exit, TCF DATAOUT, is followed as written, and its -0 exit,
- * which would run on into DISINDAT, is not modelled.) */
+/* NEWDATA -- p. 900: "SET NEGATIVE ALTSAVE +1 TO +0." and "PROVIDE A 15 BIT
+ * UNSIGNED OUTPUT.": "THE HI-ORDER PART IS +1 OR +0.", so a high word of +1
+ * sets bit 15 over the low word. Then DATAOUT, "DISPATCH UNSIGNED BITS TO
+ * ALTM REG." (OLDDATA and ZERODATA leave ALTSAVE +0 or positive; the CCS's
+ * negative exit, TCF DATAOUT, is followed as written, and its -0 exit, which
+ * would run on into DISINDAT, is not modelled.) */
 static void newdata(void)
 {
     switch (ccs_at(ADDRESS_OF(ALTSAVE) + 1u)) {
@@ -233,7 +234,7 @@ static void newdata(void)
 
 /* ---- DISINDAT and INTLZE -- pp. 900-901 ---- */
 
-/* DISINDAT: "SAVE RETURN TO ALTROUT +1 OR ALTOUT +1" in LADQSAVE.
+/* DISINDAT -- p. 900: "SAVE RETURN TO ALTROUT +1 OR ALTOUT +1" in LADQSAVE.
  * "WISHETH THE ASTRONAUT THE ANALOG DISPLAYS? I.E., IS THE MODE SELECT
  * SWITCH IN PGNCS?" (channel 30 bit 6, a RAND that is never negative): no,
  * DISPRSET. If DIDFLAG is set, SPEEDRUN: "PERFORM DATA DISPLAY SEQUENCE."
@@ -281,14 +282,14 @@ static void disindat(void)
     tc_to(INTLZE - 3u, TWIDDLE); /* ADRES INTLZE */
 }
 
-/* INTLZE -1, where TWIDDLE returns: TCF TASKOVER. */
+/* INTLZE -1 -- p. 900, where TWIDDLE returns: TCF TASKOVER. */
 void intlze_minus_one(void)
 {
     continue_at(TASKOVER);
 }
 
-/* INTLZE: channel 12 bit 2, "ENABLE RR ERROR COUNTER.", and IMODES33 bit
- * 8: "SET INERTIAL DATA FLAG." */
+/* INTLZE -- p. 900: channel 12 bit 2, "ENABLE RR ERROR COUNTER.", and
+ * IMODES33 bit 8: "SET INERTIAL DATA FLAG." */
 void intlze(void)
 {
     set_A(BIT2);
@@ -301,13 +302,13 @@ void intlze(void)
 
 /* ---- The velocity -- pp. 901-902 ---- */
 
-/* SPEEDRUN: "UPDATE THE VELOCITY VECTOR". DT is "T - TN", the time since
- * the last PIPA reading (two ADs of HALF "CORRECT FOR POSSIBLE OVERFLOW OF
- * TIME1."), and each axis of VVECT, "VVECT = VN + DELV + GN(T-TN) M/CS
- * *2(-5)": GDT/2 times DT over 1SEC, plus SERVICER's V, plus the PIPA
- * count since then (PIPAX, plus PIPATMPX "IN CASE PIPAX HAS BEEN ZEROED")
- * times KPIP1(5). Then "PAUSE 40 MS TO LET OTHER RUPTS IN.": TC VARDELAY.
- * (TS ITEMP5 of 1SEC does not skip.) */
+/* SPEEDRUN -- p. 901: "UPDATE THE VELOCITY VECTOR". DT is "T - TN", the time
+ * since the last PIPA reading (two ADs of HALF "CORRECT FOR POSSIBLE
+ * OVERFLOW OF TIME1."), and each axis of VVECT, "VVECT = VN + DELV +
+ * GN(T-TN) M/CS *2(-5)": GDT/2 times DT over 1SEC, plus SERVICER's V, plus
+ * the PIPA count since then (PIPAX, plus PIPATMPX "IN CASE PIPAX HAS BEEN
+ * ZEROED") times KPIP1(5). Then "PAUSE 40 MS TO LET OTHER RUPTS IN.": TC
+ * VARDELAY. (TS ITEMP5 of 1SEC does not skip.) */
 static void speedrun(void)
 {
     unsigned axis;
@@ -343,8 +344,8 @@ static void speedrun(void)
 
 static void vmonitor(word index);
 
-/* SPEEDRUN +0102, VARDELAY's return. Only "IN DESCENT TRAJECTORY": out of
- * it, TC LADQSAVE, back to ALTROUT +1 or ALTOUT +1. In it:
+/* SPEEDRUN +0102 -- p. 902, VARDELAY's return. Only "IN DESCENT TRAJECTORY":
+ * out of it, TC LADQSAVE, back to ALTROUT +1 or ALTOUT +1. In it:
  *   - the velocity less SERVICER's correction, DELVS: "= VX - DVX
  *     M/CS*2(-5)" in ITEMP1-3 (an overflow at a TS skips the next CA, and
  *     the +1 or -1 it leaves is added in its place);
@@ -474,7 +475,7 @@ static void zerolsty_plus3(word index);
 #define FLAG(index)     indexed(ADDRESS_OF(TRAKLATV), index)
 #define DRIVE(index)    indexed(ADDRESS_OF(RUPTREG3), index)
 
-/* VMONITOR: "FORWARD AND LATERAL VELOCITY LANDING ANALOG DISPLAYS
+/* VMONITOR -- p. 904: "FORWARD AND LATERAL VELOCITY LANDING ANALOG DISPLAYS
  * MONITOR." A velocity at or beyond the end of the scale, CHKLASTY; inside
  * it (or zero), LVLIMITS. */
 static void vmonitor(word index)
@@ -497,8 +498,8 @@ static void vmonitor(word index)
         lvlimits(index);
 }
 
-/* CHKLASTY: off the scale. If the meter stands on the other side of zero
- * from the velocity, a drive of MAXVBITS toward it: LASTPOSY +5
+/* CHKLASTY -- p. 904: off the scale. If the meter stands on the other side
+ * of zero from the velocity, a drive of MAXVBITS toward it: LASTPOSY +5
  * (-MAXVBITS) or LASTNEGY +4 (+MAXVBITS). Otherwise LASTOK. */
 static void chklasty(word index)
 {
@@ -525,8 +526,8 @@ static void chklasty(word index)
     lastok(index);
 }
 
-/* LASTOK: by the flag, LASTPOSY (held at the top), LASTNEGY (at the
- * bottom), or, not held, to the end the velocity is beyond: NEGVMAXY or
+/* LASTOK -- p. 904: by the flag, LASTPOSY (held at the top), LASTNEGY (at
+ * the bottom), or, not held, to the end the velocity is beyond: NEGVMAXY or
  * POSVMAXY. */
 static void lastok(word index)
 {
@@ -543,7 +544,7 @@ static void lastok(word index)
         posvmaxy(index);
 }
 
-/* LASTPOSY: held at the top. Still positive: POSVMAXY. Now zero or
+/* LASTPOSY -- p. 905: held at the top. Still positive: POSVMAXY. Now zero or
  * negative: a drive of -MAXVBITS. */
 static void lastposy(word index)
 {
@@ -556,7 +557,8 @@ static void lastposy(word index)
     zerolsty(index);
 }
 
-/* POSVMAXY: drive the meter up to MAXVBITS, and set the flag +1. */
+/* POSVMAXY -- p. 905: drive the meter up to MAXVBITS, and set the flag
+ * +1. */
 static void posvmaxy(word index)
 {
     cs(METER(index));
@@ -566,8 +568,8 @@ static void posvmaxy(word index)
     zerolsty_plus3(index);
 }
 
-/* LASTNEGY: held at the bottom. Still zero or negative: NEGVMAXY. Now
- * positive: a drive of +MAXVBITS. */
+/* LASTNEGY -- p. 905: held at the bottom. Still zero or negative: NEGVMAXY.
+ * Now positive: a drive of +MAXVBITS. */
 static void lastnegy(word index)
 {
     ca(VELOCITY(index));
@@ -579,7 +581,8 @@ static void lastnegy(word index)
     zerolsty(index);
 }
 
-/* NEGVMAXY: drive the meter down to -MAXVBITS, and set the flag -1. */
+/* NEGVMAXY -- p. 905: drive the meter down to -MAXVBITS, and set the flag
+ * -1. */
 static void negvmaxy(word index)
 {
     ca(METER(index));
@@ -590,7 +593,7 @@ static void negvmaxy(word index)
     zerolsty_plus3(index);
 }
 
-/* LVLIMITS: on the scale. Held at the top, LATVPOS; at the bottom,
+/* LVLIMITS -- p. 905: on the scale. Held at the top, LATVPOS; at the bottom,
  * LATVNEG. Not held, with the meter positive or zero: LVMINLM (the drive
  * is the velocity less the meter) unless that is a drive down of more than
  * MAXVBITS (AD ITEMP6); then a drive of -MAXVBITS. A negative meter:
@@ -624,8 +627,8 @@ static void lvlimits(word index)
     zerolsty(index);
 }
 
-/* LATVPOS: held at the top. A velocity at or above zero: LVMINLM. Below
- * zero, drive the meter back to zero (LATVNEG +4). */
+/* LATVPOS -- p. 906: held at the top. A velocity at or above zero: LVMINLM.
+ * Below zero, drive the meter back to zero (LATVNEG +4). */
 static void latvpos(word index)
 {
     cs(VELOCITY(index));
@@ -637,8 +640,8 @@ static void latvpos(word index)
     zerolsty(index);
 }
 
-/* LATVNEG: held at the bottom. A velocity at or below zero: LVMINLM.
- * Above zero, drive the meter back to zero. */
+/* LATVNEG -- p. 906: held at the bottom. A velocity at or below zero:
+ * LVMINLM. Above zero, drive the meter back to zero. */
 static void latvneg(word index)
 {
     ca(VELOCITY(index));
@@ -650,8 +653,9 @@ static void latvneg(word index)
     zerolsty(index);
 }
 
-/* NEGLMLV: a negative meter, not held, the mirror of LVLIMITS: LVMINLM
- * unless that is a drive up of more than MAXVBITS; then +MAXVBITS. */
+/* NEGLMLV -- p. 906: a negative meter, not held, the mirror of LVLIMITS:
+ * LVMINLM unless that is a drive up of more than MAXVBITS; then
+ * +MAXVBITS. */
 static void neglmlv(word index)
 {
     ca(VELOCITY(index));
@@ -673,7 +677,7 @@ static void neglmlv(word index)
     zerolsty(index);
 }
 
-/* LVMINLM: the drive is the velocity less the meter. */
+/* LVMINLM -- p. 906: the drive is the velocity less the meter. */
 static void lvminlm(word index)
 {
     cs(METER(index));
@@ -681,7 +685,7 @@ static void lvminlm(word index)
     zerolsty(index);
 }
 
-/* ZEROLSTY: the drive in A to RUPTREG3 +index, and the flag +0. */
+/* ZEROLSTY -- p. 906: the drive in A to RUPTREG3 +index, and the flag +0. */
 static void zerolsty(word index)
 {
     xch(DRIVE(index));
@@ -689,8 +693,8 @@ static void zerolsty(word index)
     zerolsty_plus3(index);
 }
 
-/* ZEROLSTY +3: the flag from A; the drive to the CDU drive counter less
- * one ("AVOIDS +0 DINC HARDWARE MALFUNCTION"), and added to the meter.
+/* ZEROLSTY +3 -- p. 906: the flag from A; the drive to the CDU drive counter
+ * less one ("AVOIDS +0 DINC HARDWARE MALFUNCTION"), and added to the meter.
  * (The flag is +0, +1 or -1, and a word plus -0 does not overflow: neither
  * TS skips.) */
 static void zerolsty_plus3(word index)
@@ -705,9 +709,9 @@ static void zerolsty_plus3(word index)
 
 /* ---- DISPRSET -- p. 907 ---- */
 
-/* DISPRSET: "ARE WE IN DESCENT TRAJECTORY?" Yes: channel 12 bit 8 off,
- * "REMOVE DISPLAY INERTIAL DATA", and if IMODES33 bit 8 is set ("CHECK IF
- * INERTIAL DATA JUST DISPLAYED.") bit 2 too: "DISABLE RR ERROR COUNTER".
+/* DISPRSET -- p. 907: "ARE WE IN DESCENT TRAJECTORY?" Yes: channel 12 bit 8
+ * off, "REMOVE DISPLAY INERTIAL DATA", and if IMODES33 bit 8 is set ("CHECK
+ * IF INERTIAL DATA JUST DISPLAYED.") bit 2 too: "DISABLE RR ERROR COUNTER".
  * Then ABORTON. (A MASK of BIT8 is never negative: the CCS goes on at its
  * first or second word.) */
 static void disprset(void)
@@ -727,9 +731,9 @@ static void disprset(void)
     aborton();
 }
 
-/* ABORTON: "RESET INERTIAL DATA, INTERLEAVE FLAGS." (IMODES33 bits 8 and
- * 7, BITS8/7) and "RESET DIDFLAG.", and TCF TASKOVER. (Both TS's store a
- * MASK: neither skips.) */
+/* ABORTON -- p. 907: "RESET INERTIAL DATA, INTERLEAVE FLAGS." (IMODES33 bits
+ * 8 and 7, BITS8/7) and "RESET DIDFLAG.", and TCF TASKOVER. (Both TS's store
+ * a MASK: neither skips.) */
 static void aborton(void)
 {
     set_A(negate(BITS8_7));

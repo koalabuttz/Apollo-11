@@ -111,7 +111,7 @@ void prout_after_exit(void)
     imustllg();
 }
 
-/* PROUT +2: back to the caller, through QPLACES. */
+/* PROUT +2 -- p. 430: back to the caller, through QPLACES. */
 void prout_after_imustllg(void)
 {
     tc_return(E(QPLACES));
@@ -135,20 +135,21 @@ void show(void)
     show1();
 }
 
-/* SHOW +7: "V 34", terminate: the test ends. */
+/* SHOW +7 -- p. 431: "V 34", terminate: the test ends. */
 void show_after_terminate(void)
 {
     tc_at(SHOW1 + 5u);
     endtest1();
 }
 
-/* SHOW +010: "V33", proceed: back to the caller, through QPLACE. */
+/* SHOW +010 -- p. 431: "V33", proceed: back to the caller, through
+ * QPLACE. */
 void show_after_proceed(void)
 {
     tc_return(E(QPLACE));
 }
 
-/* SHOW +011: a load (enter): show it again. TCF SHOW1. */
+/* SHOW +011 -- p. 431: a load (enter): show it again. TCF SHOW1. */
 void show_after_enter(void)
 {
     show1();
@@ -163,18 +164,18 @@ void p11out(void)
 
 /* ---- FINETIME -- p. 431, in fixed-fixed ---- */
 
-/* FINETIME. The time now: the scaler's low part (LOSCALAR) in L, and its
- * high part (HISCALAR) in A. "RETURNS WITH INTERRUPT INHIBITED". */
+/* FINETIME -- p. 431. The time now: the scaler's low part (LOSCALAR) in L,
+ * and its high part (HISCALAR) in A. "RETURNS WITH INTERRUPT INHIBITED". */
 void finetime(void)
 {
     inhint();
     continue_at(FINETIME + 1u);
 }
 
-/* FINETIME +1. LOSCALAR read twice: if the two disagree (it moved between
- * them), once more. At 37777 the low part is about to carry into the high:
- * read it all again (the AGC waits here for the scaler; the binding stops
- * the run). Then HISCALAR, and back through Q. */
+/* FINETIME +1 -- p. 431. LOSCALAR read twice: if the two disagree (it moved
+ * between them), once more. At 37777 the low part is about to carry into the
+ * high: read it all again (the AGC waits here for the scaler; the binding
+ * stops the run). Then HISCALAR, and back through Q. */
 void finetime_plus1(void)
 {
     read_channel(LOSCALAR);
@@ -274,14 +275,14 @@ void sleepie_plus1(void)
     continue_at(PHASCHNG); /* OCT 00135 */
 }
 
-/* ESTIMS +033: the drift test. */
+/* ESTIMS +033 -- p. 434: the drift test. */
 void estims_drift_test(void)
 {
     tc_at(ESTIMS + 033u);
     sleepie_plus1();
 }
 
-/* ESTIMS +034: gyrocompassing: ERTHRVSE in the interpreter. */
+/* ESTIMS +034 -- p. 434: gyrocompassing: ERTHRVSE in the interpreter. */
 void estims_compass(void)
 {
     tc_at(ESTIMS + 034u);
@@ -298,7 +299,7 @@ static const word estims_words[] = {
 const struct interpretive_code ESTIMS_CODE = {033u, ESTIMS + 035u, COUNT(estims_words),
                                               estims_words};
 
-/* ESTIMS +040 -- p. 435, ERTHRVSE's EXIT. ERECTIME the time to erect the
+/* ESTIMS +040 -- p. 434, ERTHRVSE's EXIT. ERECTIME the time to erect the
  * platform ("TIMES FIVE IS THE NUM OF SEC ERECTING"); the major mode P02. */
 void estims_after_erthrvse(void)
 {
@@ -308,8 +309,8 @@ void estims_after_erthrvse(void)
     continue_at(NEWMODEX); /* MM 02 */
 }
 
-/* ESTIMS +044: "SET UP PIPA FAIL TO CAUSE ISS ALARM" (PIPUSE; "COMPASS
- * NEVER TURNS THIS OFF"). */
+/* ESTIMS +044 -- p. 434: "SET UP PIPA FAIL TO CAUSE ISS ALARM" (PIPUSE;
+ * "COMPASS NEVER TURNS THIS OFF"). */
 void estims_after_newmodex(void)
 {
     tc_at(ESTIMS + 044u);
@@ -325,7 +326,7 @@ void annnnnn(void)
     sleepie_plus1();
 }
 
-/* ESTIMS +046: "END OF FIRST TIME THROUGH". */
+/* ESTIMS +046 -- p. 435: "END OF FIRST TIME THROUGH". */
 void estims_after_pipuse(void)
 {
     tc_at(ESTIMS + 046u);
@@ -343,8 +344,8 @@ void sleepie(void)
     sleepie_plus1();
 }
 
-/* SLEEPIE +3. "ARE WE DOING VERTDRIFT": TORQNDX positive, earth rate
- * compensation first (EARTHR*, which comes back to WTLISTNT). Then the
+/* SLEEPIE +3 -- p. 436. "ARE WE DOING VERTDRIFT": TORQNDX positive, earth
+ * rate compensation first (EARTHR*, which comes back to WTLISTNT). Then the
  * next ALLOOP; -0 ends the job without it. */
 void sleepie_after_phaschng(void)
 {
@@ -393,21 +394,21 @@ static void setgwlst(void)
     wtgtsmpl();
 }
 
-/* WTLISTNT +1: set up the next ALLOOP (SETGWLST). */
+/* WTLISTNT +1 -- p. 436: set up the next ALLOOP (SETGWLST). */
 void wtlistnt_after_chkcomed(void)
 {
     tc_at(WTLISTNT + 1u);
     setgwlst();
 }
 
-/* WTLISTNT +2: this job ends. */
+/* WTLISTNT +2 -- p. 436: this job ends. */
 void wtlistnt_after_setgwlst(void)
 {
     tc_at(WTLISTNT + 2u);
     continue_at(ENDOFJOB);
 }
 
-/* WTGTSMPL +2: back through MPAC. */
+/* WTGTSMPL +2 -- p. 436: back through MPAC. */
 void wtgtsmpl_after_twiddle(void)
 {
     tc_return(ADDRESS_OF(MPAC));
@@ -541,7 +542,7 @@ void specsts(void)
     continue_at(FINDVAC); /* 2CADR ALFLT */
 }
 
-/* SPECSTS +4. */
+/* SPECSTS +4 -- p. 437. */
 void specsts_after_findvac(void)
 {
     tc_at(SPECSTS + 4u);
@@ -558,14 +559,14 @@ void alflt(void)
     storedta();
 }
 
-/* ALFLT +1: a phase change (PHASCHNG, OCT 00215). */
+/* ALFLT +1 -- p. 438: a phase change (PHASCHNG, OCT 00215). */
 void alflt_after_storedta(void)
 {
     tc_at(ALFLT + 1u);
     continue_at(PHASCHNG); /* OCT 00215 */
 }
 
-/* ALFLT +3: TCF +2. */
+/* ALFLT +3 -- p. 438: TCF +2. */
 void alflt_after_phaschng(void)
 {
     alflt1_after_loadstdt();
@@ -578,8 +579,8 @@ void alflt1(void)
     loadstdt();
 }
 
-/* ALFLT1 +1. GEOCOMP1: +0, the drift test's filter (NORMLOP); otherwise
- * gyrocompassing: "SEE IF PRELAUNCH OVER" (CHKCOMED) and the PIPA
+/* ALFLT1 +1 -- p. 438. GEOCOMP1: +0, the drift test's filter (NORMLOP);
+ * otherwise gyrocompassing: "SEE IF PRELAUNCH OVER" (CHKCOMED) and the PIPA
  * compensation (1/PIPA) first. */
 void alflt1_after_loadstdt(void)
 {
@@ -591,21 +592,21 @@ void alflt1_after_loadstdt(void)
     }
 }
 
-/* ALFLT1 +3. */
+/* ALFLT1 +3 -- p. 438. */
 void alflt1_calibration(void)
 {
     tc_at(ALFLT1 + 3u);
     normlop();
 }
 
-/* ALFLT1 +4. */
+/* ALFLT1 +4 -- p. 438. */
 void alflt1_compass(void)
 {
     tc_at(ALFLT1 + 4u);
     chkcomed();
 }
 
-/* ALFLT1 +5: "COMPENSATION IF IN COMPASS". */
+/* ALFLT1 +5 -- p. 438: "COMPENSATION IF IN COMPASS". */
 void alflt1_after_chkcomed(void)
 {
     tc_at(ALFLT1 + 5u);
@@ -777,7 +778,7 @@ void someerrr(void)
     continue_at(ALARM); /* OCT 1600 */
 }
 
-/* SOMEERRR +2: on as SOMERR2's after its alarm. TC +3. */
+/* SOMEERRR +2 -- p. 442: on as SOMERR2's after its alarm. TC +3. */
 void someerrr_after_alarm(void)
 {
     tc_at(SOMEERRR + 2u);
@@ -791,14 +792,15 @@ void somerr2(void)
     continue_at(ALARM); /* OCT 1601 */
 }
 
-/* SOMERR2 +2: a phase change (PHASCHNG, OCT 00005), and the test ends. */
+/* SOMERR2 +2 -- p. 442: a phase change (PHASCHNG, OCT 00005), and the test
+ * ends. */
 void somerr2_after_alarm(void)
 {
     tc_at(SOMERR2 + 2u);
     continue_at(PHASCHNG); /* OCT 00005 */
 }
 
-/* SOMERR2 +4. */
+/* SOMERR2 +4 -- p. 442. */
 void somerr2_after_phaschng(void)
 {
     tc_at(SOMERR2 + 4u);

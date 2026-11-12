@@ -53,7 +53,7 @@ void prog20(void)
     tc_to(PROG20, TWO_PHSCHNG);
 }
 
-/* PROG20 +4 -- "CHECK IF ON LUNAR SURFACE": LUNSFCHK comes back to
+/* PROG20 +4 -- p. 492: "CHECK IF ON LUNAR SURFACE": LUNSFCHK comes back to
  * PROG20 +5 if so, PROG20 +6 if not. */
 void prog20_after_2phschng(void)
 {
@@ -61,13 +61,13 @@ void prog20_after_2phschng(void)
     lunsfchk();
 }
 
-/* PROG20 +5 -- "YES": P22. */
+/* PROG20 +5 -- p. 493: "YES": P22. */
 void prog20_on_surface(void)
 {
     tc_to(PROG20 + 5u, ORBCHGO);
 }
 
-/* PROG20 +6 -- "NO -- CONTINUE WITH P20". */
+/* PROG20 +6 -- p. 493: "NO -- CONTINUE WITH P20". */
 void prog20_in_orbit(void)
 {
     tc_at(PROG20 + 6u);
@@ -80,8 +80,9 @@ void orbchgo(void)
     tc_to(ORBCHGO, UPFLAG); /* ADRES VEHUPFLG */
 }
 
-/* ORBCHGO +2 -- "SET R2 FOR OPTION CSM WILL NOT CHANGE PRESENT ORBIT":
- * OPTION2 is 1. (CAF ONE leaves no overflow for the TS to skip on.) */
+/* ORBCHGO +2 -- p. 493: "SET R2 FOR OPTION CSM WILL NOT CHANGE PRESENT
+ * ORBIT": OPTION2 is 1. (CAF ONE leaves no overflow for the TS to skip
+ * on.) */
 void orbchgo_after_upflag(void)
 {
     set_A(ONE);
@@ -89,7 +90,7 @@ void orbchgo_after_upflag(void)
     orbchgo_display();
 }
 
-/* ORBCHGO +4 -- "DISPLAY ASSUMED CSM ORBIT OPTION": GOPERF4, through
+/* ORBCHGO +4 -- p. 493: "DISPLAY ASSUMED CSM ORBIT OPTION": GOPERF4, through
  * BANKCALL, shows OCT00012's option code (option 12, R2 the orbit option)
  * for the crew to accept, or load. */
 static void orbchgo_display(void)
@@ -98,19 +99,20 @@ static void orbchgo_display(void)
     tc_to(ORBCHGO + 5u, BANKCALL); /* CADR GOPERF4 */
 }
 
-/* ORBCHGO +7 -- "TERMINATE". */
+/* ORBCHGO +7 -- p. 493: "TERMINATE". */
 void orbchgo_terminate(void)
 {
     tc_to(ORBCHGO + 7u, GOTOPOOH);
 }
 
-/* ORBCHGO +010 -- "PROCEED VALUE OF ASSUMED OPTION OK". */
+/* ORBCHGO +010 -- p. 493: "PROCEED VALUE OF ASSUMED OPTION OK". */
 void orbchgo_proceed(void)
 {
     tc_to(ORBCHGO + 010u, ORBCHG1);
 }
 
-/* ORBCHGO +011 -- "R2 LOADED THRU DSKY": TC -5, the display again. */
+/* ORBCHGO +011 -- p. 493: "R2 LOADED THRU DSKY": TC -5, the display
+ * again. */
 void orbchgo_enter(void)
 {
     tc_at(ORBCHGO + 011u);
@@ -130,28 +132,30 @@ void orbchg1(void)
     orbchg1_display();
 }
 
-/* ORBCHG1 +4 -- verb 06 noun 33 (V06N33*) flashed by GOFLASH. Noun 33 is
- * "TIME OF IGNITION" in the noun list (ASSEMBLY_AND_OPERATION_INFORMATION):
- * TIG, here the estimated launch time. */
+/* ORBCHG1 +4 -- p. 493: verb 06 noun 33 (V06N33*) flashed by GOFLASH. Noun
+ * 33 is "TIME OF IGNITION" in the noun list
+ * (ASSEMBLY_AND_OPERATION_INFORMATION): TIG, here the estimated launch
+ * time. */
 static void orbchg1_display(void)
 {
     set_A(V06N33_STAR);
     tc_to(ORBCHG1 + 5u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* ORBCHG1 +7 -- "TERMINATE". */
+/* ORBCHG1 +7 -- p. 493: "TERMINATE". */
 void orbchg1_terminate(void)
 {
     tc_to(ORBCHG1 + 7u, GOTOPOOH);
 }
 
-/* ORBCHG1 +010 -- "PROCEED VALUES OK". */
+/* ORBCHG1 +010 -- p. 493: "PROCEED VALUES OK". */
 void orbchg1_proceed(void)
 {
     tc_to(ORBCHG1 + 010u, ORBCHG2);
 }
 
-/* ORBCHG1 +011 -- "TIME LOADED THRU DSKY": TC -5, the display again. */
+/* ORBCHG1 +011 -- p. 493: "TIME LOADED THRU DSKY": TC -5, the display
+ * again. */
 void orbchg1_enter(void)
 {
     tc_at(ORBCHG1 + 011u);
@@ -287,7 +291,7 @@ static const word orbchg3_words[] = {
     ORDER(EXIT),
 };
 
-/* ORBCHG3 +0145 -- back to bank 24, P20 proper. */
+/* ORBCHG3 +0145 -- p. 495: back to bank 24, P20 proper. */
 void orbchg3_after_exit(void)
 {
     tc_to(ORBCHG3 + 0145u, BANKCALL); /* CADR PROG20A */
@@ -300,13 +304,13 @@ static void prog20a_minus2(void)
     tc_to(PROG20A - 2u, DOWNFLAG); /* ADRES VEHUPFLG */
 }
 
-/* PROG20A -- R02BOTH, "IMU STATUS CHECK". */
+/* PROG20A -- p. 495: R02BOTH, "IMU STATUS CHECK". */
 void prog20a(void)
 {
     tc_to(PROG20A, BANKCALL); /* CADR R02BOTH */
 }
 
-/* PROG20A +2 to +022 -- the flags, one call each. */
+/* PROG20A +2 -- p. 495 to +022 -- the flags, one call each. */
 void prog20a_after_r02both(void)
 {
     tc_to(PROG20A + 2u, UPFLAG); /* ADRES UPDATFLG: "SET UPDATE FLAG" */
@@ -332,26 +336,28 @@ void prog20a_after_srchoptn(void)
     tc_to(PROG20A + 012u, DOWNFLAG); /* ADRES ACMODFLG: "ALSO MANUAL ACQUISITION FLAG RESET" */
 }
 
-/* "TURN OFF R04FLAG TO ENSURE GETTING ALARM 521 IF CAN'T READ RADAR". */
+/* PROG20A +014 -- p. 496: "TURN OFF R04FLAG TO ENSURE GETTING ALARM 521 IF
+ * CAN'T READ RADAR". */
 void prog20a_after_acmodflg(void)
 {
     tc_to(PROG20A + 014u, DOWNFLAG); /* ADRES R04FLAG */
 }
 
-/* "ENSURE R25 GIMBAL MONITOR IS ENABLED (RESET NORRMON FLAG)". */
+/* PROG20A +016 -- p. 496: "ENSURE R25 GIMBAL MONITOR IS ENABLED (RESET
+ * NORRMON FLAG)". */
 void prog20a_after_r04flag(void)
 {
     tc_to(PROG20A + 016u, DOWNFLAG); /* ADRES NORRMON */
 }
 
-/* "RESET LOS BEING COMPUTED FLAG". */
+/* PROG20A +020 -- p. 496: "RESET LOS BEING COMPUTED FLAG". */
 void prog20a_after_norrmon(void)
 {
     tc_to(PROG20A + 020u, DOWNFLAG); /* ADRES LOSCMFLG */
 }
 
-/* PROG20A +022 -- CLRADMOD (part 3) clears RADMODES' bits 10 and 15, and
- * comes back to P20LEM1. */
+/* PROG20A +022 -- p. 496: CLRADMOD (part 3) clears RADMODES' bits 10 and 15,
+ * and comes back to P20LEM1. */
 void prog20a_after_loscmflg(void)
 {
     tc_to(PROG20A + 022u, CLRADMOD);
@@ -363,7 +369,7 @@ void p20lem1(void)
     tc_to(P20LEM1, PHASCHNG); /* OCT 04022 */
 }
 
-/* P20LEM1 +2 -- "ZERO MARK COUNTER", then the "LOS DETERMINATION
+/* P20LEM1 +2 -- p. 496: "ZERO MARK COUNTER", then the "LOS DETERMINATION
  * ROUTINE". (CAF ZERO leaves no overflow for the TS to skip on.) */
 void p20lem1_after_phaschng(void)
 {
@@ -382,7 +388,7 @@ static const word p20lem1_words[] = {
     ORDER(EXIT),
 };
 
-/* P20LEM1 +014 -- INDEX MPAC; TC +1: MPAC 0 (or -0, which indexes
+/* P20LEM1 +014 -- p. 496: INDEX MPAC; TC +1: MPAC 0 (or -0, which indexes
  * nothing) runs the TC at P20LEM1 +016, "NORMAL RETURN WITHIN 400 N M"; 1
  * the word after it, 526ALARM. Not modelled: any other MPAC, which would
  * run a word of 526ALARM as an instruction. */
@@ -395,7 +401,7 @@ void p20lem1_after_exit(void)
     tc_to(P20LEM1 + 015u, to);
 }
 
-/* P20LEM1 +016 -- "NORMAL RETURN WITHIN 400 N M". */
+/* P20LEM1 +016 -- p. 496: "NORMAL RETURN WITHIN 400 N M". */
 void p20lem1_in_range(void)
 {
     tc_at(P20LEM1 + 016u);
@@ -410,26 +416,26 @@ void five_twenty_six_alarm(void)
     tc_to(FIVE_TWENTY_SIX_ALARM + 1u, BANKCALL); /* CADR PRIOLARM */
 }
 
-/* 526ALARM +3 -- "TERMINATE EXITS P20 VIA V56 CODING". */
+/* 526ALARM +3 -- p. 496: "TERMINATE EXITS P20 VIA V56 CODING". */
 void five_twenty_six_alarm_terminate(void)
 {
     tc_to(FIVE_TWENTY_SIX_ALARM + 3u, GOTOV56);
 }
 
-/* 526ALARM +4 -- "PROC (ILLEGAL)": TC -4, the alarm again. */
+/* 526ALARM +4 -- p. 496: "PROC (ILLEGAL)": TC -4, the alarm again. */
 void five_twenty_six_alarm_proceed(void)
 {
     tc_to(FIVE_TWENTY_SIX_ALARM + 4u, FIVE_TWENTY_SIX_ALARM);
 }
 
-/* 526ALARM +5 -- "ENTER RECYCLE". */
+/* 526ALARM +5 -- p. 496: "ENTER RECYCLE". */
 void five_twenty_six_alarm_enter(void)
 {
     tc_to(FIVE_TWENTY_SIX_ALARM + 5u, P20LEM1);
 }
 
-/* 526ALARM +6 -- PRIOLARM's immediate return: the job ends, to wait for
- * the crew. */
+/* 526ALARM +6 -- p. 496: PRIOLARM's immediate return: the job ends, to wait
+ * for the crew. */
 void five_twenty_six_alarm_immediate_return(void)
 {
     tc_to(FIVE_TWENTY_SIX_ALARM + 6u, ENDOFJOB);
@@ -442,21 +448,21 @@ void p20lema(void)
     tc_to(P20LEMA, PHASCHNG); /* OCT 04022 */
 }
 
-/* P20LEMA +2 -- "CHECK LUNAR SURFACE FLAG (P22 FLAG)": LUNSFCHK comes
- * back to P20LEMA +3 if it is set, P20LEMA +4 if not. */
+/* P20LEMA +2 -- p. 496: "CHECK LUNAR SURFACE FLAG (P22 FLAG)": LUNSFCHK
+ * comes back to P20LEMA +3 if it is set, P20LEMA +4 if not. */
 void p20lema_after_phaschng(void)
 {
     tc_at(P20LEMA + 2u);
     lunsfchk();
 }
 
-/* P20LEMA +3 -- on the surface: no attitude to hold. */
+/* P20LEMA +3 -- p. 496: on the surface: no attitude to hold. */
 void p20lema_on_surface(void)
 {
     tc_to(P20LEMA + 3u, P20LEMB);
 }
 
-/* P20LEMA +4 -- "PREFERRED TRACKING ATTITUDE ROUTINE", R61LEM. */
+/* P20LEMA +4 -- p. 496: "PREFERRED TRACKING ATTITUDE ROUTINE", R61LEM. */
 void p20lema_in_orbit(void)
 {
     tc_to(P20LEMA + 4u, BANKCALL); /* CADR R61LEM */
@@ -469,16 +475,17 @@ void p20lemb(void)
     tc_to(P20LEMB, PHASCHNG);
 }
 
-/* P20LEMB +3 -- "RESTORE PRIORITY 26". */
+/* P20LEMB +3 -- p. 496: "RESTORE PRIORITY 26". */
 void p20lemb_after_phaschng(void)
 {
     set_A(PRIO26);
     tc_to(P20LEMB + 4u, PRIOCHNG);
 }
 
-/* P20LEMB +5 -- "IS THE TRACK FLAG SET": "NO -- WAIT FOR IT TO BE SET"
- * (P20LEMWT). P20LEMB7: "IS RR AUTO MODE DISCRETE PRESENT" (channel 33's
- * bit 2, set when it is not): "YES -- DO AUTOMATIC ACQUISITION (R21)". */
+/* P20LEMB +5 -- p. 496: "IS THE TRACK FLAG SET": "NO -- WAIT FOR IT TO BE
+ * SET" (P20LEMWT). P20LEMB7: "IS RR AUTO MODE DISCRETE PRESENT" (channel
+ * 33's bit 2, set when it is not): "YES -- DO AUTOMATIC ACQUISITION
+ * (R21)". */
 void p20lemb_after_priochng(void)
 {
     ca(ADDRESS_OF(FLAGWRD1));
@@ -517,14 +524,14 @@ void p20lemb5(void)
     tc_to(P20LEMB5 + 010u, BANKCALL); /* CADR PRIOLARM */
 }
 
-/* P20LEMB5 +012 -- "TERMINATE EXITS VIA V56". */
+/* P20LEMB5 +012 -- p. 497: "TERMINATE EXITS VIA V56". */
 void p20lemb5_terminate(void)
 {
     tc_to(P20LEMB5 + 012u, GOTOV56);
 }
 
-/* P20LEMB5 +013, +014 -- "PROCEED AND ENTER BOTH GO BACK TO CHECK AUTO
- * MODE AGAIN". */
+/* P20LEMB5 +013, +014 -- p. 497: "PROCEED AND ENTER BOTH GO BACK TO CHECK
+ * AUTO MODE AGAIN". */
 void p20lemb5_proceed(void)
 {
     tc_to(P20LEMB5 + 013u, P20LEMB);
@@ -535,7 +542,7 @@ void p20lemb5_enter(void)
     tc_to(P20LEMB5 + 014u, P20LEMB);
 }
 
-/* P20LEMB5 +015 -- PRIOLARM's immediate return. */
+/* P20LEMB5 +015 -- p. 497: PRIOLARM's immediate return. */
 void p20lemb5_immediate_return(void)
 {
     tc_to(P20LEMB5 + 015u, ENDOFJOB);
@@ -549,19 +556,19 @@ static void p20lemb6(void)
     tc_to(P20LEMB6 + 1u, BANKCALL); /* CADR GOPERF1 */
 }
 
-/* P20LEMB6 +3 -- "TERMINATE EXITS P20 VIA V56 CODING". */
+/* P20LEMB6 +3 -- p. 497: "TERMINATE EXITS P20 VIA V56 CODING". */
 void p20lemb6_terminate(void)
 {
     tc_to(P20LEMB6 + 3u, GOTOV56);
 }
 
-/* P20LEMB6 +4 -- "PROCEED CHECKS AUTO MODE DISCRETE AGAIN". */
+/* P20LEMB6 +4 -- p. 497: "PROCEED CHECKS AUTO MODE DISCRETE AGAIN". */
 void p20lemb6_proceed(void)
 {
     tc_to(P20LEMB6 + 4u, P20LEMB);
 }
 
-/* P20LEMB6 +5 -- "ENTER INDICATES MANUAL ACQUISITION (R23)", unless
+/* P20LEMB6 +5 -- p. 497: "ENTER INDICATES MANUAL ACQUISITION (R23)", unless
  * LUNSFCHK finds the LM on the surface. */
 void p20lemb6_enter(void)
 {
@@ -569,13 +576,13 @@ void p20lemb6_enter(void)
     lunsfchk();
 }
 
-/* P20LEMB6 +6 -- "YES -- R23 NOT ALLOWED -- TURN ON OPR ERROR". */
+/* P20LEMB6 +6 -- p. 497: "YES -- R23 NOT ALLOWED -- TURN ON OPR ERROR". */
 void p20lemb6_on_surface(void)
 {
     tc_to(P20LEMB6 + 6u, P20LEMB2);
 }
 
-/* P20LEMB6 +7 -- "NO -- DO MANUAL ACQUISITION". */
+/* P20LEMB6 +7 -- p. 497: "NO -- DO MANUAL ACQUISITION". */
 void p20lemb6_in_orbit(void)
 {
     tc_at(P20LEMB6 + 7u);
@@ -594,8 +601,8 @@ void p20lemb1_after_upflag(void)
     tc_to(P20LEMB1 + 2u, P20LEMB);
 }
 
-/* P20LEMB2 -- "TURNS ON OPERATOR ERROR LIGHT ON DSKY AND GOES BACK TO
- * CHECK AUTO MODE". */
+/* P20LEMB2 -- p. 497: "TURNS ON OPERATOR ERROR LIGHT ON DSKY AND GOES BACK
+ * TO CHECK AUTO MODE". */
 void p20lemb2(void)
 {
     tc_to(P20LEMB2, FALTON);
@@ -632,7 +639,7 @@ void p20lemb3_after_srchoptn(void)
     tc_to(P20LEMB3 + 012u, DOWNFLAG); /* ADRES ACMODFLG */
 }
 
-/* P20LEMB3 +014 -- "WAIT 2.5 SECONDS THEN GO TO RR DATA READ". */
+/* P20LEMB3 +014 -- p. 498: "WAIT 2.5 SECONDS THEN GO TO RR DATA READ". */
 void p20lemb3_after_acmodflg(void)
 {
     tc_to(P20LEMB3 + 014u, P20LEMWT);
@@ -674,8 +681,8 @@ void p20lemc(void)
     tc_to(P20LEMC, PHASCHNG); /* OCT 04022 */
 }
 
-/* P20LEMC +2 -- "IS THE RENDEZVOUS FLAG SET": "NO -- EXIT P20". "IS TRACK
- * FLAG SET (BIT 5 FLAGWORD 1)": "TRACK FLAG NOT ON -- WAIT 15 SECONDS"
+/* P20LEMC +2 -- p. 498: "IS THE RENDEZVOUS FLAG SET": "NO -- EXIT P20". "IS
+ * TRACK FLAG SET (BIT 5 FLAGWORD 1)": "TRACK FLAG NOT ON -- WAIT 15 SECONDS"
  * (P20LEMD). P20LEMF: R21, the designate. */
 void p20lemc_after_phaschng(void)
 {
@@ -702,14 +709,14 @@ void p20lemwt(void)
     p20lemwt_plus1();
 }
 
-/* P20LEMWT +1 -- R22WAIT comes here with its own delay in A. */
+/* P20LEMWT +1 -- p. 498: R22WAIT comes here with its own delay in A. */
 void p20lemwt_plus1(void)
 {
     tc_to(P20LEMWT + 1u, TWIDDLE); /* ADRES P20LEMC1 */
 }
 
-/* P20LEMWT +3 -- "IS TRACK FLAG SET": "NO -- EXIT WITHOUT DOING 2.7 PHASE
- * CHANGE". */
+/* P20LEMWT +3 -- p. 498: "IS TRACK FLAG SET": "NO -- EXIT WITHOUT DOING 2.7
+ * PHASE CHANGE". */
 void p20lemwt_after_twiddle(void)
 {
     ca(ADDRESS_OF(FLAGWRD1));
@@ -721,7 +728,8 @@ void p20lemwt_after_twiddle(void)
     p20lmwt1();
 }
 
-/* P20LMWT1 -- group 2's restart (OCT 40072) is now the P20LEMC1 task. */
+/* P20LMWT1 -- p. 498: group 2's restart (OCT 40072) is now the P20LEMC1
+ * task. */
 static void p20lmwt1(void)
 {
     tc_to(P20LMWT1, PHASCHNG);
@@ -803,8 +811,8 @@ void p20lemd1_after_fixdelay(void)
     tc_to(P20LEMD1 + 6u, P20LEMD1);
 }
 
-/* P20LEMD2 -- "SCHEDULE JOB TO DO R21": FINDVAC, P20LEMC3 at priority 26,
- * "START AT PERM. MEMORY INTEGRATION". */
+/* P20LEMD2 -- p. 499: "SCHEDULE JOB TO DO R21": FINDVAC, P20LEMC3 at
+ * priority 26, "START AT PERM. MEMORY INTEGRATION". */
 void p20lemd2(void)
 {
     set_A(PRIO26);
@@ -889,7 +897,7 @@ void prog25(void)
     tc_to(PROG25, TWO_PHSCHNG);
 }
 
-/* PROG25 +4 -- "IMU STATUS CHECK". */
+/* PROG25 +4 -- p. 502: "IMU STATUS CHECK". */
 void prog25_after_2phschng(void)
 {
     tc_to(PROG25 + 4u, BANKCALL); /* CADR R02BOTH */
@@ -912,7 +920,7 @@ void p25lem1(void)
     tc_to(P25LEM1, PHASCHNG); /* OCT 04022 */
 }
 
-/* P25LEM1 +2 -- "IS P25FLAG SET": no, the program has ended. "IS
+/* P25LEM1 +2 -- p. 502: "IS P25FLAG SET": no, the program has ended. "IS
  * TRACKFLAG SET?": "NO -- SKIP PHASE CHANGE AND WAIT 1 MINUTE". "CALL R65
  * -- FINE PREFERRED TRACKING ATTITUDE ROUTINE", with R65CNTR 7. (CAF SEVEN
  * leaves no overflow for the TS to skip on.) */
@@ -935,7 +943,7 @@ void p25lem1_after_phaschng(void)
     tc_to(P25LEM1 + 014u, BANKCALL); /* CADR R65LEM */
 }
 
-/* P25LEM1 +016 -- "THEN GO CHECK FLAGS". */
+/* P25LEM1 +016 -- p. 503: "THEN GO CHECK FLAGS". */
 void p25lem1_after_r65lem(void)
 {
     tc_to(P25LEM1 + 016u, P25LEM1);
@@ -947,8 +955,8 @@ void p25lemwt(void)
     tc_to(P25LEMWT, PHASCHNG);
 }
 
-/* P25LMWT1 -- "WAIT ONE MINUTE THEN CHECK AGAIN": the task P25LEM2, in
- * 60SCNDS. */
+/* P25LMWT1 -- p. 503: "WAIT ONE MINUTE THEN CHECK AGAIN": the task P25LEM2,
+ * in 60SCNDS. */
 void p25lmwt1(void)
 {
     set_A(SIXTY_SCNDS);

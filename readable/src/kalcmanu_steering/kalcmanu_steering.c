@@ -738,7 +738,8 @@ static void stopyz(void)
     ts(ADDRESS_OF(BIAS2));
 }
 
-/* STOPRATE entered on its own (from any bank): back to the caller. */
+/* STOPRATE -- CM p. 418 entered on its own (from any bank): back to the
+ * caller. */
 void stoprate(void)
 {
     stoprate_body();

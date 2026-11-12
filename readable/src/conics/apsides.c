@@ -71,8 +71,8 @@ static const word apsides_words[] = {
 const struct interpretive_code APSIDES_CODE = {I_APSIDES >> 10, K_APSIDES, COUNT(apsides_words),
                                                apsides_words};
 
-/* After ABTCONIC's EXIT: TC POODOO, with the alarm code after it (OCT
- * 00607). POODOO does not return. */
+/* ABTCONIC +1 -- LM p. 1201, CM p. 1304: After ABTCONIC's EXIT: TC POODOO,
+ * with the alarm code after it (OCT 00607). POODOO does not return. */
 void abtconic_after_exit(void)
 {
     tc_to(ABTCONIC + 1u, POODOO); /* OCT 00607 */

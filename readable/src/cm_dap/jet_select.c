@@ -79,15 +79,15 @@ void translation_bias(unsigned failure)
 
 /* ---- JETSLECT -- pp. 1039-1040 ---- */
 
-/* JETSLECT: "RESET TO EXECUTE PHASE1" in 60 ms after T5TIME (an overflow
- * at the TS skips the TCF: "20 MS TO ASSURE A T5RUPT"), "RESET T6 TO
- * INITIALIZE THE JET CHANNELS IN 14 MS", T6's enable (channel 13's bit
+/* JETSLECT -- p. 1039: "RESET TO EXECUTE PHASE1" in 60 ms after T5TIME (an
+ * overflow at the TS skips the TCF: "20 MS TO ASSURE A T5RUPT"), "RESET T6
+ * TO INITIALIZE THE JET CHANNELS IN 14 MS", T6's enable (channel 13's bit
  * 15). Then "EXAMINE THE TRANSLATION HAND CONTROLLER", channel 31's bits
  * 7-12 (clear for a command): the X, Y and Z translation indexes, "1 = +
  * XLN", "2 = - XLN", "3 = NO XLN"; with none, "ZERO ALL REQUESTS FOR
- * TRANSLATION" (NOXLNCMD). ATTKALMN -3 with the LEM on (DAPDATR1 bit 14),
- * -2 off, for the filter gains. XTRANS picks the quads for X translation:
- * + "USING BD-X", XNDX1 zeroed; - "USING AC-X", XNDX2 zeroed. */
+ * TRANSLATION" (NOXLNCMD). ATTKALMN -3 with the LEM on (DAPDATR1 bit 14), -2
+ * off, for the filter gains. XTRANS picks the quads for X translation: +
+ * "USING BD-X", XNDX1 zeroed; - "USING AC-X", XNDX2 zeroed. */
 void jetslect(void)
 {
     lxch(ADDRESS_OF(BANKRUPT));
@@ -141,7 +141,7 @@ void jetslect(void)
     pword();
 }
 
-/* PWORD: "CHECK FOR PITCH COMMANDS", with the AC quads' failures
+/* PWORD -- p. 1040: "CHECK FOR PITCH COMMANDS", with the AC quads' failures
  * (RACFAIL) and X translation, and TABPCOM: the PYTABLE word. Its MASK
  * runs at the key TABPCOM +5. */
 static void pword(void)
@@ -155,8 +155,8 @@ static void pword(void)
 
 /* ---- The pitch, yaw and roll words -- pp. 1041-1043 ---- */
 
-/* TABPCOM +5: the pitch jets, PWORD1, and NPJETS, "NO. OF PITCH JETS".
- * YWORD and TABYCOM the same for yaw, with the BD quads' failures
+/* TABPCOM +5 -- p. 1041: the pitch jets, PWORD1, and NPJETS, "NO. OF PITCH
+ * JETS". YWORD and TABYCOM the same for yaw, with the BD quads' failures
  * (RBDFAIL) and X translation: YWORD1 and NYJETS. RWORD: "CHECK FOR ROLL
  * COMMANDS", and ACORBD's choice, "+, +0 = BD ROLL", "-, -0 = AC ROLL".
  * ACROLL: the AC quads' failures, or the Y translation (RXLNS), into
@@ -186,9 +186,9 @@ void tabpcom_pjets(void)
     tabrcom_rtable();
 }
 
-/* TABRCOM +1: the AC roll word from RTABLE, RWORD1. BDZCHECK: "CHECK FOR
- * Z-TRANSLATIONS ON BD", none (ZNDX +0 or less) at NOBDZ; else the BD
- * quads' failure bias, and on at BDZCHECK +7. */
+/* TABRCOM +1 -- p. 1043: the AC roll word from RTABLE, RWORD1. BDZCHECK:
+ * "CHECK FOR Z-TRANSLATIONS ON BD", none (ZNDX +0 or less) at NOBDZ; else
+ * the BD quads' failure bias, and on at BDZCHECK +7. */
 void tabrcom_rtable(void)
 {
     ca(table(ADDRESS_OF(RTABLE), a_word()));
@@ -205,19 +205,19 @@ void tabrcom_rtable(void)
 
 /* ---- Z translation on the BD quads -- p. 1044 ---- */
 
-/* BDZCHECK +7: the Z translation's XLN1NDX. */
+/* BDZCHECK +7 -- p. 1044: the Z translation's XLN1NDX. */
 void bdzcheck_index(void)
 {
     ad_at(table(ADDRESS_OF(XLN1NDX), fetch(ADDRESS_OF(ZNDX))));
     bdzcheck_yztable();
 }
 
-/* BDZCHECK +011: Z translation is possible "AS LONG AS ROLL COMMANDS CAN
- * BE SATISFIED WITH THE AC ROLL JETS": the YZTABLE word "ADD TO ROLL
- * COMMANDS" in T5TEMP, and NRJETS, "NET NO. OF +,- ROLL JETS ON" (its
+/* BDZCHECK +011 -- p. 1044: Z translation is possible "AS LONG AS ROLL
+ * COMMANDS CAN BE SATISFIED WITH THE AC ROLL JETS": the YZTABLE word "ADD TO
+ * ROLL COMMANDS" in T5TEMP, and NRJETS, "NET NO. OF +,- ROLL JETS ON" (its
  * bits 9-11 less 4). Not zero, ACRBDZ: "Z-TRANSLATION ACCEPTED". Zero,
- * TAUCHECK. (An overflow at the TS T5TEMP skips the EXTEND: MP BIT7 runs
- * as MASK BIT7. Either way A is small, and holds no overflow at the TS
+ * TAUCHECK. (An overflow at the TS T5TEMP skips the EXTEND: MP BIT7 runs as
+ * MASK BIT7. Either way A is small, and holds no overflow at the TS
  * NRJETS.) */
 void bdzcheck_yztable(void)
 {
@@ -236,8 +236,8 @@ void bdzcheck_yztable(void)
         acrbdz();
 }
 
-/* ACRBDZ: "Z-TRANSLATION ACCEPTED EVEN THO WE MAY HAVE INTRODUCED AN
- * UNDESIREABLE ROLL"; "BRANCH TO JET ON-TIME CALCULATIONS". */
+/* ACRBDZ -- p. 1044: "Z-TRANSLATION ACCEPTED EVEN THO WE MAY HAVE INTRODUCED
+ * AN UNDESIREABLE ROLL"; "BRANCH TO JET ON-TIME CALCULATIONS". */
 static void acrbdz(void)
 {
     ca(ADDRESS_OF(T5TEMP));
@@ -245,9 +245,9 @@ static void acrbdz(void)
     continue_at(ROLLTIME);
 }
 
-/* TAUCHECK: "IF THE RESULTANT NET ROLL COMMANDS = 0 (WITH Z-TRANSLATION)
- * AND IF TAU = 0, THEN INCLUDE THE BD Z-TRANSLATION COMMANDS"; with TAU
- * not zero, NOBDZ. */
+/* TAUCHECK -- p. 1044: "IF THE RESULTANT NET ROLL COMMANDS = 0 (WITH
+ * Z-TRANSLATION) AND IF TAU = 0, THEN INCLUDE THE BD Z-TRANSLATION
+ * COMMANDS"; with TAU not zero, NOBDZ. */
 static void taucheck(void)
 {
     switch (ccs_at(ADDRESS_OF(TAU))) {
@@ -257,8 +257,8 @@ static void taucheck(void)
     }
 }
 
-/* NOBDZ: "Z-TRANSLATION NOT ACCEPTED": NRJETS from the roll word alone
- * (bits 9-11 less 2), and the roll's on-time. (A, a small product less
+/* NOBDZ -- p. 1044: "Z-TRANSLATION NOT ACCEPTED": NRJETS from the roll word
+ * alone (bits 9-11 less 2), and the roll's on-time. (A, a small product less
  * 2, holds no overflow at the TS.) */
 void nobdz(void)
 {
@@ -271,9 +271,9 @@ void nobdz(void)
 
 /* ---- Roll on the BD quads, Y translation on AC -- pp. 1045-1046 ---- */
 
-/* BDROLL: "BD QUAD SELECTION FOR ROLL COMMANDS": the BD quads' failures,
- * or the Z translation (RZXLNS), into TABRZCMD: the BD roll word, RWORD1.
- * ACYCHECK: "ANY Y-TRANSLATION", none at NOACY; else the AC quads'
+/* BDROLL -- p. 1045: "BD QUAD SELECTION FOR ROLL COMMANDS": the BD quads'
+ * failures, or the Z translation (RZXLNS), into TABRZCMD: the BD roll word,
+ * RWORD1. ACYCHECK: "ANY Y-TRANSLATION", none at NOACY; else the AC quads'
  * failure bias, the Y translation's XLN1NDX, the YZTABLE word, and on at
  * ACYCHECK +014. */
 void bdroll(void)
@@ -295,9 +295,9 @@ void bdroll(void)
     continue_at(ACYCHECK + 014u);
 }
 
-/* ACYCHECK +014: added to the roll word in T5TEMP, and "FOR EXPLANATION
- * SEE CODING ON RTABLE": the net roll from bits 12-14. (An overflow at
- * the TS skips the EXTEND: MP BIT4 runs as MASK BIT4.) */
+/* ACYCHECK +014 -- p. 1045: added to the roll word in T5TEMP, and "FOR
+ * EXPLANATION SEE CODING ON RTABLE": the net roll from bits 12-14. (An
+ * overflow at the TS skips the EXTEND: MP BIT4 runs as MASK BIT4.) */
 void acycheck_rword1(void)
 {
     ad_at(ADDRESS_OF(RWORD1));
@@ -308,7 +308,7 @@ void acycheck_rword1(void)
     acycheck_net();
 }
 
-/* ACYCHECK +020: NRJETS, "NO. OF NET ROLL JETS"; "IF NRJETS = 0",
+/* ACYCHECK +020 -- p. 1045: NRJETS, "NO. OF NET ROLL JETS"; "IF NRJETS = 0",
  * TAUCHCK, else BDRACZ. (An overflow at the TS skips the EXTEND: the BZF
  * runs as TCF TAUCHCK.) */
 void acycheck_net(void)
@@ -320,7 +320,7 @@ void acycheck_net(void)
         bdracz();
 }
 
-/* BDRACZ: "Y-TRANSLATION ACCEPTED". */
+/* BDRACZ -- p. 1045: "Y-TRANSLATION ACCEPTED". */
 void bdracz(void)
 {
     ca(ADDRESS_OF(T5TEMP));
@@ -328,13 +328,13 @@ void bdracz(void)
     bdracz_rolltime();
 }
 
-/* BDRACZ +2: "BRANCH TO JET ON-TIME CALCULATIONS". */
+/* BDRACZ +2 -- p. 1045: "BRANCH TO JET ON-TIME CALCULATIONS". */
 void bdracz_rolltime(void)
 {
     continue_at(ROLLTIME);
 }
 
-/* TAUCHCK: as TAUCHECK, with TAU not zero NOACY, else BDRACZ. */
+/* TAUCHCK -- p. 1045: as TAUCHECK, with TAU not zero NOACY, else BDRACZ. */
 void tauchck(void)
 {
     switch (ccs_at(ADDRESS_OF(TAU))) {
@@ -344,9 +344,9 @@ void tauchck(void)
     }
 }
 
-/* NOACY: "Y-TRANSLATION NOT ACCEPTED": NRJETS from the roll word alone,
- * and the roll's on-time. (A, a small product less 2, holds no overflow
- * at the TS.) */
+/* NOACY -- p. 1046: "Y-TRANSLATION NOT ACCEPTED": NRJETS from the roll word
+ * alone, and the roll's on-time. (A, a small product less 2, holds no
+ * overflow at the TS.) */
 void noacy(void)
 {
     ca(ADDRESS_OF(RWORD1));

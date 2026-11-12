@@ -24,16 +24,17 @@
 
 /* ---- Verb 37, the major mode change (LM p. 447, CM p. 365) ---- */
 
-/* MMCHANG -- "ENTPASHI ASSUMES THE TC REQMM AT MMCHANG": the mode's two
- * digits are asked for, and come back at MMCHANG +1. */
+/* MMCHANG -- LM p. 447, CM p. 365: "ENTPASHI ASSUMES THE TC REQMM AT
+ * MMCHANG": the mode's two digits are asked for, and come back at MMCHANG
+ * +1. */
 void mmchang(void)
 {
     tc(MMCHANG, REQMM);
 }
 
-/* MMCHANG +1. "DEMAND THAT 2 NUM CHAR WERE PUNCHED IN" (DSPCOUNT = -ND2,
- * BIT5 being OCT20, ND2), or ALMCYCLE; the mode out of NOUNREG into MPAC,
- * and the noun lights blanked (ND1, 2BLANK). */
+/* MMCHANG +1 -- LM p. 447, CM p. 365. "DEMAND THAT 2 NUM CHAR WERE PUNCHED
+ * IN" (DSPCOUNT = -ND2, BIT5 being OCT20, ND2), or ALMCYCLE; the mode out of
+ * NOUNREG into MPAC, and the noun lights blanked (ND1, 2BLANK). */
 void mmchang_plus1(void)
 {
     set_A(BIT5); /* "OCT20 = ND2." */
@@ -50,9 +51,10 @@ void mmchang_plus1(void)
     tc(MMCHANG + 013u, BANKCALL); /* CADR 2BLANK */
 }
 
-/* MMCHANG +13, where 2BLANK returns. "BLOCK NUM CHAR IN" (DSPCOUNT -VD1),
- * and to V37 with the mode in A ("GO THRU STANDARD LOC.", MODROUTB). */
-void mmchang_plus13(void)
+/* MMCHANG +015 -- LM p. 447, CM p. 365, where 2BLANK returns. "BLOCK NUM
+ * CHAR IN" (DSPCOUNT -VD1), and to V37 with the mode in A ("GO THRU STANDARD
+ * LOC.", MODROUTB). */
+void mmchang_plus015(void)
 {
     set_A(negate(VD1));
     ts(ADDRESS_OF(DSPCOUNT));
@@ -60,9 +62,9 @@ void mmchang_plus13(void)
     tc(MMCHANG + 020u, POSTJUMP); /* CADR MODROUTB */
 }
 
-/* REQMM -- the return, complemented, into REQRET (minus for ENTER's
- * higher pass), the noun lights blanked and flashing, and DECBRNCH "SET
- * FOR DEC". */
+/* REQMM -- LM p. 447, CM p. 365: the return, complemented, into REQRET
+ * (minus for ENTER's higher pass), the noun lights blanked and flashing, and
+ * DECBRNCH "SET FOR DEC". */
 void reqmm(void)
 {
     cs(Q_ADDRESS);
@@ -87,9 +89,10 @@ void reqmm_plus8(void)
 
 static void reqex1_plus1(void);
 
-/* VBRQEXEC -- "ENTERS REQUEST TO EXEC FOR ANY ADDRESS WITH ANY PRIORITY":
- * noun 26's first component is the priority, "BIT1=0 FOR NOVAC, BIT1=1
- * FOR FINDVAC". TC NOVAC or TC FINDVAC goes into MPAC (REQEX1). */
+/* VBRQEXEC -- LM p. 447, CM p. 366: "ENTERS REQUEST TO EXEC FOR ANY ADDRESS
+ * WITH ANY PRIORITY": noun 26's first component is the priority, "BIT1=0 FOR
+ * NOVAC, BIT1=1 FOR FINDVAC". TC NOVAC or TC FINDVAC goes into MPAC
+ * (REQEX1). */
 void vbrqexec(void)
 {
     set_A(BIT1);
@@ -105,14 +108,14 @@ void vbrqexec(void)
     }
 }
 
-/* REQEX1 -- "TC NOVAC OR TC FINDVAC INTO MPAC". */
+/* REQEX1 -- LM p. 448, CM p. 366: "TC NOVAC OR TC FINDVAC INTO MPAC". */
 void reqex1(void)
 {
     if (ts(ADDRESS_OF(MPAC))) not_modelled();
     reqex1_plus1();
 }
 
-/* REQEX1 +1: the priority, without bit 1. */
+/* REQEX1 +1 -- LM p. 448, CM p. 366: the priority, without bit 1. */
 static void reqex1_plus1(void)
 {
     set_A(negate(BIT1));
@@ -120,24 +123,24 @@ static void reqex1_plus1(void)
     continue_at(REQEX1 + 3u);
 }
 
-/* REQEX1 +3 (REQUESTC -1, where verb 31 comes in with the delay): "PRIO
- * INTO MPAC+4 AS A TEMP". */
+/* REQEX1 +3 -- LM p. 448, CM p. 366 (REQUESTC -1, where verb 31 comes in
+ * with the delay): "PRIO INTO MPAC+4 AS A TEMP". */
 void reqex1_plus3(void)
 {
     if (ts(ADDRESS_OF(MPAC) + 4u)) not_modelled();
     continue_at(REQUESTC);
 }
 
-/* REQUESTC -- the display system released (RELDSP). */
+/* REQUESTC -- LM p. 448, CM p. 366: the display system released (RELDSP). */
 void requestc(void)
 {
     tc(REQUESTC, RELDSP);
 }
 
-/* REQUESTC +1. "TC ENDOFJOB INTO MPAC+3", the "JOB ADRES INTO MPAC+1"
- * and "BBCON INTO MPAC+2", the priority or delay in A, and with interrupts
- * off TC MPAC: NOVAC, FINDVAC or WAITLIST with the 2CADR after it, coming
- * back to MPAC +3's TC ENDOFJOB. */
+/* REQUESTC +1 -- LM p. 448, CM p. 366. "TC ENDOFJOB INTO MPAC+3", the "JOB
+ * ADRES INTO MPAC+1" and "BBCON INTO MPAC+2", the priority or delay in A,
+ * and with interrupts off TC MPAC: NOVAC, FINDVAC or WAITLIST with the 2CADR
+ * after it, coming back to MPAC +3's TC ENDOFJOB. */
 void requestc_plus1(void)
 {
     set_A(ENDINST);
@@ -149,15 +152,16 @@ void requestc_plus1(void)
     tc(REQUESTC + 010u, ADDRESS_OF(MPAC));
 }
 
-/* SETVAC -- TC FINDVAC for REQEX1. */
+/* SETVAC -- LM p. 448, CM p. 366: TC FINDVAC for REQEX1. */
 void setvac(void)
 {
     set_A(TCFINDVC);
     tc(SETVAC + 1u, REQEX1);
 }
 
-/* VBRQWAIT -- "ENTERS REQUEST TO WAITLIST FOR ANY ADDRESS WITH ANY DELAY":
- * "TC WAITLIST INTO MPAC", and the "TIME DELAY" in A. */
+/* VBRQWAIT -- LM p. 448, CM p. 366: "ENTERS REQUEST TO WAITLIST FOR ANY
+ * ADDRESS WITH ANY DELAY": "TC WAITLIST INTO MPAC", and the "TIME DELAY" in
+ * A. */
 void vbrqwait(void)
 {
     set_A(TCWAIT);
@@ -173,10 +177,10 @@ void endrqwt(void)
 
 /* ---- Verbs 32-34 and PRO (LM pp. 448-449, CM pp. 366-367) ---- */
 
-/* VBPROC -- verb 34, "PROCEED WITHOUT DATA": LOADSTAT +1. Verb 34 (VBTERM)
- * sets it -1 and verb 32 (VBRESEQ) -0 at VBPROC +1. Then the monitor is
- * killed (KILMONON), the display system released, the flash turned off,
- * and RECALTST wakes the routine waiting in ENDIDLE. */
+/* VBPROC -- LM p. 448, CM p. 366: verb 34, "PROCEED WITHOUT DATA": LOADSTAT
+ * +1. Verb 34 (VBTERM) sets it -1 and verb 32 (VBRESEQ) -0 at VBPROC +1.
+ * Then the monitor is killed (KILMONON), the display system released, the
+ * flash turned off, and RECALTST wakes the routine waiting in ENDIDLE. */
 void vbproc(void)
 {
     set_A(ONE);
@@ -205,15 +209,16 @@ void vbproc_plus5(void)
     tc(VBPROC + 5u, RECALTST); /* "SEE IF THERE IS ANY RECALL FROM ENDIDLE" */
 }
 
-/* VBTERM -- verb 34: "TERM VERB SETS LOADSTAT NEG". */
+/* VBTERM -- LM p. 448, CM p. 367: verb 34: "TERM VERB SETS LOADSTAT NEG". */
 void vbterm(void)
 {
     set_A(negate(ONE));
     tc(VBTERM + 1u, VBPROC + 1u);
 }
 
-/* PROCKEY -- "PERFORMS THE SAME FUNCTION AS VBPROC": "SET REQRET FOR ENTER
- * PASS 0" and "BLOCK NUMERICAL CHARACTERS, SIGNS, CLEAR". */
+/* PROCKEY -- LM p. 449, CM p. 367: "PERFORMS THE SAME FUNCTION AS VBPROC":
+ * "SET REQRET FOR ENTER PASS 0" and "BLOCK NUMERICAL CHARACTERS, SIGNS,
+ * CLEAR". */
 void prockey(void)
 {
     set_A(ZERO);
@@ -223,7 +228,8 @@ void prockey(void)
     tc(PROCKEY + 4u, VBPROC);
 }
 
-/* VBRESEQ -- verb 32: "MAKE IT LOOK LIKE DATA IN" (CS ZERO, -0). */
+/* VBRESEQ -- LM p. 449, CM p. 367: verb 32: "MAKE IT LOOK LIKE DATA IN" (CS
+ * ZERO, -0). */
 void vbreseq(void)
 {
     set_A(negate(ZERO));
@@ -232,9 +238,9 @@ void vbreseq(void)
 
 /* ---- Key release (LM p. 450, CM p. 368) ---- */
 
-/* VBRELDSP -- "ALWAYS TURNS OFF THE UPACT LIGHT" (bit 3 of channel 11).
- * With the old DSPLOCK (21/22REG, as KEYRUPT left it) and the external
- * monitor bit both set, UNSUSPEN; otherwise TSTLTS4. Each CCS's
+/* VBRELDSP -- LM p. 450, CM p. 368: "ALWAYS TURNS OFF THE UPACT LIGHT" (bit
+ * 3 of channel 11). With the old DSPLOCK (21/22REG, as KEYRUPT left it) and
+ * the external monitor bit both set, UNSUSPEN; otherwise TSTLTS4. Each CCS's
  * other outcomes run on in the listing's words. */
 void vbreldsp(void)
 {
@@ -261,9 +267,9 @@ void vbreldsp(void)
     }
 }
 
-/* TSTLTS4 -- "NOT UNSUSPENDING EXTERNAL MONITOR, RELEASE DISPLAY SYSTEM
- * AND DO RE-ESTABLISH IF CADRSTOR IS FULL": PINBRNCH re-runs the NVSUB
- * calls of the job waiting in ENDIDLE. */
+/* TSTLTS4 -- LM p. 450, CM p. 368: "NOT UNSUSPENDING EXTERNAL MONITOR,
+ * RELEASE DISPLAY SYSTEM AND DO RE-ESTABLISH IF CADRSTOR IS FULL": PINBRNCH
+ * re-runs the NVSUB calls of the job waiting in ENDIDLE. */
 void tstlts4(void)
 {
     tc_at(TSTLTS4);
@@ -279,9 +285,9 @@ void tstlts4(void)
     tc(TSTLTS4 + 4u, POSTJUMP); /* CADR PINBRNCH */
 }
 
-/* UNSUSPEN -- "EXTERNAL MONITOR IS SUSPENDED, JUST UNSUSPEND IT BY
- * CLEARING DSPLOCK", and "TURN KEY RELEASE LIGHT OFF IF BOTH CADRSTOR AND
- * DSPLIST ARE EMPTY" (RELDSP1). */
+/* UNSUSPEN -- LM p. 450, CM p. 368: "EXTERNAL MONITOR IS SUSPENDED, JUST
+ * UNSUSPEND IT BY CLEARING DSPLOCK", and "TURN KEY RELEASE LIGHT OFF IF BOTH
+ * CADRSTOR AND DSPLIST ARE EMPTY" (RELDSP1). */
 void unsuspen(void)
 {
     set_A(ZERO);

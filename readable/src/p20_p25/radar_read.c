@@ -38,7 +38,7 @@
 
 static void initread(void);
 
-/* INITREAD -1: "ENTRY TO TAKE ONLY 1 SAMPLE" */
+/* INITREAD -1 -- p. 554: "ENTRY TO TAKE ONLY 1 SAMPLE" */
 static void initread_one_sample(void)
 {
     set_A(ONE);
@@ -86,7 +86,8 @@ void rrrange(void)
     initread_one_sample();
 }
 
-/* LRVEL: "THE ENTRY TO THE LR VELOCITY READ ROUTINE WHEN 5 SAMPLES ARE
+/* LRVEL -- p. 553: "THE ENTRY TO THE LR VELOCITY READ ROUTINE WHEN 5 SAMPLES
+ * ARE
  * WANTED.  ENTER WITH C(A)= 0,2,4 FOR LRVELZ,LRVELY,LRVELX RESP." The
  * index waits in TIMEHOLD ("STORE VBEAM INDEX HERE MOMENTARILY"; a TS that
  * overflows skips the CAF FIVE), and INDEX TIMEHOLD makes the TCF LRVELZ a
@@ -182,7 +183,8 @@ void radaread_after_alarm(void)
     tc_to(TRYCOUNT + 5u, RESUME);
 }
 
-/* NOMORE: no tries left. "IS LRBYPASS SET?" "NO.  R12 IS ON -- BYPASS 521
+/* NOMORE -- p. 555: no tries left. "IS LRBYPASS SET?" "NO.  R12 IS ON --
+ * BYPASS 521
  * ALARM." Nor while R04 runs ("IF 1, R04 IS RUNNING.  DO NOT ALARM"):
  * else "P20 WANTS THE ALARM." */
 void nomore(void)
@@ -219,7 +221,8 @@ static void rgoodend_from_interrupt(void)
     continue_at(RGOODEND);
 }
 
-/* BADRAD: SAMPLIM -1 (no more readings wanted), and the bad end. */
+/* BADRAD -- p. 555: SAMPLIM -1 (no more readings wanted), and the bad
+ * end. */
 void badrad(void)
 {
     set_A(negate(ONE));
@@ -230,9 +233,10 @@ void badrad(void)
 
 static void r77check(void);
 
-/* PLENTY: SAMPLIM the tries left, less one (a TS that overflows skips the
- * CAF BIT3). Channel 13 bit 3 "TO FIND OUT WHICH RADAR": the rendezvous
- * radar's (RENDRAD), else the landing radar's, which "R77 QUITS HERE." */
+/* PLENTY -- p. 555: SAMPLIM the tries left, less one (a TS that overflows
+ * skips the CAF BIT3). Channel 13 bit 3 "TO FIND OUT WHICH RADAR": the
+ * rendezvous radar's (RENDRAD), else the landing radar's, which "R77 QUITS
+ * HERE." */
 void plenty(void)
 {
     if (!ts(ADDRESS_OF(SAMPLIM))) set_A(BIT3);
@@ -245,8 +249,8 @@ void plenty(void)
     r77check();
 }
 
-/* LRPOSCHK: "SEE IF LR IN DESIRED POSITION" (RADMODES bit 6, channel 33
- * bit 6), else alarm 522 and BADRAD. */
+/* LRPOSCHK -- p. 556: "SEE IF LR IN DESIRED POSITION" (RADMODES bit 6,
+ * channel 33 bit 6), else alarm 522 and BADRAD. */
 void lrposchk(void)
 {
     ca(ADDRESS_OF(RADMODES));
@@ -266,12 +270,12 @@ void lrposchk_after_alarm(void)
 
 static void dgcheck(void);
 
-/* VELCHK: channel 13 bits 1-2 both set (LRALT's select bits): "TAKE A LR
- * RANGE READING" (LRHEIGHT). Else a velocity beam's: the count less its
- * bias, LVELBIAS ("LANDING RADAR BIAS FOR 153.6 KC."), to ITEMP3 +1, and
- * its bit 15 to ITEMP3; then DGCHECK for the velocity's data good bit
- * (channel 33 bit 8): "DATA GOOD ISN'T CHECKED UNTIL AFTER READ- ING DATA
- * SO SOME RADAR TESTS WILL WORK INDEPENDENT OF DATA GOOD." */
+/* VELCHK -- p. 556: channel 13 bits 1-2 both set (LRALT's select bits):
+ * "TAKE A LR RANGE READING" (LRHEIGHT). Else a velocity beam's: the count
+ * less its bias, LVELBIAS ("LANDING RADAR BIAS FOR 153.6 KC."), to ITEMP3
+ * +1, and its bit 15 to ITEMP3; then DGCHECK for the velocity's data good
+ * bit (channel 33 bit 8): "DATA GOOD ISN'T CHECKED UNTIL AFTER READ- ING
+ * DATA SO SOME RADAR TESTS WILL WORK INDEPENDENT OF DATA GOOD." */
 void velchk(void)
 {
     set_A(THREE); /* BIN3 */
@@ -297,8 +301,9 @@ void velchk(void)
 static void goodrad_tries_done(void);
 static void goodrad_fail_bit_off(void);
 
-/* After DGCHECK: samples still wanted (NOEND), or GOODRAD. (A negative
- * NSAMP, or -0, runs into GOODRAD past its CS ONE, or past its TS.) */
+/* VELCHK +020 -- p. 556: After DGCHECK: samples still wanted (NOEND), or
+ * GOODRAD. (A negative NSAMP, or -0, runs into GOODRAD past its CS ONE, or
+ * past its TS.) */
 void velchk_after_dgcheck(void)
 {
     switch (ccs_at(ADDRESS_OF(NSAMP))) {
@@ -311,9 +316,9 @@ void velchk_after_dgcheck(void)
 
 static void radlites(void);
 
-/* GOODRAD: SAMPLIM -1, and "WHEN ENOUGH GOOD DATA HAS BEEN GATHERED, RESET
- * DATA FAIL FLAGS FOR SETTRKF." (ITEMP1's bit in RADMODES); "LAMPS MAY GO
- * OFF IF DATA JUST GOOD." Then the good end. */
+/* GOODRAD -- p. 556: SAMPLIM -1, and "WHEN ENOUGH GOOD DATA HAS BEEN
+ * GATHERED, RESET DATA FAIL FLAGS FOR SETTRKF." (ITEMP1's bit in RADMODES);
+ * "LAMPS MAY GO OFF IF DATA JUST GOOD." Then the good end. */
 void goodrad(void)
 {
     set_A(negate(ONE));
@@ -351,8 +356,9 @@ static void resample_resume(void)
     tc_to(RESAMPLE + 6u, RESUME);
 }
 
-/* RESAMPLE: "SEE IF ANY MORE TRIES SHOULD BE MADE." None left: DATAFAIL,
- * "N SAMPLES NOT AVAILABLE." (SAMPLIM -0 puts A +0 in the channel.) */
+/* RESAMPLE -- p. 556: "SEE IF ANY MORE TRIES SHOULD BE MADE." None left:
+ * DATAFAIL, "N SAMPLES NOT AVAILABLE." (SAMPLIM -0 puts A +0 in the
+ * channel.) */
 static void resample(void)
 {
     switch (ccs_at(ADDRESS_OF(SAMPLIM))) {
@@ -364,7 +370,7 @@ static void resample(void)
     resample_resume();
 }
 
-/* NOEND: one sample fewer still wanted. (A TS that overflows skips
+/* NOEND -- p. 556: one sample fewer still wanted. (A TS that overflows skips
  * RESAMPLE's CCS, to its TCF +2.) */
 void noend(void)
 {
@@ -391,12 +397,12 @@ void lrheight(void)
     scalechk_with_bit();
 }
 
-/* RENDRAD: the rendezvous radar's reading. "MAKE SURE ANTENNA HAS NOT GONE
- * OUT OF LIMITS." (a reposition, REPOSBIT) and "BE SURE RR CDU HASN'T
- * FAILED." (RCDUFBIT), else BADRAD. Its data good bit is channel 33 bit 4;
- * Q gets channel 13 bit 1 "FOR LATER TESTING.": set for the range, which
- * has a scale bit (channel 33 bit 3), clear for the range rate: "NO SCALE
- * CHECK FOR RR RDOT." */
+/* RENDRAD -- p. 557: the rendezvous radar's reading. "MAKE SURE ANTENNA HAS
+ * NOT GONE OUT OF LIMITS." (a reposition, REPOSBIT) and "BE SURE RR CDU
+ * HASN'T FAILED." (RCDUFBIT), else BADRAD. Its data good bit is channel 33
+ * bit 4; Q gets channel 13 bit 1 "FOR LATER TESTING.": set for the range,
+ * which has a scale bit (channel 33 bit 3), clear for the range rate: "NO
+ * SCALE CHECK FOR RR RDOT." */
 void rendrad(void)
 {
     set_A(REPOSBIT);
@@ -424,8 +430,8 @@ void rendrad(void)
     scalechk_with_bit();
 }
 
-/* SCALECHK -1: L gets the radar's scale bit (A); SCALECHK compares the
- * "SCALE STATUS NOW" (channel 33) with the "SCALE STATUS BEFORE"
+/* SCALECHK -1 -- p. 557: L gets the radar's scale bit (A); SCALECHK compares
+ * the "SCALE STATUS NOW" (channel 33) with the "SCALE STATUS BEFORE"
  * (RADMODES): "SEE IF THEY DIFFER". "THEY DIFFER.": SCALCHNG. */
 static void scalechk_with_bit(void)
 {
@@ -444,7 +450,8 @@ static void scalechk_with_bit(void)
 static void scaladj(void);
 static void dgcheck_plus1(void);
 
-/* DGCHECK2: "SEE THAT DATA HAS BEEN GOOD BEFORE AND AFTER TAKING SAMPLE." */
+/* DGCHECK2 -- p. 558: "SEE THAT DATA HAS BEEN GOOD BEFORE AND AFTER TAKING
+ * SAMPLE." */
 static void dgcheck2(void)
 {
     ca(ADDRESS_OF(ITEMP1));
@@ -452,18 +459,18 @@ static void dgcheck2(void)
     dgcheck_plus1();
 }
 
-/* DASAMPL: a correction (A, L) added to the sample in ITEMP3. */
+/* DASAMPL -- p. 558: a correction (A, L) added to the sample in ITEMP3. */
 static void dasampl(void)
 {
     das(ADDRESS_OF(ITEMP3));
     dgcheck2();
 }
 
-/* RADIN: the count, bits 1-14 to ITEMP4 and bit 15 to ITEMP3 (the sample,
- * double precision). Not the RR RDOT (Q positive): SCALADJ, "NO, BUT SCALE
- * CHANGING MAY BE NEEDED."; else "IF RR RANGE RATE, THROW OUT BIAS"
- * (RDOTBIAS, "BIAS COUNT FOR RR RANGE RATE."). (Q -0 adds +0; not
- * modelled: a negative Q.) */
+/* RADIN -- p. 557: the count, bits 1-14 to ITEMP4 and bit 15 to ITEMP3 (the
+ * sample, double precision). Not the RR RDOT (Q positive): SCALADJ, "NO, BUT
+ * SCALE CHANGING MAY BE NEEDED."; else "IF RR RANGE RATE, THROW OUT BIAS"
+ * (RDOTBIAS, "BIAS COUNT FOR RR RANGE RATE."). (Q -0 adds +0; not modelled:
+ * a negative Q.) */
 void radin(void)
 {
     set_A(POSMAX);
@@ -487,10 +494,10 @@ void dgcheck2_after_dgcheck(void)
     tc_to(DGCHECK2 + 2u, GOODRAD);
 }
 
-/* SCALCHNG: RADMODES's scale bit (A, the bit that differs, less one)
- * changed to the new scale, the data good bits updated ("UPDATE LAST VALUE
- * OF DATA GOOD BITS."), and RNGSCFLG set "FOR LRS24.1"; this reading is
- * bad. (A TS that overflows skips the CAF DGBITS.) */
+/* SCALCHNG -- p. 558: RADMODES's scale bit (A, the bit that differs, less
+ * one) changed to the new scale, the data good bits updated ("UPDATE LAST
+ * VALUE OF DATA GOOD BITS."), and RNGSCFLG set "FOR LRS24.1"; this reading
+ * is bad. (A TS that overflows skips the CAF DGBITS.) */
 void scalchng(void)
 {
     lxch(ADDRESS_OF(RADMODES));
@@ -507,7 +514,7 @@ void scalchng_after_upflag(void)
     continue_at(BADRAD);
 }
 
-/* R77CHECK: "R77 MUST IGNORE DATA FAILS SO AS NOT TO DISTURB THE
+/* R77CHECK -- p. 558: "R77 MUST IGNORE DATA FAILS SO AS NOT TO DISTURB THE
  * ASTRONAUT." "NOT R77": back to LRPOSCHK. In R77, "UPDATE LR DATA GOOD
  * BITS IN RADMODES" (bits 5 and 8, from channel 33) and end the reading
  * at RGOODEND. */
@@ -558,11 +565,12 @@ static void scaladj(void)
     dgcheck2();
 }
 
-/* LRSCK: the altitude on the high scale. A count of 2^14 or more (ITEMP3
- * 1), or one over HISCALIM ("2481.7 FT"), clears the scale-bad flag
+/* LRSCK -- p. 559: the altitude on the high scale. A count of 2^14 or more
+ * (ITEMP3 1), or one over HISCALIM ("2481.7 FT"), clears the scale-bad flag
  * (FLGWRD11 bit 3, SCABBIT, set when the LR's low scale discrete is not
- * present when it should be), a lower one sets it. The sample times 5 (DASAMPL adds it
- * times 4). Not modelled: a negative ITEMP3, or -0 (RADIN sets 0 or 1). */
+ * present when it should be), a lower one sets it. The sample times 5
+ * (DASAMPL adds it times 4). Not modelled: a negative ITEMP3, or -0 (RADIN
+ * sets 0 or 1). */
 static void lrsck(void)
 {
     bool scale_bad;
@@ -630,7 +638,8 @@ static void dgcheck_plus1(void)
     }
 }
 
-/* "IF DATA GOOD BEFORE AND AFTER, ADD TO ACCUMULATION." */
+/* DGCHECK +014 -- p. 560: "IF DATA GOOD BEFORE AND AFTER, ADD TO
+ * ACCUMULATION." */
 void dgcheck_good(void)
 {
     dxch(ADDRESS_OF(ITEMP3));
@@ -638,9 +647,9 @@ void dgcheck_good(void)
     tc_q();
 }
 
-/* DATAFAIL: "IN THE ABOVE CASE, SET RADMODES BIT SHOWING SOME RADAR DATA
- * FAILED." "IF WE HAVE BEEN UNABLE TO GATHER N SAMPLES, USE LAST ONE
- * ONLY." The lamps, and NOMORE. */
+/* DATAFAIL -- p. 560: "IN THE ABOVE CASE, SET RADMODES BIT SHOWING SOME
+ * RADAR DATA FAILED." "IF WE HAVE BEEN UNABLE TO GATHER N SAMPLES, USE LAST
+ * ONE ONLY." The lamps, and NOMORE. */
 static void datafail(void)
 {
     cs(ADDRESS_OF(ITEMP1));
@@ -693,18 +702,19 @@ void radnoop_after_waitlist(void)
     tc_to(RADNOOP + 4u, ROADBACK);
 }
 
-/* LRPOSNXT: "SCAN ONCE PER SECOND 15 TIMES MAX AFTER INITIAL DELAY OF 7
- * SECONDS." SAMPLIM counts the scans. Not modelled: an A with overflow. */
+/* LRPOSNXT -- p. 561: "SCAN ONCE PER SECOND 15 TIMES MAX AFTER INITIAL DELAY
+ * OF 7 SECONDS." SAMPLIM counts the scans. Not modelled: an A with
+ * overflow. */
 void lrposnxt(void)
 {
     if (ts(ADDRESS_OF(SAMPLIM))) not_modelled();
     tc_to(LRPOSNXT + 1u, FIXDELAY); /* DEC 100 */
 }
 
-/* "SEE IF LR POS2 IS ON": "IF THERE, WAIT FINAL SECOND FOR BOUNCE."
- * (LASTLRDT). "SEE IF MAX TIME UP.": "IF TIME UP, DISABLE COMMAND AND
- * ALARM." (A negative SAMPLIM takes the WAND with A as CCS leaves it; not
- * modelled: -0.) */
+/* LRPOSNXT +3 -- p. 561: "SEE IF LR POS2 IS ON": "IF THERE, WAIT FINAL
+ * SECOND FOR BOUNCE." (LASTLRDT). "SEE IF MAX TIME UP.": "IF TIME UP,
+ * DISABLE COMMAND AND ALARM." (A negative SAMPLIM takes the WAND with A as
+ * CCS leaves it; not modelled: -0.) */
 void lrposnxt_after_fixdelay(void)
 {
     set_A(BIT7);
@@ -738,7 +748,7 @@ void lastlrdt_after_vardelay(void)
     continue_at(RGOODEND);
 }
 
-/* LRPOSCAN: the task. "SET UP FOR 15 SAMPLES." */
+/* LRPOSCAN -- p. 562: the task. "SET UP FOR 15 SAMPLES." */
 void lrposcan(void)
 {
     set_A(FOURTEEN);
@@ -783,10 +793,10 @@ void r12lites_after_vlight(void)
     continue_at(ISWRETRN);
 }
 
-/* RADLITES: after a reading, the lamp of the data good bit in ITEMP1
- * (nothing during a lamp test): channel 33 bit 8 the V lamp (VLIGHT, ITEMP5
- * -1), bit 5 (the -0 of ITEMP1 less BIT5) the H lamp (HLIGHT, ITEMP5 +0),
- * bit 4 the rendezvous radar's tracker lamp only (RRTRKF). */
+/* RADLITES -- p. 612: after a reading, the lamp of the data good bit in
+ * ITEMP1 (nothing during a lamp test): channel 33 bit 8 the V lamp (VLIGHT,
+ * ITEMP5 -1), bit 5 (the -0 of ITEMP1 less BIT5) the H lamp (HLIGHT, ITEMP5
+ * +0), bit 4 the rendezvous radar's tracker lamp only (RRTRKF). */
 static void radlites(void)
 {
     set_A(BIT1);
@@ -811,9 +821,9 @@ static void radlites(void)
 static void bothlits(void);
 static void onlites(void);
 
-/* HLIGHT: "ZERO ITEMP5 FOR H INDEX"; the H lamp (DSPTAB +11D bit 5, HLITE)
- * on when the scale is bad (SCABBIT) or the altitude failed (RADMODES bit
- * 5, LRALTBIT). */
+/* HLIGHT -- p. 612: "ZERO ITEMP5 FOR H INDEX"; the H lamp (DSPTAB +11D bit
+ * 5, HLITE) on when the scale is bad (SCABBIT) or the altitude failed
+ * (RADMODES bit 5, LRALTBIT). */
 static void hlight(void)
 {
     ts(ADDRESS_OF(ITEMP5));
@@ -829,8 +839,8 @@ static void hlight(void)
     bothlits();
 }
 
-/* VLIGHT: ITEMP5 the V index (-1); the V lamp (DSPTAB +11D bit 3, VLITE)
- * on when the velocity failed (RADMODES bit 8, LRVELBIT). */
+/* VLIGHT -- p. 613: ITEMP5 the V index (-1); the V lamp (DSPTAB +11D bit 3,
+ * VLITE) on when the velocity failed (RADMODES bit 8, LRVELBIT). */
 static void vlight(void)
 {
     ts(ADDRESS_OF(ITEMP5));
@@ -842,10 +852,10 @@ static void vlight(void)
 
 static void litit(void);
 
-/* BOTHLITS: A the lamp's fail bit in RADMODES. Failed: ONLITES. Else the
- * lamp's flash bit in FLGWRD11 (INDEX ITEMP5; MASK HFLSHBIT: bit 1 for H,
- * bit 2 for V): a flashing lamp is left as it is (RRTRKF); else LITIT puts
- * it off (A +0). */
+/* BOTHLITS -- p. 612: A the lamp's fail bit in RADMODES. Failed: ONLITES.
+ * Else the lamp's flash bit in FLGWRD11 (INDEX ITEMP5; MASK HFLSHBIT: bit 1
+ * for H, bit 2 for V): a flashing lamp is left as it is (RRTRKF); else LITIT
+ * puts it off (A +0). */
 static void bothlits(void)
 {
     mask_at(ADDRESS_OF(RADMODES));
@@ -877,7 +887,7 @@ void litit_after_trkflon(void)
     rrtrkf();
 }
 
-/* ONLITES: the lamp's flash bit off, and the lamp on (A, L). */
+/* ONLITES -- p. 613: the lamp's flash bit off, and the lamp on (A, L). */
 static void onlites(void)
 {
     cs(indexed(ADDRESS_OF(HFLSHBIT), fetch(ADDRESS_OF(ITEMP5))));

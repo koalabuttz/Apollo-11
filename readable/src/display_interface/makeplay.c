@@ -72,8 +72,8 @@ void oktocopy(void)
     continue_at(JOBWAKE);
 }
 
-/* OKTOCOPY +3, where JOBWAKE returns: the woken job to ENDOFJOB
- * (XCHTOEND), and REDOPRIO. */
+/* OKTOCOPY +3 -- LM p. 1359, CM p. 1470, where JOBWAKE returns: the woken
+ * job to ENDOFJOB (XCHTOEND), and REDOPRIO. */
 void oktocopy_after_jobwake(void)
 {
     tc_at((word)(OKTOCOPY + 3u));
@@ -117,8 +117,8 @@ void priobort(void)
     continue_at(POODOO);
 }
 
-/* MAKEPRIO +4, LINUSCHR's Q+1 return (not a LINUS): "IS PRIO IN ENDIDLE
- * OR BUSY": "YES, ABORT"; if not HIPRIO. */
+/* MAKEPRIO +4 -- LM p. 1358, CM p. 1469, LINUSCHR's Q+1 return (not a
+ * LINUS): "IS PRIO IN ENDIDLE OR BUSY": "YES, ABORT"; if not HIPRIO. */
 void makeprio_after_linuschr(void)
 {
     ca(ADDRESS_OF(FLAGWRD4));
@@ -142,8 +142,8 @@ void makeprio(void)
     if (Z == MAKEPRIO + 3u) hiprio();
 }
 
-/* OKTOPLAY +015, where JOBWAKE returns: the woken job to ENDOFJOB
- * (XCHTOEND), and PLAYJUM1. */
+/* OKTOPLAY +015 -- LM p. 1360, CM p. 1471, where JOBWAKE returns: the woken
+ * job to ENDOFJOB (XCHTOEND), and PLAYJUM1. */
 void oktoplay_after_jobwake(void)
 {
     tc_at((word)(OKTOPLAY + 015u));
@@ -174,9 +174,10 @@ void oktoplay(void)
     continue_at(JOBWAKE);
 }
 
-/* IFLEGAL +4, LINUSCHR's Q+1 return (not a LINUS): a NORMAL display may
- * go out if the last one was not a flashing one (EBANKTEM bit 4), or if
- * not, unless "ARE ANY NORMS ASLEEP" finds one; then PRIOBORT. */
+/* IFLEGAL +4 -- LM p. 1359, CM p. 1470, LINUSCHR's Q+1 return (not a LINUS):
+ * a NORMAL display may go out if the last one was not a flashing one
+ * (EBANKTEM bit 4), or if not, unless "ARE ANY NORMS ASLEEP" finds one; then
+ * PRIOBORT. */
 void iflegal_after_linuschr(void)
 {
     cs(ADDRESS_OF(EBANKTEM));
@@ -217,10 +218,10 @@ void makeplay(void)
     continue_at(PRIOCHNG);
 }
 
-/* MAKEPLAY +5, where PRIOCHNG returns: "IS IT MARK OR PRIO OR NORM"
- * (PLAYTEM4 bits 15 and 7): "ITS PRIO", IFLEGAL for a NORMAL display,
- * "ITS MARK". MAKEMARK's ways on to SETNORM and PRIOPLAY are taken here
- * too, as the faithful port takes them. */
+/* MAKEPLAY +5 -- LM p. 1359, CM p. 1470, where PRIOCHNG returns: "IS IT MARK
+ * OR PRIO OR NORM" (PLAYTEM4 bits 15 and 7): "ITS PRIO", IFLEGAL for a
+ * NORMAL display, "ITS MARK". MAKEMARK's ways on to SETNORM and PRIOPLAY are
+ * taken here too, as the faithful port takes them. */
 void makeplay_after_priochng(void)
 {
     ca(ADDRESS_OF(PLAYTEM4));

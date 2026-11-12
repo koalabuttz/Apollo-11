@@ -65,16 +65,16 @@ void tc_through_computed(unsigned address)
 
 /* ---- SERVICER -- pp. 860-861 ---- */
 
-/* SERVICER: "RESTART REREADAC + SERVICER" (PHASCHNG, OCT 16035, OCT 20000,
- * 2CADR GETABVAL), ... */
+/* SERVICER -- p. 860: "RESTART REREADAC + SERVICER" (PHASCHNG, OCT 16035,
+ * OCT 20000, 2CADR GETABVAL), ... */
 void servicer(void)
 {
     tc_to(SERVICER, PHASCHNG);
 }
 
-/* ... 1/PIPADT "IN CASE RESTART HAS CAUSED LASTBIAS TO BE SKIPPED.", and
- * the "PIPA COMPENSATION CALL" (1/PIPA, through BANKCALL), on to
- * GETABVAL. */
+/* SERVICER +5 -- p. 860: ... 1/PIPADT "IN CASE RESTART HAS CAUSED LASTBIAS
+ * TO BE SKIPPED.", and the "PIPA COMPENSATION CALL" (1/PIPA, through
+ * BANKCALL), on to GETABVAL. */
 void servicer_after_phaschng(void)
 {
     set_A(PRIO31);
@@ -82,7 +82,7 @@ void servicer_after_phaschng(void)
     tc_to(SERVICER + 7u, BANKCALL); /* CADR 1/PIPA */
 }
 
-/* GETABVAL: to the interpreter, for GETABVAL_CODE. */
+/* GETABVAL -- p. 860: to the interpreter, for GETABVAL_CODE. */
 void getabval(void)
 {
     tc_at(GETABVAL);
@@ -99,8 +99,9 @@ static const word getabval_words[] = {
 const struct interpretive_code GETABVAL_CODE = {033u, GETABVAL + 1u, COUNT(getabval_words),
                                                 getabval_words};
 
-/* After the EXIT: "ABDELV = CM/SEC*2(-14).", "ABDVCONV = M/CS * 2(-5).",
- * and MASS1 the mass, "IN CASE WE SKIP MASSMON"; on to MASSMON. */
+/* GETABVAL +4 -- p. 860: After the EXIT: "ABDELV = CM/SEC*2(-14).",
+ * "ABDVCONV = M/CS * 2(-5).", and MASS1 the mass, "IN CASE WE SKIP MASSMON";
+ * on to MASSMON. */
 void getabval_after_exit(void)
 {
     ca(MPAC_AT(0u));
@@ -112,16 +113,16 @@ void getabval_after_exit(void)
     massmon();
 }
 
-/* MASSMON: "ARE WE ON THE SURFACE?" (SURFFLAG): if so, "BYPASS MASS
- * MESS". Else the mass the burn used, from the rocket equation over one
+/* MASSMON -- p. 860: "ARE WE ON THE SURFACE?" (SURFFLAG): if so, "BYPASS
+ * MASS MESS". Else the mass the burn used, from the rocket equation over one
  * cycle: the change ABDVCONV over the exhaust velocity, times the mass,
- * added to MASS1. The exhaust velocities are stored negative, so MASS1
- * goes down by the mass the cycle's burn used. The exhaust
- * velocity is the ascent engine's, APSVEX, with APSFLAG set; else the
- * descent engine's, DPSVEX. That is the word after APSVEX, and the code
- * reads it with the DCA's own word: with APSFLAG clear the CCS skips the
- * EXTEND and runs the DCA word as CA APSVEX +1. ("IF EXTEND IS EXECUTED,
- * APSVEX --> A, OTHERWISE DPSVEX --> A"; a MASK leaves no negative.) */
+ * added to MASS1. The exhaust velocities are stored negative, so MASS1 goes
+ * down by the mass the cycle's burn used. The exhaust velocity is the ascent
+ * engine's, APSVEX, with APSFLAG set; else the descent engine's, DPSVEX.
+ * That is the word after APSVEX, and the code reads it with the DCA's own
+ * word: with APSFLAG clear the CCS skips the EXTEND and runs the DCA word as
+ * CA APSVEX +1. ("IF EXTEND IS EXECUTED, APSVEX --> A, OTHERWISE DPSVEX -->
+ * A"; a MASK leaves no negative.) */
 void massmon(void)
 {
     cs(ADDRESS_OF(FLAGWRD8));
@@ -144,16 +145,16 @@ void massmon(void)
     moonspot();
 }
 
-/* MOONSPOT: ABDELV, "TP MPAC = ABDELV AT 2(14) CM/SEC", "MULTIPLY BY
- * KPIP1 TO GET" "ABDELV AT 2(7) M/CS" (SHORTMP), ... */
+/* MOONSPOT -- p. 860: ABDELV, "TP MPAC = ABDELV AT 2(14) CM/SEC", "MULTIPLY
+ * BY KPIP1 TO GET" "ABDELV AT 2(7) M/CS" (SHORTMP), ... */
 void moonspot(void)
 {
     set_A(KPIP1);
     tc_to(MOONSPOT + 1u, SHORTMP);
 }
 
-/* ... "UPDATE DVTOTAL FOR DISPLAY", and the CDUs of the PIPA reading into
- * CDUSPOT (TC TMPTOSPT); ... */
+/* MOONSPOT +2 -- p. 861: ... "UPDATE DVTOTAL FOR DISPLAY", and the CDUs of
+ * the PIPA reading into CDUSPOT (TC TMPTOSPT); ... */
 void moonspot_after_shortmp(void)
 {
     dxch(MPAC_AT(0u));
@@ -161,21 +162,22 @@ void moonspot_after_shortmp(void)
     tc_to(MOONSPOT + 4u, TMPTOSPT);
 }
 
-/* ... their sines and cosines (QUICTRIG, through BANKCALL), ... */
+/* MOONSPOT +5 -- p. 861: ... their sines and cosines (QUICTRIG, through
+ * BANKCALL), ... */
 void moonspot_after_tmptospt(void)
 {
     tc_to(MOONSPOT + 5u, BANKCALL); /* CADR QUICTRIG */
 }
 
-/* ... the navigation base's axes from them, into XNBPIP (FLESHPOT, with
- * XNBPIPAD's ECADR XNBPIP in A), ... */
+/* MOONSPOT +7 -- p. 861: ... the navigation base's axes from them, into
+ * XNBPIP (FLESHPOT, with XNBPIPAD's ECADR XNBPIP in A), ... */
 void moonspot_after_quictrig(void)
 {
     set_A(XNBPIPAD);
     tc_to(MOONSPOT + 010u, BANKCALL); /* CADR FLESHPOT */
 }
 
-/* ... and the interpreter, for AVERAGEG_CODE. */
+/* MOONSPOT +012 -- p. 861: ... and the interpreter, for AVERAGEG_CODE. */
 void moonspot_after_fleshpot(void)
 {
     tc_at(MOONSPOT + 012u);
@@ -195,24 +197,25 @@ static const word averageg_words[] = {
 const struct interpretive_code AVERAGEG_CODE = {033u, AVERAGEG, COUNT(averageg_words),
                                                 averageg_words};
 
-/* GOSERV: the restart point moved on (TC QUIKFAZ5), ... */
+/* GOSERV -- p. 861: the restart point moved on (TC QUIKFAZ5), ... */
 void goserv(void)
 {
     tc_to(GOSERV, QUIKFAZ5);
 }
 
-/* ... COPYCYCL: the new state copied into the old (TC COPYCYC), ... */
+/* COPYCYCL -- p. 861: ... COPYCYCL: the new state copied into the old (TC
+ * COPYCYC), ... */
 void copycycl(void)
 {
     tc_to(COPYCYCL, COPYCYC);
 }
 
-/* ... and PIPATMP cleared ("A IS ZERO ON RETURN FROM COPYCYC"). (A TS that
- * overflows, entered here with A so, skips the next TS: PIPATMPZ gets the
- * +1 or -1 the first leaves in A.) Then STEERSW cleared "PRIOR TO DVMON".
- * With IDLEFLAG set, AUXFLAG to 0 (NODVMON1); with AUXFLAG clear, AUXFLAG
- * to 1 (NODVMON2); else the delta-V monitor, DVMON. (The two CCSs test
- * MASK results: positive or +0.) */
+/* COPYCYCL +1 -- p. 861: ... and PIPATMP cleared ("A IS ZERO ON RETURN FROM
+ * COPYCYC"). (A TS that overflows, entered here with A so, skips the next
+ * TS: PIPATMPZ gets the +1 or -1 the first leaves in A.) Then STEERSW
+ * cleared "PRIOR TO DVMON". With IDLEFLAG set, AUXFLAG to 0 (NODVMON1); with
+ * AUXFLAG clear, AUXFLAG to 1 (NODVMON2); else the delta-V monitor, DVMON.
+ * (The two CCSs test MASK results: positive or +0.) */
 void copycycl_after_copycyc(void)
 {
     if (!ts(ADDRESS_OF(PIPATMPX))) ts(ADDRESS_OF(PIPATMPY));
@@ -239,7 +242,7 @@ void copycycl_after_copycyc(void)
 
 /* ---- DVMON -- pp. 861-863 ---- */
 
-/* DVMON: a velocity change no more than DVTHRUSH is low thrust
+/* DVMON -- p. 861: a velocity change no more than DVTHRUSH is low thrust
  * (LOTHRUST). Else STEERSW set, and DVCNTSET. */
 void dvmon(void)
 {
@@ -255,9 +258,9 @@ void dvmon(void)
     dvcntset();
 }
 
-/* DVCNTSET: DVCNTR 1: "ALLOW TWO PASSES MAXIMUM NOW THAT" "THRUST HAS BEEN
- * DETECTED." Then the jets (USEJETS) with APSFLAG set or with the gimbal
- * fail bit of channel 32 (bit 9) +0; else the trim gimbal, USEGTS. */
+/* DVCNTSET -- p. 861: DVCNTR 1: "ALLOW TWO PASSES MAXIMUM NOW THAT" "THRUST
+ * HAS BEEN DETECTED." Then the jets (USEJETS) with APSFLAG set or with the
+ * gimbal fail bit of channel 32 (bit 9) +0; else the trim gimbal, USEGTS. */
 void dvcntset(void)
 {
     set_A(ONE);
@@ -277,8 +280,8 @@ void dvcntset(void)
     usegts();
 }
 
-/* USEGTS: DAPBOOLS's USEQRJTS clear (the DAP trims with the gimbal), and
- * SERVOUT. */
+/* USEGTS -- p. 862: DAPBOOLS's USEQRJTS clear (the DAP trims with the
+ * gimbal), and SERVOUT. */
 void usegts(void)
 {
     set_A(negate(USEQRJTS));
@@ -287,7 +290,7 @@ void usegts(void)
     servout();
 }
 
-/* NODVMON1: "SET AUXFLAG TO 0.", and USEJETS. */
+/* NODVMON1 -- p. 862: "SET AUXFLAG TO 0.", and USEJETS. */
 void nodvmon1(void)
 {
     set_A(negate(AUXFLBIT));
@@ -296,7 +299,7 @@ void nodvmon1(void)
     usejets();
 }
 
-/* NODVMON2: "SET AUXFLAG TO 1.", and USEJETS. */
+/* NODVMON2 -- p. 862: "SET AUXFLAG TO 1.", and USEJETS. */
 void nodvmon2(void)
 {
     cs(ADDRESS_OF(FLAGWRD6));
@@ -305,13 +308,14 @@ void nodvmon2(void)
     usejets();
 }
 
-/* LOTHRUST: the restart point moved on (TC QUIKFAZ5); ... */
+/* LOTHRUST -- p. 862: the restart point moved on (TC QUIKFAZ5); ... */
 void lothrust(void)
 {
     tc_to(LOTHRUST, QUIKFAZ5);
 }
 
-/* ... with DVCNTR positive, one more pass (DECCNTR); with it +0 (the
+/* LOTHRUST +1 -- p. 862: ... with DVCNTR positive, one more pass (DECCNTR);
+ * with it +0 (the
  * passes spent), the COMFAIL job unless group 4 runs one already ("COMFAIL
  * JOB ACTIVE?": PHASE4 positive, "YES:  WON'T NEED ANOTHER."), else phase
  * 4.37, the "4.37SPOT FOR COMFAIL" (PHASCHNG, OCT 00374), and the job.
@@ -336,22 +340,23 @@ void lothrust_after_quikfaz5(void)
     }
 }
 
-/* The COMFAIL job (NOVAC at priority 25, 2CADR COMFAIL), ... */
+/* LOTHRUST +7 -- p. 862: The COMFAIL job (NOVAC at priority 25, 2CADR
+ * COMFAIL), ... */
 void lothrust_after_phaschng(void)
 {
     set_A(PRIO25);
     tc_to(LOTHRUST + 010u, NOVAC);
 }
 
-/* ... and SERVOUT. */
+/* LOTHRUST +013 -- p. 862: ... and SERVOUT. */
 void lothrust_after_novac(void)
 {
     servout();
 }
 
-/* DECCNTR: DVCNTR less one (the CCS left it in A) kept in DVCNTR1 over
- * the restart point (TC QUIKFAZ5), ... (A TS that overflows, entered here
- * with A so, skips the TC.) */
+/* DECCNTR -- p. 862: DVCNTR less one (the CCS left it in A) kept in DVCNTR1
+ * over the restart point (TC QUIKFAZ5), ... (A TS that overflows, entered
+ * here with A so, skips the TC.) */
 void deccntr(void)
 {
     if (ts(ADDRESS_OF(DVCNTR1))) {
@@ -361,9 +366,9 @@ void deccntr(void)
     tc_to(DECCNTR + 1u, QUIKFAZ5);
 }
 
-/* ... then in DVCNTR; and STOPRATE (through IBNKCALL, interrupts held):
- * "IF THRUST IS LOW, NO STEERING IS DONE" "AND THE DESIRED RATES ARE SET
- * TO ZERO." It returns to USEJETS. */
+/* DECCNTR +2 -- p. 862: ... then in DVCNTR; and STOPRATE (through IBNKCALL,
+ * interrupts held): "IF THRUST IS LOW, NO STEERING IS DONE" "AND THE DESIRED
+ * RATES ARE SET TO ZERO." It returns to USEJETS. */
 void deccntr_after_quikfaz5(void)
 {
     ca(ADDRESS_OF(DVCNTR1));
@@ -372,8 +377,8 @@ void deccntr_after_quikfaz5(void)
     tc_to(DECCNTR + 5u, IBNKCALL); /* CADR STOPRATE */
 }
 
-/* USEJETS: DAPBOOLS's USEQRJTS set (the DAP trims with the jets), and
- * SERVOUT. */
+/* USEJETS -- p. 863: DAPBOOLS's USEQRJTS set (the DAP trims with the jets),
+ * and SERVOUT. */
 void usejets(void)
 {
     cs(ADDRESS_OF(DAPBOOLS));
@@ -382,18 +387,18 @@ void usejets(void)
     servout();
 }
 
-/* SERVOUT: interrupts allowed, and 1/ACCS (through BANKCALL), the DAP's
- * accelerations for the new mass; ... */
+/* SERVOUT -- p. 863: interrupts allowed, and 1/ACCS (through BANKCALL), the
+ * DAP's accelerations for the new mass; ... */
 void servout(void)
 {
     relint();
     tc_to(SERVOUT + 1u, BANKCALL); /* CADR 1/ACCS */
 }
 
-/* ... the job's work area set up for the guidance: PUSHLOC the bottom of
- * its VAC area (PRIORITY's low nine bits), FIXLOC that too and the word
- * after it +0 (ZL; DXCH FIXLOC); the restart point moved on (TC
- * QUIKFAZ5); ... */
+/* SERVOUT +3 -- p. 863: ... the job's work area set up for the guidance:
+ * PUSHLOC the bottom of its VAC area (PRIORITY's low nine bits), FIXLOC that
+ * too and the word after it +0 (ZL; DXCH FIXLOC); the restart point moved on
+ * (TC QUIKFAZ5); ... */
 void servout_after_1_accs(void)
 {
     ca(ADDRESS_OF(PRIORITY));
@@ -404,9 +409,9 @@ void servout_after_1_accs(void)
     tc_to(SERVOUT + 010u, QUIKFAZ5);
 }
 
-/* ... and the guidance, through AVGEXIT's 2CADR (EXTEND; DCA AVGEXIT; DXCH
- * Z): "EXIT TO SELECTED ROUTINE WHETHER THERE IS THRUST OR NOT. THE STATE
- * OF STEERSW WILL CONVEY THIS INFORMATION." */
+/* SERVOUT +011 -- p. 863: ... and the guidance, through AVGEXIT's 2CADR
+ * (EXTEND; DCA AVGEXIT; DXCH Z): "EXIT TO SELECTED ROUTINE WHETHER THERE IS
+ * THRUST OR NOT. THE STATE OF STEERSW WILL CONVEY THIS INFORMATION." */
 void servout_after_quikfaz5(void)
 {
     dca(ADDRESS_OF(AVGEXIT));

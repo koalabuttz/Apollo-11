@@ -33,8 +33,8 @@ static const word r53_words[] = {
 
 const struct interpretive_code R53_CODE = {014u, R53, COUNT(r53_words), r53_words};
 
-/* R53A: the marks, MARKINDX's low three bits, "NUMBER OF MARKS", by
- * SXTMARK; OPTSTALL waits for them (CURTAINS when it fails). */
+/* R53A -- p. 772: the marks, MARKINDX's low three bits, "NUMBER OF MARKS",
+ * by SXTMARK; OPTSTALL waits for them (CURTAINS when it fails). */
 static void r53a(void)
 {
     ca(ADDRESS_OF(MARKINDX)); /* "NUMBER OF MARKS" */
@@ -57,11 +57,11 @@ void r53a_failed(void)
     tc_to(R53A + 6u, CURTAINS);
 }
 
-/* The marks done: the mark area's QPRET (INDEX MARKSTAT), "NUMBER OF
- * MARKS ACTUALLY DONE": some, R53B. None (or the "CCS HOLE"): "HOUSEKEEP
- * VAC AREA SAVE AND MARKSTAT": MARKSTAT to zero, and the area given back
- * (MARKSTAT less one, by CCS, stored at that address: INDEX A; TS 0);
- * then the marks again. (Not modelled: an index that turns the CCS into
+/* R53A +7 -- p. 772: The marks done: the mark area's QPRET (INDEX MARKSTAT),
+ * "NUMBER OF MARKS ACTUALLY DONE": some, R53B. None (or the "CCS HOLE"):
+ * "HOUSEKEEP VAC AREA SAVE AND MARKSTAT": MARKSTAT to zero, and the area
+ * given back (MARKSTAT less one, by CCS, stored at that address: INDEX A; TS
+ * 0); then the marks again. (Not modelled: an index that turns the CCS into
  * another instruction, a TCF too.) */
 void r53a_marked(void)
 {
@@ -94,8 +94,8 @@ void r53a_marked(void)
     r53a(); /* TCF R53A */
 }
 
-/* R53B: in P22 or P23 (CHECKMM), straight to R53D; else the display
- * cleared (R53C1, CLEANDSP) and the star's code flashed. */
+/* R53B -- p. 773: in P22 or P23 (CHECKMM), straight to R53D; else the
+ * display cleared (R53C1, CLEANDSP) and the star's code flashed. */
 static void r53b(void)
 {
     tc_to(R53B, CHECKMM); /* MM 22 */
@@ -127,8 +127,8 @@ void r53c1(void)
     tc_to(R53C1 + 1u, BANKCALL); /* CADR CLEANDSP */
 }
 
-/* R53C: the star's code flashed (V01N71, GOFLASH): terminate, proceed
- * (CHKSCODE checks the code, at R53Z) or enter, "RECYCLE". */
+/* R53C -- p. 773: the star's code flashed (V01N71, GOFLASH): terminate,
+ * proceed (CHKSCODE checks the code, at R53Z) or enter, "RECYCLE". */
 static void r53c(void)
 {
     set_A(V01N71);
@@ -156,7 +156,7 @@ void r53c_enter(void)
     r53c();
 }
 
-/* R53Z: CHKSCODE; its return (+0), a code over 50 or below 0: the
+/* R53Z -- p. 773: CHKSCODE; its return (+0), a code over 50 or below 0: the
  * operator error light (FALTON), and the code flashed again. */
 void r53z(void)
 {
@@ -175,10 +175,10 @@ void r53z_after_falton(void)
     r53c();
 }
 
-/* CHKSCODE's return (+2): a good code. The code (its low six bits: CS
- * HIGH9; MASK STARCODE) times SIGHTSIX, the star's index in the catalog,
- * to BESTI or BESTJ (INDEX STARIND), "STAR NUMBER SIGHTED". (MP leaves
- * the product in L, small: TS does not skip.) */
+/* R53Z +3 -- p. 773: CHKSCODE's return (+2): a good code. The code (its low
+ * six bits: CS HIGH9; MASK STARCODE) times SIGHTSIX, the star's index in the
+ * catalog, to BESTI or BESTJ (INDEX STARIND), "STAR NUMBER SIGHTED". (MP
+ * leaves the product in L, small: TS does not skip.) */
 void r53z_code_good(void)
 {
     set_A(negate(HIGH9)); /* CS HIGH9 */
@@ -189,8 +189,8 @@ void r53z_code_good(void)
     r53d();
 }
 
-/* R53D: R53OUT sets TERMIFLG, "SET TERMINATE FOR R52", and goes back to
- * the caller (R53EXIT). */
+/* R53D -- p. 773: R53OUT sets TERMIFLG, "SET TERMINATE FOR R52", and goes
+ * back to the caller (R53EXIT). */
 void r53d(void)
 {
     tc_at(R53D);
@@ -246,8 +246,8 @@ const struct interpretive_code S52_2_CODE = {011u, S52_2, COUNT(s52_2_words), s5
 
 /* ---- SR52.1 -- pp. 775-777 (bank 13) ---- */
 
-/* SR52.1, called by BANKCALL: the caller's return (MAKECADR) to QMIN;
- * then the target's line of sight. (A as MAKECADR leaves it does not
+/* SR52.1 -- p. 776, called by BANKCALL: the caller's return (MAKECADR) to
+ * QMIN; then the target's line of sight. (A as MAKECADR leaves it does not
  * overflow: TS does not skip.) */
 void sr52_1(void)
 {
@@ -363,9 +363,10 @@ static const word sr52e3_words[] = {
 
 const struct interpretive_code SR52E3_CODE = {013u, SR52E3, COUNT(sr52e3_words), sr52e3_words};
 
-/* The returns: SR52E1 to the caller's +2 ("TRUNNION GREATER THAN 90
- * DEG."), SR52E2 to its +3 ("TRUNNION GREATER THAN 50 DEG"), SR52E3 to
- * its +4 ("NORMAL RETURN"): QMIN counted on (INCR), back by SWCALL. */
+/* SR52E22 +1 -- p. 777: The returns: SR52E1 to the caller's +2 ("TRUNNION
+ * GREATER THAN 90 DEG."), SR52E2 to its +3 ("TRUNNION GREATER THAN 50 DEG"),
+ * SR52E3 to its +4 ("NORMAL RETURN"): QMIN counted on (INCR), back by
+ * SWCALL. */
 void sr52e22_after_exit(void)
 {
     tc_at(SR52E22 + 1u); /* TC SR52E2 */

@@ -248,7 +248,7 @@ void smodechk_plus6(void)
     soptions();
 }
 
-/* SMODECHK +7, +8 -- LM p. 1287, CM p. 1397.
+/* SMODECHK +7, +010 -- LM p. 1287, CM p. 1397.
  * The -0 option: count the pass and go on where SKEEP1 says ("CONTINUE
  * WITH SELF-CHECK"). */
 void smodechk_plus7(void)
@@ -380,15 +380,15 @@ static void erasloop(void)
     cs(x_at() + 1u);               /* NDX SKEEP7; CS 0001: "CS X+1" */
     ad_at(x_at());                 /* NDX SKEEP7; AD 0000: "AD X" */
     tc_at(ERASLOOP + 021u);        /* TC -1CHK */
-    if (minus_1chk()) erasloop_plus18();
+    if (minus_1chk()) erasloop_plus022();
 }
 
-/* ERASLOOP +18 -- LM pp. 1288-1289, CM pp. 1398-1399.
+/* ERASLOOP +022 -- LM pp. 1288-1289, CM pp. 1398-1399.
  * Unless a restart put the words back already ("HAS ERASABLE BEEN
  * RESTORED", ERESTORE +0), store the complements of the addresses
  * ("PUT COMPLEMENT OF ADDRESS OF X AND X+1") and check (X +1) - X is
  * -1. */
-void erasloop_plus18(void)
+void erasloop_plus022(void)
 {
     ca(ADDRESS_OF(ERESTORE));
     if (A_is_zero()) { /* EXTEND; BZF ELOOPFIN: "YES, EXIT ERASLOOP." */
@@ -400,13 +400,13 @@ void erasloop_plus18(void)
     cs(x_at());             /* NDX SKEEP7; CS 0000: "CS X" */
     ad_at(x_at() + 1u);     /* NDX SKEEP7; AD 0001: "AD X+1" */
     tc_at(ERASLOOP + 036u); /* TC -1CHK */
-    if (minus_1chk()) erasloop_plus31();
+    if (minus_1chk()) erasloop_plus037();
 }
 
-/* ERASLOOP +31 -- LM p. 1289, CM p. 1399.
+/* ERASLOOP +037 -- LM p. 1289, CM p. 1399.
  * "PUT B(X) AND B(X+1) BACK INTO X AND X+1", and clear ERESTORE ("IF
  * RESTART, DO NOT RESTORE C(X), C(X+1)"). */
-void erasloop_plus31(void)
+void erasloop_plus037(void)
 {
     ca(ADDRESS_OF(ERESTORE));
     if (A_is_zero()) { /* EXTEND; BZF ELOOPFIN */
@@ -519,11 +519,11 @@ static void cntrchk(void)
     ad_at(ADDRESS_OF(EDOP));
     ad(CONC_PLUS_S2);
     tc_at(CYCLSHFT + 012u); /* TC -1CHK */
-    if (minus_1chk()) cyclshft_plus11();
+    if (minus_1chk()) cyclshft_plus013();
 }
 
-/* CYCLSHFT +11 -- LM p. 1290, CM p. 1400. */
-void cyclshft_plus11(void)
+/* CYCLSHFT +013 -- LM p. 1290, CM p. 1400. */
+void cyclshft_plus013(void)
 {
     ad_at(ADDRESS_OF(CYR)); /* "45252" */
     ad_at(ADDRESS_OF(CYL)); /* "72523" */
@@ -531,13 +531,13 @@ void cyclshft_plus11(void)
     ad_at(ADDRESS_OF(EDOP));
     ad(S_PLUS_1);
     tc_at(CYCLSHFT + 020u); /* TC -1CHK */
-    if (minus_1chk()) cyclshft_plus17();
+    if (minus_1chk()) cyclshft_plus021();
 }
 
-/* CYCLSHFT +17 -- LM p. 1290, CM p. 1400.
+/* CYCLSHFT +021 -- LM p. 1290, CM p. 1400.
  * Count the pass of ERASCHK, CNTRCHK and CYCLSHFT in SCOUNT +1, and back
  * to SMODECHK, which keeps ROPECHK, the next word, in SKEEP1. */
-void cyclshft_plus17(void)
+void cyclshft_plus021(void)
 {
     incr(ADDRESS_OF(SCOUNT) + 1u);
     tc_at(CYCLSHFT + 022u); /* TC SMODECHK */
@@ -891,7 +891,7 @@ static void soption(void)
     continue_at(LEFT5);
 }
 
-/* SOPTION +3, SOPT -- LM p. 1293, CM p. 1403.
+/* SOPTION +3, SOPT -- LM pp. 1292-1293, CM p. 1403.
  * With "SUPER BANK BITS", the bank's number is its superbank's ("SUPER
  * BANK NECESSARY", the bits shifted down by SR) plus its low three bits:
  * "BANK NUMBER WITH SUPER BANK". SHOW-BANKSUM displays it ("ON +1 GO TO

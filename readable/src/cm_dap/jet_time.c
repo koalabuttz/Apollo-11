@@ -14,25 +14,25 @@
 
 /* ---- JTIME -- p. 1035 ---- */
 
-/* JTIME: "PICK UP S/C INERTIA/TORQUE RATIO" for the axis, J/M, J/M1 or
- * J/M2, times KMPAC (SMALLMP). */
+/* JTIME -- p. 1035: "PICK UP S/C INERTIA/TORQUE RATIO" for the axis, J/M,
+ * J/M1 or J/M2, times KMPAC (SMALLMP). */
 void jtime(void)
 {
     ca(maneuver_index_read(ADDRESS_OF(J_M), spndx()));
     tc_to(JTIME + 2u, SMALLMP);
 }
 
-/* JTIME +3, after SMALLMP: times BIT11 (SMALLMP again). */
+/* JTIME +3 -- p. 1035, after SMALLMP: times BIT11 (SMALLMP again). */
 void jtime_bit11(void)
 {
     set_A(BIT11);
     tc_to(JTIME + 4u, SMALLMP);
 }
 
-/* JTIME +5, after SMALLMP: the jet-on time, "SCALED 16384/1600 SEC": the
- * lower word of KMPAC (TAUNORM) when the upper one is +0 or -0, POSMAX or
- * NEGMAX by its sign otherwise. DOJET stores it as the axis' time, TAU
- * indexed by SPNDX. (The TS's overflow skip, for an A that holds an
+/* JTIME +5 -- p. 1035, after SMALLMP: the jet-on time, "SCALED 16384/1600
+ * SEC": the lower word of KMPAC (TAUNORM) when the upper one is +0 or -0,
+ * POSMAX or NEGMAX by its sign otherwise. DOJET stores it as the axis' time,
+ * TAU indexed by SPNDX. (The TS's overflow skip, for an A that holds an
  * overflow, is not honored by the faithful port here; nor is it in this
  * code.) */
 void jtime_ccs(void)
@@ -46,10 +46,10 @@ void jtime_ccs(void)
     dojet_next();
 }
 
-/* DOJET +2: the next axis, SPNDX less one, at JLOOP; after the last (SPNDX
- * +0), T6PROG. A negative SPNDX, which the loop never leaves, runs on into
- * ZEROCMDS: the three times zeroed, then T6PROG; -0 joins it at its TS TAU
- * (A is +0 either way). */
+/* DOJET +2 -- p. 1035: the next axis, SPNDX less one, at JLOOP; after the
+ * last (SPNDX +0), T6PROG. A negative SPNDX, which the loop never leaves,
+ * runs on into ZEROCMDS: the three times zeroed, then T6PROG; -0 joins it at
+ * its TS TAU (A is +0 either way). */
 void dojet_next(void)
 {
     switch (ccs_at(ADDRESS_OF(SPNDX))) {
@@ -66,15 +66,15 @@ void dojet_next(void)
 
 /* ---- T6PROG -- p. 1036 ---- */
 
-/* T6PROG: "WHEN THE ROTATION COMMANDS (TAUS) HAVE BEEN DETERMINED",
- * JETADDR, the 2CADR of JETSLECT, the jet selection logic. */
+/* T6PROG -- p. 1036: "WHEN THE ROTATION COMMANDS (TAUS) HAVE BEEN
+ * DETERMINED", JETADDR, the 2CADR of JETSLECT, the jet selection logic. */
 void t6prog(void)
 {
     dca(ADDRESS_OF(JETADDR));
     t6prog_t5loc();
 }
 
-/* T6PROG +2: "RESET T5LOC FOR PHASE3", and RESUME. */
+/* T6PROG +2 -- p. 1036: "RESET T5LOC FOR PHASE3", and RESUME. */
 void t6prog_t5loc(void)
 {
     dxch(ADDRESS_OF(T5LOC));

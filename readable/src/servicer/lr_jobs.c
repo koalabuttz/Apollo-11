@@ -14,17 +14,18 @@
 
 /* ---- LRVJOB, ENDLRV, VBAD -- pp. 892-893 ---- */
 
-/* LRVJOB: "SET TASK TO READ CDUS + PIPAS" (RDGIMS, 170MS on); ... */
+/* LRVJOB -- p. 892: "SET TASK TO READ CDUS + PIPAS" (RDGIMS, 170MS on);
+ * ... */
 void lrvjob(void)
 {
     set_A(K170MS);
     tc_to(LRVJOB + 1u, WAITLIST); /* 2CADR RDGIMS */
 }
 
-/* ... "SEQUENCE LR VEL BEAM SELECTOR": VSELECT less one, two in place of
- * +0, "2XVSELECT USED FOR VBEAM INDEX IN LRVEL" (a -0 VSELECT, which the
- * program never holds, leaves +0); "GO INITIALIZE LR VEL READ ROUTINE"
- * (LRVEL, through BANKCALL); ... */
+/* LRVJOB +4 -- p. 892: ... "SEQUENCE LR VEL BEAM SELECTOR": VSELECT less
+ * one, two in place of +0, "2XVSELECT USED FOR VBEAM INDEX IN LRVEL" (a -0
+ * VSELECT, which the program never holds, leaves +0); "GO INITIALIZE LR VEL
+ * READ ROUTINE" (LRVEL, through BANKCALL); ... */
 void lrvjob_after_waitlist(void)
 {
     switch (ccs_at(ADDRESS_OF(VSELECT))) {
@@ -39,24 +40,25 @@ void lrvjob_after_waitlist(void)
     tc_to(LRVJOB + 010u, BANKCALL); /* CADR LRVEL */
 }
 
-/* ... "PUT LRVJOB TO SLEEP ABOUT 500 MS" (RADSTALL), ... */
+/* LRVJOB +012 -- p. 892: ... "PUT LRVJOB TO SLEEP ABOUT 500 MS" (RADSTALL),
+ * ... */
 void lrvjob_after_lrvel(void)
 {
     tc_to(LRVJOB + 012u, BANKCALL); /* CADR RADSTALL */
 }
 
-/* ... the bad return: VBAD; ... */
+/* LRVJOB +014 -- p. 892: ... the bad return: VBAD; ... */
 void lrvjob_bad_exit(void)
 {
     vbad();
 }
 
-/* ... the good one: "IS DATA GOOD JUST PRESENT?" (STILBADV): "JUST GOOD --
- * MUST WAIT 4 SECONDS." (VSTILBAD, with it less one). Else, interrupts
- * held, "GOOD RETURN -- STOW AWAY VMEAS" (SAMPLSUM); "FOR DOWNLINK" (E
- * bank 4) the reading's time and CDUs (LRVTIMDL, LRXCDUDL, LRZCDUDL);
- * "SET BIT TO INDICATE VELOCITY" "MEASUREMENT MADE" (VELDABIT), and
- * ENDLRV. (A negative STILBADV skips the INHINT; a -0 one, onto the DCA
+/* LRVJOB +015 -- p. 892: ... the good one: "IS DATA GOOD JUST PRESENT?"
+ * (STILBADV): "JUST GOOD -- MUST WAIT 4 SECONDS." (VSTILBAD, with it less
+ * one). Else, interrupts held, "GOOD RETURN -- STOW AWAY VMEAS" (SAMPLSUM);
+ * "FOR DOWNLINK" (E bank 4) the reading's time and CDUs (LRVTIMDL, LRXCDUDL,
+ * LRZCDUDL); "SET BIT TO INDICATE VELOCITY" "MEASUREMENT MADE" (VELDABIT),
+ * and ENDLRV. (A negative STILBADV skips the INHINT; a -0 one, onto the DCA
  * after its EXTEND, is not modelled.) */
 void lrvjob_good_exit(void)
 {
@@ -84,8 +86,8 @@ void lrvjob_good_exit(void)
     endlrv();
 }
 
-/* ENDLRV: "UPDATE VSELECT": less one, two in place of +0 (a -0 VSELECT
- * stays), and the job ends. */
+/* ENDLRV -- p. 893: "UPDATE VSELECT": less one, two in place of +0 (a -0
+ * VSELECT stays), and the job ends. */
 void endlrv(void)
 {
     switch (ccs_at(ADDRESS_OF(VSELECT))) {
@@ -100,15 +102,15 @@ void endlrv(void)
     continue_at(ENDOFJOB);
 }
 
-/* VBAD: "SET STILBAD TO WAIT 4 SECONDS" (two passes); ... */
+/* VBAD -- p. 893: "SET STILBAD TO WAIT 4 SECONDS" (two passes); ... */
 void vbad(void)
 {
     set_A(TWO);
     vstilbad();
 }
 
-/* ... VSTILBAD: in STILBADV, and ENDLRV. (A TS that overflows, entered
- * here with A so, skips the TCF: on to HIGATJOB.) */
+/* VSTILBAD -- p. 893: ... VSTILBAD: in STILBADV, and ENDLRV. (A TS that
+ * overflows, entered here with A so, skips the TCF: on to HIGATJOB.) */
 void vstilbad(void)
 {
     if (ts(ADDRESS_OF(STILBADV))) {
@@ -120,31 +122,32 @@ void vstilbad(void)
 
 /* ---- LRHJOB, HBAD, RDGIMS -- pp. 893-894 (bank 34) ---- */
 
-/* LRHJOB: "INITIATE LR ALT MEASUREMENT" (LRALT, through BANKCALL); ... */
+/* LRHJOB -- p. 893: "INITIATE LR ALT MEASUREMENT" (LRALT, through BANKCALL);
+ * ... */
 void lrhjob(void)
 {
     tc_to(LRHJOB, BANKCALL); /* CADR LRALT */
 }
 
-/* ... "LRHJOB TO SLEEP ABOUT 95MS" (RADSTALL), ... */
+/* LRHJOB +2 -- p. 893: ... "LRHJOB TO SLEEP ABOUT 95MS" (RADSTALL), ... */
 void lrhjob_after_lralt(void)
 {
     tc_to(LRHJOB + 2u, BANKCALL); /* CADR RADSTALL */
 }
 
-/* ... the bad return: HBAD; ... */
+/* LRHJOB +4 -- p. 893: ... the bad return: HBAD; ... */
 void lrhjob_bad_exit(void)
 {
     hbad();
 }
 
-/* ... the good one: "IS DATA GOOD JUST PRESENT?" (STILBADH): "JUST GOOD --
- * MUST WAIT 4 SECONDS." (HSTILBAD, with it less one). Else, interrupts
- * held, "GOOD RETURN -- STORE AWAY LRH DATA" (HMEAS, "LRH DATA 1.079
- * FT/BIT"), and "FOR DOWNLINK" its time (MKTIME) and the CDUs, "CDUY,Z =
- * AIG,AMG" and "CDUX = AOG"; "SET BIT TO INDICATE RANGE" "MEASUREMENT
- * MADE." (RNGEDBIT), and ENDLRH. (A negative STILBADH skips the INHINT; a
- * -0 one, onto the DCA after its EXTEND, is not modelled.) */
+/* LRHJOB +5 -- p. 893: ... the good one: "IS DATA GOOD JUST PRESENT?"
+ * (STILBADH): "JUST GOOD -- MUST WAIT 4 SECONDS." (HSTILBAD, with it less
+ * one). Else, interrupts held, "GOOD RETURN -- STORE AWAY LRH DATA" (HMEAS,
+ * "LRH DATA 1.079 FT/BIT"), and "FOR DOWNLINK" its time (MKTIME) and the
+ * CDUs, "CDUY,Z = AIG,AMG" and "CDUX = AOG"; "SET BIT TO INDICATE RANGE"
+ * "MEASUREMENT MADE." (RNGEDBIT), and ENDLRH. (A negative STILBADH skips the
+ * INHINT; a -0 one, onto the DCA after its EXTEND, is not modelled.) */
 void lrhjob_good_exit(void)
 {
     switch (ccs_at(ADDRESS_OF(STILBADH))) {
@@ -167,13 +170,14 @@ void lrhjob_good_exit(void)
     endlrh();
 }
 
-/* ENDLRH: "TERMATE LRHJOB". */
+/* ENDLRH -- p. 893: "TERMATE LRHJOB". */
 void endlrh(void)
 {
     tc_to(ENDLRH, ENDOFJOB);
 }
 
-/* HBAD: "IS BAD RETURN DUE TO SCALE CHANGE?" (RNGSCBIT of FLAGWRD5): "NO
+/* HBAD -- p. 894: "IS BAD RETURN DUE TO SCALE CHANGE?" (RNGSCBIT of
+ * FLAGWRD5): "NO
  * RESET HSTILBAD". "YES  RESET SCALE CHANGE BIT AND IGNORE" (RNGSCFLG), ... */
 void hbad(void)
 {
@@ -186,21 +190,22 @@ void hbad(void)
     tc_to(HBAD + 4u, DOWNFLAG); /* ADRES RNGSCFLG */
 }
 
-/* ... and the job ends. */
+/* HBAD +6 -- p. 894: ... and the job ends. */
 void hbad_after_rngscflg(void)
 {
     tc_to(HBAD + 6u, ENDOFJOB);
 }
 
-/* HSTILBAD -1: "SET STILBAD TO WAIT 4 SECONDS" (two passes); ... */
+/* HSTILBAD -1 -- p. 894: "SET STILBAD TO WAIT 4 SECONDS" (two passes);
+ * ... */
 void hbad_reset(void)
 {
     set_A(TWO);
     hstilbad();
 }
 
-/* ... HSTILBAD: in STILBADH, and the job ends. (A TS that overflows,
- * entered here with A so, skips the TC: on to RDGIMS.) */
+/* HSTILBAD -- p. 894: ... HSTILBAD: in STILBADH, and the job ends. (A TS
+ * that overflows, entered here with A so, skips the TC: on to RDGIMS.) */
 void hstilbad(void)
 {
     if (ts(ADDRESS_OF(STILBADH))) {
@@ -210,10 +215,10 @@ void hstilbad(void)
     tc_to(HSTILBAD + 1u, ENDOFJOB);
 }
 
-/* RDGIMS, "A TASK SET UP BY LRVJOB TO PICK UP THE IMU CDUS AND TIME": "PICK
- * UP TIME2, TIME1" "AND SAVE IN LRVTIME", the CDUs in LRXCDU, LRYCDU and
- * LRZCDU, and the PIPAs in PIPTEM, PIPTEM +1 and PIPTEM +2; the task
- * ends. */
+/* RDGIMS -- p. 894, "A TASK SET UP BY LRVJOB TO PICK UP THE IMU CDUS AND
+ * TIME": "PICK UP TIME2, TIME1" "AND SAVE IN LRVTIME", the CDUs in LRXCDU,
+ * LRYCDU and LRZCDU, and the PIPAs in PIPTEM, PIPTEM +1 and PIPTEM +2; the
+ * task ends. */
 void rdgims(void)
 {
     dca(ADDRESS_OF(TIME2)); /* "PICK UP TIME2, TIME1" */
@@ -231,83 +236,87 @@ void rdgims(void)
 
 /* ---- HIGATJOB, POSGOOD, POSALARM -- p. 895 ---- */
 
-/* HIGATJOB: "START LRPOS2 JOB" (through BANKCALL); ... */
+/* HIGATJOB -- p. 895: "START LRPOS2 JOB" (through BANKCALL); ... */
 void higatjob(void)
 {
     tc_to(HIGATJOB, BANKCALL); /* CADR LRPOS2 */
 }
 
-/* ... "PUT HIGATJOB TO SLEEP UNTIL JOB IS DONE" (RADSTALL); ... */
+/* HIGATJOB +2 -- p. 895: ... "PUT HIGATJOB TO SLEEP UNTIL JOB IS DONE"
+ * (RADSTALL); ... */
 void higatjob_after_lrpos2(void)
 {
     tc_to(HIGATJOB + 2u, BANKCALL); /* CADR RADSTALL */
 }
 
-/* ... "BAD END    ALARM" (POSALARM); the good end is POSGOOD. */
+/* HIGATJOB +4 -- p. 895: ... "BAD END    ALARM" (POSALARM); the good end is
+ * POSGOOD. */
 void higatjob_bad_exit(void)
 {
     posalarm();
 }
 
-/* POSGOOD: "REDUCE PRIORITY FOR INTERPRETIVE COMPS." (PRIO23, PRIOCHNG);
- * ... */
+/* POSGOOD -- p. 895: "REDUCE PRIORITY FOR INTERPRETIVE COMPS." (PRIO23,
+ * PRIOCHNG); ... */
 void posgood(void)
 {
     set_A(PRIO23);
     tc_to(POSGOOD + 1u, PRIOCHNG);
 }
 
-/* ... "LR IN POS2 -- SET UP TRANSFORMATIONS" (SETPOS2); ... */
+/* POSGOOD +2 -- p. 895: ... "LR IN POS2 -- SET UP TRANSFORMATIONS"
+ * (SETPOS2); ... */
 void posgood_after_priochng(void)
 {
     tc_at(POSGOOD + 2u);
     setpos2();
 }
 
-/* ... "RESET NOLRREAD FLAG TO ENABLE LR READING"; ... */
+/* POSGOOD +3 -- p. 895: ... "RESET NOLRREAD FLAG TO ENABLE LR READING";
+ * ... */
 void posgood_after_setpos2(void)
 {
     tc_to(POSGOOD + 3u, DOWNFLAG); /* ADRES NOLRREAD */
 }
 
-/* ... and the job ends. */
+/* POSGOOD +5 -- p. 895: ... and the job ends. */
 void posgood_after_nolrread(void)
 {
     tc_to(POSGOOD + 5u, ENDOFJOB);
 }
 
-/* POSALARM: "FLASH ALARM CODE" 523 (PRIOLARM); ... */
+/* POSALARM -- p. 895: "FLASH ALARM CODE" 523 (PRIOLARM); ... */
 void posalarm(void)
 {
     set_A(OCT523);
     tc_to(POSALARM + 1u, BANKCALL); /* CADR PRIOLARM */
 }
 
-/* ... "TERMINATE" (GOTOPOOH); ... */
+/* POSALARM +3 -- p. 895: ... "TERMINATE" (GOTOPOOH); ... */
 void posalarm_terminate(void)
 {
     continue_at(GOTOPOOH);
 }
 
-/* ... "PROCEED -- TRY AGAIN"; ... */
+/* POSALARM +4 -- p. 895: ... "PROCEED -- TRY AGAIN"; ... */
 void posalarm_proceed(void)
 {
     posalarm_retry();
 }
 
-/* ... "V 32 E    TERMINATE R12"; ... */
+/* POSALARM +5 -- p. 895: ... "V 32 E    TERMINATE R12"; ... */
 void posalarm_enter(void)
 {
     continue_at(ENDOFJOB);
 }
 
-/* ... PRIOLARM's immediate return: the job ends. */
+/* POSALARM +6 -- p. 895: ... PRIOLARM's immediate return: the job ends. */
 void posalarm_immediate_return(void)
 {
     tc_to(POSALARM + 6u, ENDOFJOB);
 }
 
-/* POSALARM +7 (the listing's "+3"): "SEE IF IN POS2 YET" (bit 7 of
+/* POSALARM +7 -- p. 895 (the listing's "+3"): "SEE IF IN POS2 YET" (bit 7 of
  * channel 33 +0): "POS2 ACHIEVED   SET UP ANTENNA BEAMS" (POSGOOD); else
  * "STILL DIDN'T MAKE IT   REALARM". */
 void posalarm_retry(void)
@@ -323,14 +332,15 @@ void posalarm_retry(void)
 
 /* ---- SETPOS1, SETPOS2, SETPOS -- pp. 895-897 ---- */
 
-/* SETPOS1 ("MUST BE CALLED BY BANKCALL"): the caller's CADR (MAKECADR);
- * ... */
+/* SETPOS1 -- p. 895 ("MUST BE CALLED BY BANKCALL"): the caller's CADR
+ * (MAKECADR); ... */
 void setpos1(void)
 {
     tc_to(SETPOS1, MAKECADR);
 }
 
-/* ... "SAVE RETURN CADR.  SINCE BUP2 CLOBBERED" (LRADRET1); STILBADH and
+/* SETPOS1 +1 -- p. 895: ... "SAVE RETURN CADR.  SINCE BUP2 CLOBBERED"
+ * (LRADRET1); STILBADH and
  * STILBADV two ("INITIALIZE STILBAD"); "SET L,M,R, ANS S TO ZERO", and
  * "INITIALIZE VSELECT"; "CONTINUE WITH COMPUTATIONS." with the index +0
  * ("INDEX FOR LRALPHA, LRBETA IN POS 1.") in A (SETPOS). (A TS that
@@ -350,26 +360,27 @@ void setpos1_after_makecadr(void)
     setpos();
 }
 
-/* ... and "RETURN TO CALLER" (BANKJUMP, the CADR). */
+/* SETPOS1 +014 -- p. 896: ... and "RETURN TO CALLER" (BANKJUMP, the
+ * CADR). */
 void setpos1_after_setpos(void)
 {
     ca(ADDRESS_OF(LRADRET1));
     tc_to(SETPOS1 + 015u, BANKJUMP);
 }
 
-/* SETPOS2: "INDEX FOR POS2" (two), and SETPOS. */
+/* SETPOS2 -- p. 896: "INDEX FOR POS2" (two), and SETPOS. */
 void setpos2(void)
 {
     set_A(TWO);
     setpos();
 }
 
-/* SETPOS: "SAVE INDEX IN Q", "SAVE RETURN" (LRADRET); from E bank 5,
- * "LRALPHA IN A, LRBETA IN L" for the position (LRALPHA2 and LRBETA2 two
+/* SETPOS -- p. 896: "SAVE INDEX IN Q", "SAVE RETURN" (LRADRET); from E bank
+ * 5, "LRALPHA IN A, LRBETA IN L" for the position (LRALPHA2 and LRBETA2 two
  * on), the rotations "ABOUT X" (CDUSPOT +4) and "ABOUT Y" (CDUSPOT), "ZERO
  * ROTATION ABOUT Z."; back to E bank 7, and to the interpreter. (A TS that
- * overflows, entered here with Q so, skips the CA EBANK5. Not modelled:
- * an index other than 0 and 2.) */
+ * overflows, entered here with Q so, skips the CA EBANK5. Not modelled: an
+ * index other than 0 and 2.) */
 void setpos(void)
 {
     xch(Q_ADDRESS); /* "SAVE INDEX IN Q" */
@@ -412,7 +423,7 @@ static const word setpos_words[] = {
 const struct interpretive_code SETPOS_CODE = {033u, SETPOS + 016u, COUNT(setpos_words),
                                               setpos_words};
 
-/* After it, back to the caller (TC LRADRET). */
+/* SETPOS +036 -- p. 897: After it, back to the caller (TC LRADRET). */
 void setpos_after_exit(void)
 {
     tc_through_computed(ADDRESS_OF(LRADRET));

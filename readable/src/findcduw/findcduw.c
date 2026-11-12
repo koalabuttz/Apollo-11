@@ -46,13 +46,13 @@ static const word findcduw_words[] = {
 const struct interpretive_code FINDCDUW_CODE = {030u, FINDCDUW - 2u, COUNT(findcduw_words),
                                                 findcduw_words};
 
-/* "MORE HAUSKEEPING": FINDCDUW's E-bank ("SET EBANK"), the caller's kept
- * in ECDUWUSR. NDXCDUW, the index of the constants' pairs, is 1 "IF CSM
- * DOCKED", else 0; FLPAUTNO is XOVINHIB's bit, "POS-NON-ZERO FLAG PNGCS
- * AUTO NOT", until the test below clears it; FLAGOODW, the window good
- * flag, is the bit if the X axis override is inhibited, else +0. (After
- * each MASK, A is +0 or the bit: CCS takes its first two ways only. A is
- * a word at each TS here: none skips.)
+/* FINDCDUW +5 -- p. 910: "MORE HAUSKEEPING": FINDCDUW's E-bank ("SET
+ * EBANK"), the caller's kept in ECDUWUSR. NDXCDUW, the index of the
+ * constants' pairs, is 1 "IF CSM DOCKED", else 0; FLPAUTNO is XOVINHIB's
+ * bit, "POS-NON-ZERO FLAG PNGCS AUTO NOT", until the test below clears it;
+ * FLAGOODW, the window good flag, is the bit if the X axis override is
+ * inhibited, else +0. (After each MASK, A is +0 or the bit: CCS takes its
+ * first two ways only. A is a word at each TS here: none skips.)
  *
  * "FETCH BASIC DATA": with interrupts inhibited ("RELINT AT PAUTNO (TC
  * INTPRET)"), CDUSPOT gets the three CDUs, Y, Z, X (CDUSPOTX is CDUSPOT
@@ -131,12 +131,12 @@ const struct interpretive_code PAUTNO_CODE = {030u, PAUTNO + 1u, COUNT(pautno_wo
 
 /* ---- The thrust direction filter -- p. 912 ---- */
 
-/* "THRUST DIRECTION FILTER": UNFV/2, the thrust direction in vehicle
- * axes, follows the measured one in MPAC, Y then Z, through FLTRSUB.
- * "FOR RESTARTS, UNFV/2 ALWAYS INTACT, MPAC RENEWD AFTER RETURN FROM
- * CALLER, TWO FILTER UPDATES MAY BE DONE. UNFV/2 NEED NOT BE EXACTLY
- * SEMI-UNIT." FLTRSUB returns through TEM2 (TC TEM2), which leaves the
- * file: each return is a key of its own. */
+/* PAUTNO +020 -- p. 912: "THRUST DIRECTION FILTER": UNFV/2, the thrust
+ * direction in vehicle axes, follows the measured one in MPAC, Y then Z,
+ * through FLTRSUB. "FOR RESTARTS, UNFV/2 ALWAYS INTACT, MPAC RENEWD AFTER
+ * RETURN FROM CALLER, TWO FILTER UPDATES MAY BE DONE. UNFV/2 NEED NOT BE
+ * EXACTLY SEMI-UNIT." FLTRSUB returns through TEM2 (TC TEM2), which leaves
+ * the file: each return is a key of its own. */
 void thrust_filter(void)
 {
     ca(ADDRESS_OF(UNFVY_2));
@@ -145,8 +145,8 @@ void thrust_filter(void)
     fltrsub();
 }
 
-/* FLTRSUB's return: the new Y offset, and Z. (An A that overflows skips
- * the CA: FLTRSUB then filters UNFVY/2's +1 or -1.) */
+/* PAUTNO +023 -- p. 912: FLTRSUB's return: the new Y offset, and Z. (An A
+ * that overflows skips the CA: FLTRSUB then filters UNFVY/2's +1 or -1.) */
 void thrust_filter_after_y(void)
 {
     if (!ts(ADDRESS_OF(UNFVY_2))) ca(ADDRESS_OF(UNFVZ_2));
@@ -155,9 +155,10 @@ void thrust_filter_after_y(void)
     fltrsub();
 }
 
-/* FLTRSUB's return: the new Z offset, and the interpreter again
- * ("COMPLETES FILTER"), at AFTRFLTR. Not modelled: an A that overflows,
- * whose TS would skip the TC INTPRET into the interpretive word after it.
+/* PAUTNO +027 -- p. 912: FLTRSUB's return: the new Z offset, and the
+ * interpreter again ("COMPLETES FILTER"), at AFTRFLTR. Not modelled: an A
+ * that overflows, whose TS would skip the TC INTPRET into the interpretive
+ * word after it.
  */
 void thrust_filter_after_z(void)
 {

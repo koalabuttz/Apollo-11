@@ -62,7 +62,8 @@ void dspsign(void)
     tc(DSPSIGN + 013u, PLUS_ON);
 }
 
-/* DSPSIGN +8, where -ON returns: the low word's magnitude too. */
+/* DSPSIGN +010 -- LM p. 441, CM p. 359, where -ON returns: the low word's
+ * magnitude too. */
 void dspsign_after_minus_on(void)
 {
     cs(ADDRESS_OF(MPAC) + 1u);
@@ -70,7 +71,7 @@ void dspsign_after_minus_on(void)
     tc(DSPSIGN + 012u, ADDRESS_OF(DSPWDRET));
 }
 
-/* DSPSIGN +12, where +ON returns. */
+/* DSPSIGN +014 -- LM p. 441, CM p. 359, where +ON returns. */
 void dspsign_after_plus_on(void)
 {
     tc(DSPSIGN + 014u, ADDRESS_OF(DSPWDRET));
@@ -112,8 +113,8 @@ void dspdecwd_after_dspsign(void)
     tc(DSPDECWD + 3u, DSPRND);
 }
 
-/* DSPDCWD1 -1, where DSPRND returns: the count of the digits after this
- * one, four. */
+/* DSPDCWD1 -1 -- LM p. 441, CM p. 359, where DSPRND returns: the count of
+ * the digits after this one, four. */
 void dspdcwd1_minus1(void)
 {
     set_A(FOUR);
@@ -152,8 +153,8 @@ void dspdcwd1(void)
     }
 }
 
-/* DSPDCWD1 +16, where DSPIN returns: the next digit while WDCNT counts
- * down, then DSPCOUNT -VD1 and back through WDRET. */
+/* DSPDCWD1 +020 -- LM p. 442, CM p. 360, where DSPIN returns: the next digit
+ * while WDCNT counts down, then DSPCOUNT -VD1 and back through WDRET. */
 void dspdcwd1_after_dspin(void)
 {
     switch (ccs_at(ADDRESS_OF(WDCNT))) {
@@ -198,8 +199,8 @@ void dspdc2nr(void)
     tc(DSPDC2NR + 2u, DSPSIGN);
 }
 
-/* DSPDC2NR +3, where DSPSIGN returns (and where DSPDECVN goes): one digit
- * after this one. */
+/* DSPDC2NR +3 -- LM p. 442, CM p. 360, where DSPSIGN returns (and where
+ * DSPDECVN goes): one digit after this one. */
 void dspdc2nr_plus3(void)
 {
     set_A(ONE);
@@ -308,7 +309,8 @@ void wdagain(void)
     wdagain_plus5();
 }
 
-/* WDAGAIN +5, where DSP2BIT comes in with its digits in CYL. */
+/* WDAGAIN +5 -- LM p. 443, CM p. 361, where DSP2BIT comes in with its digits
+ * in CYL. */
 void wdagain_plus5(void)
 {
     mask(DSPMSK);

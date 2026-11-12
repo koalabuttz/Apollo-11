@@ -55,23 +55,23 @@ void upstore_after_phaschng(void)
     timedidl();
 }
 
-/* UPEND73 +4, TIMEDIDL's error return: "ERROR- TURN ON *OPERATOR ERROR*
- * LIGHT". */
+/* UPEND73 +4 -- LM p. 1392, CM p. 1503, TIMEDIDL's error return: "ERROR-
+ * TURN ON *OPERATOR ERROR* LIGHT". */
 static void upend73_error(void)
 {
     tc_to((word)(UPEND73 + 4u), FALTON);
 }
 
-/* UPEND73 +5, where FALTON returns, and TIMEDIDL's normal return: "GO TO
- * COMMON UPDATE PROGRAM EXIT" (UPOUT +1). */
+/* UPEND73 +5 -- LM p. 1392, CM p. 1503, where FALTON returns, and TIMEDIDL's
+ * normal return: "GO TO COMMON UPDATE PROGRAM EXIT" (UPOUT +1). */
 void upend73_exit(void)
 {
     tc_at((word)(UPEND73 + 5u));
     upout4();
 }
 
-/* UPFNDVAC +4, where FINDVAC returns: this job is done; UPJOB is the new
- * one. */
+/* UPFNDVAC +4 -- LM p. 1392, CM p. 1503, where FINDVAC returns: this job is
+ * done; UPJOB is the new one. */
 void upfndvac_after_findvac(void)
 {
     tc_to((word)(UPFNDVAC + 4u), ENDOFJOB);
@@ -86,23 +86,25 @@ void upjob(void)
     tc_to(UPJOB, INTPRET);
 }
 
-/* UPWAKE +1, after the interpretive EXIT: "RESTART PROTECT(GROUP 6)". */
+/* UPWAKE +1 -- LM p. 1392, CM p. 1503, after the interpretive EXIT: "RESTART
+ * PROTECT(GROUP 6)". */
 void upwake(void)
 {
     tc_to((word)(UPWAKE + 1u), PHASCHNG); /* OCT 04026 */
 }
 
-/* UPWAKE +3, where PHASCHNG returns: "SET INTEGRATION RESTART BIT". */
+/* UPWAKE +3 -- LM p. 1392, CM p. 1503, where PHASCHNG returns: "SET
+ * INTEGRATION RESTART BIT". */
 void upwake_after_phaschng(void)
 {
     tc_to((word)(UPWAKE + 3u), UPFLAG); /* ADRES REINTFLG */
 }
 
-/* UPWAKE +5 and UPPART3, where UPFLAG returns: INHINT, and INDEX UPVERB;
- * TCF +1, "BRANCH TO THE APPROPRIATE UPDATE VERB ROUTINE TO ACTUALLY
- * PERFORM THE UPDATE": V70, V71 or V72 (UPVERB 3 lands on TIMEDIDL
- * itself, the word after the branches). Not modelled: an UPVERB that
- * makes the TCF any other. */
+/* UPWAKE +5 -- LM p. 1392, CM p. 1503 and UPPART3, where UPFLAG returns:
+ * INHINT, and INDEX UPVERB; TCF +1, "BRANCH TO THE APPROPRIATE UPDATE VERB
+ * ROUTINE TO ACTUALLY PERFORM THE UPDATE": V70, V71 or V72 (UPVERB 3 lands
+ * on TIMEDIDL itself, the word after the branches). Not modelled: an UPVERB
+ * that makes the TCF any other. */
 void upwake_after_upflag(void)
 {
     word fan = (word)(UPPART3 + 2u); /* where the TCF +1 goes */
@@ -167,9 +169,10 @@ void timedidr(void)
     tc_to((word)(TIMEDIDR + 016u), PHASCHNG); /* OCT 04026 */
 }
 
-/* TIMEDIDR +020, where PHASCHNG returns: TC UPTEMP, "GO TO ERROR EXIT":
- * the AGC runs the word TIMEDIDL saved there, its caller's return, as TC
- * to it. That is UPEND73 +4 or UPEND70 +4; not modelled, any other word. */
+/* TIMEDIDR +020 -- LM p. 1393, CM p. 1504, where PHASCHNG returns: TC
+ * UPTEMP, "GO TO ERROR EXIT": the AGC runs the word TIMEDIDL saved there,
+ * its caller's return, as TC to it. That is UPEND73 +4 or UPEND70 +4; not
+ * modelled, any other word. */
 void timedidr_after_phaschng(void)
 {
     word to = fetch(ADDRESS_OF(UPTEMP));
@@ -182,8 +185,8 @@ void timedidr_after_phaschng(void)
         upend70_clock_error();
 }
 
-/* DELTATOK +1, where TPAGREE returns: "INCREMENT TIME2,TIME1", and
- * "RESTART PROTECT(GROUP 6)". */
+/* DELTATOK +1 -- LM p. 1393, where TPAGREE returns: "INCREMENT TIME2,TIME1",
+ * and "RESTART PROTECT(GROUP 6)". */
 void deltatok_after_tpagree(void)
 {
     dxch(ADDRESS_OF(MPAC));
@@ -191,10 +194,10 @@ void deltatok_after_tpagree(void)
     tc_to((word)(DELTATOK + 3u), PHASCHNG); /* OCT 04026 */
 }
 
-/* DELTATOK +5, where PHASCHNG returns: INHINT, and INDEX UPTEMP; TC 1,
- * the "NORMAL RETURN" to the word after the error return ("CODED THIS WAY
- * FOR RESTART PROTECTION"): UPEND73 +5 or UPEND70 +5. Not modelled: an
- * UPTEMP that makes it any other. */
+/* DELTATOK +5 -- LM p. 1393, where PHASCHNG returns: INHINT, and INDEX
+ * UPTEMP; TC 1, the "NORMAL RETURN" to the word after the error return
+ * ("CODED THIS WAY FOR RESTART PROTECTION"): UPEND73 +5 or UPEND70 +5. Not
+ * modelled: an UPTEMP that makes it any other. */
 void deltatok_after_phaschng(void)
 {
     word to;

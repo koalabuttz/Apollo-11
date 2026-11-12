@@ -24,13 +24,14 @@
 
 /* ---- P35 and P75 -- LM p. 666, CM p. 468 ---- */
 
-/* P35: this vehicle the active one (AVFLAGA). */
+/* P35 -- LM p. 666, CM p. 468: this vehicle the active one (AVFLAGA). */
 void p35(void)
 {
     tc_to(P35, AVFLAGA);
 }
 
-/* P35 +1: the active vehicle's time to the maneuver, then P35/P75A. */
+/* P35 +1 -- LM p. 666, CM p. 468: the active vehicle's time to the maneuver,
+ * then P35/P75A. */
 void p35_after_avflaga(void)
 {
     dca(ADDRESS_OF(ATIGINC)); /* EXTEND; DCA */
@@ -38,29 +39,30 @@ void p35_after_avflaga(void)
     p35_p75a();
 }
 
-/* P75: the other vehicle the active one (AVFLAGP). */
+/* P75 -- LM p. 666, CM p. 468: the other vehicle the active one
+ * (AVFLAGP). */
 void p75(void)
 {
     tc_to(P75, AVFLAGP);
 }
 
-/* P75 +1: the passive vehicle's time to the maneuver; on into
- * P35/P75A. */
+/* P75 +1 -- LM p. 666, CM p. 468: the passive vehicle's time to the
+ * maneuver; on into P35/P75A. */
 void p75_after_avflagp(void)
 {
     dca(ADDRESS_OF(PTIGINC)); /* EXTEND; DCA */
     p35_p75a();
 }
 
-/* P35/P75A: the time to KT, and P20's flags, "SET UPDATFLG, TRACKFLG"
- * (P20FLGON). */
+/* P35/P75A -- LM p. 666, CM p. 468: the time to KT, and P20's flags, "SET
+ * UPDATFLG, TRACKFLG" (P20FLGON). */
 void p35_p75a(void)
 {
     dxch(ADDRESS_OF(KT));
     tc_to(P35_P75A + 1u, P20FLGON);
 }
 
-/* P35/P75A +2: to the interpreter, for P35_CODE. */
+/* P35/P75A +2 -- LM p. 666, CM p. 468: to the interpreter, for P35_CODE. */
 void p35_p75a_after_p20flgon(void)
 {
     tc_at(P35_P75A + 2u);

@@ -40,8 +40,8 @@ void r51_after_exit(void)
     tc_to(R51_1 + 1u, PHASCHNG); /* OCT 04024 */
 }
 
-/* R51C: V50N25, option 15 (GOPERF1): the computer picks the stars (V33)
- * or the crew does (ENTER). */
+/* R51C -- p. 941: V50N25, option 15 (GOPERF1): the computer picks the stars
+ * (V33) or the crew does (ENTER). */
 void r51c(void)
 {
     set_A(OCT15);
@@ -53,22 +53,23 @@ void r51c_terminate(void)
     tc_to(R51C + 3u, GOTOPOOH);
 }
 
-/* R51C +4: "V33E". */
+/* R51C +4 -- p. 941: "V33E". */
 void r51c_proceed(void)
 {
     tc_at(R51C + 4u); /* TC +2 */
     r51c_pick_stars();
 }
 
-/* R51C +5: "ENTER". */
+/* R51C +5 -- p. 941: "ENTER". */
 void r51c_enter(void)
 {
     tc_at(R51C + 5u);
     r51e();
 }
 
-/* R51C +6: the sun, the earth and the moon six minutes from now (TSIGHT1:
- * "6 MIN TO MARKING", from LOADTIME, LOCSAM); then R56 picks the stars. */
+/* R51C +6 -- p. 941: the sun, the earth and the moon six minutes from now
+ * (TSIGHT1: "6 MIN TO MARKING", from LOADTIME, LOCSAM); then R56 picks the
+ * stars. */
 void r51c_pick_stars(void)
 {
     tc_at(R51C + 6u);
@@ -91,8 +92,8 @@ void r51c_after_exit(void)
     tc_to(R51C + 015u, BANKCALL); /* CADR R56 */
 }
 
-/* R56's returns: +2, no pair of stars in the field of view (R51I); +3, a
- * pair, on to the marks (R51F). */
+/* R51F -1 -- p. 941: R56's returns: +2, no pair of stars in the field of
+ * view (R51I); +3, a pair, on to the marks (R51F). */
 void r51c_no_stars(void)
 {
     tc_at(R51F - 1u);
@@ -105,8 +106,8 @@ void r51f(void)
     r51e();
 }
 
-/* R51I: alarm 405, then V05N09 flashed: terminate, proceed (the crew
- * picks the stars, R51E) or enter (try again, R51C). */
+/* R51I -- p. 941: alarm 405, then V05N09 flashed: terminate, proceed (the
+ * crew picks the stars, R51E) or enter (try again, R51C). */
 void r51i(void)
 {
     tc_to(R51I, ALARM); /* OCT 405 */
@@ -135,8 +136,8 @@ void r51i_enter(void)
     r51c();
 }
 
-/* R51E: STARIND +0, the first of the two marks; then (R51.3) a restart
- * point. */
+/* R51E -- p. 941: STARIND +0, the first of the two marks; then (R51.3) a
+ * restart point. */
 void r51e(void)
 {
     set_A(ZERO);
@@ -188,8 +189,8 @@ void r51_mark_failed(void)
     tc_to(R51_3 + 013u, CURTAINS);
 }
 
-/* The marks taken: STARIND +0 after the first (R51.4 keeps it and marks
- * again, STARIND 1), positive after the second. */
+/* R51.3 +014 -- p. 942: The marks taken: STARIND +0 after the first (R51.4
+ * keeps it and marks again, STARIND 1), positive after the second. */
 void r51_marked(void)
 {
     switch (ccs_at(ADDRESS_OF(STARIND))) {
@@ -203,7 +204,8 @@ void r51_marked(void)
     }
 }
 
-/* R51.3 +017: the second star to STARSAV2; then a restart point. */
+/* R51.3 +017 -- p. 942: the second star to STARSAV2; then a restart
+ * point. */
 void r51_both_marked(void)
 {
     tc_at(R51_3 + 017u);
@@ -266,8 +268,8 @@ static const word r51_torque_words[] = {
 const struct interpretive_code R51_TORQUE_CODE = {014u, R51_3 + 027u, COUNT(r51_torque_words),
                                                   r51_torque_words};
 
-/* R51P63: V50N25, option 14: terminate, proceed (back to the caller,
- * QMAJ) or enter (align again, R51C). */
+/* R51P63 -- p. 942: V50N25, option 14: terminate, proceed (back to the
+ * caller, QMAJ) or enter (align again, R51C). */
 void r51p63(void)
 {
     set_A(OCT14);
@@ -298,7 +300,7 @@ static const word r51p63_words[] = {
 
 const struct interpretive_code R51P63_CODE = {014u, R51P63 + 6u, COUNT(r51p63_words), r51p63_words};
 
-/* R51.4: the first star (STARSAV1) and, at the mark, the planet's
+/* R51.4 -- p. 942: the first star (STARSAV1) and, at the mark, the planet's
  * direction (PLANVEC); STARIND 1, and the second mark. */
 static void r51_4(void)
 {

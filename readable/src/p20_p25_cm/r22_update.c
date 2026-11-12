@@ -162,8 +162,8 @@ static const word rendisp_words[] = {
     ORDER(EXIT),
 };
 
-/* RENDISP +1 -- after the EXIT: noun 49's third word, the data's source:
- * 2 for the VHF radar (SOURCBIT, FLAGWRD9), */
+/* RENDISP +1 -- p. 584: after the EXIT: noun 49's third word, the data's
+ * source: 2 for the VHF radar (SOURCBIT, FLAGWRD9), */
 void rendisp_after_exit(void)
 {
     ca(ADDRESS_OF(FLAGWRD9));
@@ -177,14 +177,14 @@ void rendisp_after_exit(void)
     rendisp_source();
 }
 
-/* RENDISP +7: 1 for the optics. */
+/* RENDISP +7 -- p. 585: 1 for the optics. */
 void rendisp_optics(void)
 {
     set_A(BIT1);
     rendisp_source();
 }
 
-/* RENDISP +010: to N49DISP +4; TEMPOR1 +0, "SET TEMPOR1 > ZERO TO
+/* RENDISP +010 -- p. 585: to N49DISP +4; TEMPOR1 +0, "SET TEMPOR1 > ZERO TO
  * INDICATE", "V06 N49 DISPLAY HASN'T BEEN ANSWERED"; and a restart phase
  * change (PHASCHNG, OCT 04022). (No A here overflows, for a TS to skip
  * on.) */
@@ -196,8 +196,8 @@ static void rendisp_source(void)
     tc_to(RENDISP + 013u, PHASCHNG);
 }
 
-/* RENDISP +015: "SET UP DISPLAY JOB WITH HIGHER PRIORITY", "THAN PRESENT
- * JOB": RENDISP2, priority 27 (NOVAC). */
+/* RENDISP +015 -- p. 585: "SET UP DISPLAY JOB WITH HIGHER PRIORITY", "THAN
+ * PRESENT JOB": RENDISP2, priority 27 (NOVAC). */
 void rendisp_after_phaschng(void)
 {
     set_A(PRIO27);
@@ -226,24 +226,24 @@ static const word rendisp7_words[] = {
     ADDRESS(RENDISP3), /* "POS INDICATES RECYCLE" */
 };
 
-/* RENDISP2: the display job, verb 06 noun 49, by PRIODSP. */
+/* RENDISP2 -- p. 585: the display job, verb 06 noun 49, by PRIODSP. */
 void rendisp2(void)
 {
     set_A(V06N49);
     tc_to(RENDISP2 + 1u, BANKCALL); /* CADR PRIODSP */
 }
 
-/* RENDISP2 +3: "TERM EXIT P20 VIA V56". */
+/* RENDISP2 +3 -- p. 585: "TERM EXIT P20 VIA V56". */
 void rendisp2_terminate(void)
 {
     tc_at(RENDISP2 + 3u);
     gotov56();
 }
 
-/* RENDISP2 +4: proceed: TEMPOR1 -1, "NEG INDICATES PROCEED RENDISP7 JOB",
- * and "GO COMPLETE ABOVE JOB" (ENDOFJOB). (On recycle PRIODSP comes back
- * to the TS, "POS INDICATES RECYCLE RENDISP7 JOB".) (CS ONE leaves no
- * overflow for the TS to skip on.) */
+/* RENDISP2 +4 -- p. 585: proceed: TEMPOR1 -1, "NEG INDICATES PROCEED
+ * RENDISP7 JOB", and "GO COMPLETE ABOVE JOB" (ENDOFJOB). (On recycle PRIODSP
+ * comes back to the TS, "POS INDICATES RECYCLE RENDISP7 JOB".) (CS ONE
+ * leaves no overflow for the TS to skip on.) */
 void rendisp2_proceed(void)
 {
     set_A(negate(ONE)); /* CS ONE */
@@ -260,11 +260,11 @@ static const word rendisp3_words[] = {
     ORDER(EXIT),
 };
 
-/* RENDISP3 +4 -- after the EXIT: the mark buffers' E bank (BUFBANK, E7),
- * and both buffers -1, "ERASE MARK ONE BUFFER", "ERASE MARK TWO BUFFER",
- * with interrupts held. (A change of F bank, which BUFBANK's BBCON could
- * make, the faithful port refuses: the readable code does too. A CA of a
- * constant leaves no overflow for a TS to skip on.) */
+/* RENDISP3 +4 -- p. 585: after the EXIT: the mark buffers' E bank (BUFBANK,
+ * E7), and both buffers -1, "ERASE MARK ONE BUFFER", "ERASE MARK TWO
+ * BUFFER", with interrupts held. (A change of F bank, which BUFBANK's BBCON
+ * could make, the faithful port refuses: the readable code does too. A CA of
+ * a constant leaves no overflow for a TS to skip on.) */
 void rendisp3_after_exit(void)
 {
     inhint();

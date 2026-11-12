@@ -38,9 +38,9 @@ static const word updatevg_words[] = {
     ADDRESS_PLUS_ONE(DELVREF), STORE(DELVSUMP),    ORDER(EXIT),
 };
 
-/* After the EXIT: NBRCYCLP, the passes counted, NBRCYCLS plus one (an
- * overflow would skip into the OCT after the PHASCHNG, data: not
- * modelled); restart group 1 (PHASCHNG, OCT 10035, "TYPE B RESTART
+/* UPDATEVG +014 -- p. 700: After the EXIT: NBRCYCLP, the passes counted,
+ * NBRCYCLS plus one (an overflow would skip into the OCT after the PHASCHNG,
+ * data: not modelled); restart group 1 (PHASCHNG, OCT 10035, "TYPE B RESTART
  * RESTART BELOW AND 5.3 REREADACCS"). */
 void updatevg_after_exit(void)
 {
@@ -50,8 +50,8 @@ void updatevg_after_exit(void)
     tc_to(UPDATEVG_EXIT + 4u, PHASCHNG);
 }
 
-/* UPDATEVG_EXIT +6: the copy cycle, NBRCYCLP to NBRCYCLS; to the
- * interpreter, for CALL40_8_CODE. */
+/* UPDATEVG +021 -- p. 700: UPDATEVG_EXIT +6: the copy cycle, NBRCYCLP to
+ * NBRCYCLS; to the interpreter, for CALL40_8_CODE. */
 void updatevg_after_phaschng(void)
 {
     ca(ADDRESS_OF(NBRCYCLP));
@@ -90,21 +90,22 @@ static const word call40_8_words[] = {
     /* SURELY.9 */ ORDER(EXIT),
 };
 
-/* SURELY.9 +1, after the EXIT: S40.9 as a job (FINDVAC, PRIO10), */
+/* SURELY.9 +1 -- p. 700, after the EXIT: S40.9 as a job (FINDVAC,
+ * PRIO10), */
 void surely_9_after_exit(void)
 {
     set_A(PRIO10);
     tc_to(SURELY_9 + 2u, FINDVAC); /* 2CADR S40.9 */
 }
 
-/* restart groups 1 and 5 (2PHSCHNG, OCT 00051, "1.5 = REDO40.9, PRIO 10",
- * and OCT 10035), */
+/* SURELY.9 +5 -- p. 700: restart groups 1 and 5 (2PHSCHNG, OCT 00051, "1.5 =
+ * REDO40.9, PRIO 10", and OCT 10035), */
 void surely_9_after_findvac(void)
 {
     tc_to(SURELY_9 + 5u, TWO_PHSCHNG);
 }
 
-/* and to the interpreter, for SURELY_9_CODE. */
+/* SURELY.9 +010 -- p. 700: and to the interpreter, for SURELY_9_CODE. */
 void surely_9_after_2phschng(void)
 {
     tc_at(SURELY_9 + 010u);
@@ -136,7 +137,7 @@ static const word surely_9_words[] = {
 
 /* ---- STEERING -- pp. 701-702 ---- */
 
-/* STEERING: SERVICER's exit (AVEGEXIT) during the burn; to the
+/* STEERING -- p. 701: SERVICER's exit (AVEGEXIT) during the burn; to the
  * interpreter, for STEERING_CODE. */
 void steering(void)
 {
@@ -151,10 +152,10 @@ static const word steering_words[] = {
     ORDER(EXIT),
 };
 
-/* STEERING +4, after the EXIT: "CHECK IMPULSW" (bit 9 of FLAGWRD2, by CCS
- * A): clear, SERVXT; set, "PRE-IGNITE, REQUEST ENG-OFF, OR POST-OFF":
- * "CHECK ENGINE-ON/-OFF" (bit 13 of DSALMOUT): "ENGINE-OFF, SO PRE-IGNITE
- * OR POST-OFF", SERVXT; on, EBANK 7 (TCR E7SETTER). */
+/* STEERING +4 -- p. 701, after the EXIT: "CHECK IMPULSW" (bit 9 of FLAGWRD2,
+ * by CCS A): clear, SERVXT; set, "PRE-IGNITE, REQUEST ENG-OFF, OR POST-OFF":
+ * "CHECK ENGINE-ON/-OFF" (bit 13 of DSALMOUT): "ENGINE-OFF, SO PRE-IGNITE OR
+ * POST-OFF", SERVXT; on, EBANK 7 (TCR E7SETTER). */
 void steering_after_exit(void)
 {
     set_A(BIT9); /* "CHECK IMPULSW" */
@@ -174,8 +175,9 @@ void steering_after_exit(void)
     steering_after_e7setter();
 }
 
-/* STEERING_EXIT +015, E7SETTER's return: INHINT; the time to go, TIG less
- * TIME2, in MPAC, its halves made to agree in sign (TCR DPAGREE). */
+/* STEERING +020 -- p. 701: STEERING_EXIT +015, E7SETTER's return: INHINT;
+ * the time to go, TIG less TIME2, in MPAC, its halves made to agree in sign
+ * (TCR DPAGREE). */
 void steering_after_e7setter(void)
 {
     inhint();
@@ -186,9 +188,9 @@ void steering_after_e7setter(void)
     tc_to(STEERING_EXIT + 024u, DPAGREE);
 }
 
-/* DPAGREE's return: TGO (+0 and the time to go, "LESS THAN 6 (OR 4)
- * SECONDS TO GO", at least one centisecond, "PROTECT AGAINST NEG/ZRO
- * W.L. CALL"); ENGINOFF after it (WAITLIST). */
+/* STEERING +030 -- p. 701: DPAGREE's return: TGO (+0 and the time to go,
+ * "LESS THAN 6 (OR 4) SECONDS TO GO", at least one centisecond, "PROTECT
+ * AGAINST NEG/ZRO W.L. CALL"); ENGINOFF after it (WAITLIST). */
 void steering_after_dpagree(void)
 {
     ca(ADDRESS_OF(MPAC) + 1u);
@@ -201,20 +203,21 @@ void steering_after_dpagree(void)
     tc_to(STEERING_EXIT + 037u, WAITLIST); /* 2CADR ENGINOFF */
 }
 
-/* Restart groups 3 and 5 (2PHSCHNG, OCT 40153, "3.15 = ENGINOFF (TGO+1)",
- * and OCT 10035, "5.3 = REREADAC"), */
+/* STEERING +045 -- p. 702: Restart groups 3 and 5 (2PHSCHNG, OCT 40153,
+ * "3.15 = ENGINOFF (TGO+1)", and OCT 10035, "5.3 = REREADAC"), */
 void steering_after_waitlist(void)
 {
     tc_to(STEERING_EXIT + 042u, TWO_PHSCHNG);
 }
 
-/* "CLEAR IMPULSW, ENGINOFF IS NOW SET UP" (DOWNFLAG), */
+/* STEERING +050 -- p. 702: "CLEAR IMPULSW, ENGINOFF IS NOW SET UP"
+ * (DOWNFLAG), */
 void steering_after_2phschng(void)
 {
     tc_to(STEERING_EXIT + 045u, DOWNFLAG); /* ADRES IMPULSW */
 }
 
-/* and back to SERVICER (TCF SERVXT). */
+/* STEERING +052 -- p. 702: and back to SERVICER (TCF SERVXT). */
 void steering_after_downflag(void)
 {
     servxt();

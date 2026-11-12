@@ -195,36 +195,36 @@ static const word s22f244_words[] = {
     ORDER(EXIT),
 };
 
-/* S22.1 +0730 -- after the EXIT: verb 06 noun 89 (V06N89B), the landmark's
- * latitude, longitude and altitude, flashed by GOFLASH. */
+/* S22.1 +0730 -- p. 608: after the EXIT: verb 06 noun 89 (V06N89B), the
+ * landmark's latitude, longitude and altitude, flashed by GOFLASH. */
 void s22f244_after_exit(void)
 {
     set_A(V06N89B);
     tc_to(S22_1 + 0731u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* S22.1 +0733: "V34E TERMINATE" (S22GTP). */
+/* S22.1 +0733 -- p. 608: "V34E TERMINATE" (S22GTP). */
 void s22f244_terminate(void)
 {
     tc_at(S22_1 + 0733u);
     s22gtp();
 }
 
-/* S22.1 +0734: proceed, "SAVE LANDING SITE COORD", TC +2: */
+/* S22.1 +0734 -- p. 608: proceed, "SAVE LANDING SITE COORD", TC +2: */
 void s22f244_proceed(void)
 {
     tc_at(S22_1 + 0734u);
     s22_landing_site();
 }
 
-/* S22.1 +0735: recycle, "POINT A IN GSOP" (S22.981X). */
+/* S22.1 +0735 -- p. 608: recycle, "POINT A IN GSOP" (S22.981X). */
 void s22f244_recycle(void)
 {
     tc_at(S22_1 + 0735u);
     s22_981x();
 }
 
-/* S22.1 +0736: TC INTPRET, */
+/* S22.1 +0736 -- p. 608: TC INTPRET, */
 void s22_landing_site(void)
 {
     tc_at(S22_1 + 0736u);
@@ -254,7 +254,7 @@ static const word s22rls_words[] = {
     ORDER(EXIT),
 };
 
-/* S22.981X: TC INTPRET, */
+/* S22.981X -- p. 608: TC INTPRET, */
 void s22_981x(void)
 {
     tc_at(S22_981X);
@@ -270,7 +270,7 @@ static const word s22_981x_words[] = {
     ORDER(EXIT),
 };
 
-/* S22EXEX: TC INTPRET, "WITHOUT CONVERTING W", */
+/* S22EXEX -- p. 608: TC INTPRET, "WITHOUT CONVERTING W", */
 void s22exex(void)
 {
     tc_at(S22EXEX);
@@ -283,7 +283,7 @@ static const word s22exex_words[] = {
     ADDRESS(S22RTNEX),
 };
 
-/* S22GTP: TC INTPRET, "CONVERT W BEFORE TC GOTOPOOH": */
+/* S22GTP -- p. 608: TC INTPRET, "CONVERT W BEFORE TC GOTOPOOH": */
 static void s22gtp(void)
 {
     tc_at(S22GTP);
@@ -297,7 +297,7 @@ static const word s22gtp_words[] = {
     ORDER(EXIT),
 };
 
-/* S22GTP +4 -- after the EXIT: */
+/* S22GTP +4 -- p. 608: after the EXIT: */
 void s22gtp_after_exit(void)
 {
     tc_to(S22GTP + 4u, GOTOPOOH);

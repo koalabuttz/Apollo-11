@@ -68,13 +68,13 @@ void unit_plus1(void)
 
     tc_at(UNIT + 017u);
     if (sqrtsub()) return; /* "GO TAKE THE NORMALIZED SQUARE ROOT." */
-    unit_plus16();
+    unit_plus020();
 }
 
-/* UNIT +16: "CHECK FOR UNIT OVERFLOW." The root is normalized: not less
- * than .5 "UNLESS INPUT TO SQRTSUB WAS 0". (The -0 slot runs the DXCH
- * without its INDEX.) */
-void unit_plus16(void)
+/* UNIT +020 -- LM p. 1070, CM p. 1175: "CHECK FOR UNIT OVERFLOW." The root
+ * is normalized: not less than .5 "UNLESS INPUT TO SQRTSUB WAS 0". (The -0
+ * slot runs the DXCH without its INDEX.) */
+void unit_plus020(void)
 {
     switch (ccs_at(MPAC_AT(0u))) {
     case POSITIVE: unit_plus22(); return;
@@ -87,8 +87,9 @@ void unit_plus16(void)
     dvovf();
 }
 
-/* UNIT +22: "SEE IF THE INPUT WAS SO SMALL THAT THE FIRST TWO REGISTERS OF
- * THE SQUARE WERE 0": SQRTSUB's right shift count MPTEMP against 14. */
+/* UNIT +22 -- LM p. 1070, CM p. 1175: "SEE IF THE INPUT WAS SO SMALL THAT
+ * THE FIRST TWO REGISTERS OF THE SQUARE WERE 0": SQRTSUB's right shift count
+ * MPTEMP against 14. */
 static void unit_plus22(void)
 {
     set_A(negate(FOURTEEN));
@@ -107,7 +108,7 @@ static void unit_plus22(void)
     small2();
 }
 
-/* SMALL2: "(SMALL EXITS TO THIS POINT)." */
+/* SMALL2 -- LM p. 1070, CM p. 1175: "(SMALL EXITS TO THIS POINT)." */
 static void small2(void)
 {
     ts(L_ADDRESS);
@@ -115,9 +116,10 @@ static void small2(void)
     large2(); /* "GO TO STORE LENGTH AND PROCEED." */
 }
 
-/* LARGE: "MOST ALL CASES COME HERE." "SEE IF NO NORMALIZATION WAS REQUIRED
- * BY SQRT, AND IF SO, SET UP FOR A SHIFT RIGHT 1 BEFORE DIVIDING TO PRODUCE
- * THE DESIRED HALF UNIT VECTOR" (MPTEMP -20, for MAXTEST -21D). */
+/* LARGE -- LM p. 1070, CM p. 1175: "MOST ALL CASES COME HERE." "SEE IF NO
+ * NORMALIZATION WAS REQUIRED BY SQRT, AND IF SO, SET UP FOR A SHIFT RIGHT 1
+ * BEFORE DIVIDING TO PRODUCE THE DESIRED HALF UNIT VECTOR" (MPTEMP -20, for
+ * MAXTEST -21D). */
 static void large(void)
 {
     switch (ccs_at(ADDRESS_OF(MPTEMP))) {
@@ -151,9 +153,9 @@ static void large3(void)
     large2();
 }
 
-/* LARGE2: "LENGTH NOW STORED IN WORK AREA." "NO MAXDV CASES IN UNIT." Each
- * component is divided by the length, "IN USUAL FASHION SO WE CAN EXIT
- * THROUGH VROTATEX." */
+/* LARGE2 -- LM p. 1072, CM p. 1177: "LENGTH NOW STORED IN WORK AREA." "NO
+ * MAXDV CASES IN UNIT." Each component is divided by the length, "IN USUAL
+ * FASHION SO WE CAN EXIT THROUGH VROTATEX." */
 static void large2(void)
 {
     dxch(indexed(ADDRESS_OF(LV), FIXLOC));
@@ -302,7 +304,8 @@ void sqrt_(void)
     genscr_plus4();           /* "ADDRWD WAS ZERO TO PREVENT ROUND." */
 }
 
-/* SQRTSHFT: "SELECT SHIFTING BIT AND EXIT THROUGH SHIFT ROUTINES." */
+/* SQRTSHFT -- LM p. 1076, CM p. 1181: "SELECT SHIFTING BIT AND EXIT THROUGH
+ * SHIFT ROUTINES." */
 static void sqrtshft(void)
 {
     ca(indexed(ADDRESS_OF(BIT15), MPTEMP));
@@ -408,7 +411,8 @@ void dsqsub(void)
     tc_through(Q_ADDRESS);
 }
 
-/* VSQSUB: "DOTS THE VECTOR IN MPAC WITH ITSELF", ending "AS IN DOTSUB". */
+/* VSQSUB -- LM p. 1078, CM p. 1183: "DOTS THE VECTOR IN MPAC WITH ITSELF",
+ * ending "AS IN DOTSUB". */
 void vsqsub(void)
 {
     qxch(ADDRESS_OF(DOTRET));
@@ -494,9 +498,9 @@ bool sqrtsub(void)
     return false;
 }
 
-/* SQRTNEG: "ARGUMENT IS NEGATIVE, BUT SEE IF SIGN-CORRECTED ARGUMENT IS LESS
- * THAN 10(-4) IN MAGNITUDE. IF SO, CALL ANSWER ZERO." A is MPAC's magnitude
- * less one. */
+/* SQRTNEG -- LM p. 1079, CM p. 1184: "ARGUMENT IS NEGATIVE, BUT SEE IF
+ * SIGN-CORRECTED ARGUMENT IS LESS THAN 10(-4) IN MAGNITUDE. IF SO, CALL
+ * ANSWER ZERO." A is MPAC's magnitude less one. */
 static bool sqrtneg(void)
 {
     switch (ccs_at(A_ADDRESS)) {
@@ -514,16 +518,17 @@ static bool sqrtneg(void)
     return false;
 }
 
-/* ZEROANS: "FORCE ANSWER TO ZERO HERE." */
+/* ZEROANS -- LM p. 1079, CM p. 1184: "FORCE ANSWER TO ZERO HERE." */
 static void zeroans(void)
 {
     set_A(ZERO);
     fixroot();
 }
 
-/* SQRTABRT: the alarm 1302 ("DISPLAYS ERROR CODE 1302"): the LM's
- * POODOO1 takes the interpretive return from LOC in A,L (DXCH LOC); the
- * CM's POODOO the plain one. The OCT 1302 after the TC is the code. */
+/* SQRTABRT -- LM p. 1079, CM p. 1184: the alarm 1302 ("DISPLAYS ERROR CODE
+ * 1302"): the LM's POODOO1 takes the interpretive return from LOC in A,L
+ * (DXCH LOC); the CM's POODOO the plain one. The OCT 1302 after the TC is
+ * the code. */
 static bool sqrtabrt(void)
 {
 #if LUMINARY099
@@ -556,8 +561,9 @@ static void smpac_plus(void)
     arghi();
 }
 
-/* ARGHI: "ARGUMENT BETWEEN .25 AND .5, GET A LINEAR APPROXIMATION FOR
- * THIS RANGE": "X0/2 = (MPAC/2)(SLOPHI) + BIASHI/2." */
+/* ARGHI -- LM p. 1080, CM p. 1185: "ARGUMENT BETWEEN .25 AND .5, GET A
+ * LINEAR APPROXIMATION FOR THIS RANGE": "X0/2 = (MPAC/2)(SLOPHI) +
+ * BIASHI/2." */
 static void arghi(void)
 {
     set_A(SLOPEHI);
@@ -566,9 +572,10 @@ static void arghi(void)
     arghi_plus4();
 }
 
-/* ARGHI +4: "X0/2 (ARGLO ENTERS HERE)." Two Newton steps: "X1 = X0/2 +
- * .5(MPAX/2)/(X0/2)" in single precision, then "X2 = X1/2 + (MPAC/2)X1" in
- * double, which "OVERFLOWS IF ARG. NEAR POSMAX". (It never does: the largest's root fits.) */
+/* ARGHI +4 -- LM p. 1080, CM p. 1185: "X0/2 (ARGLO ENTERS HERE)." Two Newton
+ * steps: "X1 = X0/2 + .5(MPAX/2)/(X0/2)" in single precision, then "X2 =
+ * X1/2 + (MPAC/2)X1" in double, which "OVERFLOWS IF ARG. NEAR POSMAX". (It
+ * never does: the largest's root fits.) */
 static void arghi_plus4(void)
 {
     if (!ts(BUF_AT(0u))) ca(MPAC_AT(0u)); /* "SINGLE-PRECISION THROUGHOUT." */
@@ -594,7 +601,8 @@ static void arghi_plus4(void)
     fixroot();
 }
 
-/* FIXROOT, TCQBNK00: "RETURN TO CALLER TO UNNORMALIZE, ETC." */
+/* FIXROOT -- LM p. 1080, CM p. 1185, TCQBNK00: "RETURN TO CALLER TO
+ * UNNORMALIZE, ETC." */
 static void fixroot(void)
 {
     if (!ts(MPAC_AT(0u))) ts(MPAC_AT(1u));
@@ -619,7 +627,8 @@ static void srtest(void)
     arglo();
 }
 
-/* ARGLO: "(NORMALIZED) ARGUMENT BETWEEN .125 AND .25". */
+/* ARGLO -- LM p. 1081, CM p. 1186: "(NORMALIZED) ARGUMENT BETWEEN .125 AND
+ * .25". */
 static void arglo(void)
 {
     set_A(SLOPELO);
@@ -628,8 +637,8 @@ static void arglo(void)
     arghi_plus4(); /* "BEGIN SQUARE ROOT." */
 }
 
-/* SQRTNM2: "SHIFT LEFT 2 AND INCREMENT RIGHT SHIFT COUNT (FOR TERMINAL
- * UNNORMALIZATION)." */
+/* SQRTNM2 -- LM p. 1081, CM p. 1186: "SHIFT LEFT 2 AND INCREMENT RIGHT SHIFT
+ * COUNT (FOR TERMINAL UNNORMALIZATION)." */
 static void sqrtnm2(void)
 {
     dca(MPAC_AT(1u));
@@ -639,10 +648,11 @@ static void sqrtnm2(void)
     sqrtnorm();
 }
 
-/* SQRTNORM: "FIRST TIME THROUGH, JUST SHIFT LEFT 1 (PUTS IN EFFECTIVE RIGHT
- * SHIFT SINCE WE WANT MPAC/2)." NORMTEST: "SEE IF ARGUMENT NOW NORMALIZED
- * AT GREATER THAN .125": the doubled major part goes into CYL, and each
- * CCS CYL (which cycles it left again) tests the next bit down. */
+/* SQRTNORM -- LM p. 1081, CM p. 1186: "FIRST TIME THROUGH, JUST SHIFT LEFT 1
+ * (PUTS IN EFFECTIVE RIGHT SHIFT SINCE WE WANT MPAC/2)." NORMTEST: "SEE IF
+ * ARGUMENT NOW NORMALIZED AT GREATER THAN .125": the doubled major part goes
+ * into CYL, and each CCS CYL (which cycles it left again) tests the next bit
+ * down. */
 static void sqrtnorm(void)
 {
     enum sign test;

@@ -62,10 +62,10 @@ void swcall(void)
     call_in_bank(ADDRESS_OF(BUF2), SWRETURN);
 }
 
-/* SWCALL and ISWCALL, from TS L on: the CADR is in A. buffer is the pair
- * that keeps the return (BUF2, or RUPTREG3 for ISWCALL) and return_entry
- * the routine the call returns through (SWRETURN or ISWRETRN), the word
- * after the TC that makes the call. */
+/* SWCALL -- LM p. 998, CM p. 1103 and ISWCALL, from TS L on: the CADR is in
+ * A. buffer is the pair that keeps the return (BUF2, or RUPTREG3 for
+ * ISWCALL) and return_entry the routine the call returns through (SWRETURN
+ * or ISWRETRN), the word after the TC that makes the call. */
 static void call_in_bank(unsigned buffer, word return_entry)
 {
     word subroutine;
@@ -90,8 +90,8 @@ void swreturn(void)
     return_to_caller(ADDRESS_OF(BUF2));
 }
 
-/* SWRETURN and ISWRETRN: buffer holds the return address, then the
- * caller's FBANK. */
+/* SWRETURN -- LM p. 998, CM p. 1103 and ISWRETRN: buffer holds the return
+ * address, then the caller's FBANK. */
 static void return_to_caller(unsigned buffer)
 {
     xch(buffer + 1u);   /* the caller's FBANK to A */
@@ -145,13 +145,13 @@ void q_plus_10000(void)
     continue_at(in_bank(Q));
 }
 
-/* BANKJUMP with a negative overflow in A leaves -1 in Q, and INDEX Q then
- * makes PRIO12's TCF 10000 (012000) the instruction 011777: CCS 01777, a
- * CCS of the last word of the EBANK window. Its four outcomes run on into
- * MAKECADR's four instructions (CAF, MASK, AD, TC Q) and so to a TC Q with
- * -1 in Q, which runs register Q as an instruction. No caller passes such a
- * CADR. The faithful port stops at that TC Q, with Z at register Q, and so
- * does this. */
+/* BANKJUMP -- LM p. 998, CM p. 1103 with a negative overflow in A leaves -1
+ * in Q, and INDEX Q then makes PRIO12's TCF 10000 (012000) the instruction
+ * 011777: CCS 01777, a CCS of the last word of the EBANK window. Its four
+ * outcomes run on into MAKECADR's four instructions (CAF, MASK, AD, TC Q)
+ * and so to a TC Q with -1 in Q, which runs register Q as an instruction. No
+ * caller passes such a CADR. The faithful port stops at that TC Q, with Z at
+ * register Q, and so does this. */
 static void prio12_as_ccs(void)
 {
     switch (ccs(fetch(01777u))) {

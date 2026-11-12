@@ -47,7 +47,7 @@ static void out22_1(void)
     tc_to(OUT22_1 + 1u, BANKJUMP);
 }
 
-/* EREXIT1: "SET ERROR CODE" 1, "COULD NOT READ RADAR". */
+/* EREXIT1 -- p. 571: "SET ERROR CODE" 1, "COULD NOT READ RADAR". */
 static void erexit1(void)
 {
     set_A(BIT1);
@@ -68,9 +68,9 @@ void lrs22_1_after_makecadr(void)
     tc_to(LRS22_1 + 2u, DOWNFLAG); /* ADRES RNGSCFLG */
 }
 
-/* LRS22.1 +4: "GET RR RANGE SCALE FROM CHANNEL 33 BIT 3" into RADMODES's
- * bit 3 (RRRSBIT), then READRDOT. (An overflow would skip the CS and the
- * RELINT, as the listing runs it.) */
+/* LRS22.1 +4 -- p. 569: "GET RR RANGE SCALE FROM CHANNEL 33 BIT 3" into
+ * RADMODES's bit 3 (RRRSBIT), then READRDOT. (An overflow would skip the CS
+ * and the RELINT, as the listing runs it.) */
 void lrs22_1_after_downflag(void)
 {
     inhint();
@@ -88,15 +88,16 @@ void readrdot_after_rrrdot(void)
     tc_to(READRDOT + 2u, BANKCALL); /* CADR RADSTALL: "WAIT FOR DATA READ COMPLETION" */
 }
 
-/* READRDOT +4: RADSTALL's bad return, "COULD NOT READ RADAR-ERROR EXIT 1". */
+/* READRDOT +4 -- p. 569: RADSTALL's bad return, "COULD NOT READ RADAR-ERROR
+ * EXIT 1". */
 void readrdot_failed(void)
 {
     erexit1();
 }
 
-/* READRDOT +5: "NO INTERRUPTS WHILE READING TIME AND CDU". "SET MARK TIME
- * EQUAL TO THE MID-POINT" (TIMEHOLD) of the range rate reading, kept in
- * MPAC +5 ("TEMP BUFFER FOR DOWNLINK"); "SAVE RANGE-RATE READING" to
+/* READRDOT +5 -- p. 569: "NO INTERRUPTS WHILE READING TIME AND CDU". "SET
+ * MARK TIME EQUAL TO THE MID-POINT" (TIMEHOLD) of the range rate reading,
+ * kept in MPAC +5 ("TEMP BUFFER FOR DOWNLINK"); "SAVE RANGE-RATE READING" to
  * RDOTMSAV; "SAVE ICDU ANGLES" (CDUY, CDUZ to MPAC +3, CDUX to MPAC +2);
  * "SAVE TIME" (TIME2, TIME1) in MPAC; and the radar's trunnion and shaft
  * angles "FOR RRNB" to TANG. Then "READ RR RANGE (ONE SAMPLE)". */
@@ -124,17 +125,18 @@ void readrdot_after_rrrange(void)
     tc_to(READRDOT + 030u, BANKCALL); /* CADR RADSTALL: "WAIT FOR READ COMPLETE" */
 }
 
-/* READRDOT +032: RADSTALL's bad return, "CHECK FOR ERRORS DURING READ". */
+/* READRDOT +032 -- p. 570: RADSTALL's bad return, "CHECK FOR ERRORS DURING
+ * READ". */
 void readrdot_range_failed(void)
 {
     tc_at(READRDOT + 032u);
     continue_at(CHEXERR);
 }
 
-/* READRDOT +033: "COPY CYCLE FOR MARK DATA ON DOWNLINK": the raw range
- * and range rate (DNRRANGE) to RANGRDOT, the mark time to MKTIME, the CDU
- * angles to AIG, AMG and AOG, and the radar's angles to TANGNB ("PRESERVE
- * TANG"). The time, swapped out of MPAC by the first DXCH, is the
+/* READRDOT +033 -- p. 570: "COPY CYCLE FOR MARK DATA ON DOWNLINK": the raw
+ * range and range rate (DNRRANGE) to RANGRDOT, the mark time to MKTIME, the
+ * CDU angles to AIG, AMG and AOG, and the radar's angles to TANGNB
+ * ("PRESERVE TANG"). The time, swapped out of MPAC by the first DXCH, is the
  * interpretive code's first operand. */
 void readrdot_range_read(void)
 {
@@ -186,7 +188,7 @@ static const word lrs22_1_convert_words[] = {
     ORDER(EXIT),
 };
 
-/* READRDOT +0100: "STORE IMU CDU ANGLES AT MARKTIME IN CDUSPOT FOR
+/* READRDOT +0100 -- p. 570: "STORE IMU CDU ANGLES AT MARKTIME IN CDUSPOT FOR
  * TRG*SMNB". (An overflow would skip the next CA, as the listing runs
  * it.) */
 void lrs22_1_mark_angles(void)
@@ -217,7 +219,7 @@ static const word lrs22_1_check_words[] = {
     ORDER(EXIT), /* "ERROR EXIT 2" */
 };
 
-/* NORMEXIT -3: "SET ERROR CODE" 2. */
+/* NORMEXIT -3 -- p. 571: "SET ERROR CODE" 2. */
 void lrs22_1_error_2(void)
 {
     set_A(BIT2);
@@ -236,8 +238,9 @@ void normexit_after_exit(void)
     out22_1();
 }
 
-/* CHEXERR: "CHECK IF RANGE SCALE CHANGED" (RNGSCFLG): "YES -- TAKE ANOTHER
- * READING"; else EREXIT1. (A, one bit of FLAGWRD5, is never negative.) */
+/* CHEXERR -- p. 571: "CHECK IF RANGE SCALE CHANGED" (RNGSCFLG): "YES -- TAKE
+ * ANOTHER READING"; else EREXIT1. (A, one bit of FLAGWRD5, is never
+ * negative.) */
 void chexerr(void)
 {
     ca(ADDRESS_OF(FLAGWRD5)); /* CAE */
@@ -285,7 +288,7 @@ static const word thirty_degchk_words[] = {
     ORDER(EXIT),
 };
 
-/* OKEXIT -3: "SETS ERROR CODE IN MPAC". */
+/* OKEXIT -3 -- p. 572: "SETS ERROR CODE IN MPAC". */
 void lrs22_2_error(void)
 {
     set_A(BIT1);

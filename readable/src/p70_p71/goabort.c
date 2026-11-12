@@ -12,7 +12,7 @@
 
 /* ---- GOABORT -- pp. 832-833 ---- */
 
-/* GOABORT: the interpretive code (GOABORT_CODE), ... */
+/* GOABORT -- p. 832: the interpretive code (GOABORT_CODE), ... */
 void goabort(void)
 {
     tc_at(GOABORT);
@@ -29,9 +29,10 @@ static const word goabort_words[] = {
 const struct interpretive_code GOABORT_CODE = {032u, GOABORT + 1u, COUNT(goabort_words),
                                                goabort_words};
 
-/* After the EXIT: DVCNTR four, WHICH the abort's table of the ignition
- * steps (WHICHADR, ABRTABLE), and the flags: FLRCS clear (the jets are not
- * the engine), ... (Each TS stores a constant: none skips.) */
+/* GOABORT +4 -- p. 832: After the EXIT: DVCNTR four, WHICH the abort's table
+ * of the ignition steps (WHICHADR, ABRTABLE), and the flags: FLRCS clear
+ * (the jets are not the engine), ... (Each TS stores a constant: none
+ * skips.) */
 void goabort_after_exit(void)
 {
     set_A(FOUR);
@@ -41,32 +42,33 @@ void goabort_after_exit(void)
     tc_to(GOABORT + 010u, DOWNFLAG); /* ADRES FLRCS */
 }
 
-/* ... FLUNDISP clear, ... */
+/* GOABORT +012 -- p. 833: ... FLUNDISP clear, ... */
 void goabort_after_flrcs(void)
 {
     tc_to(GOABORT + 012u, DOWNFLAG); /* ADRES FLUNDISP */
 }
 
-/* ... IDLEFLAG clear, ... */
+/* GOABORT +014 -- p. 833: ... IDLEFLAG clear, ... */
 void goabort_after_flundisp(void)
 {
     tc_to(GOABORT + 014u, DOWNFLAG); /* ADRES IDLEFLAG */
 }
 
-/* ... and "INSURE 4-JET TRANSLATION CAPABILITY" (ACC4-2FL set). */
+/* GOABORT +016 -- p. 833: ... and "INSURE 4-JET TRANSLATION CAPABILITY"
+ * (ACC4-2FL set). */
 void goabort_after_idleflag(void)
 {
     tc_to(GOABORT + 016u, UPFLAG); /* ADRES ACC4-2FL */
 }
 
-/* Then CHECKMM, with the program 70 (70DEC): in P70 its return is
- * P70INIT, ... */
+/* GOABORT +020 -- p. 833: Then CHECKMM, with the program 70 (70DEC): in P70
+ * its return is P70INIT, ... */
 void goabort_after_acc4_2fl(void)
 {
     tc_to(GOABORT + 020u, CHECKMM);
 }
 
-/* ... and otherwise the word after, TCF P71RET. */
+/* GOABORT +022 -- p. 833: ... and otherwise the word after, TCF P71RET. */
 void goabort_after_checkmm(void)
 {
     p71ret();
@@ -74,7 +76,7 @@ void goabort_after_checkmm(void)
 
 /* ---- P70INIT -- pp. 833-835 ---- */
 
-/* P70INIT: the interpretive code, ... */
+/* P70INIT -- p. 833: the interpretive code, ... */
 void p70init(void)
 {
     tc_at(P70INIT);
@@ -168,42 +170,43 @@ static const word p70init_words[] = {
 const struct interpretive_code P70INIT_CODE = {032u, P70INIT + 1u, COUNT(p70init_words),
                                                p70init_words};
 
-/* After UPTHROT's EXIT: "SET ROTFLAG", ... */
+/* UPTHROT +2 -- p. 834: After UPTHROT's EXIT: "SET ROTFLAG", ... */
 void upthrot_after_exit(void)
 {
     tc_to(UPTHROT + 2u, UPFLAG); /* ADRES ROTFLAG */
 }
 
-/* ... THROTUP, whose return is the word after, ... */
+/* UPTHROT +4 -- p. 834: ... THROTUP, whose return is the word after, ... */
 void upthrot_after_rotflag(void)
 {
     tc_at(UPTHROT + 4u);
     throtup();
 }
 
-/* ... and restart group 4 at 4.2 (PHASCHNG, OCT 04024): ... */
+/* UPTHROT +5 -- p. 834: ... and restart group 4 at 4.2 (PHASCHNG, OCT
+ * 04024): ... */
 void upthrot_after_throtup(void)
 {
     tc_to(UPTHROT + 5u, PHASCHNG);
 }
 
-/* UPTHROT1 -3: "VERIFY THAT THE PANEL SWITCHES ARE PROPERLY SET" (P40AUTO,
- * through BANKCALL), ... */
+/* UPTHROT1 -3 -- p. 834: "VERIFY THAT THE PANEL SWITCHES ARE PROPERLY SET"
+ * (P40AUTO, through BANKCALL), ... */
 void upthrot1_minus3(void)
 {
     tc_to(UPTHROT1 - 3u, BANKCALL); /* CADR P40AUTO */
 }
 
-/* ... THROTUP again, ... */
+/* UPTHROT1 -1 -- p. 834: ... THROTUP again, ... */
 void upthrot1_after_p40auto(void)
 {
     tc_at(UPTHROT1 - 1u);
     throtup();
 }
 
-/* ... and UPTHROT1: "SET SERVICER TO CALL ASCENT GUIDANCE" (AVGEXIT gets
- * ATMAGAD, 2CADR ATMAG), and GRP4OFF: "TERMINATE USE OF GROUP 4"
- * (PHASCHNG, OCT 00004), ... */
+/* UPTHROT1 -- p. 834: ... and UPTHROT1: "SET SERVICER TO CALL ASCENT
+ * GUIDANCE" (AVGEXIT gets ATMAGAD, 2CADR ATMAG), and GRP4OFF: "TERMINATE USE
+ * OF GROUP 4" (PHASCHNG, OCT 00004), ... */
 void upthrot1(void)
 {
     set_A(ATMAGAD[0]);
@@ -212,7 +215,7 @@ void upthrot1(void)
     tc_to(GRP4OFF, PHASCHNG);
 }
 
-/* ... and ENDOFJOB. */
+/* GRP4OFF +2 -- p. 835: ... and ENDOFJOB. */
 void grp4off_after_phaschng(void)
 {
     continue_at(ENDOFJOB);
@@ -220,14 +223,15 @@ void grp4off_after_phaschng(void)
 
 /* ---- P71RET -- p. 835 ---- */
 
-/* P71RET: LETABORT clear, ... */
+/* P71RET -- p. 835: LETABORT clear, ... */
 void p71ret(void)
 {
     tc_to(P71RET, DOWNFLAG); /* ADRES LETABORT */
 }
 
-/* ... "SET DVMON THRESHOLD TO THE ASCENT VALUE" (THRESH2 to DVTHRUSH),
- * and the interpretive code. (A is a constant: TS does not skip.) */
+/* P71RET +2 -- p. 835: ... "SET DVMON THRESHOLD TO THE ASCENT VALUE"
+ * (THRESH2 to DVTHRUSH), and the interpretive code. (A is a constant: TS
+ * does not skip.) */
 void p71ret_after_letabort(void)
 {
     set_A(THRESH2);
@@ -258,13 +262,14 @@ static const word p71ret_words[] = {
 
 const struct interpretive_code P71RET_CODE = {032u, P71RET + 5u, COUNT(p71ret_words), p71ret_words};
 
-/* After the EXIT: restart group 4 at 4.2 (PHASCHNG, OCT 04024), ... */
+/* OLDTIME +5 -- p. 835: After the EXIT: restart group 4 at 4.2 (PHASCHNG,
+ * OCT 04024), ... */
 void p71ret_after_exit(void)
 {
     tc_to(OLDTIME + 5u, PHASCHNG);
 }
 
-/* ... TGO from TGO1, and UPTHROT1 -3. */
+/* OLDTIME +7 -- p. 835: ... TGO from TGO1, and UPTHROT1 -3. */
 void p71ret_after_phaschng(void)
 {
     dca(ADDRESS_OF(TGO1));
@@ -287,8 +292,8 @@ static const word tgocomp_words[] = {
 
 const struct interpretive_code TGOCOMP_CODE = {032u, TGOCOMP, COUNT(tgocomp_words), tgocomp_words};
 
-/* THROTUP: THRUST BIT13, the engine's throttle all the way up, sent
- * (channel 14 bit 4), and back (TC Q). (A is a constant: TS THRUST does
+/* THROTUP -- p. 836: THRUST BIT13, the engine's throttle all the way up,
+ * sent (channel 14 bit 4), and back (TC Q). (A is a constant: TS THRUST does
  * not skip.) */
 void throtup(void)
 {

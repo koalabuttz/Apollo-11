@@ -43,11 +43,11 @@ static const word planet_words[] = {
 
 const struct interpretive_code PLANET_CODE = {015u, PLANET, COUNT(planet_words), planet_words};
 
-/* PLANET +5, after the EXIT: the star code (AOTCODE's bits 1-6) times 6
- * (REVCNT) to BESTI (or BESTJ, by STARIND). Not 0: a star, or the sun,
- * the earth or the moon (NOTPLAN). Code 0, a planet: the crew keys in
- * its vector (VNPLANV, to STARAD). (A is L, a word: TS does not skip;
- * nor is it negative: CCS takes its first two ways only.) */
+/* PLANET +5 -- p. 961, after the EXIT: the star code (AOTCODE's bits 1-6)
+ * times 6 (REVCNT) to BESTI (or BESTJ, by STARIND). Not 0: a star, or the
+ * sun, the earth or the moon (NOTPLAN). Code 0, a planet: the crew keys in
+ * its vector (VNPLANV, to STARAD). (A is L, a word: TS does not skip; nor is
+ * it negative: CCS takes its first two ways only.) */
 void planet_after_exit(void)
 {
     set_A(negate(HIGH9)); /* CS HIGH9 */
@@ -88,8 +88,8 @@ void planet_enter(void)
     planet_flash();
 }
 
-/* The planet's vector (STARAD) made a unit vector, back to the caller
- * (GCTR). */
+/* PLANET +024 -- p. 961: The planet's vector (STARAD) made a unit vector,
+ * back to the caller (GCTR). */
 void planet_vector(void)
 {
     tc_at(PLANET + 024u);
@@ -106,11 +106,11 @@ static const word planet_vector_words[] = {
 const struct interpretive_code PLANET_VECTOR_CODE = {
     015u, PLANET + 025u, COUNT(planet_vector_words), planet_vector_words};
 
-/* NOTPLAN: the code times 6, less one (as CCS leaves it), 227 or more
- * (code 46, 47 or 50: the sun, the earth or the moon), and LOCSAM
- * computes it (CALSAM1). Else a star: its place in the catalog (BESTI,
- * by STARIND) to X1, and its vector from the catalog (CATLOG,1). (A is a
- * word: TS does not skip.) */
+/* NOTPLAN -- p. 961: the code times 6, less one (as CCS leaves it), 227 or
+ * more (code 46, 47 or 50: the sun, the earth or the moon), and LOCSAM
+ * computes it (CALSAM1). Else a star: its place in the catalog (BESTI, by
+ * STARIND) to X1, and its vector from the catalog (CATLOG,1). (A is a word:
+ * TS does not skip.) */
 static void notplan(void)
 {
     cs(A_ADDRESS); /* CS A */
@@ -169,8 +169,8 @@ const struct interpretive_code CALSAM_CODE = {015u, CALSAM, COUNT(calsam_words),
 
 /* ---- GVDETER -- pp. 963-965 ---- */
 
-/* GVDETER: the first orientation's gimbal angles (42DEG, its complement
- * and 35DEG) to THETAD. (Each A is a constant: no TS skips.) */
+/* GVDETER -- p. 963: the first orientation's gimbal angles (42DEG, its
+ * complement and 35DEG) to THETAD. (Each A is a constant: no TS skips.) */
 void gvdeter(void)
 {
     set_A(FORTY_TWO_DEG);
@@ -238,9 +238,10 @@ static const word gvdeter_words[] = {
 const struct interpretive_code GVDETER_CODE = {015u, GVDETER + 7u, COUNT(gvdeter_words),
                                                gvdeter_words};
 
-/* After the EXIT: FREEFLAG cleared "IN CASE OF RECYCLE"; the angle
- * flashed (DISGRVER, V06N04): terminate, proceed (PROGRAV) or recycle
- * ("STORE GRAV AND DO IT AGAIN": FREEFLAG set, then PROGRAV). */
+/* GVDETER +060 -- p. 965: After the EXIT: FREEFLAG cleared "IN CASE OF
+ * RECYCLE"; the angle flashed (DISGRVER, V06N04): terminate, proceed
+ * (PROGRAV) or recycle ("STORE GRAV AND DO IT AGAIN": FREEFLAG set, then
+ * PROGRAV). */
 void gravel_after_exit(void)
 {
     tc_to(GVDETER + 060u, DOWNFLAG); /* ADRES FREEFLAG */
@@ -267,8 +268,8 @@ void gravel_recycle(void)
     tc_to(GVDETER + 067u, UPFLAG); /* ADRES FREEFLAG */
 }
 
-/* PROGRAV: a restart point (PHASCHNG, 04024); the new gravity (STARSAV1)
- * to GSAV. */
+/* PROGRAV -- p. 965: a restart point (PHASCHNG, 04024); the new gravity
+ * (STARSAV1) to GSAV. */
 void prograv(void)
 {
     tc_to(PROGRAV, PHASCHNG); /* OCT 04024 */
@@ -290,9 +291,9 @@ static const word prograv_words[] = {
 const struct interpretive_code PROGRAV_CODE = {015u, PROGRAV + 3u, COUNT(prograv_words),
                                                prograv_words};
 
-/* After the EXIT: "IF FREEFLAG SET, RE-COMPUTE GRAVITY" (GVDETER); else
- * "EXIT FROM GVDETER" (ATTCHK). (After the MASK, A is +0 or the bit: CCS
- * takes its first two ways only.) */
+/* PROGRAV +7 -- p. 965: After the EXIT: "IF FREEFLAG SET, RE-COMPUTE
+ * GRAVITY" (GVDETER); else "EXIT FROM GVDETER" (ATTCHK). (After the MASK, A
+ * is +0 or the bit: CCS takes its first two ways only.) */
 void prograv_after_exit(void)
 {
     set_A(FREEFBIT);
@@ -318,9 +319,9 @@ static const word lung_words[] = {
 
 const struct interpretive_code LUNG_CODE = {015u, LUNG, COUNT(lung_words), lung_words};
 
-/* After the EXIT: a restart point (PHASCHNG, 04024); the IMU coarse
- * aligned to THETAD (IMUCOARS), then fine aligned (IMUFINE), IMUSTALL
- * waiting for each (CURTAINS when it fails). */
+/* LUNG +5 -- p. 965: After the EXIT: a restart point (PHASCHNG, 04024); the
+ * IMU coarse aligned to THETAD (IMUCOARS), then fine aligned (IMUFINE),
+ * IMUSTALL waiting for each (CURTAINS when it fails). */
 void lung_after_exit(void)
 {
     tc_to(LUNG + 5u, PHASCHNG); /* OCT 04024 */
@@ -356,10 +357,10 @@ void lung_fine_failed(void)
     tc_to(LUNG + 020u, CURTAINS);
 }
 
-/* The count of readings (T/2SEC, -20) to GCTR; PRIO31's word to
- * 1/PIPADT; the compensation initialized (GCOMPZER), a restart point
- * (PHASCHNG, 04024), and the PIPAs read once (PIPSRINE: "DON'T USE
- * DATA"). (Each A is a constant: no TS skips.) */
+/* LUNG +021 -- p. 965: The count of readings (T/2SEC, -20) to GCTR; PRIO31's
+ * word to 1/PIPADT; the compensation initialized (GCOMPZER), a restart point
+ * (PHASCHNG, 04024), and the PIPAs read once (PIPSRINE: "DON'T USE DATA").
+ * (Each A is a constant: no TS skips.) */
 void lung_aligned(void)
 {
     set_A(T_2SEC); /* CA T/2SEC */
@@ -393,8 +394,8 @@ static const word greed_words[] = {
 
 const struct interpretive_code GREED_CODE = {015u, GREED, COUNT(greed_words), greed_words};
 
-/* "SET UP 2 SEC TASK TO READ PIPAS" (GRABGRAV, by TWIDDLE), and the job
- * ends. */
+/* GREED +1 -- p. 966: "SET UP 2 SEC TASK TO READ PIPAS" (GRABGRAV, by
+ * TWIDDLE), and the job ends. */
 void greed_after_exit(void)
 {
     set_A(TWO_SECS);
@@ -406,8 +407,8 @@ void greed_after_twiddle(void)
     tc_to(GREED + 4u, ENDOFJOB);
 }
 
-/* GRABGRAV, the task: the PIPAs read (PIPSRINE); "RE-ESTABLISH MAINLINE
- * JOB" (ADDGRAV, priority 13, by FINDVAC); the task ends. */
+/* GRABGRAV -- p. 966, the task: the PIPAs read (PIPSRINE); "RE-ESTABLISH
+ * MAINLINE JOB" (ADDGRAV, priority 13, by FINDVAC); the task ends. */
 void grabgrav(void)
 {
     tc_to(GRABGRAV, IBNKCALL); /* CADR PIPSRINE */
@@ -424,8 +425,8 @@ void grabgrav_after_findvac(void)
     tc_to(GRABGRAV + 6u, TASKOVER);
 }
 
-/* ADDGRAV, the job: the reading compensated (1/PIPA, to DELV), one more
- * counted (GCTR). */
+/* ADDGRAV -- p. 966, the job: the reading compensated (1/PIPA, to DELV), one
+ * more counted (GCTR). */
 void addgrav(void)
 {
     tc_to(ADDGRAV, BANKCALL); /* CADR 1/PIPA */
@@ -462,8 +463,8 @@ static const word addgrav_words[] = {
 const struct interpretive_code ADDGRAV_CODE = {015u, ADDGRAV + 4u, COUNT(addgrav_words),
                                                addgrav_words};
 
-/* After the EXIT: a restart point (PHASCHNG, 04024), then QMINEXIT, back
- * to LUNG's caller (QMIN). */
+/* ADDGRAV +023 -- p. 966: After the EXIT: a restart point (PHASCHNG, 04024),
+ * then QMINEXIT, back to LUNG's caller (QMIN). */
 void addgrav_after_exit(void)
 {
     tc_to(ADDGRAV + 023u, PHASCHNG); /* OCT 04024 */

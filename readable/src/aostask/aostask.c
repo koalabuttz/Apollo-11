@@ -41,10 +41,10 @@ static void tc_invert(word at)
     tc_through(Q_ADDRESS);
 }
 
-/* INVERT, by TC from outside the run: its TC Q goes back to the caller.
- * Only the file's own TCs call INVERT, and those run here inline, so a
- * return into the file's code (1/ACCSET on) is not modelled; nor one
- * outside 010-07777. */
+/* INVERT -- LM p. 1504, by TC from outside the run: its TC Q goes back to
+ * the caller. Only the file's own TCs call INVERT, and those run here
+ * inline, so a return into the file's code (1/ACCSET on) is not modelled;
+ * nor one outside 010-07777. */
 void invert(void)
 {
     word to;
@@ -59,12 +59,12 @@ void invert(void)
 
 /* ---- DVOVSUB -- LM pp. 1492-1493 ---- */
 
-/* DVOVSUB, by TC at at, the ADRES of the divisor after the TC: A,L over
- * the divisor, "QUOTIENT WITH OVERFLOW PROTECTION". "RETURN POSMAX FOR A
- * ZERO DIVISOR." When "DIVISION IS NOT PROPER" (ABS(DIVISOR) not above
- * ABS(DIVIDEND)), MAKEMAX gives POSMAX for like signs and NEGMAX for
- * unlike ones (the dividend's high word and the divisor are not zero
- * there). Returns by TC Q to the word after the ADRES. */
+/* DVOVSUB -- LM p. 1492, by TC at at, the ADRES of the divisor after the TC:
+ * A,L over the divisor, "QUOTIENT WITH OVERFLOW PROTECTION". "RETURN POSMAX
+ * FOR A ZERO DIVISOR." When "DIVISION IS NOT PROPER" (ABS(DIVISOR) not above
+ * ABS(DIVIDEND)), MAKEMAX gives POSMAX for like signs and NEGMAX for unlike
+ * ones (the dividend's high word and the divisor are not zero there).
+ * Returns by TC Q to the word after the ADRES. */
 static void dvovsub(word at)
 {
     tc_at(at);
@@ -97,15 +97,15 @@ static void dvovsub(word at)
 
 /* ---- 1/ACCSET, 1/ACCJOB, 1/ACCS -- LM p. 1486 ---- */
 
-/* 1/ACCJOB: "1/ACCS ASSUMES ENTRY VIA BANKCALL." The CADR after the TC
- * names 1/ACCS +2: "SKIP EBANK SETTING." */
+/* 1/ACCJOB -- LM p. 1486: "1/ACCS ASSUMES ENTRY VIA BANKCALL." The CADR
+ * after the TC names 1/ACCS +2: "SKIP EBANK SETTING." */
 void one_accjob(void)
 {
     tc_to(ONE_ACCJOB, BANKCALL);
 }
 
-/* 1/ACCSET: "ENTRY FROM FRESH START/RESTART CODING." "NULL THE OFFSET
- * ESTIMATES FOR 1/ACCS." and "FOR DOWNLIST", then 1/ACCJOB. */
+/* 1/ACCSET -- LM p. 1486: "ENTRY FROM FRESH START/RESTART CODING." "NULL THE
+ * OFFSET ESTIMATES FOR 1/ACCS." and "FOR DOWNLIST", then 1/ACCJOB. */
 void one_accset(void)
 {
     set_A(ZERO);
@@ -116,19 +116,21 @@ void one_accset(void)
     one_accjob();
 }
 
-/* 1/ACCJOB +2, where BANKCALL brings 1/ACCS back: the job ends. */
+/* 1/ACCJOB +2 -- LM p. 1486, where BANKCALL brings 1/ACCS back: the job
+ * ends. */
 void one_accjob_return(void)
 {
     tc_to(ONE_ACCJOB + 2u, ENDOFJOB);
 }
 
-/* 1/ACCS +2: TC MAKECADR, "SAVE RETURN SO THAT BUF2 MAY BE USED". */
+/* 1/ACCS +2 -- LM p. 1486: TC MAKECADR, "SAVE RETURN SO THAT BUF2 MAY BE
+ * USED". */
 void one_accs_plus2(void)
 {
     tc_to(ONE_ACCS + 2u, MAKECADR);
 }
 
-/* 1/ACCS: "***** EBANK SET BUT NOT RESTORED *****" */
+/* 1/ACCS -- LM p. 1486: "***** EBANK SET BUT NOT RESTORED *****" */
 void one_accs(void)
 {
     set_A(EBANK6);
@@ -138,8 +140,8 @@ void one_accs(void)
 
 /* ---- 1/ACCRET, DOCKTEST, DOWNGTS -- LM pp. 1491, 1504 ---- */
 
-/* 1/ACCRET +1: "SET BIT TO INDICATE DATA GOOD.", then "RETURN TO CALLER"
- * by BANKJUMP to the CADR MAKECADR made. */
+/* 1/ACCRET +1 -- LM p. 1504: "SET BIT TO INDICATE DATA GOOD.", then "RETURN
+ * TO CALLER" by BANKJUMP to the CADR MAKECADR made. */
 static void one_accret_plus1(void)
 {
     cs(ADDRESS_OF(DAPBOOLS));
@@ -158,9 +160,9 @@ static void one_accret(void)
 
 static void one_accont(void);
 
-/* DOCKTEST: "BYPASS 1/ACCONT WHEN DOCKED." DOCKTEMP holds the CSMDOCKD
- * bit or +0 (1/ACCS's own TS DOCKTEMP); a negative one would fall into
- * DVOVSUB, which is not modelled. */
+/* DOCKTEST -- LM p. 1491: "BYPASS 1/ACCONT WHEN DOCKED." DOCKTEMP holds the
+ * CSMDOCKD bit or +0 (1/ACCS's own TS DOCKTEMP); a negative one would fall
+ * into DVOVSUB, which is not modelled. */
 void docktest(void)
 {
     switch (ccs_at(ADDRESS_OF(DOCKTEMP))) {
@@ -170,7 +172,8 @@ void docktest(void)
     }
 }
 
-/* DOWNGTS: "ZERO SWITCHES WHEN USEQRJTS BIT IS UP OR DAP IS OFF". */
+/* DOWNGTS -- LM p. 1504: "ZERO SWITCHES WHEN USEQRJTS BIT IS UP OR DAP IS
+ * OFF". */
 static void downgts(void)
 {
     set_A(ZERO);
@@ -181,14 +184,14 @@ static void downgts(void)
 
 /* ---- SPSCONT -- LM pp. 1490-1491 ---- */
 
-/* SPSCONT, A ACCDOTQ: KQ and KRDAP, ".3ACCDOTQ" and ".3ACCDOTR", then
- * "THE SIGNED JERK TERMS" QACCDOT and RACCDOT from the gimbal drive bits
- * of channel 12 (LOOP3: RACCDOT, then QACCDOT): zero when "NONE", minus
- * ACCDOT(Q,R) for "POSITIVE ROTATION", plus it for negative. Then the
- * gimbal switches: down ("BE SURE THE GIMBAL SWITCHES ARE DOWN") when
- * USEQRJTS is set or "IS THE DAP RUNNINT?" (T5ADR not PAXIS) is no. Else
- * DOCKTEST when "GTS IN CONTROL", or TIMEGMBL by IBNKCALL: "NULL OFFSET AND
- * FIND ALLOWGTS". */
+/* SPSCONT -- LM p. 1490, A ACCDOTQ: KQ and KRDAP, ".3ACCDOTQ" and
+ * ".3ACCDOTR", then "THE SIGNED JERK TERMS" QACCDOT and RACCDOT from the
+ * gimbal drive bits of channel 12 (LOOP3: RACCDOT, then QACCDOT): zero when
+ * "NONE", minus ACCDOT(Q,R) for "POSITIVE ROTATION", plus it for negative.
+ * Then the gimbal switches: down ("BE SURE THE GIMBAL SWITCHES ARE DOWN")
+ * when USEQRJTS is set or "IS THE DAP RUNNINT?" (T5ADR not PAXIS) is no.
+ * Else DOCKTEST when "GTS IN CONTROL", or TIMEGMBL by IBNKCALL: "NULL OFFSET
+ * AND FIND ALLOWGTS". */
 static void spscont(void)
 {
     ts(ADDRESS_OF(ACCDOTQ));
@@ -240,10 +243,10 @@ static void spscont(void)
 
 /* ---- LRESC -- LM pp. 1489-1490 ---- */
 
-/* LRESC, in descent: "GET QUOTIENT WITH OVERFLOW PROTECTION" three times,
- * for the engine's thrust (ABDELV times MASS over GFACTM) times L,PVT-CG,
- * the gimbal's torque, over TORKJET1 times the R and Q inertias: ACCDOTR
- * and ACCDOTQ, "SCALED AT PI/2(7)". Then SPSCONT. */
+/* LRESC -- LM p. 1489, in descent: "GET QUOTIENT WITH OVERFLOW PROTECTION"
+ * three times, for the engine's thrust (ABDELV times MASS over GFACTM) times
+ * L,PVT-CG, the gimbal's torque, over TORKJET1 times the R and Q inertias:
+ * ACCDOTR and ACCDOTQ, "SCALED AT PI/2(7)". Then SPSCONT. */
 static void lresc(void)
 {
     ca(ADDRESS_OF(ABDELV));
@@ -369,16 +372,15 @@ static void inertias(bool skip_stctr)
 
 /* ---- DOCKED -- LM pp. 1494-1496 ---- */
 
-/* SPSLOOP1 and SPSLOOP2, A COEFCTR: 1 for the inertia's coefficients (C,
- * F, B, A, E, D), 7 for the CG's. "LET X = CSMMASS AND Y = LEMMASS":
- * "MPAC = C X Y + F", then "MPAC = MPAC + (A X +D)X + (B Y +E)Y", MASSCTR
- * 1 then 0 (INDEX MASSCTR on LEMMASS reads CSMMASS, the word after). A TS
- * MPAC that overflows skips the TCF +4 into SPSLOOP2. DIM takes COEFCTR to
- * 0 or 6, and +1 less 1 is -0: so CCS COEFCTR goes on at CA MPAC for the
- * inertia (the result is true) and leaves the loop for the CG: "IF
- * COEFCTR IS POS, EXIT FROM LOOP" (as a negative MASSCTR does). +0 and a
- * negative COEFCTR, or a -0 MASSCTR, run TORQCONS as instructions: not
- * modelled. */
+/* SPSLOOP1 -- LM p. 1494 and SPSLOOP2, A COEFCTR: 1 for the inertia's
+ * coefficients (C, F, B, A, E, D), 7 for the CG's. "LET X = CSMMASS AND Y =
+ * LEMMASS": "MPAC = C X Y + F", then "MPAC = MPAC + (A X +D)X + (B Y +E)Y",
+ * MASSCTR 1 then 0 (INDEX MASSCTR on LEMMASS reads CSMMASS, the word after).
+ * A TS MPAC that overflows skips the TCF +4 into SPSLOOP2. DIM takes COEFCTR
+ * to 0 or 6, and +1 less 1 is -0: so CCS COEFCTR goes on at CA MPAC for the
+ * inertia (the result is true) and leaves the loop for the CG: "IF COEFCTR
+ * IS POS, EXIT FROM LOOP" (as a negative MASSCTR does). +0 and a negative
+ * COEFCTR, or a -0 MASSCTR, run TORQCONS as instructions: not modelled. */
 static bool docked_polynomial(void)
 {
     bool spsloop2;
@@ -415,13 +417,13 @@ static bool docked_polynomial(void)
     }
 }
 
-/* DOCKED: "USE SEPARATE COMPUTATION." The inertia, "(MPAC +1) X 2(38)
- * KG-CM(2)", and the CG's offset times ABDELV ("CG X DELDOT = MPAC X 4 PI
- * RAD-CM/SEC") from the polynomials; "1JACC=1JACCCON/MASS"; the inverse
+/* DOCKED -- LM p. 1494: "USE SEPARATE COMPUTATION." The inertia, "(MPAC +1)
+ * X 2(38) KG-CM(2)", and the CG's offset times ABDELV ("CG X DELDOT = MPAC X
+ * 4 PI RAD-CM/SEC") from the polynomials; "1JACC=1JACCCON/MASS"; the inverse
  * jet accelerations "TO POSMAX, WHICH CORRESPONDS TO ACCEL. OF 1.4 D/SS.";
- * 1JACCQ and 1JACCR, TORQCONS ("CORRESPONDS TO 500 LB-FT") over the
- * inertia; COEFFQ and COEFFR "TO MAKE U- AND V-AXES ORTHOGONAL FOR DOCKED
- * CASE"; ACCDOTR with DVOVSUB's protection. Then SPSCONT: "CONTINUE K, KSQ
+ * 1JACCQ and 1JACCR, TORQCONS ("CORRESPONDS TO 500 LB-FT") over the inertia;
+ * COEFFQ and COEFFR "TO MAKE U- AND V-AXES ORTHOGONAL FOR DOCKED CASE";
+ * ACCDOTR with DVOVSUB's protection. Then SPSCONT: "CONTINUE K, KSQ
  * CALCULATIONS". */
 static void docked(void)
 {
@@ -461,7 +463,8 @@ static void docked(void)
 
 /* ---- 1/ACCS +3: the mass -- LM pp. 1486-1487 ---- */
 
-/* F(MASS): "DOCKED:  USE SEPARATE COMPUTATION.", else the inertia terms
+/* F(MASS) -- LM p. 1487: "DOCKED:  USE SEPARATE COMPUTATION.", else the
+ * inertia terms
  * from J 2 ("J=2,1,0 FOR 1JACCR,1JACCQ,1JACC"). DOCKTEMP is the CSMDOCKD
  * bit or +0. */
 static void f_mass(void)
@@ -475,7 +478,8 @@ static void f_mass(void)
     inertias(false);
 }
 
-/* 1/ACCS +3, where MAKECADR returns the caller's CADR: ACCRETRN keeps it.
+/* 1/ACCS +3 -- LM p. 1486, where MAKECADR returns the caller's CADR:
+ * ACCRETRN keeps it.
  * "IS THE CSM DOCKED": DOCKTEMP, and "DOCKED:  LEMMAS = MASS - CSMMASS",
  * "LEM ALONE:  LEMMASS = MASS". "DETERMINE WHETHER STAGED.": in ascent
  * "ALWAYS 2 JETS FOR P-AXIS RATE COMMAND", the index at 12; in descent
@@ -537,9 +541,9 @@ void one_accs_plus3(void)
 
 /* ---- 1/ACCONT, GETAOSUV -- LM p. 1497 ---- */
 
-/* 1/ACCONT: "INITIALIZE DBVAL1,2,3", DB, "0.50 DB" and "-.75 DB". Then
- * GETAOSUV: "COMPUTE ASOU AND AOSV BY ROTATING AOSQ AND AOSR." by ROT-TOUV
- * (IBNKCALL), which returns at GETAOSUV +6. */
+/* 1/ACCONT -- LM p. 1497: "INITIALIZE DBVAL1,2,3", DB, "0.50 DB" and "-.75
+ * DB". Then GETAOSUV: "COMPUTE ASOU AND AOSV BY ROTATING AOSQ AND AOSR." by
+ * ROT-TOUV (IBNKCALL), which returns at GETAOSUV +6. */
 static void one_accont(void)
 {
     ca(ADDRESS_OF(DB));
@@ -557,7 +561,8 @@ static void one_accont(void)
     tc_to(GETAOSUV + 4u, IBNKCALL); /* CADR ROT-TOUV */
 }
 
-/* 1/ACCONT -1: "ZERO INGTS IN ASCENT" (A +0, or what JACCUV's CCS left). */
+/* 1/ACCONT -1 -- LM p. 1497: "ZERO INGTS IN ASCENT" (A +0, or what JACCUV's
+ * CCS left). */
 static void one_accont_minus1(void)
 {
     ts(ADDRESS_OF(INGTS));
@@ -566,8 +571,8 @@ static void one_accont_minus1(void)
 
 /* ---- 1/ANET-, 1/NETMIN, DO1/NET+ -- LM pp. 1504-1505 ---- */
 
-/* DOACCFUN, A -1 at 2(6) (or -1 at 2(7)): "ACCFUN AT 2(7)/PI", -1/ANET
- * over ANET, then TC ARET: "RETURN". */
+/* DOACCFUN -- LM p. 1504, A -1 at 2(6) (or -1 at 2(7)): "ACCFUN AT 2(7)/PI",
+ * -1/ANET over ANET, then TC ARET: "RETURN". */
 static void doaccfun(void)
 {
     mp_at(ADDRESS_OF(1_ANET)); /* "-1/ANET AT 2(13)/PI" */
@@ -575,9 +580,9 @@ static void doaccfun(void)
     tc_through(ADDRESS_OF(ARET));
 }
 
-/* DO1/NET+, A ANET over the coast acceleration: "1 + ANET/ACOAST AT
- * 2(6)" into ANET, the return into ARET ("SAVE RETURN"), 1/ANET "AT
- * 2(7)/PI" by INVERT, and ACCFUN. */
+/* DO1/NET+ -- LM p. 1504, A ANET over the coast acceleration: "1 +
+ * ANET/ACOAST AT 2(6)" into ANET, the return into ARET ("SAVE RETURN"),
+ * 1/ANET "AT 2(7)/PI" by INVERT, and ACCFUN. */
 static void do1_net_plus(void)
 {
     ad(BIT9);
@@ -589,7 +594,8 @@ static void do1_net_plus(void)
     doaccfun();
 }
 
-/* 1/NETMIN +1, A ANET: "ANETNEG(POS)/ACOASTPOS(NEG) AT 2(6)". */
+/* 1/NETMIN +1 -- LM p. 1504, A ANET: "ANETNEG(POS)/ACOASTPOS(NEG) AT
+ * 2(6)". */
 static void one_netmin_plus1(void)
 {
     mp_at(at_index(ADDRESS_OF(1_ACOSTT) + 1u, ADDRESS_OF(MSIGNAOS)));
@@ -632,9 +638,9 @@ static void tc_one_anet_minus(word at)
 
 /* ---- BOTHAXES, the U and V axes -- LM pp. 1498-1503 ---- */
 
-/* SKIPDB2: "ANETPOS(NEG) MAX = 2 JACC + ABS(AOS)", "CANNOT OVERFLOW HERE"
- * (if it does, the TS skips the TC to ACCTHERE), then CL1/NET+: "COMPUTE
- * 1/ANET, ACCFUN". */
+/* SKIPDB2 -- LM p. 1500: "ANETPOS(NEG) MAX = 2 JACC + ABS(AOS)", "CANNOT
+ * OVERFLOW HERE" (if it does, the TS skips the TC to ACCTHERE), then
+ * CL1/NET+: "COMPUTE 1/ANET, ACCFUN". */
 static void skipdb2(void)
 {
     ca(ADDRESS_OF(ABSAOS));
@@ -644,7 +650,8 @@ static void skipdb2(void)
     tc_do1_net_plus(CL1_NET_PLUS);
 }
 
-/* SKIPDB1: "ABS(AOS) GREATER THAN AMIN, SO IT IS", at its TC INVERT
+/* SKIPDB1 -- LM p. 1499: "ABS(AOS) GREATER THAN AMIN, SO IT IS", at its TC
+ * INVERT
  * "ALL RIGHT TO DIVIDE":
  * "1/ACOASTPOS(NET) = 1/ABS(AOS)" from "(9/8) ABSAOS.", the other "1/AIN".
  * "2 JACC + ABS(AOS)" with BIT9 is the "MAXIMUM VALUE IN COMPUTATIONS":
@@ -681,7 +688,8 @@ static void skipdb1(void)
     doaccfun();          /* ACCHERE: TCF ACCTHERE */
 }
 
-/* BIGAOS: "AGS(AOS) GREATER THAN AMIN". "I DRIFT OR GTS, DO NOT COMPUTE
+/* BIGAOS -- LM p. 1498: "AGS(AOS) GREATER THAN AMIN". "I DRIFT OR GTS, DO
+ * NOT COMPUTE
  * DB" (FLATEMP positive); else "DB2(1) = 2 DB", "DB4(3) = 1 DB",
  * "DB1(2)=(1-8 ABSAOS) DB.  IF ABSAOS IS GREATER THAN .1875 THEN DB1(2) =
  * -.5 DB", "DB3(4) = -.75 DB". CCS FLATEMP's other exits run on into the
@@ -712,11 +720,11 @@ static void bigaos(void)
     skipdb1();
 }
 
-/* NOTMUCH: "ABS(AOS) LESS THAN AMIN", "ACOASTPOS,NEG = AMIN". "DO NOT
- * COMPUTE DB IF DRIFT OR GTS" (FLATEMP positive); else "AMIN/2 LT ABS(AOS)
- * LT AMIN" (SOMEAOS: "DB3(4) = DB/2", "DB4(3) = DB"; a TS DBB4 that
- * overflows skips to NOAOS), or "ABS(AOS) LESS THAN AMIN/2" (NOAOS: "DB3,4
- * = DB"). CCS FLATEMP's other exits run on into the AD L and the BZMF. */
+/* NOTMUCH -- LM p. 1500: "ABS(AOS) LESS THAN AMIN", "ACOASTPOS,NEG = AMIN".
+ * "DO NOT COMPUTE DB IF DRIFT OR GTS" (FLATEMP positive); else "AMIN/2 LT
+ * ABS(AOS) LT AMIN" (SOMEAOS: "DB3(4) = DB/2", "DB4(3) = DB"; a TS DBB4 that
+ * overflows skips to NOAOS), or "ABS(AOS) LESS THAN AMIN/2" (NOAOS: "DB3,4 =
+ * DB"). CCS FLATEMP's other exits run on into the AD L and the BZMF. */
 static void notmuch(void)
 {
     bool noaos;
@@ -746,11 +754,11 @@ static void notmuch(void)
     skipdb2();
 }
 
-/* FIXMIN, A ANET less AMIN, not positive: "IF ANET LESS THAN AMIN, STORE
- * MAX JET VALUES FOR MIN JETS AND SET ACCSW". "IF AOS NEG, ACCSW = +1",
- * "IF AOS POS, ACCSW = -1", and the failed-jet test of that side: "JET
- * FAILURE -- CANNOT USE 2-JET VALUES", "CALCULATE FUNCTIONS USING AMIN";
- * else "L HAS ACCFUN". On to STMIN- either way. */
+/* FIXMIN -- LM p. 1505, A ANET less AMIN, not positive: "IF ANET LESS THAN
+ * AMIN, STORE MAX JET VALUES FOR MIN JETS AND SET ACCSW". "IF AOS NEG, ACCSW
+ * = +1", "IF AOS POS, ACCSW = -1", and the failed-jet test of that side:
+ * "JET FAILURE -- CANNOT USE 2-JET VALUES", "CALCULATE FUNCTIONS USING
+ * AMIN"; else "L HAS ACCFUN". On to STMIN- either way. */
 static void fixmin(void)
 {
     if (ccs_at(ADDRESS_OF(SIGNAOS)) == POSITIVE) set_A(TWO);
@@ -768,7 +776,8 @@ static void fixmin(void)
     tc_one_netmin(STMIN_MINUS - 1u);
 }
 
-/* BOTHAXES, A +0: "CODING COMMON TO U,V AXES", UV 0 or 1. ABSAOS and
+/* BOTHAXES -- LM p. 1498, A +0: "CODING COMMON TO U,V AXES", UV 0 or 1.
+ * ABSAOS and
  * SIGNAOS ("SET SIGNAOS TO ONE TO SHOW AOS NEG"), the deadbands DB1-DB4
  * (BIGAOS or NOTMUCH), then ACCTHERE: ACCFUN and 1/ANET for 2 jets (max)
  * and 1 jet (min) toward the offset (into Z5TEM and 1/ATEM2), then away
@@ -872,15 +881,15 @@ static void bothaxes(void)
 
 /* ---- GETAOSUV +6, DOPAXIS -- LM pp. 1497-1498 ---- */
 
-/* GETAOSUV +6, A,L AOSU and AOSV from ROT-TOUV. DRIFTER: "IF DRIFTING
- * LIGHT, SET DRIFTER TO 1". FLATEMP: "DRIFTING FLIGHT, STORE .8 IN FLAT",
- * "IN POWERED FLIGHT, STORE ZERO IN FLAT"; "IF POWERED AND NO GTS, START P
- * AXIS, OTHERWISE SET ZONE3LIM" ("17.5 MS" when drifting). CCS's negative
- * exits store no FLATEMP. DOPAXIS: "P AXIS DATA MUST BE CONSISTENT":
- * 1/ANETP, PACCFUN ("-1/(ANET + ANET**2/ACOAST) AT 2(7)/PI") and 1/ACOSTP,
- * "NO AOS FOR P AXIS, ACOAST = AMIN". "ZERO AOSU,V IF IN DRIFT, JUST TO BE
- * SURE", then the U axis (UAXIS: UV 0). A TS FUNTEM that overflows skips
- * CA 1JACC. */
+/* GETAOSUV +6 -- LM p. 1497, A,L AOSU and AOSV from ROT-TOUV. DRIFTER: "IF
+ * DRIFTING LIGHT, SET DRIFTER TO 1". FLATEMP: "DRIFTING FLIGHT, STORE .8 IN
+ * FLAT", "IN POWERED FLIGHT, STORE ZERO IN FLAT"; "IF POWERED AND NO GTS,
+ * START P AXIS, OTHERWISE SET ZONE3LIM" ("17.5 MS" when drifting). CCS's
+ * negative exits store no FLATEMP. DOPAXIS: "P AXIS DATA MUST BE
+ * CONSISTENT": 1/ANETP, PACCFUN ("-1/(ANET + ANET**2/ACOAST) AT 2(7)/PI")
+ * and 1/ACOSTP, "NO AOS FOR P AXIS, ACOAST = AMIN". "ZERO AOSU,V IF IN
+ * DRIFT, JUST TO BE SURE", then the U axis (UAXIS: UV 0). A TS FUNTEM that
+ * overflows skips CA 1JACC. */
 void getaosuv_plus6(void)
 {
     bool dopaxis;
@@ -944,8 +953,9 @@ void u_axis_stored(void)
 
 /* ---- The deadbands, DRFDB -- LM pp. 1502-1503 ---- */
 
-/* DRFDB: "DRIFT DEADBANDS" for the U and V axes: FIREDB DB, COASTDB DB +
- * FLAT, AXISDIST 0. A TS COASTDB that overflows skips TS COASTDB +1. */
+/* DRFDB -- LM p. 1503: "DRIFT DEADBANDS" for the U and V axes: FIREDB DB,
+ * COASTDB DB + FLAT, AXISDIST 0. A TS COASTDB that overflows skips TS
+ * COASTDB +1. */
 static void drfdb(void)
 {
     ca(ADDRESS_OF(DBVAL1));

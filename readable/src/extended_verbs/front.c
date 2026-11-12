@@ -182,10 +182,10 @@ void goextvb(void)
     continue_at(fan->to);
 }
 
-/* LST2FAN +n -- one word of the fan run on its own, at Z: where a verb's
- * routine that returns to its TC's Q goes on, the next verb's word (the
- * port's compiled copy of the CM's file enters at the words after V70UPDAT
- * to V73UPDAT's). */
+/* LST2FAN +n -- LM p. 262, CM p. 236: one word of the fan run on its own, at
+ * Z: where a verb's routine that returns to its TC's Q goes on, the next
+ * verb's word (the port's compiled copy of the CM's file enters at the words
+ * after V70UPDAT to V73UPDAT's). */
 void lst2fan_word(void)
 {
     const struct fan_word *fan;
@@ -244,15 +244,16 @@ void setxtact(void)
         setxtact_plus1();
 }
 
-/* SETXTACT +1: CA Q; TS MPAC +1, the caller's return, for SETXTACT +6. */
+/* SETXTACT +1 -- LM p. 263, CM p. 237: CA Q; TS MPAC +1, the caller's
+ * return, for SETXTACT +6. */
 static void setxtact_plus1(void)
 {
     ca(Q_ADDRESS);
     setxtact_plus2();
 }
 
-/* SETXTACT +2: keep A in MPAC +1 and NVSUB with -2, "BLANK EVERYTHING
- * EXCEPT MM AND VERB". An overflow in A skips CS TWO. */
+/* SETXTACT +2 -- LM p. 263, CM p. 237: keep A in MPAC +1 and NVSUB with -2,
+ * "BLANK EVERYTHING EXCEPT MM AND VERB". An overflow in A skips CS TWO. */
 static void setxtact_plus2(void)
 {
     if (!ts(ADDRESS_OF(MPAC) + 1u)) set_A(negate(TWO));

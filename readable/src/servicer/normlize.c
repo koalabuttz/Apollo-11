@@ -11,7 +11,7 @@
 
 /* ---- NORMLIZE -- p. 867 (bank 23) ---- */
 
-/* NORMLIZE: to the interpreter, for NORMLIZE_CODE. */
+/* NORMLIZE -- p. 867: to the interpreter, for NORMLIZE_CODE. */
 void normlize(void)
 {
     tc_at(NORMLIZE);
@@ -46,8 +46,8 @@ static const word normlize_words[] = {
 const struct interpretive_code NORMLIZE_CODE = {023u, NORMLIZE + 1u, COUNT(normlize_words),
                                                 normlize_words};
 
-/* After ASCSPOT's EXIT: "MAKE SURE GROUP 2 IS OFF", and NORMLIZ2 in bank
- * 33 (POSTJUMP). */
+/* ASCSPOT +1 -- p. 867: After ASCSPOT's EXIT: "MAKE SURE GROUP 2 IS OFF",
+ * and NORMLIZ2 in bank 33 (POSTJUMP). */
 void ascspot_after_exit(void)
 {
     group_off(ADDRESS_OF(MINUS_PHASE2));
@@ -66,27 +66,27 @@ static const word normliz1_words[] = {
 const struct interpretive_code NORMLIZ1_CODE = {033u, NORMLIZ1, COUNT(normliz1_words),
                                                 normliz1_words};
 
-/* NORMLIZ2: the state copied into the old one, 18 words: "DO NOT COPY MASS
- * IN NORMLIZE" (TC COPYCYC +1); ... */
+/* NORMLIZ2 -- p. 867: the state copied into the old one, 18 words: "DO NOT
+ * COPY MASS IN NORMLIZE" (TC COPYCYC +1); ... */
 void normliz2(void)
 {
     set_A(EIGHTEEN);
     tc_to(NORMLIZ2 + 1u, COPYCYC + 1u);
 }
 
-/* ... and the job ends. */
+/* NORMLIZ2 +2 -- p. 867: ... and the job ends. */
 void normliz2_after_copycyc(void)
 {
     tc_to(NORMLIZ2 + 2u, ENDOFJOB);
 }
 
-/* COPYCYC +1: the new state (RN1 on, 20 words with the mass) over the
- * old (RN on), two words at a time from the end, interrupts held: the
+/* COPYCYC +1 -- p. 867: the new state (RN1 on, 20 words with the mass) over
+ * the old (RN on), two words at a time from the end, interrupts held: the
  * count in A "REDUCE BY 1 IF ODD" (MASK NEG1) into ITEMP1, the words at
  * ITEMP1 copied (INDEX ITEMP1; DCA RN1; INDEX ITEMP1; DXCH RN), and again
- * while CCS ITEMP1 is positive, with the count less one. At +0 back,
- * "RETURN UNDER INHINT". (The counts the program gives, 20 and 18, are
- * even: ITEMP1 is never negative.) */
+ * while CCS ITEMP1 is positive, with the count less one. At +0 back, "RETURN
+ * UNDER INHINT". (The counts the program gives, 20 and 18, are even: ITEMP1
+ * is never negative.) */
 void copycyc_plus_1(void)
 {
     inhint();

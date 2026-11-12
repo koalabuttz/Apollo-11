@@ -7,10 +7,11 @@
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
 
-/* CHECKCTR: ITERCTR, in the job's VAC area (INDEX FIXLOC), less one, to
- * ITERCTR and to MPAC, where the BHIZ after the RTB tests it: at zero the
- * iterations have run out. Then the pair goes on (TC DANZIG). (ITERCTR
- * -1 overflows only from -16383, where TS ITERCTR skips the TS MPAC.) */
+/* CHECKCTR -- LM p. 1183, CM p. 1286: ITERCTR, in the job's VAC area (INDEX
+ * FIXLOC), less one, to ITERCTR and to MPAC, where the BHIZ after the RTB
+ * tests it: at zero the iterations have run out. Then the pair goes on (TC
+ * DANZIG). (ITERCTR -1 overflows only from -16383, where TS ITERCTR skips
+ * the TS MPAC.) */
 void checkctr(void)
 {
     unsigned iterctr = indexed(ADDRESS_OF(ITERCTR), FIXLOC);

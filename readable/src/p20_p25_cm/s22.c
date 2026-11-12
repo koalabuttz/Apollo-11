@@ -55,22 +55,22 @@ static const word s22_1_words[] = {
     SWITCH(SET, P22MKFLG),
 };
 
-/* S22.1 +024 -- after the EXIT: "RELEASE VAC AREA WHERE MARK DATA WAS"
- * (MKRELEAS), */
+/* S22.1 +024 -- p. 599: after the EXIT: "RELEASE VAC AREA WHERE MARK DATA
+ * WAS" (MKRELEAS), */
 void s22_1_after_exit(void)
 {
     tc_to(S22_1 + 024u, BANKCALL); /* CADR MKRELEAS */
 }
 
-/* S22.1 +026: 2PHSCHNG. OCT 4 makes restart group 4 inactive, and OCT
- * 05022 restarts group 2 at S22.1 +032, the word after the phase words,
+/* S22.1 +026 -- p. 599: 2PHSCHNG. OCT 4 makes restart group 4 inactive, and
+ * OCT 05022 restarts group 2 at S22.1 +032, the word after the phase words,
  * as a job of priority 13 (OCT 13000). */
 void s22_1_after_mkreleas(void)
 {
     tc_to(S22_1 + 026u, TWO_PHSCHNG);
 }
 
-/* S22.1 +032: in interpretive code, */
+/* S22.1 +032 -- p. 599: in interpretive code, */
 void s22_1_after_2phschng(void)
 {
     tc_at(S22_1 + 032u);

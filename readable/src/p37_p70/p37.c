@@ -21,17 +21,17 @@
 
 /* ---- P37 -- pp. 890-891 ---- */
 
-/* P37: group 4 made inactive (PHASCHNG, OCT 4: phase 0, "INACTIVE, WILL
- * NOT PERMIT A GROUP G RESTART"), for "P37 IS NOT RESTARTABLE". A
- * recycle from any of the program's displays, and the end of an alarm
- * ("RECYCLE AFTER ALARM DISPLAY", RTEALRM's EXIT), comes back here (TCF
- * P37). */
+/* P37 -- pp. 891, 895 and 896: group 4 made inactive (PHASCHNG, OCT 4: phase
+ * 0, "INACTIVE, WILL NOT PERMIT A GROUP G RESTART"), for "P37 IS NOT
+ * RESTARTABLE". A recycle from any of the program's displays, and the end of
+ * an alarm ("RECYCLE AFTER ALARM DISPLAY", RTEALRM's EXIT), comes back here
+ * (TCF P37). */
 void p37(void)
 {
     tc_to(P37, PHASCHNG); /* OCT 4 */
 }
 
-/* P37 +2: into the interpreter, */
+/* P37 +2 -- p. 891: into the interpreter, */
 void p37_after_phaschng(void)
 {
     tc_at(P37 + 2u);
@@ -49,8 +49,8 @@ static const word p37_words[] = {
 
 const struct interpretive_code P37_CODE = {036u, P37 + 3u, COUNT(p37_words), p37_words};
 
-/* P37 +013, after the EXIT: the time of ignition flashed for the crew
- * (V06N33, "OVERLAYED WITH TIG"); a recycle (TCF -2) shows it again,
+/* P37 +013 -- p. 891, after the EXIT: the time of ignition flashed for the
+ * crew (V06N33, "OVERLAYED WITH TIG"); a recycle (TCF -2) shows it again,
  * "DISPLAY NEW DATA". */
 void p37_tig(void)
 {
@@ -58,8 +58,8 @@ void p37_tig(void)
     p370gof(P37 + 014u);
 }
 
-/* P37 +016, its proceed: the entry angle and the change in speed (V06N60,
- * through P37GFRB1, which blanks R1); a recycle shows them again,
+/* P37 +016 -- p. 891, its proceed: the entry angle and the change in speed
+ * (V06N60, through P37GFRB1, which blanks R1); a recycle shows them again,
  * "DISPLAY NEW DATA". */
 void p37_gamma(void)
 {
@@ -67,7 +67,7 @@ void p37_gamma(void)
     p37gfrb1(P37 + 017u);
 }
 
-/* RTE299, its proceed: into the interpreter. */
+/* RTE299 -- p. 891, its proceed: into the interpreter. */
 void rte299(void)
 {
     tc_at(RTE299);
@@ -113,15 +113,15 @@ const struct interpretive_code RTE299_CODE = {036u, RTE299 + 1u, COUNT(rte299_wo
 
 /* ---- RTE317 to RTE369 -- pp. 891-893 ---- */
 
-/* RTE317 +2, after the EXIT: TC POLY, a cubic in R(T1) whose degree and
- * coefficients are the words after the TC (DEC 2, then four 2DECs); POLY
- * returns past them, to RTE317 +014. */
+/* RTE317 +2 -- p. 892, after the EXIT: TC POLY, a cubic in R(T1) whose
+ * degree and coefficients are the words after the TC (DEC 2, then four
+ * 2DECs); POLY returns past them, to RTE317 +014. */
 void rte317_after_exit(void)
 {
     tc_to(RTE317 + 2u, POLY);
 }
 
-/* RTE317 +014: into the interpreter, */
+/* RTE317 +014 -- p. 892: into the interpreter, */
 void rte317_after_poly(void)
 {
     tc_at(RTE317 + 014u);
@@ -197,14 +197,14 @@ static const word rte317_poly_words[] = {
 const struct interpretive_code RTE317_POLY_CODE = {036u, RTE317 + 015u, COUNT(rte317_poly_words),
                                                    rte317_poly_words};
 
-/* RTE369 +3, after the EXIT: TC POLY, a cubic in the speed (DEC 2, then
- * four 2DECs, the first +0), back at RTE369 +015. */
+/* RTE369 +3 -- p. 893, after the EXIT: TC POLY, a cubic in the speed (DEC 2,
+ * then four 2DECs, the first +0), back at RTE369 +015. */
 void rte369_after_exit(void)
 {
     tc_to(RTE369 + 3u, POLY);
 }
 
-/* RTE369 +015: into the interpreter, */
+/* RTE369 +015 -- p. 893: into the interpreter, */
 void rte369_after_poly(void)
 {
     tc_at(RTE369 + 015u);

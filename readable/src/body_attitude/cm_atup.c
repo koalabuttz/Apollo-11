@@ -28,16 +28,16 @@ static void corangov(word at)
 
 /* ---- CM/ATUP -- pp. 887-888 ---- */
 
-/* CM/ATUP, after CM/POSE's EXIT (EBANK AOG's, EBAOG): GAMA from 10D,
- * negated, the old GAMA kept in L; inhibited "UNTIL UPDATE OF BODY"
+/* CM/ATUP -- p. 887, after CM/POSE's EXIT (EBANK AOG's, EBAOG): GAMA from
+ * 10D, negated, the old GAMA kept in L; inhibited "UNTIL UPDATE OF BODY"
  * "ANGLES, SO THAT GAMDIFSW IS VALID FIRST PASS" "INDICATOR.". GAMDIFSW
- * ("GAMDIFSW=94D BIT11", "INITLY=0") clear: set it and GAMDOT +0, "DONT
- * CALC GAMA DOT UNTIL HAVE FORMD" "ONE DIFFERENCE." Else DOGAMDOT: "DEL
- * GAMA/360= T GAMDOT/360", times TCDU ("TCDU = .1 SEC, T = 2 SEC."):
- * GAMDOT, "GAMA DOT TCDU / 180", kept if its size is 5 or more, else
- * +0: "IGNORE GAMDOT IF LEQ .5 DEG/SEC", "SET GAMDOT=+0 AS TAG IF TOO
- * SMALL." (Not modelled: a work area whose 10D is in fixed memory, or is
- * Z, which no program has; the faithful port refuses it too.) */
+ * ("GAMDIFSW=94D BIT11", "INITLY=0") clear: set it and GAMDOT +0, "DONT CALC
+ * GAMA DOT UNTIL HAVE FORMD" "ONE DIFFERENCE." Else DOGAMDOT: "DEL GAMA/360=
+ * T GAMDOT/360", times TCDU ("TCDU = .1 SEC, T = 2 SEC."): GAMDOT, "GAMA DOT
+ * TCDU / 180", kept if its size is 5 or more, else +0: "IGNORE GAMDOT IF LEQ
+ * .5 DEG/SEC", "SET GAMDOT=+0 AS TAG IF TOO SMALL." (Not modelled: a work
+ * area whose 10D is in fixed memory, or is Z, which no program has; the
+ * faithful port refuses it too.) */
 static void gamdot(void)
 {
     unsigned at;
@@ -68,12 +68,13 @@ static void gamdot(void)
     ts(ADDRESS_OF(GAMDOT));
 }
 
-/* Then "UPDATE ANGLES BY CORRECTING EUILER ANG" "FOR ACCRUED INCREMENT
- * SINCE PIPUP", "R = R EUIL + R(NOW) -R(PIPUP)", for the roll and ALFA
- * (each sum CORANGOV'd twice: "ONLY SINGLE OVFL POSSIBLE.") and BETA
- * ("OVFL NOT EXPECTED."), into TEMPROLL, TEMPALFA and TEMPBETA; REPOSADR
- * into PHSNAME5 ("THIS ASSUMES THAT THE" TC PHASCHNG "OCT 10035" "IS NOT
- * CHANGED IN" "SERVICER."), so a restart redoes REDOPOSE; on into it. */
+/* CM/ATUP -- p. 887: Then "UPDATE ANGLES BY CORRECTING EUILER ANG" "FOR
+ * ACCRUED INCREMENT SINCE PIPUP", "R = R EUIL + R(NOW) -R(PIPUP)", for the
+ * roll and ALFA (each sum CORANGOV'd twice: "ONLY SINGLE OVFL POSSIBLE.")
+ * and BETA ("OVFL NOT EXPECTED."), into TEMPROLL, TEMPALFA and TEMPBETA;
+ * REPOSADR into PHSNAME5 ("THIS ASSUMES THAT THE" TC PHASCHNG "OCT 10035"
+ * "IS NOT CHANGED IN" "SERVICER."), so a restart redoes REDOPOSE; on into
+ * it. */
 void cm_atup(void)
 {
     gamdot();
@@ -105,8 +106,8 @@ void cm_atup(void)
     redopose();
 }
 
-/* REDOPOSE, "RE-STARTS COME HERE": the angles into ROLL/180, ALFA/180 and
- * BETA/180 at once, interrupts allowed again, and back into the
+/* REDOPOSE -- p. 888, "RE-STARTS COME HERE": the angles into ROLL/180,
+ * ALFA/180 and BETA/180 at once, interrupts allowed again, and back into the
  * interpreter ("CANT TC DANZIG AFTER PHASCHNG."). */
 void redopose(void)
 {

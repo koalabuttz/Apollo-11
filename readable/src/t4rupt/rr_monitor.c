@@ -51,7 +51,7 @@ void rrautchk(void)
     continue_at(WAITLIST);
 }
 
-/* RRAUTCHK +024, where WAITLIST returns: TCF NORRGMON. */
+/* RRAUTCHK +024 -- LM p. 183, where WAITLIST returns: TCF NORRGMON. */
 void rrautchk_after_waitlist(void)
 {
     gpmatrix();
@@ -150,13 +150,13 @@ void rrgimon(void)
     continue_at(RRLIMCHK);
 }
 
-/* RRGIMON +022, where RRLIMCHK returns: TCF MONREPOS. */
+/* RRGIMON +022 -- LM p. 187, where RRLIMCHK returns: TCF MONREPOS. */
 void rrgimon_out_of_limits(void)
 {
     monrepos();
 }
 
-/* RRGIMON +023, where RRLIMCHK skips: TCF NORRGMON. */
+/* RRGIMON +023 -- LM p. 187, where RRLIMCHK skips: TCF NORRGMON. */
 void rrgimon_within_limits(void)
 {
     gpmatrix();
@@ -177,7 +177,7 @@ static void monrepos(void)
     continue_at(WAITLIST);
 }
 
-/* MONREPOS +011, where WAITLIST returns: TCF NORRGMON. */
+/* MONREPOS +011 -- LM p. 187, where WAITLIST returns: TCF NORRGMON. */
 void monrepos_after_waitlist(void)
 {
     gpmatrix();

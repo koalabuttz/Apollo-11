@@ -24,29 +24,30 @@ static const word p370alrm_words[] = {
 const struct interpretive_code P370ALRM_CODE = {032u, P370ALRM, COUNT(p370alrm_words),
                                                 p370alrm_words};
 
-/* P370ALRM +2, after the EXIT: the alarm (VARALARM, the code from MPAC in
- * A), */
+/* P370ALRM +2 -- p. 900, after the EXIT: the alarm (VARALARM, the code from
+ * MPAC in A), */
 void p370alrm_after_exit(void)
 {
     ca(ADDRESS_OF(MPAC));
     tc_to(P370ALRM + 3u, VARALARM);
 }
 
-/* then verb 05 noun 09 flashed (V5N09RTE, GOFLASH by BANKCALL). */
+/* P370ALRM +4 and P370ALRM +010 -- p. 900: then verb 05 noun 09 flashed
+ * (V5N09RTE, GOFLASH by BANKCALL). */
 void p370alrm_after_varalarm(void)
 {
     set_A(V5N09RTE);
     tc_to(P370ALRM + 5u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* P370ALRM +7: terminate (TCF GOTOPOOH). */
+/* P370ALRM +7 -- p. 900: terminate (TCF GOTOPOOH). */
 void p370alrm_terminate(void)
 {
     continue_at(GOTOPOOH);
 }
 
-/* P370ALRM +011: recycle, back into the interpreter; proceed (TCF -4, at
- * +010) shows the alarm again. */
+/* P370ALRM +011 -- p. 900: recycle, back into the interpreter; proceed (TCF
+ * -4, at +010) shows the alarm again. */
 void p370alrm_recycle(void)
 {
     tc_at(P370ALRM + 011u);

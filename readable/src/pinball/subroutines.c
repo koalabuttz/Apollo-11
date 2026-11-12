@@ -42,8 +42,8 @@ void reldspon(void)
 
 /* ---- The noun's address (LM p. 460, CM p. 378) ---- */
 
-/* SETNCADR +2 on: the address within the bank, 1400-1777, into NOUNADD,
- * and back. */
+/* SETNCADR +2 -- LM p. 460, CM p. 378 on: the address within the bank,
+ * 1400-1777, into NOUNADD, and back. */
 static void put_noun_address(void)
 {
     if (ts(ADDRESS_OF(NOUNADD))) not_modelled(); /* an overflow would skip TC Q */
@@ -57,9 +57,9 @@ static void noun_address(void)
     put_noun_address();
 }
 
-/* SETNCADR -- "E CADR ARRIVES IN A. IT IS STORED IN NOUNCADR. EBANK BITS
- * ARE SET. E ADRES IS DERIVED AND PUT INTO NOUNADD." The ECADR's low
- * eight bits are the address within the bank, 1400-1777. */
+/* SETNCADR -- LM p. 460, CM p. 378: "E CADR ARRIVES IN A. IT IS STORED IN
+ * NOUNCADR. EBANK BITS ARE SET. E ADRES IS DERIVED AND PUT INTO NOUNADD."
+ * The ECADR's low eight bits are the address within the bank, 1400-1777. */
 void setncadr(void)
 {
     if (ts(ADDRESS_OF(NOUNCADR))) { /* an overflow skips TS EBANK */
@@ -79,16 +79,16 @@ void setncadr_plus1(void)
     noun_address();
 }
 
-/* SETNADD -- "GETS E CADR FROM NOUNCADR, SETS EBANK BITS, DERIVES E ADRES
- * AND PUTS IT INTO NOUNADD." */
+/* SETNADD -- LM p. 460, CM p. 378: "GETS E CADR FROM NOUNCADR, SETS EBANK
+ * BITS, DERIVES E ADRES AND PUTS IT INTO NOUNADD." */
 void setnadd(void)
 {
     ca(ADDRESS_OF(NOUNCADR));
     setncadr_plus1(); /* TCF SETNCADR +1 */
 }
 
-/* SETEBANK -- "E CADR ARRIVES IN A. EBANK BITS ARE SET. E ADRES IS DERIVED
- * AND LEFT IN A." */
+/* SETEBANK -- LM p. 460, CM p. 378: "E CADR ARRIVES IN A. EBANK BITS ARE
+ * SET. E ADRES IS DERIVED AND LEFT IN A." */
 void setebank(void)
 {
     if (!ts(EBANK_ADDRESS)) mask(LOW8); /* an overflow skips the MASK */
@@ -122,7 +122,8 @@ void left5(void)
 
 /* ---- The lights (LM pp. 461-462, CM pp. 379-380) ---- */
 
-/* FALTON -- "TURN ON OPERATOR ERROR LIGHT": "BIT 7 OF CHANNEL 11". */
+/* FALTON -- LM p. 461, CM p. 379: "TURN ON OPERATOR ERROR LIGHT": "BIT 7 OF
+ * CHANNEL 11". */
 void falton(void)
 {
     set_A(BIT7);
@@ -130,7 +131,7 @@ void falton(void)
     tc_return(Q_ADDRESS);
 }
 
-/* FALTOF -- "TURN OFF OPERATOR ERROR LIGHT". */
+/* FALTOF -- LM p. 461, CM p. 379: "TURN OFF OPERATOR ERROR LIGHT". */
 void faltof(void)
 {
     set_A(negate(BIT7));
@@ -138,7 +139,8 @@ void faltof(void)
     tc_return(Q_ADDRESS);
 }
 
-/* FLASHON -- "TURN ON V/N FLASH": "BIT 6 OF CHANNEL 11". */
+/* FLASHON -- LM p. 462, CM p. 380: "TURN ON V/N FLASH": "BIT 6 OF CHANNEL
+ * 11". */
 void flashon(void)
 {
     set_A(BIT6);
@@ -146,7 +148,7 @@ void flashon(void)
     tc_return(Q_ADDRESS);
 }
 
-/* FLASHOFF -- "TURN OFF V/N FLASH". */
+/* FLASHOFF -- LM p. 462, CM p. 380: "TURN OFF V/N FLASH". */
 void flashoff(void)
 {
     set_A(negate(BIT6));
@@ -156,8 +158,9 @@ void flashoff(void)
 
 /* ---- Releasing the display system (LM pp. 464-465, CM pp. 382-383) ---- */
 
-/* RELDSP2: "TURN OFF KEY RELEASE LIGHT (BIT 5 OF CHANNEL 11)", DSPLOCK
- * +0 (the display system free), and back through RELRET. */
+/* RELDSP2 -- LM p. 465, CM p. 383: "TURN OFF KEY RELEASE LIGHT (BIT 5 OF
+ * CHANNEL 11)", DSPLOCK +0 (the display system free), and back through
+ * RELRET. */
 static void reldsp2(void)
 {
     relint();
@@ -168,9 +171,9 @@ static void reldsp2(void)
     tc_return(ADDRESS_OF(RELRET));
 }
 
-/* RELDSP -- "SET DSPLOCK TO +0, TURN RELDSP LIGHT OFF, SEARCH DSPLIST".
- * "RELDSP IS USED BY VBPROC, VBTERM, VBRQEXEC, VBRQWAIT, VBRELDSP,
- * EXTENDED VERB DISPATCHER, VBRESEQ, RECALTST." "TURN OFF EXTERNAL
+/* RELDSP -- LM p. 464, CM p. 382: "SET DSPLOCK TO +0, TURN RELDSP LIGHT OFF,
+ * SEARCH DSPLIST". "RELDSP IS USED BY VBPROC, VBTERM, VBRQEXEC, VBRQWAIT,
+ * VBRELDSP, EXTENDED VERB DISPATCHER, VBRESEQ, RECALTST." "TURN OFF EXTERNAL
  * MONITOR BIT" (BIT14 of MONSAVE1), interrupts off. A job waiting for the
  * display system (its address in DSPLIST) is woken (JOBWAKE) and the list
  * emptied. */
@@ -202,9 +205,9 @@ void reldsp(void)
     reldsp2();
 }
 
-/* RELDSP1 -- "SET DSPLOCK TO +0. NO DSPLIST SEARCH. TURN KEY RLSE LIGHT
- * OFF IF DSPLIST IS EMPTY. LEAVE KEY RLSE LIGHT ALONE IF DSPLIST IS NOT
- * EMPTY." "RELDSP1 IS USED BY MONITOR SET UP, VBRELDSP." */
+/* RELDSP1 -- LM p. 465, CM p. 383: "SET DSPLOCK TO +0. NO DSPLIST SEARCH.
+ * TURN KEY RLSE LIGHT OFF IF DSPLIST IS EMPTY. LEAVE KEY RLSE LIGHT ALONE IF
+ * DSPLIST IS NOT EMPTY." "RELDSP1 IS USED BY MONITOR SET UP, VBRELDSP." */
 void reldsp1(void)
 {
     xch(Q_ADDRESS);
@@ -228,13 +231,13 @@ void reldsp1(void)
 
 /* ---- Alarm and recycle (LM p. 446, CM p. 364) ---- */
 
-/* ALMCYCLE -- "ALMCYCLE TURNS ON CHECK FAIL LIGHT, REDISPLAYS THE ORIGINAL
- * VERB THAT WAS EXECUTED, AND RECYCLES TO EXECUTE THE ORIGINAL VERB/NOUN
- * COMBINATION THAT WAS LAST EXECUTED. USED FOR BAD DATA DURING LOAD VERBS
- * AND BY MCTBS. ALSO BY MMCHANG IF 2 NUMERICAL CHARACTERS WERE NOT
- * PUNCHED IN FOR MM CODE." The verb saved at ENTPAS0 (VERBSAVE, kept
- * complemented) goes into REQRET, positive for ENTER's pass 0; UPDATVB -1
- * puts it back in VERBREG and on the DSKY. */
+/* ALMCYCLE -- LM p. 446, CM p. 364: "ALMCYCLE TURNS ON CHECK FAIL LIGHT,
+ * REDISPLAYS THE ORIGINAL VERB THAT WAS EXECUTED, AND RECYCLES TO EXECUTE
+ * THE ORIGINAL VERB/NOUN COMBINATION THAT WAS LAST EXECUTED. USED FOR BAD
+ * DATA DURING LOAD VERBS AND BY MCTBS. ALSO BY MMCHANG IF 2 NUMERICAL
+ * CHARACTERS WERE NOT PUNCHED IN FOR MM CODE." The verb saved at ENTPAS0
+ * (VERBSAVE, kept complemented) goes into REQRET, positive for ENTER's pass
+ * 0; UPDATVB -1 puts it back in VERBREG and on the DSKY. */
 void almcycle(void)
 {
     tc_at(ALMCYCLE);
@@ -244,7 +247,8 @@ void almcycle(void)
     tc(ALMCYCLE + 3u, BANKCALL); /* CADR UPDATVB -1 */
 }
 
-/* ALMCYCLE +5, where UPDATVB returns: to ENTER (ENDALM: CADR ENTER). */
+/* ALMCYCLE +5 -- LM p. 446, CM p. 364, where UPDATVB returns: to ENTER
+ * (ENDALM: CADR ENTER). */
 void almcycle_after_updatvb(void)
 {
     tc(ALMCYCLE + 5u, POSTJUMP);
@@ -253,13 +257,13 @@ void almcycle_after_updatvb(void)
 /* ---- The scale routine of a mixed noun's component (LM p. 428, CM
  * p. 346) ---- */
 
-/* SFRUTMIX -- "GETS SF ROUTINE NUMBER FOR MIXED CASE". RUTMXTEM holds the
- * noun's three components' scale routines, five bits each: DECOUNT 0
- * picks the low five (LOW5, and DISPLACE's TC GOQ, back as they are), 1
- * the middle (MID5, TC RIGHT5) and 2 the high (HI5, TC LEFT5: cycled left
- * five, the high five come round to the bottom). INDEX L; TC 0 runs the
- * TC in L, with Q SFRET1, which returns through EXITEM ("CAN'T USE L FOR
- * RETURN"). */
+/* SFRUTMIX -- LM p. 428, CM p. 346: "GETS SF ROUTINE NUMBER FOR MIXED CASE".
+ * RUTMXTEM holds the noun's three components' scale routines, five bits
+ * each: DECOUNT 0 picks the low five (LOW5, and DISPLACE's TC GOQ, back as
+ * they are), 1 the middle (MID5, TC RIGHT5) and 2 the high (HI5, TC LEFT5:
+ * cycled left five, the high five come round to the bottom). INDEX L; TC 0
+ * runs the TC in L, with Q SFRET1, which returns through EXITEM ("CAN'T USE
+ * L FOR RETURN"). */
 void sfrutmix(void)
 {
     word decount, to;

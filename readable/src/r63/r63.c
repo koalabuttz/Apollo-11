@@ -51,8 +51,8 @@ void v89call(void)
     continue_at(BANKCALL); /* CADR R02BOTH */
 }
 
-/* V89CALL +7: flash V04 N12, the axis to choose (OPTION1 and OPTION2,
- * OPTIONX and OPTIONX +1). */
+/* V89CALL +7 -- LM p. 339: flash V04 N12, the axis to choose (OPTION1 and
+ * OPTION2, OPTIONX and OPTIONX +1). */
 static void flash_v04n12(void)
 {
     set_A(VB04N12);

@@ -126,8 +126,8 @@ static const word lsr22_3_words[] = {
     ADDRESS(RANGEBQ1),
 };
 
-/* RANGEBQ +3: R65 off the surface, its count (R65CNTR) from zero. (A +0
- * never overflows: the TS does not skip.) */
+/* RANGEBQ +3 -- p. 576: R65 off the surface, its count (R65CNTR) from zero.
+ * (A +0 never overflows: the TS does not skip.) */
 void rangebq_r65(void)
 {
     set_A(ZERO);

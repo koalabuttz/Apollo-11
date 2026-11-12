@@ -29,10 +29,10 @@ static void p51f(void);
 
 /* ---- P51, P53 -- pp. 766-769 (bank 14) ---- */
 
-/* P51 (and P53, its other name): the IMU must be on: IMODES30's bit 9
- * clear (CS, MASK: A is BIT9, positive) goes on to P51A; set (A +0), alarm
- * 210 (the IMU not operating) and GOTOPOOH. (MASK leaves A BIT9 or +0: CCS
- * takes its first two ways only.) */
+/* P51 -- p. 766 (and P53, its other name): the IMU must be on: IMODES30's
+ * bit 9 clear (CS, MASK: A is BIT9, positive) goes on to P51A; set (A +0),
+ * alarm 210 (the IMU not operating) and GOTOPOOH. (MASK leaves A BIT9 or +0:
+ * CCS takes its first two ways only.) */
 void p51(void)
 {
     cs(ADDRESS_OF(IMODES30));
@@ -58,15 +58,15 @@ void p51_pooh(void)
     tc_to(P51 + 6u, GOTOPOOH);
 }
 
-/* P51A: R02ZERO, then P51AA. */
+/* P51A -- p. 767: R02ZERO, then P51AA. */
 static void p51a(void)
 {
     tc_to(P51A, BANKCALL); /* CADR R02ZERO */
 }
 
-/* P51AA: V50N25 with option 15 (GOPERF1, PRFMSTAQ): terminate, proceed
- * (V33: on to the sightings, P51B) or enter (a coarse alignment to zero
- * gimbal angles first, then this flash again). */
+/* P51AA -- p. 767: V50N25 with option 15 (GOPERF1, PRFMSTAQ): terminate,
+ * proceed (V33: on to the sightings, P51B) or enter (a coarse alignment to
+ * zero gimbal angles first, then this flash again). */
 void p51aa(void)
 {
     set_A(OCT15);                /* PRFMSTAQ */
@@ -84,15 +84,16 @@ void p51aa_proceed(void)
     p51b();
 }
 
-/* The coarse alignment, after a restart point (05024, 13000). */
+/* P51AA +5 -- p. 767: The coarse alignment, after a restart point (05024,
+ * 13000). */
 void p51aa_enter(void)
 {
     tc_to(P51AA + 5u, PHASCHNG); /* OCT 05024 */
 }
 
-/* "ZERO THE GIMBALS": the desired angles (THETAD) to zero, shown with
- * V06N22, then "NOW DISPLAY COARSE ALIGN VERB 41". (A is +0: TS does not
- * skip.) */
+/* P51AA +010 -- p. 767: "ZERO THE GIMBALS": the desired angles (THETAD) to
+ * zero, shown with V06N22, then "NOW DISPLAY COARSE ALIGN VERB 41". (A is
+ * +0: TS does not skip.) */
 void p51aa_zero_gimbals(void)
 {
     set_A(ZERO); /* P51ZERO */
@@ -109,10 +110,10 @@ void p51aa_display_v41(void)
     tc_to(P51AA + 020u, BANKCALL); /* CADR GODSPRET */
 }
 
-/* The coarse alignment itself (IMUCOARS), then IMUFIN20, which schedules
- * the fine alignment mode, IMUSTALL waiting on each (CURTAINS when it
- * fails, "CAGING OR BAD END"); then a restart point and the flash again
- * ("COARSE ALIGN DONE: RECYCLE FOR FINE"). */
+/* P51AA +022 -- p. 767: The coarse alignment itself (IMUCOARS), then
+ * IMUFIN20, which schedules the fine alignment mode, IMUSTALL waiting on
+ * each (CURTAINS when it fails, "CAGING OR BAD END"); then a restart point
+ * and the flash again ("COARSE ALIGN DONE: RECYCLE FOR FINE"). */
 void p51aa_imucoars(void)
 {
     tc_to(P51AA + 022u, BANKCALL); /* CADR IMUCOARS */
@@ -153,10 +154,10 @@ void p51aa_again(void)
     p51aa(); /* TCF P51AA */
 }
 
-/* P51B: "DO STAR SIGHTING AND COMPUTE NEW REFSMMAT": a restart point
- * (00014); STARIND, "INDEX -- STAR 1 OR 2", to 0; the drift compensation
- * started afresh (SET1/PDT; GCOMP zeroed; DRIFTFLG set, "ENABLE T4
- * COMPENSATION"); TARG2FLG clear, "SHOW MARK IS STAR --- NOT LANDMARK";
+/* P51B -- p. 768: "DO STAR SIGHTING AND COMPUTE NEW REFSMMAT": a restart
+ * point (00014); STARIND, "INDEX -- STAR 1 OR 2", to 0; the drift
+ * compensation started afresh (SET1/PDT; GCOMP zeroed; DRIFTFLG set, "ENABLE
+ * T4 COMPENSATION"); TARG2FLG clear, "SHOW MARK IS STAR --- NOT LANDMARK";
  * then MARKINDX to 1, "INITIALIZE FOR ONE MARK". */
 static void p51b(void)
 {
@@ -186,7 +187,7 @@ static const word p51b_words[] = {
 
 const struct interpretive_code P51B_CODE = {014u, P51B + 3u, COUNT(p51b_words), p51b_words};
 
-/* (A is 1: TS does not skip.) */
+/* P51B +017 -- p. 768: (A is 1: TS does not skip.) */
 void p51b_one_mark(void)
 {
     set_A(BIT1);
@@ -194,8 +195,8 @@ void p51b_one_mark(void)
     p51c();
 }
 
-/* P51C: a star to mark: a restart point (05024); then in P53, "BACKUP
- * PROGRAM" (CHECKMM 53), the marks by R56, else by R53, "SIGHTING
+/* P51C -- p. 768: a star to mark: a restart point (05024); then in P53,
+ * "BACKUP PROGRAM" (CHECKMM 53), the marks by R56, else by R53, "SIGHTING
  * ROUTINE"; on at P51C.2. */
 static void p51c(void)
 {
@@ -256,8 +257,8 @@ static const word p51c_1_words[] = {
 
 const struct interpretive_code P51C_1_CODE = {014u, P51C_1 + 1u, COUNT(p51c_1_words), p51c_1_words};
 
-/* P51E: a restart point (05024); the marks released (MKRELEAS, "ZERO
- * MARKSTAT"); then the second star (STARIND +1) on to P51F; the first:
+/* P51E +1 -- p. 769: a restart point (05024); the marks released (MKRELEAS,
+ * "ZERO MARKSTAT"); then the second star (STARIND +1) on to P51F; the first:
  * a restart point, STARIND to 1, and P51C again, "GO DO SECOND STAR".
  * (STARIND is 0 or 1: CCS takes its first two ways only.) */
 void p51e_plus1(void)
@@ -279,7 +280,7 @@ void p51e_star(void)
     }
 }
 
-/* (A is 1: TS does not skip.) */
+/* P51E +013 -- p. 769: (A is 1: TS does not skip.) */
 void p51e_second_star(void)
 {
     set_A(BIT1);
@@ -287,7 +288,7 @@ void p51e_second_star(void)
     p51c(); /* TCF P51C, "GO DO SECOND STAR" */
 }
 
-/* P51F: both stars marked: a restart point (05024); the planet's
+/* P51F -- p. 769: both stars marked: a restart point (05024); the planet's
  * direction again; the two catalog vectors (PLANVEC and STARSAV1, to 12D
  * and 6D) and the two lines of sight (STARSAV2 and the push-down list's,
  * to STARAD and STARAD +6) to CHKSDATA, "CHECK STAR ANGLES IN STARAD AND"
@@ -343,8 +344,8 @@ const struct interpretive_code P51G_CODE = {014u, P51G, COUNT(p51g_words), p51g_
 
 /* ---- SET1/PDT -- pp. 769-770 (bank 15) ---- */
 
-/* SET1/PDT: the present time (TIME1) to 1/PIPADT, back to DANZIG. (A is a
- * counter's word: TS does not skip.) */
+/* SET1/PDT -- p. 769: the present time (TIME1) to 1/PIPADT, back to DANZIG.
+ * (A is a counter's word: TS does not skip.) */
 void set1_pdt(void)
 {
     ca(ADDRESS_OF(TIME1));

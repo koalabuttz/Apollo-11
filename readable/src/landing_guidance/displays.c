@@ -10,8 +10,8 @@
 
 #if LUMINARY099
 
-/* DISPEXIT: "KILL GROUP 3: DISPLAYS WILL BE RESTORED BY NEXT GUIDANCE
- * CYCLE." (-PHASE3 and PHASE3 get NEG0's -0 and +0.) */
+/* DISPEXIT -- pp. 813-814: "KILL GROUP 3: DISPLAYS WILL BE RESTORED BY NEXT
+ * GUIDANCE CYCLE." (-PHASE3 and PHASE3 get NEG0's -0 and +0.) */
 void dispexit(void)
 {
     dca(ADDRESS_OF(NEG0));
@@ -19,8 +19,8 @@ void dispexit(void)
     dispexit_plus3();
 }
 
-/* DISPEXIT +3: "IF FLUNDISP IS SET, NO DISPLAY THIS PASS" (ENDLLJOB);
- * else the phase's WHATDISP word, by WCHPHOLD. */
+/* DISPEXIT +3 -- p. 814: "IF FLUNDISP IS SET, NO DISPLAY THIS PASS"
+ * (ENDLLJOB); else the phase's WHATDISP word, by WCHPHOLD. */
 void dispexit_plus3(void)
 {
     cs(ADDRESS_OF(FLAGWRD8));
@@ -31,35 +31,36 @@ void dispexit_plus3(void)
         tcf_by_phase(WHATDISP, ADDRESS_OF(WCHPHOLD));
 }
 
-/* P63DISPS -2: "KILL GROUP 5". */
+/* P63DISPS -2 -- p. 814: "KILL GROUP 5". */
 void p63disps_phaschng(void)
 {
     tc_to(P63DISPS - 2u, PHASCHNG);
 }
 
-/* P63DISPS: V06N63. */
+/* P63DISPS -- p. 814: V06N63. */
 void p63disps(void)
 {
     set_A(V06N63);
     dispcomn();
 }
 
-/* DISPCOMN: the display (REGODSPR, through BANKCALL), and ENDLLJOB. */
+/* DISPCOMN -- p. 814: the display (REGODSPR, through BANKCALL), and
+ * ENDLLJOB. */
 void dispcomn(void)
 {
     tc_to(DISPCOMN, BANKCALL);
 }
 
-/* ENDLLJOB: the job ends. */
+/* ENDLLJOB -- pp. 814-815: the job ends. */
 void endlljob(void)
 {
     continue_at(ENDOFJOB);
 }
 
-/* P64DISPS: "HAS TREDES REACHED ZERO?" Then RED-OVER, which ends the
- * redesignations. Else, "IS REDFLAG SET?" (REDES-OK's static display);
- * "OTHERWISE USE FLASHING DISPLAY" (REFLASHR, through BANKCALL), whose
- * returns are the crew's answer. */
+/* P64DISPS +014 -- p. 814: "HAS TREDES REACHED ZERO?" Then RED-OVER, which
+ * ends the redesignations. Else, "IS REDFLAG SET?" (REDES-OK's static
+ * display); "OTHERWISE USE FLASHING DISPLAY" (REFLASHR, through BANKCALL),
+ * whose returns are the crew's answer. */
 void p64disps(void)
 {
     ca(ADDRESS_OF(TREDES));
@@ -77,15 +78,17 @@ void p64disps(void)
     tc_to(P64DISPS + 010u, BANKCALL);
 }
 
-/* REFLASHR's returns: TERMINATE (GOTOPOOH), PROCEED (P64CEED: "PERMIT
- * REDESIGNATIONS"), RECYCLE (P64DISPS) and, last, ENDLLJOB. */
+/* P64DISPS +012 -- p. 814: REFLASHR's returns: TERMINATE (GOTOPOOH), PROCEED
+ * (P64CEED: "PERMIT REDESIGNATIONS"), RECYCLE (P64DISPS) and, last,
+ * ENDLLJOB. */
 void p64disps_terminate(void)
 {
     continue_at(GOTOPOOH);
 }
 
-/* P64CEED: ELINCR1 and AZINCR1 cleared, and UPFLAG REDFLAG: "ENABLE
- * REDESIGNATION LOGIC". (A is +0: the TSs never skip.) */
+/* P64DISPS +013 -- pp. 814-815, the proceed (TCF P64CEED). P64CEED: ELINCR1
+ * and AZINCR1 cleared, and UPFLAG REDFLAG: "ENABLE REDESIGNATION LOGIC". (A
+ * is +0: the TSs never skip.) */
 void p64ceed(void)
 {
     set_A(ZERO);
@@ -94,26 +97,26 @@ void p64ceed(void)
     tc_to(P64CEED + 3u, UPFLAG);
 }
 
-/* UPFLAG's return: the job ends. */
+/* P64CEED +5 -- p. 815: UPFLAG's return: the job ends. */
 void p64ceed_after_upflag(void)
 {
     continue_at(ENDOFJOB);
 }
 
-/* RED-OVER: DOWNFLAG REDFLAG, and on to REDES-OK. */
+/* RED-OVER -- p. 815: DOWNFLAG REDFLAG, and on to REDES-OK. */
 void red_over(void)
 {
     tc_to(RED_OVER, DOWNFLAG);
 }
 
-/* REDES-OK: V06N64. */
+/* REDES-OK -- p. 815: V06N64. */
 void redes_ok(void)
 {
     set_A(V06N64);
     dispcomn();
 }
 
-/* VERTDISP: V06N60. */
+/* VERTDISP -- p. 815: V06N60. */
 void vertdisp(void)
 {
     set_A(V06N60);

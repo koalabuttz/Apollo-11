@@ -117,7 +117,7 @@ const struct interpretive_code S50_CODE = {014u, LOCSAM, COUNT(s50_words), s50_w
 
 static void picbxt(void);
 
-/* PICAPAR: the caller's return, as a CADR, to QMIN. */
+/* PICAPAR -- p. 752: the caller's return, as a CADR, to QMIN. */
 void picapar(void)
 {
     tc_to(PICAPAR, MAKECADR);
@@ -277,14 +277,14 @@ void picend_after_exit(void)
     picbxt();
 }
 
-/* PICGXT +1: the caller's +3, the normal return. */
+/* PICGXT +1 -- p. 755: the caller's +3, the normal return. */
 void picgxt_after_exit(void)
 {
     incr(ADDRESS_OF(QMIN));
     picbxt();
 }
 
-/* PICBXT: back to the caller through its CADR in QMIN (SWCALL). */
+/* PICBXT -- p. 755: back to the caller through its CADR in QMIN (SWCALL). */
 static void picbxt(void)
 {
     ca(ADDRESS_OF(QMIN));

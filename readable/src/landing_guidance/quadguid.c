@@ -14,7 +14,7 @@
 
 /* ---- QUADGUID -- pp. 808-809 ---- */
 
-/* QUADGUID. As the listing has it,
+/* QUADGUID -- p. 808. As the listing has it,
  *
  *     ACG = ADG + 6(VDG + VG)/TTF + 12(RDG - RG)/(TTF)(TTF)
  *
@@ -127,16 +127,17 @@ static const word quadguid_words[] = {
 const struct interpretive_code QUADGUID_CODE = {031u, QUADGUID + 040u, COUNT(quadguid_words),
                                                 quadguid_words};
 
-/* AFCCLEND's EXIT +1: TC FASTCHNG, restart group 3 to resume at the word
- * after. */
+/* AFCCLEND +1 -- p. 810: AFCCLEND's EXIT +1: TC FASTCHNG, restart group 3 to
+ * resume at the word after. */
 void afcclend_after_exit(void)
 {
     tc_at(AFCCLEND + 1u);
     fastchng();
 }
 
-/* FASTCHNG's return: "PREPARE FOR PHASE SWITCHING LOGIC" (WCHPHOLD gets
- * WCHPHASE) and "INCREMENT PASS COUNTER" (FLPASS0), then BRSPOT4. */
+/* AFCCLEND +2 -- p. 810: FASTCHNG's return: "PREPARE FOR PHASE SWITCHING
+ * LOGIC" (WCHPHOLD gets WCHPHASE) and "INCREMENT PASS COUNTER" (FLPASS0),
+ * then BRSPOT4. */
 void afcclend_after_fastchng(void)
 {
     ca(ADDRESS_OF(WCHPHASE));
@@ -145,7 +146,7 @@ void afcclend_after_fastchng(void)
     brspot4();
 }
 
-/* BRSPOT4: the phase's AFTRGUID word. */
+/* BRSPOT4 -- p. 810: the phase's AFTRGUID word. */
 void brspot4(void)
 {
     tcf_by_phase(AFTRGUID, ADDRESS_OF(WCHPHASE));
@@ -153,7 +154,7 @@ void brspot4(void)
 
 /* ---- CGCALC -- pp. 810-811 ---- */
 
-/* CGCALC: the phase's target time (EXTEND; INDEX WCHPHASE; INDEX
+/* CGCALC -- p. 810: the phase's target time (EXTEND; INDEX WCHPHASE; INDEX
  * TARGTDEX; DCA TCGFBRAK: TCGFBRAK's double word, or TCGFAPPR's) in
  * E-bank 5, then TTF/8's E-bank back (INCR BBANK twice: 5 to 7). With A
  * its high word plus TTF/8 and L its low word, CCS A and CCS L: CG wants
@@ -230,9 +231,9 @@ const struct interpretive_code CGCALC_CODE = {031u, CGCALC + 021u, COUNT(cgcalc_
 
 /* ---- EXTLOGIC -- p. 811 ---- */
 
-/* EXTLOGIC: "DECIDE (1) HOW TO EXIT, AND (2) WHETHER TO SWITCH PHASES":
- * the phase's end time (TENDBRAK, or TENDAPPR: "WCHPHASE = 1 APPRQUAD")
- * plus TTF/8, then EXSPOT1. */
+/* EXTLOGIC -- p. 811: "DECIDE (1) HOW TO EXIT, AND (2) WHETHER TO SWITCH
+ * PHASES": the phase's end time (TENDBRAK, or TENDAPPR: "WCHPHASE = 1
+ * APPRQUAD") plus TTF/8, then EXSPOT1. */
 void extlogic(void)
 {
     ca_indexed(ADDRESS_OF(WCHPHASE), ADDRESS_OF(TENDBRAK));
@@ -240,10 +241,10 @@ void extlogic(void)
     exspot1();
 }
 
-/* EXSPOT1: while the time is not yet past the phase's end (zero or less)
- * the phase's WHATEXIT word; else FASTCHNG and on to the next phase. The
- * AGC adds the index to the whole BZMF; not modelled: an index that makes
- * it another instruction. */
+/* EXSPOT1 -- p. 811: while the time is not yet past the phase's end (zero or
+ * less) the phase's WHATEXIT word; else FASTCHNG and on to the next phase.
+ * The AGC adds the index to the whole BZMF; not modelled: an index that
+ * makes it another instruction. */
 void exspot1(void)
 {
     word instruction = indexed_instruction((word)(060000u | WHATEXIT), fetch(ADDRESS_OF(WCHPHASE)));
@@ -257,10 +258,10 @@ void exspot1(void)
     fastchng();
 }
 
-/* FASTCHNG's return: the next phase (WCHPHOLD +1 to WCHPHASE), "RESET
- * FLPASS0", and the old phase's WHATEXIT word. A TS WCHPHASE that
- * overflows skips the CA ZERO and leaves +1 in A, which FLPASS0 gets.
- * (So TS FLPASS0 never skips.) */
+/* EXSPOT1 +4 -- p. 811: FASTCHNG's return: the next phase (WCHPHOLD +1 to
+ * WCHPHASE), "RESET FLPASS0", and the old phase's WHATEXIT word. A TS
+ * WCHPHASE that overflows skips the CA ZERO and leaves +1 in A, which
+ * FLPASS0 gets. (So TS FLPASS0 never skips.) */
 void exspot1_after_fastchng(void)
 {
     ca(ADDRESS_OF(WCHPHOLD));

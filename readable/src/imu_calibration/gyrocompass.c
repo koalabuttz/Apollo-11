@@ -66,7 +66,8 @@ static const word setuper1_words[] = {
 const struct interpretive_code SETUPER1_CODE = {033u, SETUPER1 + 1u, COUNT(setuper1_words),
                                                 setuper1_words};
 
-/* ONCEMORE +5: "FOR TROUBLESHOOTING POSNS 2$4 VD", CDUX into LOSVEC +1. */
+/* ONCEMORE +5 -- p. 441: "FOR TROUBLESHOOTING POSNS 2$4 VD", CDUX into
+ * LOSVEC +1. */
 void oncemore_cdux(void)
 {
     ca(ADDRESS_OF(CDUX));
@@ -117,7 +118,8 @@ void torqinch(void)
     continue_at(PHASCHNG);
 }
 
-/* TORQINCH +2: torque the gyros by OGC (IMUPULSE, its ECADR in A). */
+/* TORQINCH +2 -- p. 441: torque the gyros by OGC (IMUPULSE, its ECADR in
+ * A). */
 void torqinch_after_phaschng(void)
 {
     set_A(OGCPL);
@@ -125,7 +127,7 @@ void torqinch_after_phaschng(void)
     continue_at(BANKCALL); /* CADR IMUPULSE */
 }
 
-/* TORQINCH +5: wait for the gyros. */
+/* TORQINCH +5 -- p. 441: wait for the gyros. */
 void torqinch_after_imupulse(void)
 {
     tc_at(TORQINCH + 5u);
@@ -148,7 +150,7 @@ void torqinch_after_imustllg(void)
     }
 }
 
-/* TORQINCH +010: the interpreter's CALL ERTHRVSE. */
+/* TORQINCH +010 -- p. 441: the interpreter's CALL ERTHRVSE. */
 void torqinch_erate(void)
 {
     tc_at(TORQINCH + 010u);
@@ -233,7 +235,7 @@ void setupgc_after_zeroing(void)
     posn17c();
 }
 
-/* SETUPGC +5. */
+/* SETUPGC +5 -- p. 443. */
 void setupgc_after_posn17c(void)
 {
     tc_at(SETUPGC + 5u);
@@ -252,7 +254,7 @@ void posn17c(void)
     intpret();
 }
 
-/* POSN17C +017: back through QPLACE. */
+/* POSN17C +017 -- p. 443: back through QPLACE. */
 void posn17c_after_exit(void)
 {
     tc_return(E(QPLACE));
@@ -377,7 +379,7 @@ void endgtsal_after_chkcomed(void)
     }
 }
 
-/* ENDGTSAL +2: has the alignment ended (CHKCOMED)? */
+/* ENDGTSAL +2 -- p. 445: has the alignment ended (CHKCOMED)? */
 void endgtsal_chkcomed(void)
 {
     tc_at(ENDGTSAL + 2u);
@@ -406,7 +408,7 @@ void restaier(void)
     continue_at(PHASCHNG);
 }
 
-/* RESTAIER +2: the interpreter, "ADD COMPASS COMMANDS INTO ERATE":
+/* RESTAIER +2 -- p. 445: the interpreter, "ADD COMPASS COMMANDS INTO ERATE":
  * ERCOMP1 = XSM THETAN1 + THETAX1. */
 void restaier_after_phaschng(void)
 {
@@ -431,15 +433,15 @@ static const word restaier_words[] = {
 const struct interpretive_code RESTAIER_CODE = {033u, RESTAIER + 3u, COUNT(restaier_words),
                                                 restaier_words};
 
-/* RESTAIER +014: "TORQUE IT ALL IN" (EARTHR*). */
+/* RESTAIER +014 -- p. 445: "TORQUE IT ALL IN" (EARTHR*). */
 void restaier_after_exit(void)
 {
     tc_at(RESTAIER + 014u);
     earthr_star();
 }
 
-/* RESTAIER +015: GEOSAVE1 the erection time left (ERECTIM1), and the
- * phase (PHASCHNG, OCT 00155). */
+/* RESTAIER +015 -- p. 445: GEOSAVE1 the erection time left (ERECTIM1), and
+ * the phase (PHASCHNG, OCT 00155). */
 void restaier_after_earthr(void)
 {
     ca(E(ERECTIM1));
@@ -466,14 +468,15 @@ static const word restest1_words[] = {
 const struct interpretive_code RESTEST1_CODE = {033u, RESTEST1 + 1u, COUNT(restest1_words),
                                                 restest1_words};
 
-/* RESTEST1 +7: the phase (PHASCHNG, OCT 00255), then RESTEST3. */
+/* RESTEST1 +7 -- p. 445: the phase (PHASCHNG, OCT 00255), then RESTEST3. */
 void restest1_phaschng(void)
 {
     tc_at(RESTEST1 + 7u);
     continue_at(PHASCHNG);
 }
 
-/* RESTEST1 +5: PREMTRXC set, NOCHORLD; +0, a check of the azimuth. */
+/* RESTEST1 +5 -- p. 445: PREMTRXC set, NOCHORLD; +0, a check of the
+ * azimuth. */
 void restest1_after_exit(void)
 {
     switch (ccs_at(E(PREMTRXC))) {
@@ -527,7 +530,7 @@ void restest3_after_exit(void)
     posn17c();
 }
 
-/* RESTEST3 +021: the phase (PHASCHNG, OCT 00335). */
+/* RESTEST3 +021 -- p. 446: the phase (PHASCHNG, OCT 00335). */
 void restest3_after_posn17c(void)
 {
     tc_at(RESTEST3 + 021u);
@@ -554,21 +557,21 @@ void spitgyro(void)
     continue_at(BANKCALL); /* CADR IMUPULSE */
 }
 
-/* SPITGYRO +3: wait for them (IMUSTALL). */
+/* SPITGYRO +3 -- p. 446: wait for them (IMUSTALL). */
 void spitgyro_after_imupulse(void)
 {
     tc_at(SPITGYRO + 3u);
     continue_at(BANKCALL); /* CADR IMUSTALL */
 }
 
-/* SPITGYRO +5: IMUSTALL's error return, SOMERR2 (alarm 1601). */
+/* SPITGYRO +5 -- p. 446: IMUSTALL's error return, SOMERR2 (alarm 1601). */
 void spitgyro_bad_stall(void)
 {
     tc_at(SPITGYRO + 5u);
     somerr2();
 }
 
-/* SPITGYRO +6: "RE-INITIALIZE" (ESTIMS). */
+/* SPITGYRO +6 -- p. 446: "RE-INITIALIZE" (ESTIMS). */
 void spitgyro_after_imustall(void)
 {
     tc_at(SPITGYRO + 6u);

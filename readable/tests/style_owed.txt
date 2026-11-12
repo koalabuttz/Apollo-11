@@ -3,7 +3,7 @@
 # the tree to these counts; `tools/style_check.py --write` writes them.
 # A directory that is not here owes nothing and may not break a rule.
 #
-# Owed in all: ccs-order 86, ccs-default 63, ccs-not-modelled 72, continue-offset 50, goto 2.
+# Owed in all: ccs-order 86, ccs-default 63, ccs-not-modelled 72, continue-offset 49, goto 2.
 
 ccs-order aostask 3
 ccs-order aotmark 4
@@ -66,7 +66,7 @@ ccs-not-modelled trim_gimbal 2
 ccs-not-modelled update_program 1
 continue-offset cm_dap 13
 continue-offset downtelemetry 2
-continue-offset entry_dap 10
+continue-offset entry_dap 9
 continue-offset extended_verbs 1
 continue-offset imu_calibration 1
 continue-offset imu_performance 2

@@ -18,14 +18,15 @@ static void dca_constant(const word *pair)
 
 /* ---- The idler, bank 16 -- LM pp. 1410-1413 ---- */
 
-/* MOREIDLE: "CALCULATE Q,R-AXES ATTITUDE ERRORS." by IBNKCALL to QERRCALC
- * (then CALCPERR, and SHUTDOWN). */
+/* MOREIDLE -- LM p. 1413: "CALCULATE Q,R-AXES ATTITUDE ERRORS." by IBNKCALL
+ * to QERRCALC (then CALCPERR, and SHUTDOWN). */
 static void moreidle(void)
 {
     tc_to(MOREIDLE, IBNKCALL);
 }
 
-/* SETTIME5: T5RUPT again in 100 ms, and RESUME the interrupted program. */
+/* SETTIME5 -- LM p. 1412: T5RUPT again in 100 ms, and RESUME the interrupted
+ * program. */
 static void settime5(void)
 {
     set_A(MS100);
@@ -33,9 +34,10 @@ static void settime5(void)
     continue_at(RESUME);
 }
 
-/* SHUTDOWN: the next T5RUPT to DAPIDLER again; "KILL ANY POSSIBLE JET
- * REQUESTS", "COMMAND JETS OFF." (channels 5 and 6 to +0), "TURN TRIM
- * GIMBAL OFF" (BGIM23's bits of channel 12 cleared); "RETURN IN 100 MSEC." */
+/* SHUTDOWN -- LM p. 1413: the next T5RUPT to DAPIDLER again; "KILL ANY
+ * POSSIBLE JET REQUESTS", "COMMAND JETS OFF." (channels 5 and 6 to +0),
+ * "TURN TRIM GIMBAL OFF" (BGIM23's bits of channel 12 cleared); "RETURN IN
+ * 100 MSEC." */
 static void idle_shutdown(void)
 {
     dca_constant(IDLERADR);
@@ -51,20 +53,21 @@ static void idle_shutdown(void)
     settime5();
 }
 
-/* JUMPDSP: "TRANSFER TO BANK 20" "FOR ATTITUDE ERROR DISPLAYS", ALTDSPLY,
- * by DTCB (A gets the word after it, L the old BBANK). */
+/* JUMPDSP -- LM p. 1413: "TRANSFER TO BANK 20" "FOR ATTITUDE ERROR
+ * DISPLAYS", ALTDSPLY, by DTCB (A gets the word after it, L the old
+ * BBANK). */
 static void jumpdsp(void)
 {
     dca_constant(DSPCADR);
     dtcb(JUMPDSP + 2u);
 }
 
-/* CHEKBITS. Bits 13 and 14 of channel 31 both 1 (read inverted: both 0):
- * the mode select switch is off, "AND SO THE DAP SHOULD BE OFF," and
- * MOREIDLE. Else, with the IMU usable (bit 6 of IMODES33 clear), the
- * needles (JUMPDSP); and with it not usable, "SET UP INITIALIZATION" "FLAG
- * FOR ATT ERROR DISPLAY ROUTINE." (bit 3 of RCSFLAGS) and SHUTDOWN. The
- * caller's return stays in Q, for CHEKMORE's RETURN. */
+/* CHEKBITS -- LM p. 1410. Bits 13 and 14 of channel 31 both 1 (read
+ * inverted: both 0): the mode select switch is off, "AND SO THE DAP SHOULD
+ * BE OFF," and MOREIDLE. Else, with the IMU usable (bit 6 of IMODES33
+ * clear), the needles (JUMPDSP); and with it not usable, "SET UP
+ * INITIALIZATION" "FLAG FOR ATT ERROR DISPLAY ROUTINE." (bit 3 of RCSFLAGS)
+ * and SHUTDOWN. The caller's return stays in Q, for CHEKMORE's RETURN. */
 void chekbits(void)
 {
     read_channel(CHAN31);
@@ -87,9 +90,10 @@ void chekbits(void)
     idle_shutdown();
 }
 
-/* DAPIDLER +1, past its LXCH: QRUPT gets Q, and 1/ACCSET is set up once
- * since the last fresh start or restart (bit 13 of RCSFLAGS then set), by a
- * NOVAC job, which returns to CHECKUP; or, already set up, CHECKUP. */
+/* DAPIDLER +1 -- LM p. 1411, past its LXCH: QRUPT gets Q, and 1/ACCSET is
+ * set up once since the last fresh start or restart (bit 13 of RCSFLAGS then
+ * set), by a NOVAC job, which returns to CHECKUP; or, already set up,
+ * CHECKUP. */
 static void dapidler_plus1(void)
 {
     qxch(ADDRESS_OF(QRUPT));
@@ -107,10 +111,10 @@ static void dapidler_plus1(void)
     tc_to(CHECKUP - 3u, NOVAC); /* "SET UP JOB TO DO A LITTLE INITIALIZATION" */
 }
 
-/* CHEKMORE: bit 10 of channel 30 ("PGNCS CONTROL OF S/C", "BITS IN 30 ARE
- * INVERTED"): set, the LM is not under PGNCS control, MOREIDLE; clear,
- * RETURN to CHEKBITS's caller. (A RAND leaves no negative A: CCS's last
- * two exits run on into DAPIDLER and its +1.) */
+/* CHEKMORE -- LM p. 1410: bit 10 of channel 30 ("PGNCS CONTROL OF S/C",
+ * "BITS IN 30 ARE INVERTED"): set, the LM is not under PGNCS control,
+ * MOREIDLE; clear, RETURN to CHEKBITS's caller. (A RAND leaves no negative
+ * A: CCS's last two exits run on into DAPIDLER and its +1.) */
 void chekmore(void)
 {
     set_A(BIT10);
@@ -131,17 +135,17 @@ void dapidler(void)
     dapidler_plus1();
 }
 
-/* CHECKUP: TC CHEKBITS, "CHECK TO SEE IF LM DAP IS TO GO ON AND", which
- * returns (by CHEKMORE) to CHECKUP +1. */
+/* CHECKUP -- LM p. 1411: TC CHEKBITS, "CHECK TO SEE IF LM DAP IS TO GO ON
+ * AND", which returns (by CHEKMORE) to CHECKUP +1. */
 void checkup(void)
 {
     tc_at(CHECKUP);
     chekbits();
 }
 
-/* CHECKUP +1: "IF 1/ACCS HAS NOT BEEN COMPLETED, IDLE." (ACCSOKAY of
- * DAPBOOLS clear), MOREIDLE. Else STARTDAP: "ZERO ATTITUDE ERROR AND
- * DESIRED RATES." by IBNKCALL to ZATTEROR. */
+/* CHECKUP +1 -- LM p. 1411: "IF 1/ACCS HAS NOT BEEN COMPLETED, IDLE."
+ * (ACCSOKAY of DAPBOOLS clear), MOREIDLE. Else STARTDAP: "ZERO ATTITUDE
+ * ERROR AND DESIRED RATES." by IBNKCALL to ZATTEROR. */
 void checkup_after_chekbits(void)
 {
     ca(ADDRESS_OF(DAPBOOLS));
@@ -153,14 +157,14 @@ void checkup_after_chekbits(void)
     tc_to(STARTDAP, IBNKCALL);
 }
 
-/* STARTDAP +2, where ZATTEROR returns: "INITIALIZE:" the DAP's erasables
- * to +0 (the jet times, the rates, the trap counts, the offset
- * acceleration estimates and their downlist copies, the Kalman filter
- * terms, the gimbal drive timers and the minimum impulse words), MANFLAG's
- * bits of RCSFLAGS cleared, the old CDU angles OLDXFORP, OLDYFORP and
- * OLDZFORQ from the CDUs, bit 12 of RCSFLAGS set, the T6 jet timing
- * cleared (TIME6, T6NEXT and T6FURTHA at POSMAX), DAPZRUPT -10, the trap
- * counts 2, and the next T5RUPT to PAXIS: the DAP is on. */
+/* STARTDAP +2 -- LM p. 1411, where ZATTEROR returns: "INITIALIZE:" the DAP's
+ * erasables to +0 (the jet times, the rates, the trap counts, the offset
+ * acceleration estimates and their downlist copies, the Kalman filter terms,
+ * the gimbal drive timers and the minimum impulse words), MANFLAG's bits of
+ * RCSFLAGS cleared, the old CDU angles OLDXFORP, OLDYFORP and OLDZFORQ from
+ * the CDUs, bit 12 of RCSFLAGS set, the T6 jet timing cleared (TIME6, T6NEXT
+ * and T6FURTHA at POSMAX), DAPZRUPT -10, the trap counts 2, and the next
+ * T5RUPT to PAXIS: the DAP is on. */
 void startdap_after_zatteror(void)
 {
     static const unsigned zeroed[] = {
@@ -215,8 +219,8 @@ void startdap_after_zatteror(void)
     settime5();
 }
 
-/* MOREIDLE +2, where QERRCALC returns: "CALCULATE P AXIS ATTITUDE ERRORS."
- * by IBNKCALL to CALCPERR, which returns to SHUTDOWN. */
+/* MOREIDLE +2 -- LM p. 1413, where QERRCALC returns: "CALCULATE P AXIS
+ * ATTITUDE ERRORS." by IBNKCALL to CALCPERR, which returns to SHUTDOWN. */
 void moreidle_after_qerrcalc(void)
 {
     tc_to(MOREIDLE + 2u, IBNKCALL);
@@ -229,7 +233,7 @@ void shutdown_after_calcperr(void)
 
 /* ---- The attitude error needles, bank 20 -- LM pp. 1414-1420 ---- */
 
-/* RETNMORE: "RETURN TO CHEKMORE", by DTCB to bank 16. */
+/* RETNMORE -- LM p. 1420: "RETURN TO CHEKMORE", by DTCB to bank 16. */
 static void retnmore(void)
 {
     dca_constant(MORECADR);
@@ -291,10 +295,10 @@ static void dsplytot(void)
     retnmore();
 }
 
-/* NEEDLES: the DAC loop, for DINDX 2, 1 and 0 (AK +2, AK +1 and AK):
- * "RESCALE INPUTS TO + OR - 1800 DEGREES." (by -0.1), limited to + or -
- * 384 counts (added to + or - DACLIMIT, 16000: "OVFLO CHK", and then "ON
- * OVERFLOW LIMIT OUTPUT TO +-384"); the change from the DAC's present
+/* NEEDLES -- LM p. 1419: the DAC loop, for DINDX 2, 1 and 0 (AK +2, AK +1
+ * and AK): "RESCALE INPUTS TO + OR - 1800 DEGREES." (by -0.1), limited to +
+ * or - 384 counts (added to + or - DACLIMIT, 16000: "OVFLO CHK", and then
+ * "ON OVERFLOW LIMIT OUTPUT TO +-384"); the change from the DAC's present
  * value EDRIVEX added to the CDU command counter, and the new value kept.
  * Then "SET DAC ACTIVITY BITS" (13, 14 and 15 of channel 14). */
 static void needles(void)

@@ -9,8 +9,8 @@
 #if LUMINARY099
 #include "../interpreter/interpreter.h"
 
-/* INTPRETX: "SET X1 ON THE WAY TO THE INTERPRETER": X1 gets minus the
- * phase's target index (INDEX WCHPHASE; CS TARGTDEX: WCHPHASE -1 to 2,
+/* INTPRETX -- p. 825: "SET X1 ON THE WAY TO THE INTERPRETER": X1 gets minus
+ * the phase's target index (INDEX WCHPHASE; CS TARGTDEX: WCHPHASE -1 to 2,
  * IGNALG to VERTICAL), and the interpretive code after the caller's TC
  * INTPRETX runs (TCF INTPRET). Not modelled: an index that makes the CS
  * another instruction or reads outside the table's four words. (A, a
@@ -27,7 +27,7 @@ void intpretx(void)
     intpret();
 }
 
-/* TDISPSET: TTFDISP, the time to go for the display (TTF/8 times
+/* TDISPSET -- p. 825: TTFDISP, the time to go for the display (TTF/8 times
  * TSCALINV), and TREDES, the time left to redesignate: "TREDES BECOMES
  * ZERO TWO PASSES BEFORE TCGFAPPR IS REACHED". The approach phase's
  * target time TCGFAPPR is in E-bank 5 (TTF/8's E-bank back after it:
@@ -60,10 +60,10 @@ void tdispset(void)
     tc_through(Q_ADDRESS);
 }
 
-/* FASTCHNG: PHSNAME3, restart group 3's phase, gets the caller's return.
- * XCH EBANK switches in E-bank 3 and leaves the caller's EBANK in A; DXCH L
- * moves the return from Q to A and that EBANK to L; LXCH EBANK puts it
- * back, and TC A returns: A's word runs as the instruction TC <address>.
+/* FASTCHNG -- p. 826: PHSNAME3, restart group 3's phase, gets the caller's
+ * return. XCH EBANK switches in E-bank 3 and leaves the caller's EBANK in A;
+ * DXCH L moves the return from Q to A and that EBANK to L; LXCH EBANK puts
+ * it back, and TC A returns: A's word runs as the instruction TC <address>.
  * Not modelled: a return that is not such an address (bits 13-15 set, or
  * below 010), nor one whose sixteenth bit differs from its fifteenth: TS
  * PHSNAME3 would skip the LXCH and leave A +1 or -1. */

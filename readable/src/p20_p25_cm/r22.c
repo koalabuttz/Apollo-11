@@ -42,8 +42,8 @@ void r22(void)
     tc_to(R22 + 2u, PRIOCHNG);
 }
 
-/* R22 +3: MRKBUF2 -3, no mark in it, and on in interpretive code. (A CA
- * of a constant leaves no overflow for the TS to skip on.) */
+/* R22 +3 -- p. 579: MRKBUF2 -3, no mark in it, and on in interpretive code.
+ * (A CA of a constant leaves no overflow for the TS to skip on.) */
 void r22_after_priochng(void)
 {
     set_A(NEG3);
@@ -68,7 +68,7 @@ static const word r22_words[] = {
     ORDER(EXIT),
 };
 
-/* REND1A +1 -- after the EXIT: MRKBUF2's first word, the mark's time
+/* REND1A +1 -- p. 579: after the EXIT: MRKBUF2's first word, the mark's time
  * (TIME2), +0 or positive, a new mark, to REND2; negative (-1 none, -3
  * used), no mark, to REND3A. */
 void rend1a_after_exit(void)
@@ -85,16 +85,16 @@ void rend1a_after_exit(void)
     rend2();
 }
 
-/* REND2: the mark, six words, from MRKBUF2 to MARKTIME and on ("MARKTIME
- * MUST BE CONTIGUOUS WITH VTEMP") by GENTRAN, */
+/* REND2 -- p. 579: the mark, six words, from MRKBUF2 to MARKTIME and on
+ * ("MARKTIME MUST BE CONTIGUOUS WITH VTEMP") by GENTRAN, */
 static void rend2(void)
 {
     set_A(SIX);
     tc_to(REND2 + 1u, GENTRAN); /* ADRES MRKBUF2; ADRES MARKTIME */
 }
 
-/* REND2 +4: and MRKBUF2 -3 again, "NEG VALUE TO INDICATE VALUES USED".
- * GENTRAN holds interrupts; RELINT releases them. (A CAF leaves no
+/* REND2 +4 -- p. 579: and MRKBUF2 -3 again, "NEG VALUE TO INDICATE VALUES
+ * USED". GENTRAN holds interrupts; RELINT releases them. (A CAF leaves no
  * overflow for the TS to skip on.) */
 void rend2_after_gentran(void)
 {
@@ -119,7 +119,7 @@ static const word rend2_words[] = {
     ADDRESS(REND4),
 };
 
-/* REND3A: no mark; on in interpretive code, at REND3. */
+/* REND3A -- p. 579: no mark; on in interpretive code, at REND3. */
 static void rend3a(void)
 {
     tc_at(REND3A);

@@ -118,7 +118,7 @@ static unsigned qpret_store_at(void)
     return indexed_at(ADDRESS_OF(QPRET), FIXLOC, 01777u, true);
 }
 
-/* GOBAC: back into the interpreter, at the RVQ. */
+/* GOBAC -- LM p. 1220, CM p. 1325: back into the interpreter, at the RVQ. */
 static void gobac(void)
 {
     tc_at(GOBAC); /* TC INTPRET */
@@ -176,7 +176,7 @@ void intstall_after_exit(void)
     allstall();
 }
 
-/* ERASTAL1 and ERASTAL2 -- CM p. 1326: the second and third areas. */
+/* ERASTAL1 +1 and ERASTAL2 -- CM p. 1326: the second and third areas. */
 void erastal1_after_exit(void)
 {
     set_A(ONE);
@@ -235,11 +235,11 @@ void eraswak2(void)
 }
 #endif
 
-/* After JOBWAKE: LOCCTR is the woken job's core set, so wake another
- * ("MAY BE MORE TO WAKE UP"); or -1, none, and the stall area's bits
- * are cleared ("RELEASE STALL AREA"). A +0 (the core set's offset can't
- * be) runs FORTYONE, a constant, and is not modelled; at -0 the CCS skips
- * the CS (in the CM, the INDEX). */
+/* LM INTWAKE1 +3, CM WAKE1 +4 -- LM p. 1220, CM p. 1325: After JOBWAKE:
+ * LOCCTR is the woken job's core set, so wake another ("MAY BE MORE TO WAKE
+ * UP"); or -1, none, and the stall area's bits are cleared ("RELEASE STALL
+ * AREA"). A +0 (the core set's offset can't be) runs FORTYONE, a constant,
+ * and is not modelled; at -0 the CCS skips the CS (in the CM, the INDEX). */
 void intwake1_after_jobwake(void)
 {
     switch (ccs_at(ADDRESS_OF(LOCCTR))) {
@@ -297,15 +297,17 @@ void intwake(void)
 }
 
 #if LUMINARY099
-/* INTWAKE +4 in the LM, the return from INTWAKE +3's TC INTWAKE1. */
+/* INTWAKE +4 -- LM p. 1220 in the LM, the return from INTWAKE +3's TC
+ * INTWAKE1. */
 void intwake_after_intwake1(void)
 {
     keep_qpret();
 }
 #endif
 
-/* After the phase change: the return back in QPRET, and "DON'T INTWAKE
- * IF WE CAME HERE VIA RESTART" (REINTBIT clear); otherwise INTWAKE1. */
+/* INTWAKE +011 -- LM p. 1220, CM p. 1325: After the phase change: the return
+ * back in QPRET, and "DON'T INTWAKE IF WE CAME HERE VIA RESTART" (REINTBIT
+ * clear); otherwise INTWAKE1. */
 void intwake_after_phaschng(void)
 {
     ca(ADDRESS_OF(TBASE2));

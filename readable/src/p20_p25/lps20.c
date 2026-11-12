@@ -56,8 +56,8 @@ static const word lps20_1_words[] = {
     ORDER(EXIT),
 };
 
-/* LPS20.1 +027: "KILL THE TASK WHICH CALLS DODES SINCE STORING INTO
- * ERASEABLES DODES USES". */
+/* LPS20.1 +027 -- p. 565: "KILL THE TASK WHICH CALLS DODES SINCE STORING
+ * INTO ERASEABLES DODES USES". */
 void lps20_1_after_exit(void)
 {
     tc_to(LPS20_1 + 027u, KILLTASK); /* CADR DESLOOP +2 */

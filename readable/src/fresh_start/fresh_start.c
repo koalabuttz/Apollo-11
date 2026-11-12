@@ -751,7 +751,7 @@ void ptbad_after_alarm(void)
 #endif
 }
 
-/* PCLOOP, after MMDSPLAY -- LM p. 217, CM pp. 188-189.
+/* PCLOOP, after MMDSPLAY -- LM pp. 216-217, CM pp. 188-189.
  * "RELINT DONE IN MMDSPLAY". The LM clears DIDFLAG ("TO FORCE R10 TO
  * RE-INITIALIZE ITSELF"), RODFLAG (for P66) and P21FLAG ("SO THAT P21 WILL
  * COMPUTE NEW BASE STATE VECTORS"); with the RCS DAP running the CM stops
@@ -779,7 +779,7 @@ void goprog3_after_mmdsplay(void)
 }
 
 #if COMANCHE055
-/* PCLOOP, after STOPRATE -- CM p. 189. */
+/* PCLOOP, after STOPRATE -- CM pp. 188-189. */
 void goprog3_after_stoprate(void)
 {
     store_constant(EBANK_ADDRESS, EBANK3);
@@ -814,7 +814,7 @@ static void nxtrst(void)
     pinact_end(more);
 }
 
-/* PACTIVE -- LM p. 217, CM p. 189.
+/* PACTIVE +1 -- LM p. 217, CM p. 189.
  * MPAC gets the phase ("ABS OF PHASE"), MPAC +6 counts the groups running
  * ("GROUP DEMANDS PRESENT"), and RESTARTS restarts the group through
  * SWCALL: "MUST RETURN TO SWRETURN", that is to PINACT. */
@@ -838,11 +838,12 @@ void pinact(void)
         pinact_end(more);
 }
 
-/* PINACT +2 on: all groups seen. With a group running ("PHASE ACTIVE"),
- * or a major mode, back to the Executive (ENDRSTRT); with neither ("IS
- * MODE -0", no program and nothing to restart) go to P00 (GOTOPOOH).
- * mpac5 is how the CCS of MPAC +5 came out: +0, or (never, as MPAC +5
- * counts down) a negative or -0, which land one and two words on. */
+/* PINACT +2 -- LM p. 217, CM p. 189 on: all groups seen. With a group
+ * running ("PHASE ACTIVE"), or a major mode, back to the Executive
+ * (ENDRSTRT); with neither ("IS MODE -0", no program and nothing to restart)
+ * go to P00 (GOTOPOOH). mpac5 is how the CCS of MPAC +5 came out: +0, or
+ * (never, as MPAC +5 counts down) a negative or -0, which land one and two
+ * words on. */
 static void pinact_end(enum sign mpac5)
 {
     enum sign groups = POSITIVE;

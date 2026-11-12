@@ -61,9 +61,9 @@ void goto_(void)
     goto_plus1();
 }
 
-/* GOTO +1: A holds the target. "SEE IF ADDRESS POINTS TO FIXED OR ERAS."
- * In erasable, GOTOERS fetches the CADR held there and tries again
- * ("ALLOWS ARBITRARY INDIRECTNESS LEVELS"). */
+/* GOTO +1 -- LM p. 1023, CM p. 1128: A holds the target. "SEE IF ADDRESS
+ * POINTS TO FIXED OR ERAS." In erasable, GOTOERS fetches the CADR held there
+ * and tries again ("ALLOWS ARBITRARY INDIRECTNESS LEVELS"). */
 void goto_plus1(void)
 {
     unsigned hops;
@@ -80,9 +80,10 @@ void goto_plus1(void)
     goto_plus4();
 }
 
-/* GOTO +4: a CADR in fixed memory. "SET EBANK PART OF BBANK. NEXT, SET UP
- * FBANK. THE COMBINATION IS PICKED UP & PUT INTO BANKSET AT INTPRET +2."
- * LOC gets the address within the bank, and the new program starts. */
+/* GOTO +4 -- LM p. 1023, CM p. 1128: a CADR in fixed memory. "SET EBANK PART
+ * OF BBANK. NEXT, SET UP FBANK. THE COMBINATION IS PICKED UP & PUT INTO
+ * BANKSET AT INTPRET +2." LOC gets the address within the bank, and the new
+ * program starts. */
 void goto_plus4(void)
 {
     ca(ADDRESS_OF(BANKSET));
@@ -174,7 +175,7 @@ enum branch branch(void)
     return branch_from(0u);
 }
 
-/* BRANCH +4: from the test of MPAC +1. */
+/* BRANCH +4 -- LM p. 1025, CM p. 1130: from the test of MPAC +1. */
 void branch_plus4(void)
 {
     (void)branch_from(1u);
@@ -197,7 +198,8 @@ void neg(void)
     continue_at(to);
 }
 
-/* NEG +1: TC 2 without the INDEX is TC Q, the plain return. */
+/* NEG +1 -- LM p. 1025, CM p. 1130: TC 2 without the INDEX is TC Q, the
+ * plain return. */
 void neg_plus1(void)
 {
     tc_through(Q_ADDRESS);

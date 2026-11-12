@@ -135,7 +135,7 @@ void updatime(void)
     tc(UPDATIME + 010u, TPAGREE);
 }
 
-/* UPDATIME +9 -- LM p. 275, CM p. 246: the "NEW CLOCK" added to what the
+/* UPDATIME +011 -- LM p. 275, CM p. 246: the "NEW CLOCK" added to what the
  * clock counted meanwhile. */
 void updatime_after_tpagree(void)
 {

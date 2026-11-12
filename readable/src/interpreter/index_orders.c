@@ -54,7 +54,8 @@ void axt(void)
     xstore();
 }
 
-/* XSTORE: INDEXLOC "CONTAINS C(FIXLOC) OR C(FIXLOC)+1". */
+/* XSTORE -- LM p. 1087, CM p. 1192: INDEXLOC "CONTAINS C(FIXLOC) OR
+ * C(FIXLOC)+1". */
 static void xstore(void)
 {
     ts(X_SELECTED);
@@ -97,7 +98,7 @@ void sxa(void)
     mstore1();
 }
 
-/* MSTORE1: A into the erasable word at POLISH. */
+/* MSTORE1 -- LM p. 1087, CM p. 1192: A into the erasable word at POLISH. */
 static void mstore1(void)
 {
     ts(indexed(0u, POLISH));
@@ -238,9 +239,9 @@ void rtb_bhiz(void)
     }
 }
 
-/* RTB: SWCALL with the CADR in POLISH, "SO A "TC Q" FROM ROUTINE LEADS TO
- * DANZIG" (SWRETURN, then RTB_RETURN). TC SWCALL -1 increments Q past the
- * TC and runs on into SWCALL. */
+/* RTB -- LM p. 1090, CM p. 1195: SWCALL with the CADR in POLISH, "SO A "TC
+ * Q" FROM ROUTINE LEADS TO DANZIG" (SWRETURN, then RTB_RETURN). TC SWCALL -1
+ * increments Q past the TC and runs on into SWCALL. */
 void rtb(void)
 {
     ca(ADDRESS_OF(POLISH));
@@ -254,7 +255,8 @@ static void rtb_plus1(void)
     swcall();
 }
 
-/* BHIZ: "BRANCH IF THE HIGH ORDER OF MPAC IS ZERO". */
+/* BHIZ -- LM p. 1090, CM p. 1195: "BRANCH IF THE HIGH ORDER OF MPAC IS
+ * ZERO". */
 static void bhiz(void)
 {
     switch (ccs_at(ADDRESS_OF(MPAC))) {
@@ -265,7 +267,7 @@ static void bhiz(void)
     }
 }
 
-/* BHIZ +1: the -0 slot of RTB/BHIZ's CCS. */
+/* BHIZ +1 -- LM p. 1090, CM p. 1195: the -0 slot of RTB/BHIZ's CCS. */
 void bhiz_plus1(void)
 {
     continue_at(DANZIG);

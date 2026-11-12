@@ -66,41 +66,42 @@ void r62disp(void)
     continue_at(BANKCALL); /* CADR GOFLASH: ICDU ANGLES" */
 }
 
-/* R62DISP +3 -- "TERMINATE". */
+/* R62DISP +3 -- CM p. 398: "TERMINATE". */
 void r62disp_terminate(void)
 {
     continue_at(ENDEXT);
 }
 
-/* R62DISP +4 -- "PROCEED". */
+/* R62DISP +4 -- CM p. 398: "PROCEED". */
 void r62disp_proceed(void)
 {
     gomove();
 }
 
-/* R62DISP +5 -- "ENTER": "ASTRONAUT MAY LOAD NEW ICDUS AT THIS POINT",
- * and the display again. */
+/* R62DISP +5 -- CM p. 398: "ENTER": "ASTRONAUT MAY LOAD NEW ICDUS AT THIS
+ * POINT", and the display again. */
 void r62disp_enter(void)
 {
     r62disp();
 }
 
-/* GOMOVE -- "SET FOR 3-AXIS MANEUVER": the angles are the crew's, so R60
- * does not work them out. */
+/* GOMOVE -- LM p. 485, CM p. 398: "SET FOR 3-AXIS MANEUVER": the angles are
+ * the crew's, so R60 does not work them out. */
 static void gomove(void)
 {
     tc_at(GOMOVE);
     continue_at(UPFLAG); /* ADRES 3AXISFLG */
 }
 
-/* GOMOVE +2 -- R60 (R60LEM or R60CSM), through BANKCALL. */
+/* GOMOVE +2 -- LM p. 485, CM p. 398: R60 (R60LEM or R60CSM), through
+ * BANKCALL. */
 void gomove_after_upflag(void)
 {
     tc_at(GOMOVE + 2u);
     continue_at(BANKCALL); /* CADR R60LEM, R60CSM */
 }
 
-/* GOMOVE +4 -- "END R62". */
+/* GOMOVE +4 -- LM p. 485, CM p. 398: "END R62". */
 void gomove_after_bankcall(void)
 {
     continue_at(ENDEXT);
@@ -181,36 +182,36 @@ void toballa(void)
     continue_at(BANKCALL); /* CADR GOPERF2R: "DISPLAY PLEASE PERFORM AUTO MANEUVER" */
 }
 
-/* TOBALLA +3 -- terminate. */
+/* TOBALLA +3 -- LM p. 473: terminate. */
 void toballa_terminate(void)
 {
     tc_at(TOBALLA + 3u);
     r61test();
 }
 
-/* TOBALLA +4 -- "PROCEED". */
+/* TOBALLA +4 -- LM p. 473: "PROCEED". */
 void toballa_proceed(void)
 {
     tc_at(TOBALLA + 4u);
     redomanc();
 }
 
-/* TOBALLA +5 -- "ENTER I.E. FINISHED WITH R60". */
+/* TOBALLA +5 -- LM p. 473: "ENTER I.E. FINISHED WITH R60". */
 void toballa_enter(void)
 {
     tc_at(TOBALLA + 5u);
     endmanu1();
 }
 
-/* TOBALLA +6 -- GOPERF2R's immediate return: "TO CHECK FOR PRIORITY
- * DISPLAYS", then the job ends, to wait for the crew. */
+/* TOBALLA +6 -- LM p. 474: GOPERF2R's immediate return: "TO CHECK FOR
+ * PRIORITY DISPLAYS", then the job ends, to wait for the crew. */
 void toballa_immediate_return(void)
 {
     tc_at(TOBALLA + 6u);
     if (chklinus()) toballa_after_chklinus();
 }
 
-/* TOBALLA +7 */
+/* TOBALLA +7 -- LM p. 474. */
 void toballa_after_chklinus(void)
 {
     tc_at(TOBALLA + 7u);
@@ -240,7 +241,7 @@ void toballc(void)
     continue_at(BANKCALL); /* CADR BALLANGS: "TO CONVERT ANGLES TO FDAI" */
 }
 
-/* TOBALLC +2 -- "CHECK AUTO MODE": steps 8 and 9. */
+/* TOBALLC +2 -- LM p. 474: "CHECK AUTO MODE": steps 8 and 9. */
 void toballc_after_ballangs(void)
 {
     tc_at(TOBALLC + 2u);
@@ -248,7 +249,7 @@ void toballc_after_ballangs(void)
     toballc_after_g_n_auto();
 }
 
-/* TOBALLC +3 -- G+N,AUTO's answer: "NOT AUTO, GO REREQUEST AUTO
+/* TOBALLC +3 -- LM p. 474: G+N,AUTO's answer: "NOT AUTO, GO REREQUEST AUTO
  * MANEUVER" (positive), or AUTOMANV (+0). (The answer is a masked bit,
  * never negative; a negative A here skips AUTOMANV's CAF, as the AGC
  * does.) */
@@ -274,7 +275,8 @@ static void automanv(void)
     continue_at(BANKCALL); /* CADR GODSPR */
 }
 
-/* AUTOMANV +3 -- "TO CHECK FOR PRIORITY DISPLAYS", then the maneuver. */
+/* AUTOMANV +3 -- LM p. 474: "TO CHECK FOR PRIORITY DISPLAYS", then the
+ * maneuver. */
 void automanv_after_godspr(void)
 {
     tc_at(AUTOMANV + 3u);
@@ -303,7 +305,7 @@ static void endmanu1(void)
     continue_at(DOWNFLAG); /* ADRES 3AXISFLG */
 }
 
-/* ENDMANU1 +2 */
+/* ENDMANU1 +2 -- LM p. 474. */
 void endmanu1_after_downflag(void)
 {
     ca(ADDRESS_OF(TEMPR60)); /* CAE */
@@ -337,7 +339,7 @@ static bool chklinus(void)
     return false;
 }
 
-/* CHKLINUS +013 */
+/* CHKLINUS +013 -- LM p. 474. */
 void chklinus_after_phaschng(void)
 {
     set_A(BIT7);
@@ -345,8 +347,8 @@ void chklinus_after_phaschng(void)
     continue_at(LINUS); /* "GO SET BITS FOR PRIORITY DISPLAY" */
 }
 
-/* CHKLINUS +015 -- back to CHKLINUS's caller, at the return saved in
- * MPAC +2. */
+/* CHKLINUS +015 -- LM p. 474: back to CHKLINUS's caller, at the return saved
+ * in MPAC +2. */
 void chklinus_after_linus(void)
 {
     tc_at(CHKLINUS + 015u);
@@ -362,10 +364,10 @@ void relinus(void)
     continue_at(PRIOCHNG);
 }
 
-/* RELINUS +2 -- "DON'T CONTINUE R60 UNLESS TRACKFLAG ON": with it on,
- * RER60. Otherwise the job ends with the restart phase set back for its
- * program: "IS IT P20?" (RNDVZBIT): "SET 2.7 SPOT FOR P20"; if not, "MUST
- * BE P25, SET 2.11 SPOT". */
+/* RELINUS +2 -- LM p. 475: "DON'T CONTINUE R60 UNLESS TRACKFLAG ON": with it
+ * on, RER60. Otherwise the job ends with the restart phase set back for its
+ * program: "IS IT P20?" (RNDVZBIT): "SET 2.7 SPOT FOR P20"; if not, "MUST BE
+ * P25, SET 2.11 SPOT". */
 void relinus_after_priochng(void)
 {
     set_A(TRACKBIT);
@@ -390,21 +392,21 @@ void relinus_after_priochng(void)
     }
 }
 
-/* RELINUS +012 -- "NO, MUST BE P25, SET 2.11 SPOT". */
+/* RELINUS +012 -- LM p. 475: "NO, MUST BE P25, SET 2.11 SPOT". */
 void relinus_not_p20(void)
 {
     tc_at(RELINUS + 012u);
     continue_at(PHASCHNG); /* OCT 40112 */
 }
 
-/* RELINUS +014 */
+/* RELINUS +014 -- LM p. 475. */
 void relinus_after_p25_phaschng(void)
 {
     tc_at(RELINUS + 014u);
     continue_at(ENDOFJOB);
 }
 
-/* RELINUS +017 */
+/* RELINUS +017 -- LM p. 475. */
 void relinus_after_p20_phaschng(void)
 {
     tc_at(RELINUS + 017u);
@@ -419,7 +421,7 @@ static void rer60(void)
     continue_at(UPFLAG); /* ADRES PDSPFLAG */
 }
 
-/* RER60 +2 */
+/* RER60 +2 -- LM p. 475. */
 void rer60_after_upflag(void)
 {
     tc_at(RER60 + 2u);
@@ -481,11 +483,11 @@ void ballangs(void)
     continue_at(MAKECADR);
 }
 
-/* BALLANGS +1 -- the gimbal angles CPHI, CTHETA and CPSI ("THE OUTER,
- * INNER, & MIDDLE GIMBAL ANGLES") into CDUSPOT's X, Y and Z words (+4, +0,
- * +2), for CD*TR*G, then into the interpreter. (A word with overflow in A
- * would skip the first CA: MAKECADR's CADR has none. The words CA loads
- * have none either.) */
+/* BALLANGS +1 -- LM p. 477: the gimbal angles CPHI, CTHETA and CPSI ("THE
+ * OUTER, INNER, & MIDDLE GIMBAL ANGLES") into CDUSPOT's X, Y and Z words
+ * (+4, +0, +2), for CD*TR*G, then into the interpreter. (A word with
+ * overflow in A would skip the first CA: MAKECADR's CADR has none. The words
+ * CA loads have none either.) */
 void ballangs_after_makecadr(void)
 {
     if (!ts(ADDRESS_OF(BALLEXIT))) ca(ADDRESS_OF(CPHI));
@@ -621,35 +623,35 @@ void toball(void)
     continue_at(BANKCALL); /* CADR GOPERF2R */
 }
 
-/* TOBALL +3 -- terminate. */
+/* TOBALL +3 -- CM p. 390: terminate. */
 void toball_terminate(void)
 {
     tc_at(TOBALL + 3u);
     r61test();
 }
 
-/* TOBALL +4 -- "PROCEED". */
+/* TOBALL +4 -- CM p. 390: "PROCEED". */
 void toball_proceed(void)
 {
     tc_at(TOBALL + 4u);
     redomanc();
 }
 
-/* TOBALL +5 -- "ENTER I.E. FINISHED WITH R60". */
+/* TOBALL +5 -- CM p. 390: "ENTER I.E. FINISHED WITH R60". */
 void toball_enter(void)
 {
     endmanu1(); /* TCF ENDMANU1 */
 }
 
-/* TOBALL +6 -- GOPERF2R's immediate return: "TO CHECK FOR PRIORITY
- * DISPLAYS", then the job ends, to wait for the crew. */
+/* TOBALL +6 -- CM p. 390: GOPERF2R's immediate return: "TO CHECK FOR
+ * PRIORITY DISPLAYS", then the job ends, to wait for the crew. */
 void toball_immediate_return(void)
 {
     tc_at(TOBALL + 6u);
     if (chklinus()) toball_after_chklinus();
 }
 
-/* TOBALL +7 */
+/* TOBALL +7 -- CM p. 390. */
 void toball_after_chklinus(void)
 {
     tc_at(TOBALL + 7u);
@@ -691,7 +693,8 @@ void toballc(void)
     continue_at(BANKCALL); /* CADR GODSPR */
 }
 
-/* TOBALLC +012 -- the priority display check, then the maneuver. */
+/* TOBALLC +012 -- CM p. 391: the priority display check, then the
+ * maneuver. */
 void toballc_after_godspr(void)
 {
     tc_at(TOBALLC + 012u);
@@ -719,7 +722,7 @@ static void endmanu1(void)
     continue_at(DOWNFLAG); /* ADRES 3AXISFLG */
 }
 
-/* ENDMANU1 +2 */
+/* ENDMANU1 +2 -- CM p. 391. */
 void endmanu1_after_downflag(void)
 {
     ca(ADDRESS_OF(TEMPR60)); /* CAE */
@@ -753,7 +756,7 @@ static bool chklinus(void)
     return false;
 }
 
-/* CHKLINUS +013 */
+/* CHKLINUS +013 -- CM p. 391. */
 void chklinus_after_phaschng(void)
 {
     set_A(BIT7);
@@ -761,8 +764,8 @@ void chklinus_after_phaschng(void)
     continue_at(LINUS); /* "GO SET BITS FOR PRIORITY DISPLAY" */
 }
 
-/* CHKLINUS +015 -- back to CHKLINUS's caller, at the return saved in
- * MPAC +2. */
+/* CHKLINUS +015 -- CM p. 391: back to CHKLINUS's caller, at the return saved
+ * in MPAC +2. */
 void chklinus_after_linus(void)
 {
     tc_at(CHKLINUS + 015u);
@@ -787,14 +790,14 @@ void relinus(void)
     continue_at(UPFLAG); /* ADRES PDSPFLAG */
 }
 
-/* RELINUS +6 */
+/* RELINUS +6 -- CM p. 391. */
 void relinus_after_upflag(void)
 {
     tc_at(RELINUS + 6u);
     continue_at(UPFLAG); /* ADRES TARG1FLG */
 }
 
-/* RELINUS +010 -- (A is +0, so the TS never skips.) */
+/* RELINUS +010 -- CM p. 391: (A is +0, so the TS never skips.) */
 void relinus_after_targ1flg(void)
 {
     set_A(ZERO);                                /* "RESET TO ZERO, SINCE */
@@ -803,7 +806,7 @@ void relinus_after_targ1flg(void)
     continue_at(PRIOCHNG); /* "RESTORE ORIGINAL PRIORITY" */
 }
 
-/* RELINUS +014 */
+/* RELINUS +014 -- CM p. 392. */
 void relinus_after_priochng(void)
 {
     tc_at(RELINUS + 014u);
@@ -817,7 +820,7 @@ static void goredo20(void)
     continue_at(PHASCHNG); /* OCT 111 */
 }
 
-/* GOREDO20 +2 */
+/* GOREDO20 +2 -- CM p. 392. */
 void goredo20_after_phaschng(void)
 {
     tc_at(GOREDO20 + 2u);

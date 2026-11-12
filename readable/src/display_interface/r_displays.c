@@ -140,16 +140,18 @@ void bothjobs(void)
     savelocs();
 }
 
-/* GODSPRS1 +015, where NOVAC returns: TCF BOTHJOBS. */
+/* GODSPRS1 +015 -- LM p. 1361, CM p. 1472, where NOVAC returns: TCF
+ * BOTHJOBS. */
 void godsprs1_after_novac(void)
 {
     bothjobs();
 }
 
-/* BOTHJOBS +1: "SAVE NVWORD AND" the user's "MPAC +2", and the "CADR,
- * FLAGS AND EBANK" in the new job's MPAC +1 to +4, and its register set
- * offset in the user's MPAC +5 (for BLANKET). SAVELOCR, which comes back
- * to BOTHJOBS +014: RELINT, and BANKJUMP to the "CALL CADR +4". */
+/* BOTHJOBS +1 -- LM p. 1361, CM p. 1472: "SAVE NVWORD AND" the user's "MPAC
+ * +2", and the "CADR, FLAGS AND EBANK" in the new job's MPAC +1 to +4, and
+ * its register set offset in the user's MPAC +5 (for BLANKET). SAVELOCR,
+ * which comes back to BOTHJOBS +014: RELINT, and BANKJUMP to the "CALL CADR
+ * +4". */
 static void bothjobs_plus1(void)
 {
     word job = fetch(ADDRESS_OF(LOCCTR));
@@ -164,11 +166,11 @@ static void bothjobs_plus1(void)
     savelocr();
 }
 
-/* SAVELOCS +7, where MAKECADR returns: the CADR to PLAYTEM3, plus the
- * immediate return's offset (RUPTREG3, "NOT USED FOR NON R ROUTINES"),
- * and TC L back to the caller of SAVELOCS: GOFLASH2 +2 (RELINT, MAKEPLAY),
- * BOTHJOBS +1, or BOTHJOBS +014 (RELINT, BANKJUMP). (An overflow in A
- * skips the AD.) */
+/* SAVELOCS +7 -- LM p. 1362, CM p. 1473, where MAKECADR returns: the CADR to
+ * PLAYTEM3, plus the immediate return's offset (RUPTREG3, "NOT USED FOR NON
+ * R ROUTINES"), and TC L back to the caller of SAVELOCS: GOFLASH2 +2
+ * (RELINT, MAKEPLAY), BOTHJOBS +1, or BOTHJOBS +014 (RELINT, BANKJUMP). (An
+ * overflow in A skips the AD.) */
 void savelocs_after_makecadr(void)
 {
     if (!ts(ADDRESS_OF(PLAYTEM3))) ad_at(ADDRESS_OF(RUPTREG3));

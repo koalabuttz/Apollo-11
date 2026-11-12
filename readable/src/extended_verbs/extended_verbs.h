@@ -179,8 +179,8 @@ void verb85(void);
 void verb85_after_testxact(void);
 #else
 void stablish(void);
-void stablish_plus12(void); /* the listing's +3 */
-void stablish_plus13(void); /* the listing's +8 */
+void stablish_plus014(void); /* the listing's +3 */
+void stablish_plus015(void); /* the listing's +8 */
 void gotor21(void);
 void gotor21_after_downflag(void);
 void gotor23(void);
@@ -221,7 +221,7 @@ void nokill(void);
 void nokill_after_terminate(void); /* NOKILL +5, +6 and +7: GOXDSPF's returns */
 void nokill_after_proceed(void);
 void nokill_after_enter(void);
-void nokill_plus8(void); /* where NOKILL +5's TC +3 goes */
+void nokill_plus010(void); /* where NOKILL +5's TC +3 goes */
 void endsums(void);
 
 /* ---- Part 3: alignment and radar designate (align.c) ---- */
@@ -282,7 +282,7 @@ void lrp2alm_after_alarm(void);
 void rrdesnbk(void);
 void rrdesnbk_after_rdruseck(void);
 void rrdesnbk_after_testxact(void);
-void rrdesnbk_plus10(void); /* where proceed asks again */
+void rrdesnbk_plus012(void); /* where proceed asks again */
 void rrdesnbk_after_terminate(void);
 void rrdesnbk_after_proceed(void);
 void rrdesnbk_after_enter(void);
@@ -294,7 +294,7 @@ void rrdesk2_after_rrdesnb(void);
 void rrdesk2_plus3(void); /* where DESRETRN's INCR returns */
 void rrdesk2_after_radstall_bad(void);
 void rrdesk2_after_radstall_good(void);
-void rrdesk2_plus14(void);
+void rrdesk2_plus016(void);
 void rrdesk2_after_alarm(void);
 void rrdesend(void);
 void rrdesend_after_clradmod(void);
@@ -308,7 +308,7 @@ void aurlokon_after_proceed(void);
 void aurlokon_after_recycle(void);
 void aurlokon_immediate_return(void); /* and its immediate one */
 void aurlokon_after_blanket(void);
-void aurlokon_plus15(void); /* the listing's +5 */
+void aurlokon_plus017(void); /* the listing's +5 */
 void aurlokon_after_upflag(void);
 void nolokon(void);
 void nolokon_after_downflag(void);
@@ -319,7 +319,7 @@ void checkrr(void);
 void checkrr_plus1(void); /* where RDRUSECK's last CCS skips to */
 void ckrndbit(void);
 void checkp22(void);
-void imuattck_plus13(void);
+void imuattck_plus015(void);
 void imuattck_after_exdspret(void);
 void imuattck_after_waitlist(void);
 #else
@@ -330,14 +330,14 @@ void optcoark(void);
 void optcoark_after_ckmodcad(void);
 void optcoark_after_testxact(void);
 void optcoark_after_falton(void);
-void optcoark_plus11(void);
+void optcoark_plus013(void);
 void optcoark_after_alarm(void);
 void optc1(void);
 void optc1_after_terminate(void);
 void optc1_after_proceed(void);
 void optc1_after_enter(void);
 void optc1_after_exdspret(void);
-void optc1_plus15(void);
+void optc1_plus017(void);
 void imuattck_after_cklftbts_yes(void);
 void imuattck_after_needle11(void);
 void imuattck_after_needler2(void);
@@ -365,7 +365,7 @@ void r04a_after_proceed(void);
 void r04a_after_recycle(void);
 void r04a_immediate_return(void); /* and its immediate one */
 void r04a_after_blanket(void);
-void r04a_plus11(void);
+void r04a_plus013(void);
 void r04x_minus1(void);
 void r04x(void);
 void r04b(void);

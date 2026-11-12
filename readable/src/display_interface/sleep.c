@@ -44,8 +44,8 @@ void xchsleep(void)
     continue_at(JOBWAKE);
 }
 
-/* GOSLEEPS +5, where UPENT2 returns: the kind less one (a MARK 0, a NORMAL
- * 1) to FACEREG, and XCHSLEEP. */
+/* GOSLEEPS +5 -- LM p. 1363, CM p. 1474, where UPENT2 returns: the kind less
+ * one (a MARK 0, a NORMAL 1) to FACEREG, and XCHSLEEP. */
 void gosleeps_after_upent2(void)
 {
     if (display_kind() == 0u) not_modelled(); /* a PRIO display does not sleep */
@@ -55,16 +55,16 @@ void gosleeps_after_upent2(void)
     xchsleep();
 }
 
-/* XCHSLEEP +5: "REPLACE SAME CADR BUT NEW JOB AREA": this job sleeps under
- * the CADR (JOBSLEEP). */
+/* XCHSLEEP +5 -- LM p. 1363, CM p. 1474: "REPLACE SAME CADR BUT NEW JOB
+ * AREA": this job sleeps under the CADR (JOBSLEEP). */
 void xchsleep_after_xchtoend(void)
 {
     ca(indexed(ADDRESS_OF(WAKECADR), sleeper()));
     continue_at(JOBSLEEP);
 }
 
-/* XCHSLEEP +4, where JOBWAKE returns: XCHTOEND "CAUSES AWAKENED JOB TO GO
- * TO ENDOFJOB", and XCHSLEEP +5. */
+/* XCHSLEEP +4 -- LM p. 1363, CM p. 1474, where JOBWAKE returns: XCHTOEND
+ * "CAUSES AWAKENED JOB TO GO TO ENDOFJOB", and XCHSLEEP +5. */
 void xchsleep_after_jobwake(void)
 {
     sleeper();
@@ -86,8 +86,9 @@ void jobxchs(void)
     continue_at(JOBWAKE);
 }
 
-/* JOBXCHS +010, where XCHNYLOC returns: the kind's idle and sleep bits
- * (MARKOCT's word, masked by IDLESLEP) down in FLAGWRD4. */
+/* JOBXCHS +010 -- LM p. 1363, CM p. 1474, where XCHNYLOC returns: the kind's
+ * idle and sleep bits (MARKOCT's word, masked by IDLESLEP) down in
+ * FLAGWRD4. */
 void jobxchs_after_xchnyloc(void)
 {
     ca(indexed(ADDRESS_OF(MARKOCT), sleeper()));
@@ -96,9 +97,10 @@ void jobxchs_after_xchnyloc(void)
     continue_at(DOWNENT2);
 }
 
-/* JOBXCHS +3, where JOBWAKE returns: FACEREG to the woken job's FACEREG
- * (its register set at LOCCTR, -1 if none was found), and XCHNYLOC with
- * XCHSLEEP's address (XCHQADD): the woken job goes on at XCHSLEEP. */
+/* JOBXCHS +3 -- LM p. 1363, CM p. 1474, where JOBWAKE returns: FACEREG to
+ * the woken job's FACEREG (its register set at LOCCTR, -1 if none was
+ * found), and XCHNYLOC with XCHSLEEP's address (XCHQADD): the woken job goes
+ * on at XCHSLEEP. */
 void jobxchs_after_jobwake(void)
 {
     word job = fetch(ADDRESS_OF(LOCCTR));
@@ -113,9 +115,9 @@ void jobxchs_after_jobwake(void)
     jobxchs_after_xchnyloc();
 }
 
-/* IDLEMASK +1, where DOWNENT2 returns: "BIT SHOWS PRIO INTERRUPTED NORM OR
- * MARK", "BIT5 FOR MARK, BIT4 FOR NORMAL" (the word after BIT5), and bit
- * 3 too, up in FLAGWRD4. "FLAG ROUTINE DOES RELINT". */
+/* IDLEMASK +1 -- LM p. 1364, CM p. 1474, where DOWNENT2 returns: "BIT SHOWS
+ * PRIO INTERRUPTED NORM OR MARK", "BIT5 FOR MARK, BIT4 FOR NORMAL" (the word
+ * after BIT5), and bit 3 too, up in FLAGWRD4. "FLAG ROUTINE DOES RELINT". */
 void idlemask_after_downent2(void)
 {
     ca(indexed(ADDRESS_OF(BIT5), sleeper()));
@@ -124,8 +126,8 @@ void idlemask_after_downent2(void)
     continue_at(UPENT2);
 }
 
-/* XCHQADD +1, where UPENT2 returns: a mark over a NORMAL display
- * (FLAGWRD4 bit 3) goes on by MARKPLAY, else OKTOCOPY. */
+/* XCHQADD +1 -- LM p. 1364, CM p. 1475, where UPENT2 returns: a mark over a
+ * NORMAL display (FLAGWRD4 bit 3) goes on by MARKPLAY, else OKTOCOPY. */
 void xchqadd_after_upent2(void)
 {
     ca(ADDRESS_OF(FLAGWRD4));
@@ -165,7 +167,8 @@ void markwake(void)
     wakeplay();
 }
 
-/* MARKFMSK +1, where DOWNENT2 returns: wake the kind's job (WAKECADR). */
+/* MARKFMSK +1 -- LM p. 1364, CM p. 1475, where DOWNENT2 returns: wake the
+ * kind's job (WAKECADR). */
 void markfmsk_after_downent2(void)
 {
     word kind = fetch(ADDRESS_OF(TEMPOR2));
@@ -177,7 +180,8 @@ void markfmsk_after_downent2(void)
     continue_at(JOBWAKE);
 }
 
-/* MARKFMSK +5, where JOBWAKE returns: TCF ENDRET. */
+/* MARKFMSK +5 -- LM p. 1364, CM p. 1475, where JOBWAKE returns: TCF
+ * ENDRET. */
 void markfmsk_after_jobwake(void)
 {
     continue_at(ENDRET);
@@ -195,7 +199,8 @@ void initdsp(void)
     continue_at(SUPERSW);
 }
 
-/* INITDSP +4, where SUPERSW returns: the job's priority (PRIOCHNG). */
+/* INITDSP +4 -- LM p. 1364, CM p. 1475, where SUPERSW returns: the job's
+ * priority (PRIOCHNG). */
 void initdsp_after_supersw(void)
 {
     mask(PRIO37);
@@ -203,10 +208,10 @@ void initdsp_after_supersw(void)
     continue_at(PRIOCHNG);
 }
 
-/* INITDSP +6, where PRIOCHNG returns. "IF THE MOST RECENT NORMAL DISPLAY
- * REQUEST WAS NOT FINISHED, CONTROL IS SENT BACK TO THE LAST NORMAL
- * USER.": to TEMPFLSH (the NORMAL user's call CADR +1) less 3, the CAF
- * before the TC BANKCALL, which makes the request again. */
+/* INITDSP +6 -- LM p. 1364, CM p. 1475, where PRIOCHNG returns. "IF THE MOST
+ * RECENT NORMAL DISPLAY REQUEST WAS NOT FINISHED, CONTROL IS SENT BACK TO
+ * THE LAST NORMAL USER.": to TEMPFLSH (the NORMAL user's call CADR +1) less
+ * 3, the CAF before the TC BANKCALL, which makes the request again. */
 void initdsp_after_priochng(void)
 {
     set_A(negate(THREE));

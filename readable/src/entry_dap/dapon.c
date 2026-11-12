@@ -21,7 +21,8 @@
 
 /* ---- CM/DAPON -- pp. 1066-1067 ---- */
 
-/* CM/DAPON: E bank 6 (EBAOG), "RESET DAPBIT1.  T5 RESTART IDENTIFIER."
+/* CM/DAPON -- p. 1066: E bank 6 (EBAOG), "RESET DAPBIT1.  T5 RESTART
+ * IDENTIFIER."
  * (DOWNFLAG, ADRES DAPBIT1), */
 void cm_dapon(void)
 {
@@ -30,22 +31,22 @@ void cm_dapon(void)
     tc_to(CM_DAPON + 2u, DOWNFLAG); /* ADRES DAPBIT1 */
 }
 
-/* CM/DAPON +4: "RESET DAPBIT2", */
+/* CM/DAPON +4 -- p. 1066: "RESET DAPBIT2", */
 void cm_dapon_after_dapbit1(void)
 {
     tc_to(CM_DAPON + 4u, DOWNFLAG); /* ADRES DAPBIT2 */
 }
 
-/* CM/DAPON +6: "DISABLE RCS CALCULATION" (T5LOC to T5IDLOC, the 2CADR
- * T5IDLER1), */
+/* CM/DAPON +6 -- p. 1066: "DISABLE RCS CALCULATION" (T5LOC to T5IDLOC, the
+ * 2CADR T5IDLER1), */
 void cm_dapon_after_dapbit2(void)
 {
     dca(T5IDLER1); /* EXTEND; DCA */
     cm_dapon_t5loc();
 }
 
-/* CM/DAPON +010: "DISABLE RCS JET CALLS" (T6LOC too), and "JETS DEPARTED
- * ON SM. ZERO JET BITS." (FLUSHJET). */
+/* CM/DAPON +010 -- p. 1066: "DISABLE RCS JET CALLS" (T6LOC too), and "JETS
+ * DEPARTED ON SM. ZERO JET BITS." (FLUSHJET). */
 void cm_dapon_t5loc(void)
 {
     dxch(ADDRESS_OF(T5LOC));
@@ -54,8 +55,8 @@ void cm_dapon_t5loc(void)
     tc_to(CM_DAPON + 014u, FLUSHJET);
 }
 
-/* CM/DAPON +015: "SET CONFIG BITS =0 FOR ENTRY" (bits 13-15 of DAPDATR1;
- * a MASK leaves no overflow for the TS to skip on), */
+/* CM/DAPON +015 -- p. 1066: "SET CONFIG BITS =0 FOR ENTRY" (bits 13-15 of
+ * DAPDATR1; a MASK leaves no overflow for the TS to skip on), */
 void cm_dapon_after_flushjet(void)
 {
     set_A(negate(BITS13_14_15)); /* CS */
@@ -64,15 +65,15 @@ void cm_dapon_after_flushjet(void)
     cm_dapon_plus4_tc();
 }
 
-/* CM/DAPON +020: on at the word the listing labels +4 (TC +4). */
+/* CM/DAPON +020 -- p. 1066: on at the word the listing labels +4 (TC +4). */
 void cm_dapon_plus4_tc(void)
 {
     tc_at(CM_DAPON + 020u);
-    notyet_plus4();
+    notyet_plus3();
 }
 
-/* NOTYET: half a second's wait (BANKCALL, CADR DELAYJOB: "(DELAYJOB DOES
- * INHINT)"), */
+/* NOTYET -- p. 1066: half a second's wait (BANKCALL, CADR DELAYJOB:
+ * "(DELAYJOB DOES INHINT)"), */
 void notyet(void)
 {
     set_A(HALF_SEC);
@@ -84,13 +85,13 @@ void notyet_bankcall(void)
     tc_to(NOTYET + 1u, BANKCALL); /* CADR DELAYJOB */
 }
 
-/* NOTYET +3 (+4): GAMDIFSW ("GAMDIFSW = 94D BIT11, INITLY=0"): "IF ZERO,
- * WAIT UNTIL CM/POSE UPDATE." (EXTEND; BZF NOTYET). Set: "ACTIVATE
+/* NOTYET +3 -- p. 1066 (+4): GAMDIFSW ("GAMDIFSW = 94D BIT11, INITLY=0"):
+ * "IF ZERO, WAIT UNTIL CM/POSE UPDATE." (EXTEND; BZF NOTYET). Set: "ACTIVATE
  * CM/DAP" (RCSFLAGS -1: "USE BIT3 TO INITIALIZE NEEDLER ON NEXT PASS."),
- * P63FLAG -1 too, "SO WAKEP62 WILL NOT BE INITIATED UNTIL HEADSUP IS SET
- * IN P62."; JETAG and PAXERR1 +0 (CA 7): "KEEP NEEDLES ZERO UNTIL DAP
- * UPDATE". Then, with interrupts inhibited, ALFA/180 (EXTEND; DCA), */
-void notyet_plus4(void)
+ * P63FLAG -1 too, "SO WAKEP62 WILL NOT BE INITIATED UNTIL HEADSUP IS SET IN
+ * P62."; JETAG and PAXERR1 +0 (CA 7): "KEEP NEEDLES ZERO UNTIL DAP UPDATE".
+ * Then, with interrupts inhibited, ALFA/180 (EXTEND; DCA), */
+void notyet_plus3(void)
 {
     set_A(BIT11);
     mask_at(ADDRESS_OF(CM_FLAGS));
@@ -109,7 +110,8 @@ void notyet_plus4(void)
     notyet_alfacom();
 }
 
-/* NOTYET +020: to ALFACOM, "DO ATTITUDE HOLD UNTIL KEYBOARD ESTABLISHES
+/* NOTYET +020 -- p. 1067: to ALFACOM, "DO ATTITUDE HOLD UNTIL KEYBOARD
+ * ESTABLISHES
  * HEADSUP."; ROLL/180 to ROLLHOLD, "FOR ATTITUDE HOLD IN MODE +1.", and
  * half of it to ROLLC ("NOT INTERESTED IN LO WORD."); CMDAPARM set
  * ("CMDAPARM =93D BIT12  INITLY=0", "SET BIT TO 1."), NODOFLAG set (bit 1
@@ -134,9 +136,9 @@ void notyet_alfacom(void)
 
 /* ---- CM/DAPIC -- pp. 1068-1069 ---- */
 
-/* CM/DAPIC: E bank 6, interrupts inhibited; CM/DAP2C: the time since the
- * last PIPA reading, "DELTA TIME SINCE PIPUP" (TIME1 less PIPTIME +1, the
- * sum of POS1/2 and POS1/2 there to make the "OVFL GUARANTEED"), */
+/* CM/DAPIC -- p. 1068: E bank 6, interrupts inhibited; CM/DAP2C: the time
+ * since the last PIPA reading, "DELTA TIME SINCE PIPUP" (TIME1 less PIPTIME
+ * +1, the sum of POS1/2 and POS1/2 there to make the "OVFL GUARANTEED"), */
 void cm_dapic(void)
 {
     set_A(EBAOG);
@@ -150,11 +152,12 @@ void cm_dapic(void)
     cm_dap2c_jetem();
 }
 
-/* CM/DAP2C +5: into JETEM; then less 5, then less 10 at a time (CCS A,
- * AD -CDUT+1, TCF -2) until CCS finds it negative or -0, then one more
- * ("SEND NO ZERO TO WTLST"): READGYMB's first wait, kept in CM/GYMDT "FOR
- * RESTART". (TCF -2 would take a +0 round again for ever: the sums never
- * give one, a ones' complement sum being -0, so it is not modelled.) */
+/* CM/DAP2C +5 -- p. 1068: into JETEM; then less 5, then less 10 at a time
+ * (CCS A, AD -CDUT+1, TCF -2) until CCS finds it negative or -0, then one
+ * more ("SEND NO ZERO TO WTLST"): READGYMB's first wait, kept in CM/GYMDT
+ * "FOR RESTART". (TCF -2 would take a +0 round again for ever: the sums
+ * never give one, a ones' complement sum being -0, so it is not
+ * modelled.) */
 void cm_dap2c_jetem(void)
 {
     ads(ADDRESS_OF(JETEM));
@@ -180,8 +183,8 @@ void cm_dap2c_jetem(void)
     tc_to(CM_DAP2C + 016u, WAITLIST); /* 2CADR READGYMB */
 }
 
-/* CM/DAP2C +020: TC 2434's return, the 2CADR's second word (6, its
- * E bank). The faithful port runs it as CAF 6 (on the AGC the word 00006
+/* CM/DAP2C +020 -- p. 1068: TC 2434's return, the 2CADR's second word (6,
+ * its E bank). The faithful port runs it as CAF 6 (on the AGC the word 00006
  * is EXTEND); A gets 6, which the CS next replaces. */
 void cm_dap2c_2cadr(void)
 {
@@ -189,10 +192,11 @@ void cm_dap2c_2cadr(void)
     cm_dap2c_after_waitlist();
 }
 
-/* CM/DAP2C +021: CM/FLAGS' GAMDIFSW, GYMDIFSW, CM/DSTBY, DAPARM, .05GSW,
- * LATSW and ENTRYDSP cleared (CM/SWIC1, OCT 16017), then "SET CM/DSTBY,
- * LATSW" (CM/SWIC2, ten); and "DISABLE ENTRY DISPLAY, SINCE DES. GIMB.
- * CALC. (P62.3) GOES TO ENDEXIT." An overflow skips to CM/DAP2C +026. */
+/* CM/DAP2C +021 -- p. 1068: CM/FLAGS' GAMDIFSW, GYMDIFSW, CM/DSTBY, DAPARM,
+ * .05GSW, LATSW and ENTRYDSP cleared (CM/SWIC1, OCT 16017), then "SET
+ * CM/DSTBY, LATSW" (CM/SWIC2, ten); and "DISABLE ENTRY DISPLAY, SINCE DES.
+ * GIMB. CALC. (P62.3) GOES TO ENDEXIT." An overflow skips to CM/DAP2C
+ * +026. */
 void cm_dap2c_after_waitlist(void)
 {
     set_A(negate(CM_SWIC1)); /* CS */
@@ -204,14 +208,15 @@ void cm_dap2c_after_waitlist(void)
         continue_at(CM_DAP2C + 025u);
 }
 
-/* CM/DAP2C +025: +0 (CA 7) to BETA/180, */
+/* CM/DAP2C +025 -- p. 1068: +0 (CA 7) to BETA/180, */
 void cm_dap2c_beta(void)
 {
     ca(ZERO_ADDRESS);
     cm_dap2c_beta_ts();
 }
 
-/* CM/DAP2C +026: "NECESSARY:  NO OVFL CORRECTION" (an overflow skips to
+/* CM/DAP2C +026 -- p. 1068: "NECESSARY:  NO OVFL CORRECTION" (an overflow
+ * skips to
  * SW/NDX, A +1 or -1); 1 to SW/NDX, "INITIALIZE THE TM OF BODY RATES VIA"
  * "UPBUFF.", */
 void cm_dap2c_beta_ts(void)
@@ -221,14 +226,14 @@ void cm_dap2c_beta_ts(void)
     cm_dap2c_2phschng();
 }
 
-/* CM/DAP2C +031: restart groups (2PHSCHNG: OCT 40116, "SAVE TBASE6", OCT
- * 05024, OCT 13000; "DOES INHINT/RELINT"), */
+/* CM/DAP2C +031 -- p. 1068: restart groups (2PHSCHNG: OCT 40116, "SAVE
+ * TBASE6", OCT 05024, OCT 13000; "DOES INHINT/RELINT"), */
 void cm_dap2c_2phschng(void)
 {
     tc_to(CM_DAP2C + 031u, TWO_PHSCHNG);
 }
 
-/* CM/DAP2C +035: and on to P62.2 (POSTJUMP). */
+/* CM/DAP2C +035 -- p. 1068: and on to P62.2 (POSTJUMP). */
 void cm_dap2c_after_2phschng(void)
 {
     tc_to(CM_DAP2C + 035u, POSTJUMP); /* CADR P62.2 */

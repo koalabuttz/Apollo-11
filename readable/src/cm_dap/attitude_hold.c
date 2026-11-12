@@ -18,11 +18,11 @@ static void enddamp(void);
 
 /* ---- AHFNOROT -- p. 1025 ---- */
 
-/* AHFNOROT: with bit 14 of channel 31 clear, free mode: FREECONT. With the
- * rate filter not yet initialized (bit 14 of RCSFLAGS set), "RECYCLE TO
- * INITIALIZE FILTER": REINIT. With bit 13 of channel 31 clear, the hold
- * mode: HOLDFUNC. Otherwise AUTOCONT: "IF HOLDFLAG IS +, GO TO GRABANG.
- * OTHERWISE, GO TO ATTHOLD." */
+/* AHFNOROT -- p. 1025: with bit 14 of channel 31 clear, free mode: FREECONT.
+ * With the rate filter not yet initialized (bit 14 of RCSFLAGS set),
+ * "RECYCLE TO INITIALIZE FILTER": REINIT. With bit 13 of channel 31 clear,
+ * the hold mode: HOLDFUNC. Otherwise AUTOCONT: "IF HOLDFLAG IS +, GO TO
+ * GRABANG. OTHERWISE, GO TO ATTHOLD." */
 void ahfnorot(void)
 {
     read_channel(CHAN31);
@@ -50,10 +50,10 @@ void ahfnorot(void)
         continue_at(GRABANG);
 }
 
-/* FREECONT: HOLDFLAG 1, "RESET HOLDFLAG", "INHIBIT AUTOMATIC STEERING".
- * The RHC's minimum impulse bits, channel 32's MANROT bits (clear for a
- * command), that are new since CHANTEMP's (the last pass's, kept by the
- * LXCH) go to STICKCHK in A; it sets the axes' PMANNDX, YMANNDX and
+/* FREECONT -- p. 1025: HOLDFLAG 1, "RESET HOLDFLAG", "INHIBIT AUTOMATIC
+ * STEERING". The RHC's minimum impulse bits, channel 32's MANROT bits (clear
+ * for a command), that are new since CHANTEMP's (the last pass's, kept by
+ * the LXCH) go to STICKCHK in A; it sets the axes' PMANNDX, YMANNDX and
  * RMANNDX. */
 static void freecont(void)
 {
@@ -68,9 +68,9 @@ static void freecont(void)
     tc_to(FREECONT + 011u, STICKCHK);
 }
 
-/* FREECONT +012, after STICKCHK: each axis' firing time from MINTAU
- * ("+14MS MINIMUM IMPULSE", "-14MS TIME", or none), indexed by the axis'
- * index: TAU (roll), TAU1 (pitch), TAU2 (yaw), for T6PROGM. */
+/* FREECONT +012 -- p. 1025, after STICKCHK: each axis' firing time from
+ * MINTAU ("+14MS MINIMUM IMPULSE", "-14MS TIME", or none), indexed by the
+ * axis' index: TAU (roll), TAU1 (pitch), TAU2 (yaw), for T6PROGM. */
 void freecont_after_stickchk(void)
 {
     ca(maneuver_index_read(ADDRESS_OF(MINTAU), fetch(ADDRESS_OF(RMANNDX))));
@@ -84,7 +84,7 @@ void freecont_after_stickchk(void)
 
 /* ---- ATTHOLD, the attitude errors -- pp. 1027-1028 ---- */
 
-/* ATTHOLD: each CDU angle less the angle held (THETADX), into the
+/* ATTHOLD -- p. 1027: each CDU angle less the angle held (THETADX), into the
  * attitude errors ERRORX, ERRORY, ERRORZ through the gimbal-to-body
  * matrix (AMGB1, AMGB4, AMGB7 for the Y difference, AMGB5, AMGB8 for the
  * Z one; the X difference goes to ERRORX alone). The biases are added only
@@ -121,14 +121,14 @@ void atthold(void)
         continue_at(ATTHOLD + 041u);
 }
 
-/* ATTHOLD +041: CA BIAS, then the biases added. */
+/* ATTHOLD +041 -- p. 1028: CA BIAS, then the biases added. */
 void atthold_bias(void)
 {
     ca(ADDRESS_OF(BIAS));
     atthold_bias_errorx();
 }
 
-/* ATTHOLD +042: ADS ERRORX, and the other two axes' biases. */
+/* ATTHOLD +042 -- p. 1028: ADS ERRORX, and the other two axes' biases. */
 void atthold_bias_errorx(void)
 {
     ads(ADDRESS_OF(ERRORX));
@@ -141,7 +141,8 @@ void atthold_bias_errorx(void)
 
 /* ---- HOLDFUNC, GRABANG -- p. 1028 ---- */
 
-/* HOLDFUNC: HOLDFLAG +0, attitude hold: ATTHOLD. Otherwise GRABANG. */
+/* HOLDFUNC -- p. 1028: HOLDFLAG +0, attitude hold: ATTHOLD. Otherwise
+ * GRABANG. */
 void holdfunc(void)
 {
     if (ccs_at(ADDRESS_OF(HOLDFLAG)) == IS_PLUS_ZERO) {
@@ -151,9 +152,9 @@ void holdfunc(void)
     grabang();
 }
 
-/* GRABANG: "ZERO WBODYS AND BIASES". "IS RATE DAMPING COMPLETED" (the rate
- * damping flags, bits 13-11 of RCSFLAGS, clear): "IF SO, GO TO ENDDAMP".
- * "OTHERWISE, ZERO ERRORS", and the jets damp the rates alone. */
+/* GRABANG -- p. 1028: "ZERO WBODYS AND BIASES". "IS RATE DAMPING COMPLETED"
+ * (the rate damping flags, bits 13-11 of RCSFLAGS, clear): "IF SO, GO TO
+ * ENDDAMP". "OTHERWISE, ZERO ERRORS", and the jets damp the rates alone. */
 void grabang(void)
 {
     set_A(ZERO);
@@ -179,8 +180,8 @@ void grabang(void)
     jets();
 }
 
-/* ENDDAMP: "SET HOLDFLAG +0", and "PICK UP CDU ANGLES FOR ATTITUDE HOLD"
- * as THETADX, THETADY and THETADZ. */
+/* ENDDAMP -- p. 1028: "SET HOLDFLAG +0", and "PICK UP CDU ANGLES FOR
+ * ATTITUDE HOLD" as THETADX, THETADY and THETADZ. */
 static void enddamp(void)
 {
     ts(ADDRESS_OF(HOLDFLAG));

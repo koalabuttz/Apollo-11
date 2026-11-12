@@ -84,8 +84,8 @@ void goodend(void)
     report();
 }
 
-/* ENDMODE -4, where JOBWAKE returns: "ADVANCE LOC IF SUCCESSFUL." (the
- * woken job's LOC, by one for -1), and TASKOVER. */
+/* ENDMODE -4 -- LM p. 1328, CM p. 1439, where JOBWAKE returns: "ADVANCE LOC
+ * IF SUCCESSFUL." (the woken job's LOC, by one for -1), and TASKOVER. */
 void goodend_after_jobwake(void)
 {
     cs(ADDRESS_OF(RUPTREG3));
@@ -141,7 +141,8 @@ bool cagetstj(void)
     return true;
 }
 
-/* CAGETSTJ +4: "RETURN IMMEDIATELY TO SWRETURN." */
+/* CAGETSTJ +4 -- LM p. 1327, CM p. 1438: "RETURN IMMEDIATELY TO
+ * SWRETURN." */
 void cagetstj_failed(void)
 {
     set_A(negate(ZERO)); /* CS ZERO */
@@ -224,8 +225,9 @@ void imustall(void)
     stall();
 }
 
-/* MODESLP +1, where MAKECADR returns: the program's CADR to MODECADR, and
- * JOBSLEEP. (An overflow in A skips into MODABORT.) */
+/* MODESLP +1 -- LM p. 1330, CM p. 1441, where MAKECADR returns: the
+ * program's CADR to MODECADR, and JOBSLEEP. (An overflow in A skips into
+ * MODABORT.) */
 void modeslp_after_makecadr(void)
 {
     if (ts(indexed(ADDRESS_OF(MODECADR), RUPTREG2))) {

@@ -46,10 +46,10 @@ static const word r52_words[] = {
 
 const struct interpretive_code R52_CODE = {014u, R52, COUNT(r52_words), r52_words};
 
-/* R52 +2, after the EXIT: "PICK UP STARCODE DETERMINED BY R56" (the star
- * number times 6, BESTI or BESTJ by STARIND), a sixth of it, with "DETENT
- * POSITION 2" (BIT8) to STARCODE. (A is under a sixth plus BIT8: TS does
- * not skip.) */
+/* R52 +2 -- p. 955, after the EXIT: "PICK UP STARCODE DETERMINED BY R56"
+ * (the star number times 6, BESTI or BESTJ by STARIND), a sixth of it, with
+ * "DETENT POSITION 2" (BIT8) to STARCODE. (A is under a sixth plus BIT8: TS
+ * does not skip.) */
 void r52_starcode(void)
 {
     ca(indexed_ca(ADDRESS_OF(BESTI), fetch(ADDRESS_OF(STARIND)))); /* INDEX STARIND */
@@ -59,9 +59,9 @@ void r52_starcode(void)
     r52a();
 }
 
-/* R52A: "DISPLAY STARCODE AND WAIT FOR RESPONSE" (V01N70): terminate,
- * "PROCEED TO ORIENT LEM" (R52B), or enter: "SELECT NEW STARCODE --
- * RECYCLE". */
+/* R52A -- p. 955: "DISPLAY STARCODE AND WAIT FOR RESPONSE" (V01N70):
+ * terminate, "PROCEED TO ORIENT LEM" (R52B), or enter: "SELECT NEW STARCODE
+ * -- RECYCLE". */
 static void r52a(void)
 {
     set_A(V01N70);
@@ -83,17 +83,17 @@ void r52_enter(void)
     r52a(); /* TCF R52A */
 }
 
-/* R52B: 3AXISFLG cleared "TO ALLOW VECPOINT". */
+/* R52B -- p. 955: 3AXISFLG cleared "TO ALLOW VECPOINT". */
 static void r52b(void)
 {
     tc_to(R52B, DOWNFLAG); /* ADRES 3AXISFLG */
 }
 
-/* R52B +2: the detent code (STARCODE's bits 7-9) to L. Codes 0 ("COAS
- * CALIBRATION") and 7 ("COAS SIGHTING") ask for the azimuth and the
+/* R52B +2 -- p. 955: the detent code (STARCODE's bits 7-9) to L. Codes 0
+ * ("COAS CALIBRATION") and 7 ("COAS SIGHTING") ask for the azimuth and the
  * elevation (GETAZEL); any other is a detent of the AOT, whose azimuth
- * (AOTAZ, by the code, in E-bank 7) goes with an elevation of 45
- * degrees (BIT13) to AZEL. (The MP leaves A a word: TS L does not skip.) */
+ * (AOTAZ, by the code, in E-bank 7) goes with an elevation of 45 degrees
+ * (BIT13) to AZEL. (The MP leaves A a word: TS L does not skip.) */
 void r52b_detent(void)
 {
     ca(ADDRESS_OF(STARCODE));
@@ -120,7 +120,7 @@ void r52b_detent(void)
     azel();
 }
 
-/* GETAZEL: the azimuth and elevation keyed in (V06N87): terminate,
+/* GETAZEL -- p. 956: the azimuth and elevation keyed in (V06N87): terminate,
  * proceed ("CALC OPTIC AXIS") or enter (again). */
 static void getazel(void)
 {
@@ -144,9 +144,9 @@ void getazel_enter(void)
     getazel(); /* TCF GETAZEL */
 }
 
-/* AZEL: "JAM AZ AND EL IN 8 AND 9 OF VAC" for OANB, which takes the optic
- * axis to SCAXIS; the star's direction (PLANET, at the time now) in
- * stable member axes to POINTVSM, "FOR VECPOINT". */
+/* AZEL -- p. 956: "JAM AZ AND EL IN 8 AND 9 OF VAC" for OANB, which takes
+ * the optic axis to SCAXIS; the star's direction (PLANET, at the time now)
+ * in stable member axes to POINTVSM, "FOR VECPOINT". */
 static void azel(void)
 {
     dxch(indexed_dxch(8u, FIXLOC)); /* INDEX FIXLOC; DXCH 8D */
@@ -162,14 +162,14 @@ static const word azel_words[] = {
 
 const struct interpretive_code AZEL_CODE = {014u, AZEL + 3u, COUNT(azel_words), azel_words};
 
-/* R60LEM: "GO TORQUE LEM OPTIC AXIS TO STAR LOS". */
+/* AZEL +014 -- p. 956: R60LEM: "GO TORQUE LEM OPTIC AXIS TO STAR LOS". */
 void azel_r60lem(void)
 {
     tc_to(AZEL + 014u, BANKCALL); /* CADR R60LEM */
 }
 
-/* After it: with detent code 0 (COAS calibration), the star code again
- * (R52A); else back to the caller (SAVQR52). */
+/* AZEL +016 -- p. 956: After it: with detent code 0 (COAS calibration), the
+ * star code again (R52A); else back to the caller (SAVQR52). */
 void azel_after_r60lem(void)
 {
     set_A(HIGH9);
@@ -192,10 +192,10 @@ const struct interpretive_code R52_RETURN_CODE = {014u, AZEL + 023u, COUNT(r52_r
 
 /* ---- R59 -- pp. 957-960 ---- */
 
-/* R59: "IF REFSMMAT FLAG CLEAR BYPASS STAR ACQUIRE" (R59OUT); else "SELECT
- * STAR CODE FOR ACQUISITION" (V01N70*): terminate, proceed (R59A) or
- * recycle. (After the MASK, A is +0 or the bit: CCS takes its first two
- * ways only.) */
+/* R59 -- p. 957: "IF REFSMMAT FLAG CLEAR BYPASS STAR ACQUIRE" (R59OUT); else
+ * "SELECT STAR CODE FOR ACQUISITION" (V01N70*): terminate, proceed (R59A) or
+ * recycle. (After the MASK, A is +0 or the bit: CCS takes its first two ways
+ * only.) */
 void r59(void)
 {
     cs(ADDRESS_OF(FLAGWRD3));
@@ -223,11 +223,11 @@ void r59_recycle(void)
     r59(); /* TCF R59 */
 }
 
-/* R59A: "GRAB STARCODE FOR INDEX" (AOTCODE's bits 1-6), times 6 (REVCNT,
- * "JUST 6"), to BESTI (by STARIND) and X1, "CODE X 6 FOR CATLOG STAR
- * INDEX". "BYPASS ACQUISITION IF NOT CATLOG STAR" (0, or past 37: more
- * than 227); else the star's direction (CATLOG,1) in navigation base
- * axes (CDU*SMNB) to STAR. (A is L, a word: neither TS skips.) */
+/* R59A -- p. 957: "GRAB STARCODE FOR INDEX" (AOTCODE's bits 1-6), times 6
+ * (REVCNT, "JUST 6"), to BESTI (by STARIND) and X1, "CODE X 6 FOR CATLOG
+ * STAR INDEX". "BYPASS ACQUISITION IF NOT CATLOG STAR" (0, or past 37: more
+ * than 227); else the star's direction (CATLOG,1) in navigation base axes
+ * (CDU*SMNB) to STAR. (A is L, a word: neither TS skips.) */
 static void r59a(void)
 {
     set_A(negate(HIGH9)); /* CS HIGH9 */
@@ -262,8 +262,8 @@ static const word r59a_words[] = {
 
 const struct interpretive_code R59A_CODE = {015u, R59A + 020u, COUNT(r59a_words), r59a_words};
 
-/* "INITIALIZE AZ POSITION COD TO 1 (-60)" (POSCODE). (A is 1: TS does not
- * skip.) */
+/* R59A +027 -- p. 957: "INITIALIZE AZ POSITION COD TO 1 (-60)" (POSCODE). (A
+ * is 1: TS does not skip.) */
 void r59a_after_exit(void)
 {
     set_A(BIT1);
@@ -271,10 +271,10 @@ void r59a_after_exit(void)
     incaz();
 }
 
-/* INCAZ: "PICK UP AZ CORRESPONDING TO POSCODE" (AOTAZ, in E-bank 7), with
- * an elevation of 45 degrees, to the work area's 8D and 9D for OANB; the
- * azimuth to QMIN "FOR LATER". (The constants and the word leave A with
- * no overflow: no TS skips.) */
+/* INCAZ -- p. 957: "PICK UP AZ CORRESPONDING TO POSCODE" (AOTAZ, in E-bank
+ * 7), with an elevation of 45 degrees, to the work area's 8D and 9D for
+ * OANB; the azimuth to QMIN "FOR LATER". (The constants and the word leave A
+ * with no overflow: no TS skips.) */
 static void incaz(void)
 {
     set_A(EBANK7);
@@ -358,7 +358,7 @@ static const word incaz_words[] = {
 
 const struct interpretive_code INCAZ_CODE = {015u, INCAZ + 015u, COUNT(incaz_words), incaz_words};
 
-/* "GO DISPLAY CURSOR-SPIRAL-POS CODE". */
+/* R59D +015 -- p. 959: "GO DISPLAY CURSOR-SPIRAL-POS CODE". */
 void r59d_display(void)
 {
     seventy_nine_disp(); /* TCF 79DISP */
@@ -400,8 +400,8 @@ void nxax_plus1(void)
     incaz(); /* TCF INCAZ */
 }
 
-/* R59ALM: alarm 404, "THIS STAR CAN'T BE LOCATED IN AOT FIELD", shown
- * (VB05N09): terminate, "PROCEED, GO WITHOUT ACQUIRE" (R59OUT), or
+/* R59ALM -- p. 959: alarm 404, "THIS STAR CAN'T BE LOCATED IN AOT FIELD",
+ * shown (VB05N09): terminate, "PROCEED, GO WITHOUT ACQUIRE" (R59OUT), or
  * "RECYCLE AND TRY ANOTHER STAR" (R59). */
 static void r59alm(void)
 {
@@ -429,8 +429,9 @@ void r59alm_recycle(void)
     r59(); /* TCF R59 */
 }
 
-/* 79DISP: "DISPLAY CURSOR, SPIRAL AND POS CODE" (V06N79): terminate,
- * "PROCEED TO MARK ROUTINE" (R59E), or "RECYCLE TO TOP OF R59 AGAIN". */
+/* 79DISP -- p. 959: "DISPLAY CURSOR, SPIRAL AND POS CODE" (V06N79):
+ * terminate, "PROCEED TO MARK ROUTINE" (R59E), or "RECYCLE TO TOP OF R59
+ * AGAIN". */
 static void seventy_nine_disp(void)
 {
     set_A(V06N79);
@@ -452,9 +453,9 @@ void seventy_nine_disp_recycle(void)
     r59(); /* TCF R59 */
 }
 
-/* R59E: "GET DETENT CODE CORRESPONDING TO POSCODE", in bits 7-9 (MP BIT7
- * leaves it in L), with the star number (AOTCODE's bits 1-6) to AOTCODE.
- * (A is under 0777: TS does not skip.) */
+/* R59E -- p. 960: "GET DETENT CODE CORRESPONDING TO POSCODE", in bits 7-9
+ * (MP BIT7 leaves it in L), with the star number (AOTCODE's bits 1-6) to
+ * AOTCODE. (A is under 0777: TS does not skip.) */
 static void r59e(void)
 {
     set_A(SEVEN);
@@ -467,8 +468,8 @@ static void r59e(void)
     r59out();
 }
 
-/* R59OUT: "GO TO AOTMARK FOR SIGHTING"; AOTSTALL waits ("SLEEP TILL
- * SIGHTING DONE"), CURTAINS on its "BADEND RETURN". Then R59RET, in P57
+/* R59OUT -- p. 960: "GO TO AOTMARK FOR SIGHTING"; AOTSTALL waits ("SLEEP
+ * TILL SIGHTING DONE"), CURTAINS on its "BADEND RETURN". Then R59RET, in P57
  * (part 9), back to the one star or two star sighting. */
 static void r59out(void)
 {

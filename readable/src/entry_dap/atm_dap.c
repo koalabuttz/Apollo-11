@@ -28,7 +28,8 @@ static void yaw_error(void)
     two_d_sdz();
 }
 
-/* ATTRATES +066: "SAVE -1 FOR USE IN CM/RCS" (CMDAPMOD), and -1 to AK1
+/* ATTRATES +066 -- p. 1074: "SAVE -1 FOR USE IN CM/RCS" (CMDAPMOD), and -1
+ * to AK1
  * and AK2, "TO ZERO PITCH AND YAW FDAI NEEDLES" "IN ATM.  (MODE =-1)".
  * (An overflow at TS CMDAPMOD, from a caller's A, skips the TS AK1.) */
 void atm_cmdapmod(void)
@@ -41,16 +42,16 @@ void atm_cmdapmod(void)
     atm_ak1();
 }
 
-/* ATTRATES +067: AK1 and AK2 (an overflow skips the TS AK2); then the yaw
- * error. */
+/* ATTRATES +067 -- p. 1074: AK1 and AK2 (an overflow skips the TS AK2); then
+ * the yaw error. */
 void atm_ak1(void)
 {
     if (!ts(ADDRESS_OF(AK1))) ts(ADDRESS_OF(AK2));
     yaw_error();
 }
 
-/* ATTRATES +076: the tag's yaw jet code, "RCS JET BITS", into JETEM; then
- * the pitch rate's tag (2D/SDZ, back at EXDAPIN). */
+/* ATTRATES +076 -- p. 1074: the tag's yaw jet code, "RCS JET BITS", into
+ * JETEM; then the pitch rate's tag (2D/SDZ, back at EXDAPIN). */
 void atm_yjetcode(void)
 {
     jet_code(YJETCODE); /* INDEX A; CAF YJETCODE */
@@ -60,9 +61,9 @@ void atm_yjetcode(void)
     two_d_sdz();
 }
 
-/* EXDAPIN: "COME HERE FROM EX ATM DAP": the tag's pitch jet code added,
- * "COMBINE ALL NEW BITS.", and out on channel 5: "DOES NOT REQUIRE SAVING
- * OLD CODES.", "SET PYCHAN TO DESIRED BIT CONFIG." Then CCS JETAG:
+/* EXDAPIN -- p. 1074: "COME HERE FROM EX ATM DAP": the tag's pitch jet code
+ * added, "COMBINE ALL NEW BITS.", and out on channel 5: "DOES NOT REQUIRE
+ * SAVING OLD CODES.", "SET PYCHAN TO DESIRED BIT CONFIG." Then CCS JETAG:
  * positive, CM/RCS; +0, CM/FDAI; negative, CM/FDAIR -1; -0, on into 3DDZ
  * with +0. */
 void exdapin(void)
@@ -78,13 +79,13 @@ void exdapin(void)
     }
 }
 
-/* EXDAPIN +7: the needles (CM/FDAI). */
+/* EXDAPIN +7 -- p. 1075: the needles (CM/FDAI). */
 void exdapin_fdai(void)
 {
     tc_to(EXDAPIN + 7u, CM_FDAI);
 }
 
-/* EXDAPIN +010: the needles, from the word before CM/FDAIR. */
+/* EXDAPIN +010 -- p. 1075: the needles, from the word before CM/FDAIR. */
 void exdapin_fdair(void)
 {
     tc_to(EXDAPIN + 010u, CM_FDAIR - 1u);

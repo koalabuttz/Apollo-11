@@ -279,8 +279,8 @@ static const word accomp_words[] = {
 const struct interpretive_code ACCOMP_CODE = {CODE_BANK(I_ACCOMP), CODE_Z(I_ACCOMP),
                                               COUNT(accomp_words), accomp_words};
 
-/* After INT-ABRT's EXIT: POODOO, which reads the alarm code (OCT 00430)
- * in the word after the TC. */
+/* INT-ABRT +1 -- LM p. 1233, CM p. 1340: After INT-ABRT's EXIT: POODOO,
+ * which reads the alarm code (OCT 00430) in the word after the TC. */
 void int_abrt_after_exit(void)
 {
     tc_at((word)(INT_ABRT + 1u)); /* TC POODOO */

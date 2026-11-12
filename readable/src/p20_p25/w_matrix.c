@@ -108,7 +108,8 @@ void wlinit_zero_w(void)
     continue_at(WLINIT + 012u);
 }
 
-/* WLINIT +012: "RESTORE EBANK 7" (AIGBANK), and the interpreter. */
+/* WLINIT +012 -- p. 584: "RESTORE EBANK 7" (AIGBANK), and the
+ * interpreter. */
 void wlinit_restore_ebank(void)
 {
     set_A(AIGBANK);

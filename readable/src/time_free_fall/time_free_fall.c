@@ -334,8 +334,8 @@ void t_x(void)
     continue_at(POLY);
 }
 
-/* ENDT(X), and TCDANZIG the same word: TC DANZIG, which finds the RTB's
- * right-hand order in EDOP. */
+/* ENDT(X) -- LM p. 1282, CM p. 1387, and TCDANZIG the same word: TC DANZIG,
+ * which finds the RTB's right-hand order in EDOP. */
 void endt_x(void)
 {
     tc_at(ENDT_X);

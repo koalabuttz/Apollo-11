@@ -45,14 +45,14 @@
 
 /* ---- P76 -- LM p. 709, CM p. 511 ---- */
 
-/* P76: TRACKFLG set (UPFLAG), */
+/* P76 -- LM p. 709, CM p. 511: TRACKFLG set (UPFLAG), */
 void p76(void)
 {
     tc_to(P76, UPFLAG); /* ADRES TRACKFLG */
 }
 
 #if LUMINARY099
-/* and to the interpreter, for P76_CODE: */
+/* P76 +2 -- LM p. 709: and to the interpreter, for P76_CODE: */
 void p76_intpret(void)
 {
     tc_to(P76 + 2u, INTPRET);
@@ -237,9 +237,10 @@ static const word out_words[] = {
     ORDER(EXIT),
 };
 
-/* ENDP76: "CLEAR RR TRACKING MARK COUNTER" (MARKCTR) and, for the CM,
- * VHFCNT, and "INVALIDATE MARK BUFFER" (MRKBUF2 -1); then GOTOPOOH. Each
- * TS would skip the next word on an overflow, which a CAF never leaves. */
+/* ENDP76 -- LM p. 711, CM p. 513: "CLEAR RR TRACKING MARK COUNTER" (MARKCTR)
+ * and, for the CM, VHFCNT, and "INVALIDATE MARK BUFFER" (MRKBUF2 -1); then
+ * GOTOPOOH. Each TS would skip the next word on an overflow, which a CAF
+ * never leaves. */
 void endp76(void)
 {
     set_A(ZERO);

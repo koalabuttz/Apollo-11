@@ -22,10 +22,10 @@ static void tc_q(void)
 
 /* ---- The subroutines -- LM p. 1422 ---- */
 
-/* 1STOTWOS, by TC at at: a CDU difference (one's complement, from MSU)
- * made two's complement, as the CDUs count: a positive one back as it was
- * (CCS A diminished it; AD ONE), a negative one one nearer zero (CS A of
- * the diminished magnitude). */
+/* 1STOTWOS -- LM p. 1422, by TC at at: a CDU difference (one's complement,
+ * from MSU) made two's complement, as the CDUs count: a positive one back as
+ * it was (CCS A diminished it; AD ONE), a negative one one nearer zero (CS A
+ * of the diminished magnitude). */
 static void one_stotwos(word at)
 {
     tc_at(at);
@@ -38,7 +38,7 @@ static void one_stotwos(word at)
     tc_q();
 }
 
-/* DIVIDER: OMEGAU (the double word) over DAPTREG4. */
+/* DIVIDER -- LM p. 1422: OMEGAU (the double word) over DAPTREG4. */
 static void divider(void)
 {
     dxch(ADDRESS_OF(OMEGAU));
@@ -46,11 +46,11 @@ static void divider(void)
     tc_q();
 }
 
-/* SUBDIVDE (or its +3, past the first term), by TC at at: the "OVERFLOW
- * PROTECTION ROUTINE TO GIVE" "POSMAX OR NEGMAX IF THE DIVIDE WOULD"
- * "OVERFLOW": OMEGAU plus A times DAPTEMP3, kept in DAPTEMP5 too, over
- * DAPTREG4 (1/40: the CDU change in 100 ms, a rate), when its high word is
- * small enough (zero, or less than OCT 630 in magnitude); else POSMAX
+/* SUBDIVDE -- LM p. 1422 (or its +3, past the first term), by TC at at: the
+ * "OVERFLOW PROTECTION ROUTINE TO GIVE" "POSMAX OR NEGMAX IF THE DIVIDE
+ * WOULD" "OVERFLOW": OMEGAU plus A times DAPTEMP3, kept in DAPTEMP5 too,
+ * over DAPTREG4 (1/40: the CDU change in 100 ms, a rate), when its high word
+ * is small enough (zero, or less than OCT 630 in magnitude); else POSMAX
  * ("45 DEG/SEC") with its sign. */
 static void subdivde(word at, bool plus3)
 {
@@ -82,9 +82,10 @@ static void subdivde(word at, bool plus3)
     tc_q();
 }
 
-/* OVERSUB, by TC at at: "RETURNS A UNCHANGED OR LIMITED TO" "POSMAX OR
- * NEGMAX IF A HAS OVERFLOW" (TS 7 skips TC Q on an overflow, A then +1 or
- * -1 to INDEX the CS BIT15 -1 by: BIT15 or POSMAX, complemented). */
+/* OVERSUB -- LM p. 1422, by TC at at: "RETURNS A UNCHANGED OR LIMITED TO"
+ * "POSMAX OR NEGMAX IF A HAS OVERFLOW" (TS 7 skips TC Q on an overflow, A
+ * then +1 or -1 to INDEX the CS BIT15 -1 by: BIT15 or POSMAX,
+ * complemented). */
 static void oversub(word at)
 {
     tc_at(at);
@@ -94,7 +95,8 @@ static void oversub(word at)
 
 /* ---- PAXIS -- LM pp. 1421-1422 ---- */
 
-/* PAXIS: "INTERRUPT LEAD IN (CONTINUED)" (T5 again in 100 ms, L and Q to
+/* PAXIS -- LM p. 1421: "INTERRUPT LEAD IN (CONTINUED)" (T5 again in 100 ms,
+ * L and Q to
  * BANKRUPT and QRUPT). "IF DAPZRUPT POSITIVE, DAP (JASK) IS" "STILL IN
  * PROGRESS AND A RESTART IS" "CALLED FOR.  IT IS NEVER ZERO": BAILOUT. Else
  * TC CHEKBITS, whose "RETURN IS TC I+1 IF DAP SHOULD STAY ON." (A -0
@@ -118,12 +120,13 @@ void paxis_plus10(void)
     tc_to(PAXIS + 010u, CHEKBITS);
 }
 
-/* PAXIS +11, where CHEKBITS returns: the CDUs to DAPTREG4, 5 and 6 ("READ
- * AND STORE CDU'S"); the KALCMANU-DAP and rate-hold DAP interface: the
- * desired CDU angles moved on by DELCDUX, Y and Z ("EVERY 100 MS"); the
- * manual direct rate times TCP and TCQR counted down. Then PAXFILT: "EXECUTE ACDT+C12, IF
- * NEEDED." (the trim gimbal's, CALLGMBL of RCSFLAGS: "CALLGMBL IS NOT
- * BIT15, SO THIS TEST IS" "VALID."), which returns to PAXFILT +4. */
+/* PAXIS +11 -- LM p. 1421, where CHEKBITS returns: the CDUs to DAPTREG4, 5
+ * and 6 ("READ AND STORE CDU'S"); the KALCMANU-DAP and rate-hold DAP
+ * interface: the desired CDU angles moved on by DELCDUX, Y and Z ("EVERY 100
+ * MS"); the manual direct rate times TCP and TCQR counted down. Then
+ * PAXFILT: "EXECUTE ACDT+C12, IF NEEDED." (the trim gimbal's, CALLGMBL of
+ * RCSFLAGS: "CALLGMBL IS NOT BIT15, SO THIS TEST IS" "VALID."), which
+ * returns to PAXFILT +4. */
 void paxis_after_chekbits(void)
 {
     ca(ADDRESS_OF(CDUX));
@@ -157,11 +160,11 @@ void paxis_after_chekbits(void)
     paxfilt_after_acdt_c12();
 }
 
-/* PAXFILT +4: "SETTING UP THE SUPERJOB": the interrupted program's A, L,
- * B, Q and Z kept in DAPARUPT .. DAPZRUPT (DAPZRUPT positive: the DAP's
- * job in progress), and the interrupt's B and Z made SUPERJOB's word and
- * its address +1; then NOQBRSM +1: "RELINT (JUST IN CASE) AND RESUME, IN
- * THE" "FORM OF A JASK, AT SUPERJOB." */
+/* PAXFILT +4 -- LM p. 1428: "SETTING UP THE SUPERJOB": the interrupted
+ * program's A, L, B, Q and Z kept in DAPARUPT .. DAPZRUPT (DAPZRUPT
+ * positive: the DAP's job in progress), and the interrupt's B and Z made
+ * SUPERJOB's word and its address +1; then NOQBRSM +1: "RELINT (JUST IN
+ * CASE) AND RESUME, IN THE" "FORM OF A JASK, AT SUPERJOB." */
 void paxfilt_after_acdt_c12(void)
 {
     dxch(ADDRESS_OF(ARUPT));
@@ -176,7 +179,8 @@ void paxfilt_after_acdt_c12(void)
     continue_at(NOQBRSM + 1u);
 }
 
-/* SUPERJOB: TCF RATELOOP (in TJET_LAW), which returns to BACKP. */
+/* SUPERJOB -- LM p. 1428: TCF RATELOOP (in TJET_LAW), which returns to
+ * BACKP. */
 void superjob(void)
 {
     continue_at(RATELOOP);
@@ -203,13 +207,13 @@ static void traped_and_error(unsigned omega, unsigned traped, word at, unsigned 
     das(error);
 }
 
-/* BACKP: "BEGINNING OF THE RATE DERIVATION", where RATELOOP returns with
- * the jets' effect: JETRATE (1JACC times the P jets' time, DAPTEMP1), and
- * each TRAPED less the change of rate the jets and the offset
- * acceleration (AOSQTERM, AOSRTERM) gave. The CDUs' changes since last
- * time (MSU: "SCALED AT PI"), through the gimbal-to-body matrix M11 .. M32,
- * over 1/40 (SUBDIVDE: "RETURNS WITH CDU-RATE AT PI/4"); each axis'
- * TRAPED and manual error from it. "TRAPEDS HAVE ALL BEEN COMPUTED". */
+/* BACKP -- LM p. 1423: "BEGINNING OF THE RATE DERIVATION", where RATELOOP
+ * returns with the jets' effect: JETRATE (1JACC times the P jets' time,
+ * DAPTEMP1), and each TRAPED less the change of rate the jets and the offset
+ * acceleration (AOSQTERM, AOSRTERM) gave. The CDUs' changes since last time
+ * (MSU: "SCALED AT PI"), through the gimbal-to-body matrix M11 .. M32, over
+ * 1/40 (SUBDIVDE: "RETURNS WITH CDU-RATE AT PI/4"); each axis' TRAPED and
+ * manual error from it. "TRAPEDS HAVE ALL BEEN COMPUTED". */
 void backp(void)
 {
     ca(ADDRESS_OF(DAPTEMP1));
@@ -329,11 +333,11 @@ static void qr_trap(unsigned traped, unsigned traps, unsigned temp, unsigned ome
     ads(aos);
 }
 
-/* BACKP +133: "PICK UP PAD LOADED STATE ESTIMATOR GAINS" (DKOMEGAN and
- * DKTRAP docked, LMOMEGAN and LMTRAP not: the counts' restart in DAPTREG4,
- * DAPTREG5, the trap size in DAPTREG6); the P axis' trap filter
- * (SMALPDIF: one more accumulation), then P-RATE: the P rate estimate
- * moved by the jets' JETRATE; and the Q axis' trap filter. */
+/* BACKP +133 -- LM p. 1425: "PICK UP PAD LOADED STATE ESTIMATOR GAINS"
+ * (DKOMEGAN and DKTRAP docked, LMOMEGAN and LMTRAP not: the counts' restart
+ * in DAPTREG4, DAPTREG5, the trap size in DAPTREG6); the P axis' trap filter
+ * (SMALPDIF: one more accumulation), then P-RATE: the P rate estimate moved
+ * by the jets' JETRATE; and the Q axis' trap filter. */
 void estimator_gains_after_trapeds(void)
 {
     ca(ADDRESS_OF(DAPBOOLS));
@@ -360,8 +364,8 @@ void estimator_gains_after_trapeds(void)
     continue_at(Q_RATE);
 }
 
-/* Q-RATE: the Q rate estimate moved by the jets' JETRATEQ and the offset
- * acceleration's AOSQTERM; the R axis' trap filter. */
+/* Q-RATE -- LM p. 1426: the Q rate estimate moved by the jets' JETRATEQ and
+ * the offset acceleration's AOSQTERM; the R axis' trap filter. */
 void q_rate(void)
 {
     incr(ADDRESS_OF(NQTRAPS));
@@ -375,12 +379,12 @@ void q_rate(void)
     continue_at(R_RATE);
 }
 
-/* R-RATE: the R rate estimate likewise. "END OF RATE DERIVATION"; then
- * the offset estimator: not drifting (DRIFTBIT of DAPBOOLS clear), "ZERO
- * THE OFFSET ACCELERATION VALUES."; drifting, WORKTIME: AOSQ and AOSR moved
- * on by the trim gimbal's acceleration change (QACCDOT, RACCDOT) times
- * CALLCODE ("OCTAL 00032 IS DECIMAL .1 AT 2(6)."), and their 200MS terms
- * for the next pass. Then PRETIMCK. */
+/* R-RATE -- LM p. 1427: the R rate estimate likewise. "END OF RATE
+ * DERIVATION"; then the offset estimator: not drifting (DRIFTBIT of DAPBOOLS
+ * clear), "ZERO THE OFFSET ACCELERATION VALUES."; drifting, WORKTIME: AOSQ
+ * and AOSR moved on by the trim gimbal's acceleration change (QACCDOT,
+ * RACCDOT) times CALLCODE ("OCTAL 00032 IS DECIMAL .1 AT 2(6)."), and their
+ * 200MS terms for the next pass. Then PRETIMCK. */
 void r_rate(void)
 {
     incr(ADDRESS_OF(NRTRAPS));
@@ -422,8 +426,9 @@ void r_rate(void)
 
 static void qraxis(void);
 
-/* TURNOFFQ, TURNOFFR: "HALT DRIVES." (the axis' NEGU and ACCDOT +0, its
- * drive bits of channel 12 cleared, and its timer NEGMAX: inactive). */
+/* TURNOFFQ -- LM p. 1428, TURNOFFR: "HALT DRIVES." (the axis' NEGU and
+ * ACCDOT +0, its drive bits of channel 12 cleared, and its timer NEGMAX:
+ * inactive). */
 static void turnoff(unsigned negu, unsigned accdot, word bits, unsigned timer)
 {
     ts(negu);
@@ -434,9 +439,9 @@ static void turnoff(unsigned negu, unsigned accdot, word bits, unsigned timer)
     ts(timer);
 }
 
-/* CHKRTIMR: the R timer as PRETIMCK the Q, then the first DIM of CHKRTIMR
- * +3. A -0 timer enters that DIM's word without its EXTEND: ADS PJETCTR,
- * of A +0. */
+/* CHKRTIMR -- LM p. 1428: the R timer as PRETIMCK the Q, then the first DIM
+ * of CHKRTIMR +3. A -0 timer enters that DIM's word without its EXTEND: ADS
+ * PJETCTR, of A +0. */
 static void chkrtimr(void)
 {
     switch (ccs_at(ADDRESS_OF(RGIMTIMR))) {
@@ -450,12 +455,13 @@ static void chkrtimr(void)
     dim(ADDRESS_OF(PJETCTR));
 }
 
-/* PRETIMCK: "COUNT DOWN GIMBAL DRIVE TIMERS AND TURN OFF DRIVES IF
- * REQUIRED." (positive: "COUNTING DOWN", +0: "DRIVE SHOULD BE ENDED",
- * negative: "INACTIVE"), then "DECREMENT DOCKED JET INHIBITION COUNTERS".
- * With bit 12 of RCSFLAGS clear, SKIPPAXS: it is set ("BIT 12 SET TO 1.")
- * and the P axis skipped this pass, to QRAXIS; set, TC CHKVISFZ. A -0 Q
- * timer enters the word past the CCS's last exit, CHKRTIMR's TCF DECRTIMR. */
+/* PRETIMCK -- LM p. 1428: "COUNT DOWN GIMBAL DRIVE TIMERS AND TURN OFF
+ * DRIVES IF REQUIRED." (positive: "COUNTING DOWN", +0: "DRIVE SHOULD BE
+ * ENDED", negative: "INACTIVE"), then "DECREMENT DOCKED JET INHIBITION
+ * COUNTERS". With bit 12 of RCSFLAGS clear, SKIPPAXS: it is set ("BIT 12 SET
+ * TO 1.") and the P axis skipped this pass, to QRAXIS; set, TC CHKVISFZ. A
+ * -0 Q timer enters the word past the CCS's last exit, CHKRTIMR's TCF
+ * DECRTIMR. */
 void pretimck(void)
 {
     switch (ccs_at(ADDRESS_OF(QGIMTIMR))) {
@@ -489,8 +495,8 @@ void pretimck(void)
 
 /* ---- The jet policies -- LM p. 1440 ---- */
 
-/* ABORTYZ +2, to its TCF TSNEXTP: "INVERT BIT 1 OF RCSFLAGS." (TS
- * RCSFLAGS skips the CA ZERO on an overflow). */
+/* ABORTYZ +2 -- LM p. 1430, to its TCF TSNEXTP: "INVERT BIT 1 OF RCSFLAGS."
+ * (TS RCSFLAGS skips the CA ZERO on an overflow). */
 static void abortyz_flip(void)
 {
     set_A(BIT1);
@@ -501,16 +507,16 @@ static void abortyz_flip(void)
 
 static void jetsoff(void);
 
-/* SELECTP (the jet type, NUMBERT, from A by SELECTYZ), by TC at at: the
- * "JET POLICY CONSTRUCTION SUBROUTINE": TYPEP's word for NUMBERT (the
- * pairs, or all four) masked by JETSALL's for ROTINDEX (the rotation or
+/* SELECTP -- LM p. 1440 (the jet type, NUMBERT, from A by SELECTYZ), by TC
+ * at at: the "JET POLICY CONSTRUCTION SUBROUTINE": TYPEP's word for NUMBERT
+ * (the pairs, or all four) masked by JETSALL's for ROTINDEX (the rotation or
  * translation), kept in POLYTEMP; with no jet of it failed (CH6MASK),
  * RETURN. Else the next type down ("THIS SUBROUTINE SELECT A SUBSET OF THE
  * DESIRED JETS WHICH HAS NO FAILURE"), by SELECTYZ; past the last, ALARM
  * 2003 (and SELECTP +17's TCF JETSOFF). A ROTINDEX of 7776 (INDXYZ's for a
  * principal translation: "THESE INDEXES OF MASK JETSALL WILL" "CHANGE THE
- * INSTRUCTION AT SELECTP +4" "TO BE TC JETSALL -1") turns the MASK into a
- * TC to TCF ABORTYZ +2, which inverts RCSFLAGS' bit 1 and goes to TSNEXTP.
+ * INSTRUCTION AT SELECTP +4" "TO BE TC JETSALL -1") turns the MASK into a TC
+ * to TCF ABORTYZ +2, which inverts RCSFLAGS' bit 1 and goes to TSNEXTP.
  * Returns whether it returned. */
 static bool selectp(word at, bool selectyz)
 {
@@ -545,7 +551,7 @@ static bool selectp(word at, bool selectyz)
     }
 }
 
-/* SELECTP +17, where ALARM returns: "TCF ALARMJET". */
+/* SELECTP +17 -- LM p. 1440, where ALARM returns: "TCF ALARMJET". */
 void selectp_after_alarm(void)
 {
     jetsoff();
@@ -553,14 +559,14 @@ void selectp_after_alarm(void)
 
 /* ---- The Y-Z translation -- LM pp. 1429-1430 ---- */
 
-/* CHKVISFZ: "Y-X TRANSLATION" from the translation controller ("BITS 9-12
- * OF CH31", read inverted): none, TSNEXTP with A +0; else its INDXYZ word
- * to ROTINDEX, and TRYUORV: the jets for it (SELECTYZ from SIX). A policy
- * of four jets (NUMBERT still SIX), or a diagonal translation (ROTINDEX
- * past FIVE) on its pair, TSNEXTP -1 (POLYTEMP to NEXTP). A principal one
- * with a pair failed tries the other quads' pair (ALTERYZ: "INVERT BIT 1
- * OF RCSFLAGS.", ROTINDEX moved on by FOUR or FIVE), and with none left,
- * ABORTYZ: ALARM 2001. */
+/* CHKVISFZ -- LM p. 1429: "Y-X TRANSLATION" from the translation controller
+ * ("BITS 9-12 OF CH31", read inverted): none, TSNEXTP with A +0; else its
+ * INDXYZ word to ROTINDEX, and TRYUORV: the jets for it (SELECTYZ from SIX).
+ * A policy of four jets (NUMBERT still SIX), or a diagonal translation
+ * (ROTINDEX past FIVE) on its pair, TSNEXTP -1 (POLYTEMP to NEXTP). A
+ * principal one with a pair failed tries the other quads' pair (ALTERYZ:
+ * "INVERT BIT 1 OF RCSFLAGS.", ROTINDEX moved on by FOUR or FIVE), and with
+ * none left, ABORTYZ: ALARM 2001. */
 void chkvisfz(void)
 {
     read_channel(CHAN31);
@@ -605,15 +611,15 @@ void chkvisfz(void)
 
 /* ---- The state logic and the minimum impulse mode -- LM pp. 1430-1431 ---- */
 
-/* MANMODE: in the pulse mode (PULSES of DAPBOOLS: "PULSES IS ONE FOR PULSE
- * MODE"), the "MINIMUM IMPULSE MODE": PERROR +0, CDUXD the CDU. With
- * OLDPMIN positive (a pulse given), CHECKP: OLDPMIN from the controller's
- * P bits (3 and 4 of channel 31, inverted) and the jets off until it is
- * back in detent; else FIREP: a +P or -P command fires TEN for TJP ("+XMIN"
- * or "-XMIN": "ANYTHING LESS THAN 14MS. CORRECTED" "IN JET SELECTION
- * ROUTINE"), OLDPMIN ONE, to PJETSLEC -6; none, JETSOFF. Not in the pulse
- * mode, DETENTCK. (A negative OLDPMIN enters FIREP at its RAND's EXTEND;
- * the faithful port takes no -0 OLDPMIN.) */
+/* MANMODE -- LM p. 1430: in the pulse mode (PULSES of DAPBOOLS: "PULSES IS
+ * ONE FOR PULSE MODE"), the "MINIMUM IMPULSE MODE": PERROR +0, CDUXD the
+ * CDU. With OLDPMIN positive (a pulse given), CHECKP: OLDPMIN from the
+ * controller's P bits (3 and 4 of channel 31, inverted) and the jets off
+ * until it is back in detent; else FIREP: a +P or -P command fires TEN for
+ * TJP ("+XMIN" or "-XMIN": "ANYTHING LESS THAN 14MS. CORRECTED" "IN JET
+ * SELECTION ROUTINE"), OLDPMIN ONE, to PJETSLEC -6; none, JETSOFF. Not in
+ * the pulse mode, DETENTCK. (A negative OLDPMIN enters FIREP at its RAND's
+ * EXTEND; the faithful port takes no -0 OLDPMIN.) */
 static void manmode(void)
 {
     set_A(PULSES);
@@ -656,21 +662,22 @@ static void manmode(void)
     continue_at(PJETSLEC - 6u);
 }
 
-/* TSNEXTP -1: the translation's jets, POLYTEMP, to NEXTP. */
+/* TSNEXTP -1 -- LM p. 1430: the translation's jets, POLYTEMP, to NEXTP. */
 void tsnextp_minus1(void)
 {
     ca(ADDRESS_OF(POLYTEMP));
     tsnextp();
 }
 
-/* ABORTYZ +2 (JETSALL -1's TCF): RCSFLAGS' bit 1 inverted, and TSNEXTP. */
+/* ABORTYZ +2 -- LM p. 1430 (JETSALL -1's TCF): RCSFLAGS' bit 1 inverted, and
+ * TSNEXTP. */
 void abortyz_plus2(void)
 {
     abortyz_flip();
     tsnextp();
 }
 
-/* TSNEXTP: NEXTP, "THE CHANNEL 6 CODE OF JETS FOR THE DESIRED
+/* TSNEXTP -- LM p. 1430: NEXTP, "THE CHANNEL 6 CODE OF JETS FOR THE DESIRED
  * TRANSLATION.", from A. Then the "STATE LOGIC": in attitude hold (bit 13
  * of channel 31 clear, inverted: "CHECK STICK IF IN ATT. HOLD."), MANMODE;
  * else, XOVINHIB of DAPBOOLS set, PURGENCY ("ATTITUDE STEER DURING
@@ -691,9 +698,9 @@ void tsnextp(void)
 
 /* ---- The manual rate command mode -- LM pp. 1431-1435 ---- */
 
-/* ZEROENBL, by TC at at: "ENABLES COUNTERS SO THEY CAN BE READ NEXT TIME":
- * the Q and R counts kept in SAVEHAND, all three counters +0, and bits 8
- * and 9 of channel 13 set: "COUNTERS ZEROED AND ENABLED". */
+/* ZEROENBL -- LM p. 1434, by TC at at: "ENABLES COUNTERS SO THEY CAN BE READ
+ * NEXT TIME": the Q and R counts kept in SAVEHAND, all three counters +0,
+ * and bits 8 and 9 of channel 13 set: "COUNTERS ZEROED AND ENABLED". */
 static void zeroenbl(word at)
 {
     tc_at(at);
@@ -709,11 +716,11 @@ static void zeroenbl(word at)
     tc_q();
 }
 
-/* JUSTOUT -1 (PERROR from A, +0), JUSTOUT: "FIRST DETECTION OF OUT OF
- * DETENT (BY OURRCBIT)": "INITIALIZATION -- FIRST MANUAL PASS." (OURRCBIT
- * set, the manual errors, the last commands and the Q and R counters +0,
- * "BITS 10 AND 11 OF RCSFLAGS ARE 0.", "SET 'JUST-IN' BIT TO 1."), ZEROENBL,
- * JETSOFF. */
+/* JUSTOUT -1 -- LM p. 1433 (PERROR from A, +0), JUSTOUT: "FIRST DETECTION OF
+ * OUT OF DETENT (BY OURRCBIT)": "INITIALIZATION -- FIRST MANUAL PASS."
+ * (OURRCBIT set, the manual errors, the last commands and the Q and R
+ * counters +0, "BITS 10 AND 11 OF RCSFLAGS ARE 0.", "SET 'JUST-IN' BIT TO
+ * 1."), ZEROENBL, JETSOFF. */
 static void justout_minus1(void)
 {
     static const unsigned zeroed[] = {
@@ -739,7 +746,7 @@ static void justout_minus1(void)
     jetsoff();
 }
 
-/* RATEDAMP: the P counter +0, and RATERROR. */
+/* RATEDAMP -- LM p. 1434: the P counter +0, and RATERROR. */
 static void ratedamp(void)
 {
     set_A(ZERO);
@@ -747,14 +754,14 @@ static void ratedamp(void)
     continue_at(RATERROR);
 }
 
-/* DETENTCK: the rotation hand controller. "OUT-OF-DETENT" (bit 15 of
- * channel 31 clear), RHCMOVED: the first pass out (OURRCBIT clear), JUSTOUT
- * -1; else RATERROR. In detent: not in rate command last pass, PURGENCY;
- * "JUST IN DETENT??" (bit 9 of RCSFLAGS clear), RUTH: rate damping not yet
- * done in P (PBIT) or Q, R (QRBIT), RATEDAMP; done, RATEDONE ("MANUAL
- * COMMAND AND DAMPING COMPLETED IN" "ALL AXES."). Just in detent, in auto
- * ("(X-AXIS OVERRIDE)"), "ZERO ORBIT (BIT 11) AND JUST-IN BIT (9)."; and
- * RATEDAMP. */
+/* DETENTCK -- LM p. 1432: the rotation hand controller. "OUT-OF-DETENT" (bit
+ * 15 of channel 31 clear), RHCMOVED: the first pass out (OURRCBIT clear),
+ * JUSTOUT -1; else RATERROR. In detent: not in rate command last pass,
+ * PURGENCY; "JUST IN DETENT??" (bit 9 of RCSFLAGS clear), RUTH: rate damping
+ * not yet done in P (PBIT) or Q, R (QRBIT), RATEDAMP; done, RATEDONE
+ * ("MANUAL COMMAND AND DAMPING COMPLETED IN" "ALL AXES."). Just in detent,
+ * in auto ("(X-AXIS OVERRIDE)"), "ZERO ORBIT (BIT 11) AND JUST-IN BIT (9).";
+ * and RATEDAMP. */
 void detentck(void)
 {
     read_channel(CHAN31);
@@ -816,22 +823,22 @@ void detentck(void)
     ratedamp();
 }
 
-/* RATEDONE +16, where ZATTEROR returns (the attitude errors zeroed): RELINT,
- * PURGENCY. */
+/* RATEDONE +16 -- LM p. 1433, where ZATTEROR returns (the attitude errors
+ * zeroed): RELINT, PURGENCY. */
 void ratedone_after_zatteror(void)
 {
     relint();
     purgency();
 }
 
-/* PEGI, by TC at at: "DIRECT RATE CONTROL.": the desired CDU the CDU, the
- * X error +0; RCSFLAGS' PBIT set while the rate error (EDOTP) is past the
- * target deadband and TCP has time left (four seconds), cleared otherwise
- * ("FIRE, AN SWITCH TO PSEUDO-AUTO."). Then the jet time for the rate
- * error: TJP, -EDOTP times 1/ANETP doubled, pinned by OVERSUB, times
+/* PEGI -- LM p. 1435, by TC at at: "DIRECT RATE CONTROL.": the desired CDU
+ * the CDU, the X error +0; RCSFLAGS' PBIT set while the rate error (EDOTP)
+ * is past the target deadband and TCP has time left (four seconds), cleared
+ * otherwise ("FIRE, AN SWITCH TO PSEUDO-AUTO."). Then the jet time for the
+ * rate error: TJP, -EDOTP times 1/ANETP doubled, pinned by OVERSUB, times
  * 25/32 ("A CONTAINS TJET SCALED AT 2EXP(4)(16/25)"); past the two jet
- * limit, SIX (four jets) to PJETSLEC -1, else twice the time for two jets
- * to PJETSLEC -6. */
+ * limit, SIX (four jets) to PJETSLEC -1, else twice the time for two jets to
+ * PJETSLEC -6. */
 static void pegi(word at)
 {
     tc_at(at);
@@ -881,14 +888,14 @@ static void pegi(word at)
     continue_at(PJETSLEC - 6u);
 }
 
-/* RATERROR: the P command from the hand controller's count (P-RHCCTR),
- * "LINEAR/QUADRATIC CONTROLLER SCALING" (the count times itself times 4
- * plus LINRATP, times STIKSENS), into PLAST; its change from the last
- * (DAPTEMP1), and ZEROENBL (unless that overflowed). EDOTP the rate error.
- * "IF P COMMAND CHANGE EXCEEDS BREAKOUT" "LEVEL, GO TO DIRECT RATE
- * CONTROL." (PEGI, TCP 40CYC: four seconds); "IF NOT" "CHECK FOR DIRECT
- * RATE CONTROL LAST TIME." (PBIT of RCSFLAGS), still PEGI; else
- * "PSEUDO-AUTO CONTROL.": the X error to E and PERROR, and PURGENCY +4. */
+/* RATERROR -- LM p. 1434: the P command from the hand controller's count
+ * (P-RHCCTR), "LINEAR/QUADRATIC CONTROLLER SCALING" (the count times itself
+ * times 4 plus LINRATP, times STIKSENS), into PLAST; its change from the
+ * last (DAPTEMP1), and ZEROENBL (unless that overflowed). EDOTP the rate
+ * error. "IF P COMMAND CHANGE EXCEEDS BREAKOUT" "LEVEL, GO TO DIRECT RATE
+ * CONTROL." (PEGI, TCP 40CYC: four seconds); "IF NOT" "CHECK FOR DIRECT RATE
+ * CONTROL LAST TIME." (PBIT of RCSFLAGS), still PEGI; else "PSEUDO-AUTO
+ * CONTROL.": the X error to E and PERROR, and PURGENCY +4. */
 void raterror(void)
 {
     bool breakout = false;
@@ -941,16 +948,17 @@ void raterror(void)
 
 /* ---- The P jet selection -- LM pp. 1436-1437 ---- */
 
-/* JETSOFF: TC WRITEP -1 (P's jets off), which returns to JETSOFF +1. */
+/* JETSOFF -- LM p. 1437: TC WRITEP -1 (P's jets off), which returns to
+ * JETSOFF +1. */
 static void jetsoff(void)
 {
     tc_to(JETSOFF, WRITEP - 1u);
 }
 
-/* PJETSLEC: "P-JET-SELECTION-ROUTINE (ROTATION)", NUMBERT from A: none
- * for a TJP of zero (JETSOFF); else ABSTJ its magnitude and ROTINDEX 1 for
- * +P, 0 for -P, the policy by SELECTP, the jets' count (NO.PJETS: FOUR,
- * or TWO but for type SIX), and the policy to TC WRITEP. */
+/* PJETSLEC -1 -- LM p. 1436: "P-JET-SELECTION-ROUTINE (ROTATION)", NUMBERT
+ * from A: none for a TJP of zero (JETSOFF); else ABSTJ its magnitude and
+ * ROTINDEX 1 for +P, 0 for -P, the policy by SELECTP, the jets' count
+ * (NO.PJETS: FOUR, or TWO but for type SIX), and the policy to TC WRITEP. */
 void pjetslec_minus1(void)
 {
     ts(ADDRESS_OF(NUMBERT));
@@ -975,8 +983,8 @@ void pjetslec_minus1(void)
     tc_to(PJETSLEC + 024u, WRITEP);
 }
 
-/* PJETSLEC -6: "GOES TO PJETSLEC FOR TWO JETS": NUMBERT FOUR, or FIVE with
- * AORBSYST of DAPBOOLS set (the other system's pair). */
+/* PJETSLEC -6 -- LM p. 1436: "GOES TO PJETSLEC FOR TWO JETS": NUMBERT FOUR,
+ * or FIVE with AORBSYST of DAPBOOLS set (the other system's pair). */
 void pjetslec_minus6(void)
 {
     set_A(AORBSYST);
@@ -986,10 +994,10 @@ void pjetslec_minus6(void)
     pjetslec_minus1();
 }
 
-/* PJETSLEC +25, where WRITEP returns: a firing shorter than 150 ms ends
- * by T6 this pass, so to QRAXIS ("GO TO QRAXIS OR TO GTS."); else ABSTJ
- * kept the time over 136 ms, or made up to the minimum, MINTIMES' word for
- * ROTINDEX (TJP), and the rest timed by T6 (T6FURTHA) and JTLST. */
+/* PJETSLEC +25 -- LM p. 1437, where WRITEP returns: a firing shorter than
+ * 150 ms ends by T6 this pass, so to QRAXIS ("GO TO QRAXIS OR TO GTS.");
+ * else ABSTJ kept the time over 136 ms, or made up to the minimum, MINTIMES'
+ * word for ROTINDEX (TJP), and the rest timed by T6 (T6FURTHA) and JTLST. */
 void pjetslec_after_writep(void)
 {
     cs(ADDRESS_OF(ABSTJ));
@@ -1011,8 +1019,8 @@ void pjetslec_after_writep(void)
     tc_to(PJETSLEC + 044u, IBNKCALL); /* CADR JTLST */
 }
 
-/* ALTSYST, by TC at at: "ALTERNATE P-AXIS JETS" (AORBSYST of DAPBOOLS
- * inverted); RELINT. */
+/* ALTSYST -- LM p. 1437, by TC at at: "ALTERNATE P-AXIS JETS" (AORBSYST of
+ * DAPBOOLS inverted); RELINT. */
 static void altsyst(word at)
 {
     tc_at(at);
@@ -1024,7 +1032,8 @@ static void altsyst(word at)
     tc_q();
 }
 
-/* PJETSLEC +46, where JTLST returns: "BIT 12 SET TO 0.", ALTSYST, QRAXIS. */
+/* PJETSLEC +46 -- LM p. 1437, where JTLST returns: "BIT 12 SET TO 0.",
+ * ALTSYST, QRAXIS. */
 void pjetslec_after_jtlst(void)
 {
     set_A(negate(BIT12));
@@ -1034,7 +1043,7 @@ void pjetslec_after_jtlst(void)
     qraxis();
 }
 
-/* JETSOFF +1, where WRITEP -1 returns: TJP +0, QRAXIS. */
+/* JETSOFF +1 -- LM p. 1437, where WRITEP -1 returns: TJP +0, QRAXIS. */
 void jetsoff_after_writep(void)
 {
     set_A(ZERO);
@@ -1044,10 +1053,10 @@ void jetsoff_after_writep(void)
 
 /* ---- The P-axis error and urgency -- LM pp. 1437-1439 ---- */
 
-/* CALCPERR: "P-ERROR CALCULATION.": (CDUY less CDUYD) times M11, plus
- * CDUX less CDUXD ("M13 = 1 IDENTICALLY IMPLIES NULL MULTIPLICATION."),
- * plus DELPEROR ("KALCMANU INTERFACE ERROR."), in E and PERROR ("SAVE
- * P-ERROR FOR EIGHT-BALL DISPLAY."); RETURN. */
+/* CALCPERR -- LM p. 1437: "P-ERROR CALCULATION.": (CDUY less CDUYD) times
+ * M11, plus CDUX less CDUXD ("M13 = 1 IDENTICALLY IMPLIES NULL
+ * MULTIPLICATION."), plus DELPEROR ("KALCMANU INTERFACE ERROR."), in E and
+ * PERROR ("SAVE P-ERROR FOR EIGHT-BALL DISPLAY."); RETURN. */
 void calcperr(void)
 {
     ca(ADDRESS_OF(CDUY));
@@ -1062,9 +1071,9 @@ void calcperr(void)
     tc_q();
 }
 
-/* PURGENCY +4 on: AXISCTR from A (-1), and the "P-AXIS URGENCY FUNCTION
- * CALCULATION.": docked (CSMDOCKD), SPSRCS ("IF CSMDOCKD = 1, GOT TO
- * DOCKED RCS LOGIC"); else HEADTJET: SENSETYP +0, and TJETLAW. Both by
+/* PURGENCY +4 -- LM p. 1438 on: AXISCTR from A (-1), and the "P-AXIS URGENCY
+ * FUNCTION CALCULATION.": docked (CSMDOCKD), SPSRCS ("IF CSMDOCKD = 1, GOT
+ * TO DOCKED RCS LOGIC"); else HEADTJET: SENSETYP +0, and TJETLAW. Both by
  * IBNKCALL, under INHINT. */
 static void axisctr_and_urgency(void)
 {
@@ -1082,9 +1091,9 @@ static void axisctr_and_urgency(void)
     tc_to(HEADTJET + 3u, IBNKCALL); /* CADR TJETLAW */
 }
 
-/* PURGENCY: "CALCULATE P-AXIS ERRORS." (CALCPERR), and EDOTP "= OMEGAP -
- * OMEGAPD AT PI/4 RAD/SEC" ("THIS CODING IS COMMON TO BOTH LM DAP AND"
- * "SPS-BACKUP MODE."); its overflow skips the CS ONE. */
+/* PURGENCY -- LM p. 1438: "CALCULATE P-AXIS ERRORS." (CALCPERR), and EDOTP
+ * "= OMEGAP - OMEGAPD AT PI/4 RAD/SEC" ("THIS CODING IS COMMON TO BOTH LM
+ * DAP AND" "SPS-BACKUP MODE."); its overflow skips the CS ONE. */
 void purgency(void)
 {
     tc_at(PURGENCY);
@@ -1098,16 +1107,17 @@ void purgency(void)
     purgency_plus4();
 }
 
-/* PURGENCY +4: the pseudo-auto mode's way in, the error in E. */
+/* PURGENCY +4 -- LM p. 1438: the pseudo-auto mode's way in, the error in
+ * E. */
 void purgency_plus4(void)
 {
     set_A(negate(ONE));
     axisctr_and_urgency();
 }
 
-/* PURGENCY +15, where SPSRCS returns: with no P firing (TJP +0), DKALT:
- * ALTSYST ("IF TJP = ZERO, CHANGE AORBSYST.") and JETSOFF; else RELINT
- * and PJETSLEC -6 ("SELECT AORBSYST AND USE TWO JETS."). */
+/* PURGENCY +15 -- LM p. 1438, where SPSRCS returns: with no P firing (TJP
+ * +0), DKALT: ALTSYST ("IF TJP = ZERO, CHANGE AORBSYST.") and JETSOFF; else
+ * RELINT and PJETSLEC -6 ("SELECT AORBSYST AND USE TWO JETS."). */
 void purgency_after_spsrcs(void)
 {
     ca(ADDRESS_OF(TJP));
@@ -1120,10 +1130,10 @@ void purgency_after_spsrcs(void)
     pjetslec_minus6();
 }
 
-/* HEADTJET +5, where TJETLAW returns: RELINT. A small firing factor
- * (FIREFCT, past -FOURDEG), or a firing (TJP) under 160 ms, two jets
- * (PJETSLEC -6); a longer one, SIX: four jets (PJETSLEC -1); none,
- * JETSOFF. A -0 TJP enters the BZMF with A +0. */
+/* HEADTJET +5 -- LM p. 1438, where TJETLAW returns: RELINT. A small firing
+ * factor (FIREFCT, past -FOURDEG), or a firing (TJP) under 160 ms, two jets
+ * (PJETSLEC -6); a longer one, SIX: four jets (PJETSLEC -1); none, JETSOFF.
+ * A -0 TJP enters the BZMF with A +0. */
 void headtjet_after_tjetlaw(void)
 {
     relint();
@@ -1149,8 +1159,9 @@ void headtjet_after_tjetlaw(void)
 
 /* ---- QRAXIS -- LM p. 1441 ---- */
 
-/* QRAXIS: the R and Q rate errors (EDOTR, EDOTQ), each pinned by OVERSUB;
- * then "GOES TO Q,R-AXES RCS AUTOPILOT" by DTCB to CALLQERR (bank 17). */
+/* QRAXIS -- LM p. 1441: the R and Q rate errors (EDOTR, EDOTQ), each pinned
+ * by OVERSUB; then "GOES TO Q,R-AXES RCS AUTOPILOT" by DTCB to CALLQERR
+ * (bank 17). */
 static void qraxis(void)
 {
     cs(ADDRESS_OF(OMEGARD));

@@ -23,17 +23,17 @@
 
 /* ---- TRIMGIMB -- pp. 781-782 ---- */
 
-/* TRIMGIMB: GMBDRVSW clear (DOWNFLAG), "GMBDRVSW FLAG IS SET WHEN EITHER
- * ROLL OR", "PITCH IS COMPLETED, WHICHEVER IS FIRST." */
+/* TRIMGIMB -- p. 781: GMBDRVSW clear (DOWNFLAG), "GMBDRVSW FLAG IS SET WHEN
+ * EITHER ROLL OR", "PITCH IS COMPLETED, WHICHEVER IS FIRST." */
 void trimgimb(void)
 {
     tc_to(TRIMGIMB, DOWNFLAG); /* ADRES GMBDRVSW */
 }
 
-/* "TURN OFF - PITCH, - ROLL, IF ON." (PRIO5: bits 10 and 12), "TURN ON +
- * PITCH, + ROLL." (EBANK5: bits 9 and 11), and "WAIT ONE MINUTE TO MAKE
- * SURE ENGINE IS", "AT FULL + PITCH AND FULL + ROLL" (FIXDELAY, DEC
- * 6000). */
+/* TRIMGIMB +2 -- p. 781: "TURN OFF - PITCH, - ROLL, IF ON." (PRIO5: bits 10
+ * and 12), "TURN ON + PITCH, + ROLL." (EBANK5: bits 9 and 11), and "WAIT ONE
+ * MINUTE TO MAKE SURE ENGINE IS", "AT FULL + PITCH AND FULL + ROLL"
+ * (FIXDELAY, DEC 6000). */
 void trimgimb_after_downflag(void)
 {
     set_A(negate(PRIO5));
@@ -43,9 +43,9 @@ void trimgimb_after_downflag(void)
     tc_to(TRIMGIMB + 010u, FIXDELAY);
 }
 
-/* "TURN OFF + PITCH, + ROLL.", "TURN ON - PITCH, - ROLL."; "GET TIME TO
- * SHUT OFF - PITCH AND SET UP", "TWIDDLE-TASK TO TURN IT OFF THEN"
- * (PITCHOFF after PITTIME), */
+/* TRIMGIMB +012 -- p. 781: "TURN OFF + PITCH, + ROLL.", "TURN ON - PITCH, -
+ * ROLL."; "GET TIME TO SHUT OFF - PITCH AND SET UP", "TWIDDLE-TASK TO TURN
+ * IT OFF THEN" (PITCHOFF after PITTIME), */
 void trimgimb_after_fixdelay(void)
 {
     set_A(negate(EBANK5));
@@ -56,15 +56,16 @@ void trimgimb_after_fixdelay(void)
     tc_to(TRIMGIMB + 021u, TWIDDLE); /* ADRES PITCHOFF */
 }
 
-/* and "GET TIME TO SHUT OFF - ROLL AND GO AWAY", "UNTIL THEN" (VARDELAY
- * for ROLLTIME). */
+/* TRIMGIMB +023 -- p. 781: and "GET TIME TO SHUT OFF - ROLL AND GO AWAY",
+ * "UNTIL THEN" (VARDELAY for ROLLTIME). */
 void trimgimb_after_twiddle(void)
 {
     ca(ADDRESS_OF(ROLLTIME)); /* CAE */
     tc_to(TRIMGIMB + 024u, VARDELAY);
 }
 
-/* ROLLOVER: "IF HERE INLINE (ROLL DONE) IS PITCH DONE", "IF HERE FROM
+/* ROLLOVER -- p. 781: "IF HERE INLINE (ROLL DONE) IS PITCH DONE", "IF HERE
+ * FROM
  * PITCHOFF, IS ROLL DONE?" (GMBDRVSW). "NO.  SET FLAG, ROLL OR PITCH
  * DONE.": GMBDRVSW set (UPFLAG). Yes: "RETURN TO R03." (TRIMDONE as a
  * job, NOVAC). */
@@ -80,7 +81,8 @@ static void rollover(void)
     tc_to(ROLLOVER + 5u, NOVAC); /* 2CADR TRIMDONE */
 }
 
-/* After ROLLTIME: "SHUT OFF ROLL" (BIT12), and ROLLOVER. */
+/* TRIMGIMB +025 -- p. 781: After ROLLTIME: "SHUT OFF ROLL" (BIT12), and
+ * ROLLOVER. */
 void trimgimb_after_vardelay(void)
 {
     set_A(negate(BIT12));
@@ -88,14 +90,14 @@ void trimgimb_after_vardelay(void)
     rollover();
 }
 
-/* After NOVAC: the task ends. */
+/* ROLLOVER +010 -- p. 782: After NOVAC: the task ends. */
 void rollover_after_novac(void)
 {
     tc_to(ROLLOVER + 010u, TASKOVER);
 }
 
-/* PITCHOFF, the task after PITTIME: "SHUT OFF PITCH" (BIT10), and "SEE
- * IF ROLL HAS FINISHED ALSO." (TCF ROLLOVER). */
+/* PITCHOFF -- p. 782, the task after PITTIME: "SHUT OFF PITCH" (BIT10), and
+ * "SEE IF ROLL HAS FINISHED ALSO." (TCF ROLLOVER). */
 void pitchoff(void)
 {
     set_A(negate(BIT10));
@@ -103,8 +105,8 @@ void pitchoff(void)
     rollover();
 }
 
-/* After UPFLAG, "ROLL DONE; OR PITCH DONE; BUT NOT BOTH.": the task
- * ends. */
+/* PITCHOFF +6 -- p. 782: After UPFLAG, "ROLL DONE; OR PITCH DONE; BUT NOT
+ * BOTH.": the task ends. */
 void pitchoff_after_upflag(void)
 {
     tc_to(PITCHOFF + 6u, TASKOVER);

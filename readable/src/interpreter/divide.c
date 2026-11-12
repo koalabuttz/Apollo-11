@@ -63,10 +63,10 @@ void ddv_bddv(void)
     bufzero();
 }
 
-/* BUFZERO: the divisor's major part is zero. "FORCE SIGN AGREEMENT BEFORE
- * OVERFLOW" test: a dividend with a major part now is too big. Otherwise
- * "SHIFT DIVIDEND AND DIVISOR LEFT 14" and "TRY AGAIN ON FORMER MINOR
- * PART." */
+/* BUFZERO -- LM p. 1057, CM p. 1162: the divisor's major part is zero.
+ * "FORCE SIGN AGREEMENT BEFORE OVERFLOW" test: a dividend with a major part
+ * now is too big. Otherwise "SHIFT DIVIDEND AND DIVISOR LEFT 14" and "TRY
+ * AGAIN ON FORMER MINOR PART." */
 static void bufzero(void)
 {
     ts(MPAC_AT(2u)); /* "ZERO THIS." */
@@ -95,7 +95,7 @@ static void bufzero(void)
     sgndvovf();
 }
 
-/* SGNDVOVF: the quotient's sign from A's. */
+/* SGNDVOVF -- LM p. 1057, CM p. 1162: the quotient's sign from A's. */
 static void sgndvovf(void)
 {
     if (!A_is_zero_or_minus()) incr(ADDRESS_OF(DVSIGN)); /* "NEGMAX IN MPAC PERHAPS." */
@@ -118,8 +118,8 @@ void dvovf(void)
     continue_at(DANZIG);
 }
 
-/* OVF+ -1, OVF+: the dividend's major part is not zero. "LOAD LOWER ORDER
- * PART OF DIVISOR" and "GET SIGN OF RESULT." */
+/* OVF+ -1 -- LM p. 1057, CM p. 1162, OVF+: the dividend's major part is not
+ * zero. "LOAD LOWER ORDER PART OF DIVISOR" and "GET SIGN OF RESULT." */
 void ovf_plus_minus1(void)
 {
     incr(ADDRESS_OF(DVSIGN));
@@ -132,8 +132,8 @@ static void ovf_plus(void)
     sgndvovf();
 }
 
-/* BUF-: "IF BUF IS NEGATIVE, COMPLEMENT IT AND MAINTAIN DVSIGN FOR FINAL
- * QUOTIENT SIGN." */
+/* BUF- -- LM p. 1057, CM p. 1162: "IF BUF IS NEGATIVE, COMPLEMENT IT AND
+ * MAINTAIN DVSIGN FOR FINAL QUOTIENT SIGN." */
 static void buf_minus(void)
 {
     dcs(BUF_AT(0u));
@@ -160,7 +160,7 @@ static void buf_plus(void)
     }
 }
 
-/* MPAC-: "FORCE MPAC POSITIVE AS BUF IN BUF-." */
+/* MPAC- -- LM p. 1058, CM p. 1163: "FORCE MPAC POSITIVE AS BUF IN BUF-." */
 static void mpac_minus(void)
 {
     dcs(MPAC_AT(0u));
@@ -255,9 +255,9 @@ static void dvnorm(void)
     continue_at(DANZIG);
 }
 
-/* BUFPOS, BUFNEG: BUF's major part is +1 or -1 (A, from the CCS, is its
- * magnitude less one, so is never negative here): "FORCING SIGN AGREEMENT
- * MAY CAUSE BUF TO BECOME ZERO." */
+/* BUFPOS -- LM p. 1060, CM p. 1165, BUFNEG: BUF's major part is +1 or -1 (A,
+ * from the CCS, is its magnitude less one, so is never negative here):
+ * "FORCING SIGN AGREEMENT MAY CAUSE BUF TO BECOME ZERO." */
 static void bufpos(void)
 {
     if (ccs_at(A_ADDRESS) == POSITIVE) {
@@ -344,9 +344,9 @@ void maxtest_minus(unsigned n)
     maxtest();
 }
 
-/* MAXTEST: MAXDVSW is "0 IF MAJORS MIGHT BE =, -1 OTHERWISE": MAXDV, or
- * GENDDV. (It is never positive; the next word, BIASHI, a SQRT constant,
- * would run as TC 6552.) */
+/* MAXTEST -- LM p. 1061, CM p. 1166: MAXDVSW is "0 IF MAJORS MIGHT BE =, -1
+ * OTHERWISE": MAXDV, or GENDDV. (It is never positive; the next word,
+ * BIASHI, a SQRT constant, would run as TC 6552.) */
 void maxtest(void)
 {
     switch (ccs_at(ADDRESS_OF(MAXDVSW))) {
@@ -380,7 +380,8 @@ static void genddv(void)
     genddv_plus1();
 }
 
-/* GENDDV +1: "(SPECIAL UNIT PROLOGUE ENTERS HERE)." */
+/* GENDDV +1 -- LM p. 1062, CM p. 1167: "(SPECIAL UNIT PROLOGUE ENTERS
+ * HERE)." */
 static void genddv_plus1(void)
 {
     dv_at(BUF_AT(0u)); /* "A NOW CONTAINS Q AND L, R." */
@@ -407,9 +408,9 @@ static void genddv_plus1(void)
         plus_down();
 }
 
-/* +DOWN: "IF POSITIVE, REDUCE ONLY IF NECESSARY SINCE THE COMPENSATING
- * INCR MIGHT CAUSE OVERFLOW." "DON'T SUBTRACT UNLESS RESULT IS POSITIVE OR
- * ZERO." */
+/* +DOWN -- LM p. 1063, CM p. 1168: "IF POSITIVE, REDUCE ONLY IF NECESSARY
+ * SINCE THE COMPENSATING INCR MIGHT CAUSE OVERFLOW." "DON'T SUBTRACT UNLESS
+ * RESULT IS POSITIVE OR ZERO." */
 static void plus_down(void)
 {
     su_at(BUF_AT(0u));
@@ -421,9 +422,9 @@ static void plus_down(void)
     finaldv();
 }
 
-/* -UP: "IF ZERO, SET MINOR PART OF RESULT TO ZERO." "IF NEGATIVE, ADD C TO
- * A, SUBTRACTING ONE TO COMPENSATE. DIM IS OK HERE SINCE THE MAJOR PART
- * NEVER GOES NEGATIVE." */
+/* -UP -- LM p. 1063, CM p. 1168: "IF ZERO, SET MINOR PART OF RESULT TO
+ * ZERO." "IF NEGATIVE, ADD C TO A, SUBTRACTING ONE TO COMPENSATE. DIM IS OK
+ * HERE SINCE THE MAJOR PART NEVER GOES NEGATIVE." */
 static void minus_up(void)
 {
     if (A_is_zero()) {
@@ -449,9 +450,9 @@ static void finaldv(void)
     finaldv_plus3();
 }
 
-/* FINALDV +3: "LEAVE RESULT POSITIVE UNLESS C(DVSIGN) = -0." "SO WE ALWAYS
- * RETURN WITH C(A) = 0." (An overflowing TS skips the CCS, to the first
- * TC Q: DVOVF's quotient.) */
+/* FINALDV +3 -- LM p. 1064, CM p. 1169: "LEAVE RESULT POSITIVE UNLESS
+ * C(DVSIGN) = -0." "SO WE ALWAYS RETURN WITH C(A) = 0." (An overflowing TS
+ * skips the CCS, to the first TC Q: DVOVF's quotient.) */
 void finaldv_plus3(void)
 {
     if (ts(MPAC_AT(1u)) || ccs_at(ADDRESS_OF(DVSIGN)) != IS_MINUS_ZERO) {
@@ -547,7 +548,8 @@ void v_sc2(void)
     }
 }
 
-/* /BUF-: "ON NEGATIVE, COMPLEMENT BUF AND MAINTAIN DVSIGN IN VBUF +5." */
+/* /BUF- -- LM p. 1066, CM p. 1171: "ON NEGATIVE, COMPLEMENT BUF AND MAINTAIN
+ * DVSIGN IN VBUF +5." */
 static void slash_buf_minus(void)
 {
     dcs(BUF_AT(0u));

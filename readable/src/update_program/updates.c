@@ -126,16 +126,17 @@ void upend70(void)
     timedidl();
 }
 
-/* UPEND70 +4, TIMEDIDL's error return: "ERROR WHILE DECREMENTING CLOCK --
- * EXIT". */
+/* UPEND70 +4 -- LM p. 1395, CM p. 1506, TIMEDIDL's error return: "ERROR
+ * WHILE DECREMENTING CLOCK -- EXIT". */
 void upend70_clock_error(void)
 {
     tc_at((word)(UPEND70 + 4u)); /* TC UPERROUT */
     uperrout();
 }
 
-/* UPEND70 +5, TIMEDIDL's normal return: "COPY DECREMENTERS FOR RESTART
- * PROTECTION" in UPBUFF +10D and +12D, and "RESTART PROTECT(GROUP 6)". */
+/* UPEND70 +5 -- LM p. 1395, CM p. 1506, TIMEDIDL's normal return: "COPY
+ * DECREMENTERS FOR RESTART PROTECTION" in UPBUFF +10D and +12D, and "RESTART
+ * PROTECT(GROUP 6)". */
 void upend70_after_timedidl(void)
 {
     dcs(ADDRESS_OF(UPBUFF));
@@ -145,11 +146,12 @@ void upend70_after_timedidl(void)
     tc_to((word)(UPEND70 + 013u), PHASCHNG); /* OCT 04026 */
 }
 
-/* UPEND70 +015, where PHASCHNG returns, in TEPHEM's EBANK: "DECREMENT CSM
- * STATE VECTOR TIME", "DECREMENT LEM STATE VECTOR TIME", and "INCREMENT
- * TP TEPHEM" (a triple precision word: the DAS's carry goes on into its
- * top word). Each copy is zeroed as it is used, so a restart here does
- * none twice. Then "RESTART PROTECT(GROUP 6)" again. */
+/* UPEND70 +015 -- LM p. 1395, CM p. 1506, where PHASCHNG returns, in
+ * TEPHEM's EBANK: "DECREMENT CSM STATE VECTOR TIME", "DECREMENT LEM STATE
+ * VECTOR TIME", and "INCREMENT TP TEPHEM" (a triple precision word: the
+ * DAS's carry goes on into its top word). Each copy is zeroed as it is used,
+ * so a restart here does none twice. Then "RESTART PROTECT(GROUP 6)"
+ * again. */
 void upend70_after_phaschng(void)
 {
     set_A(ZERO);
@@ -168,8 +170,8 @@ void upend70_after_phaschng(void)
     tc_to((word)(UPEND70 + 032u), PHASCHNG); /* OCT 04026 */
 }
 
-/* UPEND70 +034, where PHASCHNG returns: "GO TO STANDARD UPDATE PROGRAM
- * EXIT". */
+/* UPEND70 +034 -- LM p. 1396, CM p. 1507, where PHASCHNG returns: "GO TO
+ * STANDARD UPDATE PROGRAM EXIT". */
 void upend70_after_phaschng2(void)
 {
     tc_at((word)(UPEND70 + 034u)); /* TC UPOUT */

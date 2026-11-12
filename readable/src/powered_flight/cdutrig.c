@@ -41,28 +41,30 @@ const struct interpretive_code CD_STAR_TR_STAR_G_RVQ_CODE = {
     CODE_BANK(I_CD_STAR_TR_STAR_G), (word)(CODE_Z(I_CD_STAR_TR_STAR_G) + 3u),
     COUNT(cd_star_tr_star_g_rvq_words), cd_star_tr_star_g_rvq_words};
 
-/* After CDUTRIG's EXIT: CDUTRIGS. */
+/* CDUTRIG +1 -- LM p. 1259, CM p. 1365: After CDUTRIG's EXIT: CDUTRIGS. */
 void cdutrig_plus1(void)
 {
     tc_at(CDUTRIG + 1u);
     cdutrigs();
 }
 
-/* CDUTRIGS's return: back into the interpreter, to the RVQ. */
+/* CDUTRIG +2 -- LM p. 1259, CM p. 1365: CDUTRIGS's return: back into the
+ * interpreter, to the RVQ. */
 void cdutrig_plus2(void)
 {
     tc_at(CDUTRIG + 2u);
     intpret();
 }
 
-/* After CD*TR*G's EXIT: CD*TR*GS. */
+/* CD*TR*G +1 -- LM p. 1259, CM p. 1365: After CD*TR*G's EXIT: CD*TR*GS. */
 void cd_star_tr_star_g_plus1(void)
 {
     tc_at(CD_STAR_TR_STAR_G + 1u);
     cd_star_tr_star_gs();
 }
 
-/* CD*TR*GS's return: back into the interpreter, to the RVQ. */
+/* CD*TR*G +2 -- LM p. 1259, CM p. 1365: CD*TR*GS's return: back into the
+ * interpreter, to the RVQ. */
 void cd_star_tr_star_g_plus2(void)
 {
     tc_at(CD_STAR_TR_STAR_G + 2u);
@@ -74,9 +76,9 @@ void cd_star_tr_star_g_plus2(void)
 
 static void tr_star_gl_star_star_p(void);
 
-/* CDUTRIGS: the CDU counters to CDUSPOT in the order Y, Z, X (the
- * counters themselves: "THE CONTENTS OF CDUTEMP, ETC., ARE NOT TOUCHED"),
- * then CD*TR*GS. */
+/* CDUTRIGS -- LM p. 1259, CM p. 1365: the CDU counters to CDUSPOT in the
+ * order Y, Z, X (the counters themselves: "THE CONTENTS OF CDUTEMP, ETC.,
+ * ARE NOT TOUCHED"), then CD*TR*GS. */
 void cdutrigs(void)
 {
     ca(ADDRESS_OF(CDUX));
@@ -88,7 +90,8 @@ void cdutrigs(void)
     cd_star_tr_star_gs();
 }
 
-/* CD*TR*GS: the return into TEM2, and the loop from CDUSPOT +4 down. */
+/* CD*TR*GS -- LM p. 1260, CM p. 1366: the return into TEM2, and the loop
+ * from CDUSPOT +4 down. */
 void cd_star_tr_star_gs(void)
 {
     qxch(ADDRESS_OF(TEM2));
@@ -96,10 +99,10 @@ void cd_star_tr_star_gs(void)
     tr_star_gl_star_star_p();
 }
 
-/* TR*GL**P: the angle's offset ("MAKE IT EVEN AND SMALLER") into TEM3;
- * the angle into MPAC ("STORING 2'S COMP ANGLE, LOADING MPAC") and MPAC,
- * kept, in VBUF +4 ("STORING MPAC FOR LATER RESTORATION"); then CDULOGIC,
- * by USPRCADR, makes the angle one's complement. */
+/* TR*GL**P -- LM p. 1260, CM p. 1366: the angle's offset ("MAKE IT EVEN AND
+ * SMALLER") into TEM3; the angle into MPAC ("STORING 2'S COMP ANGLE, LOADING
+ * MPAC") and MPAC, kept, in VBUF +4 ("STORING MPAC FOR LATER RESTORATION");
+ * then CDULOGIC, by USPRCADR, makes the angle one's complement. */
 static void tr_star_gl_star_star_p(void)
 {
     mask(SIX);
@@ -110,8 +113,9 @@ static void tr_star_gl_star_star_p(void)
     tc_to(TR_STAR_GL_STAR_STAR_P + 6u, USPRCADR); /* CADR CDULOGIC */
 }
 
-/* After CDULOGIC: the one's complement angle back to CDUSPOT ("STORING 1'S
- * COMPLEMENT ANGLE"), and its COSINE by USPRCADR. */
+/* TR*GL**P +010 -- LM p. 1260, CM p. 1366: After CDULOGIC: the one's
+ * complement angle back to CDUSPOT ("STORING 1'S COMPLEMENT ANGLE"), and its
+ * COSINE by USPRCADR. */
 void tr_star_gl_star_star_p_after_cdulogic(void)
 {
     dca(ADDRESS_OF(MPAC));
@@ -119,8 +123,9 @@ void tr_star_gl_star_star_p_after_cdulogic(void)
     tc_to(TR_STAR_GL_STAR_STAR_P + 014u, USPRCADR); /* CADR COSINE */
 }
 
-/* After COSINE: the cosine to COSCDU ("STORING COSINE"), and the angle
- * again for SINE +1 by USPRCADR ("SINE +1 EXPECTS ARGUMENT IN A AND L"). */
+/* TR*GL**P +016 -- LM p. 1260, CM p. 1366: After COSINE: the cosine to
+ * COSCDU ("STORING COSINE"), and the angle again for SINE +1 by USPRCADR
+ * ("SINE +1 EXPECTS ARGUMENT IN A AND L"). */
 void tr_star_gl_star_star_p_after_cosine(void)
 {
     dxch(ADDRESS_OF(MPAC));
@@ -129,11 +134,11 @@ void tr_star_gl_star_star_p_after_cosine(void)
     tc_to(TR_STAR_GL_STAR_STAR_P + 024u, USPRCADR); /* CADR SINE +1 */
 }
 
-/* After SINE: MPAC back as it was ("BRINGING UP PRIOR MPAC TO BE
- * RESTORED"), the sine to SINCDU; then the next angle (CCS TEM3 leaves A
- * one less, which MASK SIX makes the next offset down), or, after the
- * last, back by TEM2. Not modelled: TEM3 negative, which TR*GL**P's MASK
- * never leaves. */
+/* TR*GL**P +026 -- LM p. 1260, CM p. 1366: After SINE: MPAC back as it was
+ * ("BRINGING UP PRIOR MPAC TO BE RESTORED"), the sine to SINCDU; then the
+ * next angle (CCS TEM3 leaves A one less, which MASK SIX makes the next
+ * offset down), or, after the last, back by TEM2. Not modelled: TEM3
+ * negative, which TR*GL**P's MASK never leaves. */
 void tr_star_gl_star_star_p_after_sine(void)
 {
     word to;

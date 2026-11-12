@@ -31,11 +31,11 @@ void tcalarm2_plus2(void); /* back from ALARM2 */
 
 /* ERASCHK, CNTRCHK and CYCLSHFT. */
 void eraschk(void);
-void erasloop_plus18(void); /* after the first -1CHK */
-void erasloop_plus31(void); /* after the second */
-void eloopfin_plus2(void);  /* back from CHECKNJ */
-void cyclshft_plus11(void); /* after the first -1CHK */
-void cyclshft_plus17(void); /* after the second */
+void erasloop_plus022(void); /* after the first -1CHK */
+void erasloop_plus037(void); /* after the second */
+void eloopfin_plus2(void);   /* back from CHECKNJ */
+void cyclshft_plus013(void); /* after the first -1CHK */
+void cyclshft_plus021(void); /* after the second */
 
 /* ROPECHK and STSHOSUM. */
 void ropechk(void);

@@ -24,15 +24,17 @@
 
 /* ---- PROG21 and P21PROG1 -- LM p. 655, CM p. 457 ---- */
 
-/* PROG21 +2: "OPTION 2", the vehicle, in R2 of a please perform
- * (GOPERF4: verb 04 noun 06, then verb 50 noun 06 flashing). */
+/* PROG21 +2 -- LM p. 655, CM p. 457: "OPTION 2", the vehicle, in R2 of a
+ * please perform (GOPERF4: verb 04 noun 06, then verb 50 noun 06
+ * flashing). */
 static void request_vehicle(void)
 {
     set_A(BIT2);
     tc_to(PROG21 + 3u, BANKCALL); /* CADR GOPERF4 */
 }
 
-/* PROG21: "ASSUMED VEHICLE IS LM , R2 = 00001" (OPTION2). */
+/* PROG21 -- LM p. 655, CM p. 457: "ASSUMED VEHICLE IS LM , R2 = 00001"
+ * (OPTION2). */
 void prog21(void)
 {
     set_A(ONE);
@@ -40,43 +42,44 @@ void prog21(void)
     request_vehicle();
 }
 
-/* PROG21 +5: "TERMINATE". */
+/* PROG21 +5 -- LM p. 655, CM p. 457: "TERMINATE". */
 void prog21_terminate(void)
 {
     tc_to(PROG21 + 5u, GOTOPOOH);
 }
 
-/* PROG21 +6: "PROCEED VALUE OF ASSUMED VEHICLE OK" (TC +2, to
- * P21PROG1). */
+/* PROG21 +6 -- LM p. 655, CM p. 457: "PROCEED VALUE OF ASSUMED VEHICLE OK"
+ * (TC +2, to P21PROG1). */
 void prog21_proceed(void)
 {
     tc_at(PROG21 + 6u);
     p21prog1();
 }
 
-/* PROG21 +7: "R2 LOADED THROUGH DSKY" (TC -5): the option shown again. */
+/* PROG21 +7 -- LM p. 655, CM p. 457: "R2 LOADED THROUGH DSKY" (TC -5): the
+ * option shown again. */
 void prog21_loaded(void)
 {
     tc_at(PROG21 + 7u);
     request_vehicle();
 }
 
-/* P21PROG1: "LOAD DESIRED TIME OF LAT-LONG.", verb 06 noun 34 (into
- * DSPTEM1), flashed by GOFLASH. */
+/* P21PROG1 -- LM p. 655, CM p. 457: "LOAD DESIRED TIME OF LAT-LONG.", verb
+ * 06 noun 34 (into DSPTEM1), flashed by GOFLASH. */
 void p21prog1(void)
 {
     set_A(V6N34);
     tc_to(P21PROG1 + 1u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* P21PROG1 +3: "TERM". */
+/* P21PROG1 +3 -- LM p. 655, CM p. 457: "TERM". */
 void p21prog1_terminate(void)
 {
     tc_to(P21PROG1 + 3u, GOTOPOOH);
 }
 
-/* P21PROG1 +4: "PROCEED VALUES OK" (TC +2): to the interpreter, for
- * P21_CODE. */
+/* P21PROG1 +4 -- LM p. 655, CM p. 457: "PROCEED VALUES OK" (TC +2): to the
+ * interpreter, for P21_CODE. */
 void p21prog1_proceed(void)
 {
     tc_at(P21PROG1 + 4u);
@@ -84,8 +87,8 @@ void p21prog1_proceed(void)
     intpret();
 }
 
-/* P21PROG1 +5: "TIME LOADED THROUGH DSKY" (TC -5): the time shown
- * again. */
+/* P21PROG1 +5 -- LM p. 655, CM p. 457: "TIME LOADED THROUGH DSKY" (TC -5):
+ * the time shown again. */
 void p21prog1_loaded(void)
 {
     tc_at(P21PROG1 + 5u);
@@ -296,28 +299,29 @@ static const word p21_words[] = {
 };
 #endif
 
-/* P21DSP +21, after the EXIT: the latitude, longitude and altitude,
- * verb 06 noun 43, flashed by GOFLASH. */
+/* P21DSP +21 -- LM p. 657, CM p. 459, after the EXIT: the latitude,
+ * longitude and altitude, verb 06 noun 43, flashed by GOFLASH. */
 void p21dsp_after_exit(void)
 {
     set_A(V06N43);
     tc_to(P21DSP + 022u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* P21DSP +24: "TERM". */
+/* P21DSP +24 -- LM p. 657, CM p. 459: "TERM". */
 void p21dsp_terminate(void)
 {
     tc_to(P21DSP + 024u, GOTOPOOH);
 }
 
-/* P21DSP +25: proceed, which ends the program too. */
+/* P21DSP +25 -- LM p. 657, CM p. 459: proceed, which ends the program
+ * too. */
 void p21dsp_proceed(void)
 {
     tc_to(P21DSP + 025u, GOTOPOOH);
 }
 
-/* P21DSP +26: "V32E RECYCLE": to the interpreter, for
- * P21_RECYCLE_CODE. */
+/* P21DSP +26 -- LM p. 657, CM p. 459: "V32E RECYCLE": to the interpreter,
+ * for P21_RECYCLE_CODE. */
 void p21dsp_recycle(void)
 {
     tc_at(P21DSP + 026u);

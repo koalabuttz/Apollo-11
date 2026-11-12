@@ -150,8 +150,9 @@ static void chkfail2(void)
     }
 }
 
-/* FAIL3: FAILREG +2 is free if its magnitude is +0 (its sign bit only
- * says whether MULTFAIL has been). A masked word is never negative. */
+/* FAIL3 -- LM p. 1381, CM p. 1493: FAILREG +2 is free if its magnitude is +0
+ * (its sign bit only says whether MULTFAIL has been). A masked word is never
+ * negative. */
 static void fail3(void)
 {
     ca(ADDRESS_OF(FAILREG) + 2u);

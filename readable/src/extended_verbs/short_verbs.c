@@ -515,7 +515,7 @@ void v83perf_plus5(void)
     tc(V83PERF + 6u, NOVAC); /* 2CADR R31CALL */
 }
 
-/* V83PERF +9 -- CM p. 255. */
+/* V83PERF +011 -- CM p. 255. */
 void v83perf_after_novac(void)
 {
     tc(V83PERF + 011u, ENDOFJOB);
@@ -712,7 +712,7 @@ void ckoptvb_after_checkmm02_yes(void)
     tc(CKOPTVB + 5u, FINDVAC); /* 2CADR COMPVER */
 }
 
-/* CKOPTVB +8 -- CM p. 247. */
+/* CKOPTVB +010 -- CM p. 247. */
 void ckoptvb_after_findvac(void)
 {
     tc(CKOPTVB + 010u, GOPIN);
@@ -746,7 +746,7 @@ void chazfogc_after_findvac(void)
     tc(CHAZFOGC + 7u, PHASCHNG); /* OCT 00174 */
 }
 
-/* CHAZFOGC +9 -- CM p. 248. */
+/* CHAZFOGC +011 -- CM p. 248. */
 void chazfogc_after_phaschng(void)
 {
     tc(CHAZFOGC + 011u, GOPIN);
@@ -769,7 +769,7 @@ void strokon(void)
     tc(STROKON + 5u, NOVAC); /* 2CADR STRKTSTI */
 }
 
-/* STROKON +8 -- CM p. 251. */
+/* STROKON +010 -- CM p. 251. */
 void strokon_after_novac(void)
 {
     tc(STROKON + 010u, GOPIN);
@@ -897,13 +897,13 @@ void trmtrack_after_downflag(void)
     tc(TRMTRACK + 6u, DOWNFLAG); /* ADRES P25FLAG */
 }
 
-/* TRMTRACK +8 -- LM p. 287. */
+/* TRMTRACK +010 -- LM p. 287. */
 void trmtrack_after_second_downflag(void)
 {
     tc(TRMTRACK + 010u, DOWNFLAG); /* ADRES SRCHOPTN */
 }
 
-/* TRMTRACK +10 -- LM p. 287: "IS TRACK FLAG ON?" */
+/* TRMTRACK +012 -- LM p. 287: "IS TRACK FLAG ON?" */
 void trmtrack_after_third_downflag(void)
 {
     set_A(TRACKBIT);
@@ -974,15 +974,15 @@ void stablish(void)
     tc(STABLISH + 012u, POSTJUMP); /* CADR PRESWTCH */
 }
 
-/* STABLISH +12, the listing's +3 -- CM p. 251: "CSM, SO ALARM AND EXIT". */
-void stablish_plus12(void)
+/* STABLISH +014, the listing's +3 -- CM p. 251: "CSM, SO ALARM AND EXIT". */
+void stablish_plus014(void)
 {
     tc(STABLISH + 014u, ALM_END);
 }
 
-/* STABLISH +13, the listing's +8 -- CM p. 251.
+/* STABLISH +015, the listing's +8 -- CM p. 251.
  * "SET UP RCS, ENTRY, OR SATURN-STICK DAP". */
-void stablish_plus13(void)
+void stablish_plus015(void)
 {
     tc(STABLISH + 015u, POSTJUMP); /* CADR DAPFIG */
 }
@@ -1042,7 +1042,7 @@ void gotor23_after_testxact(void)
     tc(GOTOR23 + 020u, NOVAC); /* 2CADR R23CSM */
 }
 
-/* GOTOR23 +19 -- CM p. 257. */
+/* GOTOR23 +023 -- CM p. 257. */
 void gotor23_after_novac(void)
 {
     tc(GOTOR23 + 023u, ENDOFJOB);
@@ -1097,19 +1097,19 @@ void verb94_after_downflag(void)
     tc(VERB94 + 6u, CHECKMM); /* MM 23 */
 }
 
-/* VERB94 +8 -- CM p. 266. */
+/* VERB94 +010 -- CM p. 266. */
 void verb94_after_checkmm23_no(void)
 {
     tc(VERB94 + 010u, ALM_END);
 }
 
-/* VERB94 +9 -- CM p. 266. */
+/* VERB94 +011 -- CM p. 266. */
 void verb94_after_checkmm23_yes(void)
 {
     tc(VERB94 + 011u, PHASCHNG); /* OCT 112 */
 }
 
-/* VERB94 +11 -- CM p. 266. */
+/* VERB94 +013 -- CM p. 266. */
 void verb94_after_phaschng(void)
 {
     tc(VERB94 + 013u, CLEANOUT);
@@ -1347,10 +1347,10 @@ void nokill_after_enter(void)
     tc(NOKILL + 7u, NOKILL);
 }
 
-/* NOKILL +8 -- LM p. 291, CM p. 263.
+/* NOKILL +010 -- LM p. 291, CM p. 263.
  * SKEEP1 gets SELFADRS, the self-check's address, and the display system
  * is released (ENDEXT). */
-void nokill_plus8(void)
+void nokill_plus010(void)
 {
     set_A(SELFADRS);
     ts(ADDRESS_OF(SKEEP1));

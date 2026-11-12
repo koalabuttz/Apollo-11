@@ -36,14 +36,14 @@ void leave_through(unsigned address)
 
 /* ---- FLTRSUB -- p. 919 ---- */
 
-/* FLTRSUB, "THRUST VECTOR FILTER SUBROUTINE": the filter's offset (in A)
- * moves toward the measured one (in L) by GAINFLTR of the difference
- * (.2, or .1 with the CSM docked), "INCR TO OFFSET, LIMITED" to DUNFVLIM,
- * "7 MR MAX CHG IN F DIR IN VEH IN 2 SECS". The return waits in TEM2.
- * ("ONE MCT, NO WDS, CAN BE SAVED IF NEG OF ORIG OFFSET ARRIVES IN A, BUT
- * IT'S NOT WORTH THE INCREASED OBSCURITY.") (An A that overflows skips the
- * step after its TS, as each test here has it; the offset is a word, the
- * product too.) */
+/* FLTRSUB -- p. 919, "THRUST VECTOR FILTER SUBROUTINE": the filter's offset
+ * (in A) moves toward the measured one (in L) by GAINFLTR of the difference
+ * (.2, or .1 with the CSM docked), "INCR TO OFFSET, LIMITED" to DUNFVLIM, "7
+ * MR MAX CHG IN F DIR IN VEH IN 2 SECS". The return waits in TEM2. ("ONE
+ * MCT, NO WDS, CAN BE SAVED IF NEG OF ORIG OFFSET ARRIVES IN A, BUT IT'S NOT
+ * WORTH THE INCREASED OBSCURITY.") (An A that overflows skips the step after
+ * its TS, as each test here has it; the offset is a word, the product
+ * too.) */
 void fltrsub(void)
 {
     qxch(ADDRESS_OF(TEM2));
@@ -56,10 +56,10 @@ void fltrsub(void)
     fltrsub_after_increment();
 }
 
-/* LIMITSUB's return: the "TOTAL OFFSET", limited to UNFVLIM, "129 MR MAX
- * THRUST OFFSET. 105 MR TRAVEL +10MR DEFL+5MR MECH MOUNT+9MR ABLATION."
- * (A sum that overflows skips the CA: LIMITSUB then limits L to +1 or
- * -1.) */
+/* FLTRSUB +013 -- p. 919: LIMITSUB's return: the "TOTAL OFFSET", limited to
+ * UNFVLIM, "129 MR MAX THRUST OFFSET. 105 MR TRAVEL +10MR DEFL+5MR MECH
+ * MOUNT+9MR ABLATION." (A sum that overflows skips the CA: LIMITSUB then
+ * limits L to +1 or -1.) */
 void fltrsub_after_increment(void)
 {
     ad_at(ADDRESS_OF(TEM3));
@@ -69,7 +69,8 @@ void fltrsub_after_increment(void)
     fltrsub_after_total();
 }
 
-/* LIMITSUB's return: back to the caller, through TEM2. */
+/* FLTRSUB +017 -- p. 919: LIMITSUB's return: back to the caller, through
+ * TEM2. */
 void fltrsub_after_total(void)
 {
     leave_through(ADDRESS_OF(TEM2));
@@ -122,11 +123,11 @@ const struct interpretive_code NB2CDUSP_CODE = {030u, NB2CDUSP, COUNT(nb2cdusp_w
 static bool arctrgsp(void);
 static void dvbycosm(void);
 
-/* The cosine doubled, to units of 1, in TEM5 ("OVERFLOW. FETCH POSMAX,
- * MPAC ALWAYS POS"); CDUZ from its sine (the matrix's word 2) and cosine
- * (ARCTRGSP). ARCTRGSP returns through TEM4, which leaves the file; each
- * return is a key of its own, and only SINZERO's TC Q comes straight
- * back. */
+/* NB2CDUSP +010 -- p. 920: The cosine doubled, to units of 1, in TEM5
+ * ("OVERFLOW. FETCH POSMAX, MPAC ALWAYS POS"); CDUZ from its sine (the
+ * matrix's word 2) and cosine (ARCTRGSP). ARCTRGSP returns through TEM4,
+ * which leaves the file; each return is a key of its own, and only SINZERO's
+ * TC Q comes straight back. */
 void nb2cdusp_after_exit(void)
 {
     dca(MPAC_AT(0u));
@@ -141,9 +142,9 @@ void nb2cdusp_after_exit(void)
     if (arctrgsp()) nb2cdusp_store_cduz();
 }
 
-/* ARCTRGSP's return: "CDUZ". Then CDUY, from the matrix's words 0 and 4
- * divided by the cosine (DVBYCOSM). (An A that overflows skips the CA:
- * DVBYCOSM then takes the word one off FIXLOC.) */
+/* NB2CDUSP +023 -- p. 920: ARCTRGSP's return: "CDUZ". Then CDUY, from the
+ * matrix's words 0 and 4 divided by the cosine (DVBYCOSM). (An A that
+ * overflows skips the CA: DVBYCOSM then takes the word one off FIXLOC.) */
 void nb2cdusp_store_cduz(void)
 {
     if (!ts(MPAC_AT(2u))) set_A(ZERO);
@@ -160,8 +161,8 @@ void nb2cdusp_cduy_second(void)
     nb2cdusp_cduy_angle();
 }
 
-/* The first quotient negated (TEM1) is the sine, the second (in L) the
- * cosine. */
+/* NB2CDUSP +030 -- p. 920: The first quotient negated (TEM1) is the sine,
+ * the second (in L) the cosine. */
 void nb2cdusp_cduy_angle(void)
 {
     cs(ADDRESS_OF(TEM1));
@@ -169,7 +170,8 @@ void nb2cdusp_cduy_angle(void)
     if (arctrgsp()) nb2cdusp_store_cduy();
 }
 
-/* ARCTRGSP's return: "CDUY". Then CDUX, from the matrix's words 8 and 14.
+/* NB2CDUSP +032 -- p. 920: ARCTRGSP's return: "CDUY". Then CDUX, from the
+ * matrix's words 8 and 14.
  */
 void nb2cdusp_store_cduy(void)
 {
@@ -194,8 +196,9 @@ void nb2cdusp_cdux_angle(void)
     if (arctrgsp()) nb2cdusp_store_cdux();
 }
 
-/* ARCTRGSP's return: "CDUX", and back (RVQ). Not modelled: an A that
- * overflows, whose TS would skip the TC INTPRET into the RVQ. */
+/* NB2CDUSP +041 -- p. 920: ARCTRGSP's return: "CDUX", and back (RVQ). Not
+ * modelled: an A that overflows, whose TS would skip the TC INTPRET into the
+ * RVQ. */
 void nb2cdusp_store_cdux(void)
 {
     if (ts(MPAC_AT(0u))) not_modelled();
@@ -212,17 +215,17 @@ const struct interpretive_code NB2CDUSP_RVQ_CODE = {030u, NB2CDUSP + 043u,
 
 /* ---- DVBYCOSM -- p. 921 ---- */
 
-/* DVBYCOSM: the matrix's word at A (from FIXLOC) divided by the cosine in
- * TEM5, to TEM1. "THE ELEMENTS OF THE NAV BASE MATRIX WHICH WE MUST DIVIDE
- * BY COS(MGA) ALREADY CONTAIN COS(MGA)/2 AS A FACTOR. THEREFORE THE
- * QUOTIENT SHOULD ORDINARILY NEVER EXCEED 1/2 IN MAGNITUDE. BUT IF THE MGA
- * IS NEAR PI/2 THEN COS(MGA) IS NEAR ZERO, AND THERE MAY BE SOME CHAFF IN
- * THE OTHER ELEMENTS OF THE MATRIX WHICH WOULD PRODUCE CHAOS UNDER
- * DIVISION. BEFORE DIVIDING WE MAKE SURE COS(MGA) IS AT LEAST ONE BIT
- * LARGER THAN THE MAGNITUDE OF THE HIGH ORDER PART OF THE OPERAND." Else
- * TEM1 gets the difference, "ALWAYS SMALL IF BRANCH". (A small offset plus
- * FIXLOC never overflows: TS ADDRWD does not skip. A sum that overflows
- * skips the LXCH.) */
+/* DVBYCOSM -- p. 921: the matrix's word at A (from FIXLOC) divided by the
+ * cosine in TEM5, to TEM1. "THE ELEMENTS OF THE NAV BASE MATRIX WHICH WE
+ * MUST DIVIDE BY COS(MGA) ALREADY CONTAIN COS(MGA)/2 AS A FACTOR. THEREFORE
+ * THE QUOTIENT SHOULD ORDINARILY NEVER EXCEED 1/2 IN MAGNITUDE. BUT IF THE
+ * MGA IS NEAR PI/2 THEN COS(MGA) IS NEAR ZERO, AND THERE MAY BE SOME CHAFF
+ * IN THE OTHER ELEMENTS OF THE MATRIX WHICH WOULD PRODUCE CHAOS UNDER
+ * DIVISION. BEFORE DIVIDING WE MAKE SURE COS(MGA) IS AT LEAST ONE BIT LARGER
+ * THAN THE MAGNITUDE OF THE HIGH ORDER PART OF THE OPERAND." Else TEM1 gets
+ * the difference, "ALWAYS SMALL IF BRANCH". (A small offset plus FIXLOC
+ * never overflows: TS ADDRWD does not skip. A sum that overflows skips the
+ * LXCH.) */
 static void dvbycosm(void)
 {
     ad_at(ADDRESS_OF(FIXLOC));
@@ -245,18 +248,18 @@ static void sparcsin(void);
 static void usecos(void);
 static void one_to2_tcq(void);
 
-/* ARCTRGSP "RETURNS THE 2'S COMPLEMENT, PI, SP ANGLE IN THE A REGISTER
- * GIVEN ITS SINE IN A AND ITS COSINE IN L IN UNITS OF 2. THE RESULT IS AN
- * UNAMBIGUOUS ANGLE ANYWHERE IN THE CIRCLE, WITH A MAXIMUM ERROR OF +-4
- * BITS." A zero sine goes to SINZERO, "TO AVOID DIVIDING BY ZERO", which
+/* ARCTRGSP -- p. 922 "RETURNS THE 2'S COMPLEMENT, PI, SP ANGLE IN THE A
+ * REGISTER GIVEN ITS SINE IN A AND ITS COSINE IN L IN UNITS OF 2. THE RESULT
+ * IS AN UNAMBIGUOUS ANGLE ANYWHERE IN THE CIRCLE, WITH A MAXIMUM ERROR OF
+ * +-4 BITS." A zero sine goes to SINZERO, "TO AVOID DIVIDING BY ZERO", which
  * returns by TC Q: true. Else the return waits in TEM4, the sine in TEM2,
  * the cosine in TEM3; the cosine divided by the sine is zero if "COS IS
- * SMALLER" (USECOS). "SIN IS SMALLER OR EQUAL": the angle is ARCSIN(SIN),
- * or with a negative cosine PI less it ("REVERSE SIGN OF SIN"; NEGMAX,
- * "PI, 2'S COMPLEMENT", in TEM3). CCS TEM3 takes four ways: above zero
- * and +0, no turn to add; below zero, the sine negated; -0, the sine
- * replaced by its +0. (A is a word at each TS: none skips. As each test
- * here has it, an overflow would skip the step after.) */
+ * SMALLER" (USECOS). "SIN IS SMALLER OR EQUAL": the angle is ARCSIN(SIN), or
+ * with a negative cosine PI less it ("REVERSE SIGN OF SIN"; NEGMAX, "PI, 2'S
+ * COMPLEMENT", in TEM3). CCS TEM3 takes four ways: above zero and +0, no
+ * turn to add; below zero, the sine negated; -0, the sine replaced by its
+ * +0. (A is a word at each TS: none skips. As each test here has it, an
+ * overflow would skip the step after.) */
 static bool arctrgsp(void)
 {
     if (A_is_zero()) {
@@ -288,9 +291,9 @@ static bool arctrgsp(void)
     return false;
 }
 
-/* SPARCSIN -1's return: the arcsine in two's complement (ONESTO2S), less
- * the turn in TEM3 (MSU), in two's complement again (1TO2&TCQ), and back
- * through TEM4. */
+/* ARCTRGSP +025 -- p. 922, SPARCSIN -1's return: the arcsine in two's
+ * complement (ONESTO2S), less the turn in TEM3 (MSU), in two's complement
+ * again (1TO2&TCQ), and back through TEM4. */
 void arctrgsp_after_sparcsin(void)
 {
     tc_at(ARCTRGSP + 025u);
@@ -316,8 +319,8 @@ void one_to2_tcq_plus1(void)
     leave_through(ADDRESS_OF(TEM4));
 }
 
-/* USECOS: "ANGLE = SIGN(SIN)(FI/2-ARCSIN(COS))": the arcsine of the
- * cosine negated, plus HALF (a quarter turn at this scale), in TEM3 ("WE
+/* USECOS -- p. 922: "ANGLE = SIGN(SIN)(FI/2-ARCSIN(COS))": the arcsine of
+ * the cosine negated, plus HALF (a quarter turn at this scale), in TEM3 ("WE
  * NO LONGER NEED COS"). */
 static void usecos(void)
 {
@@ -327,9 +330,9 @@ static void usecos(void)
     usecos_after_sparcsin();
 }
 
-/* SPARCSIN -1's return: the angle's sign the sine's (CCS TEM2: above zero
- * as it is, below zero negated, either zero +0); an A that overflows skips
- * the CCS and keeps it as it is. Then 1TO2&TCQ. */
+/* USECOS +2 -- p. 922, SPARCSIN -1's return: the angle's sign the sine's
+ * (CCS TEM2: above zero as it is, below zero negated, either zero +0); an A
+ * that overflows skips the CCS and keeps it as it is. Then 1TO2&TCQ. */
 void usecos_after_sparcsin(void)
 {
     ad(HALF);
@@ -341,8 +344,8 @@ void usecos_after_sparcsin(void)
     one_to2_tcq();
 }
 
-/* SINZERO: a zero sine, so the angle is 0, or PI if the cosine is below
- * zero ("PI, 2'S COMP"); CCS L leaves +0 for the others. */
+/* SINZERO -- p. 922: a zero sine, so the angle is 0, or PI if the cosine is
+ * below zero ("PI, 2'S COMP"); CCS L leaves +0 for the others. */
 static void sinzero(void)
 {
     if (ccs_register(L_ADDRESS) == NEGATIVE)
@@ -354,11 +357,12 @@ static void sinzero(void)
 
 /* ---- SPARCSIN -- p. 923 ---- */
 
-/* "SPARCSIN TAKES AN ARGUMENT SCALED UNITY IN A AND RETURNS AN ANGLE
- * SCALED 180 DEGREES IN A. IT HAS BEEN UNIT TESTED IN THE REGION +-.94
- * (+-70 DEGREES) AND THE MAXIMUM ERROR IS +-5 BITS WITH AN AVERAGE TIME OF
- * 450 MICROSECONDS. SPARCSIN -1 TAKES THE ARGUMENT SCALED TWO. (BOB
- * CRISP)" SPARCSIN -1 doubles it (DOUBLE) and goes on. */
+/* SPARCSIN -1 (USECOS +016) -- p. 923: "SPARCSIN TAKES AN ARGUMENT SCALED
+ * UNITY IN A AND RETURNS AN ANGLE SCALED 180 DEGREES IN A. IT HAS BEEN UNIT
+ * TESTED IN THE REGION +-.94 (+-70 DEGREES) AND THE MAXIMUM ERROR IS +-5
+ * BITS WITH AN AVERAGE TIME OF 450 MICROSECONDS. SPARCSIN -1 TAKES THE
+ * ARGUMENT SCALED TWO. (BOB CRISP)" SPARCSIN -1 doubles it (DOUBLE) and goes
+ * on. */
 void sparcsin_minus1(void)
 {
     double_A();
@@ -391,13 +395,13 @@ static void sparcsin(void)
 
 /* ---- LIMITSUB and ONESTO2S -- p. 924 ---- */
 
-/* LIMITSUB "LIMITS THE MAGNITUDE OF THE POSITIVE OR NEGATIVE VARIABLE
- * ARRIVING IN L TO THE POSITIVE LIMIT ARRIVING IN A. THE SIGNED LIMITED
- * VARIABLE IS RETURNED IN A." ("VERSION COUTESY HUGH BLAIR-SMITH".) The
- * variable divided by the limit (DV of +0,L) is zero only if it is
- * within the limit: then the variable itself; else the limit, with its
- * sign (LXCH TEM1 puts the limit in L). (A limit that overflows skips the
- * CA ZERO: the divide then takes A's +1 or -1.) */
+/* LIMITSUB -- p. 924 "LIMITS THE MAGNITUDE OF THE POSITIVE OR NEGATIVE
+ * VARIABLE ARRIVING IN L TO THE POSITIVE LIMIT ARRIVING IN A. THE SIGNED
+ * LIMITED VARIABLE IS RETURNED IN A." ("VERSION COUTESY HUGH BLAIR-SMITH".)
+ * The variable divided by the limit (DV of +0,L) is zero only if it is
+ * within the limit: then the variable itself; else the limit, with its sign
+ * (LXCH TEM1 puts the limit in L). (A limit that overflows skips the CA
+ * ZERO: the divide then takes A's +1 or -1.) */
 void limitsub(void)
 {
     if (!ts(ADDRESS_OF(TEM1))) set_A(ZERO);
@@ -413,7 +417,7 @@ void limitsub(void)
     return_to_q();
 }
 
-/* ONESTO2S, the "SUBROUTINE TO CONVERT 1'S COMP SP TO 2'S COMP": a
+/* ONESTO2S -- p. 924, the "SUBROUTINE TO CONVERT 1'S COMP SP TO 2'S COMP": a
  * negative number one more (CCS leaves its magnitude less one, CS A its
  * negative), -0 to +0, a positive one as it is (AD ONE puts back the one
  * CCS took off). */
