@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 /* P51-P53.agc of the CM, part 6 (Comanche055 pp. 766-771): P51, the IMU
- * orientation determination, and P53, its backup (bank 14); SET1/PDT
- * (bank 15), which GYCRS (part 1) also runs by RTB; and SXTSM, a mark's
- * line of sight in stable member axes (bank 17).
+ * orientation determination, and P53, its backup (bank 14); SET1/PDT (bank
+ * 15), which GYCRS (part 1) also runs by RTB; and SXTSM, a mark's line of
+ * sight in stable member axes (bank 17). The faithful C is
+ * c64-port/src/cm_p51_p53.c.
  *
  * P51 "DETERMINES THE INERTIAL ORIENTATION OF THE IMU." The crew coarse
  * aligns the IMU to zero gimbal angles (V41) if they like, then marks two

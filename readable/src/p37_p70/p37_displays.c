@@ -2,7 +2,8 @@
 /* P37_P70.agc of the CM, part 1 (Comanche055 pp. 895-899, bank 36): the
  * "RETURN TO EARTH DISPLAY SUBROUTINE" RTEVN; the "PRECISION DISPLAY,
  * TARGETING COMPUTATION AND RTE END PROCESSING" (P37G to P37W); and the
- * display subroutines P37GFRB1, P370GOFR and P370GOF.
+ * display subroutines P37GFRB1, P370GOFR and P370GOF. The faithful C is
+ * c64-port/src/cm_p37_p70.c.
  *
  * RTEVN shows a trajectory, the conic or the precision one: the landing
  * site (V06N61), the time to entry (V06N39), the speed and angle at entry

@@ -201,6 +201,12 @@
 #define SWITCH(order, flag)                                                                        \
     ((word)((((I_##flag) / 15u) << 8) | ((I_##flag) % 15u) | SWITCH_##order))
 
+/* A label of the fixed memory as the interpreter has it: its bank, and its
+ * address in the bank (02000-03777), which is what LOC holds. (I_<label>
+ * is the bank times 02000 plus the address in the bank.) */
+#define BANK_OF(label) ((word)(I_##label / 02000u))
+#define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
+
 /* An address: an erasable word, a word in the work area or a place in
  * fixed memory (a branch's, a CALL's or a load's). */
 #define ADDRESS(name) ((word)(I_##name))

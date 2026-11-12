@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 5 (Luminary099 pp. 521-537): the rendezvous radar's
- * subroutines, from MAGSUB to RRZ2, with ENDRADAR, RDBADEND and RADNOOP
- * (pp. 561-563), which RRZERO and RRZ2 end at.
+ * subroutines, from MAGSUB to RRZ2, with ENDRADAR, RDBADEND and RADNOOP (pp.
+ * 561-563), which RRZERO and RRZ2 end at. The faithful C is
+ * c64-port/src/lm_p20_p25.c.
  *
  * MAGSUB to FLIP are in fixed-fixed memory, called with interrupts held:
  * MAGSUB compares a magnitude with a limit, RRLIMCHK checks a pair of

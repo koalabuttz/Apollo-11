@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* CM_ENTRY_DIGITAL_AUTOPILOT.agc, part C (Comanche055 p. 1076, bank 15):
- * "DEAD ZONE LOGIC USED BY ENTRY DIGITAL AUTOPILOTS."
+ * "DEAD ZONE LOGIC USED BY ENTRY DIGITAL AUTOPILOTS." The faithful C is
+ * c64-port/src/cm_entry_dap.c.
  *
  * Each test takes an error or a rate (over 180 degrees) in A and leaves a
  * tag for the jet code tables: +0 inside the dead zone, +1 or -1 outside

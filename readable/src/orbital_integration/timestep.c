@@ -2,7 +2,9 @@
 /* ORBITAL_INTEGRATION.agc, DIFEQTAB to DIFEQ0 (LM pp. 1237-1238, CM pp.
  * 1344-1345), with the sphere of influence checks (the LM's EARSPH and
  * LUNSPH, the CM's CHKSWTCH, RPQOK and EARSPH), in the listing's notation
- * (src/interpreter/notation.h), which the readable interpreter runs.
+ * (src/interpreter/notation.h), which the readable interpreter runs. The
+ * faithful C is c64-port/src/lm_orbital_integration.c and
+ * cm_orbital_integration.c.
  *
  * TIMESTEP starts each time step of the precision integration. In
  * midcourse (MIDFLAG) it first asks whether the vehicle has crossed the

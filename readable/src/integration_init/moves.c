@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* INTEGRATION_INITIALIZATION.agc, the state vector moves: MOVEACSM and
- * MOVEPCSM (LM p. 1211, CM p. 1315), MOVEALEM and MOVEPLEM (LM p. 1212,
- * CM p. 1316), and SETBANK (LM p. 1213, CM p. 1317). */
+ * MOVEPCSM (LM p. 1211, CM p. 1315), MOVEALEM and MOVEPLEM (LM p. 1212, CM
+ * p. 1316), and SETBANK (LM p. 1213, CM p. 1317). The faithful C is
+ * c64-port/src/lm_integration_init.c and cm_integration_init.c. */
 #include "integration_init.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"

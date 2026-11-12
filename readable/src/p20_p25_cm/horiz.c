@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 18 (Comanche055 pp. 627-630): HORIZ, DIVIDE and
- * RECT.1 (bank 31), all interpretive code.
+/* P20-P25.agc, part 18 (Comanche055 pp. 627-630): HORIZ, DIVIDE and RECT.1
+ * (bank 31), all interpretive code. The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * HORIZ, which POINTAXS calls when no landmark is given: the point on the
  * earth's or the moon's horizon the star is marked on. UBAR0, UBAR1 and

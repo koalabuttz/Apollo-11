@@ -40,9 +40,6 @@
 #define R30_BANK 023u
 #endif
 
-/* A label's address in its bank (02000-03777). */
-#define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
-
 /* ---- V82CALL -- LM pp. 713-714, CM pp. 515-516 ---- */
 
 /* V82CALL: to the interpreter, for V82CALL_CODE. */

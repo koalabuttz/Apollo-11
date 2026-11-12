@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 1 (Luminary099 pp. 492-503): the programs.
+/* P20-P25.agc, part 1 (Luminary099 pp. 492-503): the programs. The faithful
+ * C is c64-port/src/lm_p20_p25.c.
  *
  * P20, "RENDEZVOUS NAVIGATION PROGRAM 20": "THE PURPOSE OF THIS PROGRAM IS
  * TO CONTROL THE RENDEZVOUS RADAR FROM STARTUP THROUGH ACQUISITION AND

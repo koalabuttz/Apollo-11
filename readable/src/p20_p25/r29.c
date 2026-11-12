@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 16 (Luminary099 pp. 593-598): GOTOV56, and R29's start
- * (R29, R29REM0J, PREPOS29, R29.LOS and SETUP29D).
+ * (R29, R29REM0J, PREPOS29, R29.LOS and SETUP29D). The faithful C is
+ * c64-port/src/lm_p20_p25.c.
  *
  * GOTOV56: "P20 TERMINATES BY GOTOV56 INSTEAD OF GOTOPOOH", TRMTRACK
  * through SUPDXCHZ.

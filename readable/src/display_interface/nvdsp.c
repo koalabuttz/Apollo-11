@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* DISPLAY_INTERFACE_ROUTINES.agc, part 6: PINBRNCH and the display going
- * out (NVDSP, GOPLAY), and WITCHONE and XCHNYLOC (LM pages 1364-1367, CM
- * pages 1475-1478), bank 10.
+/* DISPLAY_INTERFACE_ROUTINES.agc, part 6: PINBRNCH and the display going out
+ * (NVDSP, GOPLAY), and WITCHONE and XCHNYLOC (LM pages 1364-1367, CM pages
+ * 1475-1478), bank 10. The faithful C is c64-port/src/lanec_di_*.c.
  *
  * NVDSP puts the kind's verb and noun out by NVMONOPT, then for a
  * flashing display waits in ENDIDLE (FLASHSUB, endidle.c) for the

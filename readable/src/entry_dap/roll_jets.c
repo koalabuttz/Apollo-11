@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* CM_ENTRY_DIGITAL_AUTOPILOT.agc, part F (Comanche055 pp. 1085-1089, bank
- * 15): the 2 s roll system's jets, after CM/RCS (part E) has its two
- * burns, TON1 and TON2, and their jets' directions, JNDX and JNDX1.
+ * 15): the 2 s roll system's jets, after CM/RCS (part E) has its two burns,
+ * TON1 and TON2, and their jets' directions, JNDX and JNDX1. The faithful C
+ * is c64-port/src/cm_entry_dap.c.
  *
  * GETOFF finds the coasting time between them, TOFF, and scales the three
  * times to centiseconds. TIMETST then makes them a list: "TIMETST
@@ -354,7 +355,7 @@ void jetactn(void)
  * with A +0. */
 static void jetactn_write(void)
 {
-    write_channel(6); /* EXTEND; WRITE ROLLJETS */
+    write_channel(CHAN6); /* EXTEND; WRITE ROLLJETS */
     switch (ccs_at(ADDRESS_OF(OUTTAG))) {
     case POSITIVE: tc_to(JETACTN + 4u, TASKOVER); break;
     case IS_PLUS_ZERO: rolldump(); break;

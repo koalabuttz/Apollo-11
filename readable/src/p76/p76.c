@@ -28,9 +28,6 @@
 
 #define P76_BANK 013u
 
-/* A label's address in its bank (02000-03777). */
-#define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
-
 /* The words of the code from P76, as the listing places them. */
 #if LUMINARY099
 #define DELTA_V_AT  (P76 + 7u)    /* CAF V06N84 */

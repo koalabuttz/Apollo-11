@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 8 (Comanche055 pp. 590-597): CRS61.1, the CSM's
  * preferred tracking attitude, and R63, which works out the desired CDU
- * angles for it (bank 34).
+ * angles for it (bank 34). The faithful C is c64-port/src/cm_p20_p25.c.
  *
  * R61CSM calls CRS61.1, which leaves in MPAC what it did ("RETURNS: ALL TO
  * L+1"): 0, the "NORMAL EXIT", the "3 SETS OF INPUTS FED TO DAP" (the
@@ -61,7 +61,7 @@ void crs61_1_after_exit(void)
 void autock(void)
 {
     set_A(PRIO30);
-    rxor_channel(031);
+    rxor_channel(CHAN31);
     mask(FURST3);
     if (A_is_zero()) { /* EXTEND; BZF DAPCK */
         dapck();

@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: MIT */
 /* RADAR_LEADIN_ROUTINES.agc (Luminary099 pp. 490-491): "RADAR SAMPLING
  * LOOP." The radar tests (R04, R77) set RSAMPDT, the sampling period, and
- * start RADSAMP as a task. Each time it runs, it puts itself on the
- * WAITLIST again, starts DORSAMP as a job and works out RTSTDEX, which
- * measurement to take. DORSAMP reads the radar once (VARADAR and RADSTALL)
- * and, except in R77, keeps the sample in RSTACK; RTSTLOC steps through
- * RSTACK's double words. "+0 INSERTED MANUALLY TERMINATES TEST."
+ * start RADSAMP as a task. Each time it runs, it puts itself on the WAITLIST
+ * again, starts DORSAMP as a job and works out RTSTDEX, which measurement to
+ * take. DORSAMP reads the radar once (VARADAR and RADSTALL) and, except in
+ * R77, keeps the sample in RSTACK; RTSTLOC steps through RSTACK's double
+ * words. "+0 INSERTED MANUALLY TERMINATES TEST." The faithful C is
+ * c64-port/src/lm_radar_leadin_routines.c.
  *
  * Each call out of the file (WAITLIST, NOVAC, SWCALL, BANKCALL) leaves Z
  * at the routine and Q at the word after the TC, where the routine comes

@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: MIT */
 /* RTB_OP_CODES.agc (Luminary099, pp. 1397-1402) and RT8_OP_CODES.agc
- * (Comanche055, pp. 1508-1516), the same code in both: the basic routines
- * an interpretive RTB runs (return to basic: RTB names one of these, the
- * interpreter's SWCALL goes there, and the routine ends back at DANZIG,
- * the interpreter's next order). The CM's file adds READPIPS, VECMODE,
- * INCRCDUS, TRANSP1 and TRANSP2, and keeps QUALITY1 and QUALITY2
- * (quality.c), which the LM has in ORBITAL_INTEGRATION.
+ * (Comanche055, pp. 1508-1516), the same code in both: the basic routines an
+ * interpretive RTB runs (return to basic: RTB names one of these, the
+ * interpreter's SWCALL goes there, and the routine ends back at DANZIG, the
+ * interpreter's next order). The CM's file adds READPIPS, VECMODE, INCRCDUS,
+ * TRANSP1 and TRANSP2, and keeps QUALITY1 and QUALITY2 (quality.c), which
+ * the LM has in ORBITAL_INTEGRATION. The faithful C is
+ * c64-port/src/lm_rtb_op_codes.c and cm_rtb_op_codes.c.
  *
  * Each routine here ends where the listing leaves the file: at SLOAD2,
  * NEWMODE or VMODE (which set the mode and go on to DANZIG), at DANZIG,

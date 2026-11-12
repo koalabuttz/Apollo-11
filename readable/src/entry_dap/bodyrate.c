@@ -2,7 +2,8 @@
 /* CM_ENTRY_DIGITAL_AUTOPILOT.agc, part B (Comanche055 pp. 1065 and
  * 1070-1072, bank 15): "THIS SECTION CALCULATES THE ANGULAR BODY RATES EACH
  * .1 SEC.  THE ANGULAR RATES ARE THOSE ALONG THE BODY AXES" "XB, YB, ZB,
- * AND ARE NORMALLY DESIGNATED  P, Q, R."
+ * AND ARE NORMALLY DESIGNATED  P, Q, R." The faithful C is
+ * c64-port/src/cm_entry_dap.c.
  *
  * BODYRATE, from READGYMB's DOBRATE1 every 0.1 s, turns the gimbal angle
  * changes READGYM1 formed (-DELAOG, -DELAIG, -DELAMG, the outer, inner and

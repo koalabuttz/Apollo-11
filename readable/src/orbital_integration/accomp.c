@@ -2,7 +2,8 @@
 /* ORBITAL_INTEGRATION.agc, ACCOMP, GETRPSV, GAMCOMP, GOBAQUE and INT-ABRT
  * (LM pp. 1230-1233, CM pp. 1337-1340). The interpretive words are in the
  * listing's notation (src/interpreter/notation.h); the basic code after
- * INT-ABRT's EXIT is C.
+ * INT-ABRT's EXIT is C. The faithful C is
+ * c64-port/src/lm_orbital_integration.c and cm_orbital_integration.c.
  *
  * "AGC ROUTINE TO COMPUTE ACCELERATION COMPONENTS." ACCOMP sums, in FV,
  * the accelerations the conic leaves out. ALPHAV comes in as the

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 /* TJET_LAW.agc, the LM's: Luminary099 pages 1460-1469, bank 17, in EBANK 6
- * (the listing's EBANK= TJP).
+ * (the listing's EBANK= TJP). The faithful C is c64-port/src/lm_tjet_law.c.
  *
  * Every branch of TJETLAW ends at RETURNTJ "WITH TJET" "(SCALED AT 4 SEC)
  * IN THE ACCUMULATOR." So each piece below leaves the jet time in A and

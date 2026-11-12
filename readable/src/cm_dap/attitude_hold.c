@@ -25,7 +25,7 @@ static void enddamp(void);
  * OTHERWISE, GO TO ATTHOLD." */
 void ahfnorot(void)
 {
-    read_channel(031);
+    read_channel(CHAN31);
     mask(BIT14);
     if (A_is_zero_or_minus()) { /* EXTEND; BZMF FREECONT */
         freecont();
@@ -37,7 +37,7 @@ void ahfnorot(void)
         continue_at(REINIT);
         return;
     }
-    read_channel(031);
+    read_channel(CHAN31);
     mask(BIT13);
     if (A_is_zero_or_minus()) { /* EXTEND; BZMF HOLDFUNC */
         continue_at(HOLDFUNC);
@@ -59,7 +59,7 @@ static void freecont(void)
 {
     set_A(ONE);
     ts(ADDRESS_OF(HOLDFLAG));
-    read_channel(032);
+    read_channel(CHAN32);
     ts(L_ADDRESS);
     com();
     mask(MANROT);

@@ -2,7 +2,7 @@
 /* SPS_BACK-UP_RCS_CONTROL.agc, the LM's: Luminary099 pages 1507-1510, bank
  * 21, in EBANK 6 (the listing's EBANK= TJU). PROGRAM NAME SPSRCS, by "EDGAR
  * M. OSHIKA (AC ELECTRONICS)", "MODIFIED TO IMPROVE BENDING STABILITY BY G.
- * KALAN, FEB. 14, 1969".
+ * KALAN, FEB. 14, 1969". The faithful C is c64-port/src/lm_sps_backup.c.
  *
  * The listing's own outline, in five steps: "JET SENSE TEST (SPSRCS)",
  * "RATE DEAD BAND TEST", "OUTER RATE LIMIT TEST (SPSSTART)", "COAST ZONE

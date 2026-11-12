@@ -269,7 +269,7 @@ void dvcntset(void)
         return;
     }
     set_A(BIT9); /* "CHECK GIMBAL FAIL BIT" */
-    rand_channel(032u);
+    rand_channel(CHAN32);
     if (A_is_zero()) {
         usejets();
         return;

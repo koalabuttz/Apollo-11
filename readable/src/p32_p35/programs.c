@@ -1,10 +1,10 @@
 /* SPDX-License-Identifier: MIT */
-/* P32-P35_P72-P75.agc (Luminary099 pp. 618-631 and 650): the programs'
- * own code (bank 35). P32 and P72, "COELLIPTIC SEQUENCE INITIATION
- * (CSI) PROGRAMS", and P33 and P73, "CONSTANT DELTA HEIGHT (CDH)
- * PROGRAMS"; AVFLAGA, AVFLAGP and P20FLGON, which set the flags; DISDVLVC,
- * which shows a delta V in local vertical coordinates; and COMPTGO, which
- * starts the clock display.
+/* P32-P35_P72-P75.agc (Luminary099 pp. 618-631 and 650): the programs' own
+ * code (bank 35). P32 and P72, "COELLIPTIC SEQUENCE INITIATION (CSI)
+ * PROGRAMS", and P33 and P73, "CONSTANT DELTA HEIGHT (CDH) PROGRAMS";
+ * AVFLAGA, AVFLAGP and P20FLGON, which set the flags; DISDVLVC, which shows
+ * a delta V in local vertical coordinates; and COMPTGO, which starts the
+ * clock display. The faithful C is c64-port/src/lm_p32_p35.c.
  *
  * P32's purpose, as its description has it: "TO CALCULATE PARAMETERS
  * ASSOCIATED WITH THE TIME FOLLOWING CONCENTRIC FLIGHT PLAN MANEUVERS --

@@ -14,10 +14,6 @@
 #include "p34_p35.h"
 #include "../agc/names.h"
 
-/* A label's bank, and its address in the bank (02000-03777). */
-#define BANK_OF(label) ((word)(I_##label / 02000u))
-#define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
-
 /* The CM's MIDGIM: with the LM active (AVFLAG set) on to MIDGIM1, the
  * middle gimbal angle when the computer is the LGC (COMPUTER clear),
  * else the delta V in local vertical coordinates (GET.LVC); with the CSM

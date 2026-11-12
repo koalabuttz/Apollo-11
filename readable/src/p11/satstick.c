@@ -1,10 +1,10 @@
 /* SPDX-License-Identifier: MIT */
-/* P11.agc of the CM, part 1 (Comanche055 pp. 548-550): the "SATURN
- * TAKEOVER FUNCTION". "DURING THE COASTING PHASE OF SIVB ATTACHED, THE
- * ASTRONAUT MAY REQUEST SATURN TAKEOVER THROUGH EXTENDED VERB 46": "THE
- * CMC REGARDS RHC COMMANDS AS BODY-AXES RATE COMMANDS AND IT TRANSMITS
- * THESE TO SATURN AS DC ... VOLTAGES" (NEEDLER, from AK, AK1 and AK2), of
- * "0.5 DEG/SEC", or none with the hand controller at rest.
+/* P11.agc of the CM, part 1 (Comanche055 pp. 548-550): the "SATURN TAKEOVER
+ * FUNCTION". "DURING THE COASTING PHASE OF SIVB ATTACHED, THE ASTRONAUT MAY
+ * REQUEST SATURN TAKEOVER THROUGH EXTENDED VERB 46": "THE CMC REGARDS RHC
+ * COMMANDS AS BODY-AXES RATE COMMANDS AND IT TRANSMITS THESE TO SATURN AS DC
+ * ... VOLTAGES" (NEEDLER, from AK, AK1 and AK2), of "0.5 DEG/SEC", or none
+ * with the hand controller at rest. The faithful C is c64-port/src/cm_p11.c.
  *
  * SATSTKON (bank 43, from DAPFIG) takes over T5: REDOSAT, the first T5
  * task (and the restart's), starts the needles and SATSTICK, the T5 task
@@ -67,7 +67,7 @@ void redosat(void)
 void redosat_after_needler(void)
 {
     set_A(BIT9);
-    wor_channel(012u);
+    wor_channel(CHAN12);
     dca_constant(TWO_SATSTCK);
     dxch(ADDRESS_OF(T5LOC));
     set_A(HUNDRED_MST5);
@@ -87,7 +87,7 @@ void satstick(void)
     set_A(HUNDRED_MST5);
     ts(ADDRESS_OF(TIME5));
     set_A(STIKBITS);
-    rxor_channel(031u);
+    rxor_channel(CHAN31);
     mask(STIKBITS);
     tc_to(SATSTICK + 013u, IBNKCALL); /* CADR STICKCHK */
 }

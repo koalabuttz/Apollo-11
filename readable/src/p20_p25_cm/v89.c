@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 14 (Comanche055 pp. 616-618): V89CALL, verb 89, which
- * points the CSM at the LM (bank 34).
+ * points the CSM at the LM (bank 34). The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * Keyed in during P00, V89 checks the IMU (R02BOTH: it comes back only if
  * the IMU is on and its orientation known) and flashes verb 04 noun 06 for

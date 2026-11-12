@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* P51-P53.agc, part 7 (Luminary099 pp. 961-966, bank 15): PLANET, the
  * direction of the body the crew sights; and GVDETER, the gravity vector
- * determination on the lunar surface, with LUNG, which reads the PIPAs
- * for it.
+ * determination on the lunar surface, with LUNG, which reads the PIPAs for
+ * it. The faithful C is c64-port/src/lm_p51_p53.c.
  *
  * PLANET is "TO PROVIDE THE REFERENCE VECTOR FOR THE SIGHTED CELESTIAL" body:
  * a star from the catalog, the sun, the earth or the moon from LOCSAM, or

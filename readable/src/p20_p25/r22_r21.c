@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 2 (Luminary099 pp. 504-512): R22 and R21.
+/* P20-P25.agc, part 2 (Luminary099 pp. 504-512): R22 and R21. The faithful C
+ * is c64-port/src/lm_p20_p25.c.
  *
  * R22, "DATA READ ROUTINE 22 (LEM)": "TO PROCESS AUTOMATIC RR MARK DATA TO
  * UPDATE THE STATE VECTOR OF EITHER LM OR CSM AS DEFINED IN THE RENDEZVOUS

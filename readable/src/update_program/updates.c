@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* UPDATE_PROGRAM.agc, part 4: the updates themselves, V71 (UPEND71), V72
- * (UPEND72) and V70 (UPEND70); LM pages 1393-1396, CM pages 1504-1507. */
+ * (UPEND72) and V70 (UPEND70); LM pages 1393-1396, CM pages 1504-1507. The
+ * faithful C is c64-port/src/lm_update.c and cm_update.c. */
 #include "update_program.h"
 
 #define CA_CODE   030000u

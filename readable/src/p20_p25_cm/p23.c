@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 15 (Comanche055 pp. 619-622 and 627): the start of
- * P23, cislunar midcourse navigation (bank 31): "DO MIDCOURSE NAVIGATION
- * BY INCORPORATION OF" "STAR/EARTH AND STAR/MOON OPTICAL MEASUREMENTS."
+/* P20-P25.agc, part 15 (Comanche055 pp. 619-622 and 627): the start of P23,
+ * cislunar midcourse navigation (bank 31): "DO MIDCOURSE NAVIGATION BY
+ * INCORPORATION OF" "STAR/EARTH AND STAR/MOON OPTICAL MEASUREMENTS." The
+ * faithful C is c64-port/src/cm_p20_p25.c.
  *
  * P23 leaves rendezvous navigation (RNDVZFLG), sets up restart group 2
  * (2PHSCHNG) and clears its flags and counters. With the IMU aligned

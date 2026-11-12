@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 11 (Comanche055 pp. 603-606): S22.1's next mark, and
- * the mark's incorporation into the CSM's state vector (bank 30).
+/* P20-P25.agc, part 11 (Comanche055 pp. 603-606): S22.1's next mark, and the
+ * mark's incorporation into the CSM's state vector (bank 30). The faithful C
+ * is c64-port/src/cm_p20_p25.c.
  *
  * S22SAVET keeps the mark's time, and S22I=N counts the marks: past the
  * last one, S22.1 goes on at S22F244X (the flowchart's figure 2.4-4, a

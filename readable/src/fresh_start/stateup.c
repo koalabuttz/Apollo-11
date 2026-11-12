@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: MIT */
-/* FRESH_START_AND_RESTART.agc's interpretive code, in the listing's
- * notation (src/interpreter/notation.h): STATEUP, in bank 13, and R00's
- * wait for the integration, in bank 04 (the CM calls it ROC). The
- * readable interpreter runs these words (src/binding/stateup_routines.c),
- * as the AGC's interpreter ran the listing's. */
+/* FRESH_START_AND_RESTART.agc's interpretive code, in the listing's notation
+ * (src/interpreter/notation.h): STATEUP, in bank 13, and R00's wait for the
+ * integration, in bank 04 (the CM calls it ROC). The readable interpreter
+ * runs these words (src/binding/stateup_routines.c), as the AGC's
+ * interpreter ran the listing's. The faithful C is c64-port/src/lm_stateup.c
+ * and cm_stateup.c. */
 #include "../agc/agc.h"
 #include "../agc/names.h"
 #include "../interpreter/notation.h"

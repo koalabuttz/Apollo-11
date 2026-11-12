@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* UPDATE_PROGRAM.agc, part 1: the verbs V70-V73, in the extended verb
- * bank (43), and the check that P27 may run (LM page 1388, CM pages
- * 1499-1500). */
+/* UPDATE_PROGRAM.agc, part 1: the verbs V70-V73, in the extended verb bank
+ * (43), and the check that P27 may run (LM page 1388, CM pages 1499-1500).
+ * The faithful C is c64-port/src/lm_update.c and cm_update.c. */
 #include "update_program.h"
 
 /* V70UPDAT, V71UPDAT, V72UPDAT and V73UPDAT -- LM p. 1388, CM p. 1499.

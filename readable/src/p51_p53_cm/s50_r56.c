@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P51-P53.agc of the CM, part 3 (Comanche055 pp. 748-755, bank 14): S50
- * and R56, the stars to sight.
+/* P51-P53.agc of the CM, part 3 (Comanche055 pp. 748-755, bank 14): S50 and
+ * R56, the stars to sight. The faithful C is c64-port/src/cm_p51_p53.c.
  *
  * S50, alias LOCSAM, "TO COMPUTE QUATITIGS LISTED BELOW, USED IN THE IMU
  * ALIGNMENT PROGRAMS": the unit vectors to the sun, the earth and the

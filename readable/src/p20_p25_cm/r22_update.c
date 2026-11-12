@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 6 (Comanche055 pp. 582-585): R22 from REND12, the
- * update into the state vector, a range's B vector, and the crew's check
- * of a large update (RENDISP) (bank 34).
+/* P20-P25.agc, part 6 (Comanche055 pp. 582-585): R22 from REND12, the update
+ * into the state vector, a range's B vector, and the crew's check of a large
+ * update (RENDISP) (bank 34). The faithful C is c64-port/src/cm_p20_p25.c.
  *
  * REND12 puts the update INCORP1 worked out into the state vector
  * (INCORP2). An optics mark then takes its second pass (REND13, with the

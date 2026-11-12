@@ -1,8 +1,10 @@
 /* SPDX-License-Identifier: MIT */
 /* CONIC_SUBROUTINES.agc, GETX (LM pp. 1189-1192, CM pp. 1292-1295): the
  * universal variable X for TIME-THETA's angle, in the listing's notation
- * (src/interpreter/notation.h), which the readable interpreter runs, and
- * the basic code around its TC POLY.
+ * (src/interpreter/notation.h), which the readable interpreter runs, and the
+ * basic code around its TC POLY. The faithful C is
+ * c64-port/src/lm_conic_compiled.c (with lm_conic_checkctr.c) and
+ * cm_conics.c.
  *
  * In: P in MPAC ("ASSUMES P (+4) IN MPAC"), with PARAM's COGA and R1A and
  * GEOM's SNTH, CSTH and R1. W comes from them and goes through three steps

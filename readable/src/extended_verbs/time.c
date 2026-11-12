@@ -180,7 +180,7 @@ void attck2_plus1(void)
         return;
     }
     set_A(BITS13_14_15);
-    wor_channel(014);
+    wor_channel(CHAN14);
     continue_at(TASKOVER); /* TCF TASKOVER */
 }
 #endif

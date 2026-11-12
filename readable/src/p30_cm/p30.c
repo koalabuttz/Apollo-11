@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* P30-P37.agc (Comanche055 pp. 635-638 and 648): P30, the "EXTERNAL
- * DELTA-V TARGETTING PROGRAM", and P31, "GENERAL LAMBERT AIMPOINT
- * GUIDANCE" (bank 35); and AVFLAGA, AVFLAGP and P20FLGON (fixed-fixed).
+/* P30-P37.agc (Comanche055 pp. 635-638 and 648): P30, the "EXTERNAL DELTA-V
+ * TARGETTING PROGRAM", and P31, "GENERAL LAMBERT AIMPOINT GUIDANCE" (bank
+ * 35); and AVFLAGA, AVFLAGP and P20FLGON (fixed-fixed). The faithful C is
+ * c64-port/src/cm_p30_p37.c.
  *
  * P30, as its program description has it, "ACCEPTS ASTRONAUT INPUTS OF
  * TIG,DELV(LV) AND COMPUTES,FOR DISPLAY, APOGEE,PERIGEE,DELV(MAG),MGA

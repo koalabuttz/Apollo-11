@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 3 (Comanche055 pp. 572-573): R21 and R23 for the CSM,
- * the sighting marks of rendezvous navigation (bank 37).
+ * the sighting marks of rendezvous navigation (bank 37). The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * The crew calls R21 by verb 57 and R23 by verb 54. R21CSM sets R21MARK,
  * so that MARKRUPT keeps each mark in MRKBUF1; both clear the mark buffers

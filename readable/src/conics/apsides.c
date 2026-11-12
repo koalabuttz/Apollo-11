@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 /* CONIC_SUBROUTINES.agc, APSIDES and ABTCONIC (LM pp. 1200-1201, CM pp.
- * 1303-1304), in the listing's notation (src/interpreter/notation.h),
- * which the readable interpreter runs, and ABTCONIC's basic code.
+ * 1303-1304), in the listing's notation (src/interpreter/notation.h), which
+ * the readable interpreter runs, and ABTCONIC's basic code. The faithful C
+ * is c64-port/src/lm_conic_compiled.c (with lm_conic_checkctr.c) and
+ * cm_conics.c.
  *
  * APSIDES: "GIVEN AN INITIAL STATE VECTOR CALCULATES THE RADIUS OF
  * PERICENTER AND OF APOCENTER AND THE ECCENTRICITY OF THE RESULTING CONIC

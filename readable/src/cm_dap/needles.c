@@ -56,7 +56,7 @@ void kresume1(void)
 void needler(void)
 {
     set_A(BIT4);
-    rand_channel(012);
+    rand_channel(CHAN12);
     if (!A_is_zero()) { /* EXTEND; BZF NEEDLER1 */
         needler_first_pass();
         return;
@@ -72,8 +72,8 @@ void needler(void)
         needler2();
         return;
     }
-    set_A(negate(BIT6)); /* CS: "FIRST PASS BIT3 = 1" */
-    wand_channel(012);   /* "DISABLE IMU ERROR COUNTER TO ZERO DACS" */
+    set_A(negate(BIT6));  /* CS: "FIRST PASS BIT3 = 1" */
+    wand_channel(CHAN12); /* "DISABLE IMU ERROR COUNTER TO ZERO DACS" */
     needle11();
 }
 
@@ -113,7 +113,7 @@ void needle11(void)
 void needler2(void)
 {
     set_A(BIT6);
-    wor_channel(012);
+    wor_channel(CHAN12);
     continue_at(NEEDLER2 + 3u);
 }
 
@@ -137,7 +137,7 @@ void needler2_mask(void)
 void needles3(void)
 {
     set_A(BIT6);
-    rand_channel(012);
+    rand_channel(CHAN12);
     needles3_test();
 }
 
@@ -180,7 +180,7 @@ static void dac_activity(enum sign entry)
         return;
     }
     if (entry == IS_PLUS_ZERO) set_A(BITS13_14_15);
-    wor_channel(014);
+    wor_channel(CHAN14);
     dacloop_return();
 }
 

@@ -313,7 +313,7 @@ void posalarm_immediate_return(void)
 void posalarm_retry(void)
 {
     set_A(BIT7);
-    rand_channel(033u);
+    rand_channel(CHAN33);
     if (A_is_zero()) {
         posgood();
         return;

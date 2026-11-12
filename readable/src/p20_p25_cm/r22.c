@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 5 (Comanche055 pp. 579-582): R22, the "RENDEZVOUS
- * TRACKING DATA PROCESSING ROUTINE", up to REND12 (bank 34).
+ * TRACKING DATA PROCESSING ROUTINE", up to REND12 (bank 34). The faithful C
+ * is c64-port/src/cm_p20_p25.c.
  *
  * P20 starts R22 as a job of its own, which runs as long as P20 tracks.
  * It takes two kinds of data: the crew's optics marks, which R21 leaves in

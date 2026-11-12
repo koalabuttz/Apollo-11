@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: MIT */
-/* P32-P33_P72-P73.agc (Comanche055 pp. 649-662): the programs' own code.
- * P32 and P72, "COELLIPTIC SEQUENCE INITIATION (CSI) PROGRAMS", and P33
- * and P73, "CONSTANT DELTA HEIGHT (CDH) PROGRAMS" (bank 4, with a stretch
- * of each in banks 14 and 12); DISDVLVC, which shows a delta V in local
- * vertical coordinates (bank 37).
+/* P32-P33_P72-P73.agc (Comanche055 pp. 649-662): the programs' own code. P32
+ * and P72, "COELLIPTIC SEQUENCE INITIATION (CSI) PROGRAMS", and P33 and P73,
+ * "CONSTANT DELTA HEIGHT (CDH) PROGRAMS" (bank 4, with a stretch of each in
+ * banks 14 and 12); DISDVLVC, which shows a delta V in local vertical
+ * coordinates (bank 37). The faithful C is c64-port/src/cm_p32_p33.c.
  *
  * Each "IS SELECTED BY THE ASTRONAUT BY DSKY ENTRY": P32 or P33 "IF THIS
  * VEHICLE IS ACTIVE VEHICLE", P72 or P73 "IF THIS VEHICLE IS PASSIVE

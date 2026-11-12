@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* IMU_MODE_SWITCHING_ROUTINES.agc, part 3: the end of a mode switch, the
  * cage tests, the stalls and GOMANUR (LM pages 1327-1331, CM pages
- * 1438-1442).
+ * 1438-1442). The faithful C is c64-port/src/imu_mode_switching.c.
  *
  * MODECADR, MODECADR +1 and MODECADR +2 (IMUCADR, OPTCADR, RADCADR) say
  * where each device's operation stands: +0 while it runs and nothing

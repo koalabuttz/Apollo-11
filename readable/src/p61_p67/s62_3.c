@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P61-P67.agc of the CM, part 3 (Comanche055 pp. 817-818, bank 10): S62.3,
- * which P62 calls for the entry attitude.
+ * which P62 calls for the entry attitude. The faithful C is
+ * c64-port/src/cm_p61_p67.c.
  *
  * "COMPUTE DESIRED GIMBAL ANGLES FOR ENTRY ATTITUDE": from the trajectory
  * triad CM/POSE keeps in reference coordinates (UXA, UYA, UZA, at half

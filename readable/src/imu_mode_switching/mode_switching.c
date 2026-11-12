@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* IMU_MODE_SWITCHING_ROUTINES.agc, part 1: zeroing the CDUs, coarse and
- * fine align, and the program's use of the PIPAs (LM pages 1309-1318, CM
- * pages 1420-1429).
+/* IMU_MODE_SWITCHING_ROUTINES.agc, part 1: zeroing the CDUs, coarse and fine
+ * align, and the program's use of the PIPAs (LM pages 1309-1318, CM pages
+ * 1420-1429). The faithful C is c64-port/src/imu_mode_switching.c.
  *
  * A mode switch starts in a job, through BANKCALL: it sets the IMU's
  * channel bits, puts the rest on WAITLIST as tasks, and leaves by

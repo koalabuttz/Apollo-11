@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* P51-P53.agc of the CM, part 7 (Comanche055 pp. 772-777): R53, the
- * sighting mark routine (bank 14); S52.2, the gimbal angles for the
- * desired stable member (bank 11); and SR52.1, the optics angles to a
- * target (bank 13).
+/* P51-P53.agc of the CM, part 7 (Comanche055 pp. 772-777): R53, the sighting
+ * mark routine (bank 14); S52.2, the gimbal angles for the desired stable
+ * member (bank 11); and SR52.1, the optics angles to a target (bank 13). The
+ * faithful C is c64-port/src/cm_p51_p53.c.
  *
  * Each call out of the file (BANKCALL, CHECKMM, CURTAINS, FALTON,
  * MAKECADR, SWCALL, GOTOPOOH) leaves Z at the routine and Q at the word

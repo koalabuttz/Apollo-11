@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* P51-P53.agc, part 8 (Luminary099 pp. 968-974, bank 15): GYROTRIM, the
- * gyro torque to a set of CDU angles; P57's star sightings (1STAR,
- * R59RET, ASTAR); and the lunar surface alignment (SURFLINE to P57POST,
- * COATRIM), coarse or fine.
+/* P51-P53.agc, part 8 (Luminary099 pp. 968-974, bank 15): GYROTRIM, the gyro
+ * torque to a set of CDU angles; P57's star sightings (1STAR, R59RET,
+ * ASTAR); and the lunar surface alignment (SURFLINE to P57POST, COATRIM),
+ * coarse or fine. The faithful C is c64-port/src/lm_p51_p53.c.
  *
  * GYROTRIM "COMPUTES AND SENDS GYRO COMMANDS WHICH CAUSE THE CDUS" to
  * reach THETAD. P57 sights two stars through the AOT (R59); SURFLINE

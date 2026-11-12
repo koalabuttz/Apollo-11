@@ -1,10 +1,10 @@
 /* SPDX-License-Identifier: MIT */
-/* P37_P70.agc of the CM, part 4 (Comanche055 pp. 914-923, banks 31 and
- * 32): the "INTEGRATION CALLING SUBROUTINE" (RTENCK1, RTENCK2 and
- * RTENCK3), and the "V2(T1) COMPUTATION SUBROUTINE" (V2T100), which finds
- * the velocity just after the burn: one that "MEETS THE INPUT VELOCITY
- * CHANGE DESIRED (RTEDVD) IN A MINIMUM TIME", or if none is asked for
- * one that "MINIMIZES THE IMPULSE (DV)". */
+/* P37_P70.agc of the CM, part 4 (Comanche055 pp. 914-923, banks 31 and 32):
+ * the "INTEGRATION CALLING SUBROUTINE" (RTENCK1, RTENCK2 and RTENCK3), and
+ * the "V2(T1) COMPUTATION SUBROUTINE" (V2T100), which finds the velocity
+ * just after the burn: one that "MEETS THE INPUT VELOCITY CHANGE DESIRED
+ * (RTEDVD) IN A MINIMUM TIME", or if none is asked for one that "MINIMIZES
+ * THE IMPULSE (DV)". The faithful C is c64-port/src/cm_p37_p70.c. */
 #include "p37_p70.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"

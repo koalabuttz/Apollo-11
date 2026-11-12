@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 /* CONIC_SUBROUTINES.agc, TIMERAD (LM pp. 1198-1199, CM pp. 1301-1302):
- * TIME-RADIUS, in the listing's notation (src/interpreter/notation.h),
- * which the readable interpreter runs.
+ * TIME-RADIUS, in the listing's notation (src/interpreter/notation.h), which
+ * the readable interpreter runs. The faithful C is
+ * c64-port/src/lm_conic_compiled.c (with lm_conic_checkctr.c) and
+ * cm_conics.c.
  *
  * "GIVEN AN INITIAL STATE VECTOR AND A DESIRED RADIUS TO WHICH THE STATE
  * IS TO BE UPDATED ALONG A CONIC TRAJECTORY, CALCULATES THE CORRESPONDING

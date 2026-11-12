@@ -2,7 +2,7 @@
 /* P51-P53.agc, part 4 (Luminary099 pp. 945-948, bank 14): R55, the gyro
  * torque; R54, alias CHKSDATA, the star data test; CAL53A, the coarse
  * alignment if one is needed and the fine alignment; MATMOVE; and RDCDUS,
- * the CDUs read for an RTB.
+ * the CDUs read for an RTB. The faithful C is c64-port/src/lm_p51_p53.c.
  *
  * Each call out of the file (BANKCALL, PHASCHNG, CURTAINS, GOTOPOOH)
  * leaves Z at the routine and Q at the word after the TC, where the

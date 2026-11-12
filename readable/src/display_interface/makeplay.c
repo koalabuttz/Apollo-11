@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* DISPLAY_INTERFACE_ROUTINES.agc, part 3: MAKEPLAY, which decides whether
- * a display may go out now (LM pages 1358-1360, CM pages 1469-1471), bank
- * 10.
+/* DISPLAY_INTERFACE_ROUTINES.agc, part 3: MAKEPLAY, which decides whether a
+ * display may go out now (LM pages 1358-1360, CM pages 1469-1471), bank 10.
+ * The faithful C is c64-port/src/lanec_di_*.c.
  *
  * "DISPLAY PRIORITIES WORK AS FOLLOWS": "PRIORITY DISPLAYS INTERRUPT ALL
  * OTHER TYPES OF INTERNAL DISPLAYS.  A PRIORITY DISPLAY INTERRUPTING

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 15 (Luminary099 pp. 588-593): LRS24.1, the RR search
- * routine (R24).
+ * routine (R24). The faithful C is c64-port/src/lm_p20_p25.c.
  *
  * LRS24.1 "DRIVES THE RENDEZVOUS RADAR IN A HEXAGONAL SEARCH PATTERN ABOUT
  * THE LOS TO THE CSM (COMPUTED FROM THE CSM AND LM STATE VECTORS) CHECKING

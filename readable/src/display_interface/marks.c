@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* DISPLAY_INTERFACE_ROUTINES.agc, part 1: blanking and the mark displays
- * (LM pages 1354-1356, CM pages 1465-1467). BLANKET, ENDMARK and CLEARMRK
- * are in fixed-fixed; from MARKEND on, bank 10.
+/* DISPLAY_INTERFACE_ROUTINES.agc, part 1: blanking and the mark displays (LM
+ * pages 1354-1356, CM pages 1465-1467). BLANKET, ENDMARK and CLEARMRK are in
+ * fixed-fixed; from MARKEND on, bank 10. The faithful C is
+ * c64-port/src/lanec_di_*.c.
  *
  * "ALL EXTENDED VERBS AND MARK ROUTINES SHOULD USE EXTENDED VERB (MARK)
  * DISPLAYS." A mark entry stores its verb and noun in PLAYTEM1 and goes

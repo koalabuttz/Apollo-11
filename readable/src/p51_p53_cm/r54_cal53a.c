@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 /* P51-P53.agc of the CM, part 5 (Comanche055 pp. 759-763): R54, alias
  * CHKSDATA, the star data test; CAL53A, the coarse alignment if one is
- * needed, and MATMOVE (bank 14); RDCDUS, the CDUs read for an RTB (bank
- * 15); and CALCSMSC, the navigation base in stable member axes (bank 16).
+ * needed, and MATMOVE (bank 14); RDCDUS, the CDUs read for an RTB (bank 15);
+ * and CALCSMSC, the navigation base in stable member axes (bank 16). The
+ * faithful C is c64-port/src/cm_p51_p53.c.
  *
  * Each call out of the file (BANKCALL, PHASCHNG, CURTAINS) leaves Z at
  * the routine and Q at the word after the TC, where the routine comes

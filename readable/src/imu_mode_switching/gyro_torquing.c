@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* IMU_MODE_SWITCHING_ROUTINES.agc, part 2: torquing the gyros (LM pages
- * 1319-1326, CM pages 1430-1437).
+ * 1319-1326, CM pages 1430-1437). The faithful C is
+ * c64-port/src/imu_mode_switching.c.
  *
  * "THE FOLLOWING ROUTINE TORQUES THE IRIGS ACCORDING TO DOUBLE PRECISION
  * INPUTS IN THE SIX REGISTERS BEGINNING AT THE ECADR ARRIVING IN A." The

@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* CONIC_SUBROUTINES.agc, CHECKCTR (LM p. 1183, CM p. 1286): basic code
- * that KEPLER and ITERATOR reach by RTB ("RTB BHIZ CHECKCTR"), to count
- * the iterations down. */
+/* CONIC_SUBROUTINES.agc, CHECKCTR (LM p. 1183, CM p. 1286): basic code that
+ * KEPLER and ITERATOR reach by RTB ("RTB BHIZ CHECKCTR"), to count the
+ * iterations down. The faithful C is c64-port/src/lm_conic_compiled.c (with
+ * lm_conic_checkctr.c) and cm_conics.c. */
 #include "conics.h"
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"

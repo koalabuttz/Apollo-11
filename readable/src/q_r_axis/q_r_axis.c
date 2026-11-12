@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* Q_R-AXIS_RCS_AUTOPILOT.agc, the LM's: Luminary099 pages 1442-1459, bank
- * 17, in EBANK 6 (the listing's EBANK= CDUXD); MAKERUPT in fixed-fixed. */
+ * 17, in EBANK 6 (the listing's EBANK= CDUXD); MAKERUPT in fixed-fixed. The
+ * faithful C is c64-port/src/lm_q_r_axis.c. */
 #include "q_r_axis.h"
 
 #if LUMINARY099

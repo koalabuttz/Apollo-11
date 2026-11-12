@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 16 (Comanche055 pp. 622-624): P23's marks and
- * POINTAXS (bank 31).
+/* P20-P25.agc, part 16 (Comanche055 pp. 622-624): P23's marks and POINTAXS
+ * (bank 31). The faithful C is c64-port/src/cm_p20_p25.c.
  *
  * P23.60, after R52's marks: MARKSTAT's low ten bits are the mark data's
  * address (MARKDATA); its first two words, the mark's time, go to

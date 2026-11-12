@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P11.agc of the CM (Comanche055 pp. 535-541, bank 34):
- * P11, its restart point REP11, VHHDOT (SERVICER's exit during the boost),
- * ATERTASK and GETDOWN.
+/* P11.agc of the CM (Comanche055 pp. 535-541, bank 34): P11, its restart
+ * point REP11, VHHDOT (SERVICER's exit during the boost), ATERTASK and
+ * GETDOWN. The faithful C is c64-port/src/cm_p11.c.
  *
  * P11 "WILL ... ZERO CMC CLOCK AT LIFTOFF (OR UPON RECEIPT OF BACKUP)",
  * "UPDATE TEPHEM TO TIME CMC CLOCK WAS ZEROED", "INITIATE SERVICER AT

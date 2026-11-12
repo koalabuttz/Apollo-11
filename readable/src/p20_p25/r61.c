@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 4 (Luminary099 pp. 517-520): R61 and R65.
+/* P20-P25.agc, part 4 (Luminary099 pp. 517-520): R61 and R65. The faithful C
+ * is c64-port/src/lm_p20_p25.c.
  *
  * R61, "PREFERRED TRACKING ATTITUDE ROUTINE R61LEM": "TO COMPUTE THE
  * PREFERRED TRACKING ATTITUDE OF THE LM TO ENABLE RR TRACKING OF THE CSM

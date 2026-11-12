@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 19 (Comanche055 pp. 632-634): the W-matrix monitor,
- * verb 67 (V67CALL, bank 40).
+/* P20-P25.agc, part 19 (Comanche055 pp. 632-634): the W-matrix monitor, verb
+ * 67 (V67CALL, bank 40). The faithful C is c64-port/src/cm_p20_p25.c.
  *
  * V67 shows the astronaut, in noun 99, how big the W-matrix's errors are:
  * the root sum square of its position part and of its velocity part

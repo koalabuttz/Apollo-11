@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 3 (Luminary099 pp. 513-516): R23 and R24.
+/* P20-P25.agc, part 3 (Luminary099 pp. 513-516): R23 and R24. The faithful C
+ * is c64-port/src/lm_p20_p25.c.
  *
  * R23, "MANUAL ACQUISITION ROUTINE R23LEM": "TO ACQUIRE THE CSM BY MANUAL
  * OPERATION OF THE RENDEZVOUS RADAR". The radar's tracker enabled, verb

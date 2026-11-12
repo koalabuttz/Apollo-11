@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 /* IMU_MODE_SWITCHING_ROUTINES.agc, part 4: R02, the IMU status check (LM
- * pages 1332-1333, bank 04; CM pages 1443-1444, bank 07), and P06 and
- * P05, the computer to standby and back (LM pages 1334-1337, bank 37; CM
- * pages 1445-1448, bank 26). */
+ * pages 1332-1333, bank 04; CM pages 1443-1444, bank 07), and P06 and P05,
+ * the computer to standby and back (LM pages 1334-1337, bank 37; CM pages
+ * 1445-1448, bank 26). The faithful C is c64-port/src/imu_mode_switching.c.
+ * */
 #include "subroutines.h"
 
 /* ======================================================================

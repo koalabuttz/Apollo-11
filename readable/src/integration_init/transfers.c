@@ -2,9 +2,10 @@
 /* INTEGRATION_INITIALIZATION.agc, the transfers between the integration's
  * state vector and the permanent ones, in the listing's notation
  * (src/interpreter/notation.h): ATOPCSM and PTOACSM (LM pp. 1210-1211, CM
- * pp. 1314-1315), ATOPLEM and PTOALEM (LM pp. 1211-1212, CM pp.
- * 1315-1316), and USEPIOS (LM pp. 1212-1213, CM pp. 1316-1317). Each runs
- * a move (moves.c) by RTB.
+ * pp. 1314-1315), ATOPLEM and PTOALEM (LM pp. 1211-1212, CM pp. 1315-1316),
+ * and USEPIOS (LM pp. 1212-1213, CM pp. 1316-1317). Each runs a move
+ * (moves.c) by RTB. The faithful C is c64-port/src/lm_integration_init.c and
+ * cm_integration_init.c.
  *
  * Each permanent vector keeps the sphere it is in with it (CMOONFLG,
  * LMOONFLG): ATOP... copies MOONFLAG there, PTOA... back, with PBODY, the

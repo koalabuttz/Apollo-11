@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P51-P53.agc of the CM, part 2 (Comanche055 pp. 743-747, bank 14): R52,
- * the automatic optics positioning routine, and ADVORB.
+/* P51-P53.agc of the CM, part 2 (Comanche055 pp. 743-747, bank 14): R52, the
+ * automatic optics positioning routine, and ADVORB. The faithful C is
+ * c64-port/src/cm_p51_p53.c.
  *
  * R52 "TO POINT THE STAR LOS OF THE OPTICS AT A STAR OR LANDMARK DEFINED
  * BY THE PROGRAM OR BY DSKY INPUT", or at the LM while tracking it. Its

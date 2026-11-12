@@ -2,7 +2,8 @@
 /* TIME_OF_FREE_FALL.agc, both missions' (Luminary099 pp. 1268-1283,
  * Comanche055 pp. 1373-1388), in bank 27: the same code in each. The
  * interpretive words are in the listing's notation
- * (src/interpreter/notation.h); T(X) and ENDT(X), basic code, are C.
+ * (src/interpreter/notation.h); T(X) and ENDT(X), basic code, are C. The
+ * faithful C is c64-port/src/lm_tff_abi.c and cm_time_free_fall.c.
  *
  * "THE TFF SUBROUTINES MAY BE USED IN EITHER EARTH OR MOON CENTERED
  * COORDINATES." The user leaves the state vector in RONE and VONE and

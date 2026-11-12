@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* UPDATE_PROGRAM.agc, part 2: UPPART2, loading UPBUFF from the DSKY
  * (OHWELL1, OHWELL2) and the ground's check of it (UPVERIFY), in bank 04
- * (the CM's in bank 27); LM pages 1389-1391, CM pages 1500-1502. */
+ * (the CM's in bank 27); LM pages 1389-1391, CM pages 1500-1502. The
+ * faithful C is c64-port/src/lm_update.c and cm_update.c. */
 #include "update_program.h"
 
 /* CK4V32 -- LM p. 1391, CM p. 1502, "ON DATA RETURN FROM 'GOXDSPF'", with

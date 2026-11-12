@@ -130,7 +130,7 @@ void trmtrak1_after_second_ibnkcall(void)
 void trmtrak1_after_clradmod(void)
 {
     set_A(negate(BIT14)); /* CS BIT14 */
-    wand_channel(012);
+    wand_channel(CHAN12);
     tc(TRMTRAK1 + 025u, POSTJUMP); /* CADR GOPROG2 */
 }
 #else

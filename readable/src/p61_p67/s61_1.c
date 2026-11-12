@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P61-P67.agc of the CM, part 1 (Comanche055 pp. 803-805, bank 26):
- * S61.1, which P61 and P62 call.
+/* P61-P67.agc of the CM, part 1 (Comanche055 pp. 803-805, bank 26): S61.1,
+ * which P61 and P62 call. The faithful C is c64-port/src/cm_p61_p67.c.
  *
  * "FIRST, TEST TO SEE IF AVERAGEG IS ON. IF NOT, UPDATE THE STATE VECTOR
  * TO PRESENT TIME + TOLERANCE AND TURN ON AVERAGEG AT THAT TIME, AND

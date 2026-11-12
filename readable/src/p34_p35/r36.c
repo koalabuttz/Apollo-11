@@ -26,9 +26,7 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-/* A label's address in its bank (02000-03777). */
-#define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
-#define R36TAG2        IN_BANK(R36TAG2)
+#define R36TAG2 IN_BANK(R36TAG2)
 
 /* The banks: the LM's all in 4; the CM's display code in 41, R36INT in
  * 42 and R36B in 40 (the superbank's, FB 30-32 with the superbank bit). */

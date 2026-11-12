@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P51-P53.agc, part 9 (Luminary099 pp. 975-983, bank 15; LSORIENT in
- * bank 4): P57, the "LUNAR SURFACE IMU ALIGNMENT PROGRAM".
+/* P51-P53.agc, part 9 (Luminary099 pp. 975-983, bank 15; LSORIENT in bank
+ * 4): P57, the "LUNAR SURFACE IMU ALIGNMENT PROGRAM". The faithful C is
+ * c64-port/src/lm_p51_p53.c.
  *
  * P57 checks the IMU is on (IMUCHK) and flashes the alignment option
  * (OPTION2): 0, the attitude stored before (YNBSAV, ZNBSAV); 1, the

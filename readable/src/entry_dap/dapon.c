@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* CM_ENTRY_DIGITAL_AUTOPILOT.agc, part A (Comanche055 pp. 1066-1069, bank
- * 20): "THESE ARE CALLED FOR THE VARIOUS INITIALIZATIONS NEEDED."
+ * 20): "THESE ARE CALLED FOR THE VARIOUS INITIALIZATIONS NEEDED." The
+ * faithful C is c64-port/src/cm_entry_dap.c.
  *
  * CM/DAPON, from P61-P67, turns the service module's RCS DAP off (its T5
  * and T6 programs idled, the jets zeroed, the DAP's configuration bits

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P51-P53.agc of the CM, parts 1 and 2 (Comanche055 pp. 737-743, banks
- * 15 and 16): P52, and P54 (P54 = PROG52); P52LS, the landing site's
- * orientation.
+/* P51-P53.agc of the CM, parts 1 and 2 (Comanche055 pp. 737-743, banks 15
+ * and 16): P52, and P54 (P54 = PROG52); P52LS, the landing site's
+ * orientation. The faithful C is c64-port/src/cm_p51_p53.c.
  *
  * PROG52 "ALIGNS THE IMU TO ONE OF THREE ORIENTATIONS SELECTED BY THE
  * ASTRONAUT." The options (OPTION2, flashed with V04N06): 1, the preferred

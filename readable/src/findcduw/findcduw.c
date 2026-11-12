@@ -81,10 +81,10 @@ void findcduw_after_exit(void)
     ca(ADDRESS_OF(CDUZ));
     ts(ADDRESS_OF(CDUSPOTZ));
     set_A(BIT10); /* "PNGCS CONTROL BIT" */
-    rand_channel(030u);
+    rand_channel(CHAN30);
     if (ccs_register(A_ADDRESS) == IS_PLUS_ZERO) {
         set_A(BIT14); /* "AUTO MODE BIT" */
-        rand_channel(031u);
+        rand_channel(CHAN31);
         if (ccs_register(A_ADDRESS) == IS_PLUS_ZERO) {
             ts(ADDRESS_OF(FLPAUTNO)); /* "RESET FLAG PNGCS AUTO NOT" */
             ca(ADDRESS_OF(CDUXD));    /* "PNGCS AUTO: FETCH CDUXD,CDUYD,CDUZD" */

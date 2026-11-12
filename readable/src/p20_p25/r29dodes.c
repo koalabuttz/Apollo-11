@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 17 (Luminary099 pp. 599-604): R29's designate loop,
- * BEGDES29 and R29DLOOP (bank 24), and R29DODES (bank 32).
+ * BEGDES29 and R29DLOOP (bank 24), and R29DODES (bank 32). The faithful C is
+ * c64-port/src/lm_p20_p25.c.
  *
  * "TASK RECURS EVERY .5 SEC UNTIL DESIGNATE IS CALLED OFF; IT MAY WAIT FOR
  * A CENTISECOND OR TWO IF IT COMES UP WHILE SETUP29D IS SUPPLYING NEW

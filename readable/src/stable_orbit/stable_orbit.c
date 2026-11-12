@@ -52,9 +52,6 @@
 #define STABLE_ORBIT_BANK 04u
 #endif
 
-/* A label's address in its bank (02000-03777). */
-#define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
-
 static void vndsply(void);
 static void p38_option(void);
 static void p38_option_code(void);

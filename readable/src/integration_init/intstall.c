@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: MIT */
-/* INTEGRATION_INITIALIZATION.agc, INTSTALL and INTWAKE (LM pp. 1219-1220,
- * CM pp. 1324-1326), and the basic code after INTEXIT's EXIT (LM p. 1217,
- * CM p. 1321), which goes on into INTWAKE. Basic code in C; the EXITs and
- * GOBAC's RVQ are interpretive, in the listing's notation
- * (src/interpreter/notation.h).
+/* INTEGRATION_INITIALIZATION.agc, INTSTALL and INTWAKE (LM pp. 1219-1220, CM
+ * pp. 1324-1326), and the basic code after INTEXIT's EXIT (LM p. 1217, CM p.
+ * 1321), which goes on into INTWAKE. Basic code in C; the EXITs and GOBAC's
+ * RVQ are interpretive, in the listing's notation
+ * (src/interpreter/notation.h). The faithful C is
+ * c64-port/src/lm_integration_init.c and cm_integration_init.c.
  *
  * Orbital integration has one set of erasables, so one job at a time may
  * use it. INTSTALL takes it: with RASFLAG's INTBITAB bits clear, the job

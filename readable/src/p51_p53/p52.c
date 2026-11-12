@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P51-P53.agc, part 1 (Luminary099 pp. 926-933, banks 15 and 14): P52.
+/* P51-P53.agc, part 1 (Luminary099 pp. 926-933, banks 15 and 14): P52. The
+ * faithful C is c64-port/src/lm_p51_p53.c.
  *
  * PROG52 "ALIGNS THE IMU TO ONE OF THREE ORIENTATIONS SELECTED BY THE
  * ASTRONAUT. THE PRESENT IMU ORIENTATION IS KNOWN AND IS STORED IN

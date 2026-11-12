@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: MIT */
-/* ORBITAL_INTEGRATION.agc, the constants of ORBITAL1 (bank 12 in the LM,
- * 11 in the CM) and ORBITAL2 (bank 13) (LM pp. 1246-1247, CM pp.
- * 1353-1354). The interpretive code reads them in the rope; these are
- * their words, as yaYUL assembles them, which the side-by-side test holds
- * to the rope.
+/* ORBITAL_INTEGRATION.agc, the constants of ORBITAL1 (bank 12 in the LM, 11
+ * in the CM) and ORBITAL2 (bank 13) (LM pp. 1246-1247, CM pp. 1353-1354).
+ * The interpretive code reads them in the rope; these are their words, as
+ * yaYUL assembles them, which the side-by-side test holds to the rope. The
+ * faithful C is c64-port/src/lm_orbital_integration.c and
+ * cm_orbital_integration.c.
  *
  * In ORBITAL2, "IT IS VITAL THAT THE FOLLOWING CONSTANTS NOT BE SHUFFLED":
  * ACCOMP reads the shifts before ASCALE by X1 (ASCALE,1), and the body's

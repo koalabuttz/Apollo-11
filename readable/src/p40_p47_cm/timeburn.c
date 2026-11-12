@@ -189,8 +189,8 @@ static void notaddul(void);
  * ULLAGE_CODE. */
 void s40_13_after_exit(void)
 {
-    set_A(BIT7);       /* "TEST +X TRANSLATION" */
-    rxor_channel(031); /* CHAN31 */
+    set_A(BIT7);          /* "TEST +X TRANSLATION" */
+    rxor_channel(CHAN31); /* CHAN31 */
     mask(BIT7);
     if (A_is_zero()) { /* EXTEND; BZF NOTADDUL */
         notaddul();

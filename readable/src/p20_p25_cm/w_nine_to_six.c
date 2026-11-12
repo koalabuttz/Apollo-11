@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 13 (Comanche055 pp. 610-614): 9DWTO6DW, which turns
- * the nine-dimensional W matrix S22.1 leaves into the six-dimensional one
- * of the CSM's state vector, and its ROWDOT (bank 30).
+/* P20-P25.agc, part 13 (Comanche055 pp. 610-614): 9DWTO6DW, which turns the
+ * nine-dimensional W matrix S22.1 leaves into the six-dimensional one of the
+ * CSM's state vector, and its ROWDOT (bank 30). The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * W is the square root of the navigation filter's error covariance. With
  * the landmark's position in the filter it is nine by nine, 27 vectors of

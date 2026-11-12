@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: MIT */
-/* CONIC_SUBROUTINES.agc, NEWSTATE and LAMENTER (LM p. 1184, CM p. 1287):
- * the state at the end of a conic, in the listing's notation
- * (src/interpreter/notation.h), which the readable interpreter runs.
+/* CONIC_SUBROUTINES.agc, NEWSTATE and LAMENTER (LM p. 1184, CM p. 1287): the
+ * state at the end of a conic, in the listing's notation
+ * (src/interpreter/notation.h), which the readable interpreter runs. The
+ * faithful C is c64-port/src/lm_conic_compiled.c (with lm_conic_checkctr.c)
+ * and cm_conics.c.
  *
  * After DELTIME has found T for an X (in TIME-THETA, TIME-RADIUS and
  * LAMBERT), the position and velocity there from the initial ones (UR1, the

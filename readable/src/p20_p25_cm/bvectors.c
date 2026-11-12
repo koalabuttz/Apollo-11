@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 4 (Comanche055 pp. 576-578): BVECTORS and GETUM, the
  * measurement geometry of the CSM's rendezvous navigation (bank 23), both
- * interpretive subroutines that R22 calls.
+ * interpretive subroutines that R22 calls. The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * BVECTORS takes UM, the "1/2 UNIT VECTOR ALONG THE CSM-LM LINE-OF-SIGHT",
  * and RCLP, the "RELATIVE CSM TO LM POSITION VECTOR" the state vectors

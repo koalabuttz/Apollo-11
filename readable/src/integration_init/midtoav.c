@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: MIT */
-/* INTEGRATION_INITIALIZATION.agc, MIDTOAV1 and MIDTOAV2 to TIMEDELT (LM
- * pp. 1223-1225, CM pp. 1329-1331). The interpretive words are in the
- * listing's notation (src/interpreter/notation.h); the basic code between
- * them is C.
+/* INTEGRATION_INITIALIZATION.agc, MIDTOAV1 and MIDTOAV2 to TIMEDELT (LM pp.
+ * 1223-1225, CM pp. 1329-1331). The interpretive words are in the listing's
+ * notation (src/interpreter/notation.h); the basic code between them is C.
+ * The faithful C is c64-port/src/lm_integration_init.c and
+ * cm_integration_init.c.
  *
  * MIDTOAV1 and MIDTOAV2 bring this vehicle's state vector to the time a
  * burn's AVERAGEG starts from. MIDTOAV1 "INTEGRATES (PRECISION) TO THE

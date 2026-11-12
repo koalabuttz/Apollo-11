@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: MIT */
-/* CONIC_SUBROUTINES.agc, ITERATOR (LM pp. 1182-1183, CM pp. 1285-1286):
- * the search for the root that LAMBERT and TIME-RADIUS share, in the
- * listing's notation (src/interpreter/notation.h), which the readable
- * interpreter runs.
+/* CONIC_SUBROUTINES.agc, ITERATOR (LM pp. 1182-1183, CM pp. 1285-1286): the
+ * search for the root that LAMBERT and TIME-RADIUS share, in the listing's
+ * notation (src/interpreter/notation.h), which the readable interpreter
+ * runs. The faithful C is c64-port/src/lm_conic_compiled.c (with
+ * lm_conic_checkctr.c) and cm_conics.c.
  *
  * Given the dependent variable now (DEP) and last time (DEPREV), the
  * change still wanted in it (DELDEP), the last step in the independent

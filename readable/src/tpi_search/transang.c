@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* TPI_SEARCH.agc of the CM, part 2 (Comanche055 pp. 558-559, bank 07):
- * TRANSANG, the "CENTRAL ANGLE SUBROUTINE".
+ * TRANSANG, the "CENTRAL ANGLE SUBROUTINE". The faithful C is
+ * c64-port/src/cm_tpi_search.c.
  *
  * "THIS SUBROUTINE COMPUTES THE CENTRAL ANGLE OF TRAVEL OF THE PASSIVE
  * VEHICLE DURING THE TRANSFER": from its state at TPF (RPASS4, VPASS4),

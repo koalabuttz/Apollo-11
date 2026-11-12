@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* AOSTASK_AND_AOSJOB.agc, the LM's: Luminary099 pages 1485-1506, bank 20,
- * its erasable words in EBANK 6 (EBANK= AOSQ) once 1/ACCS has set it.
+ * its erasable words in EBANK 6 (EBANK= AOSQ) once 1/ACCS has set it. The
+ * faithful C is c64-port/src/lm_aostask.c.
  *
  * A TS whose A holds an overflow stores the corrected word, leaves +1 or
  * -1 in A and skips the next instruction. Where an overflow can reach a

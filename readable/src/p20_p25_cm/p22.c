@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 2 (Comanche055 pp. 565-569): P22, the CSM's
- * "ORBITAL NAVIGATION PROGRAM 22" (bank 30).
+/* P20-P25.agc, part 2 (Comanche055 pp. 565-569): P22, the CSM's "ORBITAL
+ * NAVIGATION PROGRAM 22" (bank 30). The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * The crew sights a landmark through the optics, and S22 (later in the
  * file) uses the marks to update the CSM's state vector. PROG22 checks the

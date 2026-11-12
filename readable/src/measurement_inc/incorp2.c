@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: MIT */
-/* MEASUREMENT_INCORPORATION.agc, INCORP2's basic code (LM pp. 1153-1157,
- * CM pp. 1256-1260): the bookkeeping of its three phases, each made safe
+/* MEASUREMENT_INCORPORATION.agc, INCORP2's basic code (LM pp. 1153-1157, CM
+ * pp. 1256-1260): the bookkeeping of its three phases, each made safe
  * against a restart. The first phase works one column of W at a time into
  * HOLDW; the second moves HOLDW into W. Each column's indices are kept
- * twice: WIXA and ZIXA for the phase at work, WIXB and ZIXB for the next.
- * A restart in either phase goes back to FAZA (group 2's phase, OCT 04022)
- * and redoes the column from the B copies. */
+ * twice: WIXA and ZIXA for the phase at work, WIXB and ZIXB for the next. A
+ * restart in either phase goes back to FAZA (group 2's phase, OCT 04022) and
+ * redoes the column from the B copies. The faithful C is
+ * c64-port/src/lm_measurement_inc.c and cm_measurement_inc.c. */
 #include "measurement_inc.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"

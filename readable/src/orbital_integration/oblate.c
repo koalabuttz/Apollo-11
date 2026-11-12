@@ -1,8 +1,10 @@
 /* SPDX-License-Identifier: MIT */
 /* ORBITAL_INTEGRATION.agc, OBLATE to COSPHIE (LM pp. 1234-1237, CM pp.
- * 1341-1344), in the listing's notation (src/interpreter/notation.h),
- * which the readable interpreter runs. The LM's QUALITY1 and QUALITY2,
- * which COMTERM calls, are in quality.c; the CM's are in RT8_OP_CODES.
+ * 1341-1344), in the listing's notation (src/interpreter/notation.h), which
+ * the readable interpreter runs. The LM's QUALITY1 and QUALITY2, which
+ * COMTERM calls, are in quality.c; the CM's are in RT8_OP_CODES. The
+ * faithful C is c64-port/src/lm_orbital_integration.c and
+ * cm_orbital_integration.c.
  *
  * "THE OBLATE ROUTINE COMPUTES THE ACCELERATION DUE TO OBLATENESS." The
  * central body is not a sphere, and near it (ALPHAM, the distance, less

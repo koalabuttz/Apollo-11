@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* TPI_SEARCH.agc of the CM, parts 1 and 2 (Comanche055 pp. 551-558, bank
- * 36): S17.1 and S17.2, the search, from S17.1 to NEXUS. TRANSANG, which
- * the search calls (bank 07), is in transang.c.
+ * 36): S17.1 and S17.2, the search, from S17.1 to NEXUS. TRANSANG, which the
+ * search calls (bank 07), is in transang.c. The faithful C is
+ * c64-port/src/cm_tpi_search.c.
  *
  * "BOTH ROUTINES ARE CALLED IN INTERPRETIVE CODE AND RETURN VIA QPRET"
  * (S17.1 through NORMEX, S17.2 through QTEMP, where each keeps its

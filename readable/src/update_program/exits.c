@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* UPDATE_PROGRAM.agc, part 5: the ways out of P27, UPOUT (the normal
- * finish), UPERROUT (the error exits) and UPACTOFF; LM pages 1394-1396,
- * CM pages 1506-1507. */
+ * finish), UPERROUT (the error exits) and UPACTOFF; LM pages 1394-1396, CM
+ * pages 1506-1507. The faithful C is c64-port/src/lm_update.c and
+ * cm_update.c. */
 #include "update_program.h"
 
 /* UPOUT -- LM p. 1394, CM p. 1506: "NORMAL FINISH OF P27". "RELEASE GRAB

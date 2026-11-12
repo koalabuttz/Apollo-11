@@ -1,10 +1,10 @@
 /* SPDX-License-Identifier: MIT */
-/* P11.agc of the CM (Comanche055 pp. 542-547, banks 34 and 37): ATERJOB,
- * the job that "PROVIDES ATTITUDE ERROR DISPLAYS TO THE FDAI DURING SONE
- * BOOST", about every half second, and steers the Saturn with them when
- * the crew has the S/C control of Saturn switch on; the small routines
- * its interpretive code calls (DELSTOR, RLTST, NOPOLY, RESCALES); and
- * S11.1, VHHDOT's display of V1, HDOT and H.
+/* P11.agc of the CM (Comanche055 pp. 542-547, banks 34 and 37): ATERJOB, the
+ * job that "PROVIDES ATTITUDE ERROR DISPLAYS TO THE FDAI DURING SONE BOOST",
+ * about every half second, and steers the Saturn with them when the crew has
+ * the S/C control of Saturn switch on; the small routines its interpretive
+ * code calls (DELSTOR, RLTST, NOPOLY, RESCALES); and S11.1, VHHDOT's display
+ * of V1, HDOT and H. The faithful C is c64-port/src/cm_p11.c.
  *
  * Until RPSTART after liftoff the desired attitude is the one at liftoff
  * (OGC, IGC and MGC as MATRXJOB stored them: NOPOLY, "ATTITUDE HOLD");
@@ -222,7 +222,7 @@ void aterjob(void)
         return;
     }
     set_A(BIT10);
-    rand_channel(030u);
+    rand_channel(CHAN30);
     if (A_is_zero()) {
         strsat();
         return;
@@ -377,7 +377,7 @@ void attdisp2_after_exit(void)
 static void takeon(void)
 {
     set_A(BIT9);
-    wor_channel(012u);
+    wor_channel(CHAN12);
     set_A(ZERO);
     ts(ADDRESS_OF(SATSW));
     tc_at(TAKEON + 5u);
@@ -421,7 +421,7 @@ void atreset_after_delayjob(void)
     }
     ts(ADDRESS_OF(SATSW));
     set_A(negate(BIT9)); /* CS BIT9 */
-    wand_channel(012u);
+    wand_channel(CHAN12);
     tc_at(ATRESET + 020u);
     satout();
 }

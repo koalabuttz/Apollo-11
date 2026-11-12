@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* CM_ENTRY_DIGITAL_AUTOPILOT.agc, part F (Comanche055 pp. 1089-1091, bank
  * 15): the dead zone's end of the 2 s roll system, and "CM ENTRY FDAI
- * DISPLAY".
+ * DISPLAY". The faithful C is c64-port/src/cm_entry_dap.c.
  *
  * "CALCULATE BY INTEGRATION THE ROLL ERROR BETWEEN THE 2 SEC CM/RCS
  * UPDATES." CM/FDAI comes each 0.1 s (EXDAPIN, part C); CM/FDAIR after
@@ -66,7 +66,7 @@ void dzcall_ad_l(void)
 void dzcall_rollhold(void)
 {
     if (!ts(ADDRESS_OF(ROLLHOLD))) set_A(ZERO); /* CA ZERO */
-    write_channel(6);                           /* EXTEND; WRITE ROLLJETS */
+    write_channel(CHAN6);                       /* EXTEND; WRITE ROLLJETS */
     ts(ADDRESS_OF(VDT_180));
     dzcall1();
 }

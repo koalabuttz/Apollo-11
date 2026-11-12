@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* CM_ENTRY_DIGITAL_AUTOPILOT.agc, part B (Comanche055 pp. 1071-1074, bank
- * 15): the rates taken relative to the turning flight path, NOGAMDUT, and
- * ATTRATES: "CALCULATE BODY ATTITUDE RATES AND INTEGRATE TO OBTAIN
- * ATTITUDE ANGLES."
+ * 15), the faithful C c64-port/src/cm_entry_dap.c: the rates taken relative
+ * to the turning flight path, NOGAMDUT, and ATTRATES: "CALCULATE BODY
+ * ATTITUDE RATES AND INTEGRATE TO OBTAIN ATTITUDE ANGLES."
  *   "CB PHIDOT TCDU/180 = (CA PREL + SA RREL) TCDU/180"
  *   "BETADOT TCDU/180 = (-SA PREL + CA RREL) TCDU/180"
  *   "ALFADOT TCDU = (QREL + SB PHIDOT) TCDU/180"

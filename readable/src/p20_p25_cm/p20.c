@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 1 (Comanche055 pp. 562-564): P20, the CSM's
- * "RENDEZVOUS NAVIGATION PROGRAM 20" (bank 37).
+/* P20-P25.agc, part 1 (Comanche055 pp. 562-564): P20, the CSM's "RENDEZVOUS
+ * NAVIGATION PROGRAM 20" (bank 37). The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * "TO CONTROL THE CSM ATTITUDE AND OPTICS TO ACQUIRE THE LEM IN THE S+T
  * FIELD AND TO POINT THE CSM TRANSPONDER AT THE LEM.  TO UPDATE EITHER THE

@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 /* ORBITAL_INTEGRATION.agc, DIFEQ+0 to WMATEND (LM pp. 1241-1244, CM pp.
  * 1348-1351). The interpretive words are in the listing's notation
- * (src/interpreter/notation.h); the basic code between them is C.
+ * (src/interpreter/notation.h); the basic code between them is C. The
+ * faithful C is c64-port/src/lm_orbital_integration.c and
+ * cm_orbital_integration.c.
  *
  * "THE THREE DIFEQ ROUTINES -- DIFEQ+0, DIFEQ+12, DIFEQ+24 -- ARE ENTERED
  * TO PROCESS THE CONTRIBUTIONS AT THE" beginning, middle and end of the

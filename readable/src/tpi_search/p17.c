@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* TPI_SEARCH.agc of the CM, part 3 (Comanche055 pp. 559-561, bank 35):
- * the "TPI SEARCH DISPLAY ROUTNE", P17 and P77, which run the search
- * (S17.1 and S17.2) between the crew's displays.
+/* TPI_SEARCH.agc of the CM, part 3 (Comanche055 pp. 559-561, bank 35): the
+ * "TPI SEARCH DISPLAY ROUTNE", P17 and P77, which run the search (S17.1 and
+ * S17.2) between the crew's displays. The faithful C is
+ * c64-port/src/cm_tpi_search.c.
  *
  * P17 searches with the CSM as the active vehicle, P77 with the LM
  * (AVFLAGA, AVFLAGP); both set the track and update flags and go on at

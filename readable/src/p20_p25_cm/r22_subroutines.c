@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 7 (Comanche055 pp. 586-589): R22's subroutines in bank
- * 27, from SETINTG to INITIALW.
+ * 27, from SETINTG to INITIALW. The faithful C is c64-port/src/cm_p20_p25.c.
  *
  * SETINTG sets up an integration of the state vector to the mark's time.
  * CNTCHK and CONTCHK decide whether R22 may go on: not without a good
@@ -145,9 +145,9 @@ void rangerd_after_exit(void)
 {
     inhint();
     set_A(negate(OCT17)); /* CS OCT17 */
-    wand_channel(013);
+    wand_channel(CHAN13);
     set_A(OCT11);
-    wor_channel(013);
+    wor_channel(CHAN13);
     relint();
     dca(ADDRESS_OF(TIME2));
     dxch(ADDRESS_OF(MARKTIME));
@@ -322,7 +322,7 @@ void vhfread(void)
     ca(ADDRESS_OF(RNRAD));
     if (ts(ADDRESS_OF(RM))) not_modelled(); /* "SAVE RANGE" */
     set_A(BIT2);
-    rand_channel(033); /* "READ DATA GOOD BIT" */
+    rand_channel(CHAN33); /* "READ DATA GOOD BIT" */
     if (A_is_zero()) {
         vhfgood();
         return;

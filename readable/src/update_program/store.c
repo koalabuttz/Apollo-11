@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* UPDATE_PROGRAM.agc, part 3: UPSTORE, the V73 clock increment, the job
- * that does the other updates (UPJOB), and TIMEDIDL, the clock increment
- * V70 and V73 share; LM pages 1391-1393, CM pages 1502-1504. */
+/* UPDATE_PROGRAM.agc, part 3: UPSTORE, the V73 clock increment, the job that
+ * does the other updates (UPJOB), and TIMEDIDL, the clock increment V70 and
+ * V73 share; LM pages 1391-1393, CM pages 1502-1504. The faithful C is
+ * c64-port/src/lm_update.c and cm_update.c. */
 #include "update_program.h"
 #include "../interpreter/notation.h"
 

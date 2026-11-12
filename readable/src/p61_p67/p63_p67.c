@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P61-P67.agc of the CM, part 1 (Comanche055 pp. 795-802, bank 26): P63
- * to P67, the entry guidance's programs.
+/* P61-P67.agc of the CM, part 1 (Comanche055 pp. 795-802, bank 26): P63 to
+ * P67, the entry guidance's programs. The faithful C is
+ * c64-port/src/cm_p61_p67.c.
  *
  * P63 initializes the entry equations: the entry guidance (STARTENT) goes
  * on after CM/POSE, and the entry display shows G, VI and the range to

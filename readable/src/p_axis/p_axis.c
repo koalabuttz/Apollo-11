@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* P-AXIS_RCS_AUTOPILOT.agc, the LM's: Luminary099 pages 1421-1441, bank 16,
  * in EBANK 6 (the listing's EBANK= PERROR). "THE NOMINAL TIME BETWEEN THE
- * P-AXIS RUPTS IS 100 MS IN ALL NON-IDLING MODES OF THE DAP." */
+ * P-AXIS RUPTS IS 100 MS IN ALL NON-IDLING MODES OF THE DAP." The faithful C
+ * is c64-port/src/lm_p_axis.c. */
 #include "p_axis.h"
 
 #if LUMINARY099

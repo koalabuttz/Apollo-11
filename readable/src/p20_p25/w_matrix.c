@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 13 (Luminary099 pp. 582-585): LSR22.4, INITWMX6,
- * INTGRCAL and WLINIT, the lunar surface's measurement incorporation and
- * the W-matrix's start.
+ * INTGRCAL and WLINIT, the lunar surface's measurement incorporation and the
+ * W-matrix's start. The faithful C is c64-port/src/lm_p20_p25.c.
  *
  * "LSR22.4 IS THE ENTRY TO PERFORM LUNAR SURFACE NAVIGATION FOR THE LM
  * COMPUTER ONLY". LSR22.3 comes here when SURFFLAG says the LM is on the

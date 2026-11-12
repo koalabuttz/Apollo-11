@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 14 (Luminary099 pp. 585-586): GETULC, RADARANG and
- * LGCUPDTE, the subroutines LSR22.3 and LSR22.4 call for each mark.
+ * LGCUPDTE, the subroutines LSR22.3 and LSR22.4 call for each mark. The
+ * faithful C is c64-port/src/lm_p20_p25.c.
  *
  * GETULC "COMPUTES THE RELATIVE POSITION VECTOR BETWEEN THE CSM AND THE
  * LM, LEAVING THE UNIT VECTOR IN THE PUSHLIST AND MPAC AND THE MAGNITUDE

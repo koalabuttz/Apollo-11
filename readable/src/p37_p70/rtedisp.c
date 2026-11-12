@@ -1,10 +1,11 @@
 /* SPDX-License-Identifier: MIT */
 /* P37_P70.agc of the CM, part 2 (Comanche055 pp. 900-904, bank 32): the
  * "ALARM DISPLAY SUBROUTINE" (P370ALRM), the "TIME RADIUS CALLING
- * SUBROUTINE" (TMRAD100) and the "DISPLAY CALCULATION SUBROUTINE"
- * (RTEDISP), which turns the trajectory home into what the crew sees: the
- * speed, time and flight path angle at entry, the change in velocity in
- * local vertical coordinates, and the landing site. */
+ * SUBROUTINE" (TMRAD100) and the "DISPLAY CALCULATION SUBROUTINE" (RTEDISP),
+ * which turns the trajectory home into what the crew sees: the speed, time
+ * and flight path angle at entry, the change in velocity in local vertical
+ * coordinates, and the landing site. The faithful C is
+ * c64-port/src/cm_p37_p70.c. */
 #include "p37_p70.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"

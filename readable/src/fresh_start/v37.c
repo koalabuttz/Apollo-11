@@ -582,11 +582,11 @@ void r00_after_downflag_xovinflg(void)
 void roc_after_intpret(void)
 {
     set_A(negate(OCT1400));
-    wand_channel(011u);
+    wand_channel(DSALMOUT);
     set_A(OCT44571);
-    wand_channel(012u);
+    wand_channel(CHAN12);
     set_A(negate(OCT600)); /* "CLEAR UNUSED BITS" */
-    wand_channel(013u);
+    wand_channel(CHAN13);
     tc_at(TC_INITSUB_ROC);
     initsub();
 }
@@ -1058,8 +1058,8 @@ void r00top00_after_tvczap(void)
 void r00top00_after_delayjob(void)
 {
     set_A(ZERO);
-    write_channel(05u);
-    write_channel(06u);
+    write_channel(CHAN5);
+    write_channel(CHAN6);
     isitp00();
 }
 

@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 6 (Comanche055 pp. 631-632): GOTOV56, in fixed-fixed
- * memory (BLOCK 02), written with RENDISP2, which ends P20 through it. */
+ * memory (BLOCK 02), written with RENDISP2, which ends P20 through it. The
+ * faithful C is c64-port/src/cm_p20_p25.c. */
 #include "p20_p25_cm.h"
 #include "../agc/names.h"
 

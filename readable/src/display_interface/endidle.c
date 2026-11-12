@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* DISPLAY_INTERFACE_ROUTINES.agc, part 7: a flashing display waiting in
- * ENDIDLE, the astronaut's answer back to the user, and the displays
- * that come next (LM pages 1367-1372, CM pages 1478-1482), bank 10.
+ * ENDIDLE, the astronaut's answer back to the user, and the displays that
+ * come next (LM pages 1367-1372, CM pages 1478-1482), bank 10. The faithful
+ * C is c64-port/src/lanec_di_*.c.
  *
  * "ALL FLASHING DISPLAYS HAVE 3 RETURNS TO THE USER FROM ASTRONAUT
  * RESPOSES.  A TERMINATE (V34) BRANCHES TO THE USER'S CALL CADR +1.  A

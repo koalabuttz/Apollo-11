@@ -2,7 +2,8 @@
 /* P30-P37.agc (Comanche055 pp. 643-647): DELRSPL, the splash-down error V82
  * shows in P11, and AUGEKUGL, the entry range angle (bank 32), in the
  * listing's notation (src/interpreter/notation.h), which the readable
- * interpreter runs (src/binding/cm_p30_routines.c).
+ * interpreter runs (src/binding/cm_p30_routines.c). The faithful C is
+ * c64-port/src/cm_p30_p37.c.
  *
  * DELRSPL's function, as its description has it: "CALCULATE (FOR DISPLAY
  * ON CALL) AN APPROXIMATE MEASURE OF IN-PLANE SPLASH DOWN ERROR. IF THE

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 9 (Luminary099 pp. 568-573): LRS22.1 and LRS22.2,
- * R22's data read subroutines.
+/* P20-P25.agc, part 9 (Luminary099 pp. 568-573): LRS22.1 and LRS22.2, R22's
+ * data read subroutines. The faithful C is c64-port/src/lm_p20_p25.c.
  *
  * LRS22.1 (bank 32) "READS RENDEZVOUS RADAR RANGE AND RANGE-RATE, TRUNNION
  * AND SHAFT ANGLES, THREE CDU VALUES AND TIME", one sample each, for the
@@ -75,7 +75,7 @@ void lrs22_1_after_downflag(void)
 {
     inhint();
     set_A(BIT3);
-    rand_channel(033);
+    rand_channel(CHAN33);
     if (!ts(L_ADDRESS)) set_A(negate(RRRSBIT));
     mask_at(ADDRESS_OF(RADMODES));
     ad_at(L_ADDRESS);

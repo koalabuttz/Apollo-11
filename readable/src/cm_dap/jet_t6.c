@@ -62,7 +62,7 @@ void t6start_plus1(void)
     }
     ads(ADDRESS_OF(RCSFLAGS));
     ca(ADDRESS_OF(RWORD1)); /* "INITIALIZE CHANNELS 5,6 WITH WORD1" */
-    write_channel(6);
+    write_channel(CHAN6);
     ca(ADDRESS_OF(PWORD1));
     t6start_yword1();
 }
@@ -71,7 +71,7 @@ void t6start_plus1(void)
 void t6start_yword1(void)
 {
     ad_at(ADDRESS_OF(YWORD1));
-    write_channel(5);
+    write_channel(CHAN5);
     t6ruptor();
 }
 
@@ -157,7 +157,7 @@ void replace2_plus2(void)
 void replacer(void)
 {
     ca(ADDRESS_OF(RWORD2));
-    write_channel(6);
+    write_channel(CHAN6);
     tc_q();
 }
 
@@ -166,9 +166,9 @@ void replacer(void)
 void replacep(void)
 {
     set_A(YJETS);
-    rand_channel(5);
+    rand_channel(CHAN5);
     ad_at(ADDRESS_OF(PWORD2));
-    write_channel(5);
+    write_channel(CHAN5);
     replacep_return();
 }
 
@@ -182,9 +182,9 @@ void replacep_return(void)
 void replacey(void)
 {
     set_A(PJETS);
-    rand_channel(5);
+    rand_channel(CHAN5);
     ad_at(ADDRESS_OF(YWORD2));
-    write_channel(5);
+    write_channel(CHAN5);
     tc_q();
 }
 
@@ -227,7 +227,7 @@ static void enabt6(void)
 {
     ts(ADDRESS_OF(TIME6));
     set_A(NEGMAX);
-    wor_channel(013);
+    wor_channel(CHAN13);
     continue_at(RESUME);
 }
 

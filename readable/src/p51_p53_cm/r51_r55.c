@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P51-P53.agc of the CM, part 4 (Comanche055 pp. 756-759): R51, the fine
- * alignment (bank 14), and R55, the gyro torque (bank 15).
+ * alignment (bank 14), and R55, the gyro torque (bank 15). The faithful C is
+ * c64-port/src/cm_p51_p53.c.
  *
  * R51, "TO ALIGN THE STABLE MEMBER TO REFSSMAT": two stars are sighted
  * (BESTI and BESTJ, the pair PICAPAR picked, STARIND 1 the first and 0

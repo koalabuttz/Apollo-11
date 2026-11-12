@@ -93,13 +93,13 @@ void hitest(void)
 void pos2chk(void)
 {
     set_A(BIT7);
-    rand_channel(033u);
+    rand_channel(CHAN33);
     if (A_is_zero()) {
         continue_at(UPDATCHK);
         return;
     }
     set_A(BIT13);
-    rand_channel(012u);
+    rand_channel(CHAN12);
     if (A_is_zero()) {
         lrposalm();
         return;
@@ -138,7 +138,7 @@ void higatchk(void)
 void pos1chk(void)
 {
     set_A(BIT6);
-    rand_channel(033u);
+    rand_channel(CHAN33);
     if (A_is_zero()) {
         continue_at(UPDATCHK);
         return;

@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 19 (Comanche055 p. 631): LOWMEMRY and LDPLANET, the
- * star or planet P23 marks on (banks 14 and 16).
+/* P20-P25.agc, part 19 (Comanche055 p. 631): LOWMEMRY and LDPLANET, the star
+ * or planet P23 marks on (banks 14 and 16). The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * LOWMEMRY loads a star's unit vector from the star catalog: CATLOG less
  * X1, which is the star's number times 6, and returns (RVQ).

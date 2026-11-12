@@ -28,7 +28,7 @@ static void rcsatt_after_lxch(void)
 {
     qxch(ADDRESS_OF(QRUPT));
     set_A(BIT15);
-    rand_channel(031);
+    rand_channel(CHAN31);
     if (A_is_zero()) { /* EXTEND; BZF SETT5 */
         sett5();
         return;
@@ -43,7 +43,7 @@ static void rcsatt_after_lxch(void)
     ts(ADDRESS_OF(ERRORY));
     ts(ADDRESS_OF(ERRORZ));
     set_A(BIT14);
-    rand_channel(031);
+    rand_channel(CHAN31);
     if (A_is_zero()) { /* EXTEND; BZF SETT5 */
         sett5();
         return;
@@ -98,7 +98,7 @@ static void freechk(void)
     ads(ADDRESS_OF(RCSFLAGS));
     set_A(BIT14);
     ts(ADDRESS_OF(HOLDFLAG));
-    rand_channel(031); /* "CHECK FOR FREE MODE" */
+    rand_channel(CHAN31); /* "CHECK FOR FREE MODE" */
     if (A_is_zero())
         continue_at(KRESUME1); /* EXTEND; BZF */
     else

@@ -115,7 +115,7 @@ void r04z(void)
     mask_at(ADDRESS_OF(RADMODES));
     ts(ADDRESS_OF(RADMODES));
     set_A(LRPOSCAL);
-    rand_channel(033);
+    rand_channel(CHAN33);
     ads(ADDRESS_OF(RADMODES));
     relint();
 
@@ -216,7 +216,7 @@ void r04x(void)
 void r04b(void)
 {
     set_A(BIT2);
-    rand_channel(033);
+    rand_channel(CHAN33);
     if (A_is_zero()) { /* EXTEND; BZF R04C: "YES" */
         continue_at(R04C);
         return;
@@ -256,7 +256,7 @@ void r04b_after_enter(void)
 void r04c(void)
 {
     set_A(BIT14);
-    wor_channel(012);
+    wor_channel(CHAN12);
     set_A(TWO);
     r04c_plus4();
 }
@@ -467,7 +467,7 @@ void r04end_after_delayjob(void)
 {
     inhint();
     set_A(negate(BIT14)); /* CS BIT14 */
-    wand_channel(012);
+    wand_channel(CHAN12);
     tc(R04END + 011u, DOWNFLAG); /* ADRES R04FLAG */
 }
 

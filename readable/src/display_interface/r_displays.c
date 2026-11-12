@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* DISPLAY_INTERFACE_ROUTINES.agc, part 4: the perform displays, the R
- * displays and the copies of a display's words (LM pages 1360-1363, CM
- * pages 1471-1474), bank 10.
+ * displays and the copies of a display's words (LM pages 1360-1363, CM pages
+ * 1471-1474), bank 10. The faithful C is c64-port/src/lanec_di_*.c.
  *
  * "ALL ROUTINES THAT END IN R HAVE AN IMMEDIATE RETURN TO THE USER." and
  * "ALL ROUTINES THAT END IN R START A SEPARATE JOB (MAKEPLAY) WITH USER'S

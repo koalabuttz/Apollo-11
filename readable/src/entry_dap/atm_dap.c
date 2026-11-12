@@ -2,7 +2,7 @@
 /* CM_ENTRY_DIGITAL_AUTOPILOT.agc, part C (Comanche055 pp. 1074-1075, bank
  * 15): the 0.1 s yaw and pitch DAPs inside the atmosphere, from ATTRATES
  * once .05GSW is set, and EXDAPIN, where the extra atmospheric DAP joins
- * them.
+ * them. The faithful C is c64-port/src/cm_entry_dap.c.
  *
  * "START YAW AUTOPILOT HERE.  RATE DAMPING WITH ENFORCED COORDINATED ROLL
  * MANEUVER." The yaw rate taken against the roll rate, "YAW ERROR = RREL
@@ -69,7 +69,7 @@ void exdapin(void)
 {
     jet_code(P_RJCODE); /* INDEX A; CAF P/RJCODE */
     ads(ADDRESS_OF(JETEM));
-    write_channel(5); /* EXTEND; WRITE PYJETS */
+    write_channel(CHAN5); /* EXTEND; WRITE PYJETS */
     switch (ccs_at(ADDRESS_OF(JETAG))) {
     case POSITIVE: tc_to(EXDAPIN + 6u, CM_RCS); break;
     case IS_PLUS_ZERO: exdapin_fdai(); break;

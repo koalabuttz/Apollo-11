@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 /* The words of fixed memory after a caller's TC, for the bindings whose
  * routines read them (binding.h): from the program's operand set, or,
- * where the set names the address alone, from the rope image. */
+ * where the set names the address alone, from the rope image. (The
+ * faithful port's routines look their sites up the same way:
+ * agc_site_lookup, c64-port/src/agc_transfer.c.) */
 #include <stddef.h>
 #include "binding.h"
 

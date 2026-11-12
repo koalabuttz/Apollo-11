@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: MIT */
-/* DAP_INTERFACE_SUBROUTINES.agc, the LM's: Luminary099 pages 1406-1409,
- * bank 20 (the CM has none of it). The calling sequence the listing gives
- * is TC IBNKCALL; FCADR ROUTINE, in an interrupt "OR WITH INTERRUPT
- * INHIBITED". The DAP's deadband, DB, is an angle "SCALED AT 45" (degrees):
- * NARROWDB 0.3 degree, WIDEDB 5.0 degrees, POWERDB 1.0 degree. */
+/* DAP_INTERFACE_SUBROUTINES.agc, the LM's: Luminary099 pages 1406-1409, bank
+ * 20 (the CM has none of it). The calling sequence the listing gives is TC
+ * IBNKCALL; FCADR ROUTINE, in an interrupt "OR WITH INTERRUPT INHIBITED".
+ * The DAP's deadband, DB, is an angle "SCALED AT 45" (degrees): NARROWDB 0.3
+ * degree, WIDEDB 5.0 degrees, POWERDB 1.0 degree. The faithful C is
+ * c64-port/src/lm_dap_interface.c. */
 #include "dap_interface.h"
 
 #if LUMINARY099

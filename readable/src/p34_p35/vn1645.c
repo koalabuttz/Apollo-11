@@ -28,11 +28,9 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-/* A label's address in its bank (02000-03777). */
-#define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
-#define FLAGON         IN_BANK(FLAGON)
-#define FLAGOFF        IN_BANK(FLAGOFF)
-#define GET45          IN_BANK(GET45)
+#define FLAGON  IN_BANK(FLAGON)
+#define FLAGOFF IN_BANK(FLAGOFF)
+#define GET45   IN_BANK(GET45)
 
 /* ---- S34/35.5 -- LM pp. 678-679, CM pp. 480-481 ---- */
 

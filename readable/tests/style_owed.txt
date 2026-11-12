@@ -3,7 +3,7 @@
 # the tree to these counts; `tools/style_check.py --write` writes them.
 # A directory that is not here owes nothing and may not break a rule.
 #
-# Owed in all: ccs-order 86, ccs-default 63, ccs-not-modelled 72, raw-channel 86, continue-offset 50, file-header 162, goto 2.
+# Owed in all: ccs-order 86, ccs-default 63, ccs-not-modelled 72, continue-offset 50, goto 2.
 
 ccs-order aostask 3
 ccs-order aotmark 4
@@ -64,17 +64,6 @@ ccs-not-modelled sps_backup 1
 ccs-not-modelled t4rupt 7
 ccs-not-modelled trim_gimbal 2
 ccs-not-modelled update_program 1
-raw-channel cm_dap 24
-raw-channel entry_dap 7
-raw-channel extended_verbs 11
-raw-channel findcduw 2
-raw-channel fresh_start 5
-raw-channel p11 5
-raw-channel p20_p25 19
-raw-channel p20_p25_cm 4
-raw-channel p40_p47_cm 1
-raw-channel r60_62 3
-raw-channel servicer 5
 continue-offset cm_dap 13
 continue-offset downtelemetry 2
 continue-offset entry_dap 10
@@ -87,40 +76,5 @@ continue-offset powered_flight 1
 continue-offset r31 1
 continue-offset t6rupt 1
 continue-offset tvc 3
-file-header aostask 1
-file-header binding 2
-file-header cm_dap 1
-file-header conics 12
-file-header dap_interface 1
-file-header dapidler 1
-file-header display_interface 7
-file-header entry_dap 10
-file-header fresh_start 1
-file-header imu_mode_switching 4
-file-header inflight_align 1
-file-header integration_init 10
-file-header kalman_filter 1
-file-header measurement_inc 1
-file-header orbital_integration 9
-file-header p11 3
-file-header p20_p25 17
-file-header p20_p25_cm 23
-file-header p30_cm 3
-file-header p32_p33_cm 3
-file-header p32_p35 3
-file-header p37_p70 6
-file-header p51_p53 10
-file-header p51_p53_cm 9
-file-header p61_p67 6
-file-header p_axis 1
-file-header q_r_axis 1
-file-header radar_leadin 1
-file-header rtb_op_codes 2
-file-header sps_backup 1
-file-header time_free_fall 1
-file-header tjet_law 1
-file-header tpi_search 3
-file-header trim_gimbal 1
-file-header update_program 5
 goto imu_performance 1
 goto landing_guidance 1

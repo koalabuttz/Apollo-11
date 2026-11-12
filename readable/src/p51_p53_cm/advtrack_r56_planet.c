@@ -2,8 +2,8 @@
 /* P51-P53.agc of the CM, part 8 (Comanche055 pp. 778-784): ADVTRACK and
  * ROTA, the line of sight to a point ahead on the ground track (bank 26);
  * S52.3, the preferred orientation (bank 16); R56, the alternate line of
- * sight mark (bank 17); and PLANET, a star's or a planet's direction
- * (bank 15).
+ * sight mark (bank 17); and PLANET, a star's or a planet's direction (bank
+ * 15). The faithful C is c64-port/src/cm_p51_p53.c.
  *
  * Each call out of the file (BANKCALL, CLEARMRK, GOTOPOOH) leaves Z at
  * the routine and Q at the word after the TC, where the routine comes

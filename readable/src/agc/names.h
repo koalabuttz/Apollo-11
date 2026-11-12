@@ -653,9 +653,9 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 
 /* The channels: CHAN13 (bit 7 is the downlink's word order code), and
  * DNTM1 and DNTM2, the two words each DOWNRUPT sends. */
-#define CHAN13 013u
-#define DNTM1  034u
-#define DNTM2  035u
+#define CHAN13 ((unsigned)K_CHAN13)
+#define DNTM1  ((unsigned)K_DNTM1)
+#define DNTM2  ((unsigned)K_DNTM2)
 
 /* ---- Fresh start and restart (FRESH_START_AND_RESTART.agc) ---- */
 
@@ -674,14 +674,16 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define STATE(n) ERASABLE(K_STATE + (n)) /* STATE +n: flag word n */
 
 /* Its channels: CHAN5 and CHAN6 (the RCS jets), DSALMOUT (11), CHAN12,
- * CHAN14, CHAN33, MNKEYIN (15, the main DSKY's keys) and NAVKEYIN (16, the
- * navigation DSKY's keys and the MARK buttons); SUPERBNK is channel 7 and
- * LCHAN (1) register L. */
+ * CHAN14, CHAN31 (the hand controllers and the autopilot's mode), CHAN33,
+ * MNKEYIN (15, the main DSKY's keys) and NAVKEYIN (16, the navigation
+ * DSKY's keys and the MARK buttons); SUPERBNK is channel 7 and LCHAN (1)
+ * register L. */
 #define CHAN5    ((unsigned)K_CHAN5)
 #define CHAN6    ((unsigned)K_CHAN6)
 #define DSALMOUT ((unsigned)K_DSALMOUT)
 #define CHAN12   ((unsigned)K_CHAN12)
 #define CHAN14   ((unsigned)K_CHAN14)
+#define CHAN31   ((unsigned)K_CHAN31)
 #define CHAN33   ((unsigned)K_CHAN33)
 #define MNKEYIN  ((unsigned)K_MNKEYIN)
 #define NAVKEYIN ((unsigned)K_NAVKEYIN)
@@ -4230,7 +4232,6 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define AFTRGUID ((word)K_AFTRGUID)
 #define CALCRGVG ((word)K_CALCRGVG)
 #define CGCALC   ((word)K_CGCALC)
-#define CHAN31   031u
 #define DERCLOOP ((word)K_DERCLOOP)
 #define DISPCOMN ((word)K_DISPCOMN)
 #define DISPEXIT ((word)K_DISPEXIT)

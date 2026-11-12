@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P37_P70.agc of the CM, part 1 (Comanche055 pp. 890-895, bank 36): P37's
- * main line, "RETURN TO EARTH": the crew's inputs, then the conic
- * trajectory home, found by iteration.
+ * main line, "RETURN TO EARTH": the crew's inputs, then the conic trajectory
+ * home, found by iteration. The faithful C is c64-port/src/cm_p37_p70.c.
  *
  * The crew loads the time of ignition (V06N33, "INPUT TIG STORED IN
  * SPRTETIG") and, if they want, the entry angle and the change in speed

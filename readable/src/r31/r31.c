@@ -34,9 +34,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-/* A label's address in its bank (02000-03777). */
-#define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
-
 /* ---- R31CALL and the display -- LM p. 705, CM p. 507 ---- */
 
 /* R31CALL: a job at V83CALL, priority 3 (FINDVAC, 2CADR V83CALL). */

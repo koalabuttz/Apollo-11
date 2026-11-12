@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* CM_ENTRY_DIGITAL_AUTOPILOT.agc, part D (Comanche055 pp. 1077-1079, bank
- * 15): "EXTRA ATMOSPHERIC DIGITAL AUTOPILOT", from ATTRATES while .05GSW
- * is clear (the BZF EXDAP), every 0.1 s.
+ * 15): "EXTRA ATMOSPHERIC DIGITAL AUTOPILOT", from ATTRATES while .05GSW is
+ * clear (the BZF EXDAP), every 0.1 s. The faithful C is
+ * c64-port/src/cm_entry_dap.c.
  *
  * Its mode, CMDAPMOD, comes from the angle of attack, by CALFA:
  *   "1.	IF ABS(CALF) -C(45) POS, USE": the yaw jets hold beta,
@@ -133,7 +134,7 @@ void exdap4(void)
 
     if (jetag == NEGATIVE) set_A(ZERO); /* CA ZERO (the -0 leaves +0 too) */
     if (jetag == NEGATIVE || jetag == IS_MINUS_ZERO) {
-        write_channel(6); /* EXTEND; WRITE ROLLJETS */
+        write_channel(CHAN6); /* EXTEND; WRITE ROLLJETS */
         ts(ADDRESS_OF(JETAG));
     }
     exdap3();
@@ -291,9 +292,9 @@ void exdap2_betadot(void)
  * faithful port's run stops at EXDAP1, a key of another of its parts.) */
 void exdap2_after_biasedz(void)
 {
-    ror_lchan();        /* EXTEND; ROR LCHAN */
-    jet_code(P_RJCODE); /* INDEX A; CAF P/RJCODE */
-    write_channel(6);   /* EXTEND; WRITE ROLLJETS */
+    ror_lchan();          /* EXTEND; ROR LCHAN */
+    jet_code(P_RJCODE);   /* INDEX A; CAF P/RJCODE */
+    write_channel(CHAN6); /* EXTEND; WRITE ROLLJETS */
     ca(ADDRESS_OF(ROLLHOLD));
     msu_at(ADDRESS_OF(ROLL_180)); /* EXTEND; MSU ROLL/180 */
     ts(L_ADDRESS);

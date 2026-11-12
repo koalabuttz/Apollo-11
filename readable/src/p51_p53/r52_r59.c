@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P51-P53.agc, part 6 (Luminary099 pp. 955-960, banks 14 and 15): R52,
- * the automatic optics positioning; and R59, the lunar surface star
- * acquisition.
+/* P51-P53.agc, part 6 (Luminary099 pp. 955-960, banks 14 and 15): R52, the
+ * automatic optics positioning; and R59, the lunar surface star acquisition.
+ * The faithful C is c64-port/src/lm_p51_p53.c.
  *
  * R52, the "AUTOMATIC OPTICS POSITIONING ROUTINE", is to "POINT THE AOT
  * APTICS AXIS BY MANEUVERING THE LEM TO A NAVIGATION" star: the crew

@@ -1,6 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* CONIC_SUBROUTINES.agc, DELTIME (LM pp. 1180-1181, CM pp. 1283-1284):
- * Kepler's equation in the universal variable, the time T an X gives.
+ * Kepler's equation in the universal variable, the time T an X gives. The
+ * faithful C is c64-port/src/lm_conic_compiled.c (with lm_conic_checkctr.c)
+ * and cm_conics.c.
  *
  * In: MPAC is XI, ALPHA X^2 ("MPAC=XI (+6), 0D=XSQ"), and 0D is X^2; X,
  * R1, KEPC1 and KEPC2 as KEPLER left them. Two series in XI by POLY, the

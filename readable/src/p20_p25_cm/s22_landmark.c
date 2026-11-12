@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 10 (Comanche055 pp. 600-603): S22.1's first pass for
- * an unknown landmark (bank 30).
+/* P20-P25.agc, part 10 (Comanche055 pp. 600-603): S22.1's first pass for an
+ * unknown landmark (bank 30). The faithful C is c64-port/src/cm_p20_p25.c.
  *
  * With the landmark not known (KNOWNFLG clear; a known one goes on at
  * S22BOX22), S22.1 estimates where it is on the first mark and gives the

@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: MIT */
-/* P32-P35_P72-P75.agc (Luminary099 pp. 632-641): CSI/A, the CSI
- * computation (bank 34), from its start to SCNDSOL. P32's CSI/A finds the
- * delta V of the CSI burn: a first guess, then (from NTP/2 on) the CDH and
- * TPI it leads to, and a Newton iteration on the guess.
+/* P32-P35_P72-P75.agc (Luminary099 pp. 632-641): CSI/A, the CSI computation
+ * (bank 34), from its start to SCNDSOL. P32's CSI/A finds the delta V of the
+ * CSI burn: a first guess, then (from NTP/2 on) the CDH and TPI it leads to,
+ * and a Newton iteration on the guess. The faithful C is
+ * c64-port/src/lm_p32_p35.c.
  *
  * The listing's own words for its flags (p. 632): S32.1F1, "DVT1 HAS
  * EXCEEDED MAX INDICATOR"; S32.1F2, "FIRST PASS FOR NEWTON ITERATION

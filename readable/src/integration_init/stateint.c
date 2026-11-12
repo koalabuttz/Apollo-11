@@ -6,7 +6,8 @@
  * FRESH_START_AND_RESTART). Each step is a phase of restart group 2, so a
  * restart picks the cycle up again. QUITFLAG stops it ("KILL INTEGRATION
  * UNTIL NEXT P00"). The interpretive words are in the listing's notation
- * (src/interpreter/notation.h); the basic code is C. */
+ * (src/interpreter/notation.h); the basic code is C. The faithful C is
+ * c64-port/src/lm_integration_init.c and cm_integration_init.c. */
 #include "integration_init.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"

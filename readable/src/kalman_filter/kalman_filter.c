@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* KALMAN_FILTER.agc, the LM's: Luminary099 pages 1470-1471, bank 16, in
- * EBANK 6 (the listing's EBANK= NO.UJETS). */
+ * EBANK 6 (the listing's EBANK= NO.UJETS). The faithful C is
+ * c64-port/src/lm_kalman.c. */
 #include "kalman_filter.h"
 
 #if LUMINARY099

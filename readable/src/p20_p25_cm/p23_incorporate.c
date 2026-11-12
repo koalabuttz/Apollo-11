@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 17 (Comanche055 pp. 625-626): R23.55 to R23.END, the
- * measurement's incorporation (bank 31).
+ * measurement's incorporation (bank 31). The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * R23.55 takes POINTAXS's line of sight ("RCLL IS IN MPAC"). UCLSTAR is
  * its unit vector plus the CSM's velocity VZC times ONE/C, made a unit

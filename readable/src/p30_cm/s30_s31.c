@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: MIT */
-/* P30-P37.agc (Comanche055 pp. 639-642): S30.1 and S31.1, the
- * computations of P30 and P31 (bank 31), in the listing's notation
+/* P30-P37.agc (Comanche055 pp. 639-642): S30.1 and S31.1, the computations
+ * of P30 and P31 (bank 31), in the listing's notation
  * (src/interpreter/notation.h), which the readable interpreter runs
- * (src/binding/cm_p30_routines.c).
+ * (src/binding/cm_p30_routines.c). The faithful C is
+ * c64-port/src/cm_p30_p37.c.
  *
  * S30.1: "BASED ON STORED TARGET PARAMETERS(R OF IGNITION(RTIG),V OF
  * IGNITION(VTIG),TIME OF IGNITION(TIG),DELV(LV),COMPUTE PERIGEE ALTITUDE

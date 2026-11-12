@@ -34,7 +34,8 @@ The rules, each named as the ledger names it:
                     it says where the listing would go, and stops there.
   own-helper        COUNT() and tc_to() are defined once, in
                     src/agc/agc.h (COUNT() also in src/assembly/assembly.h,
-                    for the tables that do not use the machine).
+                    for the tables that do not use the machine), and
+                    IN_BANK() and BANK_OF() in src/interpreter/notation.h.
   decimal-offset    An offset from a label of the fixed memory is in
                     octal, with its leading 0, as the listing counts:
                     POODOO + 014u, not POODOO + 12u (STYLE.md, Naming).
@@ -75,7 +76,8 @@ CASE = re.compile(r'\bcase (\w+):')
 CHANNEL = re.compile(r'\b(?:read|write|rand|wand|wor|rxor|ror)_channel\('
                      r'\s*\(?(?:word|unsigned)?\)?\s*0?[0-9]+u?\s*[,)]')
 CONTINUE = re.compile(r'\bcontinue_at\(\s*(?:\(word\)\s*)?\(?\s*([A-Z][A-Z0-9_]*)\s*([+-])\s*(0?[0-9]+)u?')
-HELPER = re.compile(r'^[ \t]*#[ \t]*define[ \t]+COUNT\(|^(?:static )?(?:inline )?void tc_to\(', re.M)
+HELPER = re.compile(r'^[ \t]*#[ \t]*define[ \t]+(?:COUNT|IN_BANK|BANK_OF)\('
+                    r'|^(?:static )?(?:inline )?void tc_to\(', re.M)
 DECIMAL = re.compile(r'\b(?:K_)?([A-Z][A-Z0-9_]*) \+ ([89]|[1-9][0-9]+)u\b')
 LABEL = re.compile(r'^#define (\w+) +\(\(word\)K_\w+\)', re.M)
 NEVER = re.compile(r'/\*[^\n]*\bnever\b|^[^\n]*\bnever\b[^\n]*\*/', re.M)
@@ -86,7 +88,7 @@ NO_FAITHFUL = ('agc', 'assembly')
 GOTO = re.compile(r'\bgoto\b(?!_)')
 WORDING = re.compile(r'\bas the original\b|\bas yaAGC\b', re.I)
 FUNCTION = re.compile(r'^(?:static )?(?:inline )?(?:void|bool|word|int|unsigned|enum \w+) (\w+)\(', re.M)
-HELPER_HOMES = ('agc/agc.h', 'assembly/assembly.h')
+HELPER_HOMES = ('agc/agc.h', 'assembly/assembly.h', 'interpreter/notation.h')
 ENTRY = re.compile(r'(\S+) (\S+) (\d+)$')
 
 
@@ -342,6 +344,8 @@ def self_check():
     expect('a jump to an offset of a routine of another', 'continue_at((word)(POODOO + 014u));\ncontinue_at(GETLCX);\n',
            [], {'getlcx'})
     expect('a COUNT of its own', '#define COUNT(a) (sizeof(a) / sizeof((a)[0]))\n', [('own-helper', 1)])
+    expect('an IN_BANK of its own', '#define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))\n',
+           [('own-helper', 1)])
     expect('a tc_to of its own', 'static void tc_to(word at, word routine)\n{\n}\n', [('own-helper', 1)])
     expect('a decimal offset from a label', 'tc_at((word)(POODOO + 12u));\n#define X ((word)(K_SGNCOM + 9u))\n',
            [('decimal-offset', 1), ('decimal-offset', 2)])

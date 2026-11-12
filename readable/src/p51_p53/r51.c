@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P51-P53.agc, part 3 (Luminary099 pp. 941-944, bank 14): R51, the fine
- * alignment, and GYCOARS, the gyro torque coarse alignment.
+ * alignment, and GYCOARS, the gyro torque coarse alignment. The faithful C
+ * is c64-port/src/lm_p51_p53.c.
  *
  * R51, "TO ALIGN THE STABLE MEMBER TO REFSSMAT": the crew picks (V50N25,
  * option 15) whether the computer picks the stars, then marks two stars

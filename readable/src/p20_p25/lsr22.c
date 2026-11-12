@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, parts 10 to 12 (Luminary099 pp. 574-582): LSR22.3, R22's
- * measurement incorporation.
+ * measurement incorporation. The faithful C is c64-port/src/lm_p20_p25.c.
  *
  * LSR22.3 (bank 26) "COMPUTES THE B-VECTORS ADN" [sic] "DELTA Q FOR EACH
  * OF THE QUANTITIES MEASURED BY THE RENDEZVOUS RADAR. (RANGE, RANGE RATE,

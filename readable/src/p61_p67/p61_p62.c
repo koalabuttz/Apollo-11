@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P61-P67.agc of the CM, part 1 (Comanche055 pp. 789-794, bank 26): P61
- * and P62.
+/* P61-P67.agc of the CM, part 1 (Comanche055 pp. 789-794, bank 26): P61 and
+ * P62. The faithful C is c64-port/src/cm_p61_p67.c.
  *
  * P61, "TO CALCULATE AND DISPLAY EMS INITIALIZATION DATA": the crew loads
  * the splash point and the lift direction (V06N61: LAT(SPL), LNG(SPL),

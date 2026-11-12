@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* TRIM_GIMBAL_CONTROL_SYSTEM.agc, the LM's: Luminary099 pages 1472-1484,
- * bank 21 in EBANK 6 (the listing's EBANK= QDIFF); ACDT+C12 in bank 16. */
+ * bank 21 in EBANK 6 (the listing's EBANK= QDIFF); ACDT+C12 in bank 16. The
+ * faithful C is c64-port/src/lm_trim_gimbal.c. */
 #include "trim_gimbal.h"
 
 #if LUMINARY099

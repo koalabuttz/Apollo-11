@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* DISPLAY_INTERFACE_ROUTINES.agc, part 5: display jobs put to sleep and
- * woken, and INITDSP (LM pages 1363-1364, CM pages 1474-1475), bank 10.
+ * woken, and INITDSP (LM pages 1363-1364, CM pages 1474-1475), bank 10. The
+ * faithful C is c64-port/src/lanec_di_*.c.
  *
  * A display that may not go out yet sleeps under its kind's CADR
  * (WAKECADR: MARKPLAY for a MARK, PLAYJUM1 for a NORMAL), with its kind's

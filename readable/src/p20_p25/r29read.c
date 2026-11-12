@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 18 (Luminary099 pp. 605-607): R29's radar reading,
- * the task R29READ and the job R29RDJOB (bank 24).
+/* P20-P25.agc, part 18 (Luminary099 pp. 605-607): R29's radar reading, the
+ * task R29READ and the job R29RDJOB (bank 24). The faithful C is
+ * c64-port/src/lm_p20_p25.c.
  *
  * "RADAR READING:  TASK R29READ AND JOB R29RDJOB.  ALL JOBS ARE NOVAC
  * TYPE." R29LOKON starts the task when the designate ends. Every 2

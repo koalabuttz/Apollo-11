@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 6 (Luminary099 pp. 538-552): the rendezvous radar's
- * designate, from RRDESSM to DODESEND.
+ * designate, from RRDESSM to DODESEND. The faithful C is
+ * c64-port/src/lm_p20_p25.c.
  *
  * RRDESSM, an interpretive routine, points the antenna along a line of
  * sight known in stable member axes (RRTARGET): RRANGLES finds its gimbal

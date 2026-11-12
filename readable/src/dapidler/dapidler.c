@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: MIT */
-/* DAPIDLER_PROGRAM.agc, the LM's: Luminary099 pages 1410-1420. The idler
- * in bank 16 (CHEKBITS to MOREIDLE, pp. 1410-1413) works in EBANK 6 (the
+/* DAPIDLER_PROGRAM.agc, the LM's: Luminary099 pages 1410-1420. The idler in
+ * bank 16 (CHEKBITS to MOREIDLE, pp. 1410-1413) works in EBANK 6 (the
  * listing's EBANK= AOSQ), and so do the attitude error needles in bank 20
  * (ALTDSPLY, NEEDLER, pp. 1414-1420): "EBANK MUST BE SET TO 6". The two
- * banks' parts reach each other by DTCB. */
+ * banks' parts reach each other by DTCB. The faithful C is
+ * c64-port/src/lm_dapidler.c. */
 #include "dapidler.h"
 
 #if LUMINARY099

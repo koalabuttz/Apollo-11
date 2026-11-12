@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: MIT */
-/* INTEGRATION_INITIALIZATION.agc, the end of an integration: A-PCHK,
- * PHEXIT, RECTOUT and INTEXIT (LM pp. 1216-1217, CM pp. 1320-1321). The
- * interpretive words are in the listing's notation
- * (src/interpreter/notation.h); the basic code between them is C.
+/* INTEGRATION_INITIALIZATION.agc, the end of an integration: A-PCHK, PHEXIT,
+ * RECTOUT and INTEXIT (LM pp. 1216-1217, CM pp. 1320-1321). The interpretive
+ * words are in the listing's notation (src/interpreter/notation.h); the
+ * basic code between them is C. The faithful C is
+ * c64-port/src/lm_integration_init.c and cm_integration_init.c.
  *
  * A-PCHK is where the integration has reached TDEC. With STATEFLG set
  * the answer is also the new permanent state vector: a phase change of

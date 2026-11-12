@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 19 (Luminary099 pp. 608-611): the "W-MATRIX
- * MONITOR", verb 67 (V67CALL, bank 31, and ADDPOS, bank 30).
+/* P20-P25.agc, part 19 (Luminary099 pp. 608-611): the "W-MATRIX MONITOR",
+ * verb 67 (V67CALL, bank 31, and ADDPOS, bank 30). The faithful C is
+ * c64-port/src/lm_p20_p25.c.
  *
  * V67 shows the astronaut, in noun 99, how big the W-matrix's errors are:
  * the root sum square of its words in three groups, position, velocity

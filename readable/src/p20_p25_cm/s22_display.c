@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 12 (Comanche055 pp. 606-609): the end of S22.1, the
- * landmark's position shown, and two of its subroutines (bank 30).
+ * landmark's position shown, and two of its subroutines (bank 30). The
+ * faithful C is c64-port/src/cm_p20_p25.c.
  *
  * S22BOX42 finishes a mark's incorporation (INCORP2, the CSM's position
  * again from S22CALRC); a mark that was not the landmark's first goes on

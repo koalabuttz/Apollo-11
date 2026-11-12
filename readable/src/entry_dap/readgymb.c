@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: MIT */
-/* CM_ENTRY_DIGITAL_AUTOPILOT.agc, part A (Comanche055 pp. 1063-1065, bank
- * 15 and fixed-fixed): READGYMB, the "SUBROUTINE TO READ GIMBAL ANGLES AND
- * FORM DIFFERENCES", a WAITLIST task every 0.1 s ("ENTER AND READ ANGLES
- * EACH .1 SEC."); ANGOVCOR, which corrects an angle's overflow; and
- * FLUSHJET, which turns all the jets off.
+/* CM_ENTRY_DIGITAL_AUTOPILOT.agc, part A (Comanche055 pp. 1063-1065, bank 15
+ * and fixed-fixed): READGYMB, the "SUBROUTINE TO READ GIMBAL ANGLES AND FORM
+ * DIFFERENCES", a WAITLIST task every 0.1 s ("ENTER AND READ ANGLES EACH .1
+ * SEC."); ANGOVCOR, which corrects an angle's overflow; and FLUSHJET, which
+ * turns all the jets off. The faithful C is c64-port/src/cm_entry_dap.c.
  *
  * "GIMBAL ANGLES ARE SAVED IN 2S COMPLEMENT, BUT THE DIFFERENCES ARE IN
  * 1S COMP." CM/FLAGS' two low bits steer the task: CM/DSTBY (bit 2), "= 1
@@ -26,8 +26,8 @@ static void dobrate1(void);
 void flushjet(void)
 {
     ca(ZERO_ADDRESS);
-    write_channel(6); /* EXTEND; WRITE ROLLJETS */
-    write_channel(5); /* EXTEND; WRITE PYJETS */
+    write_channel(CHAN6); /* EXTEND; WRITE ROLLJETS */
+    write_channel(CHAN5); /* EXTEND; WRITE PYJETS */
     tc_q();
 }
 

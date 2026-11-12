@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 9 (Comanche055 pp. 598-600 and 609-610): the start
- * of S22.1, the "ORBITAL NAVIGATION ROUTINE" P22 runs on its marks (bank
- * 30), and its small subroutines in bank 31.
+/* P20-P25.agc, part 9 (Comanche055 pp. 598-600 and 609-610): the start of
+ * S22.1, the "ORBITAL NAVIGATION ROUTINE" P22 runs on its marks (bank 30),
+ * and its small subroutines in bank 31. The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * S22.1's three jobs: "UPDATE CSM STATE VECTOR", "UPDATE LANDMARK
  * POSITION" and "CONVERT W MATRIX FROM 9 TO 6 DIMENSIONS". This part

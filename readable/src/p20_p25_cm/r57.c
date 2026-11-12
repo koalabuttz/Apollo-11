@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 3 (Comanche055 pp. 570-571): R57, the "OPTICS
- * CALIBRATION ROUTINE" (bank 37).
+ * CALIBRATION ROUTINE" (bank 37). The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * P23 calls R57 to measure the trunnion bias: the angle the sextant's
  * trunnion reads when the shaft's line of sight and the landmark's are

@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: MIT */
-/* ORBITAL_INTEGRATION.agc, DOSWITCH, ORIGCHNG, RECTIFY and MINIRECT (LM
- * pp. 1239-1240, CM pp. 1345-1347), in the listing's notation
- * (src/interpreter/notation.h), which the readable interpreter runs.
+/* ORBITAL_INTEGRATION.agc, DOSWITCH, ORIGCHNG, RECTIFY and MINIRECT (LM pp.
+ * 1239-1240, CM pp. 1345-1347), in the listing's notation
+ * (src/interpreter/notation.h), which the readable interpreter runs. The
+ * faithful C is c64-port/src/lm_orbital_integration.c and
+ * cm_orbital_integration.c.
  *
  * DOSWITCH changes the center of the integration when the vehicle has
  * crossed the moon's sphere of influence, and goes on with the step

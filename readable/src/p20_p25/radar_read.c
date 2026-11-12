@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 7 (Luminary099 pp. 553-563 and 612-613): the radar
- * data read, from LRALT to RDBADEND, and the landing radar's lamps, from
- * R12LITES to VLIGHT, which the read routines call.
+/* P20-P25.agc, part 7 (Luminary099 pp. 553-563 and 612-613): the radar data
+ * read, from LRALT to RDBADEND, and the landing radar's lamps, from R12LITES
+ * to VLIGHT, which the read routines call. The faithful C is
+ * c64-port/src/lm_p20_p25.c.
  *
  * A job reads a radar by a BANKCALL for one of the lead-ins (LRALT,
  * LRVELZ, LRVELY, LRVELX, RRRDOT, RRRANGE, or LRVEL for five velocity
@@ -132,12 +133,12 @@ static void initread(void)
     case IS_MINUS_ZERO: break;
     }
     set_A(DGBITS);
-    rand_channel(033);
+    rand_channel(CHAN33);
     ts(ADDRESS_OF(OLDATAGD));
     set_A(negate(ALLREAD));
-    wand_channel(013);
+    wand_channel(CHAN13);
     set_A(read_word(Q)); /* INDEX Q; CAF 0 */
-    wor_channel(013);
+    wor_channel(CHAN13);
     dca(ADDRESS_OF(TIME2));
     das(ADDRESS_OF(TIMEHOLD));
     set_A(ZERO);
@@ -162,7 +163,7 @@ void radaread(void)
     ts(ADDRESS_OF(BANKRUPT));
     qxch(ADDRESS_OF(QRUPT));
     set_A(SEVEN);
-    rand_channel(013);
+    rand_channel(CHAN13);
     ts(ADDRESS_OF(DNINDEX));
     if (!A_is_zero()) {
         ca(ADDRESS_OF(RNRAD));
@@ -235,7 +236,7 @@ static void r77check(void);
 void plenty(void)
 {
     if (!ts(ADDRESS_OF(SAMPLIM))) set_A(BIT3);
-    rand_channel(013);
+    rand_channel(CHAN13);
     if (A_is_zero()) {
         continue_at(RENDRAD);
         return;
@@ -249,7 +250,7 @@ void plenty(void)
 void lrposchk(void)
 {
     ca(ADDRESS_OF(RADMODES));
-    rxor_channel(033);
+    rxor_channel(CHAN33);
     mask(BIT6);
     if (A_is_zero()) {
         continue_at(VELCHK);
@@ -274,7 +275,7 @@ static void dgcheck(void);
 void velchk(void)
 {
     set_A(THREE); /* BIN3 */
-    rxor_channel(013);
+    rxor_channel(CHAN13);
     mask(THREE);
     if (A_is_zero()) {
         continue_at(LRHEIGHT);
@@ -346,7 +347,7 @@ static void datafail(void);
  * ("RESET ACTIVITY BIT.") for the next reading, and the interrupt's end. */
 static void resample_resume(void)
 {
-    wor_channel(013);
+    wor_channel(CHAN13);
     tc_to(RESAMPLE + 6u, RESUME);
 }
 
@@ -413,7 +414,7 @@ void rendrad(void)
     set_A(BIT4); /* "SEE IF DATA HAS BEEN GOOD." */
     ts(ADDRESS_OF(ITEMP1));
     set_A(BIT1); /* "SEE IF RR RDOT." */
-    rand_channel(013);
+    rand_channel(CHAN13);
     ts(Q_ADDRESS);
     if (!bit_set_in_A()) {
         continue_at(RADIN);
@@ -429,7 +430,7 @@ void rendrad(void)
 static void scalechk_with_bit(void)
 {
     ts(L_ADDRESS);
-    rand_channel(033);
+    rand_channel(CHAN33);
     xch(L_ADDRESS);
     mask_at(ADDRESS_OF(RADMODES));
     rxor_lchan();
@@ -496,7 +497,7 @@ void scalchng(void)
     ad(BIT1);
     rxor_lchan();
     if (!ts(ADDRESS_OF(RADMODES))) set_A(DGBITS);
-    rand_channel(033);
+    rand_channel(CHAN33);
     ts(ADDRESS_OF(OLDATAGD));
     tc_to(SCALCHNG + 011u, UPFLAG); /* ADRES RNGSCFLG */
 }
@@ -522,7 +523,7 @@ static void r77check(void)
     mask_at(ADDRESS_OF(RADMODES));
     ts(L_ADDRESS);
     set_A(BITS5_8);
-    rand_channel(033);
+    rand_channel(CHAN33);
     ad_at(L_ADDRESS);
     ts(ADDRESS_OF(RADMODES));
     tc_at(R77CHECK + 014u);
@@ -607,7 +608,7 @@ static void dgcheck(void)
 
 static void dgcheck_plus1(void)
 {
-    rand_channel(033);
+    rand_channel(CHAN33);
     ts(L_ADDRESS);
     cs(ADDRESS_OF(ITEMP1));
     mask_at(ADDRESS_OF(OLDATAGD));
@@ -671,13 +672,13 @@ void lrpos2(void)
     mask(LRPOSBIT);
     ads(ADDRESS_OF(RADMODES));
     set_A(BIT7);
-    rand_channel(033);
+    rand_channel(CHAN33);
     if (A_is_zero()) {
         radnoop();
         return;
     }
     set_A(BIT13);
-    wor_channel(012);
+    wor_channel(CHAN12);
     set_A(SIX_SECS);
     tc_to(LRPOS2 + 015u, WAITLIST); /* 2CADR LRPOSCAN */
 }
@@ -707,7 +708,7 @@ void lrposnxt(void)
 void lrposnxt_after_fixdelay(void)
 {
     set_A(BIT7);
-    rand_channel(033);
+    rand_channel(CHAN33);
     if (A_is_zero()) {
         continue_at(LASTLRDT);
         return;
@@ -718,7 +719,7 @@ void lrposnxt_after_fixdelay(void)
     case NEGATIVE: break;
     case IS_MINUS_ZERO: not_modelled();
     }
-    wand_channel(012);
+    wand_channel(CHAN12);
     rdbadend();
 }
 
@@ -733,7 +734,7 @@ void lastlrdt(void)
 void lastlrdt_after_vardelay(void)
 {
     set_A(negate(BIT13));
-    wand_channel(012);
+    wand_channel(CHAN12);
     continue_at(RGOODEND);
 }
 

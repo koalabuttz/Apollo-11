@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 /* INFLIGHT_ALIGNMENT_ROUTINES.agc, both missions' (Luminary099 pp.
- * 1249-1257, Comanche055 pp. 1355-1363), in bank 23. The interpretive
- * words are in the listing's notation (src/interpreter/notation.h); the
- * basic code after GIMLOCK1's EXIT is C.
+ * 1249-1257, Comanche055 pp. 1355-1363), in bank 23. The interpretive words
+ * are in the listing's notation (src/interpreter/notation.h); the basic code
+ * after GIMLOCK1's EXIT is C. The faithful C is
+ * c64-port/src/lm_inflight_align.c and cm_inflight_align.c.
  *
  * The routines that turn the IMU's stable member to a new orientation
  * (the alignment programs, P51 and P52, and the IMU's coarse and fine

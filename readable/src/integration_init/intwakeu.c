@@ -1,8 +1,10 @@
 /* SPDX-License-Identifier: MIT */
-/* INTEGRATION_INITIALIZATION.agc, INTWAKEU to GRP2PC (LM pp. 1225-1226,
- * CM pp. 1332-1333), in UPDATE2 (bank 4 in the LM, 27 in the CM).
- * The interpretive words are in the listing's notation
- * (src/interpreter/notation.h); the basic code between them is C.
+/* INTEGRATION_INITIALIZATION.agc, INTWAKEU to GRP2PC (LM pp. 1225-1226, CM
+ * pp. 1332-1333), in UPDATE2 (bank 4 in the LM, 27 in the CM). The
+ * interpretive words are in the listing's notation
+ * (src/interpreter/notation.h); the basic code between them is C. The
+ * faithful C is c64-port/src/lm_integration_init.c and
+ * cm_integration_init.c.
  *
  * INTWAKEU ends an uplinked state vector update (UPDATE_PROGRAM, P27):
  * the vector, put into RRECT and VRECT with UPSVFLAG saying whose it is,

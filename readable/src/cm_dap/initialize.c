@@ -157,7 +157,7 @@ void zerojet(void)
     set_A(PLUS_14MS);
     ts(ADDRESS_OF(TIME6));
     set_A(BIT15);
-    wor_channel(013);
+    wor_channel(CHAN13);
     continue_at(ZEROJET + 026u);
 }
 

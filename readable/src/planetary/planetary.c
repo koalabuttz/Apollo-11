@@ -326,11 +326,6 @@ static const word constants[] = {
 };
 #endif
 
-/* In a bank, the address of a fixed word's name (bank * 02000 plus its
- * address in the bank, as names.h has it) as the interpreter's LOC holds
- * it: 02000-03777. */
-#define IN_BANK(fixed) (02000u + ((fixed) & 01777u))
-
 const struct interpretive_code PLANETARY_CODE[PLANETARY_PARTS] = {
 #if LUMINARY099
     {026u, K_RP_TO_R, COUNT(rp_to_r), rp_to_r}, {024u, K_R_TO_RP, COUNT(r_to_rp), r_to_rp},
@@ -343,6 +338,6 @@ const struct interpretive_code PLANETARY_CODE[PLANETARY_PARTS] = {
     {026u, (word)(K_R_TO_RP + COUNT(r_to_rp)), COUNT(moonmxa), moonmxa},
     {026u, K_EARTHMX, COUNT(earthmx), earthmx},
     {026u, K_EARTHL, COUNT(earthl), earthl},
-    {026u, IN_BANK(I_COSI), COUNT(constants), constants},
+    {026u, IN_BANK(COSI), COUNT(constants), constants},
 #endif
 };

@@ -452,7 +452,7 @@ static void r61test(void)
  * masked bit is never negative.) */
 void g_n_auto(void)
 {
-    read_channel(030u);
+    read_channel(CHAN30);
     mask(BIT10);
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: tc_q(); return;
@@ -466,7 +466,7 @@ void g_n_auto(void)
  * "(+) = NOT IN AUTO, (+0) = AOK". */
 void isitauto(void)
 {
-    read_channel(031u);
+    read_channel(CHAN31);
     mask(BIT14);
     tc_q();
 }
@@ -680,7 +680,7 @@ static const word redomanc_words[] = {
 void toballc(void)
 {
     set_A(PRIO30);
-    rxor_channel(031u);
+    rxor_channel(CHAN31);
     mask(BITS13_14_15);
     if (!A_is_zero()) { /* EXTEND; BZF +2 */
         toball();       /* TCF TOBALL: "NOT AUTO" */

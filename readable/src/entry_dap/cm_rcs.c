@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* CM_ENTRY_DIGITAL_AUTOPILOT.agc, part E (Comanche055 pp. 1081-1085, bank
- * 15): SETJTAG and the 2 s roll system's phase plane, CM/RCS.
+ * 15): SETJTAG and the 2 s roll system's phase plane, CM/RCS. The faithful C
+ * is c64-port/src/cm_entry_dap.c.
  *
  * "RCS		THIS SECTION IS ENTERED EACH 2 SEC BY WAITLIST CALL FOLLOWING A
  * DELAY OF 1.2 SEC AFTER PIPUP." SETJTAG sets JETAG, and on the next 0.1 s

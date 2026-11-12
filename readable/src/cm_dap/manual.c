@@ -58,7 +58,7 @@ void nohiauto(void)
     if (!ts(ADDRESS_OF(ATTKALMN))) set_A(negate(OCT01760)); /* CS */
     mask_at(ADDRESS_OF(RCSFLAGS));
     ts(ADDRESS_OF(RCSFLAGS));
-    read_channel(031);
+    read_channel(CHAN31);
     ts(L_ADDRESS);
     ca(ADDRESS_OF(CH31TEMP));
     rxor_lchan();
@@ -116,7 +116,7 @@ void nochange_after_stickchk(void)
     mask(BIT14);
     ads(ADDRESS_OF(FLAGWRD1));
     set_A(BIT14);
-    rand_channel(031);
+    rand_channel(CHAN31);
     if (A_is_zero_or_minus()) { /* EXTEND; BZMF FREEFUNC */
         continue_at(FREEFUNC);
         return;

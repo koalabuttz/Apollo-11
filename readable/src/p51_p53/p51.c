@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* P51-P53.agc, part 5 (Luminary099 pp. 949-954, bank 14): P51, the IMU
  * orientation determination; COARSE and NCOARSE, its coarse alignment;
- * S52.2, the gimbal angles; and S52.3, the nominal orientation.
+ * S52.2, the gimbal angles; and S52.3, the nominal orientation. The faithful
+ * C is c64-port/src/lm_p51_p53.c.
  *
  * P51 "DETERMINES THE INERTIAL ORIENTATION OF THE IMU." The crew coarse
  * aligns the IMU to zero gimbal angles (V41) if they like, then sights two

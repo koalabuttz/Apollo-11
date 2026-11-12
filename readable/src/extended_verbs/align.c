@@ -953,14 +953,14 @@ void imuattck_after_chkpooh(void)
 #else
     set_A(OCTAL30); /* "CHECK IF IMU ZERO AND IMU COARSE ARE ON" */
 #endif
-    rand_channel(012);
+    rand_channel(CHAN12);
     if (ccs_register(A_ADDRESS) == POSITIVE) {
         continue_at(ALM_END); /* "NOT ALLOWED IF IMU COARSE OR IMU ZERO ON" */
         return;
     }
 #if LUMINARY099
     set_A(BIT13_14); /* "BOTH BITS 13 AND 14 MUST BE 1 INDICATING THE MODE SELECTED IS OFF." */
-    rxor_channel(031);
+    rxor_channel(CHAN31);
     mask(BIT13_14);
     if (A_is_zero()) {                /* EXTEND; BZF +2 */
         continue_at(IMUATTCK + 015u); /* "NEEDLES IS OFF." */
@@ -1012,7 +1012,7 @@ void imuattck_after_enter(void)
 void imuattck_after_exdspret(void)
 {
     set_A(BIT6);
-    wor_channel(012);
+    wor_channel(CHAN12);
     set_A(TWO);
     tc(IMUATTCK + 032u, WAITLIST); /* EBANK= THETAD; 2CADR ATTCK2 */
 }
@@ -1035,7 +1035,7 @@ void imuattck_after_cklftbts_yes(void)
 void imuattck_after_testxact(void)
 {
     set_A(negate(OCT50)); /* CS OCT50 */
-    wand_channel(012);
+    wand_channel(CHAN12);
     set_A(VNLODCDU);
     tc(IMUATTCK + 014u, BANKCALL); /* CADR GOXDSPF */
 }
@@ -1126,7 +1126,7 @@ void cklftbts(void)
         return;
     }
     set_A(BIT5);
-    rand_channel(030);
+    rand_channel(CHAN30);
     if (ccs_register(A_ADDRESS) == POSITIVE) {
         continue_at(Q_PLUS_1); /* TCF Q+1 */
         return;

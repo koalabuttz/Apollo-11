@@ -100,10 +100,10 @@ void jetslect(void)
     set_A(EQ_14MS);
     ts(ADDRESS_OF(TIME6));
     set_A(NEGMAX);
-    wor_channel(013);
+    wor_channel(CHAN13);
     qxch(ADDRESS_OF(QRUPT));
     set_A(XLNMASK);
-    rxor_channel(031);
+    rxor_channel(CHAN31);
     mask(XLNMASK);
     if (A_is_zero()) { /* EXTEND; BZF NOXLNCMD */
         ts(ADDRESS_OF(XNDX1));

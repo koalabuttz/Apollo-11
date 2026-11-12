@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P51-P53.agc, part 2 (Luminary099 pp. 934-940, bank 14): S50 and R56,
- * the stars to sight.
+/* P51-P53.agc, part 2 (Luminary099 pp. 934-940, bank 14): S50 and R56, the
+ * stars to sight. The faithful C is c64-port/src/lm_p51_p53.c.
  *
  * S50, alias LOCSAM, "COMPUTE INPUTS FOR PICAPAR AND PLANET": the unit
  * vectors to the sun, the earth and the moon from the LM at a time

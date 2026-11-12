@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 8 (Luminary099 pp. 564-567): LPS20.1, "VECTOR
- * EXTRAPOLATION AND LOS COMPUTATION", and LPS20.2, the "400 NM RANGE
- * CHECK".
+ * EXTRAPOLATION AND LOS COMPUTATION", and LPS20.2, the "400 NM RANGE CHECK".
+ * The faithful C is c64-port/src/lm_p20_p25.c.
  *
  * LPS20.1 brings both vehicles' state vectors to the time in TDEC1: the
  * LM's by LEMCONIC (unless R21 called it on the lunar surface), kept in

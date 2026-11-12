@@ -221,9 +221,10 @@ so a reader sees both versions together.
   rope.
 - A helper that more than one file needs is defined once: `COUNT()` and
   `tc_to()` in `src/agc/agc.h`, the interpretive notation in
-  `src/interpreter/notation.h`. A file does not carry its own copy. (The
-  tables of `src/assembly`, which do not use the machine, have `COUNT()`
-  from their own header.)
+  `src/interpreter/notation.h` (with `BANK_OF()` and `IN_BANK()`, a
+  label's bank and its address there). A file does not carry its own
+  copy. (The tables of `src/assembly`, which do not use the machine, have
+  `COUNT()` from their own header.)
 - One subsystem per directory under `src/`, named after the listing's log
   section: `EXECUTIVE.agc` → `src/executive/`. `src/agc/` is the machine
   model; `src/binding/` connects the routines to the flight program and

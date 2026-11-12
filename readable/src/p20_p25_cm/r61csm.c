@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 4 (Comanche055 pp. 574-575): R61CSM, the "PREFERRED
- * TRACKING ATTITUDE ROUTINE" (bank 37).
+ * TRACKING ATTITUDE ROUTINE" (bank 37). The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * P20's tracking calls R61CSM by BANKCALL, again and again. It works out
  * the CSM's attitude for tracking the LM with the optics (CRS61.1) and, when
