@@ -390,7 +390,16 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    states each (`tests/kernel_side_cases.c`), some of them states no
    program makes (a core set's PRIORITY at +0, a VAC area's use word
    negative, RUPTAGN at +0), where a CCS lands on a constant that then
-   runs as an instruction: the two must go the same way.
+   runs as an instruction: the two must go the same way. An entry passes
+   only if the faithful routine ran some of its cases and both ran some,
+   which were compared; a case the readable routine runs and the faithful
+   one refuses fails, since nothing would compare it; and the count of
+   cases excused because the faithful routine departs from the AGC is
+   held to a number (below). One of the states is made on purpose for
+   SETLOC's `INDEX NEWJOB; CS PRIORITY`: a NEWJOB that takes the CS to an
+   editing register, where reading PRIORITY as a variable of C would go
+   wrong (1,828 cases of the LM and 1,999 of the CM come there, and the
+   test fails if none does).
    `make interbank-cases` runs every inter-bank entry, readable and
    faithful side by side, on 100,000 random machine states each, and
    compares memory and channels word for word. `make phase-cases` runs
@@ -1590,6 +1599,15 @@ check holds each stretch to its kind's rule:
   case that runs it or the reason none can, and the count is in the
   ledger's head.
 
+A line can also run and be compared with nothing: one that refuses
+(`not_modelled()` first on the line). 84 such lines of 81 functions ran:
+a case or a scenario brought the routine there, its binding refused the
+state, and the test held only that the refusal left the state as it
+found it. They are not unrun, so they are in no stretch; the ledger
+lists them at its end, by function, and the check fails when a
+function's count is not the measure's. A not-modelled stretch that a new
+case comes to moves to that list.
+
 The files are tied to `src/` too. Of its 474 `.c` files, 406 hold lines
 that are counted. The other 68 are named in the ledger, each with its
 kind: **no-code**, a source the build compiles that holds no line of C
@@ -1697,7 +1715,9 @@ the side by side tests do not count them, and print how many they met:
   itself** (VACFOUND's LXCH with a use word that is no erasable address,
   SETLOC's CS of PRIORITY with a NEWJOB that reaches past erasable
   memory): the AGC reads the rope; the faithful kernel keeps the low ten
-  bits of the address and reads erasable memory there. Refused.
+  bits of the address and reads erasable memory there. Refused. The
+  kernel's side-by-side test holds the count of these cases (4,585 in
+  the LM, 4,689 in the CM of 640,000 each).
 - **A return through a Q that holds no address**, from one of the
   interpreter's routines that basic code calls: the AGC runs the word in
   Q as an instruction; the faithful routine goes to its low twelve bits.

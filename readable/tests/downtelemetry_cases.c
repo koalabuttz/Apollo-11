@@ -354,6 +354,85 @@ static void zero_list_words(const agc_native_program *program)
         MISSION, made, run);
 }
 
+/* The word at a fixed address, if it is one the faithful routines read
+ * (their data: the lists and the routines' constants). */
+static bool data_word(uint16_t address, uint16_t *value)
+{
+    agc_word w;
+    if (address < 02000u || address > 07777u ||
+        !agc_site_lookup(DATA, DATA_COUNT,
+                         address < 04000u ? (uint16_t)(5u * 1024u + address - 02000u) : address,
+                         &w))
+        return false;
+    *value = (uint16_t)w;
+    return true;
+}
+
+/* Why no case runs the zero slots of DODNPTR's CCS and of SNAPLOOP's (the
+ * [never] stretches of tests/line_coverage.txt): counted here, on every
+ * run, from the words the faithful routines read. A faithful routine reads
+ * a fixed word only from those (it refuses any other), so a run of it
+ * through one of the slots needs one of these, and there is none:
+ *
+ *   a pointer at a zero word. DODNPTR's CCS is of the word DNECADR points
+ *   at, and DNECADR is the magnitude of the list word NEXTINCL or NEXTINSL
+ *   has just read, one that passes for a DNPTR (SETWO +2: above 30000, up
+ *   to 34000);
+ *
+ *   a snapshot with a zero word. SNAPLOOP's CCS is of each word after the
+ *   one a snapshot's DNPTR points at (a negative one), up to the first
+ *   that is not positive;
+ *
+ *   a -0 word below 4000. A list word of -0 leaves in DNECADR not the word
+ *   but the list's pointer plus one: CTLIST's (an address, under 10000:
+ *   no DNPTR), or SUBLIST's, which is a DNPTR only where the -0 word is
+ *   below 4000.
+ *
+ * (The two states of zero_list_words() point CTLIST and SUBLIST at ZERO,
+ * which is in fixed-fixed, above every DNPTR: they run NEXTINCL's and
+ * NEXTINSL's zero slots, and cannot run these.) */
+static void pointer_census(void)
+{
+    unsigned i, pointers = 0, outside = 0, at_zero = 0, snapshots = 0, with_zero = 0, run_out = 0;
+    unsigned minus_zero_low = 0;
+
+    for (i = 0; i < DATA_COUNT; ++i) {
+        uint16_t w = (uint16_t)DATA[i].word, at, next;
+        uint16_t address = DATA[i].physical < 04000u || DATA[i].physical >= 010000u
+                               ? (uint16_t)(02000u + DATA[i].physical % 1024u)
+                               : DATA[i].physical;
+        uint16_t magnitude = w & 040000u ? (uint16_t)(~w & 077777u) : w;
+        if (w == 077777u && address < 04000u) ++minus_zero_low;
+        if (magnitude <= 030000u || magnitude > 034000u) continue;
+        ++pointers;
+        if (!data_word(magnitude & 07777u, &at)) {
+            ++outside;
+            continue;
+        }
+        if (at == 0u || at == 077777u) ++at_zero;
+        if (!(at & 040000u) || at == 077777u) continue; /* a regular sublist */
+        ++snapshots;
+        for (next = (uint16_t)(magnitude + 1u);; ++next) {
+            if (next > 037777u || !data_word(next & 07777u, &at)) {
+                ++run_out;
+                break;
+            }
+            if (at == 0u || at == 077777u) ++with_zero;
+            if (at == 0u || (at & 040000u)) break;
+        }
+    }
+    if (at_zero || with_zero || minus_zero_low) {
+        printf("FAIL: a faithful run can come to a zero slot of DODNPTR's CCS or SNAPLOOP's: make "
+               "the state (as zero_list_words does) and take the [never] out of the ledger\n");
+        ++failures;
+    }
+    printf("downtelemetry-cases %s: of the %u words the faithful routines read, %u pass for a "
+           "DNPTR: %u point outside those words, %u at a zero word, %u at a snapshot (%u with a "
+           "zero word, %u that run out of those words); %u words of -0 below 4000\n",
+           MISSION, (unsigned)DATA_COUNT, pointers, outside, at_zero, snapshots, with_zero, run_out,
+           minus_zero_low);
+}
+
 int main(void)
 {
     agc_native_program program = {0, 1, 0, 0, 0, 0, AGC_TRANSFER_NONE, 0, 0, 0, 0, 0};
@@ -387,6 +466,7 @@ int main(void)
         }
     }
     zero_list_words(&program);
+    pointer_census();
     for (i = 0; i < TABLE.count; ++i) {
         printf("%s down-telemetry entry %s: %u steps, %u run by the faithful routine, %u refused "
                "by the readable one\n",

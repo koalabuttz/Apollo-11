@@ -36,6 +36,15 @@ through another header, or be named [not-built] too. The check fails on a
 file that is not counted and not named, on one named that is counted now,
 and on one named as the wrong kind.
 
+A line can run and still be compared with nothing: one that refuses
+(not_modelled() first on it). A case or a scenario brought the routine
+there, the binding refused the state, and the test held only that the
+refusal left the state as it found it. Such a line is not unrun, so it is
+in no stretch; the ledger lists them at its end, by function with how many,
+and the check fails when a function's count is not the measure's
+(refusals_run()). So a [not-modelled] stretch that a new case comes to
+moves to that list, and does not just go.
+
 What is measured is C. An interpretive program is a table of words to the
 compiler, with no line to run: the measure does not see which of its words
 the interpreter ran, in a [no-code] source or in a source that has C lines
@@ -91,6 +100,10 @@ CLASS = re.compile(r'\[([a-z0-9-]+)\] (.+)$')
 REASON = re.compile(r'\[([a-z0-9-]+)\](?: (.+))?$', re.S)
 SOURCE = re.compile(r'  - src/(\S+): (.*)$')
 SOURCES_HEAD = 'Files of src/ that are not counted:'
+# A line that refuses: not_modelled() first on it, after any case labels.
+REFUSES = re.compile(r'\s*(?:(?:case \w+|default):\s*)*not_modelled\(\);')
+REFUSED_HEAD = 'Lines that ran and refuse (not_modelled() first on the line), by function:'
+REFUSED = re.compile(r'  \* src/(\S+): (\S+) \((\d+)\)$')
 # The classes a source with no line counted is named under, and whether the
 # build compiles a source of that class.
 SOURCE_CLASSES = {'no-code': True, 'not-built': False}
@@ -448,6 +461,33 @@ def measure():
     return lines, functions, [p.name for p, profiles in ran if not profiles], sources
 
 
+def function_at(starts):
+    """The function a line is of: the one that starts last before it."""
+    starts = sorted(starts)
+
+    def function(line):
+        inside = [name for start, name in starts if start <= line]
+        return inside[-1] if inside else '(no function)'
+    return function
+
+
+def refusals_run(lines, functions, text_of=lambda file: (SRC / file).read_text()):
+    """The lines that ran and refuse, {(file, function): how many}: a line
+    with a count that has not_modelled() first on it. A case or a scenario
+    brought the routine there, and its binding refused the state: the line
+    is run, and nothing was compared at it but that the refusal left the
+    state as it found it. (A not_modelled() that follows a test on its own
+    line is not seen: the line runs whenever the test does.)"""
+    out = collections.Counter()
+    for file in sorted(lines):
+        source = text_of(file).split('\n')
+        function = function_at(functions[file])
+        for line in sorted(lines[file]):
+            if lines[file][line] and line <= len(source) and REFUSES.match(source[line - 1]):
+                out[file, function(line)] += 1
+    return dict(out)
+
+
 def stretches(lines, functions, text_of=lambda file: (SRC / file).read_text()):
     """The unrun lines, grouped: [(file, function, first, last, unrun
     lines, digest, text)]. A stretch is the unrun lines of one function
@@ -457,11 +497,7 @@ def stretches(lines, functions, text_of=lambda file: (SRC / file).read_text()):
     out = []
     for file in sorted(lines):
         source = text_of(file).split('\n')
-        starts = sorted(functions[file])
-
-        def function(line):
-            inside = [name for start, name in starts if start <= line]
-            return inside[-1] if inside else '(no function)'
+        function = function_at(functions[file])
         runs, run = [], []
         for line in sorted(lines[file]):
             unrun = lines[file][line] == 0
@@ -498,17 +534,24 @@ def key_of(found):
 
 def read_ledger(path=LEDGER):
     """The ledger's classes of reason, {name: text}, its stretches, {key:
-    reason} (keys(), in the ledger's order), and the sources it names as
-    having no line counted, {file: reason}."""
-    classes, reasons, sources, seen = {}, {}, {}, collections.Counter()
+    reason} (keys(), in the ledger's order), the sources it names as having
+    no line counted, {file: reason}, and the lines it lists as run and
+    refusing, {(file, function): how many}."""
+    classes, reasons, sources, refusing, seen = {}, {}, {}, {}, collections.Counter()
     if not path.is_file():
-        return classes, reasons, sources
-    file = key = listing = None
+        return classes, reasons, sources, refusing
+    file = key = listing = tail = None
     for line in path.read_text().split('\n'):
         entry = ENTRY.match(line)
         named = CLASS.match(line)
         source = SOURCE.match(line)
-        if line == SOURCES_HEAD:
+        refuser = REFUSED.match(line)
+        if line == REFUSED_HEAD:
+            tail, key = True, None
+        elif tail:
+            if refuser:
+                refusing[refuser.group(1), refuser.group(2)] = int(refuser.group(3))
+        elif line == SOURCES_HEAD:
             listing = True
         elif listing and source and not file:
             listing = source.group(1)
@@ -531,7 +574,7 @@ def read_ledger(path=LEDGER):
         elif line.startswith('    ') and not file and not listing and classes and not line.startswith('    |'):
             last = list(classes)[-1]
             classes[last] += ' ' + line.strip()
-    return classes, reasons, sources
+    return classes, reasons, sources, refusing
 
 
 def wrap(text, first, rest, width=78):
@@ -649,8 +692,10 @@ def by_reason(found, reasons):
     return [f'{name}: {lines[name]} lines in {count[name]} stretches' for name in sorted(lines)]
 
 
-def write_ledger(path, version, lines, found, never, classes, reasons, sources):
-    """(sources: the files of src/ the measure does not count, {file: reason}.)"""
+def write_ledger(path, version, lines, found, never, classes, reasons, sources, refusing=None):
+    """(sources: the files of src/ the measure does not count, {file: reason};
+    refusing: the lines that ran and refuse, refusals_run().)"""
+    refusing = refusing or {}
     total = sum(len(counted) for counted in lines.values())
     unrun = sum(s[4] for s in found)
     sources_with = sum(1 for file in lines if file.endswith('.c'))
@@ -676,6 +721,12 @@ def write_ledger(path, version, lines, found, never, classes, reasons, sources):
            '# By reason:',
            *[f'#   {line}' for line in by_reason(found, reasons)],
            '#',
+           f'# Run, and compared with nothing: {sum(refusing.values())} lines of {len(refusing)} functions ran',
+           '# and refuse (not_modelled() first on the line). A case or a scenario',
+           '# brought the routine there and its binding refused the state: the tests',
+           '# hold only that a refusal leaves the state as it found it. They are',
+           '# listed at the end, by function.',
+           '#',
            '# A reason in brackets is one of these:',
            '']
     for name in sorted(classes):
@@ -697,7 +748,20 @@ def write_ledger(path, version, lines, found, never, classes, reasons, sources):
             out.append(f'    | ... ({len(text) - SHOWN} more)')
         reason = reasons.get(key, '') or NO_REASON
         out += wrap(reason, '    why: ', '         ')
+    out += ['', REFUSED_HEAD]
+    out += [f'  * src/{file}: {function} ({count})' for (file, function), count in sorted(refusing.items())]
     path.write_text('\n'.join(out) + '\n')
+
+
+def refusals_differ(measured, listed):
+    """What is wrong between the lines that ran and refuse and the ledger's
+    list of them, a line each."""
+    out = []
+    for file, function in sorted(set(measured) | set(listed)):
+        ran, told = measured.get((file, function), 0), listed.get((file, function), 0)
+        if ran != told:
+            out.append(f'src/{file}: {function} has {ran} lines that ran and refuse, and the ledger lists {told}')
+    return out
 
 
 def judge(found, classes, reasons, sources=None, named=None, compiled_sources=()):
@@ -778,13 +842,14 @@ def self_check():
              't/spare.c': '[not-built] Kept for a port that is not started, a reason long enough to wrap onto '
                           'a second line.'}
     built = {'t/tables.c'}
+    refusing = {('a/a.c', 'first'): 2, ('b/b.c', 'marked'): 1}
     failures, tried = [], []
 
     def expect(name, measured, edit, want, sources=None, compiled_sources=None):
         tried.append(name)
         with tempfile.TemporaryDirectory() as scratch:
             ledger = Path(scratch) / 'ledger.txt'
-            write_ledger(ledger, 'no compiler', lines, found, [], classes, reasons, named)
+            write_ledger(ledger, 'no compiler', lines, found, [], classes, reasons, named, refusing)
             ledger.write_text(edit(ledger.read_text()))
             read = read_ledger(ledger)
             got = tuple(len(part) for part in judge(measured, read[0], read[1], named if sources is None else sources,
@@ -806,9 +871,10 @@ def self_check():
     if not failures:
         with tempfile.TemporaryDirectory() as scratch:
             ledger = Path(scratch) / 'ledger.txt'
-            write_ledger(ledger, 'no compiler', lines, found, [], classes, reasons, named)
-            if read_ledger(ledger) != (classes, reasons, named):
-                failures.append('a ledger read back is not the classes, reasons and sources it was written from')
+            write_ledger(ledger, 'no compiler', lines, found, [], classes, reasons, named, refusing)
+            if read_ledger(ledger) != (classes, reasons, named, refusing):
+                failures.append('a ledger read back is not the classes, reasons, sources and refusing lines it '
+                                'was written from')
     expect('a new unrun stretch', found + [stretch('b/b.c', 'other', 90, ['y = 1;'])], same, (1, 0, 0, 0))
     expect('a stretch that now runs', found[1:], same, (0, 1, 0, 0))
     expect('the first of two with one text now runs', found[:1] + found[2:], same, (0, 1, 0, 0))
@@ -852,6 +918,23 @@ def self_check():
         tried.append(name)
         if got != want:
             failures.append(f'{name}: {got!r}, expected {want!r}')
+    # The lines that ran and refuse.
+    refuser = ['void first(void)', '{', '    switch (x) {', '    case A: not_modelled(); return;',
+               '    case B:', '    default: not_modelled();', '    }', '    if (y) not_modelled();',
+               '    not_modelled();', '}', 'void other(void)', '{', '    not_modelled();', '}']
+    part('the lines that ran and refuse',
+         refusals_run({'a/a.c': {4: 3, 6: 1, 8: 9, 9: 0, 13: 0}}, {'a/a.c': {(1, 'first'), (11, 'other')}},
+                      lambda file: '\n'.join(refuser)), {('a/a.c', 'first'): 2})
+    with tempfile.TemporaryDirectory() as scratch:
+        ledger = Path(scratch) / 'ledger.txt'
+        write_ledger(ledger, 'no compiler', lines, found, [], classes, reasons, named, refusing)
+        listed = read_ledger(ledger)[3]
+    part('the list of them read back', listed, refusing)
+    part('one that ran as listed', refusals_differ(refusing, listed), [])
+    part('a refusal that ran and is not listed',
+         len(refusals_differ({**refusing, ('b/b.c', 'other'): 1}, listed)), 1)
+    part('a listed one that did not run', len(refusals_differ({('a/a.c', 'first'): 2}, listed)), 1)
+    part('one more line of a listed function', len(refusals_differ({**refusing, ('a/a.c', 'first'): 3}, listed)), 1)
     shown = 'Counters:\n  fetch:\n    Hash: 0x1\n  store:\n    Hash: 0x2\n  fetch:\n    Hash: 0x1\n  main:\n'
     part('a count file that lists a name twice', twice(shown), {'fetch'})
     part('a count file that lists each name once', twice(shown.replace('  store', '  other', 1).replace(
@@ -929,16 +1012,18 @@ def main():
         listing(lines, args[args.index('--list') + 1])
         return 0
     found = stretches(lines, functions)
-    classes, reasons, named = read_ledger()
+    refusing = refusals_run(lines, functions)
+    classes, reasons, named, listed = read_ledger()
     compiled_sources = read_by(compiled_sources)
     sources = without_lines(lines, compiled_sources, named)
     total = sum(len(counted) for counted in lines.values())
     unrun = sum(s[4] for s in found)
     print(f'line coverage: {len(lines)} files, {total} lines, {unrun} unrun ({100 * unrun / total:.2f}%) in '
-          f'{len(found)} stretches of {len({s[0] for s in found})} files; {len(sources)} files of src/ not '
-          f'counted; built and never run: {", ".join(never) or "no program"}')
+          f'{len(found)} stretches of {len({s[0] for s in found})} files; {sum(refusing.values())} lines that '
+          f'ran and refuse; {len(sources)} files of src/ not counted; built and never run: '
+          f'{", ".join(never) or "no program"}')
     if '--write' in args:
-        write_ledger(LEDGER, version, lines, found, never, classes, reasons, sources)
+        write_ledger(LEDGER, version, lines, found, never, classes, reasons, sources, refusing)
         print(f'wrote {LEDGER.relative_to(READABLE)}')
         return 0
     for line in by_reason(found, reasons):
@@ -952,14 +1037,18 @@ def main():
         print(f'FAIL src/{key[0]}: {key[1]} {key[2]} {what}')
     for line in files[:40]:
         print(f'FAIL {line}')
-    bad = len(new) + len(gone) + len(unexplained) + len(files)
+    refusals = refusals_differ(refusing, listed)
+    for line in refusals[:40]:
+        print(f'FAIL {line}')
+    bad = len(new) + len(gone) + len(unexplained) + len(files) + len(refusals)
     print(f"{'FAIL' if bad else 'ok  '} line coverage against {LEDGER.relative_to(READABLE)}: {len(new)} unrun "
           f'stretches not in it, {len(gone)} of its stretches not unrun now, {len(unexplained)} with a reason '
-          f'that does not stand, {len(files)} files not accounted for')
+          f'that does not stand, {len(files)} files not accounted for, {len(refusals)} functions whose lines '
+          'that ran and refuse are not as listed')
     if bad:
         # What --write would make of this measure, for a run whose tree
         # is not at hand (CI keeps it).
-        write_ledger(BUILD / LEDGER.name, version, lines, found, never, classes, reasons, sources)
+        write_ledger(BUILD / LEDGER.name, version, lines, found, never, classes, reasons, sources, refusing)
         print(f'the ledger as measured is {(BUILD / LEDGER.name).relative_to(READABLE)}')
     return 1 if bad else 0
 

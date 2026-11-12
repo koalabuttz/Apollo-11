@@ -18,15 +18,22 @@
  * Where the faithful routine runs, the readable one must too, with the
  * same erasable memory, registers, io record and hardware record, word
  * for word. Where the faithful routine refuses (leaves the state to the
- * original program), the readable one may run it; where the readable one
- * refuses, it must leave everything as it found it.
+ * original program), the readable one must refuse too: a case it ran alone
+ * would be compared with nothing. Where the readable one refuses, it must
+ * leave everything as it found it.
+ *
+ * An entry passes only if the faithful routine ran some of its cases and
+ * some were run by both and compared.
  *
  * One kind of state no program makes, where the faithful routine departs
  * from the AGC and the readable one refuses, is not counted: a routine
  * that goes on to read fixed memory itself (VACFOUND's LXCH with a use
- * word that is not an erasable address). The faithful routines keep the
- * low ten bits of every address and read erasable memory there
- * (c64-port/src/agc_image_ops.c, ai_ea); the AGC reads the rope. */
+ * word that is not an erasable address; SETLOC's INDEX NEWJOB; CS PRIORITY
+ * with a NEWJOB that takes it past erasable memory). The faithful routines
+ * keep the low ten bits of every address and read erasable memory there
+ * (c64-port/src/agc_image_ops.c, ai_ea); the AGC reads the rope. Their
+ * count is held (DEPARTS): it is of this seed's cases, so a change to the
+ * states made moves it, and it is then counted again and written here. */
 #include <stdio.h>
 #include <string.h>
 #include "agc_transfer.h"
@@ -36,6 +43,7 @@
 #include "../src/agc/lm_names.inc"
 typedef p66_bias_io mission_io;
 #define MISSION "LM"
+#define DEPARTS 4585u /* cases where the faithful routine departs from the AGC */
 extern const agc_routine_table lm_kernel_routines, lm_kernel_job_routines, lm_kernel_task_routines,
     lm_kernel_idle_routines;
 extern const agc_routine_table faithful_lm_kernel_routines, faithful_lm_kernel_job_routines,
@@ -53,6 +61,7 @@ static const struct {
 #include "../src/agc/cm_names.inc"
 typedef cm_native_io mission_io;
 #define MISSION "CM"
+#define DEPARTS 4689u
 extern const agc_routine_table cm_kernel_routines, cm_kernel_job_routines, cm_kernel_idle_routines;
 extern const agc_routine_table faithful_cm_kernel_routines, faithful_cm_kernel_job_routines,
     faithful_cm_kernel_idle_routines;
@@ -123,6 +132,10 @@ static uint16_t priority(void)
 
 static agc_site_operand operands[3u * SITES];
 
+/* The editing register (CYR, SR, CYL or EDOP) that the state just made
+ * points SETLOC's INDEX NEWJOB; CS PRIORITY at, or 0. */
+static uint16_t setloc_register;
+
 /* The made-up call sites: sorted physical addresses, three words each (the
  * word a TC's Q names and the two after), in fixed-fixed and in the banks. */
 static void make_sites(void)
@@ -170,6 +183,7 @@ static void state(apollo_overlay_state *s, mission_io *io, agc_hardware *hw, uin
     bool bank01 = key < 2048u;
     bool broken = rnd() % 4u == 0u; /* a state no program makes, somewhere */
 
+    setloc_register = 0u;
     memset(s, 0, sizeof *s);
     memset(io, 0, sizeof *io);
     memset(hw, 0, sizeof *hw);
@@ -273,7 +287,8 @@ static void state(apollo_overlay_state *s, mission_io *io, agc_hardware *hw, uin
     }
     if (rnd() % 64u == 0u) s->words[7] = 1u;
 
-    /* Two states made on purpose, since no random one comes to them. */
+    /* Three states made on purpose, since no random one comes to them
+     * (or only by luck). */
     if (broken && rnd() % 8u == 0u) {
         /* A new priority (PRIOCHNG's A) that sums with the job's VAC
          * address to -0, so that BUF +1 starts the scan at +0; and a core
@@ -288,6 +303,13 @@ static void state(apollo_overlay_state *s, mission_io *io, agc_hardware *hw, uin
         for (i = 0; i < 8u; ++i) s->words[K_LST1 + i] = 0u;
         s->words[0] = delay;
         s->words[K_TIME3] = (uint16_t)(037777u - delay + 1u + rnd() % 8u);
+    } else if (broken && rnd() % 8u == 0u) {
+        /* A NEWJOB that takes SETLOC's INDEX NEWJOB; CS PRIORITY down to an
+         * editing register (NEWJOB is PRIORITY's address less the
+         * register's, negative): the CS reads the register, which edits
+         * its word again. PRIORITY as a variable of C would not. */
+        setloc_register = (uint16_t)(020u + rnd() % 4u);
+        s->words[K_NEWJOB] = complement((uint16_t)(K_PRIORITY - setloc_register));
     }
 }
 
@@ -314,7 +336,7 @@ int main(void)
 {
     agc_native_program program;
     agc_hardware hw_a, hw_b, hw_start;
-    unsigned t, i, checks = 0, both = 0, departs = 0, failures = 0;
+    unsigned t, i, checks = 0, both = 0, departs = 0, edited = 0, failures = 0;
 
     make_sites();
     memset(&program, 0, sizeof program);
@@ -330,7 +352,7 @@ int main(void)
         for (i = 0; i < tables[t].faithful->count; ++i) {
             uint16_t key = tables[t].faithful->entries[i].physical;
             agc_routine r = find(tables[t].readable, key), f = tables[t].faithful->entries[i].call;
-            unsigned n, ran = 0, refused = 0, bad = 0;
+            unsigned n, ran = 0, refused = 0, compared = 0, bad = 0;
             if (!r) {
                 printf("FAIL %s: no readable entry at %s\n", tables[t].name, where(key));
                 ++failures;
@@ -364,11 +386,15 @@ int main(void)
                     else if (sa == EXEC_OK)
                         why = "readable refused, faithful ran";
                 } else if (sa == EXEC_OK) {
-                    ++both;
+                    ++compared;
                     if (memcmp(&a, &b, sizeof a) || memcmp(&ia, &ib, sizeof ia) ||
                         memcmp(&hw_a, &hw_b, sizeof hw_a))
                         why = "different";
-                }
+                    /* SETLOC's CS read the editing register NEWJOB named. */
+                    if (setloc_register && a.words[setloc_register] != start.words[setloc_register])
+                        ++edited;
+                } else
+                    why = "readable ran, faithful refused";
                 if (why && ++bad <= 3) {
                     unsigned w;
                     printf("FAIL %s %s case %u: %s (status %d, faithful %d)\n", tables[t].name,
@@ -387,13 +413,29 @@ int main(void)
                 }
             }
             failures += bad;
-            printf("%s kernel entry %s: %u cases, %u run by the faithful routine, %u refused by "
-                   "the readable one, %u failures\n",
-                   MISSION, where(key), CASES, ran, refused, bad);
+            both += compared;
+            printf("%s kernel entry %s: %u cases, %u run by the faithful routine, %u by both and "
+                   "compared, %u refused by the readable one, %u failures\n",
+                   MISSION, where(key), CASES, ran, compared, refused, bad);
+            if (ran == 0u || compared == 0u) {
+                printf("FAIL %s %s: %s\n", tables[t].name, where(key),
+                       ran == 0u ? "the faithful routine never ran" : "no case was run by both");
+                ++failures;
+            }
         }
     }
-    printf("kernel-side-cases %s: %u checks, %u run by both and compared, %u where the faithful "
-           "routine departs from the AGC, %u failures\n",
-           MISSION, checks, both, departs, failures);
+    if (edited == 0u) {
+        printf("FAIL: no case brought SETLOC's INDEX NEWJOB; CS PRIORITY to an editing register\n");
+        ++failures;
+    }
+    if (departs != DEPARTS) {
+        printf("FAIL: %u cases where the faithful routine departs from the AGC (held: %u)\n",
+               departs, DEPARTS);
+        ++failures;
+    }
+    printf("kernel-side-cases %s: %u checks, %u run by both and compared (%u of them with SETLOC's "
+           "CS at an editing register), %u where the faithful routine departs from the AGC, %u "
+           "failures\n",
+           MISSION, checks, both, edited, departs, failures);
     return failures != 0;
 }

@@ -21,6 +21,12 @@
 #   open: 417 lines in 158 stretches
 #   refusal: 767 lines in 288 stretches
 #
+# Run, and compared with nothing: 84 lines of 81 functions ran
+# and refuse (not_modelled() first on the line). A case or a scenario
+# brought the routine there and its binding refused the state: the tests
+# hold only that a refusal leaves the state as it found it. They are
+# listed at the end, by function.
+#
 # A reason in brackets is one of these:
 
 [impossible] No state brings the routine to the line: the routine's own
@@ -46,7 +52,9 @@
 [not-modelled] The stretch is, or ends in, not_modelled(): the source marks
     the outcome as one that cannot come there (a CCS outcome its word never
     has, a value outside a switch's table). A routine that met it would stop
-    and its binding refuse the state.
+    and its binding refuse the state. One that a case or a scenario does
+    bring a routine to is run, and so is in no stretch here, but nothing was
+    compared at it: those are listed at the end.
 [open] Not looked at yet: owed a case that runs it, or the reason none can.
     Item 3 of the validation plan is not done while a stretch says this.
 [refusal] Part of how a binding refuses a state its routines do not model: a
@@ -2099,47 +2107,71 @@ src/downtelemetry/downtelemetry.c
          +0, and MINTIME2 is not.
   dodnptr, line 283 (1 unrun) 853bd30c
     | case IS_PLUS_ZERO: dosublst(); return; /* (never: no sublist starts with a zero) */
-    why: [never] DNECADR here is a word NEXTINCL or NEXTINSL has just read
-         from fixed memory, one that passes for a DNPTR (above 30000, up to
-         34000). Of the words the faithful routines read there (the lists and
-         the routines' constants: 259 in the LM, 244 in the CM), 42 and 43
-         pass. One of them, the constant PRIO34, points outside those words,
-         where the faithful routine refuses; every other points at a word
-         that is not zero. So there is no faithful run to compare a zero one
-         with.
+    why: [never] No downlist has a sublist that starts with a zero word, and
+         no state gives the faithful routine one: it reads a fixed word only
+         from its own data (the lists and the routines' constants: 259 words
+         in the LM, 244 in the CM) and refuses any other. DNECADR here is the
+         magnitude of a list word NEXTINCL or NEXTINSL has just read, one
+         that passes for a DNPTR (above 30000, up to 34000). 42 and 43 of the
+         data's words pass: one, the constant PRIO34, points outside the
+         data, and every other points at a word that is not zero. (A list
+         word of -0 leaves the list's pointer plus one in DNECADR instead of
+         the word. That is a DNPTR only where the -0 word is below 4000, and
+         the data has none there: ZERO and NEG0, which a made-up state can
+         point CTLIST or SUBLIST at, are in fixed-fixed, above every DNPTR.)
+         So there is no faithful run to compare one with. make
+         downtelemetry-cases counts these words on every run
+         (pointer_census() of tests/downtelemetry_cases.c) and fails if a run
+         could come here.
   dodnptr, line 285 (1 unrun) 0e42ad5f
     | case IS_MINUS_ZERO: break; /* (never) */
-    why: [never] DNECADR here is a word NEXTINCL or NEXTINSL has just read
-         from fixed memory, one that passes for a DNPTR (above 30000, up to
-         34000). Of the words the faithful routines read there (the lists and
-         the routines' constants: 259 in the LM, 244 in the CM), 42 and 43
-         pass. One of them, the constant PRIO34, points outside those words,
-         where the faithful routine refuses; every other points at a word
-         that is not zero. So there is no faithful run to compare a zero one
-         with.
+    why: [never] No downlist has a sublist that starts with a zero word, and
+         no state gives the faithful routine one: it reads a fixed word only
+         from its own data (the lists and the routines' constants: 259 words
+         in the LM, 244 in the CM) and refuses any other. DNECADR here is the
+         magnitude of a list word NEXTINCL or NEXTINSL has just read, one
+         that passes for a DNPTR (above 30000, up to 34000). 42 and 43 of the
+         data's words pass: one, the constant PRIO34, points outside the
+         data, and every other points at a word that is not zero. (A list
+         word of -0 leaves the list's pointer plus one in DNECADR instead of
+         the word. That is a DNPTR only where the -0 word is below 4000, and
+         the data has none there: ZERO and NEG0, which a made-up state can
+         point CTLIST or SUBLIST at, are in fixed-fixed, above every DNPTR.)
+         So there is no faithful run to compare one with. make
+         downtelemetry-cases counts these words on every run
+         (pointer_census() of tests/downtelemetry_cases.c) and fails if a run
+         could come here.
   snaploop, lines 317-320 (4 unrun) c576de33
     | case IS_PLUS_ZERO: /* (never) LDNPHAS2 (GENADR DNPHASE2) would run as TC DNPHASE2 */
     | tc_at(ADDRESS_OF(LDNPHAS2));
     | dnphase2();
     | return;
     why: [never] SNAPLOOP reads on from the DNPTR's own list, word after
-         word, to the first that is not positive. Every list pointer the
-         faithful routines read whose list is a snapshot (13 in the LM, 20 in
-         the CM) comes to a negative word of its list with no zero word on
-         the way: the only zero words those routines read are the constants
-         ZERO and NEG0. The faithful routine refuses a pointer outside those
-         words, and the +0 slot itself, so there is no faithful run to
-         compare one with.
+         word, to the first that is not positive. No snapshot of a downlist
+         has a zero word, and no state gives the faithful routine one: it
+         reads a fixed word only from its own data (the lists and the
+         routines' constants) and refuses any other, and every DNPTR among
+         those words whose list is a snapshot (13 in the LM, 20 in the CM)
+         comes to a negative word of its list with no zero word on the way
+         and without leaving the data. (The faithful routine also refuses the
+         +0 slot itself.) So there is no faithful run to compare one with.
+         make downtelemetry-cases counts these words on every run
+         (pointer_census() of tests/downtelemetry_cases.c) and fails if a run
+         could come here.
   snaploop, line 322 (1 unrun) e3a7273a
     | default: break;                                /* (-0: never) */
     why: [never] SNAPLOOP reads on from the DNPTR's own list, word after
-         word, to the first that is not positive. Every list pointer the
-         faithful routines read whose list is a snapshot (13 in the LM, 20 in
-         the CM) comes to a negative word of its list with no zero word on
-         the way: the only zero words those routines read are the constants
-         ZERO and NEG0. The faithful routine refuses a pointer outside those
-         words, and the +0 slot itself, so there is no faithful run to
-         compare one with.
+         word, to the first that is not positive. No snapshot of a downlist
+         has a zero word, and no state gives the faithful routine one: it
+         reads a fixed word only from its own data (the lists and the
+         routines' constants) and refuses any other, and every DNPTR among
+         those words whose list is a snapshot (13 in the LM, 20 in the CM)
+         comes to a negative word of its list with no zero word on the way
+         and without leaving the data. (The faithful routine also refuses the
+         +0 slot itself.) So there is no faithful run to compare one with.
+         make downtelemetry-cases counts these words on every run
+         (pointer_census() of tests/downtelemetry_cases.c) and fails if a run
+         could come here.
   dndump, lines 435-439 (5 unrun) 270a0086
     | case NEGATIVE: dndump1(); return;
     | case IS_MINUS_ZERO:
@@ -3788,3 +3820,86 @@ src/waitlist/waitlist.c
     why: [impossible] The DAS just before added -0 to LONGTIME (and at most a
          borrow from the low word). In the AGC's adder a sum is +0 only when
          both numbers are +0, so LONGTIME is never +0 here.
+
+Lines that ran and refuse (not_modelled() first on the line), by function:
+  * src/aostask/aostask.c: spscont (1)
+  * src/aotmark/aotmark.c: aotmark_after_ccs (1)
+  * src/aotmark/aotmark.c: markrupt_after_resume (1)
+  * src/aotmark/aotmark.c: ts_indexed (1)
+  * src/binding/pinball_routines.c: channel_out (1)
+  * src/binding/q_r_axis_routines.c: rope_word (1)
+  * src/binding/rcs_failure_monitor_routines.c: fixed_memory (1)
+  * src/burn_baby/burn_baby.c: comfail_after_second_upflag (1)
+  * src/burn_baby/burn_baby.c: p40sjunk (1)
+  * src/burn_baby/burn_baby.c: redo4_2 (1)
+  * src/burn_baby/burn_baby.c: tcf_into_table (1)
+  * src/burn_baby/burn_baby.c: which_table (1)
+  * src/burn_baby/clock.c: clokjob (2)
+  * src/burn_baby/clock.c: tcf_into_table (1)
+  * src/burn_baby/clock.c: which_table (1)
+  * src/cm_dap/jet_t6.c: tc_replacer (1)
+  * src/cm_dap/manual.c: next_axis (1)
+  * src/entry_dap/cm_fdai.c: indexed_store (1)
+  * src/entry_dap/exdap.c: nsec_constant (1)
+  * src/fresh_start/fresh_start.c: restore_e_memory (1)
+  * src/fresh_start/v37.c: return_from_initsub (1)
+  * src/imu_calibration/drift_loop.c: estims_after_exit (1)
+  * src/imu_calibration/gyrocompass.c: endgtsal_after_chkcomed (1)
+  * src/imu_calibration/gyrocompass.c: restest1_after_exit (1)
+  * src/imu_calibration/gyrocompass.c: torqinch_after_imustllg (1)
+  * src/imu_calibration/imu_test.c: nbpospl_after_imustllg (1)
+  * src/imu_calibration/optical_verification.c: data_word (1)
+  * src/imu_calibration/optical_verification.c: retarg1 (1)
+  * src/imu_performance/imu_performance.c: back_to_caller (1)
+  * src/imu_performance/imu_performance.c: geostrt4 (1)
+  * src/integration_init/intstall.c: indexed_read (1)
+  * src/integration_init/intstall.c: intwake1_after_jobwake (1)
+  * src/kalcmanu_steering/kalcmanu_steering.c: newdelhi_after_isitauto (1)
+  * src/landing_guidance/entries.c: tcf_table_word (1)
+  * src/landing_guidance/exits.c: exgsub_after_exit (1)
+  * src/landing_guidance/indexing.h: dca_indexed (1)
+  * src/landing_guidance/indexing.h: dxch_indexed (1)
+  * src/landing_guidance/subroutines.c: intpretx (1)
+  * src/landing_guidance/vertguid.c: vertguid (1)
+  * src/p11/aterjob.c: attdisp2_after_exit (1)
+  * src/p11/aterjob.c: work_area (1)
+  * src/p20_p25/designate.c: notp20_after_rrout (1)
+  * src/p20_p25/r29.c: setup29d_after_exit (1)
+  * src/p20_p25/r29dodes.c: dca_by_tang (1)
+  * src/p20_p25/r29dodes.c: r29lokon (1)
+  * src/p20_p25/r61.c: r61lem1_after_auto_check (1)
+  * src/p20_p25/radar_read.c: lrposnxt_after_fixdelay (1)
+  * src/p20_p25/radar_read.c: lrvel (1)
+  * src/p20_p25/radar_read.c: radaread (1)
+  * src/p20_p25/radar_read.c: radin (1)
+  * src/p20_p25_cm/crs61.c: cduloop (2)
+  * src/p20_p25_cm/crs61.c: cduloop_after_exit (1)
+  * src/p20_p25_cm/r61csm.c: r61csm_after_exit (1)
+  * src/p40_p47_cm/dap_data.c: output (1)
+  * src/p51_p53/p51.c: p51c_star (1)
+  * src/p51_p53/p51.c: p51d_star (1)
+  * src/p51_p53/r51.c: r51_marked (1)
+  * src/p51_p53_cm/indexed.c: indexed_dxch (1)
+  * src/p51_p53_cm/p51.c: p51e_star (1)
+  * src/p70_p71/contabrt.c: abrtjask (1)
+  * src/pinball/display_words.c: wdagain_plus5 (1)
+  * src/pinball/lights.c: tstlts1 (1)
+  * src/pinball/subroutines.c: sfconum (1)
+  * src/powered_flight/quictrig.c: store_cosine (1)
+  * src/q_r_axis/q_r_axis.c: skipped (1)
+  * src/r60_62/r60_62.c: three_axis_test (2)
+  * src/radar_leadin/radar_leadin.c: caf_rdrlocs_indexed (1)
+  * src/radar_leadin/radar_leadin.c: radsamp (1)
+  * src/reentry/overnout.c: nodisky (1)
+  * src/self_check/self_check.c: pair_at (1)
+  * src/servicer/lr_jobs.c: lrhjob_good_exit (1)
+  * src/servicer/lr_jobs.c: lrvjob_good_exit (1)
+  * src/servicer/lr_update.c: nolite (1)
+  * src/servicer/servicer.c: lothrust_after_quikfaz5 (1)
+  * src/servicer/servicer.c: not_into_the_interpreter (1)
+  * src/servicer_cm/servicer.c: piploop (1)
+  * src/sxtmark/sxtmark.c: mrkrejct (1)
+  * src/sxtmark/sxtmark.c: ts_vacnuse (1)
+  * src/tvc/tvcexecutive.c: vargains (1)
+  * src/update_program/store.c: upwake_after_upflag (1)
+  * src/update_program/updates.c: upend71 (1)
