@@ -186,16 +186,15 @@ void reldsp(void)
     mask_at(ADDRESS_OF(MONSAVE1));
     ts(ADDRESS_OF(MONSAVE1));
     switch (ccs_at(ADDRESS_OF(DSPLIST))) {
+    case POSITIVE:
+        tc_at(RELDSP + 7u); /* TC +2 */
+        set_A(ZERO);
+        break;
     case IS_PLUS_ZERO:
         tc_at(RELDSP + 010u); /* TC RELDSP2: "LIST EMPTY" */
         reldsp2();
         return;
-    case POSITIVE:
-        tc_at(RELDSP + 7u); /* TC +2 */
-        /* fall through */
-    case NEGATIVE:
-        set_A(ZERO);
-        /* fall through */
+    case NEGATIVE: set_A(ZERO); break;
     case IS_MINUS_ZERO: break; /* (CCS left +0 in A) */
     }
     xch(ADDRESS_OF(DSPLIST));
@@ -213,16 +212,15 @@ void reldsp1(void)
     xch(Q_ADDRESS);
     if (ts(ADDRESS_OF(RELRET))) not_modelled(); /* an overflow in Q would skip the CCS */
     switch (ccs_at(ADDRESS_OF(DSPLIST))) {
+    case POSITIVE:
+        tc_at(RELDSP1 + 3u); /* TC +2: "+ NOT EMPTY" */
+        set_A(ZERO);
+        break;
     case IS_PLUS_ZERO:
         tc_at(RELDSP1 + 4u); /* TC RELDSP2: "+0 EMPTY" */
         reldsp2();
         return;
-    case POSITIVE:
-        tc_at(RELDSP1 + 3u); /* TC +2: "+ NOT EMPTY" */
-        /* fall through */
-    case NEGATIVE:
-        set_A(ZERO); /* "- NOT EMPTY" */
-        /* fall through */
+    case NEGATIVE: set_A(ZERO); break; /* "- NOT EMPTY" */
     case IS_MINUS_ZERO: break;
     }
     ts(ADDRESS_OF(DSPLOCK));
@@ -379,8 +377,13 @@ void leftncom(void)
         switch (ccs_at(ADDRESS_OF(SFTEMP1))) {
         case POSITIVE: tc_at(LEFTNCOM + 3u); continue; /* TC LEFTNCOM */
         case IS_PLUS_ZERO: tc_return(ADDRESS_OF(SFTEMP2)); return;
-        case NEGATIVE:
-        case IS_MINUS_ZERO: not_modelled(); /* the CCS would run 2ROUND */
+        /* (The next words are 2ROUND's: a negative count runs it, and -0 from its
+         * second word, DOUBLE.) */
+        case NEGATIVE: two_round(); return; /* never: the callers' counts are 6, 2 and 6 */
+        case IS_MINUS_ZERO:
+            double_A();
+            two_round_plus2();
+            return;
         }
     }
 }
@@ -394,9 +397,12 @@ void prshrtmp(void)
 {
     if (ts(ADDRESS_OF(MPTEMP))) not_modelled(); /* an overflow would skip the CCS */
     switch (ccs_at(A_ADDRESS)) {
-    case POSITIVE:
-    case NEGATIVE: ca(ADDRESS_OF(MPTEMP));      /* fall through */
+    case POSITIVE: ca(ADDRESS_OF(MPTEMP));      /* fall through */
     case IS_PLUS_ZERO: shortmp_plus1(); return; /* "DO REGULAR SHORTMP" */
+    case NEGATIVE:                              /* TCF -2 */
+        ca(ADDRESS_OF(MPTEMP));
+        shortmp_plus1();
+        return;
     case IS_MINUS_ZERO: break;
     }
     set_A(negate(ZERO)); /* CS ZERO: "FORCE RESULT TO -0 AND RETURN." */

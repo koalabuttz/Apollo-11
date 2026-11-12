@@ -151,9 +151,12 @@ void dctstcyc(void)
     (void)dctstcyc_returns();
 }
 
+static bool tstfordp_returns(void);
+
 /* NOUNTEST -- LM p. 415, CM p. 332. "NOUNTEST ALARMS IF NO-LOAD BIT (BIT5
  * OF COMP CODE NUMBER) = 1. IF NOT, IT RETURNS." The no-load bit is the
- * word's sign. */
+ * word's sign. (GETCOMP's MASK leaves no -0; on -0 the next word is
+ * TSTFORDP's first.) */
 void nountest(void)
 {
     lxch(Q_ADDRESS);
@@ -163,7 +166,7 @@ void nountest(void)
     case POSITIVE:
     case IS_PLUS_ZERO: tc_return(L_ADDRESS); return;
     case NEGATIVE: tc(NOUNTEST + 5u, GODSPALM); return;
-    case IS_MINUS_ZERO: not_modelled(); /* MASK HI5 never leaves -0 */
+    case IS_MINUS_ZERO: (void)tstfordp_returns(); return;
     }
 }
 
@@ -344,8 +347,10 @@ void decdsp(void)
         switch (ccs_at(ADDRESS_OF(DECTEM))) {
         case POSITIVE: tc_at(DSPDCGET + 7u); continue; /* TC DSPDCGET: "MORE TO GET" */
         case IS_PLUS_ZERO: break;
-        case NEGATIVE:
-        case IS_MINUS_ZERO: not_modelled(); /* MASK THREE leaves 0 to 3 */
+        case NEGATIVE: /* never: MASK THREE leaves 0 to 3, counted down; DSPDCPUT's TS MPAC +1 */
+            continue_at(DSPDCPUT + 1u);
+            return;
+        case IS_MINUS_ZERO: /* never: on at its TS MPAC +2 */ continue_at(DSPDCPUT + 2u); return;
         }
         break;
     }

@@ -505,8 +505,8 @@ static bool mpactst_returns(void)
 {
     switch (ccs_at(ADDRESS_OF(MPAC))) {
     case POSITIVE: tc(MPACTST + 1u, ALMCYCLE); return false; /* "ALARM AND RECYCLE." */
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: tc(MPACTST + 3u, ALMCYCLE); return false;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     tc_return(Q_ADDRESS);
@@ -550,20 +550,26 @@ void sizetst(void)
  * WORDS ARE LOADED IN DEC (FOR HMSIN). ALARM IF NOT. (TEST THAT BITS 3,4,5
  * OF DECBRNCH ARE ALL = 1)." With all three, AD OCT34BAR leaves -0;
  * otherwise less. "FORCE VERB 25 TO BE EXECUTED BY RECYCLE IN CASE
- * OPERATOR EXECUTED A LOWER LOAD VERB." True when it went back. */
+ * OPERATOR EXECUTED A LOWER LOAD VERB." True when it went back. (The sum is
+ * never positive or +0. Positive would go to FORCEV25 too; on +0 the
+ * constant OCT34BAR, OCT 77743, runs as the instruction MASK 7743, and the
+ * TC FORCEV25 after it.) */
 static bool all3dec_returns(void)
 {
     set_A(negate(OCT34BAR)); /* "GET BITS 3,4,5 IN A" */
     mask_at(ADDRESS_OF(DECBRNCH));
     ad(OCT34BAR);
     switch (ccs_at(A_ADDRESS)) {
+    case POSITIVE:
+        tc_at(ALL3DEC + 4u);
+        forcev25();
+        return false;
+    case IS_PLUS_ZERO: mask_at(ADDRESS_FIELD(OCT34BAR)); /* fall through */
     case NEGATIVE:
         tc_at(ALL3DEC + 6u);
         forcev25();
         return false;
     case IS_MINUS_ZERO: break;
-    case POSITIVE:
-    case IS_PLUS_ZERO: not_modelled(); /* AD OCT34BAR leaves -0 or less */
     }
     tc_return(Q_ADDRESS);
     return true;

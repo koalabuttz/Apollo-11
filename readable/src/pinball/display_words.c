@@ -322,7 +322,7 @@ void wdagain_plus5(void)
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: ts(ADDRESS_OF(DSPCOUNT));                 /* fall through */
     case IS_PLUS_ZERO: tc(WDAGAIN + 016u, POSTJUMP); return; /* CADR DSPOCTIN */
-    case NEGATIVE: not_modelled(); return;
+    case NEGATIVE: not_modelled(); return; /* never: a position here; an address word is next */
     case IS_MINUS_ZERO: octback(); return;
     }
 }

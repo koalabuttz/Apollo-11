@@ -4,8 +4,8 @@
 #
 # Measured with Ubuntu clang version 18.1.3 (1ubuntu1).
 # 422 files hold lines of C to run (406 of the 474 .c files under src/,
-# and 16 headers); 59930 such lines; 1527 of them unrun
-# (2.55%), in 634 stretches of 214 files.
+# and 16 headers); 59968 such lines; 1549 of them unrun
+# (2.58%), in 638 stretches of 216 files.
 # Built and never run: x86-flight-cm-core, x86-flight-lm-core, x86-link-check.
 #
 # These are lines of C only. Interpretive code is tables of words, which
@@ -15,13 +15,13 @@
 # this measure does not see.
 #
 # By reason:
-#   impossible: 185 lines in 83 stretches
-#   never: 69 lines in 31 stretches
-#   not-modelled: 122 lines in 91 stretches
-#   open: 384 lines in 141 stretches
+#   impossible: 221 lines in 97 stretches
+#   never: 76 lines in 33 stretches
+#   not-modelled: 111 lines in 83 stretches
+#   open: 374 lines in 137 stretches
 #   refusal: 767 lines in 288 stretches
 #
-# Run, and compared with nothing: 85 lines of 82 functions ran
+# Run, and compared with nothing: 84 lines of 81 functions ran
 # and refuse (not_modelled() first on the line). A case or a scenario
 # brought the routine there and its binding refused the state: the tests
 # hold only that a refusal leaves the state as it found it. They are
@@ -2073,16 +2073,37 @@ src/dapidler/dapidler.c
     why: [open]
 
 src/display_interface/endidle.c
-  linuschr, line 325 (1 unrun) fccab479
-    | default: not_modelled();
-    why: [not-modelled]
+  endout, line 173 (1 unrun) c37ec7b1
+    | case IS_MINUS_ZERO: timechek(); return; /* the next word is TIMECHEK's first */
+    why: [impossible] A is a word masked with OCT60000, bits 15 and 14 alone:
+         never -0.
+  linuschr, lines 329-330 (2 unrun) 73487103
+    | case NEGATIVE: proceed(); return;     /* never. The next words are PROCEED's: CAF ONE */
+    | case IS_MINUS_ZERO: endout(); return; /* never. And its TCF ENDOUT */
+    why: [never] DSPLOCK is +0 or +1. Pinball's six stores in it
+         (src/pinball: keys.c, lights.c, monitor.c, special_verbs.c,
+         subroutines.c twice) leave +0, the ONE of CHARIN's XCH, or the value
+         CHARIN saved from it in 21/22REG (ERROR), and the fresh start zeroes
+         it.
+
+src/display_interface/makeplay.c
+  makeplay_after_priochng, line 233 (1 unrun) a5fbc233
+    | case IS_MINUS_ZERO: iflegal(); return; /* the next word is IFLEGAL's first */
+    why: [impossible] A is PLAYTEM4 masked with BITS15+7, two bits: never -0.
 
 src/display_interface/marks.c
   gogomark, lines 213-215 (3 unrun) dcb23f21
     | continue_at(PRIOPLAY);
     | return;
     | }
-    why: [open]
+    why: [impossible] A is the complement of MARKNV, an erasable word: a CS
+         leaves no overflow for the TS to skip on.
+
+src/display_interface/nvdsp.c
+  pinbrnch, line 37 (1 unrun) 29ea1b44
+    | case IS_MINUS_ZERO: break; /* the next word is NORMBNCH's first */
+    why: [impossible] A is FLAGWRD4 masked with PINMASK, three bits: never
+         -0.
 
 src/display_interface/r_displays.c
   savelocs, lines 128-131 (4 unrun) 30836f01
@@ -2090,7 +2111,10 @@ src/display_interface/r_displays.c
     | continue_at(MAKECADR);
     | return;
     | }
-    why: [open]
+    why: [impossible] A is PLAYTEM4 without bits 9 to 11, plus EBANK, which
+         holds those bits alone. A negative word and a positive one do not
+         overflow, and two positive ones with no bit in common carry nowhere:
+         the TS does not skip.
   savelocs_after_makecadr, lines 187-188 (2 unrun) 8afb91e4
     | not_modelled();
     | }
@@ -3388,14 +3412,19 @@ src/phase_table/phase_table.c
          went to BELOW2), and nothing between stores in it.
 
 src/pinball/display_verbs.c
-  nountest, line 166 (1 unrun) 9fea65de
-    | case IS_MINUS_ZERO: not_modelled(); /* MASK HI5 never leaves -0 */
-    why: [not-modelled]
-  decdsp, lines 347-348 (2 unrun) 9be2d28f
-    | case NEGATIVE:
-    | case IS_MINUS_ZERO: not_modelled(); /* MASK THREE leaves 0 to 3 */
-    why: [not-modelled]
-  dspdcend_plus2, line 422 (1 unrun) f0045070
+  nountest, line 169 (1 unrun) 773a16e2
+    | case IS_MINUS_ZERO: (void)tstfordp_returns(); return;
+    why: [impossible] A is what GETCOMP leaves: a word masked with HI5 (its
+         last instruction). Never -0.
+  decdsp, lines 350-353 (4 unrun) 718a308d
+    | case NEGATIVE: /* never: MASK THREE leaves 0 to 3, counted down; DSPDCPUT's TS MPAC +1 */
+    | continue_at(DSPDCPUT + 1u);
+    | return;
+    | case IS_MINUS_ZERO: /* never: on at its TS MPAC +2 */ continue_at(DSPDCPUT + 2u); return;
+    why: [impossible] DECTEM is DECOUNT, a word masked with THREE just above,
+         then what this CCS left of it: 3 down to 0, never negative, never
+         -0.
+  dspdcend_plus2, line 427 (1 unrun) f0045070
     | case IS_MINUS_ZERO: tc(DSPDCEND + 6u, DSPDCPUT); return;
     why: [open]
 
@@ -3420,32 +3449,49 @@ src/pinball/enter.c
   mixnoun, line 374 (1 unrun) fa9d72bc
     | case IS_MINUS_ZERO: tc_at(MIXNOUN + 4u); break;        /* TC +1: "-0 IN USE" */
     why: [open]
-  mixnoun, lines 410-411 (2 unrun) 6b3a09b2
-    | case NEGATIVE:
-    | case IS_MINUS_ZERO: not_modelled(); /* the CCS would run MIXAD */
-    why: [not-modelled]
+  mixnoun, lines 410-416 (7 unrun) 9d5d6f9c
+    | case NEGATIVE: /* never: DECOUNT counts 2, 1, 0. The next word is MIXAD's, TC MIXTEMP */
+    | tc_at(MIXNN2 + 012u);
+    | continue_at(ADDRESS_OF(MIXTEMP));
+    | return;
+    | case IS_MINUS_ZERO: /* never: the word after that is DPTEST's first */
+    | continue_at(DPTEST);
+    | ... (1 more)
+    why: [impossible] DECOUNT is the TWO loaded above the loop, then what
+         this CCS left of it: 2, 1, 0.
 
 src/pinball/input_scale.c
-  all3dec_returns, lines 565-566 (2 unrun) 3f8406f9
+  all3dec_returns, lines 563-567 (5 unrun) b8428f53
     | case POSITIVE:
-    | case IS_PLUS_ZERO: not_modelled(); /* AD OCT34BAR leaves -0 or less */
-    why: [not-modelled]
+    | tc_at(ALL3DEC + 4u);
+    | forcev25();
+    | return false;
+    | case IS_PLUS_ZERO: mask_at(ADDRESS_FIELD(OCT34BAR)); /* fall through */
+    why: [impossible] A is DECBRNCH masked with OCT 34, with OCT34BAR, minus
+         34, added: -0 with all three bits, else negative. In the AGC's adder
+         a sum is +0 only when both numbers are +0.
 
 src/pinball/keys.c
-  mornum, lines 336-338 (3 unrun) 8657a932
+  mornum, lines 339-341 (3 unrun) 8657a932
     | case IS_PLUS_ZERO: tc(MORNUM + 2u, ENDOFJOB); break;
     | case NEGATIVE: tc(MORNUM + 3u, 022u); break;
     | case IS_MINUS_ZERO: tc(MORNUM + 4u, 020u); break;
     why: [open]
-  legaltst_returns, line 638 (1 unrun) 3d840b13
+  legaltst_returns, line 641 (1 unrun) 3d840b13
     | case IS_PLUS_ZERO: tc(LEGALTST + 3u, CCSHOLE); return false;
-    why: [open]
+    why: [impossible] A has just had NEG2 added. In the AGC's adder a sum is
+         +0 only when both numbers are +0.
 
 src/pinball/lights.c
-  force_bit12, lines 306-307 (2 unrun) d6fbe208
-    | case NEGATIVE:
-    | case IS_MINUS_ZERO: not_modelled(); /* the count runs 10 to 0 */
-    why: [not-modelled]
+  error_, line 259 (1 unrun) 24a1c40d
+    | case POSITIVE:                          /* (the loop goes on) */
+    why: [impossible] force_bit12() returns how the CCS ERCNT came out that
+         ended its loop, and a positive count does not end it (TC TSTAB +1).
+  force_bit12, lines 313-314 (2 unrun) 465d41ff
+    | case NEGATIVE: return NEGATIVE;
+    | case IS_MINUS_ZERO: return IS_MINUS_ZERO;
+    why: [impossible] ERCNT is BINCON, DEC 10, loaded above the loop, then
+         what this CCS left of it: 10 down to 0.
 
 src/pinball/load_verbs.c
   put_by_decbrnch, lines 469-471 (3 unrun) 94bde98f
@@ -3460,36 +3506,42 @@ src/pinball/monitor.c
     | ad_at(A_ADDRESS); /* BIT15/14, OCT 60000, run as AD A */
     | tc_at(MONITOR + 010u);
     | break;
-    why: [open]
+    why: [impossible] A is the complement of ENTEXIT with ENDINST added, the
+         word TC ENDOFJOB. In the AGC's adder a sum is +0 only when both
+         numbers are +0.
 
 src/pinball/nvsub.c
-  blankdsp, lines 147-148 (2 unrun) 6c0473c7
-    | case NEGATIVE:
-    | case IS_MINUS_ZERO: not_modelled(); /* CODE counts down from 7 to 10 */
-    why: [not-modelled]
-  nvsub1, lines 199-200 (2 unrun) 975fe3b4
+  blankdsp, lines 152-153 (2 unrun) a7cece5e
+    | case NEGATIVE: more = false; break;
+    | case IS_MINUS_ZERO: more = indexed = false; break;
+    why: [open]
+  nvsub1, lines 205-206 (2 unrun) 975fe3b4
     | case NEGATIVE: tc(NVSUB1 + 021u, UPDATVB - 1u); return;
     | case IS_MINUS_ZERO: continue_at(NVSUB1 + 022u); return;
     why: [open]
-  nvsub2, lines 233-234 (2 unrun) 2ef12378
+  nvsub2, lines 239-240 (2 unrun) 2ef12378
     | case NEGATIVE: tc(NVSUB2 + 3u, UPDATNN - 1u); return;
     | case IS_MINUS_ZERO: continue_at(NVSUB2 + 4u); return;
     why: [open]
-  islist_returns, line 298 (1 unrun) 66eecf0b
-    | case IS_MINUS_ZERO: not_modelled();
+  islist_returns, lines 305-308 (4 unrun) 86dc3146
+    | case IS_MINUS_ZERO:
+    | tc_at(DSPABORT + 1u); /* OCT 01206, run as TC 1206 */
+    | not_modelled();
+    | return false;
     why: [not-modelled]
-  blanksub_plus010, line 409 (1 unrun) 08a28db5
+  blanksub_plus010, lines 418-419 (2 unrun) ed92cec4
+    | case NEGATIVE: blanksub_plus11(); return;
     | case IS_MINUS_ZERO: blanksub_plus12(); return;
     why: [open]
-  testbit, lines 445-446 (2 unrun) b960739c
+  testbit, lines 455-456 (2 unrun) b960739c
     | case NEGATIVE:
     | case IS_MINUS_ZERO: break;
     why: [open]
-  testbit, lines 448-449 (2 unrun) 42a58747
+  testbit, lines 458-459 (2 unrun) 42a58747
     | not_modelled(); /* the code is three bits */
     | return false;
     why: [not-modelled]
-  nvsbwait, lines 712-713 (2 unrun) d0cfe4cc
+  nvsbwait, lines 722-723 (2 unrun) d0cfe4cc
     | case NEGATIVE: nvsbwt1(); return;
     | case IS_MINUS_ZERO: continue_at(PRENVBSY); return;
     why: [open]
@@ -3497,7 +3549,8 @@ src/pinball/nvsub.c
 src/pinball/output_scale.c
   negopt, line 174 (1 unrun) 5b760fb1
     | case IS_PLUS_ZERO: tc(NEGOPT + 4u, CCSHOLE); return;
-    why: [open]
+    why: [impossible] A has just had 20BIAS added. In the AGC's adder a sum
+         is +0 only when both numbers are +0.
   opdegout, line 197 (1 unrun) 822498e9
     | case IS_MINUS_ZERO: ad(NEG1); break; /* "IF NEG ZERO SUBTRACT 1" */
     why: [open]
@@ -3531,14 +3584,19 @@ src/pinball/subroutines.c
     | return;
     | }
     why: [open]
-  sfrutmix, lines 286-287 (2 unrun) 57af5f03
+  sfrutmix, lines 284-285 (2 unrun) 57af5f03
     | else
     | not_modelled();
     why: [open]
-  leftncom, lines 382-383 (2 unrun) 890cb0ba
-    | case NEGATIVE:
-    | case IS_MINUS_ZERO: not_modelled(); /* the CCS would run 2ROUND */
-    why: [not-modelled]
+  leftncom, lines 382-386 (5 unrun) 15744506
+    | case NEGATIVE: two_round(); return; /* never: the callers' counts are 6, 2 and 6 */
+    | case IS_MINUS_ZERO:
+    | double_A();
+    | two_round_plus2();
+    | return;
+    why: [never] TPLEFTN is the only way in, and its three callers pass SIX,
+         TWO and SIX (input_scale.c twice, output_scale.c). SFTEMP1 then
+         holds what this CCS left: never negative, never -0.
 
 src/pinball_noun_tables/readers.c
   noun_table_word, lines 130-131 (2 unrun) 3a2338fb
@@ -3994,7 +4052,6 @@ Lines that ran and refuse (not_modelled() first on the line), by function:
   * src/p51_p53_cm/p51.c: p51e_star (1)
   * src/p70_p71/contabrt.c: abrtjask (1)
   * src/pinball/display_words.c: wdagain_plus5 (1)
-  * src/pinball/lights.c: tstlts1 (1)
   * src/pinball/subroutines.c: sfconum (1)
   * src/powered_flight/quictrig.c: store_cosine (1)
   * src/q_r_axis/q_r_axis.c: skipped (1)

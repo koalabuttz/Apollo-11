@@ -25,7 +25,15 @@ The rules, each named as the ledger names it:
                     (STYLE.md, Fidelity). One whose comment says the
                     listing has no word there (the CCS's last words fall
                     past the end of a bank's program) is let be: there is
-                    nothing to follow.
+                    nothing to follow. So is one whose comment says the
+                    next word is an interpretive word or an address word
+                    (no instruction's line), and one in a helper that
+                    stands for one CCS at several places, whose comment
+                    says that what would run differs with the place. In
+                    each the comment (on the case's lines, or right above
+                    them) also says that the outcome never comes, and
+                    what rules it out; the check holds it to the word
+                    never.
   raw-channel       A channel is written by its name, not a bare number
                     (STYLE.md, Naming).
   continue-offset   A place inside its own directory that a routine ends
@@ -84,7 +92,9 @@ HELPER = re.compile(r'^[ \t]*#[ \t]*define[ \t]+(?:COUNT|IN_BANK|BANK_OF)\('
                     r'|^(?:static )?(?:inline )?void tc_to\(', re.M)
 DECIMAL = re.compile(r'\b(?:K_)?([A-Z][A-Z0-9_]*) \+ ([89]|[1-9][0-9]+)u\b')
 LABEL = re.compile(r'^#define (\w+) +\(\(word\)K_\w+\)', re.M)
-NO_WORD = re.compile(r'\bno word\b')
+NO_WORD = re.compile(r'\b(?:no word|interpretive words?|address words?|differs with the place)\b')
+NEVER = re.compile(r'\bnever\b', re.I)
+ABOVE = re.compile(r'\s*(?:/\*|\*|case \w+:\s*(?:/\*.*\*/)?\s*$)')  # a comment's line, or a case's label alone
 NEVER = re.compile(r'/\*[^\n]*\bnever\b|^[^\n]*\bnever\b[^\n]*\*/', re.M)
 NAMES = 'agc/names.h'
 WIDTH = 100
@@ -197,7 +207,11 @@ def breaks(file, text, routines=(), labels=()):
                         ('ccs-not-modelled', where) not in seen:
                     seen.add(('ccs-not-modelled', where))
                     first, last = line_of(mission, where), line_of(mission, mission.index('not_modelled', where))
-                    if not NO_WORD.search('\n'.join(lines[first - 1:last])):
+                    top = first
+                    while top > 1 and ABOVE.match(lines[top - 2]):
+                        top -= 1
+                    said = '\n'.join(lines[top - 1:last])
+                    if not (NO_WORD.search(said) and NEVER.search(said)):
                         out.append(('ccs-not-modelled', first, name))
     for found in CHANNEL.finditer(code):
         out.append(('raw-channel', line_of(code, found.start()), found.group().strip()))
@@ -343,6 +357,18 @@ def self_check():
            'switch (ccs_at(X)) {\ncase POSITIVE: break;\ncase IS_PLUS_ZERO: break;\ncase NEGATIVE: break;\n'
            'case IS_MINUS_ZERO:\n    /* (never) TCF X is the last word: the listing has no word\n     * after it. */\n'
            '    not_modelled();\n}\n', [])
+    for words in ('never: a bit. Next are interpretive words', 'never: a count. Next is an address word',
+                  'never; what would run differs with the place'):
+        expect(f'an outcome whose next word is no instruction ({words.split(". ")[-1]})',
+               'switch (ccs_at(X)) {\ncase POSITIVE: break;\ncase IS_PLUS_ZERO: break;\ncase NEGATIVE:\n'
+               f'case IS_MINUS_ZERO: not_modelled(); /* {words} */\n}}\n', [])
+    expect('one that says why above its cases\' labels',
+           'switch (ccs_at(X)) {\ncase POSITIVE: break;\ncase IS_PLUS_ZERO: break;\n/* (never: a masked bit) */\n'
+           'case NEGATIVE:\ncase IS_MINUS_ZERO: not_modelled(); /* the next word is an address word */\n}\n', [])
+    expect('one that does not say the outcome never comes',
+           'switch (ccs_at(X)) {\ncase POSITIVE: break;\ncase IS_PLUS_ZERO: break;\ncase NEGATIVE: break;\n'
+           'case IS_MINUS_ZERO: not_modelled(); /* the next word is an address word, CADR X */\n}\n',
+           [('ccs-not-modelled', 5)])
     expect('a value outside a table refused', 'switch (a_word()) {\ncase 1: break;\ndefault: not_modelled();\n}\n', [])
     expect('a channel by number', 'x = rand_channel(031);\nwor_channel(013u);\nwrite_channel(6, A);\n',
            [('raw-channel', 1), ('raw-channel', 2), ('raw-channel', 3)])

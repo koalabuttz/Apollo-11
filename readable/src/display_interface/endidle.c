@@ -47,9 +47,10 @@ void restslep(void)
 void rest(void)
 {
     switch (ccs_at(ADDRESS_OF(CADRSTOR))) {
-    case IS_PLUS_ZERO:
-    case IS_MINUS_ZERO: restslep(); return;
-    default: continue_at(ENDOFJOB); return;
+    case POSITIVE: continue_at(ENDOFJOB); return; /* "YES" */
+    case IS_PLUS_ZERO: restslep(); return;
+    case NEGATIVE: continue_at(ENDOFJOB); return;
+    case IS_MINUS_ZERO: restslep(); return; /* the next word is RESTSLEP's first */
     }
 }
 
@@ -126,9 +127,10 @@ void itismask_after_upent2(void)
         return;
     }
     switch (ccs_at(ADDRESS_OF(CADRSTOR))) {
-    case POSITIVE:
+    case POSITIVE: isitprio(); return;
+    case IS_PLUS_ZERO: goidle(); return; /* TCF +2 */
     case NEGATIVE: isitprio(); return;
-    default: goidle(); return;
+    case IS_MINUS_ZERO: goidle(); return;
     }
 }
 
@@ -165,9 +167,10 @@ void endout(void)
     if (!ts(ADDRESS_OF(OUTHERE))) ca(ADDRESS_OF(FLAGWRD4));
     mask(OCT60000);
     switch (ccs_register(A_ADDRESS)) {
+    case POSITIVE: timechek(); return; /* "PRIO ENDIDLE RETURN" */
     case IS_PLUS_ZERO: normret(); return;
     case NEGATIVE: markret(); return;
-    default: timechek(); return;
+    case IS_MINUS_ZERO: timechek(); return; /* the next word is TIMECHEK's first */
     }
 }
 
@@ -235,9 +238,10 @@ void endret_plus4(void)
 void endret(void)
 {
     switch (ccs_at(ADDRESS_OF(OUTHERE))) {
+    case POSITIVE: ad(ONE); break; /* CCS took one off; TCF +2 */
+    case IS_PLUS_ZERO: break;      /* TCF +2: "NORMAL ENDIDLE EXIT" */
     case NEGATIVE: continue_at(ENDOFJOB); return;
-    case POSITIVE: ad(ONE); break; /* CCS took one off */
-    default: break;
+    case IS_MINUS_ZERO: break;
     }
     endret_plus4();
 }
@@ -322,7 +326,8 @@ void linuschr(void)
         continue_at(ENDOFJOB);
         return;
     case IS_PLUS_ZERO: tc_through(Q_ADDRESS); return;
-    default: not_modelled();
+    case NEGATIVE: proceed(); return;     /* never. The next words are PROCEED's: CAF ONE */
+    case IS_MINUS_ZERO: endout(); return; /* never. And its TCF ENDOUT */
     }
 }
 

@@ -1556,9 +1556,9 @@ builds the x86 flight program the same way and flies gate 2's 86
 scenarios. Each program that ran left its counts, and a line of `src/` is
 run if any of them ran it. What is counted is every line the build
 compiled, in a program that ran or not: each compile leaves the lines of
-its object, and a line no program holds counts as unrun. Of the 59,930
-lines of C with code in them, 1,527 (2.5%) are run by none, in 634
-stretches of 214 files. That is a figure for the C alone: interpretive
+its object, and a line no program holds counts as unrun. Of the 59,968
+lines of C with code in them, 1,549 (2.6%) are run by none, in 638
+stretches of 216 files. That is a figure for the C alone: interpretive
 code is tables of words, and none of its words is among those lines
 (below).
 
@@ -1588,13 +1588,13 @@ check holds each stretch to its kind's rule:
 - **refusal** (767 lines): how a binding refuses a state its routines do
   not model. No case's state and no scenario makes those files refuse.
   Only a stretch of `src/binding` may say this.
-- **not-modelled** (122 lines): the source marks the line
+- **not-modelled** (111 lines): the source marks the line
   `not_modelled()`, an outcome that cannot come there. The stretch must
   hold the call.
-- **impossible** (185 lines): no state brings the routine to the line,
+- **impossible** (221 lines): no state brings the routine to the line,
   and the reason says what in the routine's own lines, or its file's,
   rules the outcome out. An argument, not a run. The reason must say why.
-- **never** (69 lines): no program brings the state, though the routine's
+- **never** (76 lines): no program brings the state, though the routine's
   own lines do not rule it out. The reason rests on what the rest of the
   program stores there or on what the assembler makes, and says what was
   looked at. The comment at the line must say never, and the reason why.
@@ -1604,12 +1604,12 @@ check holds each stretch to its kind's rule:
   negative of a sine there, which can be -0, and a core set is not
   cleared for its next job), so no line of the interpreter rules it out
   and no check proves it of every entry.
-- **open** (384 lines, 141 stretches): not looked at yet. Each is owed a
+- **open** (374 lines, 137 stretches): not looked at yet. Each is owed a
   case that runs it or the reason none can, and the count is in the
   ledger's head.
 
 A line can also run and be compared with nothing: one that refuses
-(`not_modelled()` first on the line). 85 such lines of 82 functions ran:
+(`not_modelled()` first on the line). 84 such lines of 81 functions ran:
 a case or a scenario brought the routine there, its binding refused the
 state, and the test held only that the refusal left the state as it
 found it. They are not unrun, so they are in no stretch; the ledger
@@ -1632,7 +1632,7 @@ measure cannot see which of its words the interpreter ran. `src/` holds
 811 such programs (each a `struct interpretive_code`) in 199 files. 55
 of those files are among the 68 with no line of C at all; the other 144
 have C lines of their own, which are counted, beside tables that are
-not. So "2.5% unrun" says nothing of the interpretive words, in any
+not. So "2.6% unrun" says nothing of the interpretive words, in any
 file. What holds those programs today is that each table is compared
 with the rope word for word and that the cases and scenarios compare
 what the programs compute. Which words run, and which way each branch

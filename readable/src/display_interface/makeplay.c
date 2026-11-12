@@ -227,9 +227,10 @@ void makeplay_after_priochng(void)
     ca(ADDRESS_OF(PLAYTEM4));
     mask(BITS15_PLUS_7);
     switch (ccs_register(A_ADDRESS)) {
-    case POSITIVE: makeprio(); return;
+    case POSITIVE: makeprio(); return; /* "ITS PRIO" */
     case IS_PLUS_ZERO: iflegal(); return;
-    default: break;
+    case NEGATIVE: break;                  /* TCF MAKEMARK: "ITS MARK" */
+    case IS_MINUS_ZERO: iflegal(); return; /* the next word is IFLEGAL's first */
     }
     continue_at(MAKEMARK);
     makemark();

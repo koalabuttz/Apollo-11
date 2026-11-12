@@ -101,12 +101,13 @@ void tstlts1(void)
     ts(indexed_erasable(ADDRESS_OF(DSPTAB), fetch(ADDRESS_OF(ERCNT))));
     switch (ccs_at(ADDRESS_OF(ERCNT))) {
     case POSITIVE: tc(TSTLTS1 + 5u, TSTLTS1); return;
-    case IS_PLUS_ZERO: break;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); /* a count of 0 to 10 is never negative */
+    case IS_PLUS_ZERO:
+        set_A(negate(FULLDSP1)); /* fall through */
+    /* (A count of 0 to 10 is never negative or -0. Negative would skip the CS
+     * FULLDSP1, and -0 the TS DSPTAB +1 too.) */
+    case NEGATIVE: ts(ADDRESS_OF(DSPTAB) + 1u); /* fall through */
+    case IS_MINUS_ZERO: break;
     }
-    set_A(negate(FULLDSP1));
-    ts(ADDRESS_OF(DSPTAB) + 1u);
     ts(ADDRESS_OF(DSPTAB) + 4u);
     ts(ADDRESS_OF(DSPTAB) + 6u);
     set_A(ELEVEN);
@@ -208,7 +209,7 @@ void tstlts3_plus26(void)
 
 /* ---- ERROR LIGHT RESET, the RSET key (bank 40) ---- */
 
-static void force_bit12(void);
+static enum sign force_bit12(void);
 
 /* ERROR -- LM p. 470, CM p. 388: CHARIN's key table sends the RSET key here.
  * "RESTORE ORIGINAL C(DSPLOCK). THUS ERROR LIGHT RESET LEAVES DSPLOCK
@@ -252,9 +253,14 @@ void error_(void)
     wand_channel(CHAN13);
     set_A(negate(ERCON));
     wand_dsalmout();
-    force_bit12();
-    set_A(ZERO);
-    ts(ADDRESS_OF(FAILREG));
+    /* ERCOM's CCS ERCNT ends the loop on +0. (The count runs 10 to 0: never negative,
+     * which would skip the CAF ZERO, or -0, the TS FAILREG too.) */
+    switch (force_bit12()) {
+    case POSITIVE:                          /* (the loop goes on) */
+    case IS_PLUS_ZERO: set_A(ZERO);         /* fall through */
+    case NEGATIVE: ts(ADDRESS_OF(FAILREG)); /* fall through */
+    case IS_MINUS_ZERO: break;
+    }
     ts(ADDRESS_OF(FAILREG) + 1u);
     ts(ADDRESS_OF(FAILREG) + 2u);
     ts(ADDRESS_OF(SFAIL));
@@ -267,8 +273,9 @@ void error_(void)
  * ERPLUS, CS A, MASK NOTBIT12, CS A, has bit 12 set; a - word (or -0) by
  * ERMINUS, CS A, MASK NOTBIT12, is put back negative with bit 12 of its
  * complement clear: so set in the word the relays get. "MIGHT WANT TO RESET
- * CLPASS, DECBRNCH, ETC." Interrupts in between words. */
-static void force_bit12(void)
+ * CLPASS, DECBRNCH, ETC." Interrupts in between words. Returns how the CCS
+ * ERCNT that ended the loop came out. */
+static enum sign force_bit12(void)
 {
     word ercnt;
 
@@ -302,9 +309,9 @@ static void force_bit12(void)
         relint();
         switch (ccs_at(ADDRESS_OF(ERCNT))) {
         case POSITIVE: tc_at(ERCOM + 4u); continue; /* TC TSTAB +1 */
-        case IS_PLUS_ZERO: return;
-        case NEGATIVE:
-        case IS_MINUS_ZERO: not_modelled(); /* the count runs 10 to 0 */
+        case IS_PLUS_ZERO: return IS_PLUS_ZERO;
+        case NEGATIVE: return NEGATIVE;
+        case IS_MINUS_ZERO: return IS_MINUS_ZERO;
         }
     }
 }

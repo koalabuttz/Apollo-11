@@ -329,9 +329,9 @@ static bool alldc_oc_returns(void)
     cs(ADDRESS_OF(SR));
     cs(ADDRESS_OF(SR)); /* "SHIFTED RIGHT 2" */
     switch (ccs_at(A_ADDRESS)) {
-    case POSITIVE:
-    case NEGATIVE: ad_at(ADDRESS_OF(DECOUNT)); break;     /* "SOME ONES IN LOW 3" */
+    case POSITIVE: ad_at(ADDRESS_OF(DECOUNT)); break;     /* TCF +2: "SOME ONES IN LOW 3" */
     case IS_PLUS_ZERO: tc_return(Q_ADDRESS); return true; /* "ALL ZEROS. ALL OCTAL. OK" */
+    case NEGATIVE: ad_at(ADDRESS_OF(DECOUNT)); break;
     case IS_MINUS_ZERO: break;
     }
     if (!A_is_zero()) { /* EXTEND; BZF +2 */

@@ -123,7 +123,7 @@ void nvsubend(void)
 void blankdsp(void)
 {
     word to;
-    bool more = true;
+    bool more = true, indexed = true;
 
     ad(SEVEN);
     inhint();
@@ -143,21 +143,27 @@ void blankdsp(void)
         }
         switch (ccs_at(ADDRESS_OF(CODE))) {
         case POSITIVE: tc_at(BLANKDSP + 012u); break; /* TC BLANKDSP +2: the next one down */
-        case IS_PLUS_ZERO: more = false; break;
-        case NEGATIVE:
-        case IS_MINUS_ZERO: not_modelled(); /* CODE counts down from 7 to 10 */
+        case IS_PLUS_ZERO:
+            relint();
+            more = false;
+            break;
+        /* (CODE counts down from 7 to 10 and is never negative or -0. Negative would
+         * skip the RELINT, and -0 the INDEX NVTEMP too: TC +5 as it stands.) */
+        case NEGATIVE: more = false; break;
+        case IS_MINUS_ZERO: more = indexed = false; break;
         }
     }
-    relint();
-    /* INDEX NVTEMP; TC +5: -4 to TC +1 ("NEVER TOUCH MODREG"), -3 to TS
-     * VERBREG, -2 to TS NOUNREG, -1 to TS CLPASS. A is +0. */
-    to = indexed_by(BLANKDSP + 022u, fetch(ADDRESS_OF(NVTEMP)));
-    if (to < BLANKDSP + 016u || to > BLANKDSP + 021u) not_modelled();
     tc_at(BLANKDSP + 015u);
-    if (to == BLANKDSP + 016u) tc_at(BLANKDSP + 016u); /* TC +1 */
-    if (to <= BLANKDSP + 017u) ts(ADDRESS_OF(VERBREG));
-    if (to <= BLANKDSP + 020u) ts(ADDRESS_OF(NOUNREG));
-    ts(ADDRESS_OF(CLPASS));
+    if (indexed) {
+        /* INDEX NVTEMP; TC +5: -4 to TC +1 ("NEVER TOUCH MODREG"), -3 to TS
+         * VERBREG, -2 to TS NOUNREG, -1 to TS CLPASS. A is +0. */
+        to = indexed_by(BLANKDSP + 022u, fetch(ADDRESS_OF(NVTEMP)));
+        if (to < BLANKDSP + 016u || to > BLANKDSP + 021u) not_modelled();
+        if (to == BLANKDSP + 016u) tc_at(BLANKDSP + 016u); /* TC +1 */
+        if (to <= BLANKDSP + 017u) ts(ADDRESS_OF(VERBREG));
+        if (to <= BLANKDSP + 020u) ts(ADDRESS_OF(NOUNREG));
+        ts(ADDRESS_OF(CLPASS));
+    }
     set_A(negate(VD1));
     ts(ADDRESS_OF(DSPCOUNT));
     tc_at(BLANKDSP + 024u);
@@ -288,14 +294,18 @@ static void dspabort(void)
 
 /* ISLIST+0 -- LM p. 455, CM p. 373: "ABORTS (CODE 01206) IF DSPLIST NOT= +0.
  * RETURNS IF DSPLIST = +0." True when it went back. A -0 runs the OCT 01206
- * after DSPABORT, which the readable port does not model. */
+ * after DSPABORT as TC 1206, and the listing's lines do not say what erasable
+ * word 1206 holds then. */
 static bool islist_returns(void)
 {
     switch (ccs_at(ADDRESS_OF(DSPLIST))) {
     case POSITIVE: tc_at(ISLIST_PLUS0 + 1u); break;
     case IS_PLUS_ZERO: tc_return(Q_ADDRESS); return true;
     case NEGATIVE: break; /* the word after is DSPABORT */
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO:
+        tc_at(DSPABORT + 1u); /* OCT 01206, run as TC 1206 */
+        not_modelled();
+        return false;
     }
     dspabort();
     return false;
@@ -403,9 +413,9 @@ void blanksub(void)
 static void blanksub_plus010(void)
 {
     switch (ccs_at(ADDRESS_OF(NVTEMP))) {
-    case POSITIVE: /* TCF +2 */
-    case NEGATIVE: blanksub_plus11(); return;
+    case POSITIVE: blanksub_plus11(); return; /* TCF +2 */
     case IS_PLUS_ZERO: tc_return(Q_ADDRESS); return;
+    case NEGATIVE: blanksub_plus11(); return;
     case IS_MINUS_ZERO: blanksub_plus12(); return;
     }
 }

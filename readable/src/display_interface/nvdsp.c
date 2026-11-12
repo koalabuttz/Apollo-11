@@ -31,9 +31,10 @@ void pinbrnch(void)
     ca(ADDRESS_OF(FLAGWRD4));
     mask(PINMASK);
     switch (ccs_register(A_ADDRESS)) {
+    case POSITIVE: break; /* TCF +3 */
     case IS_PLUS_ZERO: continue_at(ERASER); return;
     case NEGATIVE: continue_at(MARKPLAY); return;
-    default: break; /* TCF +3 */
+    case IS_MINUS_ZERO: break; /* the next word is NORMBNCH's first */
     }
     normbnch();
 }

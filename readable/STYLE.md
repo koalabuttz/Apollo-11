@@ -58,7 +58,14 @@ there too.
   its word can hold: the words after the CCS are in the listing. (Where
   one is not, because the CCS's last words fall past the end of the
   bank's program, the call stands, and its comment says that the listing
-  has no word there.)
+  has no word there. It stands too where the word is not an instruction's
+  line, and the comment says which: an interpretive word, or an address
+  word the assembler makes, such as a CADR. A constant with a value, an
+  OCT or a DEC, is not such a word: it runs as the instruction it is. And
+  it stands in a helper that is one CCS at several places, since what the
+  listing would run differs with the place, which the comment says. In
+  each of these the comment also says that the outcome never comes and
+  what rules it out: `never: the caller's MASK leaves no sign`.)
 - Say what a thing is compared with. What a routine does is what the AGC
   does (`the AGC would run OCT 1104 as TC 1104`). What a test shows is
   that it matches the faithful port, or Virtual AGC in gate 3. Write

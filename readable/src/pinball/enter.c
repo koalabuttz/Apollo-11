@@ -407,8 +407,13 @@ void mixnoun(void)
         switch (ccs_at(ADDRESS_OF(DECOUNT))) {
         case POSITIVE: tc_at(MIXNN2 + 010u); continue; /* TC MIXNN1 */
         case IS_PLUS_ZERO: tc(MIXNN2 + 011u, VERBFAN); return;
-        case NEGATIVE:
-        case IS_MINUS_ZERO: not_modelled(); /* the CCS would run MIXAD */
+        case NEGATIVE: /* never: DECOUNT counts 2, 1, 0. The next word is MIXAD's, TC MIXTEMP */
+            tc_at(MIXNN2 + 012u);
+            continue_at(ADDRESS_OF(MIXTEMP));
+            return;
+        case IS_MINUS_ZERO: /* never: the word after that is DPTEST's first */
+            continue_at(DPTEST);
+            return;
         }
     }
 }

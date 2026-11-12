@@ -80,26 +80,29 @@ static bool five_blank_plus2_returns(void);
  * (-) and AD MPAC (-0); a -0 adds the key to +0, so any key lights it. */
 void charin(void)
 {
+    bool full = true; /* CADRSTOR not +0 */
+
     set_A(ONE);
     xch(ADDRESS_OF(DSPLOCK));
     ts(ADDRESS_OF(TWENTY_ONE_22REG));
     switch (ccs_at(ADDRESS_OF(CADRSTOR))) {
     case POSITIVE:
         tc_at(CHARIN + 4u); /* TC +2 */
-        /* fall through */
-    case NEGATIVE:
         set_A(negate(ELRCODE1));
-        /* fall through */
-    case IS_MINUS_ZERO:
+        break;
+    case IS_PLUS_ZERO:
+        tc_at(CHARIN + 5u); /* TC CHARIN2 */
+        full = false;
+        break;
+    case NEGATIVE: set_A(negate(ELRCODE1)); break;
+    case IS_MINUS_ZERO: break;
+    }
+    if (full) {
         ad_at(ADDRESS_OF(MPAC)); /* EXTEND; BZF CHARIN2 */
         if (!A_is_zero()) {
             tc_at(CHARIN + 012u);
             reldspon();
         }
-        break;
-    case IS_PLUS_ZERO:
-        tc_at(CHARIN + 5u); /* TC CHARIN2 */
-        break;
     }
 
     /* CHARIN2: the key's code into CHAR, MPAC back as it was (the lock's
