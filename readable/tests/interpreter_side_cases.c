@@ -42,7 +42,17 @@
  *     word in Q as an instruction; the faithful routines keep its low
  *     twelve bits and go there).
  *
- * These are counted apart (README, Departures). */
+ * These are counted apart (README, Departures).
+ *
+ * The run is held to its record: the table's entries by number and, at
+ * the usual number of cases, how many ended each way (RECORD, below). The
+ * generator's seed is fixed and no case depends on the machine, so a run
+ * counts the same every time; a run that does not has lost an entry, runs
+ * fewer cases, or takes or refuses a state it did not before.
+ *
+ * After the random cases come the states of the defects they first found
+ * (PINS, below), each made on purpose: a random run makes one of them only
+ * some dozens of times. */
 #define _POSIX_C_SOURCE 200809L /* sigsetjmp, setitimer */
 #include <setjmp.h>
 #include <signal.h>
@@ -58,6 +68,7 @@
 #include "../src/agc/lm_names.inc"
 typedef p66_bias_io mission_io;
 #define MISSION    "LM"
+#define ENTRIES    55u
 #define ROPE       0u
 #define NAME(n)    n##_lm_interpreter_basic
 #define READABLE   lm_interpreter_basic
@@ -69,6 +80,7 @@ typedef p66_bias_io mission_io;
 #include "../src/agc/cm_names.inc"
 typedef cm_native_io mission_io;
 #define MISSION    "CM"
+#define ENTRIES    50u
 #define ROPE       1u
 #define NAME(n)    n##_cm_interpreter_basic
 #define READABLE   cm_interpreter_basic
@@ -232,8 +244,10 @@ static uint16_t operand_address(unsigned fixloc)
     }
 }
 
-/* Returns whether the state has a word no program leaves. */
-static bool make_state(apollo_overlay_state *s, mission_io *io, uint16_t key)
+/* Returns whether the state has a word no program leaves. (force: the
+ * word of a pinned case, put in last; such a state always has one.) */
+static bool make_state(apollo_overlay_state *s, mission_io *io, uint16_t key,
+                       void (*force)(apollo_overlay_state *))
 {
     unsigned i, fixloc;
     bool broken = rnd() % 4u == 0u;
@@ -320,6 +334,10 @@ static bool make_state(apollo_overlay_state *s, mission_io *io, uint16_t key)
         /* The largest argument (the listing has its second Newton step overflow; none does). */
         s->words[K_MPAC] = 037777u;
         s->words[K_MPAC + 1u] = (uint16_t)(037777u - rnd() % 2u);
+    }
+    if (force) {
+        force(s);
+        return true;
     }
     if (!broken) return false;
 
@@ -443,21 +461,27 @@ static void show(const char *why, uint16_t key, unsigned n, const apollo_overlay
            (unsigned)start->words[K_DVNORMCT]);
 }
 
+/* How the cases ended: run by both and compared, refused by the faithful
+ * routines alone, by both, by the readable routine alone for a step it
+ * does not model (a shift count, a return), or with no end on the faithful
+ * side. */
 struct counts {
-    unsigned checks, both, faithful_only, both_refuse, not_modelled, faithful_no_end, failures;
+    unsigned checks, both, faithful_only, both_refuse, no_shift, no_return, faithful_no_end,
+        failures;
 };
 
 /* One case of the entry at key. Returns what is wrong with it, or NULL. */
 static const char *one_case(uint16_t key, agc_routine routine, const agc_native_program *program,
                             struct counts *counts, apollo_overlay_state *start,
-                            apollo_overlay_state *readable, apollo_overlay_state *faithful_state)
+                            apollo_overlay_state *readable, apollo_overlay_state *faithful_state,
+                            void (*force)(apollo_overlay_state *))
 {
     static mission_io io_start, io_readable, io_faithful;
     enum outcome r, f;
     const char *note;
     bool broken;
 
-    broken = make_state(start, &io_start, key);
+    broken = make_state(start, &io_start, key, force);
     *readable = *faithful_state = *start;
     io_readable = io_faithful = io_start;
     ++counts->checks;
@@ -481,9 +505,12 @@ static const char *one_case(uint16_t key, agc_routine routine, const agc_native_
             ++counts->both_refuse;
             return NULL;
         }
-        if (!note || (strcmp(note, NOT_MODELLED_SHIFT) && strcmp(note, NOT_MODELLED_RETURN)))
+        if (note && !strcmp(note, NOT_MODELLED_SHIFT))
+            ++counts->no_shift;
+        else if (note && !strcmp(note, NOT_MODELLED_RETURN))
+            ++counts->no_return;
+        else
             return "the readable routine refused a state the faithful routines run";
-        ++counts->not_modelled;
         return NULL;
     }
     if (f == REFUSED) {
@@ -498,12 +525,102 @@ static const char *one_case(uint16_t key, agc_routine routine, const agc_native_
     return NULL;
 }
 
+/* ---- The run of record ----
+ * How the cases of a run of CASES_PER_ENTRY end, counted (checks, both,
+ * the faithful routines alone refuse, both refuse, a shift count not
+ * modelled, a return not modelled, no end on the faithful side, failures).
+ * A run that counts otherwise fails: look why, and if the change is meant,
+ * these are the numbers to change. */
+#if LUMINARY099
+static const struct counts RECORD = {1100000u, 1080364u, 12483u, 7107u, 37u, 9u, 0u, 0u};
+#else
+static const struct counts RECORD = {1000000u, 981369u, 12430u, 6164u, 29u, 8u, 0u, 0u};
+#endif
+
+/* ---- The states of the defects the random cases found, made on purpose ----
+ * Each is an entry's state as a caller brings it, with one word that no
+ * caller brings put in (so the state may be refused, as any made-up one):
+ *
+ *   - an overflow in A at SLOAD2 +2 and at NEWMODE, where the TS skips the
+ *     next instruction, and at SHORTMP and DMPNSUB, where it skips the
+ *     EXTEND and leaves the MP a MASK: the readable routine once ran on
+ *     as if nothing was skipped;
+ *   - any word for SQRTSUB's shift count in MPTEMP at UNIT +16, most of
+ *     which enter no prologue of MAXTEST at UNIT's divide: once a made-up
+ *     step, now refused where the faithful routines run on, the state
+ *     left as it was;
+ *   - a Q with more than an address in it at MPACVBUF, which returns
+ *     through it: once the binding could only stop the program, now it
+ *     refuses.
+ *
+ * Each pin runs PINNED cases, from a seed of its own, and must end as its
+ * record says: every case with the overflow run by both and compared;
+ * of the shift counts and of the Qs, so many refused by both and so many
+ * by the readable routine alone, for the step it does not model. */
+#define PINNED       2000u
+#define ALL_COMPARED {PINNED, PINNED, 0u, 0u, 0u, 0u, 0u, 0u}
+#if LUMINARY099
+#define ANY_COUNT  {PINNED, 1179u, 1u, 714u, 106u, 0u, 0u, 0u}
+#define NO_ADDRESS {PINNED, 0u, 0u, 1677u, 0u, 323u, 0u, 0u}
+#else
+#define ANY_COUNT  {PINNED, 1174u, 0u, 722u, 104u, 0u, 0u, 0u}
+#define NO_ADDRESS {PINNED, 0u, 0u, 1702u, 0u, 298u, 0u, 0u}
+#endif
+
+static void overflow_in_a(apollo_overlay_state *s)
+{
+    s->words[K_A] = (uint16_t)((rnd() % 2u ? 040000u : 0100000u) | (rnd() & 037777u));
+}
+
+/* SQRTSUB's shift count, as UNIT +16 finds it in MPTEMP: any word. */
+static void any_count(apollo_overlay_state *s)
+{
+    s->words[K_MPTEMP] = (uint16_t)(rnd() & 077777u);
+}
+
+/* More than twelve bits, the low twelve naming a word no entry is at. */
+static void q_no_address(apollo_overlay_state *s)
+{
+    s->words[K_Q] = (uint16_t)(010000u * (1u + rnd() % 7u) + 07740u + rnd() % 030u);
+}
+
+static const struct pin {
+    const char *name;
+    uint16_t z;
+    void (*force)(apollo_overlay_state *);
+    struct counts record;
+} PINS[] = {
+    {"an overflow in A at SLOAD2 +2", K_SLOAD2 + 2u, overflow_in_a, ALL_COMPARED},
+    {"an overflow in A at NEWMODE", K_NEWMODE, overflow_in_a, ALL_COMPARED},
+    {"an overflow in A at SHORTMP", K_SHORTMP, overflow_in_a, ALL_COMPARED},
+#if LUMINARY099 /* (no basic code of the CM enters DMPNSUB) */
+    {"an overflow in A at DMPNSUB", K_DMPNSUB, overflow_in_a, ALL_COMPARED},
+#endif
+    {"any shift count at UNIT +16", K_UNIT + 16u, any_count, ANY_COUNT},
+    {"a Q that is no address at MPACVBUF", K_MPACVBUF, q_no_address, NO_ADDRESS},
+};
+
+static bool same_counts(const struct counts *a, const struct counts *b)
+{
+    return !memcmp(a, b, sizeof *a);
+}
+
+static void print_counts(const char *what, const struct counts *c)
+{
+    printf("%s: %u checks, %u run by both and compared, %u that only the faithful routines refuse, "
+           "%u refused by both, %u steps the readable code does not model (%u a shift count, %u a "
+           "return), %u where the faithful routines do not end, %u failures\n",
+           what, c->checks, c->both, c->faithful_only, c->both_refuse, c->no_shift + c->no_return,
+           c->no_shift, c->no_return, c->faithful_no_end, c->failures);
+}
+
 int main(int argc, char **argv)
 {
     static apollo_overlay_state start, readable, faithful_state;
     agc_native_program program;
     struct counts total;
     unsigned cases = argc > 2 ? (unsigned)strtoul(argv[2], 0, 0) : CASES_PER_ENTRY;
+    unsigned wrong = 0, pin;
     uint16_t i;
 
     if (argc < 2 || !apollo_rope_load(ROPE, argv[1])) {
@@ -514,6 +631,11 @@ int main(int argc, char **argv)
     memset(&total, 0, sizeof total);
     signal(SIGVTALRM, on_alarm);
 
+    if (READABLE.count != ENTRIES) {
+        printf("FAIL %s: the readable table has %u entries, not the %u of record\n", MISSION,
+               (unsigned)READABLE.count, ENTRIES);
+        ++wrong;
+    }
     for (i = 0; i < READABLE.count; ++i) {
         uint16_t key = READABLE.entries[i].physical;
         unsigned n, shown = 0;
@@ -526,17 +648,56 @@ int main(int argc, char **argv)
         find_sites(key);
         for (n = 0; n < cases; ++n) {
             const char *why = one_case(key, READABLE.entries[i].call, &program, &total, &start,
-                                       &readable, &faithful_state);
+                                       &readable, &faithful_state, 0);
 
             if (!why) continue;
             ++total.failures;
             if (++shown <= SHOWN_PER_ENTRY) show(why, key, n, &start, &readable, &faithful_state);
         }
     }
-    printf("interpreter-side-cases %s: %u entries, %u checks, %u run by both and compared, %u "
-           "refused by both, %u that only the faithful routines refuse, %u steps the readable "
-           "code does not model, %u where the faithful routines do not end, %u failures\n",
-           MISSION, (unsigned)READABLE.count, total.checks, total.both, total.both_refuse,
-           total.faithful_only, total.not_modelled, total.faithful_no_end, total.failures);
-    return total.failures != 0;
+    printf("interpreter-side-cases %s: %u entries; ", MISSION, (unsigned)READABLE.count);
+    print_counts("the random cases", &total);
+    if (cases != CASES_PER_ENTRY) {
+        printf("  (%u cases an entry, not %u: not held to the run of record)\n", cases,
+               CASES_PER_ENTRY);
+    } else if (!same_counts(&total, &RECORD)) {
+        print_counts("FAIL: not as the run of record", &RECORD);
+        ++wrong;
+    }
+
+    /* The pinned states, each from a seed of its own, so that they are the
+     * same states however many random cases ran. */
+    for (pin = 0; pin < sizeof PINS / sizeof PINS[0]; ++pin) {
+        struct counts pinned;
+        unsigned n, shown = 0;
+
+        memset(&pinned, 0, sizeof pinned);
+        seed = 1202u + 7919u * (pin + 1u);
+        for (i = 0; i < READABLE.count; ++i)
+            if (address_of(READABLE.entries[i].physical) == PINS[pin].z) break;
+        if (i == READABLE.count) {
+            printf("FAIL %s: no entry for the pin \"%s\"\n", MISSION, PINS[pin].name);
+            ++wrong;
+            continue;
+        }
+        find_sites(READABLE.entries[i].physical);
+        for (n = 0; n < PINNED; ++n) {
+            const char *why =
+                one_case(READABLE.entries[i].physical, READABLE.entries[i].call, &program, &pinned,
+                         &start, &readable, &faithful_state, PINS[pin].force);
+
+            if (!why) continue;
+            ++pinned.failures;
+            if (++shown <= SHOWN_PER_ENTRY)
+                show(why, READABLE.entries[i].physical, n, &start, &readable, &faithful_state);
+        }
+        printf("  %s, ", PINS[pin].name);
+        print_counts("made on purpose", &pinned);
+        total.failures += pinned.failures;
+        if (!same_counts(&pinned, &PINS[pin].record)) {
+            print_counts("FAIL: not as its record", &PINS[pin].record);
+            ++wrong;
+        }
+    }
+    return total.failures != 0 || wrong != 0;
 }

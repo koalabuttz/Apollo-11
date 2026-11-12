@@ -280,9 +280,9 @@ static void dodnptr(void)
         ca(ADDRESS_OF(DNECADR));
         dosublst();
         return;
-    case IS_PLUS_ZERO: dosublst(); return;
+    case IS_PLUS_ZERO: dosublst(); return; /* (never: no sublist starts with a zero) */
     case NEGATIVE: xch(ADDRESS_OF(DNECADR)); break;
-    case IS_MINUS_ZERO: break;
+    case IS_MINUS_ZERO: break; /* (never) */
     }
     ts(ADDRESS_OF(SUBLIST));
     set_A(ZERO);
@@ -314,12 +314,12 @@ static void snaploop(void)
     } while (next == POSITIVE);
 
     switch (next) {
-    case IS_PLUS_ZERO: /* LDNPHAS2 (GENADR DNPHASE2) runs as TC DNPHASE2 */
+    case IS_PLUS_ZERO: /* (never) LDNPHAS2 (GENADR DNPHASE2) would run as TC DNPHASE2 */
         tc_at(ADDRESS_OF(LDNPHAS2));
         dnphase2();
         return;
     case NEGATIVE: ts(ADDRESS_OF(SUBLIST)); break; /* the last word */
-    default: break;
+    default: break;                                /* (-0: never) */
     }
     set_A(NEGONE);
     ts(ADDRESS_OF(DNECADR));

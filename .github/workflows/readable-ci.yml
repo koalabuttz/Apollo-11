@@ -10,10 +10,13 @@
 #      rows and one landing on PRs and pushes, every row (117) nightly.
 #      Each run first tries the check on three programs that are wrong,
 #      and holds each row's counts to the run of record.
-# And, nightly, which lines run (readable/tests/line_coverage.py): every
-# case test and every scenario again, built with clang's source coverage;
-# each stretch of lines that none runs must stand with its reason in
-# readable/tests/line_coverage.txt.
+# And which lines run (readable/tests/line_coverage.py), on PRs and pushes
+# too, in a job of its own (about half an hour): every case test and every
+# scenario again, built from nothing with clang's source coverage; each
+# stretch of lines that none runs must stand with its reason in
+# readable/tests/line_coverage.txt, and each source file with no line to
+# run must be named there. A PR that changes what runs, or a stretch's
+# text, changes that ledger with it.
 name: readable-ci
 # It runs on a change to readable/ and on a change to what readable/ is
 # built from and checked against: the faithful port's sources, its tests
@@ -157,7 +160,6 @@ jobs:
           if-no-files-found: ignore
 
   line-coverage:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     steps:

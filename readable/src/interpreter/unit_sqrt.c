@@ -253,7 +253,7 @@ void abvalabs(void)
     case POSITIVE:
     case IS_PLUS_ZERO: abs_(); return; /* "DO ABS ON SCALAR." */
     case NEGATIVE: abval(); return;
-    case IS_MINUS_ZERO: abval_plus1(); return;
+    case IS_MINUS_ZERO: abval_plus1(); return; /* (never) */
     }
 }
 
@@ -359,8 +359,8 @@ void push(void)
     switch (ccs_at(ADDRESS_OF(MODE))) {
     case POSITIVE: tpush(); return;                 /* "PUSH DOWN MPAC +2." */
     case IS_PLUS_ZERO: continue_at(DANZIG); return; /* "DONE FOR DP." */
-    case NEGATIVE: dca(MPAC_AT(3u)); break;         /* "ON VECTOR, PUSH DOWN Y AND Z */
-    case IS_MINUS_ZERO: ca(MPAC_AT(4u)); break;     /* COMPONENTS." */
+    case NEGATIVE: dca(MPAC_AT(3u)); break;         /* "ON VECTOR, PUSH DOWN Y AND Z COMPONENTS." */
+    case IS_MINUS_ZERO: ca(MPAC_AT(4u)); break;     /* (never) */
     }
     dxch(PUSHED(4u));
     dca(MPAC_AT(5u));

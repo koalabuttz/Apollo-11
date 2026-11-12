@@ -68,15 +68,19 @@ INCLUDES := -I$(PORT)/include -I$(PORT)/src -I$(PORT)/tests
 # Line coverage (make line-coverage; tests/line_coverage.py): with
 # LINE_COVERAGE set, every target builds again under build/linecov with
 # clang's source coverage (and without the warnings, which the ordinary
-# build gives), and each test that runs writes its counts where
-# LLVM_PROFILE_FILE says. The scripts that link readable objects
-# themselves follow the same switch (tests/coverage_build.py). The port's
-# own make is not to see this compiler.
+# build gives), and each test that runs writes its counts to files of its
+# own name under build/linecov/profiles. The scripts that link readable
+# objects themselves follow the same switch (tests/coverage_build.py). The
+# compiler is clang through tests/coverage_cc.py, which counts only the
+# sources under src/, gives no program two functions of one name (a test
+# that links both missions' builds of a source is linked once for each,
+# and runs as both), and leaves each compile's lines under
+# build/linecov/maps. The port's own make is not to see this compiler.
 ifdef LINE_COVERAGE
 export LINE_COVERAGE
 unexport CC
 BUILD := build/linecov
-CC := clang
+CC := python3 $(abspath tests/coverage_cc.py)
 COVERAGE_FLAGS := -fprofile-instr-generate -fcoverage-mapping
 READABLE_CFLAGS := -std=c99 -O2 -g $(COVERAGE_FLAGS)
 PORT_CFLAGS := -O2 -g -std=c99 $(COVERAGE_FLAGS)
@@ -518,7 +522,9 @@ machine-cases: $(BUILD)/machine-cases
 # interpreter core (src/<m>_interp_core.c, built with faithful_ before its
 # names) on the same random interpretive programs, pass by pass, seeds 1
 # to 40 per mission (under a second each). Its generator is the port's own
-# fuzz's (tools/interp_core_fuzz.c).
+# fuzz's (tools/interp_core_fuzz.c). Then every shift order, made on
+# purpose: each short shift and each address word of the general one,
+# direct and indexed, in each MODE (the test's `shifts`).
 INTERPRETER_CASES ?= 20000
 INTERPRETER_SEEDS ?= $(shell seq 1 40)
 ROPES := $(PORT)/build/fixed-data/Luminary099/MAIN.agc.bin $(PORT)/build/fixed-data/Comanche055/MAIN.agc.bin
@@ -579,6 +585,8 @@ interpreter-cases: $(BUILD)/interpreter-cases-lm $(BUILD)/interpreter-cases-cm \
 	@for m in lm cm; do for s in $(INTERPRETER_SEEDS); do \
 		printf 'seed %s: ' $$s; ./$(BUILD)/interpreter-cases-$$m $(ROPES) $(INTERPRETER_CASES) $$s || exit 1; \
 	done; done
+	./$(BUILD)/interpreter-cases-lm $(ROPES) shifts
+	./$(BUILD)/interpreter-cases-cm $(ROPES) shifts
 	./$(BUILD)/interpreter-side-cases-lm $(word 1,$(ROPES))
 	./$(BUILD)/interpreter-side-cases-cm $(word 2,$(ROPES))
 

@@ -233,22 +233,25 @@ def record(path, summary, left_out, twice):
 
 # The programs --wrong flies: (the macro tests/x86_lockstep_wrong.c is built
 # with, the function wrapped, what is wrong, what the one miss must show,
-# whether an erasable word may differ too).
+# whether an erasable word may differ too, whether channel 13 may).
+# (WRONG_TRAP's bit is one the check leaves out of channel 13: a check
+# that compared more of the channel than it should would show it there.)
 WRONG = (
-    ('WRONG_TS', 'ts', 'one TS storing its word plus one, once', re.compile(r' 0006 \d{5}/\d{5}'), True),
+    ('WRONG_TS', 'ts', 'one TS storing its word plus one, once', re.compile(r' 0006 \d{5}/\d{5}'), True, False),
     ('WRONG_CHANNEL', 'wor_channel', 'one WOR leaving bit 5 of channel 13 changed', re.compile(r' ch13 \d{5}/\d{5}'),
-     False),
+     False, True),
     ('WRONG_TRAP', 'wor_channel', 'one WOR leaving bit 13 of channel 13 set, which arms trap 31B',
-     re.compile(r' traps 31A 31B 32 \d1\d/\d0\d'), False),
+     re.compile(r' traps 31A 31B 32 \d1\d/\d0\d'), False, False),
 )
 ERASABLE = re.compile(r' \d{4} \d{5}/\d{5}')
+CHANNEL13 = re.compile(r' ch13 ')
 
 
 def wrong(cc):
     """The check must fail each wrong program, and say where and in what."""
     OUT.mkdir(parents=True, exist_ok=True)
     failures = 0
-    for macro, wrapped, what, shows, erasable in WRONG:
+    for macro, wrapped, what, shows, erasable, channel13 in WRONG:
         o = OUT / f'x86_lockstep_{macro.lower()}.o'
         subprocess.run([cc, '-std=c99', '-O2', '-Wall', '-Wextra', '-Werror', '-pedantic', f'-D{macro}', '-c',
                         str(READABLE / 'tests/x86_lockstep_wrong.c'), '-o', str(o)], check=True)
@@ -259,7 +262,8 @@ def wrong(cc):
         misses = [l.strip() for l in out.splitlines() if l.startswith('  miss ')]
         ok = (status == 1 and got is not None and int(got[4]) == 1 and len(misses) == 1
               and ': 1 times;' in misses[0] and shows.search(misses[0]) is not None
-              and (erasable or not ERASABLE.search(misses[0])))
+              and (erasable or not ERASABLE.search(misses[0]))
+              and (channel13 or not CHANNEL13.search(misses[0])))
         failures += not ok
         print(f'{"ok  " if ok else "FAIL"} x86-lockstep --wrong: the LM program with {what}: '
               + (f'{got[4]} points differ: {misses[0][:200] if misses else ""}' if got

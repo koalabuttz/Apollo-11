@@ -257,9 +257,9 @@ def build(cc, m, mode, certified_only=False):
     objects += readable_objects(m)
     exe = xb.OUT / f'x86-flight-{m}{suffix}'
     link_map = xb.OUT / f'x86-flight-{m}{suffix}.map'
-    subprocess.run([cb.linker(cc), *objects, *xb.LINK, *cb.LINK, '-Wl,--gc-sections', f'-Wl,-Map={link_map}',
+    subprocess.run([*cb.link(cc), *objects, *xb.LINK, *cb.LINK, '-Wl,--gc-sections', f'-Wl,-Map={link_map}',
                     '-lm', '-o', str(exe)], cwd=PORT, check=True)
-    stands_alone(exe, link_map, objects, cb.linker(cc))
+    stands_alone(exe, link_map, objects + cb.counts_object(exe), cb.linker(cc))
     # The readable routines must be the ones linked: theirs are present, and
     # the faithful kernel's instruction helpers (k_go and the rest) absent,
     # as is every name the earlier builds kept a faithful routine under.
