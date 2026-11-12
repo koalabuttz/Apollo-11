@@ -34,7 +34,7 @@ static unsigned indexed_store(word base, word index, unsigned lowest)
 /* DZCALL +3 -- p. 1089: "ERASABLE ORDER:  ROLLTM, ROLLC, ROLLC +1.": "GET
  * ROLL/180
  * OR ROLLC (/360)." (INDEX A; CA ROLLTM), */
-void dzcall_rolltm(void)
+void dzcall_plus3(void)
 {
     index_a_ca(ADDRESS_OF(ROLLTM));
     dzcall_ts_a();

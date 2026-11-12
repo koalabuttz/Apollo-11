@@ -362,9 +362,9 @@ static void resample_resume(void)
 static void resample(void)
 {
     switch (ccs_at(ADDRESS_OF(SAMPLIM))) {
-    case POSITIVE:
-    case NEGATIVE: set_A(BIT4); break;
+    case POSITIVE: set_A(BIT4); break;
     case IS_PLUS_ZERO: datafail(); return;
+    case NEGATIVE: set_A(BIT4); break;
     case IS_MINUS_ZERO: break;
     }
     resample_resume();
@@ -547,9 +547,9 @@ static void lrsck(void);
 static void scaladj(void)
 {
     switch (ccs_at(L_ADDRESS)) {
-    case POSITIVE:
-    case NEGATIVE: ca(ADDRESS_OF(DNINDEX)); break;
+    case POSITIVE: ca(ADDRESS_OF(DNINDEX)); break;
     case IS_PLUS_ZERO: dgcheck2(); return;
+    case NEGATIVE: ca(ADDRESS_OF(DNINDEX)); break;
     case IS_MINUS_ZERO: break;
     }
     mask(BIT3);
@@ -640,7 +640,7 @@ static void dgcheck_plus1(void)
 
 /* DGCHECK +014 -- p. 560: "IF DATA GOOD BEFORE AND AFTER, ADD TO
  * ACCUMULATION." */
-void dgcheck_good(void)
+void dgcheck_plus014(void)
 {
     dxch(ADDRESS_OF(ITEMP3));
     das(ADDRESS_OF(SAMPLSUM));

@@ -231,7 +231,7 @@ void data_word(void);               /* (a data word) */
 void gcompver(void);                /* GCOMPVER */
 void gcompver_after_phaschng(void); /* GCOMPVER +2 */
 void setnbpos(void);                /* SETNBPOS */
-void setnbpos_after_nbpospl(void);  /* SETNBPOS +1 */
+void setnbpos_plus1(void);          /* SETNBPOS +1 */
 void optdata(void);                 /* OPTDATA */
 void optdata_display(void);         /* OPTDATA +010 */
 void optdata_after_godspret(void);  /* OPTDATA +013 */

@@ -234,10 +234,10 @@ static void spscont(void)
         return;
     }
     switch (ccs_at(ADDRESS_OF(INGTS))) {
-    case POSITIVE:
-    case IS_MINUS_ZERO: docktest(); return;
+    case POSITIVE: docktest(); return;
     case IS_PLUS_ZERO: tc_to(DOCKTEST - 2u, IBNKCALL); return; /* CADR TIMEGMBL */
     case NEGATIVE: not_modelled(); return;                     /* the CADR as an instruction */
+    case IS_MINUS_ZERO: docktest(); return;
     }
 }
 
@@ -351,8 +351,8 @@ static void inertias(bool skip_stctr)
         if (ts(at_index(ADDRESS_OF(1JACC), MPAC_1))) continue;
         switch (ccs_at(MPAC_1)) {
         case POSITIVE: continue;
+        case IS_PLUS_ZERO: break;
         case NEGATIVE: lresc(); return;
-        case IS_PLUS_ZERO:
         case IS_MINUS_ZERO: break;
         }
         commeqs();
@@ -405,9 +405,9 @@ static bool docked_polynomial(void)
         ads(ADDRESS_OF(MPAC));
         switch (ccs_at(ADDRESS_OF(MASSCTR))) {
         case POSITIVE: spsloop2 = true; continue;
+        case IS_PLUS_ZERO: break;
         case NEGATIVE: return false;
         case IS_MINUS_ZERO: not_modelled(); return false;
-        case IS_PLUS_ZERO: break;
         }
         switch (ccs_at(ADDRESS_OF(COEFCTR))) {
         case POSITIVE: return false;

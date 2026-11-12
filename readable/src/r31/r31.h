@@ -53,7 +53,7 @@ void onebase(void); /* ONEBASE */
 extern const struct interpretive_code V83_CODE, V83CALL_CODE, COMPDISP_CODE, STATEXTP_CODE,
     R34LOS_CODE;
 
-void dispn5x_r34(void);       /* DISPN5X +6: R34's noun 53 */
+void dispn5x_plus6(void);     /* DISPN5X +6: R34's noun 53 */
 void v83(void);               /* V83 */
 void r34los_after_exit(void); /* R34LOS +1 */
 #endif

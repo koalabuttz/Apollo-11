@@ -31,9 +31,9 @@ void r10_r11(void)
         return;
     }
     switch (ccs_at(ADDRESS_OF(PIPCTR))) {
-    case POSITIVE:
-    case NEGATIVE: ts(ADDRESS_OF(PIPCTR1)); break;   /* (A, CCS's result, never overflows) */
+    case POSITIVE: ts(ADDRESS_OF(PIPCTR1)); break;   /* (A, CCS's result, never overflows) */
     case IS_PLUS_ZERO: continue_at(LRHTASK); return; /* "LAST PASS. CALL LRHTASK." */
+    case NEGATIVE: ts(ADDRESS_OF(PIPCTR1)); break;   /* (A, CCS's result, never overflows) */
     case IS_MINUS_ZERO: break;
     }
     set_A(OCT31);

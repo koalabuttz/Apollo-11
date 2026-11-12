@@ -156,13 +156,13 @@ static void altout_plus1(void)
     set_A(negate(BIT2));
     wand_channel(CHAN14);
     switch (ccs_at(ADDRESS_OF(ALTBITS))) {
+    case POSITIVE:
+    case IS_PLUS_ZERO: break;
     case NEGATIVE:    /* OLDDATA */
         set_A(ARTOA); /* "RATE APPLIES FOR .5 SEC. (4X/SEC. CYCLE)" */
         olddata_plus1();
         return;
     case IS_MINUS_ZERO: ts(ADDRESS_OF(ALTBITS)); break; /* "SET ALTBITS FROM -0 TO +0." */
-    case POSITIVE:
-    case IS_PLUS_ZERO: break;
     }
     set_A(negate(ONE));
     dxch(ADDRESS_OF(ALTBITS)); /* "SET ALTBITS=-1 FOR SWITCH USE NEXT PASS." */
@@ -485,11 +485,11 @@ static void vmonitor(word index)
         cs(VELOCITY(index));
         ad(MAXVBITS); /* "+199.9989 FT.SEC." */
         break;
+    case IS_PLUS_ZERO: lvlimits(index); return;
     case NEGATIVE:
         ca(VELOCITY(index));
         ad(MAXVBITS);
         break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: lvlimits(index); return;
     }
     if (A_is_zero_or_minus())
@@ -512,6 +512,7 @@ static void chklasty(word index)
             return;
         }
         break;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE:
         cs(VELOCITY(index));
         if (A_is_zero_or_minus()) {
@@ -520,7 +521,6 @@ static void chklasty(word index)
             return;
         }
         break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     lastok(index);
@@ -533,8 +533,8 @@ static void lastok(word index)
 {
     switch (ccs_at(FLAG(index))) {
     case POSITIVE: lastposy(index); return;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: lastnegy(index); return;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     ca(VELOCITY(index));
@@ -602,8 +602,8 @@ static void lvlimits(word index)
 {
     switch (ccs_at(FLAG(index))) {
     case POSITIVE: latvpos(index); return;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: latvneg(index); return;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     cs(METER(index));

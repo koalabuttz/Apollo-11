@@ -88,7 +88,7 @@ void dspdelay(void)
 
 /* DISPN5X +6 -- CM p. 505: "R34 USE NOUN 53", verb 16 noun 53 (BANKCALL,
  * CADR GOMARKF). */
-void dispn5x_r34(void)
+void dispn5x_plus6(void)
 {
     set_A(V16N53);
     tc_to(DISPN5X + 7u, BANKCALL);

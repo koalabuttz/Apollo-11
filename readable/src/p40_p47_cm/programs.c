@@ -284,8 +284,8 @@ void trimonly_after_waitlist(void)
 {
     switch (ccs_at(ADDRESS_OF(MRKRTMP))) {
     case POSITIVE: set_A(EIGHTEEN_SEC); break;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: set_A(FIVE_SEC); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     tc_to(TRIMONLY + 014u, BANKCALL); /* CADR DELAYJOB */

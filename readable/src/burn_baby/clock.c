@@ -176,8 +176,8 @@ void clokjob(void)
     switch (ccs_at(ADDRESS_OF(DISPDEX))) {
     case POSITIVE:
     case IS_PLUS_ZERO: continue_at(ENDOFJOB); return;
-    case IS_MINUS_ZERO: not_modelled(); break;
     case NEGATIVE: break;
+    case IS_MINUS_ZERO: not_modelled(); break;
     }
     com();
     relint();

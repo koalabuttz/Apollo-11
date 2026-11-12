@@ -174,12 +174,12 @@ void drholoop_drho_unindexed(void); /* DRHOLOOP +4: CS DRHO */
 void drholoop_das(void);            /* DRHOLOOP +010: INDEX DPNDX; DAS DRHO */
 void drholoop_after_smallmp(void);  /* DRHOLOOP +020 */
 void adotloop(void);                /* ADOTLOOP */
-void adotloop_drho(void);           /* ADOTLOOP +6 */
+void adotloop_plus6(void);          /* ADOTLOOP +6 */
 void adotloop_merrorx(void);        /* ADOTLOOP +013 */
 void kmatrix(void);                 /* KMATRIX */
 void kmatrix_after_novac(void);     /* KMATRIX +010 */
 void deloop(void);                  /* DELOOP */
-void deloop_delcdux(void);          /* DELOOP +6 */
+void deloop_plus6(void);            /* DELOOP +6 */
 void deloop_dpadd(void);            /* DELOOP +012: TC DPADD */
 void deloop_after_dpadd(void);      /* DELOOP +013 */
 void deloop_next(void);             /* DELOOP +021: CCS SPNDX */
@@ -189,10 +189,10 @@ void dacndls(void);                /* DACNDLS */
 void dacndls_ccs(enum sign entry); /* DACNDLS, entered by a CCS */
 void kresume1(void);               /* KRESUME1 */
 void needler(void);                /* NEEDLER */
-void needler_first_pass(void);     /* NEEDLER +5 */
+void needler_plus5(void);          /* NEEDLER +5 */
 void needle11(void);               /* NEEDLE11 */
 void needler2(void);               /* NEEDLER2 */
-void needler2_reset(void);         /* NEEDLER2 +3 */
+void needler2_plus3(void);         /* NEEDLER2 +3 */
 void needler2_mask(void);          /* NEEDLER2 +4 */
 void needles3(void);               /* NEEDLES3 */
 void needles3_test(void);          /* NEEDLES3 +3: EXTEND; BZF NEEDLER +5 */
@@ -220,7 +220,7 @@ void redap_chantemp(void);      /* REDAP +015: TS CHANTEMP */
 void redap_imu(void);           /* REDAP +035: CS IMODES33 */
 void imuaok_after_novac(void);  /* IMUAOK +4 */
 void zerojet(void);             /* ZEROJET */
-void zerojet_return(void);      /* ZEROJET +026: TC Q */
+void zerojet_plus026(void);     /* ZEROJET +026: TC Q */
 
 /* ---- RCS-CSM_DIGITAL_AUTOPILOT.agc, manual rotation -- manual.c ---- */
 void t5phase2(void);                   /* T5PHASE2 */
@@ -249,34 +249,34 @@ void kresume2_t5phase(void);           /* KRESUME2 +1: TS T5PHASE */
 void ahfnorot(void);                /* AHFNOROT */
 void freecont_after_stickchk(void); /* FREECONT +012 */
 void atthold(void);                 /* ATTHOLD */
-void atthold_bias(void);            /* ATTHOLD +041: CA BIAS */
+void atthold_plus041(void);         /* ATTHOLD +041: CA BIAS */
 void atthold_bias_errorx(void);     /* ATTHOLD +042: ADS ERRORX */
 void holdfunc(void);                /* HOLDFUNC */
 void grabang(void);                 /* GRABANG */
 
 /* ---- AUTOMATIC_MANEUVERS.agc, jet switching logic -- switching.c ---- */
-void jets(void);        /* JETS */
-void jloop(void);       /* JLOOP */
-void inhold(void);      /* INHOLD */
-void signck1(void);     /* SIGNCK1 */
-void posvel(void);      /* POSVEL */
-void negvel(void);      /* NEGVEL */
-void nj22_slope(void);  /* NJ22 +2: EXTEND; DV SLOPE */
-void tcf_nj23(void);    /* SIGNCK3 -1: TCF NJ23 */
-void signck3(void);     /* SIGNCK3 */
-void j18(void);         /* J18 */
-void j20(void);         /* J20 */
-void j21(void);         /* J21 */
-void jn(void);          /* JN */
-void jp(void);          /* JP */
-void j22(void);         /* J22 */
-void tcf_jn(void);      /* J22 +1, SIGNCK5 +1, +2: TCF JN */
-void tcf_signck5(void); /* J22 +2: TCF SIGNCK5 */
-void tcf_jp(void);      /* J22 +3, SIGNCK5 +3, +4: TCF JP */
-void signck5(void);     /* SIGNCK5 */
-void j23(void);         /* J23 */
-void j24(void);         /* J24 */
-void j24_kmpac(void);   /* J24 +5: DXCH KMPAC */
+void jets(void);       /* JETS */
+void jloop(void);      /* JLOOP */
+void inhold(void);     /* INHOLD */
+void signck1(void);    /* SIGNCK1 */
+void posvel(void);     /* POSVEL */
+void negvel(void);     /* NEGVEL */
+void nj22_plus2(void); /* NJ22 +2: EXTEND; DV SLOPE */
+void tcf_nj23(void);   /* SIGNCK3 -1: TCF NJ23 */
+void signck3(void);    /* SIGNCK3 */
+void j18(void);        /* J18 */
+void j20(void);        /* J20 */
+void j21(void);        /* J21 */
+void jn(void);         /* JN */
+void jp(void);         /* JP */
+void j22(void);        /* J22 */
+void j22_plus1(void);  /* J22 +1, SIGNCK5 +1, +2: TCF JN */
+void j22_plus2(void);  /* J22 +2: TCF SIGNCK5 */
+void j22_plus3(void);  /* J22 +3, SIGNCK5 +3, +4: TCF JP */
+void signck5(void);    /* SIGNCK5 */
+void j23(void);        /* J23 */
+void j24(void);        /* J24 */
+void j24_kmpac(void);  /* J24 +5: DXCH KMPAC */
 
 /* ---- AUTOMATIC_MANEUVERS.agc, the jet-on times -- jet_time.c ---- */
 void jtime(void);        /* JTIME */
@@ -318,7 +318,7 @@ void rolltime(void);           /* ROLLTIME: the roll on-time */
 /* ---- JET_SELECTION_LOGIC.agc, the second channel words -- jet_words.c ---- */
 
 void translation_bias(unsigned failure); /* (jet_select.c) 3, 6 or +0 by a failure flag */
-void rblast_limit(void);                 /* RBLAST +015: BLAST .1 s */
+void rblast_plus015(void);               /* RBLAST +015: BLAST .1 s */
 void ad14msr(void);                      /* AD14MSR: at least 14 ms */
 void rblastok(void);                     /* RBLASTOK */
 void asmblwp(void);                      /* ASMBLWP: the second pitch word */
@@ -330,14 +330,14 @@ void no2y_plus1(void);                   /* NO2Y +1: TS RWORD2 */
 void no2y_plus2(void);                   /* NO2Y +2: CCS ZNDX */
 void no2z(void);                         /* NO2Z */
 void no2z_plus1(void);                   /* NO2Z +1: ADS RWORD2 */
-void acbd2y_rtable(void);                /* ACBD2Y +012: INDEX A, CA RTABLE */
+void acbd2y_plus012(void);               /* ACBD2Y +012: INDEX A, CA RTABLE */
 void acbd2y_acrjets(void);               /* ACBD2Y +014: MASK ACRJETS */
 void ac2y(void);                         /* AC2Y: Y translation on AC */
 void ac2y_index(void);                   /* AC2Y +4: INDEX YNDX */
 void ac2y_acyjets(void);                 /* AC2Y +010: MASK ACYJETS */
 void acbd2z(void);                       /* ACBD2Z: Z translation */
 void acbd2z_index(void);                 /* ACBD2Z +010: INDEX ZNDX */
-void acbd2z_dft(void);                   /* ACBD2Z +026: CA L, ADS DFT */
+void acbd2z_plus026(void);               /* ACBD2Z +026: CA L, ADS DFT */
 void bdf2z(void);                        /* BDF2Z: Z translation on BD */
 void bdf2z_index(void);                  /* BDF2Z +4: INDEX ZNDX */
 void rbypass(void);                      /* RBYPASS: no roll command */

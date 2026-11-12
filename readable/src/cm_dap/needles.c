@@ -58,7 +58,7 @@ void needler(void)
     set_A(BIT4);
     rand_channel(CHAN12);
     if (!A_is_zero()) { /* EXTEND; BZF NEEDLER1 */
-        needler_first_pass();
+        needler_plus5();
         return;
     }
     ca(ADDRESS_OF(RCSFLAGS)); /* NEEDLER1 */
@@ -79,7 +79,7 @@ void needler(void)
 
 /* NEEDLER +5 -- p. 1011, in coarse align: "SET BIT3 FOR INITIALIZATION
  * PASS". */
-void needler_first_pass(void)
+void needler_plus5(void)
 {
     cs(ADDRESS_OF(RCSFLAGS));
     mask(BIT3);
@@ -120,7 +120,7 @@ void needler2(void)
 
 /* NEEDLER2 +3 -- p. 1011: "RESET RCSFLAGS TO DISPLAY ATTITUDE" errors (bits
  * 3 and 2 clear), "WAIT AT LEAST 4 MS FOR RELAY CLOSURE". */
-void needler2_reset(void)
+void needler2_plus3(void)
 {
     set_A(negate(SIX)); /* CS */
     needler2_mask();
@@ -203,8 +203,8 @@ void dacloop_limit(void)
     for (;;) {
         switch (ccs_register(A_ADDRESS)) {
         case POSITIVE: ca(ADDRESS_OF(DACLIMIT)); break;
+        case IS_PLUS_ZERO: break; /* A +0 */
         case NEGATIVE: cs(ADDRESS_OF(DACLIMIT)); break;
-        case IS_PLUS_ZERO:
         case IS_MINUS_ZERO: break; /* A +0 */
         }
         ad_at(L_ADDRESS);

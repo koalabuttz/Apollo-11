@@ -313,8 +313,8 @@ void minrtn(void)
         unsigned tju = indexed(ADDRESS_OF(TJU), axis());
         switch (ccs_at(tju)) {
         case POSITIVE: set_A(K60MS); break;
+        case IS_PLUS_ZERO: break; /* TS TJU of +0 */
         case NEGATIVE: set_A(negate(K60MS)); break;
-        case IS_PLUS_ZERO:
         case IS_MINUS_ZERO: break; /* TS TJU of +0 */
         }
         ts(tju);
@@ -515,8 +515,8 @@ void backhand(void)
     u = axis();
     switch (ccs_at(indexed(ADDRESS_OF(URATEDIF), u))) {
     case POSITIVE: set_A(ZERO); break;
+    case IS_PLUS_ZERO: break; /* A +0 */
     case NEGATIVE: set_A(ONE); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break; /* A +0 */
     }
     ad_at(indexed(AXISDIFF, u));
@@ -706,8 +706,8 @@ static void aftertj(void)
     ts(L_ADDRESS);
     switch (ccs_at(indexed(ADDRESS_OF(TJU), axis()))) {
     case POSITIVE: break; /* TCF +5 */
+    case IS_PLUS_ZERO: norotat(); return;
     case NEGATIVE: zl(); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: norotat(); return;
     }
     ad(ONE);
@@ -809,8 +809,8 @@ void doskip_plus1(void)
     tju = indexed(ADDRESS_OF(TJU), axis());
     switch (ccs_at(tju)) {
     case POSITIVE: set_A(TJMINT6); break;
+    case IS_PLUS_ZERO: break; /* TS TJU of +0 */
     case NEGATIVE: set_A(negate(TJMINT6)); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break; /* TS TJU of +0 */
     }
     ts(tju);

@@ -204,7 +204,7 @@ void angovcor(void)
 }
 
 /* ANGOVCOR +5 -- p. 1065: back by TC Q. */
-void angovcor_return(void)
+void angovcor_plus5(void)
 {
     tc_q();
 }

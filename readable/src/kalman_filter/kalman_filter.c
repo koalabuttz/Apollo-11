@@ -17,8 +17,8 @@ static void jet_time(void)
     unsigned tj = indexed(ADDRESS_OF(TJP), fetch(ADDRESS_OF(DAPTEMP6)));
 
     switch (ccs_at(tj)) {
+    case POSITIVE: ad(MINUS_100MST6); break;
     case IS_PLUS_ZERO: return; /* TCF LOOPRATE, A +0 */
-    case POSITIVE:
     case NEGATIVE: ad(MINUS_100MST6); break;
     case IS_MINUS_ZERO: break; /* A +0 */
     }
@@ -31,15 +31,15 @@ static void jet_time(void)
     }
     switch (ccs_at(tj)) {
     case POSITIVE: set_A(MINUS_100MST6); break;
+    case IS_PLUS_ZERO: break; /* ADS of +0 */
     case NEGATIVE: set_A(negate(MINUS_100MST6)); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break; /* ADS of +0 */
     }
     ads(tj);
     switch (ccs_at(tj)) {
     case POSITIVE: set_A(negate(MINUS_100MS)); break; /* "0.1 AT 1" */
+    case IS_PLUS_ZERO: break;                         /* A +0 */
     case NEGATIVE: set_A(MINUS_100MS); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break; /* A +0 */
     }
 }

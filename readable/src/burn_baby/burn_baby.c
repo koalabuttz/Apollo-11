@@ -767,11 +767,11 @@ void comfail_after_second_upflag(void)
 {
     set_A(FOUR);
     ts(ADDRESS_OF(DVCNTR));
-    switch (ccs_at(ADDRESS_OF(PHASE6))) { /* "CLOCKTASK ACTIVE?" */
-    case POSITIVE:
-    case IS_MINUS_ZERO: comfail_after_stclok1(); break;        /* TCF +3 */
+    switch (ccs_at(ADDRESS_OF(PHASE6))) {                      /* "CLOCKTASK ACTIVE?" */
+    case POSITIVE: comfail_after_stclok1(); break;             /* TCF +3 */
     case IS_PLUS_ZERO: tc_to(COMFAIL + 010u, BANKCALL); break; /* CADR STCLOK1 */
     case NEGATIVE: not_modelled(); break;
+    case IS_MINUS_ZERO: comfail_after_stclok1(); break; /* TCF +3 */
     }
 }
 

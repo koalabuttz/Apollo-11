@@ -497,7 +497,7 @@ void rr1ax2(void)
 
 /* RR1AX2 +022 -- p. 534: MAGSUB's +2: within one degree, back to the
  * caller. */
-void rr1ax2_done(void)
+void rr1ax2_plus022(void)
 {
     tc_return_in(RR1AX2 + 022u, ADDRESS_OF(RRRET)); /* "RETURN TO CALLER." */
 }

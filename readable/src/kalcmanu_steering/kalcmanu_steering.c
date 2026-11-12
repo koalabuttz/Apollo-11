@@ -169,14 +169,14 @@ static word timechk(void)
     das(ADDRESS_OF(TTEMP));
     switch (ccs_at(ADDRESS_OF(TTEMP))) {
     case POSITIVE: return tc_q();                  /* TC Q */
+    case IS_PLUS_ZERO: break;                      /* TCF +2 */
     case NEGATIVE: incr(Q_ADDRESS); return tc_q(); /* TCF 2NDRETRN */
-    case IS_PLUS_ZERO:                             /* TCF +2 */
     case IS_MINUS_ZERO: break;
     }
     switch (ccs_at(ADDRESS_OF(TTEMP) + 1u)) {
     case POSITIVE: return tc_q(); /* TC Q */
+    case IS_PLUS_ZERO: break;     /* TCF MANUOFF */
     case NEGATIVE: com(); break;
-    case IS_PLUS_ZERO: /* TCF MANUOFF */
     case IS_MINUS_ZERO: break;
     }
     /* MANUOFF */
@@ -484,17 +484,17 @@ static word timechk(void)
     das(ADDRESS_OF(TTEMP));
     switch (ccs_at(ADDRESS_OF(TTEMP))) {
     case POSITIVE: return tc_q(); /* TC Q */
+    case IS_PLUS_ZERO: break;     /* TCF +2 */
     case NEGATIVE:                /* TCF 2NDRETRN */
         incr(Q_ADDRESS);
         incr(Q_ADDRESS);
         return tc_q();
-    case IS_PLUS_ZERO: /* TCF +2 */
     case IS_MINUS_ZERO: break;
     }
     switch (ccs_at(ADDRESS_OF(TTEMP) + 1u)) {
     case POSITIVE: return tc_q(); /* TC Q */
+    case IS_PLUS_ZERO: break;     /* TCF MANUOFF */
     case NEGATIVE: com(); break;
-    case IS_PLUS_ZERO: /* TCF MANUOFF */
     case IS_MINUS_ZERO: break;
     }
     /* MANUOFF */

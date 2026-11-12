@@ -91,8 +91,8 @@ static bool stroke_test(word stroker)
 {
     switch (ccs_at(ADDRESS_OF(STROKER))) {
     case POSITIVE: tc_to(stroker + 1u, HACK); return true;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: tc_to(stroker + 3u, HACK); return true;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     return false;
@@ -241,9 +241,9 @@ static void limit(unsigned address, word limit_word)
     if (A_is_zero()) return;
     switch (ccs_at(address)) {
     case POSITIVE: set_A(limit_word); break;
+    case IS_PLUS_ZERO: break;                        /* (the CCS's +0) */
     case NEGATIVE: set_A(negate(limit_word)); break; /* CS */
-    case IS_PLUS_ZERO:
-    case IS_MINUS_ZERO: break; /* (the CCS's +0) */
+    case IS_MINUS_ZERO: break;                       /* (the CCS's +0) */
     }
     ts(address);
 }

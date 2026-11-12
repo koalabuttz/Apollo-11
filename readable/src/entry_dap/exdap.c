@@ -240,7 +240,7 @@ static void exdap2(void)
  * BETA/180" from RAXERR, against SALFA's sign ("SGN(-SALF)"; +0 for
  * either zero), "TEMP SAVE.  ERROR/180" in PAXERR1. (A -0 P63FLAG skips
  * the CCS SALFA: the CS RAXERR.) */
-void exdap2_p63flag(void)
+void exdap2_plus3(void)
 {
     enum sign salfa = POSITIVE;
 

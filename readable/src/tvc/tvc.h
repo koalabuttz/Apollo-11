@@ -108,10 +108,10 @@ void tvcinit1(void);                /* TVCINIT1 */
 void tvcinit1_after_massprop(void); /* TVCINIT1 +5 */
 void tvcinit1_after_loadcoef(void); /* TVCINIT1 +025 */
 void tvcinit2(void);                /* TVCINIT2 */
-void tvcinit2_repfrac(void);        /* TVCINIT2 +021 */
+void tvcinit2_plus021(void);        /* TVCINIT2 +021 */
 void tvcinit4(void);                /* TVCINIT4 */
 void tvcinit4_after_waitlist(void); /* TVCINIT4 +017 */
-void tvcinit4_t5(void);             /* TVCINIT4 +021 */
+void tvcinit4_plus021(void);        /* TVCINIT4 +021 */
 void preswtch(void);                /* PRESWTCH */
 void preswtch_after_swichovr(void); /* PRESWTCH +1 */
 void swichovr_restart(void);        /* SWICHOVR +5 */
@@ -119,7 +119,7 @@ void swichovr_after_s40_15(void);   /* SWICHOVR +026 */
 void swichovr_after_loadcoef(void); /* SWICHOVR +043 */
 void rtrnloc_return(void);          /* TC RTRNLOC, run as TC <return> */
 void loadcoef(void);                /* LOADCOEF */
-void loadcoef_dca6(void);           /* LOADCOEF +014 */
+void loadcoef_plus014(void);        /* LOADCOEF +014 */
 void loadcoef_n10_6(void);          /* LOADCOEF +017 */
 void loadcoef_n10_8(void);          /* LOADCOEF +023 */
 void s40_15(void);                  /* S40.15 */

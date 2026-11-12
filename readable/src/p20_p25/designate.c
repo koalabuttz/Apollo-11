@@ -199,7 +199,7 @@ void lundesch(void)
     }
 }
 
-void lundesch_not_rendezvous(void)
+void lundesch_plus010(void)
 {
     continue_at(ENDOFJOB); /* TCF ENDOFJOB */
 }
@@ -413,7 +413,7 @@ void begdes(void)
         continue_at(BEGDES + 4u);
 }
 
-void begdes_remode(void)
+void begdes_plus4(void)
 {
     tc_to(BEGDES + 4u, REMODE);
 }
@@ -733,7 +733,7 @@ void notp20(void)
  * and R21's R21LEM2 for a new one. LOSCOUNT negative skips the INHINT, as
  * the listing runs it. Not modelled: LOSCOUNT -0, which runs the CADR after
  * KILLTASK as an instruction. */
-void notp20_after_rrout(void)
+void notp20_plus5(void)
 {
     ca(ADDRESS_OF(FLAGWRD2));
     mask(LOSCMBIT);
@@ -750,7 +750,7 @@ void notp20_after_rrout(void)
 }
 
 /* NOTP20 +013 -- p. 552: "YES -- KILL TASK WHICH SCHEDULES DODES". */
-void notp20_new_los(void)
+void notp20_plus013(void)
 {
     inhint();
     tc_to(NOTP20 + 014u, KILLTASK); /* CADR DESLOOP +2 */
@@ -770,7 +770,7 @@ void notp20_after_killtask(void)
     }
 }
 
-void notp20_after_chang1(void)
+void notp20_plus021(void)
 {
     tc_to(NOTP20 + 021u, BANKCALL); /* CADR R21LEM2 */
 }

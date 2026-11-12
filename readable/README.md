@@ -1556,8 +1556,8 @@ builds the x86 flight program the same way and flies gate 2's 86
 scenarios. Each program that ran left its counts, and a line of `src/` is
 run if any of them ran it. What is counted is every line the build
 compiled, in a program that ran or not: each compile leaves the lines of
-its object, and a line no program holds counts as unrun. Of the 59,968
-lines of C with code in them, 1,549 (2.6%) are run by none, in 638
+its object, and a line no program holds counts as unrun. Of the 59,974
+lines of C with code in them, 1,558 (2.6%) are run by none, in 651
 stretches of 216 files. That is a figure for the C alone: interpretive
 code is tables of words, and none of its words is among those lines
 (below).
@@ -1604,7 +1604,7 @@ check holds each stretch to its kind's rule:
   negative of a sine there, which can be -0, and a core set is not
   cleared for its next job), so no line of the interpreter rules it out
   and no check proves it of every entry.
-- **open** (374 lines, 137 stretches): not looked at yet. Each is owed a
+- **open** (383 lines, 150 stretches): not looked at yet. Each is owed a
   case that runs it or the reason none can, and the count is in the
   ledger's head.
 

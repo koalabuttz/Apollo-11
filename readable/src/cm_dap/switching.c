@@ -199,7 +199,7 @@ static void nj22(void)
  * attitude error: not negative, J23. Negative: the rate error less WLMH ("WL
  * - H") in WTEMP, and with that + (its upper word, or that +0 or -0, its
  * lower one +), J23 again; -, NJ23. */
-void nj22_slope(void)
+void nj22_plus2(void)
 {
     dv_at(ADDRESS_OF(SLOPE));
     ad_at(ADDRESS_OF(T5TEMP));
@@ -333,18 +333,18 @@ void j22(void)
 
 /* J22 +1 and SIGNCK5 +1 and SIGNCK5 +2 -- p. 1033: TCF JN and TCF JP, J22's
  * and SIGNCK5's words. */
-void tcf_jn(void)
+void j22_plus1(void)
 {
     continue_at(JN);
 }
 
-void tcf_jp(void)
+void j22_plus3(void)
 {
     continue_at(JP);
 }
 
 /* J22 +2 -- p. 1033: TCF SIGNCK5. */
-void tcf_signck5(void)
+void j22_plus2(void)
 {
     signck5();
 }

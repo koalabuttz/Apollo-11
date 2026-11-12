@@ -10,7 +10,7 @@
  * Each function below starts at its word, with the machine as control
  * leaves it there (Z is the word), and returns with Z where the listing
  * goes next: another of these words, another file's routine, or NEWOPS
- * (after a TC INTPRET). pipachk_landing and pipjobb_landing take any of
+ * (after a TC INTPRET). pipachk_plus2 and pipjobb_plus2 take any of
  * the words an INDEX NDXCTR; TC +1 can land on, from Z. The binding is
  * src/binding/imu_performance_routines.c. */
 #ifndef READABLE_IMU_PERFORMANCE_H
@@ -47,14 +47,14 @@ void goestims_after_jobwake(void);
 void torque(void);
 /* The PIPA test. */
 void pipachk(void);
-void pipachk_landing(void); /* PIPACHK +2 to +015 */
+void pipachk_plus2(void); /* PIPACHK +2 to +015 */
 void pipachk_after_checkg(void);
 void pipachk_after_twiddle(void);
 void pipatask(void);
 void startpip(void);
 void startpip_after_findvac(void);
 void pipjobb(void);
-void pipjobb_landing(void); /* PIPJOBB +2 to +011 */
+void pipjobb_plus2(void); /* PIPJOBB +2 to +011 */
 void pipjobb_after_checkg(void);
 void aingotn_after_exit(void); /* AINGOTN +7 */
 void aingotn_show(void);       /* AINGOTN +011 */

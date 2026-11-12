@@ -32,7 +32,7 @@ static unsigned table(unsigned field, word index)
 
 /* RBLAST +015 -- p. 1053: "LIMIT THE LENGTH OF ROLL ROTATION COMMANDS TO 0.1
  * SEC" (BLAST), so that only the Y and Z translations go on. */
-void rblast_limit(void)
+void rblast_plus015(void)
 {
     set_A(EQ_P_1SEC);
     ts(ADDRESS_OF(BLAST));
@@ -192,7 +192,7 @@ static void acbd2y(void)
 }
 
 /* ACBD2Y +012 -- p. 1056: the RTABLE word. */
-void acbd2y_rtable(void)
+void acbd2y_plus012(void)
 {
     ca(table(ADDRESS_OF(RTABLE), a_word()));
     acbd2y_acrjets();
@@ -276,7 +276,7 @@ void acbd2z_index(void)
 
 /* ACBD2Z +026 -- p. 1057: the product's low word into DFT, and on to
  * PITCHTIM. */
-void acbd2z_dft(void)
+void acbd2z_plus026(void)
 {
     ca(L_ADDRESS);
     ads(ADDRESS_OF(DFT));

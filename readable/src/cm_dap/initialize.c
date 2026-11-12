@@ -163,7 +163,7 @@ void zerojet(void)
 }
 
 /* ZEROJET +026 -- p. 1016: TC Q. */
-void zerojet_return(void)
+void zerojet_plus026(void)
 {
     tc_q();
 }

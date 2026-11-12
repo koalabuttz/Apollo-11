@@ -29,12 +29,12 @@ void lrvjob(void)
 void lrvjob_after_waitlist(void)
 {
     switch (ccs_at(ADDRESS_OF(VSELECT))) {
-    case POSITIVE:
-    case NEGATIVE: double_A(); break;
+    case POSITIVE: double_A(); break;
     case IS_PLUS_ZERO:
         set_A(TWO); /* "IF ZERO, RESET TO TWO" */
         double_A();
         break;
+    case NEGATIVE: double_A(); break;
     case IS_MINUS_ZERO: break;
     }
     tc_to(LRVJOB + 010u, BANKCALL); /* CADR LRVEL */
@@ -91,12 +91,12 @@ void lrvjob_good_exit(void)
 void endlrv(void)
 {
     switch (ccs_at(ADDRESS_OF(VSELECT))) {
-    case POSITIVE:
-    case NEGATIVE: ts(ADDRESS_OF(VSELECT)); break;
+    case POSITIVE: ts(ADDRESS_OF(VSELECT)); break;
     case IS_PLUS_ZERO:
         set_A(TWO);
         ts(ADDRESS_OF(VSELECT));
         break;
+    case NEGATIVE: ts(ADDRESS_OF(VSELECT)); break;
     case IS_MINUS_ZERO: break;
     }
     continue_at(ENDOFJOB);

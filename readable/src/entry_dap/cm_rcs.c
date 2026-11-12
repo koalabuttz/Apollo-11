@@ -112,7 +112,7 @@ static void getlcx(void)
 
 /* GETLCX +012 -- p. 1082: -VT/180 positive: its magnitude (less 1, after
  * CCS) plus 1, */
-void cm_rcs_vt_positive(void)
+void getlcx_plus012(void)
 {
     ad(ONE);
     getlcx_plus013();
@@ -121,14 +121,14 @@ void cm_rcs_vt_positive(void)
 /* GETLCX +013 -- p. 1082: TCF +2 (+0 for a -VT/180 of +0), */
 void getlcx_plus013(void)
 {
-    cm_rcs_shortest();
+    getlcx_plus015();
 }
 
 /* GETLCX +014 -- p. 1082: -VT/180 negative: plus 1, */
-void cm_rcs_vt_negative(void)
+void getlcx_plus014(void)
 {
     ad(ONE);
-    cm_rcs_shortest();
+    getlcx_plus015();
 }
 
 /* GETLCX +015 -- p. 1082: "DOES SGN(-VT) (VT/180) (VT/180) (180/(4 A1 TT
@@ -137,7 +137,7 @@ void cm_rcs_vt_negative(void)
  * = -2 VT/180", times 1/16A1, "= 180/(16 A1 TT)", over CALFA, to L; then
  * POS1/2 by the sign of LCX/360 (+0 for either zero; CS POS1/2 for a
  * negative one, at GETLCX +027). */
-void cm_rcs_shortest(void)
+void getlcx_plus015(void)
 {
     mp_at(ADDRESS_OF(MVT_180)); /* EXTEND; MP -VT/180 */
     mp(ONE_16A1);               /* EXTEND; MP 1/16A1 */
@@ -145,9 +145,9 @@ void cm_rcs_shortest(void)
     ts(L_ADDRESS);
     switch (ccs_at(ADDRESS_OF(LCX_360))) {
     case POSITIVE: set_A(POS1_2); break; /* CAF POS1/2; TCF +2 */
-    case IS_PLUS_ZERO:
-    case IS_MINUS_ZERO: break;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: cm_rcs_cs_pos1_2(); return;
+    case IS_MINUS_ZERO: break;
     }
     cm_rcs_ad_lcx();
 }
@@ -293,7 +293,7 @@ void reflect(void)
 
 /* REFLECT +1 -- p. 1083: to -VT/180 (an overflow skips the TS SR: A +1 or
  * -1), */
-void reflect_ts(void)
+void reflect_plus1(void)
 {
     if (!ts(ADDRESS_OF(MVT_180))) {
         reflect_ts_sr();

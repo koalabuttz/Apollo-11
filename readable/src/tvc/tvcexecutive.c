@@ -169,9 +169,9 @@ void oneshotchk(void)
         ts(ADDRESS_OF(TVCEXPHS));
         cntrcopy();
         return;
-    case IS_PLUS_ZERO:
-    case IS_MINUS_ZERO: oneshotok(); return;
+    case IS_PLUS_ZERO: oneshotok(); return;
     case NEGATIVE: repchek(); return;
+    case IS_MINUS_ZERO: oneshotok(); return;
     }
 }
 

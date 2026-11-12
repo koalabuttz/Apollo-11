@@ -311,8 +311,8 @@ static void needles(void)
         ts(L_ADDRESS);
         switch (ccs_register(A_ADDRESS)) {
         case POSITIVE: ca(DACLIMIT); break;
+        case IS_PLUS_ZERO: break;
         case NEGATIVE: cs(DACLIMIT); break;
-        case IS_PLUS_ZERO:
         case IS_MINUS_ZERO: break;
         }
         ad_at(L_ADDRESS);

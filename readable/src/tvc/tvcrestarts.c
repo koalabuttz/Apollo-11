@@ -51,8 +51,8 @@ void redotvc(void)
     lxch(ADDRESS_OF(BANKRUPT));
     qxch(ADDRESS_OF(QRUPT));
     switch (ccs_at(ADDRESS_OF(TVCEXPHS))) {
+    case POSITIVE: set_A(NINE); break;
     case IS_PLUS_ZERO: tvcdaphs(); return;
-    case POSITIVE:
     case NEGATIVE: set_A(NINE); break;
     case IS_MINUS_ZERO: break;
     }

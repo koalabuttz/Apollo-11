@@ -97,7 +97,7 @@ void r22lem_after_phaschng(void)
 /* R22LEM +025 -- p. 505: "ARE RR CDUS BEING ZEROED": "CDUS BEING ZEROED",
  * R22LEM42. Else restart group 2 at R22RSTRT ("IF A RESTART OCCURS, AND
  * EXTRA RADAR READING IS TAKEN, SO BAD DATA ISN'T USED"). */
-void r22lem_after_p20lemb5(void)
+void r22lem_plus025(void)
 {
     cs(ADDRESS_OF(RADMODES));
     mask(RCDU0BIT);
@@ -568,7 +568,7 @@ void r21lem5(void)
 }
 
 /* R21LEM5 +4 -- p. 508. */
-void r21lem5_mode2_center(void)
+void r21lem5_plus4(void)
 {
     set_A(BIT15);
     if (ts(ADDRESS_OF(TANG))) not_modelled(); /* (CAF leaves no overflow) */
@@ -837,7 +837,7 @@ static void r21lem13(void)
 }
 
 /* R21LEM13 +2 -- p. 510: 60 times. */
-void r21lem13_tried_enough(void)
+void r21lem13_plus2(void)
 {
     tc_at(R21LEM13 + 2u);
     r21lem11();

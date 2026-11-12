@@ -150,11 +150,11 @@ static bool zone2_3(void)
     }
     switch (ccs_at(ADDRESS_OF(EDOT))) { /* ZONE3: "CHECK IF EDOT IS ZERO." */
     case POSITIVE: set_A(BIT6); break;  /* "FIRE A ONE-JET MINIMUM IMPULSE." */
+    case IS_PLUS_ZERO: break;           /* "TJET = +0." */
     case NEGATIVE:                      /* "CANNOT BE BECAUSE NEG EDOT COMPLEMENTED." */
         tc_at(ZONE3 + 3u);
         continue_at(CCSHOLE);
         return false;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break; /* "TJET = +0." */
     }
     return true;
@@ -310,9 +310,9 @@ static bool finelaw(void)
     mp(BIT13);
     ts(ADDRESS_OF(EDOTSQ));
     switch (ccs_at(ADDRESS_OF(E))) { /* ERRTEST */
-    case POSITIVE:
+    case POSITIVE: ad(MINUS_3DEG); break;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: ad(MINUS_3DEG); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     su_at(by_adrsdif1(ADDRESS_OF(FIREDB)));
@@ -393,8 +393,8 @@ static bool ruflaw1(void)
     rufsetup(SMALRATE, false); /* "BRANCH IF RATE LESS THAN TARGET." */
     switch (ccs_at(ADDRESS_OF(ROTSENSE))) {
     case POSITIVE: set_A(ONE); break;
+    case IS_PLUS_ZERO: break; /* ADS of +0 */
     case NEGATIVE: set_A(NEGONE); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break; /* ADS of +0 */
     }
     ads(ADDRESS_OF(ADRSDIF2));
@@ -443,8 +443,8 @@ static bool jet_time(void)
     mp(BIT5);
     switch (ccs_register(A_ADDRESS)) {
     case POSITIVE: return ruflaw2();
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: return ruflaw1();
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     set_A(BIT13); /* SCALEE: "ERROR IS IN L SCALED AT PI/16." */

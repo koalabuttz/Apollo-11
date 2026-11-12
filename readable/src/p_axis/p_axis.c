@@ -31,8 +31,8 @@ static void one_stotwos(word at)
     tc_at(at);
     switch (ccs_register(A_ADDRESS)) {
     case POSITIVE: ad(ONE); break;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: cs(A_ADDRESS); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     tc_q();
@@ -75,8 +75,8 @@ static void subdivde(word at, bool plus3)
     }
     switch (ccs_at(ADDRESS_OF(OMEGAU))) {
     case POSITIVE: set_A(POSMAX); break;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: set_A(negate(POSMAX)); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     tc_q();
@@ -282,9 +282,9 @@ void backp(void)
 static bool p_trap(void)
 {
     switch (ccs_at(ADDRESS_OF(TRAPEDP))) {
-    case POSITIVE: /* TCF +2 */
+    case POSITIVE: break;            /* TCF +2 */
+    case IS_PLUS_ZERO: return false; /* TCF SMALPDIF */
     case NEGATIVE: break;
-    case IS_PLUS_ZERO: return false;  /* TCF SMALPDIF */
     case IS_MINUS_ZERO: return false; /* EXTEND; BZMF SMALPDIF, A +0 */
     }
     ad_at(ADDRESS_OF(DAPTREG6));
@@ -309,9 +309,9 @@ static void qr_trap(unsigned traped, unsigned traps, unsigned temp, unsigned ome
                     unsigned aos)
 {
     switch (ccs_at(traped)) {
-    case POSITIVE: /* TCF +2 */
-    case NEGATIVE: break;
+    case POSITIVE: break; /* TCF +2 */
     case IS_PLUS_ZERO: return;
+    case NEGATIVE: break;
     case IS_MINUS_ZERO: return; /* EXTEND; BZMF, A +0 */
     }
     ad_at(ADDRESS_OF(DAPTREG6));
@@ -338,7 +338,7 @@ static void qr_trap(unsigned traped, unsigned traps, unsigned temp, unsigned ome
  * in DAPTREG4, DAPTREG5, the trap size in DAPTREG6); the P axis' trap filter
  * (SMALPDIF: one more accumulation), then P-RATE: the P rate estimate moved
  * by the jets' JETRATE; and the Q axis' trap filter. */
-void estimator_gains_after_trapeds(void)
+void backp_plus0133(void)
 {
     ca(ADDRESS_OF(DAPBOOLS));
     mask(CSMDOCKD);
@@ -919,10 +919,10 @@ void raterror(void)
         breakout = true; /* the skip lands at TCF +3 */
     } else {
         switch (ccs_at(ADDRESS_OF(DAPTEMP1))) {
-        case POSITIVE:
+        case POSITIVE: breakout = true; break;
+        case IS_PLUS_ZERO: break; /* TCF +8D */
         case NEGATIVE:
         case IS_MINUS_ZERO: breakout = true; break;
-        case IS_PLUS_ZERO: break; /* TCF +8D */
         }
     }
     if (breakout) {
@@ -966,8 +966,8 @@ void pjetslec_minus1(void)
     ts(L_ADDRESS);
     switch (ccs_at(ADDRESS_OF(TJP))) {
     case POSITIVE: break; /* TCF +5 */
+    case IS_PLUS_ZERO: jetsoff(); return;
     case NEGATIVE: zl(); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: jetsoff(); return;
     }
     ad(ONE);
@@ -1144,9 +1144,9 @@ void headtjet_after_tjetlaw(void)
         return;
     }
     switch (ccs_at(ADDRESS_OF(TJP))) {
-    case POSITIVE: /* TCF +2 */
-    case NEGATIVE: ad(M160MST6); break;
+    case POSITIVE: ad(M160MST6); break; /* TCF +2 */
     case IS_PLUS_ZERO: jetsoff(); return;
+    case NEGATIVE: ad(M160MST6); break;
     case IS_MINUS_ZERO: break;
     }
     if (A_is_zero_or_minus()) {

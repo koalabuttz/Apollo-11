@@ -154,9 +154,9 @@ void biasedz_after_3ddz(void)
 {
     dxch(L_ADDRESS);
     switch (ccs_at(ADDRESS_OF(JETEM2))) {
-    case POSITIVE:
+    case POSITIVE: ad(FOUR_D_SLIM); break;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: ad(FOUR_D_SLIM); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     if (ts(A_ADDRESS)) zl(); /* "RATE GEQ 4 D/S.  OVER RIDE ERROR BIT" */

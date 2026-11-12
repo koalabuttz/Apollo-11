@@ -299,7 +299,7 @@ void adotloop_merrorx(void)
 }
 
 /* ADOTLOOP +6 -- p. 1006: DELTEMP into DRHO. */
-void adotloop_drho(void)
+void adotloop_plus6(void)
 {
     das_indexed(ADDRESS_OF(DRHO), dpndx());
     dca_indexed(ADDRESS_OF(DELTEMPX), dpndx());
@@ -372,7 +372,7 @@ void deloop(void)
 
 /* DELOOP +6 -- p. 1008: the angle into KMPAC and its increment, DELCDUX's
  * double word, added by DPADD (round the circle on an overflow). */
-void deloop_delcdux(void)
+void deloop_plus6(void)
 {
     dxch(ADDRESS_OF(KMPAC));
     dca_indexed(ADDRESS_OF(DELCDUX), dpndx());

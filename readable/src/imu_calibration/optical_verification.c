@@ -58,7 +58,7 @@ void setnbpos(void)
 }
 
 /* SETNBPOS +1 -- p. 449: release the display (MKRELEAS), and OPTDATA. */
-void setnbpos_after_nbpospl(void)
+void setnbpos_plus1(void)
 {
     tc_at(SETNBPOS + 1u);
     continue_at(BANKCALL); /* CADR MKRELEAS */

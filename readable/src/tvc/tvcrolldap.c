@@ -107,8 +107,8 @@ static void jetroll(void)
     }
     switch (ccs_at(ADDRESS_OF(ROLLFIRE))) {
     case POSITIVE: plus_torque(); break;
+    case IS_PLUS_ZERO: t6enabl(); break;
     case NEGATIVE: minus_torque(); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: t6enabl(); break;
     }
 }
@@ -176,9 +176,9 @@ static void maxtfire(void)
 static void newroll(void)
 {
     switch (ccs_at(ADDRESS_OF(TEMREG))) {
-    case POSITIVE:
+    case POSITIVE: ad(ONE); break;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: ad(ONE); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     com(); /* "-MAG(T6FIRE)" */
@@ -221,8 +221,8 @@ static void rollset(void)
         ts(ADDRESS_OF(I));
         maxtfire();
         break;
+    case IS_PLUS_ZERO: newroll(); break;
     case NEGATIVE: noroll(); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: newroll(); break;
     }
 }

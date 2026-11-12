@@ -53,7 +53,6 @@ static void inhibition(void)
 {
     switch (ccs_at(ADDRESS_OF(OLDSENSE))) {
     case POSITIVE: ca(by_axis(ADDRESS_OF(TJU))); break; /* POSCHECK */
-    case NEGATIVE: cs(by_axis(ADDRESS_OF(TJU))); break; /* NEGCHECK */
     case IS_PLUS_ZERO:
         switch (ccs_at(by_axis(ADDRESS_OF(UJETCTR)))) { /* CTRCHECK */
         case POSITIVE:
@@ -62,6 +61,7 @@ static void inhibition(void)
         case IS_MINUS_ZERO: tc_q(); return; /* "CTR IS NOT POSITIVE.  RETURN" */
         }
         return;
+    case NEGATIVE: cs(by_axis(ADDRESS_OF(TJU))); break; /* NEGCHECK */
     case IS_MINUS_ZERO: not_modelled(); return;
     }
     if (ccs_at(A_ADDRESS) == POSITIVE) { /* NEGCHECK +2 */
@@ -101,11 +101,11 @@ static void spsstart(void)
         set_A(negate(HALF));
         store_jet_time();
         return;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: /* POSTHRST */
         set_A(HALF);
         store_jet_time();
         return;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     ca(ADDRESS_OF(EDOT)); /* "COAST ZONE TEST" */
@@ -144,12 +144,15 @@ void spsrcs(void)
         ts(ADDRESS_OF(OLDSENSE));
         cs(ADDRESS_OF(EDOT));
         break;
+    case IS_PLUS_ZERO:
+        ts(ADDRESS_OF(OLDSENSE)); /* "JETS OFF" */
+        spsstart();
+        return;
     case NEGATIVE: /* NEGFIRE */
         set_A(negate(ONE));
         ts(ADDRESS_OF(OLDSENSE));
         ca(ADDRESS_OF(EDOT));
         break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO:
         ts(ADDRESS_OF(OLDSENSE)); /* "JETS OFF" */
         spsstart();

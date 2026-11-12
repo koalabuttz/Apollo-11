@@ -91,10 +91,10 @@ static void dodelvz(void)
 void rereadac(void)
 {
     switch (ccs_at(ADDRESS_OF(PHASE5))) {
+    case POSITIVE: set_A(PRIO31); break;
     case IS_PLUS_ZERO: continue_at(TASKOVER); return;
-    case IS_MINUS_ZERO: break;
-    case POSITIVE:
     case NEGATIVE: set_A(PRIO31); break;
+    case IS_MINUS_ZERO: break;
     }
     ts(ADDRESS_OF(1_PIPADT));
 
@@ -130,9 +130,9 @@ void rereadac(void)
      * complement (CS TEMZ; but +0 for TEMZ +0, which the CCS leaves in A),
      * into DELVZ. "TEMZ = -0, L HAS ZPIP VALUE.": that, and back. */
     switch (ccs_at(ADDRESS_OF(TEMZ))) {
-    case POSITIVE:
-    case NEGATIVE: cs(ADDRESS_OF(TEMZ)); break;
+    case POSITIVE: cs(ADDRESS_OF(TEMZ)); break;
     case IS_PLUS_ZERO: break;
+    case NEGATIVE: cs(ADDRESS_OF(TEMZ)); break;
     case IS_MINUS_ZERO:
         lxch(ADDRESS_OF(DELVZ));
         return_to_q();
@@ -148,9 +148,9 @@ void rereadac(void)
 static void chktemx(void)
 {
     switch (ccs_at(ADDRESS_OF(TEMX))) { /* "HAS THIS CHANGED" */
-    case POSITIVE:
-    case NEGATIVE: cs(ADDRESS_OF(TEMX)); break;
+    case POSITIVE: cs(ADDRESS_OF(TEMX)); break;
     case IS_PLUS_ZERO: break;
+    case NEGATIVE: cs(ADDRESS_OF(TEMX)); break;
     case IS_MINUS_ZERO: repip1(); return; /* "NO" */
     }
     ts(ADDRESS_OF(DELVX));

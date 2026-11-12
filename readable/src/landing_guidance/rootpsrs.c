@@ -230,8 +230,8 @@ void rootloop_after_abs(void)
     incr(ADDRESS_OF(MODE)); /* "INCREMENT ITERATION COUNTER" */
     switch (ccs_at(ADDRESS_OF(MPAC))) {
     case POSITIVE: rootloop(); return;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: rootstor(); return;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     if (ccs_at(ADDRESS_OF(MPAC) + 1u) == POSITIVE)

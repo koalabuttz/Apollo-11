@@ -132,30 +132,30 @@ static const struct {
     {GOESTIMS + 2u, goestims_after_jobwake},
     {TORQUE, torque},
     {PIPACHK, pipachk},
-    {PIPACHK + 2u, pipachk_landing},
-    {PIPACHK + 3u, pipachk_landing},
-    {PIPACHK + 4u, pipachk_landing},
-    {PIPACHK + 5u, pipachk_landing},
-    {PIPACHK + 6u, pipachk_landing},
-    {PIPACHK + 7u, pipachk_landing},
-    {PIPACHK + 010u, pipachk_landing},
-    {PIPACHK + 011u, pipachk_landing},
-    {PIPACHK + 012u, pipachk_landing},
-    {PIPACHK + 014u, pipachk_landing},
-    {PIPACHK + 015u, pipachk_landing},
+    {PIPACHK + 2u, pipachk_plus2},
+    {PIPACHK + 3u, pipachk_plus2},
+    {PIPACHK + 4u, pipachk_plus2},
+    {PIPACHK + 5u, pipachk_plus2},
+    {PIPACHK + 6u, pipachk_plus2},
+    {PIPACHK + 7u, pipachk_plus2},
+    {PIPACHK + 010u, pipachk_plus2},
+    {PIPACHK + 011u, pipachk_plus2},
+    {PIPACHK + 012u, pipachk_plus2},
+    {PIPACHK + 014u, pipachk_plus2},
+    {PIPACHK + 015u, pipachk_plus2},
     {PIPACHK + 016u, pipachk_after_checkg},
     {PIPACHK + 022u, pipachk_after_twiddle},
     {PIPATASK, pipatask},
     {STARTPIP, startpip},
     {STARTPIP + 4u, startpip_after_findvac},
     {PIPJOBB, pipjobb},
-    {PIPJOBB + 2u, pipjobb_landing},
-    {PIPJOBB + 3u, pipjobb_landing},
-    {PIPJOBB + 4u, pipjobb_landing},
-    {PIPJOBB + 6u, pipjobb_landing},
-    {PIPJOBB + 7u, pipjobb_landing},
-    {PIPJOBB + 010u, pipjobb_landing},
-    {PIPJOBB + 011u, pipjobb_landing},
+    {PIPJOBB + 2u, pipjobb_plus2},
+    {PIPJOBB + 3u, pipjobb_plus2},
+    {PIPJOBB + 4u, pipjobb_plus2},
+    {PIPJOBB + 6u, pipjobb_plus2},
+    {PIPJOBB + 7u, pipjobb_plus2},
+    {PIPJOBB + 010u, pipjobb_plus2},
+    {PIPJOBB + 011u, pipjobb_plus2},
     {PIPJOBB + 012u, pipjobb_after_checkg},
     {AINGOTN + 7u, aingotn_after_exit},
     {AINGOTN + 011u, aingotn_show},
@@ -440,7 +440,8 @@ static enum exec_status run(const agc_native_program *program, apollo_overlay_st
 #define BASIC_KEYS(K, F, FFK)                                                                      \
     FFK(K_FINETIME + 1u)                                                                           \
     FFK(K_FINETIME + 010u)                                                                         \
-    K(K_REDO) K(K_GEOIMUTT) K(K_LATAZCHK + 6u) K(K_LATAZCHK + 013u) K(K_LATAZCHK + 014u)           \
+    K(K_REDO)                                                                                      \
+    K(K_GEOIMUTT) K(K_LATAZCHK + 6u) K(K_LATAZCHK + 013u) K(K_LATAZCHK + 014u)                     \
         K(K_LATAZCHK + 015u) F(K_POSGMBL + 3u) K(K_POSGMBL + 5u) K(K_POSGMBL + 014u)               \
             K(K_POSGMBL + 025u) K(K_GOESTIMS) K(K_GOESTIMS + 2u) K(K_PIPACHK + 022u) K(K_PIPATASK) \
                 K(K_STARTPIP) K(K_STARTPIP + 4u) K(K_PIPJOBB) F(K_AINGOTN + 7u) K(K_ENDTEST1 + 2u) \

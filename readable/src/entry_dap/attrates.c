@@ -21,7 +21,7 @@
 
 /* BODYRATE +0100 -- p. 1071: "PREL TCDU/180=(P-SALF SR GAMDOT)TCDU/180" (ADS
  * PREL); then the cosine of ROLL/180, */
-void bodyrate_trim_prel(void)
+void bodyrate_plus0100(void)
 {
     ads(ADDRESS_OF(PREL));
     ca(ADDRESS_OF(ROLL_180));

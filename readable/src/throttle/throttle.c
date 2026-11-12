@@ -201,9 +201,9 @@ static void doit(void)
     dxch(ADDRESS_OF(FWEIGHT));
     /* |PIF|: CCS leaves |PIF| - 1, and AD ONE restores it. */
     switch (ccs_at(ADDRESS_OF(PIF))) {
-    case POSITIVE:
+    case POSITIVE: ad(ONE); break;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: ad(ONE); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     mp_at(ADDRESS_OF(PIF));

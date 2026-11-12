@@ -80,13 +80,13 @@ void oncemore_cdux(void)
 void oncemore_torqndx(void)
 {
     switch (ccs_at(E(TORQNDX))) {
-    case POSITIVE:
-    case NEGATIVE: oncemore_cdux(); return; /* TCF +2 */
+    case POSITIVE: oncemore_cdux(); return; /* TCF +2 */
     case IS_PLUS_ZERO:
         tc_at(ONCEMORE + 4u);
         setuper1();
         return;
-    case IS_MINUS_ZERO: /* TS LOSVEC +1 */
+    case NEGATIVE: oncemore_cdux(); return; /* TCF +2 */
+    case IS_MINUS_ZERO:                     /* TS LOSVEC +1 */
         ts(E(LOSVEC) + 1u);
         setuper1();
         return;

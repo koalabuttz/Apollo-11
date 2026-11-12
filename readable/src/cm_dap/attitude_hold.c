@@ -122,7 +122,7 @@ void atthold(void)
 }
 
 /* ATTHOLD +041 -- p. 1028: CA BIAS, then the biases added. */
-void atthold_bias(void)
+void atthold_plus041(void)
 {
     ca(ADDRESS_OF(BIAS));
     atthold_bias_errorx();

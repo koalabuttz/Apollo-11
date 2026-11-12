@@ -4,8 +4,8 @@
 #
 # Measured with Ubuntu clang version 18.1.3 (1ubuntu1).
 # 422 files hold lines of C to run (406 of the 474 .c files under src/,
-# and 16 headers); 59968 such lines; 1549 of them unrun
-# (2.58%), in 638 stretches of 216 files.
+# and 16 headers); 59974 such lines; 1558 of them unrun
+# (2.60%), in 651 stretches of 216 files.
 # Built and never run: x86-flight-cm-core, x86-flight-lm-core, x86-link-check.
 #
 # These are lines of C only. Interpretive code is tables of words, which
@@ -18,7 +18,7 @@
 #   impossible: 221 lines in 97 stretches
 #   never: 76 lines in 33 stretches
 #   not-modelled: 111 lines in 83 stretches
-#   open: 374 lines in 137 stretches
+#   open: 383 lines in 150 stretches
 #   refusal: 767 lines in 288 stretches
 #
 # Run, and compared with nothing: 84 lines of 81 functions ran
@@ -146,7 +146,10 @@ src/aostask/aostask.c
   docktest, line 171 (1 unrun) 126f7bdf
     | default: not_modelled(); return;
     why: [not-modelled]
-  docked_polynomial, lines 408-409 (2 unrun) 4409ad32
+  inertias, line 356 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  docked_polynomial, lines 409-410 (2 unrun) 4409ad32
     | case NEGATIVE: return false;
     | case IS_MINUS_ZERO: not_modelled(); return false;
     why: [open]
@@ -2414,10 +2417,10 @@ src/imu_mode_switching/gyro_torquing.c
     why: [open]
 
 src/imu_performance/imu_performance.c
-  pipachk_landing, line 356 (1 unrun) 5454f838
+  pipachk_plus2, line 356 (1 unrun) 5454f838
     | default: not_modelled(); /* (the TS after an INDEX: not a word of its own) */
     why: [not-modelled]
-  pipjobb_landing, line 443 (1 unrun) 2796b01e
+  pipjobb_plus2, line 443 (1 unrun) 2796b01e
     | default: not_modelled(); /* (BZMF without its EXTEND) */
     why: [not-modelled]
   zeroing, line 779 (1 unrun) f378a0ab
@@ -3142,12 +3145,16 @@ src/interpreter/vectors.c
          -0 slot.)
 
 src/kalman_filter/kalman_filter.c
-  jet_time, lines 35-36 (2 unrun) d369bea4
-    | case IS_PLUS_ZERO:
+  jet_time, line 34 (1 unrun) f5365334
+    | case IS_PLUS_ZERO: break; /* ADS of +0 */
+    why: [open]
+  jet_time, line 36 (1 unrun) 5ccc12c5
     | case IS_MINUS_ZERO: break; /* ADS of +0 */
     why: [open]
-  jet_time, lines 42-43 (2 unrun) 1a46babc
-    | case IS_PLUS_ZERO:
+  jet_time, line 41 (1 unrun) 7731fe4c
+    | case IS_PLUS_ZERO: break;                         /* A +0 */
+    why: [open]
+  jet_time, line 43 (1 unrun) a75b8cf5
     | case IS_MINUS_ZERO: break; /* A +0 */
     why: [open]
   rateloop, line 83 (1 unrun) 4f04b17c
@@ -3170,6 +3177,9 @@ src/landing_displays/landing_displays.c
   newdata, lines 229-230 (2 unrun) c899a662
     | case NEGATIVE: break;
     | case IS_MINUS_ZERO: not_modelled();
+    why: [open]
+  vmonitor, line 493 (1 unrun) 9da23c0e
+    | case IS_MINUS_ZERO: lvlimits(index); return;
     why: [open]
 
 src/landing_guidance/exits.c
@@ -3393,8 +3403,13 @@ src/p70_p71/contabrt.c
     why: [open]
 
 src/p_axis/p_axis.c
-  subdivde, lines 79-80 (2 unrun) 8acb8780
-    | case IS_PLUS_ZERO:
+  one_stotwos, line 36 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  subdivde, line 78 (1 unrun) a33ec75a
+    | case IS_PLUS_ZERO: break;
+    why: [open]
+  subdivde, line 80 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
     why: [open]
   selectp, lines 547-548 (2 unrun) 22de002c
@@ -3748,8 +3763,10 @@ src/servicer/readaccs.c
     why: [open]
 
 src/sps_backup/sps_backup.c
-  inhibition, lines 64-65 (2 unrun) d329b9e3
+  inhibition, line 63 (1 unrun) 8ed85277
     | return;
+    why: [open]
+  inhibition, line 65 (1 unrun) f4215585
     | case IS_MINUS_ZERO: not_modelled(); return;
     why: [open]
 
@@ -3891,7 +3908,7 @@ src/t6rupt/t6rupt.c
     why: [not-modelled]
 
 src/tjet_law/tjet_law.c
-  zone2_3, lines 153-156 (4 unrun) 62671ac8
+  zone2_3, lines 154-157 (4 unrun) 62671ac8
     | case NEGATIVE:                      /* "CANNOT BE BECAUSE NEG EDOT COMPLEMENTED." */
     | tc_at(ZONE3 + 3u);
     | continue_at(CCSHOLE);
@@ -3906,8 +3923,13 @@ src/tjet_law/tjet_law.c
   zone5, line 239 (1 unrun) 29d28b4a
     | case IS_MINUS_ZERO: ads(ADDRESS_OF(ADRSDIF2)); break;
     why: [open]
-  ruflaw1, lines 397-398 (2 unrun) d369bea4
-    | case IS_PLUS_ZERO:
+  finelaw, line 316 (1 unrun) 0039665b
+    | case IS_MINUS_ZERO: break;
+    why: [open]
+  ruflaw1, line 396 (1 unrun) f5365334
+    | case IS_PLUS_ZERO: break; /* ADS of +0 */
+    why: [open]
+  ruflaw1, line 398 (1 unrun) 5ccc12c5
     | case IS_MINUS_ZERO: break; /* ADS of +0 */
     why: [open]
 
@@ -3918,17 +3940,28 @@ src/trim_gimbal/trim_gimbal.c
   axis_inputs, line 175 (1 unrun) 1467e5e0
     | case IS_MINUS_ZERO: not_modelled(); return false; /* QRCNTR is 2, +-1 or 0 */
     why: [not-modelled]
-  gts, line 415 (1 unrun) cdcaa1d6
+  second_term, lines 252-255 (4 unrun) 7a4bd431
+    | case IS_MINUS_ZERO:
+    | ts(ADDRESS_OF(K2CNTRAL)); /* DEFUNCT */
+    | ts(ADDRESS_OF(K2CNTRAL) + 1u);
+    | break;
+    why: [open]
+  gts, line 402 (1 unrun) 32a57f28
+    | case IS_MINUS_ZERO: break; /* to NEGUSUM */
+    why: [open]
+  gts, line 418 (1 unrun) cdcaa1d6
     | case IS_MINUS_ZERO: not_modelled(); return; /* QRCNTR is 2, +-1 or 0 */
     why: [not-modelled]
-  timegmbl, line 557 (1 unrun) 12708606
+  timegmbl, line 560 (1 unrun) 12708606
     | default: not_modelled(); return; /* QRNDXER is 2 or 0 */
     why: [not-modelled]
 
 src/tvc/tvcdaps.c
-  limit, lines 245-246 (2 unrun) 815fad95
-    | case IS_PLUS_ZERO:
-    | case IS_MINUS_ZERO: break; /* (the CCS's +0) */
+  limit, line 244 (1 unrun) 130605c9
+    | case IS_PLUS_ZERO: break;                        /* (the CCS's +0) */
+    why: [open]
+  limit, line 246 (1 unrun) 9d1ecb49
+    | case IS_MINUS_ZERO: break;                       /* (the CCS's +0) */
     why: [open]
 
 src/tvc/tvcmassprop.c
@@ -3949,11 +3982,13 @@ src/tvc/tvcrestarts.c
     why: [open]
 
 src/tvc/tvcrolldap.c
-  jetroll, line 111 (1 unrun) 8f59ce8f
-    | case IS_PLUS_ZERO:
+  jetroll, line 110 (1 unrun) 85e0f5f4
+    | case IS_PLUS_ZERO: t6enabl(); break;
     why: [open]
-  newroll, lines 181-182 (2 unrun) 8acb8780
-    | case IS_PLUS_ZERO:
+  newroll, line 180 (1 unrun) a33ec75a
+    | case IS_PLUS_ZERO: break;
+    why: [open]
+  newroll, line 182 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
     why: [open]
 
@@ -4032,7 +4067,7 @@ Lines that ran and refuse (not_modelled() first on the line), by function:
   * src/landing_guidance/vertguid.c: vertguid (1)
   * src/p11/aterjob.c: attdisp2_after_exit (1)
   * src/p11/aterjob.c: work_area (1)
-  * src/p20_p25/designate.c: notp20_after_rrout (1)
+  * src/p20_p25/designate.c: notp20_plus5 (1)
   * src/p20_p25/r29.c: setup29d_after_exit (1)
   * src/p20_p25/r29dodes.c: dca_by_tang (1)
   * src/p20_p25/r29dodes.c: r29lokon (1)

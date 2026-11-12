@@ -3,26 +3,16 @@
 # the tree to these counts; `tools/style_check.py --write` writes them.
 # A directory that is not here owes nothing and may not break a rule.
 #
-# Owed in all: ccs-order 61, ccs-default 56, ccs-not-modelled 49, continue-offset 45, goto 2.
+# Owed in all: ccs-order 8, ccs-default 56, ccs-not-modelled 49, continue-offset 1, goto 2.
 
-ccs-order aostask 3
-ccs-order burn_baby 2
-ccs-order dapidler 1
-ccs-order imu_performance 1
-ccs-order kalcmanu_steering 4
-ccs-order kalman_filter 3
-ccs-order landing_displays 6
-ccs-order landing_guidance 2
-ccs-order p20_p25 3
-ccs-order p70_p71 1
-ccs-order p_axis 8
-ccs-order q_r_axis 4
+ccs-order landing_displays 1
+ccs-order landing_guidance 1
+ccs-order p20_p25 1
+ccs-order p_axis 1
 ccs-order radar_leadin 1
-ccs-order servicer 5
-ccs-order sps_backup 4
-ccs-order throttle 1
-ccs-order tjet_law 4
-ccs-order trim_gimbal 8
+ccs-order servicer 1
+ccs-order sps_backup 1
+ccs-order trim_gimbal 1
 ccs-default aostask 3
 ccs-default burn_baby 4
 ccs-default findcduw 3
@@ -53,14 +43,6 @@ ccs-not-modelled servicer 4
 ccs-not-modelled sps_backup 1
 ccs-not-modelled trim_gimbal 2
 ccs-not-modelled update_program 1
-continue-offset cm_dap 13
-continue-offset entry_dap 9
-continue-offset imu_calibration 1
-continue-offset imu_performance 2
-continue-offset p20_p25 14
-continue-offset p_axis 1
 continue-offset powered_flight 1
-continue-offset r31 1
-continue-offset tvc 3
 goto imu_performance 1
 goto landing_guidance 1

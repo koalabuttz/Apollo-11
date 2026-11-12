@@ -333,7 +333,7 @@ void pipachk(void)
  * seconds; RESULTCT 1, where CHECKG puts the first pulse's time; and the
  * PIPA (PIPINDEX: X, Y or Z, whichever is up) and DATAPL cleared. Then
  * catch a pulse. */
-void pipachk_landing(void)
+void pipachk_plus2(void)
 {
     switch ((word)(Z - PIPACHK)) {
     case 02u:
@@ -418,7 +418,7 @@ void pipjobb(void)
 /* PIPJOBB +2 -- pp. 375-376, where the TC lands, or EARTHR* returns to.
  * Unless LENGTHOT has run out, the job ends; else catch the closing pulse,
  * its time into DATAPL +5 (RESULTCT 5). */
-void pipjobb_landing(void)
+void pipjobb_plus2(void)
 {
     switch ((word)(Z - PIPJOBB)) {
     case 02u:
@@ -1283,9 +1283,9 @@ void perferas_after_atiginc(void)
     case IS_MINUS_ZERO: setuper1(); return; /* TC SETUPER1 */
     }
     switch (ccs_at(E(TORQNDX))) {
-    case POSITIVE: /* TCF +2 */
-    case NEGATIVE: keep_cdux(); return;
+    case POSITIVE: keep_cdux(); return;    /* TCF +2 */
     case IS_PLUS_ZERO: setuper1(); return; /* TC SETUPER1 */
+    case NEGATIVE: keep_cdux(); return;
     case IS_MINUS_ZERO:
         ts(E(LOSVEC) + 1u); /* (A +0) */
         setuper1();

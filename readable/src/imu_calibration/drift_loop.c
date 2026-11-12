@@ -585,9 +585,9 @@ void alflt1(void)
 void alflt1_after_loadstdt(void)
 {
     switch (ccs_at(E(GEOCOMP1))) {
-    case POSITIVE:
-    case NEGATIVE: alflt1_compass(); return; /* TC +2 */
+    case POSITIVE: alflt1_compass(); return; /* TC +2 */
     case IS_PLUS_ZERO: alflt1_calibration(); return;
+    case NEGATIVE: alflt1_compass(); return; /* TC +2 */
     case IS_MINUS_ZERO: alflt1_after_chkcomed(); return;
     }
 }

@@ -55,7 +55,7 @@ void dobrate_q_after_phaschng(void); /* DOBRATE? +012 */
 void dobrate1_after_waitlist(void);  /* DOBRATE1 +5 */
 void dobrate1_taskover(void);        /* DOBRATE1 +7 */
 void angovcor(void);                 /* ANGOVCOR */
-void angovcor_return(void);          /* ANGOVCOR +5, part B's key */
+void angovcor_plus5(void);           /* ANGOVCOR +5, part B's key */
 
 /* ---- Part A: dapon.c (bank 20) ---- */
 void cm_dapon(void);                /* CM/DAPON */
@@ -89,7 +89,7 @@ void bodyrate_prel(void);      /* BODYRATE +065 */
 void bodyrate_nogamdut(void);  /* BODYRATE +070 */
 void bodyrate_gamdot(void);    /* BODYRATE +071 */
 void bodyrate_sr_gamdot(void); /* BODYRATE +073 */
-void bodyrate_trim_prel(void); /* BODYRATE +0100 */
+void bodyrate_plus0100(void);  /* BODYRATE +0100 */
 void bodyrate_trim_qrel(void); /* BODYRATE +0103 */
 void nogamdut(void);           /* NOGAMDUT */
 void attrates(void);           /* ATTRATES */
@@ -102,7 +102,7 @@ void attrates_ak1(void);       /* ATTRATES +047 */
 void attrates_rolltm(void);    /* ATTRATES +054 */
 
 /* ---- Part C: atm_dap.c and dead_zone.c (bank 15) ---- */
-void atm_cmdapmod(void);              /* ATTRATES +066 */
+void attrates_plus066(void);          /* ATTRATES +066 */
 void atm_ak1(void);                   /* ATTRATES +067 */
 void atm_yjetcode(void);              /* ATTRATES +076 */
 void exdapin(void);                   /* EXDAPIN */
@@ -131,7 +131,7 @@ void exdap1(void);               /* EXDAP1 */
 void exdap1_mode0(void);         /* EXDAP1 +5 */
 void exdap1_after_biasedz(void); /* EXDAP1 +011 */
 void exdap1_after_alfa_dz(void); /* EXDAP1 +022 */
-void exdap2_p63flag(void);       /* EXDAP2 +3 */
+void exdap2_plus3(void);         /* EXDAP2 +3 */
 void exdap2_paxerr1(void);       /* EXDAP2 +013 */
 void exdap2_betadot(void);       /* EXDAP2 +022 */
 void exdap2_after_biasedz(void); /* EXDAP2 +024 */
@@ -139,27 +139,27 @@ void exdap2_cs_l(void);          /* EXDAP2 +041 */
 void nsec_constant(void);        /* EXDAP2 +043, NSEC */
 
 /* ---- Part E: cm_rcs.c (bank 15) ---- */
-void setjtag(void);            /* SETJTAG */
-void setjtag_taskover(void);   /* SETJTAG +6 */
-void cm_rcs(void);             /* CM/RCS */
-void cm_rcs_vt_positive(void); /* GETLCX +012 */
-void getlcx_plus013(void);     /* GETLCX +013 */
-void cm_rcs_vt_negative(void); /* GETLCX +014 */
-void cm_rcs_shortest(void);    /* GETLCX +015 */
-void cm_rcs_cs_pos1_2(void);   /* GETLCX +027 */
-void cm_rcs_ad_lcx(void);      /* GETLCX +030 */
-void compat(void);             /* COMPAT */
-void compat_tc(void);          /* COMPAT +6 */
-void compat_ca(void);          /* COMPAT +7 */
-void reflect(void);            /* REFLECT */
-void reflect_ts(void);         /* REFLECT +1 */
-void reflect_ts_sr(void);      /* REFLECT +2 */
-void reflect_jndx(void);       /* REFLECT +5 */
-void dz1(void);                /* DZ1 */
-void maxvtest_ad(void);        /* MAXVTEST +3 */
-void maxvtim1(void);           /* MAXVTIM1 */
-void ovrline(void);            /* OVRLINE */
-void ovrline1(void);           /* OVRLINE1 */
+void setjtag(void);          /* SETJTAG */
+void setjtag_taskover(void); /* SETJTAG +6 */
+void cm_rcs(void);           /* CM/RCS */
+void getlcx_plus012(void);   /* GETLCX +012 */
+void getlcx_plus013(void);   /* GETLCX +013 */
+void getlcx_plus014(void);   /* GETLCX +014 */
+void getlcx_plus015(void);   /* GETLCX +015 */
+void cm_rcs_cs_pos1_2(void); /* GETLCX +027 */
+void cm_rcs_ad_lcx(void);    /* GETLCX +030 */
+void compat(void);           /* COMPAT */
+void compat_tc(void);        /* COMPAT +6 */
+void compat_ca(void);        /* COMPAT +7 */
+void reflect(void);          /* REFLECT */
+void reflect_plus1(void);    /* REFLECT +1 */
+void reflect_ts_sr(void);    /* REFLECT +2 */
+void reflect_jndx(void);     /* REFLECT +5 */
+void dz1(void);              /* DZ1 */
+void maxvtest_ad(void);      /* MAXVTEST +3 */
+void maxvtim1(void);         /* MAXVTIM1 */
+void ovrline(void);          /* OVRLINE */
+void ovrline1(void);         /* OVRLINE1 */
 
 /* ---- Part F: roll_jets.c and cm_fdai.c (bank 15) ---- */
 void getoff(void);                 /* GETOFF */
@@ -183,7 +183,7 @@ void jetactn(void);                /* JETACTN */
 void rolldump(void);               /* ROLLDUMP */
 void jetcall(void);                /* JETCALL */
 void dzcall(void);                 /* DZCALL */
-void dzcall_rolltm(void);          /* DZCALL +3 */
+void dzcall_plus3(void);           /* DZCALL +3 */
 void dzcall_ts_a(void);            /* DZCALL +5 */
 void dzcall_ad_l(void);            /* DZCALL +7 */
 void dzcall_rollhold(void);        /* DZCALL +011 */

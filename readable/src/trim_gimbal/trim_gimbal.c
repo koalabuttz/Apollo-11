@@ -35,14 +35,14 @@ static void sign_of_double(unsigned high)
 {
     switch (ccs_at(high)) {
     case POSITIVE: set_A(BIT1); return;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: set_A(negate(BIT1)); return;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     switch (ccs_at(high + 1u)) {
     case POSITIVE: set_A(BIT1); return;
+    case IS_PLUS_ZERO: return; /* TCF +2 */
     case NEGATIVE: set_A(negate(BIT1)); return;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: return; /* TCF +2 */
     }
 }
@@ -242,13 +242,16 @@ static void second_term(void)
     switch (ccs_at(ADDRESS_OF(DEL))) {
     case POSITIVE: break; /* "POSITIVE DEL VALUE.  PROCEED." */
     case IS_PLUS_ZERO:
-    case IS_MINUS_ZERO:
         ts(ADDRESS_OF(K2CNTRAL)); /* DEFUNCT */
         ts(ADDRESS_OF(K2CNTRAL) + 1u);
         break;
     case NEGATIVE:
         dcs(ADDRESS_OF(K2CNTRAL)); /* NEGFNCT2 */
         dxch(ADDRESS_OF(K2CNTRAL));
+        break;
+    case IS_MINUS_ZERO:
+        ts(ADDRESS_OF(K2CNTRAL)); /* DEFUNCT */
+        ts(ADDRESS_OF(K2CNTRAL) + 1u);
         break;
     }
     dca(ADDRESS_OF(A2CNTRAL)); /* FUNCT2 */
@@ -342,12 +345,12 @@ static void new_drive(void)
     mp_at(L_ADDRESS); /* "MULTIPLY OLD NEGU AND NEW NEGU." */
     switch (ccs_at(L_ADDRESS)) {
     case POSITIVE: return;
+    case IS_PLUS_ZERO: break; /* "NO REVERSAL PROBLEM HERE." */
     case NEGATIVE:
         ts(by_axis(ADDRESS_OF(QACCDOT))); /* REVERSAL */
         cs(by_axis(GMBLBITA));
         wand_channel(CHAN12);
         break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break; /* "NO REVERSAL PROBLEM HERE." */
     }
     cs(ADDRESS_OF(RCSFLAGS)); /* ZEROLOUP */
@@ -390,12 +393,12 @@ void gts(void)
             second_term();
             switch (ccs_at(ADDRESS_OF(DEL))) {
             case POSITIVE: third_term(); break;
-            case NEGATIVE: /* NEGATE */
+            case IS_PLUS_ZERO: break; /* to NEGUSUM */
+            case NEGATIVE:            /* NEGATE */
                 dcs(ADDRESS_OF(K2CNTRAL));
                 dxch(ADDRESS_OF(K2CNTRAL));
                 third_term();
                 break;
-            case IS_PLUS_ZERO:
             case IS_MINUS_ZERO: break; /* to NEGUSUM */
             }
             sign_of_double(ADDRESS_OF(K2THETA)); /* NEGUSUM */
@@ -443,15 +446,15 @@ void acdt_c12(void)
 
     switch (ccs_at(ADDRESS_OF(NEGUQ))) {
     case POSITIVE: set_A(BIT10); break;
+    case IS_PLUS_ZERO: break; /* A +0 */
     case NEGATIVE: set_A(BIT9); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break; /* A +0 */
     }
     ts(ADDRESS_OF(CHNL12));
     switch (ccs_at(ADDRESS_OF(NEGUR))) {
     case POSITIVE: set_A(BIT12); break;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: set_A(BIT11); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     ads(ADDRESS_OF(CHNL12));

@@ -32,7 +32,7 @@ static void yaw_error(void)
  * to AK1
  * and AK2, "TO ZERO PITCH AND YAW FDAI NEEDLES" "IN ATM.  (MODE =-1)".
  * (An overflow at TS CMDAPMOD, from a caller's A, skips the TS AK1.) */
-void atm_cmdapmod(void)
+void attrates_plus066(void)
 {
     if (ts(ADDRESS_OF(CMDAPMOD))) {
         ts(ADDRESS_OF(AK2));

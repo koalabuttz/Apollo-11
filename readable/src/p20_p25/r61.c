@@ -238,7 +238,7 @@ void r61c_l06(void)
 }
 
 /* R61C+L06 +4 -- p. 519: CCS R65CNTR. */
-void r61c_l06_r65(void)
+void r61c_l06_plus4(void)
 {
     switch (ccs_at(ADDRESS_OF(R65CNTR))) {
     case POSITIVE: tc_to(R61C_L06 + 5u, R61C_L06 + 7u); return; /* TC +2 */
@@ -252,14 +252,14 @@ void r61c_l06_r65(void)
 }
 
 /* R61C+L06 +6 -- p. 519: "R65CNTR = 0 - EXIT ROUTINE". */
-void r61c_l06_count_out(void)
+void r61c_l06_plus6(void)
 {
     tc_to(R61C_L06 + 6u, R61C_L4);
 }
 
 /* R61C+L06 +7 -- p. 519: the count back to R65CNTR, and again in 6
  * seconds. */
-void r61c_l06_again(void)
+void r61c_l06_plus7(void)
 {
     if (!ts(ADDRESS_OF(R65CNTR))) set_A(SIX_SEC);
     tc_to(R61C_L06 + 011u, TWIDDLE); /* ADRES R61C+L2 */

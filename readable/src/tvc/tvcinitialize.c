@@ -213,7 +213,7 @@ static void attinit(void)
  * OUTPUT" "TRACKERS, OFFSET-UPDATES, AND" "OFFSET-TRACKER FILTERS", PACTOFF
  * and YACTOFF. ATTINIT; then NEEDLEIN: bit 3 of RCSFLAGS set "FOR
  * INITIALIZATION PASS AND GO" "TO NEEDLER" (IBNKCALL). */
-void tvcinit2_repfrac(void)
+void tvcinit2_plus021(void)
 {
     ca_indexed(ADDRESS_OF(EREPFRAC), index_at(ADDRESS_OF(CNTR)));
     ts(ADDRESS_OF(REPFRAC));
@@ -272,7 +272,7 @@ void tvcinit4_after_waitlist(void)
 
 /* TVCINIT4 +021 -- p. 940: the 2CADR to T5LOC, and TIME5 T5TVCDT ("ALLOW
  * TIME FOR RESTART COMPUTATIONS"); RESUME (ENDTVCIN). */
-void tvcinit4_t5(void)
+void tvcinit4_plus021(void)
 {
     dxch(ADDRESS_OF(T5LOC));
     ca(ADDRESS_OF(T5TVCDT));
@@ -414,7 +414,7 @@ void loadcoef_n10_6(void)
 }
 
 /* LOADCOEF +014 -- p. 942: the fourth pair, and on. */
-void loadcoef_dca6(void)
+void loadcoef_plus014(void)
 {
     dca_indexed(6u, index_at(ADDRESS_OF(COEFFADR)));
     loadcoef_n10_6();
