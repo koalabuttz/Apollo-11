@@ -41,6 +41,8 @@
 
 #include <stdbool.h>
 
+/* How many entries a table has (as src/agc/agc.h has it: these tables do
+ * not use the machine). */
 #define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* ---- MAIN ---- */

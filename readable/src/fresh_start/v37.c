@@ -25,8 +25,6 @@
 #include "v37.h"
 #include "../agc/names.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 #define MPAC1 (ADDRESS_OF(MPAC) + 1u)
 
 /* Where the routines TC out of the file: label + offset, the TC's own

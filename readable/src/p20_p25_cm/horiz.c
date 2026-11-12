@@ -31,8 +31,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* HORIZ: the return in SRRETURN, the push-down pointer 0. */
 static const word horiz_words[] = {
     ORDERS(STQ, SETPD),

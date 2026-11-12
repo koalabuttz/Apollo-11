@@ -160,8 +160,9 @@ static enum branch branch_from(unsigned k)
     for (; k < 3u; ++k) {
         switch (ccs_at(ADDRESS_OF(MPAC) + k)) {
         case POSITIVE: tc_through(Q_ADDRESS); return BRANCH_POSITIVE;
+        case IS_PLUS_ZERO: break; /* TCF +2, "ON ZERO.": the next register */
         case NEGATIVE: neg(); return BRANCH_NEGATIVE;
-        default: break; /* +0 or -0: the next register */
+        case IS_MINUS_ZERO: break; /* the next register */
         }
     }
     q_plus_1();

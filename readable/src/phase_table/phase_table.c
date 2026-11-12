@@ -111,7 +111,7 @@ void setupdsp_after_novac(void)
 {
     dxch(ADDRESS_OF(RUPTREG1));
     relint();
-    dtcb((word)(SETUPDSP + 8u)); /* DXCH Z: "RETURN" */
+    dtcb((word)(SETUPDSP + 010u)); /* DXCH Z: "RETURN" */
 }
 
 /* ======================================================================

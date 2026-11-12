@@ -10,8 +10,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- KEP, KEP2, PREFINAL, PREDICT3 -- pp. 869-870 ---- */
 
 /* KEP, the "UPCONTRL ENTRY INTO KEP2.": P66, "DISPLAY TRIM GIMBAL ANGLE

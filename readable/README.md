@@ -1389,6 +1389,11 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    tools/code_extents.py names for it. The case tests check a table's
    words against the rope but take its count from the table, so this is
    what notices a table one word short.
+   `make style-check` counts the breaks of STYLE.md that a script can
+   know by their form (tools/style_check.py) and holds each directory of
+   src/ to tests/style_owed.txt, the list of what the whole-tree review
+   (issue #1334) found and is still to fix. A new break fails, and the
+   list only gets shorter.
 2. **x86 exact scenarios.** The x86_64 flight program is built from the
    readable routines alone (`tests/x86_readable.py`): under them are the
    faithful port's step and main (`c64-port/platform/x86`) and its model
@@ -1547,8 +1552,8 @@ builds the x86 flight program the same way and flies gate 2's 86
 scenarios. Each program that ran left its counts, and a line of `src/` is
 run if any of them ran it. What is counted is every line the build
 compiled, in a program that ran or not: each compile leaves the lines of
-its object, and a line no program holds counts as unrun. Of the 60,127
-lines of C with code in them, 1,504 (2.5%) are run by none, in 631
+its object, and a line no program holds counts as unrun. Of the 59,897
+lines of C with code in them, 1,511 (2.5%) are run by none, in 634
 stretches of 214 files. That is a figure for the C alone: interpretive
 code is tables of words, and none of its words is among those lines
 (below).
@@ -1582,10 +1587,10 @@ check holds each stretch to its kind's rule:
 - **not-modelled** (123 lines): the source marks the line
   `not_modelled()`, an outcome that cannot come there. The stretch must
   hold the call.
-- **impossible** (139 lines): no state brings the routine to the line,
+- **impossible** (145 lines): no state brings the routine to the line,
   and the reason says what in the routine's own lines, or its file's,
   rules the outcome out. An argument, not a run. The reason must say why.
-- **never** (58 lines): no program brings the state, though the routine's
+- **never** (59 lines): no program brings the state, though the routine's
   own lines do not rule it out. The reason rests on what the rest of the
   program stores there or on what the assembler makes, and says what was
   looked at. The comment at the line must say never, and the reason why.

@@ -36,14 +36,6 @@
 #include "../interpreter/notation.h"
 #include "../agc/names.h"
 
-/* TC at, to a routine out of the file: Q gets the return and the routine
- * runs next. */
-static inline void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* Instruction words, for an INDEX before them: the operation code (CCS is
  * 1, CA 3, CS 4, TS 5 with its quarter code; after an EXTEND, MSU is 2, MP
  * 7, DV 1 and DCA 3, whose address is written one more). */

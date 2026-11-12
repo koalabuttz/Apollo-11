@@ -11,8 +11,6 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* TTF/8CL: the time to go is the root of a cubic in TTF/8 whose
  * coefficients, to TABLTTF, come from the phase's targets (through X1,
  * INTPRETX: the jerk JDG, the acceleration ADG, the velocity VDG and the

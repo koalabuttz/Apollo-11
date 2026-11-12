@@ -30,8 +30,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* GOTOV56 -- p. 593: "P20 TERMINATES BY GOTOV56 INSTEAD OF GOTOPOOH":
  * TRMTRACK's 2CADR (VB56CADR) through SUPDXCHZ. */
 void gotov56(void)

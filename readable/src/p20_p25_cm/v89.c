@@ -24,8 +24,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void v89_choose_axis(void);
 static void setpaf(void);
 

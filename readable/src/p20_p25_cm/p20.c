@@ -25,8 +25,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* PROG20 -- p. 562. "IMU STATUS CHECK". */
 void prog20(void)
 {

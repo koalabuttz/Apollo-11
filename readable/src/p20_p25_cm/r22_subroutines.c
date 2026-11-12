@@ -26,8 +26,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void lighton(void);
 static void rangerd3(void);
 static void rangerd1_positive(void);

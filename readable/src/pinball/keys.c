@@ -93,7 +93,7 @@ void charin(void)
     case IS_MINUS_ZERO:
         ad_at(ADDRESS_OF(MPAC)); /* EXTEND; BZF CHARIN2 */
         if (!A_is_zero()) {
-            tc_at(CHARIN + 10u);
+            tc_at(CHARIN + 012u);
             reldspon();
         }
         break;
@@ -130,9 +130,9 @@ void eighty_nine_test(void)
     set_A(THREE);
     mask_at(ADDRESS_OF(DECBRNCH)); /* CCS A: MASK leaves 0 to 3 */
     if (ccs_at(A_ADDRESS) == POSITIVE)
-        tc(EIGHTY_NINE_TEST + 8u, NUM);
+        tc(EIGHTY_NINE_TEST + 010u, NUM);
     else
-        tc(EIGHTY_NINE_TEST + 9u, CHARALRM);
+        tc(EIGHTY_NINE_TEST + 011u, CHARALRM);
 }
 
 /* NUM -2 -- LM p. 399, CM p. 316. The 0 key, whose code is 20: CHAR +0. */
@@ -196,13 +196,13 @@ void num(void)
     ts(ADDRESS_OF(CODE));
     ca(ADDRESS_OF(DSPCOUNT));
     ts(ADDRESS_OF(COUNT));
-    tc_at(NUM + 16u);
+    tc_at(NUM + 020u);
     if (!dspin_returns()) return;
 
     set_A(THREE);
     mask_at(ADDRESS_OF(DECBRNCH)); /* "+0, OCTAL. +1, + DEC. +2, - DEC." */
     if (ccs_at(A_ADDRESS) == POSITIVE) {
-        tc_at(NUM + 20u);
+        tc_at(NUM + 024u);
         dectobin();
         return;
     }
@@ -234,12 +234,12 @@ static void dectobin(void)
     xch(ADDRESS_OF(MPAC) + 1u);
     ad_at(ADDRESS_OF(CHAR));
     if (!ts(ADDRESS_OF(MPAC) + 1u)) {
-        tc_at(DECTOBIN + 10u); /* "NO OF" */
+        tc_at(DECTOBIN + 012u); /* "NO OF" */
         endnmtst();
         return;
     }
     ads(ADDRESS_OF(MPAC));
-    tc_at(DECTOBIN + 12u);
+    tc_at(DECTOBIN + 014u);
     decend();
 }
 
@@ -297,9 +297,9 @@ static void decend(void)
     dmp(); /* ADRES DECON */
     set_A(THREE);
     mask_at(ADDRESS_OF(DECBRNCH));
-    tc_at(DECEND + 9u);
+    tc_at(DECEND + 011u);
     switch (a_word()) {
-    case 1u: /* "+" */ tc_at(DECEND + 10u); break;
+    case 1u: /* "+" */ tc_at(DECEND + 012u); break;
     case 2u: /* "- CASE" */
         dcs(ADDRESS_OF(MPAC) + 1u);
         dxch(ADDRESS_OF(MPAC) + 1u);
@@ -391,7 +391,7 @@ static void nvcom(void)
     ts(ADDRESS_OF(REQRET));
     set_A(ENDINST);
     ts(ADDRESS_OF(ENTRET));
-    tc(NVCOM + 8u, ENDOFJOB);
+    tc(NVCOM + 010u, ENDOFJOB);
 }
 
 /* ---- The sign keys ---- */
@@ -508,7 +508,7 @@ static bool signtest_returns(void)
     static const struct {
         word first_digit;
         word at;
-    } registers[] = {{R1D1, SIGNTEST + 6u}, {R2D1, SIGNTEST + 8u}, {R3D1, SIGNTEST + 10u}};
+    } registers[] = {{R1D1, SIGNTEST + 6u}, {R2D1, SIGNTEST + 010u}, {R3D1, SIGNTEST + 012u}};
     unsigned i;
 
     lxch(Q_ADDRESS);
@@ -528,7 +528,7 @@ static bool signtest_returns(void)
         }
         tc_return(Q_ADDRESS); /* TC Q: on to the next */
     }
-    tc(SIGNTEST + 11u, ENDOFJOB); /* "NO MATCH FOUND. SIGN ILLEGAL" */
+    tc(SIGNTEST + 013u, ENDOFJOB); /* "NO MATCH FOUND. SIGN ILLEGAL" */
     return false;
 }
 
@@ -564,18 +564,18 @@ void clear(void)
     ts(ADDRESS_OF(INREL));
     switch (ccs_at(ADDRESS_OF(CLPASS))) {
     case POSITIVE:
-        tc_at(CLEAR + 8u);
+        tc_at(CLEAR + 010u);
         clpashi();
         return;
-    case IS_PLUS_ZERO: tc_at(CLEAR + 9u); break; /* TC +2 */
-    case NEGATIVE: tc_at(CLEAR + 10u); break;    /* TC +1 */
+    case IS_PLUS_ZERO: tc_at(CLEAR + 011u); break; /* TC +2 */
+    case NEGATIVE: tc_at(CLEAR + 012u); break;     /* TC +1 */
     case IS_MINUS_ZERO: break;
     }
     /* "IF CLPASS IS +0 OR -, IT IS PASS0" */
     ca(ADDRESS_OF(INREL));
-    tc_at(CLEAR + 12u);
+    tc_at(CLEAR + 014u);
     if (!legaltst_returns()) return;
-    tc_at(CLEAR + 13u);
+    tc_at(CLEAR + 015u);
     clear1();
 }
 
@@ -601,9 +601,9 @@ static void clpashi(void)
     case IS_MINUS_ZERO: ads(ADDRESS_OF(REQRET)); break;
     }
     ca(ADDRESS_OF(INREL));
-    ts(ADDRESS_OF(MIXTEMP));    /* "TEMP STORAGE FOR INREL" */
-    dim(ADDRESS_OF(VERBREG));   /* "DECREMENT VERB AND RE-DISPLAY" */
-    tc(CLPASHI + 9u, BANKCALL); /* CADR UPDATVB */
+    ts(ADDRESS_OF(MIXTEMP));      /* "TEMP STORAGE FOR INREL" */
+    dim(ADDRESS_OF(VERBREG));     /* "DECREMENT VERB AND RE-DISPLAY" */
+    tc(CLPASHI + 011u, BANKCALL); /* CADR UPDATVB */
 }
 
 /* CLPASHI +11, after UPDATVB: INREL back ("RESTORE INREL"), then CLEAR1. */
@@ -678,7 +678,7 @@ static bool five_blank_plus2_returns(void)
     ts(ADDRESS_OF(DECBRNCH));
     ca(indexed_by(ADDRESS_OF(SINBLANK) - 2u, inrel));
     ts(ADDRESS_OF(COUNT));
-    tc_at(FIVE_BLANK + 16u);
+    tc_at(FIVE_BLANK + 020u);
     if (!dspin_returns()) return false;
 
     /* 5BLANK1 */

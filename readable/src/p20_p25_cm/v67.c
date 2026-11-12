@@ -33,8 +33,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- V67CALL and the display ---- */
 
 /* V67CALL: V67WW, by the interpreter. */

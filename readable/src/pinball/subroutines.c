@@ -184,7 +184,7 @@ void reldsp(void)
     ts(ADDRESS_OF(MONSAVE1));
     switch (ccs_at(ADDRESS_OF(DSPLIST))) {
     case IS_PLUS_ZERO:
-        tc_at(RELDSP + 8u); /* TC RELDSP2: "LIST EMPTY" */
+        tc_at(RELDSP + 010u); /* TC RELDSP2: "LIST EMPTY" */
         reldsp2();
         return;
     case POSITIVE:
@@ -196,7 +196,7 @@ void reldsp(void)
     case IS_MINUS_ZERO: break; /* (CCS left +0 in A) */
     }
     xch(ADDRESS_OF(DSPLIST));
-    tc_at(RELDSP + 11u);
+    tc_at(RELDSP + 013u);
     jobwake();
     if (Z != RELDSP2) not_modelled(); /* JOBWAKE went to CCSHOLE */
     reldsp2();
@@ -272,7 +272,7 @@ void sfrutmix(void)
     ca(indexed_by(ADDRESS_OF(LOW5), decount)); /* "LOW5, MID5, OR HI5 IN A" */
     mask_at(ADDRESS_OF(RUTMXTEM));
     to = indexed_instruction(0u, L); /* INDEX L; TC 0 */
-    tc_at(SFRUTMIX + 9u);
+    tc_at(SFRUTMIX + 011u);
     if (to == GOQ)
         tc_return(Q_ADDRESS); /* GOQ: TC Q */
     else if (to == RIGHT5)
@@ -323,7 +323,7 @@ void sfconum(void)
     ca(indexed_by(ADDRESS_OF(LOW5), decount));
     mask_at(ADDRESS_OF(NNTYPTEM));
     to = indexed_instruction(0u, L); /* INDEX L; TC 0 */
-    tc_at(SFCONUM + 12u);
+    tc_at(SFCONUM + 014u);
     if (to == GOQ)
         tc_return(Q_ADDRESS); /* GOQ: TC Q */
     else if (to == RIGHT5)

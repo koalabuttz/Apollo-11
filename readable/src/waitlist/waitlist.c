@@ -473,6 +473,10 @@ void longcall(const word task[2])
  * delay first: one that is not positive is alarm 1204 (LONGPOOH). */
 void lngcall2(void)
 {
+#if LUMINARY099
+    bool negative = false;
+#endif
+
     lxch(ADDRESS_OF(LONGEXIT) + 1u);
     set_A(TWO);
     A = add16(A, Q); /* ADS Q */
@@ -482,18 +486,19 @@ void lngcall2(void)
 #if LUMINARY099
     set_A(LONGTIME(0));
     switch (ccs_register(A_ADDRESS)) {
-    case POSITIVE: continue_at(LONGCYCL); return;
-    case NEGATIVE: break;
-    case IS_PLUS_ZERO:
-    case IS_MINUS_ZERO:
-        set_A(LONGTIME(1));
+    case POSITIVE: continue_at(LONGCYCL); return; /* "HI-ORDER OK" */
+    case IS_PLUS_ZERO: break;                     /* "CHECK LO-ORDER" */
+    case NEGATIVE: negative = true; break;        /* "NEG. DT": to LONGPOOH */
+    case IS_MINUS_ZERO: break; /* (the CCS's fourth word is the check of the low order) */
+    }
+    if (!negative) {
+        set_A(LONGTIME(1)); /* "CHECK LO-ORDER FOR ZERO OR NEGATIVE." */
         if (A != 0u && !(A & 0100000u)) {
             continue_at(LONGCYCL);
             return;
         }
-        break;
     }
-    /* LONGPOOH */
+    /* LONGPOOH: "BAD DELTA-TIME. ABORT" */
     dxch(ADDRESS_OF(LONGEXIT));
     tc_at((word)(LONGPOOH + 3u));
     continue_at(POODOO1);

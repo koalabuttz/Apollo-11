@@ -19,8 +19,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- S40.1 -- pp. 764-767 ---- */
 
 /* S40.1: the return kept in QTEMP (STQ), TIG kept in TIGSAVE. With

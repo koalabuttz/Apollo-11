@@ -27,6 +27,9 @@ typedef uint16_t reg16;
 #define MINUS_ZERO ((word)077777)
 #define SIGN_BIT   ((word)040000)
 
+/* How many entries a table has. */
+#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
+
 /* The memory and channels of the program being run. The routine bindings
  * (src/binding/) point these at the flight program's state before each
  * call; nothing else changes them. */
@@ -492,6 +495,15 @@ static inline void tc_through(unsigned address)
 static inline void continue_at(word address)
 {
     Z = address;
+}
+
+/* TC at fixed address at, to a routine of another file (or to INTPRET): Q
+ * gets the return, and the routine runs next. A routine that reads the
+ * words after its TC (PHASCHNG, UPFLAG, ALARM) finds them through Q. */
+static inline void tc_to(word at, word routine)
+{
+    tc_at(at);
+    continue_at(routine);
 }
 
 /* DTCB (DXCH Z) at address at: the 2CADR in A,L becomes Z and BBANK, and A,L

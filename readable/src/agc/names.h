@@ -2692,7 +2692,7 @@ static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
 #define POSGN            ((word)K_POSGN)
 #define SGNCOM           ((word)K_SGNCOM)
 #define PLUS_ON          ((word)(K_POSGN + 4u))  /* +ON: the word after POSGN's TC BOTHSGN */
-#define MINUS_ON         ((word)(K_SGNCOM + 9u)) /* -ON: the word after SGNCOM's TC L */
+#define MINUS_ON         ((word)(K_SGNCOM + 011u)) /* -ON: the word after SGNCOM's TC L */
 #define SIGNTEST         ((word)K_SIGNTEST)
 #define SGNTST1          ((word)K_SGNTST1)
 #define CLEAR            ((word)K_CLEAR)

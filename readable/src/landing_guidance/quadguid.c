@@ -12,8 +12,6 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- QUADGUID -- pp. 808-809 ---- */
 
 /* QUADGUID. As the listing has it,

@@ -19,13 +19,6 @@
 
 static void one_to2sub(void);
 
-/* TC at to a routine of another file: Q the word after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* TC Q, the return to the word in Q: its address bits (an overflow in Q,
  * its 16th bit, is not part of the address). Not modelled: a Q that is
  * not an address of fixed memory (the AGC would run it as another
@@ -267,8 +260,8 @@ void incrcdus_plus7(void)
 {
     incr(ADDRESS_OF(BUF));
     ca(MPAC_AT(5u));
-    tc_at(INCRCDUS + 9u);
-    if (cduinc() == INCRCDUS + 10u) incrcdus_plus10();
+    tc_at(INCRCDUS + 011u);
+    if (cduinc() == INCRCDUS + 012u) incrcdus_plus10();
 }
 
 void incrcdus_plus10(void)

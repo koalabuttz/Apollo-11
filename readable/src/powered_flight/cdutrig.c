@@ -20,14 +20,6 @@
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
 
-/* TC at the word at to a routine outside the file, which reads the word after
- * the TC (USPRCADR's CADR). */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* ---- The interpretive entries -- LM p. 1259 (CM p. 1365) ---- */
 
 /* CDUTRIG and CD*TR*G: out of the interpreter to CDUTRIGS or CD*TR*GS, and

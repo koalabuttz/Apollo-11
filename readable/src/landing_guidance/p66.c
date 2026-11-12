@@ -16,8 +16,6 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* RODTASK: the second's task, which starts RODCOMP as a job (FINDVAC,
  * priority 22, "EBANK= DVCNTR", 2CADR RODCOMP), */
 void rodtask(void)

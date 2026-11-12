@@ -47,7 +47,7 @@ void mmchang_plus1(void)
     if (ts(ADDRESS_OF(MPAC))) not_modelled();
     set_A(ND1);
     ts(ADDRESS_OF(DSPCOUNT));
-    tc(MMCHANG + 11u, BANKCALL); /* CADR 2BLANK */
+    tc(MMCHANG + 013u, BANKCALL); /* CADR 2BLANK */
 }
 
 /* MMCHANG +13, where 2BLANK returns. "BLOCK NUM CHAR IN" (DSPCOUNT -VD1),
@@ -57,7 +57,7 @@ void mmchang_plus13(void)
     set_A(negate(VD1));
     ts(ADDRESS_OF(DSPCOUNT));
     ca(ADDRESS_OF(MPAC));
-    tc(MMCHANG + 16u, POSTJUMP); /* CADR MODROUTB */
+    tc(MMCHANG + 020u, POSTJUMP); /* CADR MODROUTB */
 }
 
 /* REQMM -- the return, complemented, into REQRET (minus for ENTER's
@@ -76,11 +76,11 @@ void reqmm(void)
 
 void reqmm_plus8(void)
 {
-    tc_at(REQMM + 8u);
+    tc_at(REQMM + 010u);
     flashon();
     set_A(ONE);
-    ts(ADDRESS_OF(DECBRNCH));            /* "SET FOR DEC" */
-    tc(REQMM + 11u, ADDRESS_OF(ENTRET)); /* TC ENTEXIT */
+    ts(ADDRESS_OF(DECBRNCH));             /* "SET FOR DEC" */
+    tc(REQMM + 013u, ADDRESS_OF(ENTRET)); /* TC ENTEXIT */
 }
 
 /* ---- Verbs 30 and 31, the requests (LM pp. 447-448, CM p. 366) ---- */
@@ -146,7 +146,7 @@ void requestc_plus1(void)
     dxch(ADDRESS_OF(MPAC) + 1u);
     ca(ADDRESS_OF(MPAC) + 4u); /* "PRIO IN A" */
     inhint();
-    tc(REQUESTC + 8u, ADDRESS_OF(MPAC));
+    tc(REQUESTC + 010u, ADDRESS_OF(MPAC));
 }
 
 /* SETVAC -- TC FINDVAC for REQEX1. */

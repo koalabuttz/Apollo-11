@@ -25,8 +25,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- P32 and P72 -- pp. 652-655 ---- */
 
 /* P32: AVFLAGA, the CM the active vehicle, then on at P32STRT. */

@@ -33,16 +33,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-/* TC at, to a routine out of the file: Q gets the return, and the
- * routine runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* TC Q, a subroutine's return: the word in Q runs as the instruction TC
  * <Q>, so Z gets the address and Q becomes 3. Not modelled: a Q (taken
  * overflow-corrected, as the AGC reads a register's word) that is no such

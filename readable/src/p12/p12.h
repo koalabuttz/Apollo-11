@@ -24,14 +24,6 @@
 #if LUMINARY099
 #include "../interpreter/notation.h"
 
-/* TC at, to a routine out of the file: Q gets the return and the routine
- * runs next. */
-static inline void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* P12LM, its flashing displays and BURNBABY -- p12.c */
 void p12lm(void);                 /* P12LM */
 void p12lm_after_phaschng(void);  /* PHASCHNG's return: TC BANKCALL */

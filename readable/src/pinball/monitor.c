@@ -49,9 +49,9 @@ void monitor(void)
     case POSITIVE: tc_at(MONITOR + 6u); break;
     case IS_PLUS_ZERO:
         ad_at(A_ADDRESS); /* BIT15/14, OCT 60000, run as AD A */
-        tc_at(MONITOR + 8u);
+        tc_at(MONITOR + 010u);
         break;
-    case NEGATIVE: tc_at(MONITOR + 8u); break;
+    case NEGATIVE: tc_at(MONITOR + 010u); break;
     case IS_MINUS_ZERO:
         set_A(BIT14); /* "EXTERNALLY INITIATED MONITOR." */
         ads(ADDRESS_OF(MPAC) + 1u);
@@ -81,12 +81,12 @@ static void monit2(void)
     ts(ADDRESS_OF(DSPLOCK)); /* "+0 INTO DSPLOCK SO MONITOR CAN RUN." */
     switch (ccs_at(ADDRESS_OF(CADRSTOR))) {
     case POSITIVE:
-        tc_at(MONIT2 + 11u); /* TC +2 */
-        continue_at(MONIT2 + 13u);
+        tc_at(MONIT2 + 013u); /* TC +2 */
+        continue_at(MONIT2 + 015u);
         return;
-    case IS_PLUS_ZERO: tc(MONIT2 + 12u, RELDSP1); return;
-    case NEGATIVE: continue_at(MONIT2 + 13u); return;
-    case IS_MINUS_ZERO: continue_at(MONIT2 + 14u); return;
+    case IS_PLUS_ZERO: tc(MONIT2 + 014u, RELDSP1); return;
+    case NEGATIVE: continue_at(MONIT2 + 015u); return;
+    case IS_MINUS_ZERO: continue_at(MONIT2 + 016u); return;
     }
 }
 
@@ -95,7 +95,7 @@ static void monit2(void)
 void monit2_plus13(void)
 {
     inhint();
-    continue_at(MONIT2 + 14u);
+    continue_at(MONIT2 + 016u);
 }
 
 /* MONIT2 +14. "IF MONSAVE WAS +, NO REQUEST"; "IF MONSAVE WAS 0, REQUEST
@@ -104,15 +104,15 @@ void monit2_plus14(void)
 {
     switch (ccs_at(ADDRESS_OF(MONSAVE))) {
     case POSITIVE:
-        tc_at(MONIT2 + 15u); /* TC +5 */
-        continue_at(MONIT2 + 20u);
+        tc_at(MONIT2 + 017u); /* TC +5 */
+        continue_at(MONIT2 + 024u);
         return;
     case IS_PLUS_ZERO:
         set_A(ONE);
-        tc(MONIT2 + 17u, WAITLIST);
+        tc(MONIT2 + 021u, WAITLIST);
         return;
-    case NEGATIVE: tc(MONIT2 + 17u, WAITLIST); return;
-    case IS_MINUS_ZERO: tc(MONIT2 + 18u, MONREQ); return; /* the 2CADR's word, TC MONREQ */
+    case NEGATIVE: tc(MONIT2 + 021u, WAITLIST); return;
+    case IS_MINUS_ZERO: tc(MONIT2 + 022u, MONREQ); return; /* the 2CADR's word, TC MONREQ */
     }
 }
 
@@ -124,7 +124,7 @@ void monit2_plus20(void)
     dxch(ADDRESS_OF(MPAC));
     dxch(ADDRESS_OF(MONSAVE));
     relint();
-    tc(MONIT2 + 23u, ADDRESS_OF(ENTRET));
+    tc(MONIT2 + 027u, ADDRESS_OF(ENTRET));
 }
 
 /* MONREQ -- LM p. 438, CM p. 356. "CALLED BY WAITLIST": the time for noun
@@ -147,12 +147,12 @@ void monreq(void)
 void monreq_plus10(void)
 {
     set_A(CHRPRIO);
-    tc(MONREQ + 11u, NOVAC); /* "ENTER EXEC REQUEST FOR MONDO" */
+    tc(MONREQ + 013u, NOVAC); /* "ENTER EXEC REQUEST FOR MONDO" */
 }
 
 void monreq_plus14(void)
 {
-    tc(MONREQ + 14u, TASKOVER);
+    tc(MONREQ + 016u, TASKOVER);
 }
 
 /* KILLMON -- LM p. 438, CM p. 356. "ZERO MONSAVE AND TURN KILLER BIT OFF",
@@ -185,7 +185,7 @@ void mondo(void)
     case NEGATIVE: mask_at(ADDRESS_OF(MONSAVE)); break;
     case IS_MINUS_ZERO: break;
     }
-    tc(MONDO + 9u, UPDATNN - 1u); /* "PLACE NOUN INTO NOUNREG AND DISPLAY IT" */
+    tc(MONDO + 011u, UPDATNN - 1u); /* "PLACE NOUN INTO NOUNREG AND DISPLAY IT" */
 }
 
 /* MONDO +10, where UPDATNN returns. "CHANGE MONITOR VERB TO DISPLAY VERB":
@@ -248,7 +248,7 @@ void pasteopt_plus4(void)
 /* PASTEOPT +8, where BLANKSUB returns when the DSKY is busy. */
 void pasteopt_plus8(void)
 {
-    tc_at(PASTEOPT + 8u); /* TC +1 */
+    tc_at(PASTEOPT + 010u); /* TC +1 */
     continue_at(ENDPASTE);
 }
 
@@ -309,14 +309,14 @@ void dspalarm(void)
     set_A(negate(MONADR));
     ad_at(ADDRESS_OF(ENTRET));
     if (!A_is_zero()) { /* EXTEND; BZF +2 */
-        tc(DSPALARM + 8u, CHARALRM);
+        tc(DSPALARM + 010u, CHARALRM);
         return;
     }
-    tc_at(DSPALARM + 9u);
+    tc_at(DSPALARM + 011u);
     kilmonon();
-    tc_at(DSPALARM + 10u);
+    tc_at(DSPALARM + 012u);
     falton();
-    tc(DSPALARM + 11u, PASTEVB); /* "PUT MONITOR VERB BACK IN VERBREG" */
+    tc(DSPALARM + 013u, PASTEVB); /* "PUT MONITOR VERB BACK IN VERBREG" */
 }
 
 /* CHARALRM -- "NOT NVSUB INITIATED. TURN ON OPR ERROR". */

@@ -16,14 +16,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-/* TC at "at" to a routine outside the file (PHASCHNG), which reads the
- * word after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* INTWAKEU -- LM p. 1225 (CM p. 1332): the return kept ("SAVE Q FOR
  * RETURN"), and into the interpreter. */
 void intwakeu(void)

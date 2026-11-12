@@ -52,14 +52,6 @@
 
 #if COMANCHE055
 
-/* TC at, to a routine out of the file (or to a keyed label): Q gets the
- * return, and the routine runs next. */
-static inline void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* ---- Part 1: P20 (p20.c) ---- */
 
 extern const struct interpretive_code PROG20_CODE;

@@ -23,14 +23,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* ---- S40.9 -- pp. 723-725 ---- */
 
 /* S40.9: to the interpreter, for S40_9_CODE. */

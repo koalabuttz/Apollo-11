@@ -21,8 +21,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- ERTHRVSE and EARTHR -- p. 430 ---- */
 
 /* ERTHRVSE -- p. 430, in bank 32. The earth rate vector in stable member

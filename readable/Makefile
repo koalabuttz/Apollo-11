@@ -320,8 +320,8 @@ HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 .PHONY: all check code-extents kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
 	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases throttle-cases llge-cases p70-cases p12-cases ascent-cases servicer-cases landing-displays-cases findcduw-cases p51-p53-cases cm-p51-p53-cases ephemerides-cases cm-p61-p67-cases cm-servicer-cases cm-reentry-cases cm-body-attitude-cases cm-p37-p70-cases cm-tvc-init-cases cm-tvc-exec-cases cm-tvc-massprop-cases cm-tvc-restarts-cases cm-tvc-daps-cases cm-tvc-stroke-cases cm-tvc-roll-cases cm-mysubs-cases cm-rcs-dap-cases cm-auto-man-cases cm-rcs-dap-exec-cases cm-jet-select-cases cm-imu-cal-cases cm-p11-cases cm-tpi-search-cases cm-entry-dap-cases constant-pool-cases lat-long-cases planetary-cases measurement-inc-cases conics-cases integration-init-cases orbital-integration-cases inflight-align-cases powered-flight-cases time-free-fall-cases self-check-cases imu-mode-switching-cases display-interface-cases update-program-cases star-tables-cases rtb-op-codes-cases dap-interface-cases dapidler-cases p-axis-cases q-r-axis-cases tjet-law-cases kalman-filter-cases trim-gimbal-cases aostask-cases sps-backup-cases assembly-cases names-check \
 	coverage x86-flight x86-link-check chan13-sites x86-objects-lm x86-objects-cm x86-scenarios-quick x86-scenarios \
-	x86-lockstep-quick x86-lockstep x86-lockstep-record line-coverage line-coverage-check format clean
-all: names-check coverage code-extents x86-link-check chan13-sites line-coverage-check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
+	x86-lockstep-quick x86-lockstep x86-lockstep-record line-coverage line-coverage-check style-check format clean
+all: names-check coverage code-extents x86-link-check chan13-sites line-coverage-check style-check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
 	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases \
@@ -1516,6 +1516,14 @@ line-coverage:
 # be wrong is reported as that (no build, no clang).
 line-coverage-check:
 	@python3 tests/line_coverage.py --self-check
+
+# The style guide's rules that a program can count (tools/style_check.py,
+# issue #1334): what each directory of src/ still owes stands in
+# tests/style_owed.txt, and no count may go up. First the check itself, on
+# made-up sources.
+style-check:
+	@python3 tools/style_check.py --self-check
+	@python3 tools/style_check.py
 
 format:
 	$(PORT)/deps/llvm-mos/bin/clang-format -i --style=file:$(PORT)/.clang-format $(SOURCES) $(filter %.h,$(HEADERS))

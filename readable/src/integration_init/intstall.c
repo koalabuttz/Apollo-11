@@ -72,14 +72,6 @@ const struct interpretive_code ERASTAL2_CODE = {CODE_BANK(I_ERASTAL2), CODE_Z(I_
 
 /* ---- The basic code ---- */
 
-/* TC at "at" to a routine outside the file (PHASCHNG, JOBSLEEP,
- * JOBWAKE), which reads the words after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* A word's value as a signed number (ones' complement). */
 static long value_of(word w)
 {

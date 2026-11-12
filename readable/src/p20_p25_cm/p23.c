@@ -36,8 +36,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void p23_152(void);
 static void p23_16(void);
 static void r23_10(void);

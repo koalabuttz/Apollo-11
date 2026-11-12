@@ -24,8 +24,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- S50 (LOCSAM) -- pp. 748-751 ---- */
 
 /* S50: the time in MPAC, kept in TSIGHT; the sun's and the moon's

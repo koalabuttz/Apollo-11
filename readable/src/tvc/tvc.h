@@ -78,13 +78,6 @@ static inline int value_of(word value)
     return (value & SIGN_BIT) ? -(int)negate(value) : (int)value;
 }
 
-/* TC (or TCR) to routine at fixed address at. */
-static inline void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* TC Q, the end of LOADCOEF, S40.15 and MASSPROP: the word in Q runs as
  * the instruction TC <Q>, so Z gets the address and Q becomes 3. Q 3
  * itself (Q after a TC Q) names the word at 3, EBANK: the word in Q, 3,

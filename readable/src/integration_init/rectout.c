@@ -56,14 +56,6 @@ static const word a_pchk_words[] = {
 const struct interpretive_code A_PCHK_CODE = {CODE_BANK(I_A_PCHK), CODE_Z(I_A_PCHK),
                                               COUNT(a_pchk_words), a_pchk_words};
 
-/* TC at "at" to a routine outside the file (PHASCHNG, UPFLAG), which
- * reads the word after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* After the EXIT: group 2's phase (OCT 04022), REINTFLG set ("PHASE
  * CHANGE HAS OCCURRED BETWEEN" INTSTALL and INTWAKE), and back into the
  * interpreter. */

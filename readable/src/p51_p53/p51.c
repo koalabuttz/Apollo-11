@@ -19,8 +19,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void p51b(void);
 static void p51e(void);
 

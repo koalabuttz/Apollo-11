@@ -35,8 +35,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- P20 (P22) ---- */
 
 static void orbchgo_display(void);

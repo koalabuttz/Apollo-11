@@ -23,8 +23,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static const word delrspl_words[] = {
     /* ---- DELRSPL -- pp. 643-644 ---- */
 

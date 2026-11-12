@@ -56,9 +56,11 @@ void ddv_bddv(void)
 
     switch (ccs_at(BUF_AT(0u))) {
     case POSITIVE: bufpos(); return;
+    case IS_PLUS_ZERO: break; /* TCF +2 */
     case NEGATIVE: bufneg(); return;
-    default: bufzero(); return;
+    case IS_MINUS_ZERO: break;
     }
+    bufzero();
 }
 
 /* BUFZERO: the divisor's major part is zero. "FORCE SIGN AGREEMENT BEFORE
@@ -73,8 +75,9 @@ static void bufzero(void)
 
     switch (ccs_at(MPAC_AT(0u))) {            /* "TEST TO SEE IF MPAC NON-ZERO. (TOO BIG)" */
     case POSITIVE: ovf_plus(); return;        /* "MAJOR PART OF DIVIDEND IS POSITIVE NON-0" */
+    case IS_PLUS_ZERO: break;                 /* TCF +2 */
     case NEGATIVE: ovf_plus_minus1(); return; /* "... IS NEG. NON-ZERO" */
-    default: break;
+    case IS_MINUS_ZERO: break;
     }
 
     xch(BUF_AT(1u));
@@ -83,8 +86,9 @@ static void bufzero(void)
     xch(MPAC_AT(0u));
     switch (ccs_at(BUF_AT(0u))) {
     case POSITIVE: buf_plus(); return;
+    case IS_PLUS_ZERO: break; /* TCF +2: "OVERFLOW ON ZERO DIVISOR." */
     case NEGATIVE: buf_minus(); return;
-    default: break; /* "OVERFLOW ON ZERO DIVISOR." */
+    case IS_MINUS_ZERO: break;
     }
 
     cs(MPAC_AT(0u)); /* "SIGN OF MPAC DETERMINES SIGN OF RESULT." */
@@ -142,19 +146,17 @@ static void buf_minus(void)
  * DIVIDEND IN THE PROCESS." "EXIT IMMEDIATELY ON ZERO DIVIDEND." */
 static void buf_plus(void)
 {
-    enum sign major = ccs_at(MPAC_AT(0u));
-    if (major == POSITIVE) {
-        mpac_plus();
-        return;
-    }
-    if (major == NEGATIVE) {
-        mpac_minus();
-        return;
+    switch (ccs_at(MPAC_AT(0u))) {
+    case POSITIVE: mpac_plus(); return;
+    case IS_PLUS_ZERO: break; /* TCF +2 */
+    case NEGATIVE: mpac_minus(); return;
+    case IS_MINUS_ZERO: break;
     }
     switch (ccs_at(MPAC_AT(1u))) {
     case POSITIVE: mpac_plus(); return;
+    case IS_PLUS_ZERO: continue_at(DANZIG); return; /* "EXIT IMMEDIATELY ON ZERO DIVIDEND." */
     case NEGATIVE: mpac_minus(); return;
-    default: continue_at(DANZIG); return;
+    case IS_MINUS_ZERO: continue_at(DANZIG); return;
     }
 }
 
@@ -187,7 +189,8 @@ static void mpac_plus(void)
          * as AD L, and the TCF +1 after it goes on. */
         ad_at(L_ADDRESS);
         break;
-    default: break;
+    case NEGATIVE: break; /* TCF +1 */
+    case IS_MINUS_ZERO: break;
     }
 
     set_A(HALF);
@@ -508,8 +511,9 @@ void v_sc2(void)
     switch (ccs_at(BUF_AT(0u))) { /* "FORCE DIVISOR POSITIVE WITH MAJOR PART
                                    * NON-ZERO (IF POSSIBLE)." */
     case POSITIVE: slash_buf_plus(); return;
+    case IS_PLUS_ZERO: break; /* TCF +2 */
     case NEGATIVE: slash_buf_minus(); return;
-    default: break;
+    case IS_MINUS_ZERO: break;
     }
 
     /* "SHIFT VECTOR AND SCALAR LEFT 14." "CHECK FOR OVERFLOW IN EACH
@@ -537,8 +541,9 @@ void v_sc2(void)
 
     switch (ccs_at(BUF_AT(0u))) {
     case POSITIVE: slash_buf_plus(); return;
+    case IS_PLUS_ZERO: dvovf(); return; /* "ZERO DIVISOR - OVERFLOW." */
     case NEGATIVE: slash_buf_minus(); return;
-    default: dvovf(); return; /* "ZERO DIVISOR - OVERFLOW." */
+    case IS_MINUS_ZERO: dvovf(); return;
     }
 }
 
@@ -576,13 +581,13 @@ static void slash_buf_plus(void)
     dxch(MPAC_AT(0u));
     dxch(MPAC_AT(3u));
 
-    tc_at(SLASH_NORM + 8u);
+    tc_at(SLASH_NORM + 010u);
     if (v_scdv()) return; /* "Y COMPONENT." */
     dxch(MPAC_AT(5u));
     dxch(MPAC_AT(0u));
     dxch(MPAC_AT(5u));
 
-    tc_at(SLASH_NORM + 12u);
+    tc_at(SLASH_NORM + 014u);
     if (v_scdv()) return; /* "Z COMPONENT." */
     vrotatex();           /* "GO RE-ARRANGE COMPONENTS BEFORE EXIT." */
 }
@@ -594,6 +599,7 @@ static void slash_buf_plus(void)
 static bool v_scdv(void)
 {
     enum sign major;
+    bool near_one = true;
 
     ca(ADDRESS_OF(VBUF) + 5u); /* "REFLECTS SIGN OF SCALAR." */
     ts(ADDRESS_OF(DVSIGN));
@@ -618,17 +624,19 @@ static bool v_scdv(void)
     cs(MPAC_AT(0u));    /* "CHECK POSSIBLE OVERFLOW." */
     ad_at(BUF2_AT(0u)); /* "UNNORMALIZED INPUT DIVISOR." */
     switch (ccs_at(A_ADDRESS)) {
-    case POSITIVE: break;                /* "NOT NEAR-ONE" */
+    case POSITIVE: near_one = false; break; /* "NOT NEAR-ONE" */
+    case IS_PLUS_ZERO: break; /* "+0 IS JUST POSSIBLE" (never +0: equal parts add to -0, below) */
     case NEGATIVE: dvovf(); return true; /* "NO HOPE" */
-    default:                             /* "+0 IS JUST POSSIBLE" */
-        ts(ADDRESS_OF(MAXDVSW));         /* "SIGNAL POSSIBLE NEAR-ONE CASE" */
-        cs(MPAC_AT(1u));                 /* "SEE IF DIVISION CAN BE DONE" */
+    case IS_MINUS_ZERO: break;
+    }
+    if (near_one) {
+        ts(ADDRESS_OF(MAXDVSW)); /* "SIGNAL POSSIBLE NEAR-ONE CASE" */
+        cs(MPAC_AT(1u));         /* "SEE IF DIVISION CAN BE DONE" */
         ad_at(BUF2_AT(1u));
         if (A_is_zero_or_minus()) {
             dvovf();
             return true;
         }
-        break;
     }
 
     /* DDVCALL: "CALL PRE-DIVIDE NORMALIZATION." The TCF leaves Q at the
@@ -654,7 +662,7 @@ void vecagree(void)
     alsignag(); /* "SIGN AGREE MPAC +3" */
     dxch(MPAC_AT(3u));
     dxch(MPAC_AT(5u));
-    tc_at(VECAGREE + 8u);
+    tc_at(VECAGREE + 010u);
     alsignag(); /* "SIGNAGREE MPAC +5" */
     dxch(MPAC_AT(5u));
     tc_through(A_ADDRESS);

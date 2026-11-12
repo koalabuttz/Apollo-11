@@ -23,8 +23,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* LOWMEMRY: the star's vector, CATLOG less X1. */
 static const word lowmemry_words[] = {
     ORDERS(VLOAD_STAR, RVQ),

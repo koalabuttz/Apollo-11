@@ -13,8 +13,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static const word incorp1[] = {
     /* INCORP1 -- p. 1149 (CM p. 1252).
      * In: "DMENFLG = 0 (6-DIMENSIONAL BVECTOR), =1 (9-DIMENSIONAL)", "W =

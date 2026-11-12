@@ -71,14 +71,6 @@
 
 #if COMANCHE055
 
-/* TC at, to a routine out of the file: Q gets the return, and the
- * routine runs next. */
-static inline void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* STARTENT to REFAZE10 -- startent.c */
 void startent_after_exit(void);     /* STARTENT +1 */
 void refaze10(void);                /* REFAZE10 (SCALEPOP's EXIT) */

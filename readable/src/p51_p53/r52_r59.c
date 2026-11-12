@@ -25,8 +25,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void r52a(void);
 static void r52b(void);
 static void getazel(void);

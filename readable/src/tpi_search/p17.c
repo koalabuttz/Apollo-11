@@ -42,16 +42,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-/* TC at, to a routine out of the file: Q gets the return and the routine
- * runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* TC to an erasable word that holds a return: the AGC runs the word as an
  * instruction, a TC when the program has saved an address there. Any
  * other word (another instruction, or a register's address) is not

@@ -26,8 +26,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void p57opt(void);
 static void alignopt(void);
 static void tdisp(void);

@@ -8,8 +8,6 @@
 #include "findcduw.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 #if LUMINARY099
 
 /* TC Q: back to the caller (Z the return, Q 3). Not modelled: a word in Q

@@ -25,8 +25,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void p61_4(void);
 static void p61_2(void);
 static void p62_2_separation(void);

@@ -46,7 +46,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 #if LUMINARY099
 #define STABLE_ORBIT_BANK 034u
 #else
@@ -55,15 +54,6 @@
 
 /* A label's address in its bank (02000-03777). */
 #define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
-
-/* TC at, to a routine out of the file or to INTPRET: Q gets the return
- * (for INTPRET, the first interpretive word), and the routine runs
- * next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
 
 static void vndsply(void);
 static void p38_option(void);

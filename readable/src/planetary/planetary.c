@@ -13,8 +13,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static const word rp_to_r[] = {
     /* RP-TO-R -- p. 1140 (CM p. 1243).
      * "SUBROUTINE TO CONVERT RP (VECTOR IN PLANETARY COORDINATE

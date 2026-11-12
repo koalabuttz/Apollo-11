@@ -7,8 +7,6 @@
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 #if LUMINARY099
 
 /* ATMAG: restart group 5 at 5.3 (PHASCHNG, OCT 00035), ... */

@@ -18,8 +18,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* FISHCALC: "GIVEN THE PRESENT POSITION, UNITR, CALCULATE A NEW UNITR THAT
  * IS ROTATED THROUGH TRANSFER ANGLE, THETA, ALONG THE TRAJECTORY.": "URPR
  * = UR CDELF + UHOR SDELF", UHOR being URONE cross UNI, the sine coming in

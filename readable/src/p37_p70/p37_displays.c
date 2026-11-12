@@ -17,8 +17,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* TC to an erasable word that holds a return: the AGC runs the word as an
  * instruction, a TC when the program has saved an address there. Any
  * other word (another instruction, or a register's address) is not

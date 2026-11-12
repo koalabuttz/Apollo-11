@@ -34,8 +34,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* INDEX MPAC; TC +1 at the address at: MPAC 0, 1 (or 2) picks the TC
  * after it or the next. Not modelled: an MPAC that runs a word past the
  * table's last as an instruction. */

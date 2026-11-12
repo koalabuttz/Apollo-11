@@ -19,14 +19,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* TC Q: the routine returns to the address in Q (bits 1-12), and Q
  * becomes 3. Not modelled: a Q that is not such an address (bits 13-15
  * set, or below 010). */

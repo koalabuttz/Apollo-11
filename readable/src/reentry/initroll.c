@@ -9,8 +9,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- INITROLL -- pp. 853-854 ---- */
 
 /* INITROLL, until the drag passes .05G: "IF D- .05G NEG, GO TO LIMITL/D",

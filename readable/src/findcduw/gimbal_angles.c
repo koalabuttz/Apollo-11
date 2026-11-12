@@ -10,8 +10,6 @@
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 #if LUMINARY099
 
 static void cduwxfr(void);

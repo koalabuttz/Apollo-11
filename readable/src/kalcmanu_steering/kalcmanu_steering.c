@@ -34,8 +34,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* TC Q: the routine returns to the address in Q (bits 1-12), and Q
  * becomes 3. Not modelled: a Q that is not such an address (bits 13-15
  * set, or below 010). Returns the address. */

@@ -18,8 +18,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- S30.1 -- pp. 639-640 ---- */
 
 /* The return to QTEMP; the CSM's state vector at ignition (THISPREC, the

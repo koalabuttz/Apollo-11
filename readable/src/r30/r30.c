@@ -34,7 +34,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 #if LUMINARY099
 #define R30_BANK 022u
 #else
@@ -43,15 +42,6 @@
 
 /* A label's address in its bank (02000-03777). */
 #define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
-
-/* TC at, to a routine out of the file or to INTPRET: Q gets the return
- * (for INTPRET, the first interpretive word), and the routine runs
- * next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
 
 /* ---- V82CALL -- LM pp. 713-714, CM pp. 515-516 ---- */
 
@@ -89,13 +79,13 @@ void v82goff_display(void)
 /* GOXDSPF's returns: terminate (TC ENDEXT), */
 void v82goff_terminate(void)
 {
-    tc_to(V82GOFF + 8u, ENDEXT);
+    tc_to(V82GOFF + 010u, ENDEXT);
 }
 
 /* proceed (TC +2), */
 void v82goff_proceed(void)
 {
-    tc_at(V82GOFF + 9u);
+    tc_at(V82GOFF + 011u);
     v82goff_ticktest();
 }
 
@@ -103,7 +93,7 @@ void v82goff_proceed(void)
  * VEHICLE." (TC -5): flash again. */
 void v82goff_recycle(void)
 {
-    tc_at(V82GOFF + 10u);
+    tc_at(V82GOFF + 012u);
     v82goff_display();
 }
 
@@ -111,7 +101,7 @@ void v82goff_recycle(void)
 void v82goff_ticktest(void)
 {
     set_A(BIT4); /* "80 MS" */
-    tc_to(V82GOFF + 12u, WAITLIST);
+    tc_to(V82GOFF + 014u, WAITLIST);
 }
 
 /* then RELINT and on into V82GOFLP. */
@@ -385,7 +375,7 @@ void ticktest_end(void)
 /* and the task ends (TC TASKOVER). */
 void ticktest_taskover(void)
 {
-    tc_to(TICKTEST + 8u, TASKOVER);
+    tc_to(TICKTEST + 010u, TASKOVER);
 }
 
 /* DOTICK: "RE-REQUEST TICKTEST" in a second (WAITLIST, 2CADR TICKTEST), */
@@ -408,7 +398,7 @@ void dotick_flags(void)
     switch (a_word()) {
     case 0u: dotick_taskover(); break;
     case 1u:
-        tc_at(DOTICK + 9u); /* TC TPERTICK */
+        tc_at(DOTICK + 011u); /* TC TPERTICK */
         tpertick();
         break;
     case 2u: tfftick(); break;
@@ -418,7 +408,7 @@ void dotick_flags(void)
 
 void dotick_taskover(void)
 {
-    tc_to(DOTICK + 8u, TASKOVER);
+    tc_to(DOTICK + 010u, TASKOVER);
 }
 
 /* TFFTICK: TFF one second on (DAS TFF, with the second in L). */

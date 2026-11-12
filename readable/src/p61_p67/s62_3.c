@@ -19,8 +19,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static const word s62_3_words[] = {
     /* S62.3 */ ORDERS(SETPD, SLOAD),
     ADDRESS_PLUS_ONE_D(0),

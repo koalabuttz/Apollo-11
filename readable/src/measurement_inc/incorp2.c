@@ -10,14 +10,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-/* TC at "at" to a routine outside the file (PHASCHNG, UPFLAG, POSTJUMP),
- * which reads the words after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* INCORP2 +020, after its EXIT: the "INITIAL IX 1 SETTING FOR W MATRIX",
  * 54 (54DD), to WIXA and WIXB, and the "INITIAL IX 2 SETTING FOR Z
  * COMPONENT", 0, to ZIXA and ZIXB. Then FAZA. (A CAF leaves no overflow

@@ -18,8 +18,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* S61.2: the MU for the conics: an EMSALT under 290K FT is an orbital
  * entry ("ESTABLISH MU FOR ORBITAL ENTRIES", 1/RTMU); above it, LUNENT, a
  * lunar one (1/RTMUE). CALLCON: "FILL VAC AREA WITH CONIC PARAMETERS"

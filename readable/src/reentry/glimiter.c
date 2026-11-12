@@ -9,8 +9,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- HAVDNRNG, GLIMITER -- pp. 871-872 ---- */
 
 /* HAVDNRNG, with the range error: DNRNGERR "= (PREDANG - THETA) /360",

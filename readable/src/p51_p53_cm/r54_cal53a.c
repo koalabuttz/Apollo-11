@@ -15,8 +15,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void chksda(void);
 
 /* ---- R54, CHKSDATA -- pp. 759-761 (bank 14) ---- */

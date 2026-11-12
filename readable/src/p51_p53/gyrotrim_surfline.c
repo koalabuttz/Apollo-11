@@ -24,8 +24,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void astar(void);
 static void one_star_plus1(void);
 static void five_deg_test(void);

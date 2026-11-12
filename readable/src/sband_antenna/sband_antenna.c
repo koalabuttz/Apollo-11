@@ -28,8 +28,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* SBANDANT -- LM p. 486, CM p. 934. "CHECK IF IMU IS ON AND ALIGNED"
  * (R02BOTH, through BANKCALL). */
 void sbandant(void)

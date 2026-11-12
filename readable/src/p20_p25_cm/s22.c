@@ -20,8 +20,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* S22.1 -- pp. 598-599: the return in S22RTNEX; "SET I=1" (8KK, "ITEM
  * 8KK IS I"), and the "MARK DATA ADDRESS" in S22LOC. Then the marks, six
  * words each (S1), from the address in MARKSTAT (X2 its complement) to

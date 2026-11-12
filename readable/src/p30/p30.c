@@ -24,8 +24,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- P30 -- LM pp. 614-615 ---- */
 
 /* P30: "SET UPDATE FLAG" (UPFLAG, ADRES UPDATFLG). */

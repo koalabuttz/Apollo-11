@@ -15,8 +15,6 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void stabl_q(void);
 static void p66now_q(void);
 static void restart_q(void);

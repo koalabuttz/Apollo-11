@@ -120,7 +120,7 @@ void mskdatr1_after_enter(void)
 void mskdatr1_immediate_return(void)
 {
     set_A(REVCNT);
-    tc(MSKDATR1 + 9u, BLANKET);
+    tc(MSKDATR1 + 011u, BLANKET);
 }
 
 /* MSKDATR1 +10 -- LM p. 292. */
@@ -378,7 +378,7 @@ void dapdata3_after_enter(void)
 void dapdata3_immediate_return(void)
 {
     set_A(BIT3);
-    tc(DAPDATA3 + 11u, BLANKET);
+    tc(DAPDATA3 + 013u, BLANKET);
 }
 
 /* DAPDATA3 +12 -- LM p. 295. */
@@ -518,7 +518,7 @@ void donoun46_plus6(void)
         continue_at(MAXIN); /* TCF MAXIN */
         return;
     }
-    tc(DONOUN46 + 10u, DOWNFLAG); /* ADRES MAXDBFLG */
+    tc(DONOUN46 + 012u, DOWNFLAG); /* ADRES MAXDBFLG */
 }
 
 /* MAXOUT -- CM p. 253: "UPON PROCEED RESPONSE, EXECUTE S41.2". */
@@ -572,7 +572,7 @@ void donoun47_plus6(void)
         return;
     }
     inhint();
-    tc(DONOUN47 + 15u, IBNKCALL); /* CADR MASSPROP */
+    tc(DONOUN47 + 017u, IBNKCALL); /* CADR MASSPROP */
 }
 
 /* DONOUN47 +17 -- CM p. 254: "UPON PROCEED RESPONSE EXECUTE S40.14":
@@ -580,7 +580,7 @@ void donoun47_plus6(void)
 void donoun47_after_ibnkcall(void)
 {
     relint();
-    tc(DONOUN47 + 18u, BANKCALL); /* CADR S40.14 */
+    tc(DONOUN47 + 022u, BANKCALL); /* CADR S40.14 */
 }
 
 /* DONOUN48 -- CM p. 254: "DISPLAY FLASHING V06,N48 (DISPLAY PITCH TRIM,

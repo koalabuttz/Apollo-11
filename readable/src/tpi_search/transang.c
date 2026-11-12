@@ -14,8 +14,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- TRANSANG -- pp. 558-559 ---- */
 
 /* The list as it goes, as the listing's comments give it (with each

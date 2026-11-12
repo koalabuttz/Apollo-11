@@ -11,8 +11,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- P370ALRM -- p. 900 ---- */
 
 /* P370ALRM, called by STQ with the alarm's code in MPAC: its return in

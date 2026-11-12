@@ -19,8 +19,6 @@
 #include "../executive/executive.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ======================================================================
  * E/BKCALL -- LM p. 370, CM p. 420.
  * "FOR DOING BANKCALLS FROM AND RETURNING TO ERASABLE." The call is

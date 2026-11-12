@@ -23,8 +23,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void p52a_plus1(void);
 static void p52b(void);
 static void p52_option(void);

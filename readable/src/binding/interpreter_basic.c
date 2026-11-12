@@ -86,13 +86,13 @@ static void branch_entry(void)
     X(VECAGREE, vecagree)                                                                          \
     X(UNIT, unit)                                                                                  \
     X(UNIT + 1u, unit_plus1)                                                                       \
-    X(UNIT + 16u, unit_plus16)                                                                     \
+    X(UNIT + 020u, unit_plus16)                                                                    \
     X(ABS, abs_)                                                                                   \
     X(K_SQRTSUB, sqrtsub_entry)                                                                    \
     X(COSINE, cosine)                                                                              \
     X(K_SINE, sine)                                                                                \
     X(K_SINE + 1u, sine_plus1)                                                                     \
-    X(SN1 + 16u, sn1_plus16)                                                                       \
+    X(SN1 + 020u, sn1_plus16)                                                                      \
     X(INTPRET, intpret)                                                                            \
     X(INTPRET + 2u, intpret_plus2)                                                                 \
     X(K_INTRSM, intrsm)                                                                            \

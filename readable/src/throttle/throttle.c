@@ -9,14 +9,6 @@
 #if LUMINARY099
 #include "../interpreter/interpreter.h"
 
-/* TC at, to a routine out of the file: Q gets the return and the routine
- * runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* Every return word these routines keep (Q at FLATOUT, WHATOUT and
  * MASSMULT, RTNHOLD at DOPIF's return) is a TC to fixed memory, 02000 to
  * 07777: TC RTNHOLD and TC BUF run it as an instruction. Any other is not

@@ -22,8 +22,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- LPS20.1 ---- */
 
 /* LPS20.1 -- p. 565: the return kept in LS21X. "LOSCMFLG = 0 MEANS NOT

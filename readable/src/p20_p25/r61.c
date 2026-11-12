@@ -26,8 +26,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* R61LEM -- p. 517. The caller's return, as a CADR, to GENRET. */
 void r61lem(void)
 {

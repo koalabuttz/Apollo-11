@@ -110,7 +110,7 @@ void deginsf(void)
     ad_at(ADDRESS_OF(MPAC) + 1u);
     tc_at(DEGINSF + 7u);
     two_round_plus2();
-    tc_at(DEGINSF + 8u);
+    tc_at(DEGINSF + 010u);
     tpsl1(); /* "LEFT 1" */
     deginsf2();
 }
@@ -344,7 +344,7 @@ void dpinsf_plus2(void)
     ad_at(ADDRESS_OF(MPAC) + 1u);
     tc_at(DPINSF + 7u);
     two_round_plus2();
-    tc_at(DPINSF + 8u);
+    tc_at(DPINSF + 010u);
     if (!testofuf_returns()) return;
     dpinsf_plus9();
 }
@@ -355,12 +355,12 @@ static void dpincom(void);
  * "NORMAL" NOUNADD (DPINORM) is E. */
 void dpinsf_plus9(void)
 {
-    if (mixed_noun(DPINSF + 10u)) {
+    if (mixed_noun(DPINSF + 012u)) {
         ca(ADDRESS_OF(DECOUNT)); /* "MIXED NOUN" */
         dpincom();
         return;
     }
-    tc_at(DPINSF + 11u);
+    tc_at(DPINSF + 013u);
     /* DPINORM */
     set_A(ZERO); /* "E +1 NORMAL" */
     tc_at(DPINORM + 1u);
@@ -431,52 +431,52 @@ void hmsin(void)
     ts(ADDRESS_OF(MPAC));
     set_A(HRCON_LO);
     xch(ADDRESS_OF(MPAC) + 1u);
-    tc_at(HMSIN + 10u);
+    tc_at(HMSIN + 012u);
     shortmp();
-    tc_at(HMSIN + 11u);
+    tc_at(HMSIN + 013u);
     if (!mpactst_returns()) return; /* "ALARM IF MPAC NON ZERO (G/ 745)" */
     dxch(ADDRESS_OF(MPAC) + 1u);    /* "STORE HOURS CONTRIBUTION" */
     dxch(ADDRESS_OF(HITEMIN));
     ca(ADDRESS_OF(YREG)); /* "PUT YREG, YREGLP INTO MPAC, +1." */
     lxch(ADDRESS_OF(YREGLP));
     dxch(ADDRESS_OF(MPAC));
-    tc_at(HMSIN + 17u);
+    tc_at(HMSIN + 021u);
     dmp(); /* ADRES WHOLECON */
-    tc_at(HMSIN + 19u);
+    tc_at(HMSIN + 023u);
     if (!rnd_tst_returns()) return; /* "ROUND OFF TO WHOLE MIN IN MPAC+1" */
     set_A(negate(MIN59));           /* "ALARM IF MPAC NON ZERO (G/16383)" */
-    tc_at(HMSIN + 21u);
+    tc_at(HMSIN + 025u);
     if (!sizetst_returns()) return; /* "ALARM IF MPAC+1 G/ 59MIN" */
     xch(ADDRESS_OF(MPAC) + 1u);
     mp(MINCON);               /* "LEAVES MINUTES CONTRIBUTION IN A,L" */
     das(ADDRESS_OF(HITEMIN)); /* "ADD IN MINUTES CONTRIBUTION" */
     if (!A_is_zero()) {       /* EXTEND; BZF +2: "IF THIS DAS OVEFLOWS, G/ 745 HR, 39MIN" */
-        tc(HMSIN + 28u, ALMCYCLE);
+        tc(HMSIN + 034u, ALMCYCLE);
         return;
     }
     ca(ADDRESS_OF(ZREG)); /* "PUT ZREG, ZREGLP INTO MPAC, +1." */
     lxch(ADDRESS_OF(ZREGLP));
     dxch(ADDRESS_OF(MPAC));
-    tc_at(HMSIN + 32u);
+    tc_at(HMSIN + 040u);
     dmp(); /* ADRES WHOLECON */
-    tc_at(HMSIN + 34u);
+    tc_at(HMSIN + 042u);
     if (!rnd_tst_returns()) return; /* "ROUND OFF TO WHOLE CENTI-SEC IN MPAC+1" */
     set_A(negate(SEC59_99));        /* "ALARM IF MPAC NON ZERO (G/163.83 SEC)" */
-    tc_at(HMSIN + 36u);
+    tc_at(HMSIN + 044u);
     if (!sizetst_returns()) return; /* "ALARM IF MPAC+1 G/59.99 SEC" */
     dxch(ADDRESS_OF(HITEMIN));      /* "ADD IN SECONDS CONTRIBUTION" */
     das(ADDRESS_OF(MPAC));
     if (!A_is_zero()) { /* "IF THIS DAS OVERFLOWS, G/ 745 HR, 39 MIN, 14.59 SEC." */
-        tc(HMSIN + 41u, ALMCYCLE);
+        tc(HMSIN + 051u, ALMCYCLE);
         return;
     }
     set_A(ZERO);
     ts(ADDRESS_OF(MPAC) + 2u);
-    tc_at(HMSIN + 44u);
+    tc_at(HMSIN + 054u);
     tpagree();
     dxch(ADDRESS_OF(MPAC));
     dxch(indexed_erasable(0u, fetch(ADDRESS_OF(NOUNADD)))); /* INDEX NOUNADD; DXCH 0 */
-    tc(HMSIN + 48u, POSTJUMP);                              /* CADR LOADLV */
+    tc(HMSIN + 060u, POSTJUMP);                             /* CADR LOADLV */
 }
 
 /* RND/TST and MPACTST -- LM p. 435, CM p. 353. "ROUNDS MPAC+2 INTO
@@ -532,7 +532,7 @@ static bool sizetst_returns(void)
         }
     ad_at(ADDRESS_OF(MPAC) + 2u); /* "MAG OF MPAC+1 - CON" */
     if (!A_is_zero_or_minus()) {  /* EXTEND; BZMF +2 */
-        tc(SIZETST + 8u, ALMCYCLE);
+        tc(SIZETST + 010u, ALMCYCLE);
         return false;
     }
     tc_return(Q_ADDRESS);

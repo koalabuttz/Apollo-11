@@ -18,8 +18,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static const word csi_a_words[] = {
     /* CSI/A: "INITIALIZE INDICATORS": S32.1F1 clear, S32.1F2 set (the
      * Newton iteration's first pass), the first cycle (S32.1F3A clear,

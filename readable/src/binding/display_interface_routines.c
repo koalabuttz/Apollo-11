@@ -141,7 +141,7 @@ static bool play_caller(void)
 {
     if (Q < 02000u || Q > 07777u) return false;
     if (Q >= 04000u || bank_selected() != 010u) return true;
-    if (Q >= LINUSCHR && Q <= LINUSCHR + 12u) return false;
+    if (Q >= LINUSCHR && Q <= LINUSCHR + 014u) return false;
     return Q < MARKEND || Q >= RELINTQ + 2u;
 }
 

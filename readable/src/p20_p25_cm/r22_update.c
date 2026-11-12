@@ -28,8 +28,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void rendisp_source(void);
 
 /* REND12 -- pp. 582-583: "INCORPORATE UPDATE VALUES INTO STATE VEC". A

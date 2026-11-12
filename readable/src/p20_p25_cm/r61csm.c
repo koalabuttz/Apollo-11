@@ -20,8 +20,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void r61csm_not_ready(void);
 static void decrm61(void);
 static void decrm61_plus1(void);

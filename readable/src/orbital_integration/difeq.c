@@ -133,14 +133,6 @@ static const word difeq_words[] = {
 const struct interpretive_code DIFEQ_CODE = {CODE_BANK(I_DIFEQP0), CODE_Z(I_DIFEQP0),
                                              COUNT(difeq_words), difeq_words};
 
-/* TC at "at" to a routine outside the file (PHASCHNG, UPFLAG, ALARM),
- * which reads the word after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* After ENDSTATE's EXIT: group 2's phase (OCT 04022, "PHASE 1"), REINTFLG
  * set, and back into the interpreter. */
 void endstate_after_exit(void)

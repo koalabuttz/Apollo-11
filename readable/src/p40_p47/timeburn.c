@@ -18,14 +18,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* ---- S40.13 -- pp. 773-775 ---- */
 
 /* S40.13: to the interpreter, for S40_13_CODE. */

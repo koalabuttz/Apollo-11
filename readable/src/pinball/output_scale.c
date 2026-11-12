@@ -62,7 +62,7 @@ static bool fixrange(void)
     mask_at(ADDRESS_OF(MPAC));
     ts(ADDRESS_OF(MPAC));
     back = (word)(Q + 1u);
-    tc(FIXRANGE + 8u, back); /* INDEX Q; TC 1 */
+    tc(FIXRANGE + 010u, back); /* INDEX Q; TC 1 */
     return true;
 }
 
@@ -327,15 +327,15 @@ void two_intout_plus4(void)
     set_A(negate(THREE));
     ad_at(indexed_by(ADDRESS_OF(R1D1), fetch(ADDRESS_OF(DECOUNT)))); /* "RXD4" */
     ts(ADDRESS_OF(DSPCOUNT));
-    tc_at(TWO_INTOUT + 8u);
+    tc_at(TWO_INTOUT + 010u);
     readlo(); /* "GET 2ND INTEGER" */
     ca(MPAC_PLUS(1u));
-    tc(TWO_INTOUT + 10u, DSPDECVN); /* "DISPLAY 2ND INTEGER" */
+    tc(TWO_INTOUT + 012u, DSPDECVN); /* "DISPLAY 2ND INTEGER" */
 }
 
 void two_intout_plus11(void)
 {
-    tc(TWO_INTOUT + 11u, POSTJUMP); /* CADR DSPDCEND +2 */
+    tc(TWO_INTOUT + 013u, POSTJUMP); /* CADR DSPDCEND +2 */
 }
 
 /* ---- READLO (LM pp. 420-421, CM pp. 337-338) ---- */
@@ -352,7 +352,7 @@ void readlo(void)
     if (mixed_noun(READLO + 3u)) {
         ca(indexed_by(ADDRESS_OF(IDAD1TEM), fetch(ADDRESS_OF(DECOUNT))));
         mask(LOW11); /* "E SUBK" */
-        tc_at(READLO + 8u);
+        tc_at(READLO + 010u);
         setebank(); /* "SET EB, LEAVE EADRES IN A." */
     } else {
         tc_at(READLO + 4u);
@@ -385,7 +385,7 @@ static void sepsecnr_plus1(void)
     dxch(ADDRESS_OF(HITEMOUT)); /* "SAVE MINUTES AND HOURS" */
     tc_at(SEPSECNR + 7u);
     tpsl1();
-    tc_at(SEPSECNR + 8u);
+    tc_at(SEPSECNR + 010u);
     tpsl1();
     set_A(ZERO);
     xch(MPAC_PLUS(2u));
@@ -433,7 +433,7 @@ static void sepmin(void)
     lxch(MPAC_PLUS(1u)); /* "THIS FORCES BITS 12-1 TO 0 IF +." */
     ca(ADDRESS_OF(HITEMOUT));
     ts(ADDRESS_OF(MPAC));
-    tc_at(SEPMIN + 10u);
+    tc_at(SEPMIN + 012u);
     dmp();                           /* ADRES MINCON1: "MULT BY 1/15" */
     tc_return(ADDRESS_OF(SEPMNRET)); /* "GIVES WHOLE HOURS IN MPAC." */
 }
@@ -465,12 +465,12 @@ void hmsout_plus4(void)
     dmp(); /* ADRES SECON2 */
     set_A(R3D1);
     ts(ADDRESS_OF(DSPCOUNT));
-    continue_at(HMSOUT + 8u);
+    continue_at(HMSOUT + 010u);
 }
 
 void hmsout_plus8(void)
 {
-    tc(HMSOUT + 8u, BANKCALL); /* CADR DSPDECWD: "DISPLAY SEC MOD 60" */
+    tc(HMSOUT + 010u, BANKCALL); /* CADR DSPDECWD: "DISPLAY SEC MOD 60" */
 }
 
 /* HMSOUT +10: "REMOVE REST OF SECONDS" (SEPMIN). "LEAVE FRACT MIN/60 IN
@@ -479,23 +479,23 @@ void hmsout_plus8(void)
  * R2. */
 void hmsout_plus10(void)
 {
-    tc_at(HMSOUT + 10u);
+    tc_at(HMSOUT + 012u);
     sepmin();
     set_A(MINCON2);
     xch(ADDRESS_OF(MPAC));
     ts(ADDRESS_OF(HITEMOUT)); /* "SAVE WHOLE HOURS." */
     set_A(MINCON2_LO);
     xch(MPAC_PLUS(1u)); /* "USE ONLY FRACT MIN/60 MOD 60" */
-    tc_at(HMSOUT + 16u);
+    tc_at(HMSOUT + 020u);
     prshrtmp();
     set_A(R2D1);
     ts(ADDRESS_OF(DSPCOUNT));
-    continue_at(HMSOUT + 19u);
+    continue_at(HMSOUT + 023u);
 }
 
 void hmsout_plus19(void)
 {
-    tc(HMSOUT + 19u, BANKCALL); /* CADR DSPDECWD: "DISPLAY MIN MOD 60" */
+    tc(HMSOUT + 023u, BANKCALL); /* CADR DSPDECWD: "DISPLAY MIN MOD 60" */
 }
 
 /* HMSOUT +21: "MINUTES, SECONDS HAVE BEEN REMOVED": the whole hours "MULT
@@ -505,21 +505,21 @@ void hmsout_plus21(void)
     dca(ADDRESS_OF(HRCON1));
     dxch(ADDRESS_OF(MPAC));
     ca(ADDRESS_OF(HITEMOUT)); /* "USE WHOLE HOURS" */
-    tc_at(HMSOUT + 25u);
+    tc_at(HMSOUT + 031u);
     prshrtmp();
     set_A(R1D1);
     ts(ADDRESS_OF(DSPCOUNT));
-    continue_at(HMSOUT + 28u);
+    continue_at(HMSOUT + 034u);
 }
 
 void hmsout_plus28(void)
 {
-    tc(HMSOUT + 28u, BANKCALL); /* CADR DSPDECWD: "USE REGULAR DSPDECWD, WITH ROUND OFF." */
+    tc(HMSOUT + 034u, BANKCALL); /* CADR DSPDECWD: "USE REGULAR DSPDECWD, WITH ROUND OFF." */
 }
 
 void hmsout_plus30(void)
 {
-    tc(HMSOUT + 30u, ADDRESS_OF(ENTRET)); /* TC ENTEXIT */
+    tc(HMSOUT + 036u, ADDRESS_OF(ENTRET)); /* TC ENTEXIT */
 }
 
 /* M/SOUT -- LM p. 422, CM p. 339. Minutes and seconds, MMBSS in one
@@ -611,7 +611,7 @@ void m_sout_plus2(void)
         m_slimit();
         return;
     }
-    if (at == M_SOUT + 8u || at == M_SOUT + 16u) { /* "G/ 59M58.5S" */
+    if (at == M_SOUT + 010u || at == M_SOUT + 020u) { /* "G/ 59M58.5S" */
         tc_at(at);
         m_slimit();
         return;
@@ -645,7 +645,7 @@ void m_snorm_plus7(void)
     set_A(negate(TWO));
     ad_at(indexed_by(ADDRESS_OF(R1D1), fetch(ADDRESS_OF(DECOUNT)))); /* "RXD3" */
     ts(ADDRESS_OF(COUNT));
-    tc(M_SNORM + 13u, BANKCALL); /* CADR DSPIN */
+    tc(M_SNORM + 015u, BANKCALL); /* CADR DSPIN */
 }
 
 /* M/SNORM +15: "REMOVE REST OF SECONDS" (SEPMIN), "LEAVE FRACT MIN/60 IN
@@ -653,22 +653,22 @@ void m_snorm_plus7(void)
  * the first two digits (RXD1). */
 void m_snorm_plus15(void)
 {
-    tc_at(M_SNORM + 15u);
+    tc_at(M_SNORM + 017u);
     sepmin();
     xch(MPAC_PLUS(1u));
     mp(HIMINCON);
     dxch(ADDRESS_OF(MPAC));
     ca(indexed_by(ADDRESS_OF(R1D1), fetch(ADDRESS_OF(DECOUNT)))); /* "RXD1" */
     ts(ADDRESS_OF(DSPCOUNT));
-    continue_at(M_SNORM + 23u);
+    continue_at(M_SNORM + 027u);
 }
 
 void m_snorm_plus23(void)
 {
-    tc(M_SNORM + 23u, BANKCALL); /* CADR DSPDC2NR: "DISPLAY MIN MOD 60 IN D1D2." */
+    tc(M_SNORM + 027u, BANKCALL); /* CADR DSPDC2NR: "DISPLAY MIN MOD 60 IN D1D2." */
 }
 
 void m_snorm_plus25(void)
 {
-    tc(M_SNORM + 25u, POSTJUMP); /* CADR DSPDCEND +2 */
+    tc(M_SNORM + 031u, POSTJUMP); /* CADR DSPDCEND +2 */
 }

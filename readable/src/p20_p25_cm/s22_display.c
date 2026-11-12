@@ -32,8 +32,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void s22gtp(void);
 
 /* S22BOX42 -- pp. 606-607: INCORP2, the state vector's change made, and

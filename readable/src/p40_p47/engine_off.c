@@ -17,12 +17,6 @@
 
 #if LUMINARY099
 
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* ---- IMPLBURN -- pp. 759-760 ---- */
 
 /* IMPLBURN: the time to go (TGO +1) as a delay of at least a

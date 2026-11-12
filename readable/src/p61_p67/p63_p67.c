@@ -19,8 +19,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void p65_1_flash(void);
 static void p66end(void);
 static void p67_1_dap_off(void);

@@ -6,13 +6,6 @@
 
 #if LUMINARY099
 
-/* TC at at, to a routine out of this run: Q the word after. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* EXTEND; DCA of a 2CADR. */
 static void dca_constant(const word *pair)
 {

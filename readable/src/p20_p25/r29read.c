@@ -148,10 +148,10 @@ void r29rrr_q_after_downflag(void)
 }
 
 /* R29RANGE +5: the range is read. "COPYCYCLE TO LAY OUT NEW R29 DOWNLINK."
- * (inhibited): DNRRANGE's two words to RM, MPAC's time to MKTIME, the radar's angles to TANGNB and the IMU's to AIG, AMG and AOG
- * (each DXCH takes the word pair the one before left in A and L). Then
- * TRKMKCNT 1, to "SHOW THAT DOWNLINK DATA IS CONSISTENT.", and the job
- * ends. */
+ * (inhibited): DNRRANGE's two words to RM, MPAC's time to MKTIME, the
+ * radar's angles to TANGNB and the IMU's to AIG, AMG and AOG (each DXCH
+ * takes the word pair the one before left in A and L). Then TRKMKCNT 1, to
+ * "SHOW THAT DOWNLINK DATA IS CONSISTENT.", and the job ends. */
 void r29range_read(void)
 {
     inhint();

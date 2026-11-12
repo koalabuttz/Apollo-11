@@ -102,7 +102,7 @@ void trmtrak1_after_third_downflag(void)
 /* TRMTRAK1 +10 -- LM p. 288: "KILL GROUP 2 TO HALT P20 ACTIVITY". */
 void trmtrak1_after_exit(void)
 {
-    tc(TRMTRAK1 + 10u, PHASCHNG); /* OCT 2 */
+    tc(TRMTRAK1 + 012u, PHASCHNG); /* OCT 2 */
 }
 
 /* TRMTRAK1 +12 -- LM p. 288: with interrupts held, "ZERO THE COMMANDED
@@ -110,19 +110,19 @@ void trmtrak1_after_exit(void)
 void trmtrak1_after_phaschng(void)
 {
     inhint();
-    tc(TRMTRAK1 + 13u, IBNKCALL); /* CADR STOPRATE */
+    tc(TRMTRAK1 + 015u, IBNKCALL); /* CADR STOPRATE */
 }
 
 /* TRMTRAK1 +15 -- LM p. 288: the DAP's deadband back. */
 void trmtrak1_after_ibnkcall(void)
 {
-    tc(TRMTRAK1 + 15u, IBNKCALL); /* CADR RESTORDB */
+    tc(TRMTRAK1 + 017u, IBNKCALL); /* CADR RESTORDB */
 }
 
 /* TRMTRAK1 +17 -- LM p. 288: "CLEAR BITS 10 + 15 OF RADMODES". */
 void trmtrak1_after_second_ibnkcall(void)
 {
-    tc(TRMTRAK1 + 17u, CLRADMOD);
+    tc(TRMTRAK1 + 021u, CLRADMOD);
 }
 
 /* TRMTRAK1 +18 -- LM p. 288: "DISABLE LOCKON" (channel 12's bit 14), and
@@ -131,7 +131,7 @@ void trmtrak1_after_clradmod(void)
 {
     set_A(negate(BIT14)); /* CS BIT14 */
     wand_channel(012);
-    tc(TRMTRAK1 + 21u, POSTJUMP); /* CADR GOPROG2 */
+    tc(TRMTRAK1 + 025u, POSTJUMP); /* CADR GOPROG2 */
 }
 #else
 /* ---- V56 (bank 43) ---- */
@@ -159,18 +159,18 @@ void tracktrm_after_downflag(void)
         continue_at(GOPIN);
         return;
     }
-    tc(TRACKTRM + 10u, DOWNFLAG); /* ADRES TRACKFLG */
+    tc(TRACKTRM + 012u, DOWNFLAG); /* ADRES TRACKFLG */
 }
 
 /* TRACKTRM +12 and +14 -- CM p. 259: UPDATFLG and IMUSE down. */
 void tracktrm_after_second_downflag(void)
 {
-    tc(TRACKTRM + 12u, DOWNFLAG); /* ADRES UPDATFLG */
+    tc(TRACKTRM + 014u, DOWNFLAG); /* ADRES UPDATFLG */
 }
 
 void tracktrm_after_third_downflag(void)
 {
-    tc(TRACKTRM + 14u, DOWNFLAG); /* ADRES IMUSE */
+    tc(TRACKTRM + 016u, DOWNFLAG); /* ADRES IMUSE */
 }
 
 /* TRACKTRM +16 -- CM p. 259: E-bank 6, and with interrupts held the
@@ -180,7 +180,7 @@ void tracktrm_after_fourth_downflag(void)
     set_A(EBANK6);
     ts(EBANK_ADDRESS);
     inhint();
-    tc(TRACKTRM + 19u, STOPRATE);
+    tc(TRACKTRM + 023u, STOPRATE);
 }
 
 /* TRACKTRM +20 -- CM p. 259: OPTIND -1, and "DONT INTERRUPT INTEGRATION"
@@ -189,14 +189,14 @@ void tracktrm_after_stoprate(void)
 {
     set_A(NEGONE);
     ts(ADDRESS_OF(OPTIND));
-    tc(TRACKTRM + 22u, INTPRET);
+    tc(TRACKTRM + 026u, INTPRET);
 }
 
 /* TRACKTRM +26 -- CM pp. 259-260: "KILL GROUP 2 TO HALT P20 ACTIVITY",
  * "ALSO KILL GROUP 1"; 2PHSCHNG returns to CLEANOUT. */
 void tracktrm_after_exit(void)
 {
-    tc(TRACKTRM + 26u, TWO_PHSCHNG); /* OCT 2; OCT 1 */
+    tc(TRACKTRM + 032u, TWO_PHSCHNG); /* OCT 2; OCT 1 */
 }
 
 /* CLEANOUT -- CM p. 260: ENEMA, "CAUSE RESTART". */
@@ -258,7 +258,7 @@ void attachit(void)
  * GENTRAN". */
 void attachit_after_exit(void)
 {
-    gentran_from(ATTACHIT + 10u);
+    gentran_from(ATTACHIT + 012u);
 }
 
 #if LUMINARY099
@@ -267,13 +267,13 @@ void attachit_after_exit(void)
 void attachit_after_gentran(void)
 {
     relint();
-    tc(ATTACHIT + 15u, INTPRET);
+    tc(ATTACHIT + 017u, INTPRET);
 }
 
 /* ATTACHIT +22 -- LM p. 297. */
 void attachit_after_second_exit(void)
 {
-    back_to_pinball(ATTACHIT + 22u);
+    back_to_pinball(ATTACHIT + 026u);
 }
 #else
 /* TACHEXIT -- CM pp. 264-265, where ATTACHIT's GENTRAN returns and
@@ -288,7 +288,7 @@ void tachexit(void)
 /* TACHEXIT +10 -- CM p. 265. */
 void tachexit_after_exit(void)
 {
-    back_to_pinball(TACHEXIT + 10u);
+    back_to_pinball(TACHEXIT + 012u);
 }
 
 /* ---- V47 (bank 43) ---- */
@@ -318,7 +318,7 @@ void lmtocm(void)
 /* LMTOCM +10 -- CM p. 265: "LM STATE VECTOR INTO CM VIA GENTRAN". */
 void lmtocm_after_exit(void)
 {
-    gentran_from(LMTOCM + 10u);
+    gentran_from(LMTOCM + 012u);
 }
 
 /* LMTOCM +14 -- CM p. 265. */
@@ -360,17 +360,17 @@ void dsprrlos_after_priochng(void)
  * watches. */
 void dsprrlos_after_terminate(void)
 {
-    tc(DSPRRLOS + 9u, B5OFF);
+    tc(DSPRRLOS + 011u, B5OFF);
 }
 
 void dsprrlos_after_proceed(void)
 {
-    tc(DSPRRLOS + 10u, B5OFF);
+    tc(DSPRRLOS + 012u, B5OFF);
 }
 
 void dsprrlos_after_enter(void)
 {
-    tc(DSPRRLOS + 11u, B5OFF);
+    tc(DSPRRLOS + 013u, B5OFF);
 }
 
 /* DSPRRLOS +12 -- LM p. 299: GOMARKFR's immediate return, with the
@@ -378,13 +378,13 @@ void dsprrlos_after_enter(void)
 void dsprrlos_immediate_return(void)
 {
     set_A(BIT3);
-    tc(DSPRRLOS + 13u, BLANKET);
+    tc(DSPRRLOS + 015u, BLANKET);
 }
 
 /* DSPRRLOS +14 -- LM p. 299. */
 void dsprrlos_after_blanket(void)
 {
-    tc(DSPRRLOS + 14u, ENDOFJOB);
+    tc(DSPRRLOS + 016u, ENDOFJOB);
 }
 
 /* RRLOSDSP -- LM pp. 299-300.
@@ -401,8 +401,8 @@ void rrlosdsp(void)
 /* RRLOSDSP +39 -- LM p. 300: a second's wait. */
 void rrlosdsp_after_exit(void)
 {
-    set_A(ONE_SEC);               /* CA 1SEC */
-    tc(RRLOSDSP + 40u, BANKCALL); /* CADR DELAYJOB */
+    set_A(ONE_SEC);                /* CA 1SEC */
+    tc(RRLOSDSP + 050u, BANKCALL); /* CADR DELAYJOB */
 }
 
 /* RRLOSDSP +42 -- LM p. 300: again while the display is up (extended verb
@@ -412,10 +412,10 @@ void rrlosdsp_after_delayjob(void)
     set_A(BIT5);
     mask_at(ADDRESS_OF(EXTVBACT));
     if (ccs_register(A_ADDRESS) == POSITIVE) {
-        tc(RRLOSDSP + 45u, RRLOSDSP);
+        tc(RRLOSDSP + 055u, RRLOSDSP);
         return;
     }
-    tc(RRLOSDSP + 46u, ENDEXT);
+    tc(RRLOSDSP + 056u, ENDEXT);
 }
 #endif
 
@@ -555,12 +555,12 @@ const struct interpretive_code TCPIN_CODE = {043u, TCPIN, WORDS(tcpin_words), tc
 #if LUMINARY099
 const struct interpretive_code TRMTRAK1_CODE = {042u, TRMTRAK1 + 7u, WORDS(trmtrak1_words),
                                                 trmtrak1_words};
-const struct interpretive_code ATTACHIT_CODE_2 = {043u, ATTACHIT + 16u, WORDS(attachit_words_2),
+const struct interpretive_code ATTACHIT_CODE_2 = {043u, ATTACHIT + 020u, WORDS(attachit_words_2),
                                                   attachit_words_2};
 const struct interpretive_code RRLOSDSP_CODE = {040u, RRLOSDSP + 4u, WORDS(rrlosdsp_words),
                                                 rrlosdsp_words};
 #else
-const struct interpretive_code TRACKTRM_CODE = {043u, TRACKTRM + 23u, WORDS(tracktrm_words),
+const struct interpretive_code TRACKTRM_CODE = {043u, TRACKTRM + 027u, WORDS(tracktrm_words),
                                                 tracktrm_words};
 const struct interpretive_code SETVHFLG_CODE = {043u, SETVHFLG + 1u, WORDS(setvhflg_words),
                                                 setvhflg_words};

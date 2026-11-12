@@ -34,11 +34,11 @@
 /* ---- The lights test, verb 35 (bank 41) ---- */
 
 #if LUMINARY099
-#define TSTLTS1_WAITLIST (TSTLTS1 + 15u) /* TC WAITLIST */
-#define TSTLTS3_BANKCALL (TSTLTS3 + 25u) /* TC BANKCALL, CADR DSPMM */
+#define TSTLTS1_WAITLIST (TSTLTS1 + 017u) /* TC WAITLIST */
+#define TSTLTS3_BANKCALL (TSTLTS3 + 031u) /* TC BANKCALL, CADR DSPMM */
 #else
-#define TSTLTS1_WAITLIST (TSTLTS1 + 13u)
-#define TSTLTS3_BANKCALL (TSTLTS3 + 24u)
+#define TSTLTS1_WAITLIST (TSTLTS1 + 015u)
+#define TSTLTS3_BANKCALL (TSTLTS3 + 030u)
 #endif
 
 static void lights_on(void);
@@ -256,7 +256,7 @@ void error_(void)
     ts(ADDRESS_OF(FAILREG) + 1u);
     ts(ADDRESS_OF(FAILREG) + 2u);
     ts(ADDRESS_OF(SFAIL));
-    tc(ERCOM + 10u, ENDOFJOB);
+    tc(ERCOM + 012u, ENDOFJOB);
 }
 
 /* TSTAB -- each DSPTAB word, DSPTAB +10 down to +0 (ERCNT counts from

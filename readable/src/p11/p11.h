@@ -38,14 +38,6 @@
 
 #if COMANCHE055
 
-/* TC at, to a routine out of the file: Q gets the return, and the routine
- * runs next. */
-static inline void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* EXTEND; DCA of a two-word constant: A gets its first word, L its
  * second. */
 static inline void dca_constant(const word pair[2])

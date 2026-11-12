@@ -21,12 +21,13 @@
  *
  * The file reads channel 31 (the translation hand controller), writes the
  * jets' channels 5 and 6, in the program's hardware record, and sets T6's
- * enable in channel 13, in the io record. The faithful routines take the hardware record, and without
- * one refuse, so the binding does too. The states they take: FB bank 17,
- * any EBANK, ZERO +0, the bank registers agreeing, the interrupt and
- * superbank latches in range and every erasable word an ordinary one. A
- * run the readable code refuses part way leaves the state and io record
- * as they were (and the hardware record, whose jet channels it writes). */
+ * enable in channel 13, in the io record. The faithful routines take the
+ * hardware record, and without one refuse, so the binding does too. The
+ * states they take: FB bank 17, any EBANK, ZERO +0, the bank registers
+ * agreeing, the interrupt and superbank latches in range and every erasable
+ * word an ordinary one. A run the readable code refuses part way leaves the
+ * state and io record as they were (and the hardware record, whose jet
+ * channels it writes). */
 #include <setjmp.h>
 #include <stddef.h>
 #include "binding.h"

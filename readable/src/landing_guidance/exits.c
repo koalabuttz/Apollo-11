@@ -19,8 +19,6 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- EXGSUB -- pp. 811-812 ---- */
 
 /* EXGSUB: "COMPUTE TRIM VELOCITY CORRECTION TERM." */

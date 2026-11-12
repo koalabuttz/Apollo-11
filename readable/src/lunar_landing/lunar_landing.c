@@ -9,17 +9,8 @@
 #if LUMINARY099
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-#define P63_BANK     032u /* P63LM .. P63SPOT4 */
-#define P68_BANK     031u /* LANDJUNK */
-
-/* TC at, to a routine out of the file or to INTPRET: Q gets the return
- * and the routine runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
+#define P63_BANK 032u /* P63LM .. P63SPOT4 */
+#define P68_BANK 031u /* LANDJUNK */
 
 /* ---- P63: THE LUNAR LANDING, BRAKING PHASE -- p. 785 ---- */
 

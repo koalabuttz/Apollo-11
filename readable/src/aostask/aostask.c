@@ -9,13 +9,6 @@
 
 #if LUMINARY099
 
-/* TC at at, to a routine out of this run: Q the word after. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* An erasable word, by its address, at an index: INDEX index on it. */
 static unsigned at_index(unsigned address, unsigned index)
 {

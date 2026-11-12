@@ -28,14 +28,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* ---- S40.1 -- pp. 709-712 ---- */
 
 /* S40.1: FIRSTFLG set, BDT zero, the return in QTEMP (STQ). A Lambert

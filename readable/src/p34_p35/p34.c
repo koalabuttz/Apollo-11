@@ -26,16 +26,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-/* TC at, to a routine out of the file: Q gets the return, and the
- * routine runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* The TC DISPLAYE after the first display (the CM's code is three words
  * shorter there, and one word longer in interpretive code); the
  * TC INTPRET after it, and the interpretive code from there. */

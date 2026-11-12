@@ -11,8 +11,6 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* CALCRGVG: "IN IGNALG, COMPUTE V FROM INTEGRATION OUTPUT AND TRIM
  * CORRECTION TERM COMPUTED LAST PASS AND LEFT IN UNFC/2": V is VATT1 in
  * stable member coordinates (REFSMMAT) plus UNFC/2. The EXIT runs on

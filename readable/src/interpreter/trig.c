@@ -125,7 +125,7 @@ void sn1_plus16(void)
     unsigned shift;
 
     set_A(LBUF2);
-    tc_at(SN1 + 17u);
+    tc_at(SN1 + 021u);
     dmpsub_minus1();
 
     for (shift = 0; shift < 2u; ++shift) {
@@ -194,8 +194,9 @@ static void acosst(void)
         set_A(ZERO);
         acos_eq_0();
         return;
+    case IS_PLUS_ZERO: acos_eq_0(); return;
     case NEGATIVE: acosst2(); return;
-    default: acos_eq_0(); return;
+    case IS_MINUS_ZERO: acos_eq_0(); return;
     }
 }
 
@@ -261,9 +262,9 @@ static void acos3_plus2(void)
     poly(); /* (it returns to ACOS3 +21) */
 
     set_A(LBUF2);
-    tc_at(ACOS3 + 22u);
+    tc_at(ACOS3 + 026u);
     dmpsub_minus1();
-    tc_escape(ACOS3 + 23u, ADDRESS_OF(ESCAPE));
+    tc_escape(ACOS3 + 027u, ADDRESS_OF(ESCAPE));
 }
 
 /* SUBTR: "EPILOGUE FOR NEGATIVE INPUTS TO ARCCOS." "FORMS PI - ARCCOS(-X) =

@@ -16,16 +16,7 @@
 #if LUMINARY099
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array)   (sizeof(array) / sizeof((array)[0]))
 #define BURN_BABY_BANK 036u
-
-/* TC at, to a routine out of the file or to INTPRET: Q gets the return
- * and the routine runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
 
 /* EXTEND; DCA NEG0; DXCH -PHASEn: restart group n ends (-PHASEn -0, PHASEn
  * +0, from NEG0 and the word after it). */

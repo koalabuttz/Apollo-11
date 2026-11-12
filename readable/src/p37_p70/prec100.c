@@ -13,8 +13,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- INVC100 -- pp. 905-906 ---- */
 
 /* INVC100, called by STQ: its return in SPRTEX. CSMPREC integrates the

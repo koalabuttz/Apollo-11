@@ -28,8 +28,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* CSI/A to CSI/B1 (bank 6, pp. 664-665). */
 static const word csi_a_words[] = {
     /* CSI/A: "INITIALIZE INDICATORS": S32.1F1 clear, S32.1F2 set (the

@@ -16,8 +16,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static const word advance_words[] = {
     /* ADVANCE: the return in SUBEXIT; both vehicles to TIG (PRECSET, with
      * TDEC1 TIG); XDELVFLG set (the burn's velocity to be gained from an

@@ -8,13 +8,6 @@
 
 #if LUMINARY099
 
-/* TC at at, to a routine out of this run: Q the word after. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* TC to a word of fixed memory, the address in the word at address (Q,
  * RUPTREG1 or RUPTREG2: a caller's return). Not modelled: one that is not
  * an address of fixed memory, which the AGC would run as another

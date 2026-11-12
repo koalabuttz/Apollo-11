@@ -12,8 +12,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- GAMDV10 -- pp. 924-927 ---- */
 
 /* GAMDV10, called by STQ: its return in 31D, and the push-down list from

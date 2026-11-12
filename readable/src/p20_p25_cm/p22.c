@@ -27,8 +27,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void prog22_display(void);
 static void prog22a(void);
 static void p22subrb_display(void);

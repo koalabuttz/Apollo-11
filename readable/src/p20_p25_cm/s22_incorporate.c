@@ -30,8 +30,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void incorporate_changes(void);
 
 /* S22SAVET -- p. 603: the mark's time (GETTF): "SAVE PRESENT TIME FOR

@@ -9,8 +9,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- OVERNOUT, NODISKY, SERVNOUT -- pp. 873-874 ---- */
 
 /* OVERNOUT, after ENDEXIT's EXIT: "ALL ENTRY DISPLAYS ARE DONE HERE.",

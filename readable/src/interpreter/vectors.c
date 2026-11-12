@@ -96,7 +96,7 @@ static void vxm_mxv(void)
     ca(ADDRESS_OF(MATINC)); /* "INITIALIZE ADDRWD FOR NEXT DOT PRODUCT." */
     ads(ADDRESS_OF(ADDRWD));
 
-    tc_at(VXM_MXV + 15u);
+    tc_at(VXM_MXV + 017u);
     dotsub();
     dxch(VBUF_AT(0u)); /* "MORE GIVEN VECTOR BACK TO MPAC, SAVING Y */
     dxch(MPAC_AT(0u)); /* COMPONENT OF ANSWER IN VBUF +2." */
@@ -107,7 +107,7 @@ static void vxm_mxv(void)
     ca(ADDRESS_OF(MATINC)); /* "FORM ADDRESS OF LAST COLUMN OR ROW." */
     ads(ADDRESS_OF(ADDRWD));
 
-    tc_at(VXM_MXV + 24u);
+    tc_at(VXM_MXV + 030u);
     dotsub();
     dxch(ADDRESS_OF(BUF2)); /* "ANSWER NOW COMPLETE. PUT COMPONENTS INTO */
     dxch(MPAC_AT(0u));      /* PROPER MPAC REGISTERS." */
@@ -161,9 +161,9 @@ static void vvxsc_plus1(void)
     dxch(MPAC_AT(0u));
     dxch(MPAC_AT(5u));
 
-    tc_at(VVXSC + 10u);
+    tc_at(VVXSC + 012u);
     dmpsub();
-    tc_at(VVXSC + 11u);
+    tc_at(VVXSC + 013u);
     vround();
     vrotatex();
 }
@@ -210,9 +210,9 @@ static void dvxsc(void)
     dca(MPAC_AT(3u));  /* "PUT SCALAR BACK INTO MPAC AND SAVE */
     dxch(MPAC_AT(0u)); /* X RESULT IN MPAC +5." */
     dxch(MPAC_AT(5u));
-    tc_at(DVXSC + 11u);
+    tc_at(DVXSC + 013u);
     dmpsub();
-    tc_at(DVXSC + 12u);
+    tc_at(DVXSC + 014u);
     vround();
 
     set_A(TWO);
@@ -220,9 +220,9 @@ static void dvxsc(void)
     dxch(MPAC_AT(3u));       /* "BRING SCALAR BACK, PUTTING Y RESULT IN */
     dxch(MPAC_AT(0u));       /* THE PROPER PLACE." */
     dxch(MPAC_AT(3u));
-    tc_at(DVXSC + 18u);
+    tc_at(DVXSC + 022u);
     dmpsub();
-    tc_at(DVXSC + 19u);
+    tc_at(DVXSC + 023u);
     vround();
 
     dxch(MPAC_AT(0u)); /* "PUT Z COMPONENT IN PROPER PLACE, ALSO */
@@ -252,7 +252,7 @@ void vxv(void)
     dcs(MPAC_AT(3u)); /* "CALCULATE -X1M2, SAVING X1M3 IN VBUF +2." */
     dxch(MPAC_AT(0u));
     dxch(VBUF_AT(2u));
-    tc_at(VXV + 9u);
+    tc_at(VXV + 011u);
     dmpsub();
 
     set_A(TWO); /* "ADVANCE ADDRWD TO X2." */
@@ -260,13 +260,13 @@ void vxv(void)
     dcs(MPAC_AT(5u));  /* "PREPARE TO GET -X2M3, SAVING -X1M2 IN */
     dxch(MPAC_AT(0u)); /* MPAC +5." */
     dxch(MPAC_AT(5u));
-    tc_at(VXV + 16u);
+    tc_at(VXV + 020u);
     dmpsub();
 
     dca(VBUF_AT(0u)); /* "GET X2M1, SAVING -X2M3 IN VBUF +4." */
     dxch(MPAC_AT(0u));
     dxch(VBUF_AT(4u));
-    tc_at(VXV + 21u);
+    tc_at(VXV + 025u);
     dmpsub();
 
     set_A(TWO); /* "ADVANCE ADDRWD TO X3." */
@@ -275,22 +275,22 @@ void vxv(void)
     dxch(MPAC_AT(0u)); /* COMPLETE THE Z COMPONENT OF THE ANSWER." */
     das(MPAC_AT(5u));
     if (!A_is_zero()) {
-        tc_at(VXV + 30u);
+        tc_at(VXV + 036u);
         overflwz();
     }
 
-    tc_at(VXV + 31u);
+    tc_at(VXV + 037u);
     dmpsub();
     dxch(VBUF_AT(2u)); /* "MOVE X1M3 TO MPAC +3 SETTING UP FOR X3M2 */
     dxch(MPAC_AT(3u)); /* AND ADD -X3M1 TO MPAC +3 TO COMPLETE THE */
     dxch(MPAC_AT(0u)); /* Y COMPONENT OF THE RESULT." */
     das(MPAC_AT(3u));
     if (!A_is_zero()) {
-        tc_at(VXV + 38u);
+        tc_at(VXV + 046u);
         overflwy();
     }
 
-    tc_at(VXV + 39u);
+    tc_at(VXV + 047u);
     dmpsub();
     dxch(VBUF_AT(4u)); /* "GO ADD -X2M3 TO X3M2 TO COMPLETE THE X */
     endvxv();          /* COMPONENT (TAIL END OF DAD)." */
@@ -321,10 +321,11 @@ void mpacvbuf(void)
  * nothing). */
 void alsignag(void)
 {
-    switch (ccs_at(A_ADDRESS)) { /* "TEST UPPER PART." */
-    case POSITIVE: uppos(); break;
-    case NEGATIVE: upneg(); break;
-    default: tc_through(Q_ADDRESS); break; /* "ZERO" */
+    switch (ccs_at(A_ADDRESS)) {                      /* "TEST UPPER PART." */
+    case POSITIVE: uppos(); break;                    /* "IT IS POSITIVE" */
+    case IS_PLUS_ZERO: tc_through(Q_ADDRESS); break;  /* "ZERO" */
+    case NEGATIVE: upneg(); break;                    /* "NEGATIVE" */
+    case IS_MINUS_ZERO: tc_through(Q_ADDRESS); break; /* "ZERO" */
     }
 }
 
@@ -496,8 +497,9 @@ void sign(void)
 {
     switch (ccs_at(indexed(0u, ADDRWD))) {
     case POSITIVE: continue_at(DANZIG); break;
-    case NEGATIVE: comp(); break; /* "DO THE COMPLEMENT." */
-    default: ccsl(); break;
+    case IS_PLUS_ZERO: ccsl(); break; /* TCF +2 */
+    case NEGATIVE: comp(); break;     /* "DO THE COMPLEMENT." */
+    case IS_MINUS_ZERO: ccsl(); break;
     }
 }
 

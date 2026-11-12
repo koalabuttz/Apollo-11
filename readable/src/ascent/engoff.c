@@ -8,8 +8,6 @@
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 #if LUMINARY099
 
 /* ---- ENGOFF -- pp. 852-853 (bank 14) ---- */

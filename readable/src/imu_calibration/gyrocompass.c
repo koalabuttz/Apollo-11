@@ -26,8 +26,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- The drift test's end: PERFERAS to TORQINCH -- pp. 441-442 ---- */
 
 /* PERFERAS +1 -- p. 441, after the EXIT: "GO TO ERASABLE ONLY TO

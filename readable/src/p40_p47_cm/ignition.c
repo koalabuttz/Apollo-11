@@ -27,12 +27,6 @@
 
 #if COMANCHE055
 
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* TC Q, a subroutine's return (as in programs.c): Z gets the address in
  * Q, which becomes 3. Not modelled: a Q that is no such address. */
 static void tc_q(void)

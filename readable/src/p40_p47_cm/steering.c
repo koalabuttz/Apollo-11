@@ -21,14 +21,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* The words of UPDATEVG and STEERING. */
 #define UPDATEVG_EXIT (UPDATEVG + 013u)
 #define STEERING_EXIT (STEERING + 3u)

@@ -21,14 +21,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* ---- TRIMGIMB -- pp. 781-782 ---- */
 
 /* TRIMGIMB: GMBDRVSW clear (DOWNFLAG), "GMBDRVSW FLAG IS SET WHEN EITHER

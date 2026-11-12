@@ -16,8 +16,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void r56_flash(void);
 static void nosam_flash(void);
 static void notplan(void);

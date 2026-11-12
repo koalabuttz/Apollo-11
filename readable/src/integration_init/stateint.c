@@ -11,14 +11,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-/* TC at "at" to a routine outside the file (PHASCHNG, FINDVAC, LONGCALL,
- * DOWNFLAG, ENDOFJOB, TASKOVER), which reads the words after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* STATEINT -- LM p. 1209 (CM p. 1313): the task. Group 2's phase (OCT
  * 00052), then a job with a VAC area at PRIO5 (FINDVAC) to run STATINT1,
  * and the task is over (TASKOVER). */

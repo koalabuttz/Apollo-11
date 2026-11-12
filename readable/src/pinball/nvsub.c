@@ -94,7 +94,7 @@ void nvsubcom(void)
     ts(ADDRESS_OF(NVBNKTEM));
     set_A(PINSUPBT);
     write_superbnk();
-    tc(NVSUBCOM + 8u, NVSUBB);
+    tc(NVSUBCOM + 010u, NVSUBB);
 }
 
 /* NVSUBEND -- back to the caller: the return and its banks (NVQTEM,
@@ -116,9 +116,9 @@ void nvsubend(void)
  * 10"). Each word from there down to DSPTAB +0 gets the blank relay word,
  * -BIT12 (CS BIT12), and NOUT one more for each word that was +. Then the
  * registers blanked are zeroed (INDEX NVTEMP; TC +5: VERBREG for -4 and
- * -3, NOUNREG for -2 too, CLPASS for all; MODREG never), the keys blocked (DSPCOUNT -VD1), the flash off
- * ("PROTECT AGAINS INVISIBLE FLASH"), and to ENTSET -2, which "ZEROS
- * REQRET". */
+ * -3, NOUNREG for -2 too, CLPASS for all; MODREG never), the keys blocked
+ * (DSPCOUNT -VD1), the flash off ("PROTECT AGAINS INVISIBLE FLASH"), and to
+ * ENTSET -2, which "ZEROS REQRET". */
 void blankdsp(void)
 {
     word to;
@@ -134,14 +134,14 @@ void blankdsp(void)
         switch (ccs_at(A_ADDRESS)) {
         case POSITIVE:
             incr(ADDRESS_OF(NOUT));
-            tc_at(BLANKDSP + 8u); /* TC +1 */
+            tc_at(BLANKDSP + 010u); /* TC +1 */
             break;
-        case IS_PLUS_ZERO: tc_at(BLANKDSP + 8u); break; /* TC +1 */
+        case IS_PLUS_ZERO: tc_at(BLANKDSP + 010u); break; /* TC +1 */
         case NEGATIVE: break;
-        case IS_MINUS_ZERO: /* to the TC BLANKDSP +2, with A +0 */ tc_at(BLANKDSP + 10u); continue;
+        case IS_MINUS_ZERO: /* to the TC BLANKDSP +2, with A +0 */ tc_at(BLANKDSP + 012u); continue;
         }
         switch (ccs_at(ADDRESS_OF(CODE))) {
-        case POSITIVE: tc_at(BLANKDSP + 10u); break; /* TC BLANKDSP +2: the next one down */
+        case POSITIVE: tc_at(BLANKDSP + 012u); break; /* TC BLANKDSP +2: the next one down */
         case IS_PLUS_ZERO: more = false; break;
         case NEGATIVE:
         case IS_MINUS_ZERO: not_modelled(); /* CODE counts down from 7 to 10 */
@@ -150,18 +150,18 @@ void blankdsp(void)
     relint();
     /* INDEX NVTEMP; TC +5: -4 to TC +1 ("NEVER TOUCH MODREG"), -3 to TS
      * VERBREG, -2 to TS NOUNREG, -1 to TS CLPASS. A is +0. */
-    to = indexed_by(BLANKDSP + 18u, fetch(ADDRESS_OF(NVTEMP)));
-    if (to < BLANKDSP + 14u || to > BLANKDSP + 17u) not_modelled();
-    tc_at(BLANKDSP + 13u);
-    if (to == BLANKDSP + 14u) tc_at(BLANKDSP + 14u); /* TC +1 */
-    if (to <= BLANKDSP + 15u) ts(ADDRESS_OF(VERBREG));
-    if (to <= BLANKDSP + 16u) ts(ADDRESS_OF(NOUNREG));
+    to = indexed_by(BLANKDSP + 022u, fetch(ADDRESS_OF(NVTEMP)));
+    if (to < BLANKDSP + 016u || to > BLANKDSP + 021u) not_modelled();
+    tc_at(BLANKDSP + 015u);
+    if (to == BLANKDSP + 016u) tc_at(BLANKDSP + 016u); /* TC +1 */
+    if (to <= BLANKDSP + 017u) ts(ADDRESS_OF(VERBREG));
+    if (to <= BLANKDSP + 020u) ts(ADDRESS_OF(NOUNREG));
     ts(ADDRESS_OF(CLPASS));
     set_A(negate(VD1));
     ts(ADDRESS_OF(DSPCOUNT));
-    tc_at(BLANKDSP + 20u);
+    tc_at(BLANKDSP + 024u);
     flashoff();
-    tc(BLANKDSP + 21u, ENTSET - 2u);
+    tc(BLANKDSP + 025u, ENTSET - 2u);
 }
 
 /* NVSUB1 -- ENTRET gets ENTSET's word, TC NVSUBEND ("SET RETURN TO
@@ -190,13 +190,13 @@ void nvsub1(void)
     ca(ADDRESS_OF(EDOP));
     ts(ADDRESS_OF(MPAC) + 4u);
     switch (ccs_at(ADDRESS_OF(MPAC) + 3u)) { /* "TEST NOUN" */
-    case POSITIVE: tc(NVSUB1 + 15u, NVSUB2); return;
+    case POSITIVE: tc(NVSUB1 + 017u, NVSUB2); return;
     case IS_PLUS_ZERO:
         ca(ADDRESS_OF(MPAC) + 4u);
-        tc(NVSUB1 + 17u, UPDATVB - 1u);
+        tc(NVSUB1 + 021u, UPDATVB - 1u);
         return;
-    case NEGATIVE: tc(NVSUB1 + 17u, UPDATVB - 1u); return;
-    case IS_MINUS_ZERO: continue_at(NVSUB1 + 18u); return;
+    case NEGATIVE: tc(NVSUB1 + 021u, UPDATVB - 1u); return;
+    case IS_MINUS_ZERO: continue_at(NVSUB1 + 022u); return;
     }
 }
 
@@ -234,7 +234,7 @@ void nvsub2(void)
     ca(ADDRESS_OF(MPAC) + 2u);
     ts(ADDRESS_OF(MPAC) + 5u);
     ca(ADDRESS_OF(MPAC) + 4u);
-    tc(NVSUB2 + 8u, UPDATVB - 1u);
+    tc(NVSUB2 + 010u, UPDATVB - 1u);
 }
 
 /* NVSUB2 +4, where UPDATNN returns: to NVSUBEND. */
@@ -248,7 +248,7 @@ void nvsub2_plus4(void)
 void nvsub2_plus9(void)
 {
     ca(ADDRESS_OF(MPAC) + 3u);
-    tc(NVSUB2 + 10u, UPDATNN - 1u);
+    tc(NVSUB2 + 012u, UPDATNN - 1u);
 }
 
 /* NVSUB2 +11, where UPDATNN returns. LOADSTAT +0, "SET FOR WAITING FOR
@@ -422,7 +422,7 @@ static void blanksub_plus12(void)
     dxch(ADDRESS_OF(BUF));
     set_A(PINSUPBT);
     write_superbnk();
-    tc(BLANKSUB + 20u, BLNKSUB1);
+    tc(BLANKSUB + 024u, BLNKSUB1);
 }
 
 /* TESTBIT -- "NVTEMP CONTAINS BLANKING CODE." True for "IF CURRENT BIT =
@@ -468,7 +468,7 @@ void blnksub1(void)
     ca(ADDRESS_OF(BUF) + 2u);
     ts(ADDRESS_OF(DSPCOUNT));
     dxch(ADDRESS_OF(BUF));
-    tc(BLNKSUB1 + 17u, SUPDXCHZ + 1u);
+    tc(BLNKSUB1 + 021u, SUPDXCHZ + 1u);
 }
 
 /* ---- DSPMM (LM pp. 457-458, CM pp. 375-376) ---- */
@@ -537,7 +537,7 @@ static void dspmmjb_plus8(void)
 {
     xch(ADDRESS_OF(DSPMMTEM));
     ts(ADDRESS_OF(DSPCOUNT));
-    tc(DSPMMJB + 10u, ENDOFJOB);
+    tc(DSPMMJB + 012u, ENDOFJOB);
 }
 
 /* ---- RECALTST (LM pp. 458-459, CM pp. 376-377, bank 40) ---- */

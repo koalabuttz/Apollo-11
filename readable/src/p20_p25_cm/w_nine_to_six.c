@@ -31,8 +31,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* 9DWTO6DW -- pp. 610-613. The return in 9DWXX; "CLEAR WORKING AREA OF
  * PUSHLIST" ("INCLUDING P"), its first 18 words, and J at 58 ("J=29",
  * "USE 2*29 FOR DP WORDS").

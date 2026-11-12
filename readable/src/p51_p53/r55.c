@@ -15,8 +15,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- R55 -- p. 945 ---- */
 
 /* R55, "GYRO TORQUE": "COMPUTE AND SEND GYRO PULSES". The caller's

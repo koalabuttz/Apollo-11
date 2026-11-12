@@ -27,8 +27,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- LSR22.4, INITWMX6 and INTGRCAL ---- */
 
 /* LSR22.4 -- p. 583: the LM's state vector to the mark time ("CALL TO GET

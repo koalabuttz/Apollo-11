@@ -10,8 +10,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- RANGER -- pp. 859-861 ---- */
 
 /* RANGER, with GAMMAL from HUNTEST: the range the trajectory HUNTEST found

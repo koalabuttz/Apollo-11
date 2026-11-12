@@ -24,8 +24,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* A data word the run has reached (a VN constant): the faithful port does
  * not run it. */
 void data_word(void)

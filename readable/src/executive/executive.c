@@ -159,10 +159,8 @@ static void novac2(void)
         /* NOVAC3 */
         EXECTEM2 = a_word();
         switch (ccs(IN_CORE_SET(PRIORITY, LOCCTR))) {
-        case IS_MINUS_ZERO: /* free */ corfound(); return;
-        case POSITIVE: /* a job that is running or ready */
-        case NEGATIVE: /* a sleeping job */ break;
-        case IS_PLUS_ZERO: /* never: priorities are never +0 */
+        case POSITIVE: break; /* a job that is running or ready */
+        case IS_PLUS_ZERO:    /* never: priorities are never +0 */
 #if LUMINARY099
             /* The CCS lands on NO.CORES (DEC 7), which runs as TC 7. */
             tc_at((word)(NOVAC3 + 4u));
@@ -173,6 +171,8 @@ static void novac2(void)
              * the TCF NEXTCORE after it runs as BZF NEXTCORE, on A = +0. */
             break;
 #endif
+        case NEGATIVE: break; /* a sleeping job */
+        case IS_MINUS_ZERO: /* free */ corfound(); return;
         }
         /* NEXTCORE */
         A = add16(sign_extend(COREINC), sign_extend(LOCCTR));
@@ -481,6 +481,11 @@ static void jobwake2(void)
         /* JOBWAKE4 */
         EXECTEM2 = a_word();
         switch (ccs(IN_CORE_SET(PRIORITY, LOCCTR))) {
+        case POSITIVE: break; /* active */
+        case IS_PLUS_ZERO:    /* never: the CCS lands on COREINC (DEC 12), a TC 14 */
+            tc_at((word)(JOBWAKE4 + 4u));
+            continue_at(COREINC);
+            return;
         case NEGATIVE: /* asleep: is it the one? */
             set_A(negate(NEWLOC(0)));
             A = add16(A, sign_extend(IN_CORE_SET(LOC, LOCCTR)));
@@ -489,12 +494,7 @@ static void jobwake2(void)
                 return;
             }
             break;
-        case IS_PLUS_ZERO: /* never: the CCS lands on COREINC (DEC 12), a TC 14 */
-            tc_at((word)(JOBWAKE4 + 4u));
-            continue_at(COREINC);
-            return;
-        case POSITIVE: /* active */
-        case IS_MINUS_ZERO: /* free */ break;
+        case IS_MINUS_ZERO: break; /* free */
         }
         /* JOBWAKE3 */
         A = add16(sign_extend(COREINC), sign_extend(LOCCTR));
@@ -600,7 +600,9 @@ void endofjob(void)
     case POSITIVE: /* INDEX A; TS 0: the use word, just before the area */ ts((unsigned)A); break;
     case IS_PLUS_ZERO: ts(A_ADDRESS); break;
     case NEGATIVE: break;
-    case IS_MINUS_ZERO: continue_at((word)(EJSCAN + 1u)); return;
+    case IS_MINUS_ZERO: /* (never: L is nine bits of PRIORITY) */
+        continue_at((word)(EJSCAN + 1u));
+        return;
     }
     ejscan();
 }
@@ -627,6 +629,7 @@ static void ejscan(void)
 
     for (k = 1; k < CORE_SETS; ++k, at = (word)(at + 4u)) {
         switch (ccs(ERASABLE(ADDRESS_OF(PRIORITY) + CORE_SET_WORDS * k))) {
+        case POSITIVE: break; /* active: EJ1, below */
         case IS_PLUS_ZERO:
             /* For core set 3 the third word is the constant -CCSPR, which
              * runs as an instruction; for the others it is TC CCSHOLE. */
@@ -639,7 +642,6 @@ static void ejscan(void)
             return;
         case NEGATIVE:
         case IS_MINUS_ZERO: continue;
-        case POSITIVE: break;
         }
         /* EJ1: is it higher than the highest so far? */
         tc_at((word)(at + 1u));
@@ -668,16 +670,16 @@ static void ejscan(void)
         tc_at((word)(at + 2u));
         continue_at(CCSHOLE);
         return;
-    case IS_MINUS_ZERO: /* nothing to run */ dummyjob_then(false); return;
     case NEGATIVE: break;
+    case IS_MINUS_ZERO: /* nothing to run */ dummyjob_then(false); return;
     }
     switch (ccs(BUF(0))) {
+    case POSITIVE: break;
     case IS_PLUS_ZERO: /* a PRIOCHNG's job is still the highest */ endprchg_minus1(); return;
+    case NEGATIVE: break;
     case IS_MINUS_ZERO: /* CAF 0 -1 unindexed: no CCS word to read */
         continue_at((word)(at + 9u));
         return;
-    case POSITIVE:
-    case NEGATIVE: break;
     }
     /* INDEX A; CAF 0 -1: A is BUF - 1, the winner's CCS +1. */
     offset = (word)(A - 1u - EJSCAN);
@@ -792,17 +794,16 @@ void nuchang2(void)
 {
     inhint();
     switch (ccs(NEWJOB)) {
+    case POSITIVE: break;        /* still waiting: TCF +3, to the light */
     case IS_PLUS_ZERO: relint(); /* fall through */
     case NEGATIVE:
         set_A(TWO);
         nudirect();
         return;
-    case POSITIVE:
-    case IS_MINUS_ZERO:
-        set_A(TWO);
-        wor_dsalmout();
-        dxch(ADDRESS_OF(LOC));
-        chanjob_plus4();
-        return;
+    case IS_MINUS_ZERO: break; /* (the CCS's fourth word is the CAF TWO below) */
     }
+    set_A(TWO);
+    wor_dsalmout();
+    dxch(ADDRESS_OF(LOC));
+    chanjob_plus4();
 }

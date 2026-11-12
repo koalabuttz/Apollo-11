@@ -11,8 +11,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- RTENCK1, RTENCK2 and RTENCK3 -- pp. 914-916 ---- */
 
 /* Three entries, each called by STQ: the return in RTENCKEX, and

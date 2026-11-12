@@ -23,8 +23,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- P11 and REP11A -- pp. 535-537 ---- */
 
 /* REP11A: TEPHEM, the ephemeris time of the clock's zero, moved on by

@@ -35,8 +35,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* KALCMAN3 -- LM p. 351, CM p. 399.
  * "KALCMANU IS CALLED AS A HIGH PRIORITY JOB WITH ENTRY POINTS AT KALCMAN3
  * AND VECPOINT." "THE THREE DESIRED CDU ANGLES MUST BE STORED AS SINGLE

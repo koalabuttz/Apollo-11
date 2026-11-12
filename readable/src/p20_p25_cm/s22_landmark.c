@@ -20,8 +20,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* S22.1 +0145 -- pp. 600-603, KNOWNFLG clear: "UNIT ALSO PUTS ABVAL(RC) IN 36D", the CSM's
  * unit position in ALPHAV ("ALPHAV +4=SINL FOR SETRE"); LUNAFLAG as
  * CMOONFLG. S22C=I: "ERADM= R0 METERS B-29 BOTH EARTH/MOON" (SETRE), and

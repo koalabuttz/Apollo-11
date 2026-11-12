@@ -9,8 +9,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- STARTENT -- pp. 844-846 ---- */
 
 /* STARTENT ("MM = 63", "COME HERE FROM CM/POSE.  RESTARTED IN CM/POSE."):

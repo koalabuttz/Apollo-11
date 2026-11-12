@@ -157,7 +157,7 @@ void r04a_after_terminate(void)
 /* R04A +6 -- LM p. 277: V33 (TCF +5). */
 void r04a_after_proceed(void)
 {
-    continue_at(R04A + 11u);
+    continue_at(R04A + 013u);
 }
 
 /* R04A +7 -- LM p. 277: V32. */
@@ -171,13 +171,13 @@ void r04a_after_recycle(void)
 void r04a_immediate_return(void)
 {
     set_A(BIT3);
-    tc(R04A + 9u, BLANKET);
+    tc(R04A + 011u, BLANKET);
 }
 
 /* R04A +10 -- LM p. 277. */
 void r04a_after_blanket(void)
 {
-    tc(R04A + 10u, ENDOFJOB);
+    tc(R04A + 012u, ENDOFJOB);
 }
 
 /* R04A +11 -- LM p. 277: "SAVE DESIRED OPTION RR =1 LR =2". */
@@ -468,13 +468,13 @@ void r04end_after_delayjob(void)
     inhint();
     set_A(negate(BIT14)); /* CS BIT14 */
     wand_channel(012);
-    tc(R04END + 9u, DOWNFLAG); /* ADRES R04FLAG */
+    tc(R04END + 011u, DOWNFLAG); /* ADRES R04FLAG */
 }
 
 /* R04END +11 -- LM p. 279. */
 void r04end_after_downflag(void)
 {
-    tc(R04END + 11u, ENDEXT);
+    tc(R04END + 013u, ENDEXT);
 }
 
 /* R77END -- LM p. 279.

@@ -25,8 +25,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* GETULC -- p. 585: the push-down list from 0. The LM's position: DELTALEM
  * "SHIFT FOR EARTH/MOON SPHERE" (X2, "LOAD X2 WITH SCALE SHIFT"), plus
  * RCVLEM; the CSM's likewise from DELTACSM and RCVCSM, less the LM's. "USE

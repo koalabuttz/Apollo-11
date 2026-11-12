@@ -12,8 +12,6 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* The tables' words, one TCF each: "ROUTINES FOR STARTING NEW GUIDANCE
  * PHASES" (NEWPHASE: TTFINCR, STARTP64 or P65START), "PRE-GUIDANCE
  * COMPUTATIONS" (PREGUIDE: CALCRGVG, RGVGCALC or REDESIG), "GUIDANCE

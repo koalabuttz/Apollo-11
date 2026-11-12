@@ -9,8 +9,6 @@
 #include "../interpreter/notation.h"
 #include "stateup.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 #if LUMINARY099
 /* STATEUP -- LM pp. 236-237.
  * "THIS ROUTINE DOES THE P00 INTEGRATION": P00 brings the two state

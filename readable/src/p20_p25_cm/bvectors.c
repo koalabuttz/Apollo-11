@@ -19,8 +19,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* BVECTORS -- p. 576. The return in EGRESS. RCLP's unit vector to 26D and
  * its length ("RCLP ABS VALUE") from 36D to TEMPOR1, a "SAFE LOCATION";
  * "USTAR = UNIT(US X UCL)" is the B vector, kept in BVECTOR and USTAR (a

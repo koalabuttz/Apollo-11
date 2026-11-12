@@ -19,8 +19,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- P37 -- pp. 890-891 ---- */
 
 /* P37: group 4 made inactive (PHASCHNG, OCT 4: phase 0, "INACTIVE, WILL

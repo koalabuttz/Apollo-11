@@ -46,13 +46,13 @@ void vad_plus1(void)
     read_indexed(READ_HISCALAR);
     das(MPAC_AT(3u));
     if (!A_is_zero()) {
-        tc_at(VAD + 8u);
+        tc_at(VAD + 010u);
         overflwy();
     }
     read_indexed(READ_CHAN5);
     das(MPAC_AT(5u));
     if (!A_is_zero()) {
-        tc_at(VAD + 15u);
+        tc_at(VAD + 017u);
         overflwz();
     }
     read_indexed(READ_LCHAN);
@@ -162,7 +162,7 @@ void bvsu(void)
     dcom();
     das(MPAC_AT(3u));
     if (!A_is_zero()) {
-        tc_at(BVSU + 9u);
+        tc_at(BVSU + 011u);
         overflwy();
     }
     dca(indexed(4u, ADDRWD));
@@ -170,7 +170,7 @@ void bvsu(void)
     dcom();
     das(MPAC_AT(5u));
     if (!A_is_zero()) {
-        tc_at(BVSU + 19u);
+        tc_at(BVSU + 023u);
         overflwz();
     }
     bdsu();
@@ -330,7 +330,7 @@ void dotsub(void)
 
     ca(ADDRESS_OF(DOTINC)); /* "ADVANCE ADDRWD TO Y COMPONENT" */
     ads(ADDRESS_OF(ADDRWD));
-    tc_at(DOTSUB + 10u);
+    tc_at(DOTSUB + 012u);
     dmpsub();
     dxch(MPAC_AT(1u)); /* "ACCUMULATE PARTIAL PRODUCTS." */
     das(ADDRESS_OF(BUF) + 1u);
@@ -342,7 +342,7 @@ void dotsub(void)
     dxch(MPAC_AT(0u));
     ca(ADDRESS_OF(DOTINC));
     ads(ADDRESS_OF(ADDRWD));
-    tc_at(DOTSUB + 22u);
+    tc_at(DOTSUB + 026u);
     dmpsub();
     enddot();
 }

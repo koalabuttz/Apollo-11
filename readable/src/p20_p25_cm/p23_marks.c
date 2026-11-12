@@ -33,8 +33,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* P23.60 +1 -- after the EXIT: with interrupts inhibited, the mark data's
  * address (MASK LOW10) to MARKDATA; INDEX MARKDATA, DCA 0 and DXCH: its
  * first two words to MARKTIME; INDEX MARKDATA, CA 5 and XCH: its word 5

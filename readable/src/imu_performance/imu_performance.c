@@ -46,8 +46,7 @@
 
 #if LUMINARY099 /* (the LM's alone) */
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-#define E(name)      ADDRESS_OF(name) /* an erasable word */
+#define E(name) ADDRESS_OF(name) /* an erasable word */
 
 /* ---- Two things every routine here does ---- */
 

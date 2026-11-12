@@ -379,7 +379,7 @@ static void erasloop(void)
     dxch(pair_at(index_value(A))); /* NDX A; DXCH 0000 */
     cs(x_at() + 1u);               /* NDX SKEEP7; CS 0001: "CS X+1" */
     ad_at(x_at());                 /* NDX SKEEP7; AD 0000: "AD X" */
-    tc_at(ERASLOOP + 17u);         /* TC -1CHK */
+    tc_at(ERASLOOP + 021u);        /* TC -1CHK */
     if (minus_1chk()) erasloop_plus18();
 }
 
@@ -395,11 +395,11 @@ void erasloop_plus18(void)
         eloopfin();
         return;
     }
-    dcs(pair_at(SKEEP7));  /* EXTEND; NDX SKEEP7; DCS 0000 */
-    dxch(pair_at(SKEEP7)); /* NDX SKEEP7; DXCH 0000 */
-    cs(x_at());            /* NDX SKEEP7; CS 0000: "CS X" */
-    ad_at(x_at() + 1u);    /* NDX SKEEP7; AD 0001: "AD X+1" */
-    tc_at(ERASLOOP + 30u); /* TC -1CHK */
+    dcs(pair_at(SKEEP7));   /* EXTEND; NDX SKEEP7; DCS 0000 */
+    dxch(pair_at(SKEEP7));  /* NDX SKEEP7; DXCH 0000 */
+    cs(x_at());             /* NDX SKEEP7; CS 0000: "CS X" */
+    ad_at(x_at() + 1u);     /* NDX SKEEP7; AD 0001: "AD X+1" */
+    tc_at(ERASLOOP + 036u); /* TC -1CHK */
     if (minus_1chk()) erasloop_plus31();
 }
 
@@ -444,14 +444,14 @@ void eloopfin_plus2(void)
     incr(ADDRESS_OF(SKEEP7));
     cs(ADDRESS_OF(SKEEP7));
     ad_at(ADDRESS_OF(SKEEP3));
-    if (!A_is_zero()) {       /* EXTEND; BZF +2 */
-        tc_at(ELOOPFIN + 9u); /* TC ERASLOOP */
+    if (!A_is_zero()) {         /* EXTEND; BZF +2 */
+        tc_at(ELOOPFIN + 011u); /* TC ERASLOOP */
         erasloop();
         return;
     }
     switch (ccs_at(ADDRESS_OF(SKEEP2))) {
     case POSITIVE:
-        tc_at(ELOOPFIN + 11u); /* TC NOEBANK */
+        tc_at(ELOOPFIN + 013u); /* TC NOEBANK */
         noebank();
         return;
     case IS_PLUS_ZERO: incr(ADDRESS_OF(SKEEP2)); /* fall through */
@@ -467,7 +467,7 @@ void eloopfin_plus2(void)
     }
     switch (ccs_at(EBANK_ADDRESS)) {
     case POSITIVE:
-        tc_at(ELOOPFIN + 20u); /* TC E134567B: "GO TO EBANKS 1,3,4,5,6, AND 7" */
+        tc_at(ELOOPFIN + 024u); /* TC E134567B: "GO TO EBANKS 1,3,4,5,6, AND 7" */
         e134567b();
         return;
     case IS_PLUS_ZERO: set_A(ERASCON6); /* fall through */
@@ -518,7 +518,7 @@ static void cntrchk(void)
     ad_at(ADDRESS_OF(SR));
     ad_at(ADDRESS_OF(EDOP));
     ad(CONC_PLUS_S2);
-    tc_at(CYCLSHFT + 10u); /* TC -1CHK */
+    tc_at(CYCLSHFT + 012u); /* TC -1CHK */
     if (minus_1chk()) cyclshft_plus11();
 }
 
@@ -530,7 +530,7 @@ void cyclshft_plus11(void)
     ad_at(ADDRESS_OF(SR));
     ad_at(ADDRESS_OF(EDOP));
     ad(S_PLUS_1);
-    tc_at(CYCLSHFT + 16u); /* TC -1CHK */
+    tc_at(CYCLSHFT + 020u); /* TC -1CHK */
     if (minus_1chk()) cyclshft_plus17();
 }
 
@@ -540,7 +540,7 @@ void cyclshft_plus11(void)
 void cyclshft_plus17(void)
 {
     incr(ADDRESS_OF(SCOUNT) + 1u);
-    tc_at(CYCLSHFT + 18u); /* TC SMODECHK */
+    tc_at(CYCLSHFT + 022u); /* TC SMODECHK */
     smodechk();
 }
 
@@ -693,38 +693,38 @@ static void adrschk(void)
         soption();
         return;
     }
-    switch (ccs_at(ADDRESS_OF(SKEEP5))) {          /* "IS CHECKSUM FINISHED" */
-    case POSITIVE: tc_at(ADRSCHK + 7u); break;     /* TC +3: "NO" */
-    case IS_PLUS_ZERO: tc_at(ADRSCHK + 8u); break; /* TC +2: "NO" */
+    switch (ccs_at(ADDRESS_OF(SKEEP5))) {            /* "IS CHECKSUM FINISHED" */
+    case POSITIVE: tc_at(ADRSCHK + 7u); break;       /* TC +3: "NO" */
+    case IS_PLUS_ZERO: tc_at(ADRSCHK + 010u); break; /* TC +2: "NO" */
     case NEGATIVE:
-        tc_at(ADRSCHK + 9u); /* TC SOPTION: "GO TO ROPECHK SHOWSUM OPTION" */
+        tc_at(ADRSCHK + 011u); /* TC SOPTION: "GO TO ROPECHK SHOWSUM OPTION" */
         soption();
         return;
     case IS_MINUS_ZERO: break;
     }
     switch (ccs_register(L_ADDRESS)) {
     case POSITIVE:
-        tc_at(ADRSCHK + 11u);
+        tc_at(ADRSCHK + 013u);
         continu();
         return; /* TC CONTINU */
     case IS_PLUS_ZERO:
-        tc_at(ADRSCHK + 12u);
+        tc_at(ADRSCHK + 014u);
         continu();
         return; /* TC CONTINU */
     case NEGATIVE:
-        tc_at(ADRSCHK + 13u);
+        tc_at(ADRSCHK + 015u);
         continu();
         return; /* TC CONTINU */
     case IS_MINUS_ZERO: break;
     }
     switch (ccs_at(ADDRESS_OF(SKEEP5))) {
     case POSITIVE:
-        tc_at(ADRSCHK + 15u); /* TC CONTINU +1 */
+        tc_at(ADRSCHK + 017u); /* TC CONTINU +1 */
         continu_plus1();
         return;
     case IS_PLUS_ZERO: set_A(S_MINUS_1); /* fall through */
     case NEGATIVE:
-        tc_at(ADRSCHK + 17u); /* TC CONTINU +1 */
+        tc_at(ADRSCHK + 021u); /* TC CONTINU +1 */
         continu_plus1();
         return;
     case IS_MINUS_ZERO: continu(); return;

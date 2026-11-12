@@ -14,8 +14,6 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- GUILDRET -- pp. 801-802 ---- */
 
 /* GUILDRET: RODCOUNT zero, and on. (A is +0: TS RODCOUNT never skips.) */

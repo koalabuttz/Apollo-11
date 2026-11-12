@@ -23,8 +23,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- S50 (LOCSAM) -- pp. 934-936 ---- */
 
 /* LOCSAM: the time in MPAC, kept in TSIGHT; the sun's and the moon's

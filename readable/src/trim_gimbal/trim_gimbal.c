@@ -8,13 +8,6 @@
 /* The CA order's operation code. */
 #define CA_CODE 3u
 
-/* TC at at, to a routine out of this run: Q the word after. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* RETURN: TC Q. */
 static void tc_q(void)
 {

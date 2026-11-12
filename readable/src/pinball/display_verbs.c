@@ -187,9 +187,9 @@ static bool tstfordp_returns(void)
         return true;
     }
     tc_at(TSTFORDP + 7u); /* TC +2: "NORMAL" */
-    tc_at(TSTFORDP + 9u);
+    tc_at(TSTFORDP + 011u);
     sfrutnor();
-    tc_at(TSTFORDP + 10u);
+    tc_at(TSTFORDP + 012u);
     if (dptest()) incr(ADDRESS_OF(NOUNADD)); /* "DP" */
     tc_return(L_ADDRESS);
     return true;
@@ -301,7 +301,7 @@ static void dspcom2_plus2(void)
 void dspcom3_after_dspoctwd(void)
 {
     xch(ADDRESS_OF(DISTEM));
-    tc_at(DSPCOM3 + 8u);
+    tc_at(DSPCOM3 + 010u);
     dspcom2_plus2();
 }
 
@@ -371,18 +371,18 @@ void dspdcput(void)
     ts(ADDRESS_OF(DSPCOUNT));
     cs(indexed_by(ADDRESS_OF(XREG), k));
     ts(ADDRESS_OF(MPAC));
-    tc_at(DSPDCPUT + 9u);
+    tc_at(DSPDCPUT + 011u);
     sfconum(); /* "2X (SF CON NUMB) IN A" */
     ts(ADDRESS_OF(SFTEMP1));
     dca(ADDRESS_OF(GTSFOUTL));
-    dtcb(DSPDCPUT + 13u); /* "LOADS SFTEMP1, SFTEMP2" */
+    dtcb(DSPDCPUT + 015u); /* "LOADS SFTEMP1, SFTEMP2" */
     gtsfout();
-    if (mixed_noun(DSPDCPUT + 15u)) {
-        tc_at(DSPDCPUT + 17u);
+    if (mixed_noun(DSPDCPUT + 017u)) {
+        tc_at(DSPDCPUT + 021u);
         sfrutmix();
-        tc_at(DSPDCPUT + 18u);
+        tc_at(DSPDCPUT + 022u);
     } else {
-        tc_at(DSPDCPUT + 16u);
+        tc_at(DSPDCPUT + 020u);
         /* DSPSFNOR */
         tc_at(DSPSFNOR);
         sfrutnor();
@@ -445,13 +445,13 @@ void dspdpdec(void)
     ts(ADDRESS_OF(DSPCOUNT));
     set_A(ZERO);
     ts(ADDRESS_OF(MPAC) + 2u);
-    tc(DSPDPDEC + 12u, TPAGREE); /* "MAKE DP DATA AGREE" */
+    tc(DSPDPDEC + 014u, TPAGREE); /* "MAKE DP DATA AGREE" */
 }
 
 /* DSPDPDEC +13, where TPAGREE (INTERPRETER.agc) comes back. */
 void dspdpdec_plus13(void)
 {
-    tc(DSPDPDEC + 13u, DSP2DEC);
+    tc(DSPDPDEC + 015u, DSP2DEC);
 }
 
 /* ENDDPDEC, where DSP2DEC comes back: the verb is done. */

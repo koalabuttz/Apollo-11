@@ -30,8 +30,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- V67CALL and the display ---- */
 
 /* V67CALL -- p. 608: V67WW, by the interpreter. */

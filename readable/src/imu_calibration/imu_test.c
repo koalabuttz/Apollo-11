@@ -34,8 +34,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- IMUTEST and the positioning -- pp. 423-424 ---- */
 
 /* IMUTEST -- p. 423. The IMU performance test's start: DRIFTT and GEOCOMP1

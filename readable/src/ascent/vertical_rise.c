@@ -7,8 +7,6 @@
 #include "ascent.h"
 #include "../agc/names.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 #if LUMINARY099
 
 /* ANG1CHEK (bank 27): with the thrust direction UNFC/2 within THETA1 of

@@ -35,14 +35,6 @@
 
 #if COMANCHE055
 
-/* TC at, to a routine out of the file (or to a keyed label): Q gets the
- * return, and the routine runs next. */
-static inline void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* ---- programs.c: P32 and P72 (banks 4 and 14) ---- */
 
 extern const struct interpretive_code P32STRT_CODE, ALMXITA_CODE, P32_P72A_CODE, VN0637_CODE,

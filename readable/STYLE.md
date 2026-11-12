@@ -10,8 +10,8 @@ side and walk across them:
 3. the readable C (`readable/src/`).
 
 Everything below serves that walk. Where a rule here and readability
-disagree, keep the rule and explain in a comment; where the original's
-names and C's habits disagree, the original's names win.
+disagree, keep the rule and explain in a comment; where the listing's
+names and C's habits disagree, the listing's names win.
 
 ## Language
 
@@ -30,20 +30,36 @@ names and C's habits disagree, the original's names win.
 ## Fidelity
 
 A readable routine leaves **every word of memory, every register and every
-I/O channel** as the original routine does, including what the listing
+I/O channel** as the AGC's routine does, including what the listing
 calls *debris* (`DEBRIS -- CENTRALS A,Q,L`). That is what lets the
 readable code run in the real flight program and be checked word for word
-against the faithful port, which is checked against the original program
-in yaAGC. The few deliberate departures, by either port, are listed in
-one place: README.md, *Departures*. A new one goes there too.
+against the faithful port (gates 1 and 2) and against Virtual AGC running
+the original rope (gate 3). The few deliberate departures, by either
+port, are listed in one place: README.md, *Departures*. A new one goes
+there too.
 
-- When a value only survives as debris, set it where the original does and
+- When a value only survives as debris, set it where the listing does and
   say so (`/* A,L get NEWLOC's old words */`).
 - Some outcomes cannot happen in a working program: a CCS on a word that is
   never +0, a branch onto a constant (`TC CCSHOLE`, `DEC 7` run as `TC 7`).
-  Follow them anyway, as the original would, in as few lines as possible,
-  with a comment that says they never happen and what the AGC would do.
+  Follow them anyway, as the AGC would, in as few lines as possible, with
+  a comment that says never and what the AGC would do there
+  (`/* (never: priorities are never +0) The CCS lands on NO.CORES ... */`).
   They are part of the program a reader is studying.
+- **`not_modelled()`** is for the one kind of step a routine cannot
+  follow: a step whose outcome the listing's lines do not say. An INDEX
+  that would make an instruction the listing does not intend, a transfer
+  through a computed address that is no place the routine goes, an index
+  past its table's end, a channel the routine never uses. The call stops
+  the routine and its binding refuses the state (README.md, *Departures*,
+  lists these steps), and a comment at the call says what the AGC would
+  do there. It is not for an outcome that never comes but that the
+  listing's lines do say. Every outcome of a CCS is followed, whatever
+  its word can hold: the words after the CCS are in the listing.
+- Say what a thing is compared with. What a routine does is what the AGC
+  does (`the AGC would run OCT 1104 as TC 1104`). What a test shows is
+  that it matches the faithful port, or Virtual AGC in gate 3. Write
+  "matches the faithful port", never "as the original".
 - Three gates prove fidelity (see *Gates*). A change that fails any of them
   is not readable, it is wrong.
 
@@ -64,10 +80,17 @@ what it means in the listing:
 | constant `EXECBANK` | `EXECBANK` | its value |
 | code label `TASKOVER` | `TASKOVER` | its address (for `continue_at`, `tc_at`) |
 | central registers `A`, `L`, `Q`, `Z` | `A`, `L`, `Q`, `Z` | the registers (lvalues) |
+| channel `CHAN12`, `DSALMOUT`, `DNTM1` | `CHAN12`, `DSALMOUT`, `DNTM1` | its number (for `read_channel()`, `wor_channel()` and the rest) |
 | bank registers `FBANK`, `EBANK`, `BBANK` | same | read; write with `set_FBANK()` etc. |
 
 `ADDRESS_OF(NEWJOB)` is an erasable word's address, for INDEX and for the
 instruction helpers.
+
+A channel is written by its name, never by a bare number: the name the
+listing uses at the line, or, where the listing writes the number, the
+name ERASABLE ASSIGNMENTS gives that channel (`RAND 31` is
+`rand_channel(CHAN31)`). A channel the listing never names keeps its
+number, in octal, with a comment that says what it is.
 
 C cannot spell every AGC name, so:
 
@@ -75,6 +98,7 @@ C cannot spell every AGC name, so:
 |---|---|---|
 | `.` or `/` | `_` | `NO.CORES` → `NO_CORES`, `NEG1/2` → `NEG1_2` |
 | a leading `-` | `MINUS_` | `-CCSPR` → `MINUS_CCSPR` |
+| `-` inside a name | `_` | `TIG-30` → `TIG_30`, `tig_30()` |
 | a trailing `-` | `_MINUS` | `WATLST0-` → `WATLST0_MINUS` |
 | a leading digit | the digit spelled out | `2K` → `TWO_K` |
 | `+` inside a name | `_PLUS_` | `Q+10000` → `Q_PLUS_10000`, `q_plus_10000()` |
@@ -112,6 +136,12 @@ gives it its C spelling. No address or constant is typed in by hand.
 - An entry the listing names by an offset from a label is the label plus
   the offset: `CHANJOB -2` → `chanjob_minus2()`, `DUMMYJOB +2` →
   `dummyjob_plus2()`.
+- An offset is a number of the listing's, and the listing counts in octal
+  unless it writes a D: `CG +14` is the word 014 after CG, `LST2 +16D`
+  the word 16 after LST2. An offset the listing does not write (the
+  address of a word some lines below a label) is counted the same way,
+  in octal with its leading 0 (`POODOO + 014u`). A function's name takes
+  the digits as they are written in its header, which says where that is.
 - When one C function covers several labels (a loop through `NOVAC3` and
   `NEXTCORE`), it takes the first label's name and its comment lists the
   others.
@@ -161,14 +191,24 @@ so a reader sees both versions together.
 
 - The machine is global, as the AGC's memory was: `agc` (`src/agc/agc.h`),
   pointed at the flight program's state by `src/binding/`. Routines take
-  only what the original passes inline (the 2CADR after `TC NOVAC`).
+  only what the listing passes inline (the 2CADR after `TC NOVAC`).
 - A routine **leaves** by setting Z: `continue_at(address)`, `dtcb(at)`, or a
-  call to the routine the original goes on to. Nothing is returned.
+  call to the routine the listing goes on to. Nothing is returned.
 - A `TCF` to another routine is a call to it, as the last statement. A
-  branch back is a loop.
+  branch back is a loop. `continue_at(LABEL)` is for a routine of another
+  file (the binding goes on there), and for a place of this one where
+  the faithful port ends a step: the flight program charges each step its
+  machine time and takes interrupts between steps, so the readable C
+  ends its steps where the faithful port does. Such a place is a
+  function named for it, so the jump can be followed by name:
+  `continue_at(GENTRAN + 1u)` goes on at `gentran_plus1()`. (An outcome
+  that never happens may end at its place without one. Its comment says
+  never, and why.)
 - **CCS** is `switch (ccs(word))` with its four cases in the listing's order
   (`POSITIVE`, `IS_PLUS_ZERO`, `NEGATIVE`, `IS_MINUS_ZERO`), each falling
-  through with a `/* fall through */` comment where the listing does.
+  through with a `/* fall through */` comment where the listing does. All
+  four are named: the listing has a word for each, so no `default:` stands
+  for two of them.
 - Register effects that carry state from one step to the next use the
   instruction helpers (`dxch()`, `xch()`, `ts()`), named as the instruction.
   Effects that do not are plain C on named words.
@@ -179,6 +219,11 @@ so a reader sees both versions together.
   `ADDRESS(DOINT)`), run by the readable interpreter as the AGC's
   interpreter ran the listing's words. A gate checks the words against the
   rope.
+- A helper that more than one file needs is defined once: `COUNT()` and
+  `tc_to()` in `src/agc/agc.h`, the interpretive notation in
+  `src/interpreter/notation.h`. A file does not carry its own copy. (The
+  tables of `src/assembly`, which do not use the machine, have `COUNT()`
+  from their own header.)
 - One subsystem per directory under `src/`, named after the listing's log
   section: `EXECUTIVE.agc` → `src/executive/`. `src/agc/` is the machine
   model; `src/binding/` connects the routines to the flight program and
@@ -199,6 +244,15 @@ describes each in full, and `.github/workflows/readable-ci.yml` runs them.
      where the listing's code or constants do (`tools/code_extents.py`);
    - `x86-link-check` and `chan13-sites`: two checks the x86 gates rest
      on, each tried on what it must fail;
+   - `style-check`: the rules of this guide that a script can count
+     (`tools/style_check.py`: the order of a CCS's cases, a `default:`
+     among them, a CCS outcome refused, a channel by number, a jump to a
+     label plus an offset, a helper defined twice, a decimal offset, a
+     long line, `goto`, the wording). `tests/style_owed.txt` lists what each directory of `src/`
+     still owes of the whole-tree review (issue #1334); a new break
+     anywhere fails, and the list only gets shorter. What a script cannot
+     count (names, comments, whether the C says what the listing does) a
+     person reads;
    - the `*-cases` targets, over a hundred, one or more for each listing
      file (`kernel-cases`, `interbank-cases`, ... `assembly-cases`). Each
      is of one of two kinds, or both. The first runs the faithful port's

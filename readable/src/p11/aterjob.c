@@ -24,8 +24,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void attdisp(void);
 static void atreset(void);
 static void satout(void);

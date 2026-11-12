@@ -35,8 +35,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- RRDESSM ---- */
 
 /* RRDESSM -- p. 538: the return in DESRET (STQ); RRNBSW clear (RRTARGET

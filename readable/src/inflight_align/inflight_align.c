@@ -186,14 +186,6 @@ static const word calcgta_words[] = {
 const struct interpretive_code CALCGTA_CODE = {CODE_BANK(I_CALCGTA), CODE_Z(I_CALCGTA),
                                                COUNT(calcgta_words), calcgta_words};
 
-/* TC at "at" to a routine outside the file (ALARM, UPFLAG), which reads
- * the word after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* After GIMLOCK1's EXIT: alarm 401, GLOKFAIL set ("GIMBAL LOCK HAS
  * OCCURRED"), and back into the interpreter. */
 void gimlock1_after_exit(void)

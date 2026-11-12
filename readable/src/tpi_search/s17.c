@@ -17,8 +17,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- S17.1 -- pp. 552-553 ---- */
 
 /* S17.1: both vehicles to the TPI time TTPI by conic extrapolation, "THE

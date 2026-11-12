@@ -26,8 +26,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* A label's address in its bank (02000-03777). */
 #define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
 #define R36TAG2        IN_BANK(R36TAG2)
@@ -43,14 +41,6 @@
 #define R36INT_BANK 042u
 #define R36B_BANK   040u
 #endif
-
-/* TC at, to a routine out of the file: Q gets the return, and the
- * routine runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
 
 #if COMANCHE055
 /* ---- The CM's R36 -- CM p. 502, bank 20 ---- */

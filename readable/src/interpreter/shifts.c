@@ -309,7 +309,7 @@ static void vssr_plus2(void)
     dxch(MPAC_AT(0u)); /* "SWAP Y AND Z COMPONENTS." */
     dxch(MPAC_AT(5u));
     dxch(MPAC_AT(0u));
-    tc_at(VSSR + 11u);
+    tc_at(VSSR + 013u);
     vshrrnd(); /* "SHIFT Z COMPONENT." */
 
     vrotatex(); /* "RESTORE COMPONENTS TO PROPER PLACES." */
@@ -331,14 +331,14 @@ void vssl(void)
         dca(MPAC_AT(3u));
         das(MPAC_AT(3u));
         if (!A_is_zero()) {
-            tc_at(VSSL + 11u);
+            tc_at(VSSL + 013u);
             overflwy();
         }
 
         dca(MPAC_AT(5u));
         das(MPAC_AT(5u));
         if (!A_is_zero()) {
-            tc_at(VSSL + 17u);
+            tc_at(VSSL + 021u);
             overflwz();
         }
 
@@ -490,19 +490,19 @@ static void vright2(void)
         ts(L_ADDRESS);
         xch(MPAC_AT(0u));
         xch(MPAC_AT(1u));
-        tc_at(VRIGHT2 + 9u);
+        tc_at(VRIGHT2 + 011u);
         setround();       /* "X COMPONENT NOW SHIFTED, SO MAKE UP THE */
         das(MPAC_AT(0u)); /* ROUNDING QUANTITY (0 IN A AND 0 OR +-1 IN L)." */
 
         xch(MPAC_AT(3u)); /* "REPEAT THE ABOVE PROCESS FOR Y AND Z." */
         xch(MPAC_AT(4u));
-        tc_at(VRIGHT2 + 13u);
+        tc_at(VRIGHT2 + 015u);
         setround();
         das(MPAC_AT(3u)); /* "NO OVERFLOW ON THESE ADDS." */
 
         xch(MPAC_AT(5u));
         xch(MPAC_AT(6u));
-        tc_at(VRIGHT2 + 17u);
+        tc_at(VRIGHT2 + 021u);
         setround();
         das(MPAC_AT(5u));
 
@@ -570,7 +570,7 @@ void genscr_plus4(void)
     switch (ccs_at(ADDRESS_OF(MPTEMP))) {
     case POSITIVE: ts(ADDRESS_OF(MPTEMP)); /* fall through */
     case IS_PLUS_ZERO:
-        tc_at(GENSCR + 12u);
+        tc_at(GENSCR + 014u);
         genscr_plus1();
         return;
     case NEGATIVE:

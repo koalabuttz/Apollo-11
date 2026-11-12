@@ -32,14 +32,6 @@
 #if LUMINARY099
 #include "../interpreter/notation.h"
 
-/* TC at, to a routine out of the file: Q gets the return and the routine
- * runs next. */
-static inline void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* TC Q: back to the return Q holds (the AGC runs register Q as the
  * instruction TC <return>), Q becoming 3. The faithful port takes a return
  * in 010-07777 only, as every caller's is. */

@@ -360,7 +360,7 @@ static void nodspy(void)
             continue_at(RESUME);
             return;
         case IS_MINUS_ZERO:
-            tc_at((word)(SYNCT4 + 8u)); /* TC RESUME */
+            tc_at((word)(SYNCT4 + 010u)); /* TC RESUME */
             continue_at(RESUME);
             return;
         case IS_PLUS_ZERO:                                /* OCT37737 */

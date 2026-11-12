@@ -274,8 +274,8 @@ static const struct entry short_verbs[] = {
     {CREWMANU + 6u, crewmanu_after_findvac},
     {TRMTRACK, trmtrack},
     {TRMTRACK + 6u, trmtrack_after_downflag},
-    {TRMTRACK + 8u, trmtrack_after_second_downflag},
-    {TRMTRACK + 10u, trmtrack_after_third_downflag},
+    {TRMTRACK + 010u, trmtrack_after_second_downflag},
+    {TRMTRACK + 012u, trmtrack_after_third_downflag},
     {DNEDUMP, dnedump},
     {LEMVEC, lemvec},
     {LEMVEC + 2u, lemvec_after_downflag},
@@ -298,7 +298,7 @@ static const struct entry short_verbs[] = {
     {NOKILL + 5u, nokill_after_terminate},
     {NOKILL + 6u, nokill_after_proceed},
     {NOKILL + 7u, nokill_after_enter},
-    {NOKILL + 8u, nokill_plus8},
+    {NOKILL + 010u, nokill_plus8},
     {ENDSUMS, endsums},
     {DAPDISP, dapdisp},
     {DAPDISP + 1u, dapdisp_after_testxact},
@@ -338,12 +338,12 @@ static const struct entry short_verbs[] = {
     {CKOPTVB, ckoptvb},
     {CKOPTVB + 2u, ckoptvb_after_checkmm02_no},
     {CKOPTVB + 3u, ckoptvb_after_checkmm02_yes},
-    {CKOPTVB + 8u, ckoptvb_after_findvac},
+    {CKOPTVB + 010u, ckoptvb_after_findvac},
     {CHAZFOGC, chazfogc},
     {CHAZFOGC + 2u, chazfogc_after_checkmm02_no},
     {CHAZFOGC + 3u, chazfogc_after_checkmm02_yes},
     {CHAZFOGC + 7u, chazfogc_after_findvac},
-    {CHAZFOGC + 9u, chazfogc_after_phaschng},
+    {CHAZFOGC + 011u, chazfogc_after_phaschng},
     {VB64, vb64},
     {VB64 + 1u, vb64_after_chkpooh},
     {VB64 + 2u, vb64_after_testxact},
@@ -351,10 +351,10 @@ static const struct entry short_verbs[] = {
     {ENATMA, enatma},
     {ENATMA + 2u, enatma_after_downflag},
     {STROKON, strokon},
-    {STROKON + 8u, strokon_after_novac},
+    {STROKON + 010u, strokon_after_novac},
     {STABLISH, stablish},
-    {STABLISH + 12u, stablish_plus12},
-    {STABLISH + 13u, stablish_plus13},
+    {STABLISH + 014u, stablish_plus12},
+    {STABLISH + 015u, stablish_plus13},
     {CREWMANU, crewmanu},
     {CREWMANU + 1u, crewmanu_after_chkpooh},
     {CREWMANU + 2u, crewmanu_after_testxact},
@@ -365,7 +365,7 @@ static const struct entry short_verbs[] = {
     {V83PERF, v83perf},
     {V83PERF + 1u, v83perf_after_testxact},
     {V83PERF + 5u, v83perf_plus5},
-    {V83PERF + 9u, v83perf_after_novac},
+    {V83PERF + 011u, v83perf_after_novac},
     {V85PERF, v85perf},
     {V85PERF + 1u, v85perf_after_testxact},
     {GOTOR21, gotor21},
@@ -373,7 +373,7 @@ static const struct entry short_verbs[] = {
     {GOTOR23, gotor23},
     {GOTOR23 + 2u, gotor23_after_upflag},
     {GOTOR23 + 3u, gotor23_after_testxact},
-    {GOTOR23 + 19u, gotor23_after_novac},
+    {GOTOR23 + 023u, gotor23_after_novac},
     {REGR21, regr21},
     {REGR21 + 4u, regr21_after_novac},
     {R22ALARM, r22alarm},
@@ -403,7 +403,7 @@ static const struct entry short_verbs[] = {
     {NOKILL + 5u, nokill_after_terminate},
     {NOKILL + 6u, nokill_after_proceed},
     {NOKILL + 7u, nokill_after_enter},
-    {NOKILL + 8u, nokill_plus8},
+    {NOKILL + 010u, nokill_plus8},
     {ENDSUMS, endsums},
     {SETPRFLG, setprflg},
     {SETPRFLG + 2u, setprflg_after_upflag},
@@ -413,9 +413,9 @@ static const struct entry short_verbs[] = {
     {ATTACHED + 4u, attached_after_findvac},
     {VERB94, verb94},
     {VERB94 + 6u, verb94_after_downflag},
-    {VERB94 + 8u, verb94_after_checkmm23_no},
-    {VERB94 + 9u, verb94_after_checkmm23_yes},
-    {VERB94 + 11u, verb94_after_phaschng},
+    {VERB94 + 010u, verb94_after_checkmm23_no},
+    {VERB94 + 011u, verb94_after_checkmm23_yes},
+    {VERB94 + 013u, verb94_after_phaschng},
     {V90PERF, v90perf},
     {V90PERF + 1u, v90perf_after_testxact},
     {V90PERF + 5u, v90perf_after_findvac},
@@ -466,16 +466,16 @@ static const struct entry align[] = {
     {ICORK2 + 3u, icork2_after_exdspret},
     {ICORK2 + 5u, icork2_after_imucoars},
     {ICORK2 + 7u, icork2_after_imustall_bad},
-    {ICORK2 + 8u, icork2_after_imustall_good},
+    {ICORK2 + 010u, icork2_after_imustall_good},
     {IMUFINEK, imufinek},
     {IMUFINEK + 1u, imufinek_after_ckmodcad},
     {IMUFINEK + 2u, imufinek_after_testxact},
     {IMUFINEK + 5u, imufinek_after_terminate},
     {IMUFINEK + 6u, imufinek_after_proceed},
     {IMUFINEK + 7u, imufinek_after_enter},
-    {IMUFINEK + 10u, imufinek_after_exdspret},
-    {IMUFINEK + 12u, imufinek_after_imufine},
-    {IMUFINEK + 14u, imufinek_after_imustall_bad},
+    {IMUFINEK + 012u, imufinek_after_exdspret},
+    {IMUFINEK + 014u, imufinek_after_imufine},
+    {IMUFINEK + 016u, imufinek_after_imustall_bad},
     {FINEK2, finek2},
     {FINEK2 + 3u, finek2_after_imupulse},
     {FINEK2 + 5u, finek2_after_imustall_bad},
@@ -500,35 +500,35 @@ static const struct entry align[] = {
     {RRDESNBK, rrdesnbk},
     {RRDESNBK + 1u, rrdesnbk_after_rdruseck},
     {RRDESNBK + 2u, rrdesnbk_after_testxact},
-    {RRDESNBK + 10u, rrdesnbk_plus10},
-    {RRDESNBK + 13u, rrdesnbk_after_terminate},
-    {RRDESNBK + 14u, rrdesnbk_after_proceed},
-    {RRDESNBK + 15u, rrdesnbk_after_enter},
-    {RRDESNBK + 17u, rrdesnbk_after_aurlokon},
-    {RRDESNBK + 20u, rrdesnbk_after_exdspret},
-    {RRDESNBK + 24u, rrdesnbk_after_findvac},
+    {RRDESNBK + 012u, rrdesnbk_plus10},
+    {RRDESNBK + 015u, rrdesnbk_after_terminate},
+    {RRDESNBK + 016u, rrdesnbk_after_proceed},
+    {RRDESNBK + 017u, rrdesnbk_after_enter},
+    {RRDESNBK + 021u, rrdesnbk_after_aurlokon},
+    {RRDESNBK + 024u, rrdesnbk_after_exdspret},
+    {RRDESNBK + 030u, rrdesnbk_after_findvac},
     {RRDESK2, rrdesk2},
     {RRDESK2 + 2u, rrdesk2_after_rrdesnb},
     {RRDESK2 + 3u, rrdesk2_plus3},
-    {RRDESK2 + 12u, rrdesk2_after_radstall_bad},
-    {RRDESK2 + 13u, rrdesk2_after_radstall_good},
-    {RRDESK2 + 14u, rrdesk2_plus14},
-    {RRDESK2 + 16u, rrdesk2_after_alarm},
+    {RRDESK2 + 014u, rrdesk2_after_radstall_bad},
+    {RRDESK2 + 015u, rrdesk2_after_radstall_good},
+    {RRDESK2 + 016u, rrdesk2_plus14},
+    {RRDESK2 + 020u, rrdesk2_after_alarm},
     {RRDESEND, rrdesend},
-    {RRDESEND + 9u, rrdesend_after_clradmod},
-    {RRDESEND + 12u, rrdesend_after_delayjob},
-    {RRDESEND + 14u, rrdesend_after_downflag},
+    {RRDESEND + 011u, rrdesend_after_clradmod},
+    {RRDESEND + 014u, rrdesend_after_delayjob},
+    {RRDESEND + 016u, rrdesend_after_downflag},
     {RDRUSECK, rdruseck},
     {CHECKRR, checkrr},
     {CKRNDBIT, ckrndbit},
     {CHECKP22, checkp22},
-    {IMUATTCK + 13u, imuattck_plus13},
-    {IMUATTCK + 14u, imuattck_after_testxact},
-    {IMUATTCK + 17u, imuattck_after_terminate},
-    {IMUATTCK + 18u, imuattck_after_proceed},
-    {IMUATTCK + 19u, imuattck_after_enter},
-    {IMUATTCK + 22u, imuattck_after_exdspret},
-    {IMUATTCK + 29u, imuattck_after_waitlist},
+    {IMUATTCK + 015u, imuattck_plus13},
+    {IMUATTCK + 016u, imuattck_after_testxact},
+    {IMUATTCK + 021u, imuattck_after_terminate},
+    {IMUATTCK + 022u, imuattck_after_proceed},
+    {IMUATTCK + 023u, imuattck_after_enter},
+    {IMUATTCK + 026u, imuattck_after_exdspret},
+    {IMUATTCK + 035u, imuattck_after_waitlist},
 #else
     {VBZERO + 2u, vbzero_after_op_inert_optics},
     {VBCOARK + 2u, vbcoark_after_op_inert_optics},
@@ -536,22 +536,22 @@ static const struct entry align[] = {
     {OPTCOARK, optcoark},
     {OPTCOARK + 2u, optcoark_after_ckmodcad},
     {OPTCOARK + 3u, optcoark_after_testxact},
-    {OPTCOARK + 9u, optcoark_after_falton},
-    {OPTCOARK + 11u, optcoark_plus11},
-    {OPTCOARK + 17u, optcoark_after_alarm},
+    {OPTCOARK + 011u, optcoark_after_falton},
+    {OPTCOARK + 013u, optcoark_plus11},
+    {OPTCOARK + 021u, optcoark_after_alarm},
     {OPTC1, optc1},
     {OPTC1 + 3u, optc1_after_terminate},
     {OPTC1 + 4u, optc1_after_proceed},
     {OPTC1 + 5u, optc1_after_enter},
-    {OPTC1 + 12u, optc1_after_exdspret},
-    {OPTC1 + 15u, optc1_plus15},
+    {OPTC1 + 014u, optc1_after_exdspret},
+    {OPTC1 + 017u, optc1_plus15},
     {IMUATTCK + 7u, imuattck_after_cklftbts_yes},
-    {IMUATTCK + 8u, imuattck_after_testxact},
-    {IMUATTCK + 14u, imuattck_after_terminate},
-    {IMUATTCK + 15u, imuattck_after_proceed},
-    {IMUATTCK + 16u, imuattck_after_enter},
-    {IMUATTCK + 20u, imuattck_after_needle11},
-    {IMUATTCK + 22u, imuattck_after_needler2},
+    {IMUATTCK + 010u, imuattck_after_testxact},
+    {IMUATTCK + 016u, imuattck_after_terminate},
+    {IMUATTCK + 017u, imuattck_after_proceed},
+    {IMUATTCK + 020u, imuattck_after_enter},
+    {IMUATTCK + 024u, imuattck_after_needle11},
+    {IMUATTCK + 026u, imuattck_after_needler2},
     {TRMATTCK, trmattck},
     {TRMATTCK + 1u, trmattck_after_cklftbts_yes},
     {TRMATTCK + 2u, trmattck_after_cklftbts_no},
@@ -567,13 +567,13 @@ static const struct entry align_in_bank_23[] = {
     {AURLOKON, aurlokon},
     {AURLOKON + 1u, aurlokon_after_makecadr},
     {AURLOKON + 6u, aurlokon_plus6},
-    {AURLOKON + 9u, aurlokon_after_terminate},
-    {AURLOKON + 10u, aurlokon_after_proceed},
-    {AURLOKON + 11u, aurlokon_after_recycle},
-    {AURLOKON + 12u, aurlokon_immediate_return},
-    {AURLOKON + 14u, aurlokon_after_blanket},
-    {AURLOKON + 15u, aurlokon_plus15},
-    {AURLOKON + 21u, aurlokon_after_upflag},
+    {AURLOKON + 011u, aurlokon_after_terminate},
+    {AURLOKON + 012u, aurlokon_after_proceed},
+    {AURLOKON + 013u, aurlokon_after_recycle},
+    {AURLOKON + 014u, aurlokon_immediate_return},
+    {AURLOKON + 016u, aurlokon_after_blanket},
+    {AURLOKON + 017u, aurlokon_plus15},
+    {AURLOKON + 025u, aurlokon_after_upflag},
     {NOLOKON, nolokon},
     {NOLOKON + 2u, nolokon_after_downflag},
     {NOLOKON + 4u, nolokon_after_upflag},
@@ -611,45 +611,45 @@ static const struct entry radar[] = {
     {R04A + 5u, r04a_after_terminate},
     {R04A + 6u, r04a_after_proceed},
     {R04A + 7u, r04a_after_recycle},
-    {R04A + 8u, r04a_immediate_return},
-    {R04A + 10u, r04a_after_blanket},
-    {R04A + 11u, r04a_plus11},
+    {R04A + 010u, r04a_immediate_return},
+    {R04A + 012u, r04a_after_blanket},
+    {R04A + 013u, r04a_plus11},
     {R04X - 1u, r04x_minus1},
     {R04X, r04x},
     {R04B, r04b},
     {R04B + 5u, r04b_plus5},
-    {R04B + 10u, r04b_after_terminate},
-    {R04B + 11u, r04b_after_proceed},
-    {R04B + 12u, r04b_after_enter},
+    {R04B + 012u, r04b_after_terminate},
+    {R04B + 013u, r04b_after_proceed},
+    {R04B + 014u, r04b_after_enter},
     {R04C, r04c},
     {R04C + 4u, r04c_plus4},
-    {R04C + 8u, r04c_after_waitlist},
+    {R04C + 010u, r04c_after_waitlist},
     {R04RR, r04rr},
     {R04RR + 3u, r04rr_after_terminate},
     {R04RR + 4u, r04rr_after_proceed},
     {R04RR + 5u, r04rr_after_recycle},
     {R04RR + 6u, r04rr_plus6},
-    {R04RR + 9u, r04rr_plus6_after_terminate},
-    {R04RR + 10u, r04rr_plus6_after_proceed},
-    {R04RR + 11u, r04rr_plus6_after_recycle},
+    {R04RR + 011u, r04rr_plus6_after_terminate},
+    {R04RR + 012u, r04rr_plus6_after_proceed},
+    {R04RR + 013u, r04rr_plus6_after_recycle},
     {R04LR, r04lr},
     {R04LR + 3u, r04lr_after_terminate},
     {R04LR + 4u, r04lr_after_proceed},
     {R04LR + 5u, r04lr_after_recycle},
     {R04LR + 6u, r04lr_plus6},
-    {R04LR + 9u, r04lr_plus6_after_terminate},
-    {R04LR + 10u, r04lr_plus6_after_proceed},
-    {R04LR + 11u, r04lr_plus6_after_recycle},
+    {R04LR + 011u, r04lr_plus6_after_terminate},
+    {R04LR + 012u, r04lr_plus6_after_proceed},
+    {R04LR + 013u, r04lr_plus6_after_recycle},
     {R04Y, r04y},
     {R04Y + 5u, r04y_after_delayjob},
     {R04K, r04k},
     {R04L, r04l},
     {R04END, r04end},
     {R04END + 5u, r04end_after_delayjob},
-    {R04END + 11u, r04end_after_downflag},
+    {R04END + 013u, r04end_after_downflag},
     {R77END, r77end},
     {R77END + 7u, r77end_after_delayjob},
-    {R77END + 9u, r77end_after_downflag},
+    {R77END + 011u, r77end_after_downflag},
 };
 #endif
 
@@ -682,8 +682,8 @@ static const struct entry dap_in_bank_20[] = {
     {MSKDATR1 + 5u, mskdatr1_after_terminate},
     {MSKDATR1 + 6u, mskdatr1_after_proceed},
     {MSKDATR1 + 7u, mskdatr1_after_enter},
-    {MSKDATR1 + 8u, mskdatr1_immediate_return},
-    {MSKDATR1 + 10u, mskdatr1_after_blanket},
+    {MSKDATR1 + 010u, mskdatr1_immediate_return},
+    {MSKDATR1 + 012u, mskdatr1_after_blanket},
     {FORCEONE, forceone},
     {DPDAT1, dpdat1},
 };
@@ -696,7 +696,7 @@ static const struct entry dap_in_bank_01[] = {
     {DAPDATA2 + 4u, dapdata2_after_proceed},
     {DAPDATA2 + 5u, dapdata2_after_enter},
     {DAPDATA2 + 6u, dapdata2_immediate_return},
-    {DAPDATA2 + 8u, dapdata2_after_blanket},
+    {DAPDATA2 + 010u, dapdata2_after_blanket},
     {ENDR03, endr03},
     {ENDR03 + 3u, endr03_after_ibnkcall},
     {DAPDAT2, dapdat2},
@@ -705,10 +705,10 @@ static const struct entry dap_in_bank_01[] = {
     {DAPDATA3, dapdata3},
     {DAPDATA3 + 4u, dapdata3_plus4},
     {DAPDATA3 + 7u, dapdata3_after_terminate},
-    {DAPDATA3 + 8u, dapdata3_after_proceed},
-    {DAPDATA3 + 9u, dapdata3_after_enter},
-    {DAPDATA3 + 10u, dapdata3_immediate_return},
-    {DAPDATA3 + 12u, dapdata3_after_blanket},
+    {DAPDATA3 + 010u, dapdata3_after_proceed},
+    {DAPDATA3 + 011u, dapdata3_after_enter},
+    {DAPDATA3 + 012u, dapdata3_immediate_return},
+    {DAPDATA3 + 014u, dapdata3_after_blanket},
     {DPDAT3, dpdat3},
     {DPDAT3 + 5u, dpdat3_after_waitlist},
     {TRIMDONE, trimdone},
@@ -716,7 +716,7 @@ static const struct entry dap_in_bank_01[] = {
     {TRIMDONE + 4u, trimdone_after_proceed},
     {TRIMDONE + 5u, trimdone_after_enter},
     {TRIMDONE + 6u, trimdone_immediate_return},
-    {TRIMDONE + 8u, trimdone_after_blanket},
+    {TRIMDONE + 010u, trimdone_after_blanket},
 };
 #else
 /* DAPDISP, in bank 43. */
@@ -740,7 +740,7 @@ static const struct entry dap_in_bank_42[] = {
     {DONOUN47 + 4u, donoun47_after_proceed},
     {DONOUN47 + 5u, donoun47_after_enter},
     {DONOUN47 + 6u, donoun47_plus6},
-    {DONOUN47 + 17u, donoun47_after_ibnkcall},
+    {DONOUN47 + 021u, donoun47_after_ibnkcall},
     {DONOUN48, donoun48},
     {DONOUN48 + 3u, donoun48_after_terminate},
     {DONOUN48 + 4u, donoun48_after_proceed},
@@ -784,7 +784,7 @@ static const struct entry time_entries[] = {
     {ALINTIME + 6u, alintime_after_enter},
 #endif
     {UPDATIME, updatime},
-    {UPDATIME + 9u, updatime_after_tpagree},
+    {UPDATIME + 011u, updatime_after_tpagree},
     {UPDTMEND, updtmend},
 #if LUMINARY099
     {ATTCK2, attck2},
@@ -814,14 +814,14 @@ static const struct entry track_in_bank_40[] = {
     {DSPRRLOS, dsprrlos},
     {DSPRRLOS + 4u, dsprrlos_after_findvac},
     {DSPRRLOS + 6u, dsprrlos_after_priochng},
-    {DSPRRLOS + 9u, dsprrlos_after_terminate},
-    {DSPRRLOS + 10u, dsprrlos_after_proceed},
-    {DSPRRLOS + 11u, dsprrlos_after_enter},
-    {DSPRRLOS + 12u, dsprrlos_immediate_return},
-    {DSPRRLOS + 14u, dsprrlos_after_blanket},
+    {DSPRRLOS + 011u, dsprrlos_after_terminate},
+    {DSPRRLOS + 012u, dsprrlos_after_proceed},
+    {DSPRRLOS + 013u, dsprrlos_after_enter},
+    {DSPRRLOS + 014u, dsprrlos_immediate_return},
+    {DSPRRLOS + 016u, dsprrlos_after_blanket},
     {RRLOSDSP, rrlosdsp},
-    {RRLOSDSP + 39u, rrlosdsp_after_exit},
-    {RRLOSDSP + 42u, rrlosdsp_after_delayjob},
+    {RRLOSDSP + 047u, rrlosdsp_after_exit},
+    {RRLOSDSP + 052u, rrlosdsp_after_delayjob},
 };
 
 /* TRMTRAK1, in bank 42. */
@@ -830,29 +830,29 @@ static const struct entry track_in_bank_42[] = {
     {TRMTRAK1 + 2u, trmtrak1_after_downflag},
     {TRMTRAK1 + 4u, trmtrak1_after_second_downflag},
     {TRMTRAK1 + 6u, trmtrak1_after_third_downflag},
-    {TRMTRAK1 + 10u, trmtrak1_after_exit},
-    {TRMTRAK1 + 12u, trmtrak1_after_phaschng},
-    {TRMTRAK1 + 15u, trmtrak1_after_ibnkcall},
-    {TRMTRAK1 + 17u, trmtrak1_after_second_ibnkcall},
-    {TRMTRAK1 + 18u, trmtrak1_after_clradmod},
+    {TRMTRAK1 + 012u, trmtrak1_after_exit},
+    {TRMTRAK1 + 014u, trmtrak1_after_phaschng},
+    {TRMTRAK1 + 017u, trmtrak1_after_ibnkcall},
+    {TRMTRAK1 + 021u, trmtrak1_after_second_ibnkcall},
+    {TRMTRAK1 + 022u, trmtrak1_after_clradmod},
 };
 #endif
 
 /* The rest, in bank 43 (VERB69 apart). */
 static const struct entry track_in_bank_43[] = {
     {ATTACHIT, attachit},
-    {ATTACHIT + 10u, attachit_after_exit},
+    {ATTACHIT + 012u, attachit_after_exit},
 #if LUMINARY099
-    {ATTACHIT + 14u, attachit_after_gentran},
-    {ATTACHIT + 22u, attachit_after_second_exit},
+    {ATTACHIT + 016u, attachit_after_gentran},
+    {ATTACHIT + 026u, attachit_after_second_exit},
 #else
     {TRACKTRM, tracktrm},
     {TRACKTRM + 6u, tracktrm_after_downflag},
-    {TRACKTRM + 12u, tracktrm_after_second_downflag},
-    {TRACKTRM + 14u, tracktrm_after_third_downflag},
-    {TRACKTRM + 16u, tracktrm_after_fourth_downflag},
-    {TRACKTRM + 20u, tracktrm_after_stoprate},
-    {TRACKTRM + 26u, tracktrm_after_exit},
+    {TRACKTRM + 014u, tracktrm_after_second_downflag},
+    {TRACKTRM + 016u, tracktrm_after_third_downflag},
+    {TRACKTRM + 020u, tracktrm_after_fourth_downflag},
+    {TRACKTRM + 024u, tracktrm_after_stoprate},
+    {TRACKTRM + 032u, tracktrm_after_exit},
     {CLEANOUT, cleanout},
     {SETVHFLG, setvhflg},
     {SETVHFLG + 3u, setvhflg_after_exit},
@@ -860,12 +860,12 @@ static const struct entry track_in_bank_43[] = {
     {RESETVHF + 3u, resetvhf_after_exit},
     {RESETVHF + 4u, resetvhf_after_trfailof},
     {TACHEXIT, tachexit},
-    {TACHEXIT + 10u, tachexit_after_exit},
+    {TACHEXIT + 012u, tachexit_after_exit},
     {LMTOCMSV, lmtocmsv},
     {LMTOCMSV + 4u, lmtocmsv_after_findvac},
     {LMTOCM, lmtocm},
-    {LMTOCM + 10u, lmtocm_after_exit},
-    {LMTOCM + 14u, lmtocm_after_gentran},
+    {LMTOCM + 012u, lmtocm_after_exit},
+    {LMTOCM + 016u, lmtocm_after_gentran},
 #endif
 };
 
@@ -909,31 +909,31 @@ static const struct {
     {&RRLOSDSP_CODE, RRLOSDSP + 4u},
     {&RRLOSDSP_CODE, RRLOSDSP + 6u},
     {&RRLOSDSP_CODE, RRLOSDSP + 7u},
-    {&RRLOSDSP_CODE, RRLOSDSP + 9u},
-    {&RRLOSDSP_CODE, RRLOSDSP + 11u},
-    {&RRLOSDSP_CODE, RRLOSDSP + 12u},
-    {&RRLOSDSP_CODE, RRLOSDSP + 13u},
-    {&RRLOSDSP_CODE, RRLOSDSP + 15u},
-    {&RRLOSDSP_CODE, RRLOSDSP + 17u},
-    {&RRLOSDSP_CODE, RRLOSDSP + 19u},
-    {&RRLOSDSP_CODE, RRLOSDSP + 21u},
-    {&RRLOSDSP_CODE, RRLOSDSP + 24u},
-    {&RRLOSDSP_CODE, RRLOSDSP + 26u},
-    {&RRLOSDSP_CODE, RRLOSDSP + 28u},
-    {&RRLOSDSP_CODE, RRLOSDSP + 30u},
-    {&RRLOSDSP_CODE, RRLOSDSP + 32u},
-    {&RRLOSDSP_CODE, RRLOSDSP + 34u},
-    {&RRLOSDSP_CODE, RRLOSDSP + 37u},
-    {&RRLOSDSP_CODE, RRLOSDSP + 38u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 011u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 013u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 014u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 015u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 017u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 021u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 023u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 025u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 030u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 032u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 034u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 036u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 040u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 042u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 045u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 046u},
     {&TRMTRAK1_CODE, TRMTRAK1 + 7u},
-    {&TRMTRAK1_CODE, TRMTRAK1 + 9u},
+    {&TRMTRAK1_CODE, TRMTRAK1 + 011u},
     {&ATTACHIT_CODE, ATTACHIT + 1u},
     {&ATTACHIT_CODE, ATTACHIT + 3u},
     {&ATTACHIT_CODE, ATTACHIT + 7u},
-    {&ATTACHIT_CODE, ATTACHIT + 9u},
-    {&ATTACHIT_CODE_2, ATTACHIT + 16u},
-    {&ATTACHIT_CODE_2, ATTACHIT + 18u},
-    {&ATTACHIT_CODE_2, ATTACHIT + 21u},
+    {&ATTACHIT_CODE, ATTACHIT + 011u},
+    {&ATTACHIT_CODE_2, ATTACHIT + 020u},
+    {&ATTACHIT_CODE_2, ATTACHIT + 022u},
+    {&ATTACHIT_CODE_2, ATTACHIT + 025u},
     {&TCPIN_CODE, TCPIN},
 };
 
@@ -1145,23 +1145,23 @@ static enum exec_status interpretive(const agc_native_program *program, apollo_o
 #define BANK43(at) ((uint16_t)(043u * 02000u + ((at) - 02000u)))
 
 static const agc_routine_entry interpretive_entries[] = {
-    {BANK43(TRACKTRM + 23u), interpretive}, /* CALL INTSTALL */
-    {BANK43(TRACKTRM + 25u), interpretive}, /* EXIT */
-    {BANK43(SETVHFLG + 1u), interpretive},  /* SET EXIT */
-    {BANK43(RESETVHF + 1u), interpretive},  /* CLEAR EXIT */
-    {BANK43(ATTACHIT + 1u), interpretive},  /* CALL INTSTALL */
-    {BANK43(ATTACHIT + 3u), interpretive},  /* SET BON */
-    {BANK43(ATTACHIT + 7u), interpretive},  /* CLEAR (a DANZIG's CHANG2 resumes here) */
-    {BANK43(ATTACHIT + 9u), interpretive},  /* EXIT (BON's +3) */
-    {BANK43(TACHEXIT + 2u), interpretive},  /* CALL PTOACSM */
-    {BANK43(TACHEXIT + 4u), interpretive},  /* LXA,2 CALL */
-    {BANK43(TACHEXIT + 7u), interpretive},  /* CALL SVDWN2 */
-    {BANK43(TACHEXIT + 9u), interpretive},  /* EXIT */
-    {BANK43(TCPIN), interpretive},          /* RTB PINBRNCH */
-    {BANK43(LMTOCM + 1u), interpretive},    /* CALL INTSTALL */
-    {BANK43(LMTOCM + 3u), interpretive},    /* SET BON */
-    {BANK43(LMTOCM + 7u), interpretive},    /* CLEAR (a DANZIG's CHANG2 resumes here) */
-    {BANK43(LMTOCM + 9u), interpretive},    /* EXIT (BON's +3) */
+    {BANK43(TRACKTRM + 027u), interpretive}, /* CALL INTSTALL */
+    {BANK43(TRACKTRM + 031u), interpretive}, /* EXIT */
+    {BANK43(SETVHFLG + 1u), interpretive},   /* SET EXIT */
+    {BANK43(RESETVHF + 1u), interpretive},   /* CLEAR EXIT */
+    {BANK43(ATTACHIT + 1u), interpretive},   /* CALL INTSTALL */
+    {BANK43(ATTACHIT + 3u), interpretive},   /* SET BON */
+    {BANK43(ATTACHIT + 7u), interpretive},   /* CLEAR (a DANZIG's CHANG2 resumes here) */
+    {BANK43(ATTACHIT + 011u), interpretive}, /* EXIT (BON's +3) */
+    {BANK43(TACHEXIT + 2u), interpretive},   /* CALL PTOACSM */
+    {BANK43(TACHEXIT + 4u), interpretive},   /* LXA,2 CALL */
+    {BANK43(TACHEXIT + 7u), interpretive},   /* CALL SVDWN2 */
+    {BANK43(TACHEXIT + 011u), interpretive}, /* EXIT */
+    {BANK43(TCPIN), interpretive},           /* RTB PINBRNCH */
+    {BANK43(LMTOCM + 1u), interpretive},     /* CALL INTSTALL */
+    {BANK43(LMTOCM + 3u), interpretive},     /* SET BON */
+    {BANK43(LMTOCM + 7u), interpretive},     /* CLEAR (a DANZIG's CHANG2 resumes here) */
+    {BANK43(LMTOCM + 011u), interpretive},   /* EXIT (BON's +3) */
 };
 const agc_routine_table cm_extended_verbs_file_interpretive = {
     interpretive_entries, sizeof interpretive_entries / sizeof interpretive_entries[0]};
@@ -1169,10 +1169,10 @@ const agc_routine_table cm_extended_verbs_file_interpretive = {
 /* The fan's words after V70UPDAT, V71UPDAT, V72UPDAT and V73UPDAT, where
  * each returns if it returns to its TC's Q: the next verb's word. */
 static const struct entry fan_returns[] = {
-    {LST2FAN + 31u, lst2fan_word}, /* VB71: TC V71UPDAT */
-    {LST2FAN + 32u, lst2fan_word}, /* VB72: TC V72UPDAT */
-    {LST2FAN + 33u, lst2fan_word}, /* VB73: TC V73UPDAT */
-    {LST2FAN + 34u, lst2fan_word}, /* VB74: TC DNEDUMP */
+    {LST2FAN + 037u, lst2fan_word}, /* VB71: TC V71UPDAT */
+    {LST2FAN + 040u, lst2fan_word}, /* VB72: TC V72UPDAT */
+    {LST2FAN + 041u, lst2fan_word}, /* VB73: TC V73UPDAT */
+    {LST2FAN + 042u, lst2fan_word}, /* VB74: TC DNEDUMP */
 };
 
 /* A basic word of the file. Each is a TC, which reads and writes no
@@ -1196,10 +1196,10 @@ static enum exec_status basic(const agc_native_program *program, apollo_overlay_
 }
 
 static const agc_routine_entry basic_entries[] = {
-    {BANK43(LST2FAN + 31u), basic},
-    {BANK43(LST2FAN + 32u), basic},
-    {BANK43(LST2FAN + 33u), basic},
-    {BANK43(LST2FAN + 34u), basic},
+    {BANK43(LST2FAN + 037u), basic},
+    {BANK43(LST2FAN + 040u), basic},
+    {BANK43(LST2FAN + 041u), basic},
+    {BANK43(LST2FAN + 042u), basic},
 };
 const agc_routine_table cm_extended_verbs_file_basic = {basic_entries, sizeof basic_entries /
                                                                            sizeof basic_entries[0]};

@@ -19,8 +19,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void retrn2_display(void);
 
 /* S61.1, from TC S61.1 at at: the return (Q, the word after the TC) to

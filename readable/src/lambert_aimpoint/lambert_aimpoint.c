@@ -22,8 +22,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- P31 -- LM pp. 652-653 ---- */
 
 /* P31: P20's update and track flags set (P20FLGON). */

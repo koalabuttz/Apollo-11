@@ -258,9 +258,10 @@ static void rtb_plus1(void)
 static void bhiz(void)
 {
     switch (ccs_at(ADDRESS_OF(MPAC))) {
-    case POSITIVE:
+    case POSITIVE: continue_at(DANZIG); return;
+    case IS_PLUS_ZERO: goto_(); return;
     case NEGATIVE: continue_at(DANZIG); return;
-    default: goto_(); return;
+    case IS_MINUS_ZERO: goto_(); return;
     }
 }
 
@@ -278,9 +279,10 @@ void bhiz_plus1(void)
 void bov_b(void)
 {
     switch (ccs_at(ADDRESS_OF(OVFIND))) {
+    case POSITIVE: ts(ADDRESS_OF(OVFIND)); break; /* TCF +2 */
     case IS_PLUS_ZERO: continue_at(DANZIG); return;
-    case IS_MINUS_ZERO: break;
-    default: ts(ADDRESS_OF(OVFIND)); break;
+    case NEGATIVE: ts(ADDRESS_OF(OVFIND)); break;
+    case IS_MINUS_ZERO: break; /* past the TS */
     }
     switch (ccs_at(CYR_ADDRESS)) {
     case POSITIVE: rtb(); return; /* "IF BASIC." */
@@ -306,8 +308,9 @@ void bze_goto(void)
         else
             continue_at(DANZIG);
         return;
+    case IS_PLUS_ZERO: continue_at(DANZIG); return;
     case NEGATIVE: goto_(); return; /* "DO GOTO." */
-    default: continue_at(DANZIG); return;
+    case IS_MINUS_ZERO: continue_at(DANZIG); return;
     }
 }
 

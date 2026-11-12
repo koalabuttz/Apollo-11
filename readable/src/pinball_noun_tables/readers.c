@@ -40,9 +40,9 @@ void lodnntab(void)
         lodmixnn();             /* "NOUN NUMBER G/E FIRST MIXED NOUN" */
         return;
     }
-    set_A(ONE);                    /* "NOUN NUMBER L/ FIRST MIXED NOUN" */
-    ts(ADDRESS_OF(MIXBR));         /* "NORMAL. +1 INTO MIXBR" */
-    tc_at((word)(LODNNTAB + 13u)); /* TC LODNLV */
+    set_A(ONE);                     /* "NOUN NUMBER L/ FIRST MIXED NOUN" */
+    ts(ADDRESS_OF(MIXBR));          /* "NORMAL. +1 INTO MIXBR" */
+    tc_at((word)(LODNNTAB + 015u)); /* TC LODNLV */
     lodnlv();
 }
 

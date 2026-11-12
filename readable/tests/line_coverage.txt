@@ -3,9 +3,9 @@
 # `make line-coverage` measures again and holds the tree to it.
 #
 # Measured with Ubuntu clang version 18.1.3 (1ubuntu1).
-# 433 files hold lines of C to run (406 of the 474 .c files under src/,
-# and 27 headers); 60127 such lines; 1504 of them unrun
-# (2.50%), in 631 stretches of 214 files.
+# 422 files hold lines of C to run (406 of the 474 .c files under src/,
+# and 16 headers); 59897 such lines; 1511 of them unrun
+# (2.52%), in 634 stretches of 214 files.
 # Built and never run: x86-flight-cm-core, x86-flight-lm-core, x86-link-check.
 #
 # These are lines of C only. Interpretive code is tables of words, which
@@ -15,8 +15,8 @@
 # this measure does not see.
 #
 # By reason:
-#   impossible: 139 lines in 65 stretches
-#   never: 58 lines in 26 stretches
+#   impossible: 145 lines in 67 stretches
+#   never: 59 lines in 27 stretches
 #   not-modelled: 123 lines in 94 stretches
 #   open: 417 lines in 158 stretches
 #   refusal: 767 lines in 288 stretches
@@ -143,14 +143,14 @@ src/alarm/alarm.c
          through from +0.)
 
 src/aostask/aostask.c
-  docktest, line 175 (1 unrun) 126f7bdf
+  docktest, line 168 (1 unrun) 126f7bdf
     | default: not_modelled(); return;
     why: [not-modelled]
-  docked_polynomial, lines 412-413 (2 unrun) 4409ad32
+  docked_polynomial, lines 405-406 (2 unrun) 4409ad32
     | case NEGATIVE: return false;
     | case IS_MINUS_ZERO: not_modelled(); return false;
     why: [open]
-  docked_polynomial, line 419 (1 unrun) 810a982d
+  docked_polynomial, line 412 (1 unrun) 810a982d
     | default: not_modelled(); return false;
     why: [not-modelled]
 
@@ -343,7 +343,7 @@ src/binding/cm_imu_cal_routines.c
     why: [refusal]
 
 src/binding/cm_jet_select_routines.c
-  channel, line 68 (1 unrun) a8aeb527
+  channel, line 69 (1 unrun) a8aeb527
     | default: not_modelled(); return NULL;
     why: [refusal]
 
@@ -2031,15 +2031,15 @@ src/binding/v37_routines.c
     why: [refusal]
 
 src/burn_baby/burn_baby.c
-  p42ign, line 636 (1 unrun) fccab479
+  p42ign, line 627 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
 
 src/burn_baby/clock.c
-  ignite, line 469 (1 unrun) fccab479
+  ignite, line 461 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
-  p40a_p_after_gpn_auto, line 565 (1 unrun) fccab479
+  p40a_p_after_gpn_auto, line 557 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
 
@@ -2058,7 +2058,7 @@ src/cm_dap/indexing.c
     why: [open]
 
 src/dapidler/dapidler.c
-  chekmore, lines 127-128 (2 unrun) e863f365
+  chekmore, lines 120-121 (2 unrun) e863f365
     | case NEGATIVE: dapidler(); return;
     | case IS_MINUS_ZERO: dapidler_plus1(); return;
     why: [open]
@@ -2211,14 +2211,17 @@ src/executive/executive.c
     | case IS_MINUS_ZERO: prioch2_plus1(); return;
     why: [impossible] LOCCTR is never negative or -0 at a match: JOBWAKE2
          itself starts it at +0 and adds COREINC for each core set it passes.
-  endofjob, lines 601-603 (3 unrun) 0ff5486b
+  endofjob, lines 601-605 (5 unrun) 40005c86
     | case IS_PLUS_ZERO: ts(A_ADDRESS); break;
     | case NEGATIVE: break;
-    | case IS_MINUS_ZERO: continue_at((word)(EJSCAN + 1u)); return;
+    | case IS_MINUS_ZERO: /* (never: L is nine bits of PRIORITY) */
+    | continue_at((word)(EJSCAN + 1u));
+    | return;
     why: [impossible] L is PRIORITY's low nine bits, so it is not negative,
          and the BZMF just before lets through only an L above FAKEPRET: the
          CCS always finds L positive.
-  ejscan, lines 676-678 (3 unrun) e4efb9e8
+  ejscan, lines 679-682 (4 unrun) cf8d9dad
+    | case NEGATIVE: break;
     | case IS_MINUS_ZERO: /* CAF 0 -1 unindexed: no CCS word to read */
     | continue_at((word)(at + 9u));
     | return;
@@ -2226,8 +2229,8 @@ src/executive/executive.c
          negative. The scan starts with BUF +1 at -0 (JOBSLEEP, ENDOFJOB),
          and then only EJ2 changes it, leaving its return address in BUF; or
          it starts with BUF at +0 (PRIOCHNG). So BUF is +0 or an address
-         here, never -0.
-  ejscan, lines 685-687 (3 unrun) 1ba75236
+         here: not negative and not -0.
+  ejscan, lines 687-689 (3 unrun) 1ba75236
     | continue_at((word)(at + 8u)); /* not a CCS word */
     | return;
     | }
@@ -2236,8 +2239,8 @@ src/executive/executive.c
          is one word after a core set's CCS.
 
 src/extended_verbs/align.c
-  rdruseck, line 880 (1 unrun) 0041ee50
-    | case POSITIVE: tc(RDRUSECK + 15u, ALM_END); return; /* "YES" */
+  rdruseck, line 880 (1 unrun) 19fd4a0a
+    | case POSITIVE: tc(RDRUSECK + 017u, ALM_END); return; /* "YES" */
     why: [open]
 
 src/extended_verbs/front.c
@@ -2247,25 +2250,25 @@ src/extended_verbs/front.c
     why: [open]
 
 src/findcduw/gimbal_angles.c
-  after_lag_angle, line 328 (1 unrun) 72d0b46c
+  after_lag_angle, line 326 (1 unrun) 72d0b46c
     | case IS_MINUS_ZERO: tcqcduw_intpret(); break;
     why: [open]
 
 src/findcduw/subroutines.c
-  arctrgsp, line 278 (1 unrun) a33ec75a
+  arctrgsp, line 276 (1 unrun) a33ec75a
     | case IS_PLUS_ZERO: break;
     why: [open]
 
 src/fresh_start/fresh_start.c
-  back_into_coarse_align, line 155 (1 unrun) 0039665b
+  back_into_coarse_align, line 153 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
     why: [open]
-  back_into_coarse_align, lines 157-159 (3 unrun) 59828d4b
+  back_into_coarse_align, lines 155-157 (3 unrun) 59828d4b
     | tc_at(WOR_CHAN12);
     | continue_at(05012u);
     | return false;
     why: [open]
-  setinfl, lines 505-508 (4 unrun) 64eb8607
+  setinfl, lines 503-506 (4 unrun) 64eb8607
     | case IS_MINUS_ZERO:                          /* never: the WOR's word alone, TC 5011 */
     | tc_at(WOR_ENGINE_ON);
     | continue_at(05011u);
@@ -2273,7 +2276,7 @@ src/fresh_start/fresh_start.c
     why: [impossible] A is FLAGWRD5's complement masked with ENGONBIT: +0 or
          the one bit, never -0. (Nor negative: the line above runs only as
          the fall through from +0.)
-  nocoarse, lines 634-637 (4 unrun) 64eb8607
+  nocoarse, lines 632-635 (4 unrun) 64eb8607
     | case IS_MINUS_ZERO:                          /* never: the WOR's word alone, TC 5011 */
     | tc_at(WOR_ENGINE_ON);
     | continue_at(05011u);
@@ -2281,43 +2284,43 @@ src/fresh_start/fresh_start.c
     why: [impossible] A is FLAGWRD5's complement masked with ENGONBIT: +0 or
          the one bit, never -0. (Nor negative: the line above runs only as
          the fall through from +0.)
-  nxtrst, line 807 (1 unrun) 7a17fe30
+  nxtrst, line 805 (1 unrun) 7a17fe30
     | not_modelled();
     why: [not-modelled]
-  pinact_end, lines 854-856 (3 unrun) 11522be5
+  pinact_end, lines 852-854 (3 unrun) 11522be5
     | case NEGATIVE: groups = POSITIVE; break;          /* on TCF ENDRSTRT */
     | case IS_MINUS_ZERO: groups = IS_PLUS_ZERO; break; /* on CAF BIT15 */
     | case POSITIVE: break;
     why: [open]
 
 src/fresh_start/v37.c
-  checktab, lines 449-450 (2 unrun) 12cb6933
+  checktab, lines 447-448 (2 unrun) 12cb6933
     | case NEGATIVE: ca(MPAC1); break; /* never: MPAC +1 counts down */
     | case IS_MINUS_ZERO: break;       /* never */
     why: [impossible] MPAC +1 is the loop's own index: AGAINMM stores there
          NOV37MM at first, and after that what its CCS of a positive index
          leaves (one less, down to +0) or the +0 of the other CCS. It is
          never negative and never -0.
-  checktab, lines 452-453 (2 unrun) 2a3ce007
+  checktab, lines 450-451 (2 unrun) 2a3ce007
     | break;
     | case IS_PLUS_ZERO: continue;      /* TCF AGAINMM, with +0 */
     why: [open]
 
 src/imu_calibration/drift_loop.c
-  finetime_plus1, lines 186-188 (3 unrun) 7a730130
+  finetime_plus1, lines 184-186 (3 unrun) 7a730130
     | read_channel(LOSCALAR);
     | ts(L_ADDRESS);
     | }
     why: [open]
-  loadstdt_plus1, lines 446-447 (2 unrun) ef032f09
+  loadstdt_plus1, lines 444-445 (2 unrun) ef032f09
     | case NEGATIVE: alloop(); return;
     | case IS_MINUS_ZERO: alloop_plus1(); return;
     why: [open]
-  storedta, lines 472-473 (2 unrun) f2dfc286
+  storedta, lines 470-471 (2 unrun) f2dfc286
     | case NEGATIVE: loadstdt(); return;
     | case IS_MINUS_ZERO: loadstdt_plus1(); return;
     why: [open]
-  someerrr, lines 777-780 (4 unrun) 166d10fd
+  someerrr, lines 775-778 (4 unrun) 166d10fd
     | {
     | tc_at(SOMEERRR);
     | continue_at(ALARM); /* OCT 1600 */
@@ -2325,16 +2328,16 @@ src/imu_calibration/drift_loop.c
     why: [open]
 
 src/imu_calibration/imu_test.c
-  zeroing, line 695 (1 unrun) c312eafd
+  zeroing, line 693 (1 unrun) c312eafd
     | default: not_modelled(); /* (the next words are EARTHR's) */
     why: [not-modelled]
 
 src/imu_calibration/optical_verification.c
-  retarg_after_optstall, lines 592-593 (2 unrun) d2911b4c
+  retarg_after_optstall, lines 590-591 (2 unrun) d2911b4c
     | case NEGATIVE: ca(ADDRESS_OF(QPRET)); break;
     | case IS_MINUS_ZERO: break;
     why: [open]
-  retarg_after_optstall, lines 595-596 (2 unrun) 1aa86b2d
+  retarg_after_optstall, lines 593-594 (2 unrun) 1aa86b2d
     | retarg_mark_taken();
     | }
     why: [open]
@@ -2363,37 +2366,37 @@ src/imu_mode_switching/gyro_torquing.c
     why: [open]
 
 src/imu_performance/imu_performance.c
-  pipachk_landing, line 356 (1 unrun) 5454f838
+  pipachk_landing, line 355 (1 unrun) 5454f838
     | default: not_modelled(); /* (the TS after an INDEX: not a word of its own) */
     why: [not-modelled]
-  pipjobb_landing, line 443 (1 unrun) 2796b01e
+  pipjobb_landing, line 442 (1 unrun) 2796b01e
     | default: not_modelled(); /* (BZMF without its EXTEND) */
     why: [not-modelled]
-  zeroing, line 779 (1 unrun) f378a0ab
+  zeroing, line 778 (1 unrun) f378a0ab
     | default: not_modelled(); /* (the next words are ERTHRVSE's) */
     why: [not-modelled]
-  finetime_plus1, lines 928-929 (2 unrun) a4b1d5ea
+  finetime_plus1, lines 927-928 (2 unrun) a4b1d5ea
     | finetime_reread();
     | }
     why: [open]
-  alflt, line 1084 (1 unrun) f4215585
+  alflt, line 1083 (1 unrun) f4215585
     | case IS_MINUS_ZERO: not_modelled(); return;
     why: [not-modelled]
 
 src/integration_init/intstall.c
-  intwake1_after_jobwake, line 265 (1 unrun) 0039665b
+  intwake1_after_jobwake, line 257 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
     why: [open]
-  intwake, lines 299-300 (2 unrun) 707235d9
+  intwake, lines 291-292 (2 unrun) 707235d9
     | case NEGATIVE: ca(ADDRESS_OF(QPRET)); break; /* CA QPRET, unindexed */
     | case IS_MINUS_ZERO: break;
     why: [open]
-  intwake, lines 302-304 (3 unrun) 27a83c0b
+  intwake, lines 294-296 (3 unrun) 27a83c0b
     | ts(ADDRESS_OF(TBASE2));
     | tc_to((word)(INTWAKE + 7u), PHASCHNG);
     | }
     why: [open]
-  intexit_after_exit, line 335 (1 unrun) b3db8cb8
+  intexit_after_exit, line 327 (1 unrun) b3db8cb8
     | not_modelled();            /* (the skip would run RVCON's words) */
     why: [not-modelled]
 
@@ -2442,7 +2445,13 @@ src/interpreter/dispatcher.c
          side by side test takes no pass that would start at such a word
          (tests/interpreter_fuzz.c, unassembled()), so there is no faithful
          run to compare one with.
-  diradres, line 223 (1 unrun) 72ccb481
+  opjump, line 202 (1 unrun) d4216b2c
+    | case IS_MINUS_ZERO: break; /* (never: the code has seven bits. To ADDRESS +1, past the MASK.) */
+    why: [impossible] A is a seven-bit order code: NEWOPS masks the pair with
+         LOW7, and NOIBNKSW's CCS leaves EDOP less one, where EDOP keeps
+         seven bits of what is stored in it. TS CYR then leaves at most seven
+         bits set, and -0 is all fifteen.
+  diradres, line 225 (1 unrun) 72ccb481
     | case IS_PLUS_ZERO: /* (never: the next word is never -0) */
     why: [never] The word after an order with an address is never -0: an
          address word is positive, and the order pair that stands there when
@@ -2450,13 +2459,13 @@ src/interpreter/dispatcher.c
          The side by side test makes its address words positive and takes no
          pass at a pair of -0 (tests/interpreter_fuzz.c, unassembled()), so
          there is no faithful run to compare one with.
-  diradres, line 228 (1 unrun) 5088b281
+  diradres, line 230 (1 unrun) 5088b281
     | case IS_MINUS_ZERO: break;                   /* (never: an address word +0) */
     why: [never] An address word is never +0: no program assembles one, and
          the side by side test leaves such a word out
          (tests/interpreter_fuzz.c, unassembled()), where the faithful core
          takes it as address 0 and the AGC's CCS as no address word at all.
-  itr, lines 282-283 (2 unrun) 58644e6a
+  itr, lines 284-285 (2 unrun) 58644e6a
     | else
     | continue_at((word)to); /* (never: CYR always holds a code here) */
     why: [impossible] CYR holds 20000 and the order's number, 0 to 37, in its
@@ -2465,13 +2474,13 @@ src/interpreter/dispatcher.c
          ("THE OP CODE IS NOW IN BITS 1-5 OF CYR WITH BIT 14 = 1"), and the
          loads that come here by themselves store such a word. Added to the
          instruction, it makes TCF INDJUMP + 0 to 37 and nothing else.
-  index_, line 322 (1 unrun) 67e3012c
+  index_, line 324 (1 unrun) 67e3012c
     | case IS_MINUS_ZERO: break; /* (never: an address word +0) */
     why: [never] An address word is never +0: no program assembles one, and
          the side by side test leaves such a word out
          (tests/interpreter_fuzz.c, unassembled()), where the faithful core
          takes it as address 0 and the AGC's CCS as no address word at all.
-  opjump3, lines 445-450 (4 unrun) be2472b7
+  opjump3, lines 447-452 (4 unrun) be2472b7
     | case IS_MINUS_ZERO:
     | /* (never: MODE is never -0. The AGC would run LVBUF, ADRES VBUF, as
     | * TC VBUF.) */
@@ -2500,14 +2509,14 @@ src/interpreter/dispatcher.c
          Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
          faithful core does (tests/interpreter_fuzz.c), so there is no
          faithful run to compare a MODE of -0 with.
-  indjump, line 477 (1 unrun) 8d701d3a
+  indjump, line 479 (1 unrun) 8d701d3a
     | case 015: ccall(); return;  /* computed call (never: no program has the order) */
     why: [never] CCALL: no program has the order (neither mission's listing
          uses it), and the flight program's interpreter refuses a pass that
          would run it before anything runs (order_taken,
          src/binding/interpreter_core.c), as the faithful core does. There is
          no faithful run to compare one with.
-  indjump, lines 493-495 (3 unrun) e63abb9a
+  indjump, lines 495-497 (3 unrun) e63abb9a
     | case 035:                   /* "AVAILABLE": TCF +0, to itself (never: no program has it) */
     | continue_at(INDJUMP + 035u);
     | return;
@@ -2518,7 +2527,7 @@ src/interpreter/dispatcher.c
          does. There is no faithful run to compare one with.
 
 src/interpreter/divide.c
-  mpac_plus, lines 185-189 (3 unrun) 1e2eaa24
+  mpac_plus, lines 187-191 (3 unrun) 1e2eaa24
     | case IS_PLUS_ZERO:
     | /* The next word, -1/2+2 ("USED IN SQRTSUB"), is OCT 60001: it runs
     | * as AD L, and the TCF +1 after it goes on. */
@@ -2527,7 +2536,7 @@ src/interpreter/divide.c
     why: [impossible] A is the sum of -MPAC, -1 and BUF. In the AGC's adder a
          sum is +0 only when both numbers are +0. -1 is not, so the first sum
          is never +0, and then neither is the second.
-  mpac_plus, lines 211-216 (4 unrun) cc311f21
+  mpac_plus, lines 214-219 (4 unrun) cc311f21
     | case IS_PLUS_ZERO:
     | /* (never: the majors differed by one before the agreement. The next
     | * word, LBUF2, ADRES BUF2, would run as TC BUF2.) */
@@ -2540,6 +2549,16 @@ src/interpreter/divide.c
          MPAC- see to that), and the sign agreement just before the test (an
          add whose overflow is dropped) leaves a major part of -0 only where
          it was -POSMAX.
+  v_scdv, line 628 (1 unrun) 69fd9113
+    | case IS_PLUS_ZERO: break; /* "+0 IS JUST POSSIBLE" (never +0: equal parts add to -0, below) */
+    why: [never] A is BUF2 less MPAC's major part. In the AGC's adder a sum
+         is +0 only when both numbers are +0, and equal parts of opposite
+         sign add to -0, the fourth word, which goes the same way. BUF2 is
+         the divisor's magnitude as /BUF+ leaves it, its major part above
+         zero (V/SC2 sends a zero divisor to DVOVF), so it is not +0. Looked
+         at: V/SC2, /BUF- and /BUF+, the only code that stores BUF2 before
+         /NORM calls V/SCDV. There is no faithful run: no case makes BUF2 +0
+         with MPAC -0.
 
 src/interpreter/index_orders.c
   fifteen_adrers, line 185 (1 unrun) a33ec75a
@@ -2572,7 +2591,7 @@ src/interpreter/index_orders.c
          nothing in bits 5 to 13, and the code's bit 3 and prefix above. This
          is RTB/BHIZ's first CCS of CYR: bits 5 to 13 are empty, so CYR is
          not -0.
-  bov_b, lines 287-290 (4 unrun) ff5b5aaa
+  bov_b, lines 289-292 (4 unrun) ff5b5aaa
     | case IS_PLUS_ZERO:
     | tc_at(ADDRESS_OF(B5TOBB));
     | continue_at(B5TOBB);
@@ -2583,7 +2602,7 @@ src/interpreter/index_orders.c
          nothing in bits 5 to 13, and the code's bit 3 and prefix above. This
          is BOV/BOVB's first CCS of CYR: its number, 17, is there, so CYR is
          not +0.
-  bov_b, line 292 (1 unrun) e2ebbba8
+  bov_b, line 294 (1 unrun) e2ebbba8
     | case IS_MINUS_ZERO: bze_goto(); return;
     why: [impossible] OPJUMP's TS and CCSs have cycled the order's code
          through CYR, and the core binding takes no other CYR at 15BITADR: a
@@ -2591,8 +2610,8 @@ src/interpreter/index_orders.c
          nothing in bits 5 to 13, and the code's bit 3 and prefix above. This
          is BOV/BOVB's first CCS of CYR: bits 5 to 13 are empty, so CYR is
          not -0.
-  bze_goto, line 310 (1 unrun) b070d238
-    | default: continue_at(DANZIG); return;
+  bze_goto, line 311 (1 unrun) d604016f
+    | case IS_PLUS_ZERO: continue_at(DANZIG); return;
     why: [impossible] OPJUMP's TS and CCSs have cycled the order's code
          through CYR, and the core binding takes no other CYR at 15BITADR: a
          miscellaneous order's CYR holds its MISCJUMP number in bits 1 to 4,
@@ -2600,7 +2619,16 @@ src/interpreter/index_orders.c
          is BZE/GOTO's first CCS of CYR (BOV's -0 slot, the other way here,
          never comes): its number, 12, is there and bits 5 to 13 are empty,
          so CYR is neither zero.
-  bpl_bmn, line 321 (1 unrun) 7c7699e5
+  bze_goto, line 313 (1 unrun) 60fcb434
+    | case IS_MINUS_ZERO: continue_at(DANZIG); return;
+    why: [impossible] OPJUMP's TS and CCSs have cycled the order's code
+         through CYR, and the core binding takes no other CYR at 15BITADR: a
+         miscellaneous order's CYR holds its MISCJUMP number in bits 1 to 4,
+         nothing in bits 5 to 13, and the code's bit 3 and prefix above. This
+         is BZE/GOTO's first CCS of CYR (BOV's -0 slot, the other way here,
+         never comes): its number, 12, is there and bits 5 to 13 are empty,
+         so CYR is neither zero.
+  bpl_bmn, line 324 (1 unrun) 7c7699e5
     | case IS_PLUS_ZERO: continue_at(FIVE_B10 & 07777u); return;
     why: [impossible] OPJUMP's TS and CCSs have cycled the order's code
          through CYR, and the core binding takes no other CYR at 15BITADR: a
@@ -2608,7 +2636,7 @@ src/interpreter/index_orders.c
          nothing in bits 5 to 13, and the code's bit 3 and prefix above. This
          is BPL/BMN's first CCS of CYR: its number, 13, is there, so CYR is
          not +0.
-  bpl_bmn, line 329 (1 unrun) 60fcb434
+  bpl_bmn, line 332 (1 unrun) 60fcb434
     | case IS_MINUS_ZERO: continue_at(DANZIG); return;
     why: [impossible] OPJUMP's TS and CCSs have cycled the order's code
          through CYR, and the core binding takes no other CYR at 15BITADR: a
@@ -2616,7 +2644,7 @@ src/interpreter/index_orders.c
          nothing in bits 5 to 13, and the code's bit 3 and prefix above. This
          is BPL/BMN's first CCS of CYR: bits 5 to 13 are empty, so CYR is not
          -0.
-  call_ita, lines 352-355 (4 unrun) f2bbbfe7
+  call_ita, lines 355-358 (4 unrun) f2bbbfe7
     | case IS_PLUS_ZERO:
     | tc_at(CALL_ITA + 2u);
     | continue_at(CCSHOLE);
@@ -2627,7 +2655,7 @@ src/interpreter/index_orders.c
          nothing in bits 5 to 13, and the code's bit 3 and prefix above. This
          is CALL/ITA's first CCS of CYR: its number, 15, is there (STCALL,
          which enters at 15BITADR, leaves exactly 15), so CYR is not +0.
-  call_ita, line 360 (1 unrun) 0039665b
+  call_ita, line 363 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
     why: [impossible] OPJUMP's TS and CCSs have cycled the order's code
          through CYR, and the core binding takes no other CYR at 15BITADR: a
@@ -2854,8 +2882,8 @@ src/interpreter/shifts.c
          here too, comes with the same test passed.)
 
 src/interpreter/switches.c
-  test, lines 120-123 (4 unrun) 1eae58af
-    | case IS_MINUS_ZERO: /* (never) */
+  test, lines 120-123 (4 unrun) 018d974e
+    | case IS_MINUS_ZERO:              /* (never) */
     | tc_at(TEST + 5u);
     | continue_at(CCSHOLE);
     | return;
@@ -2871,13 +2899,13 @@ src/interpreter/trig.c
     why: [impossible] A is MPAC less one half. In the AGC's adder a sum is +0
          only when both numbers are +0. One half is not (a major part of
          exactly one half gives -0).
-  acosst2, lines 235-236 (2 unrun) 722407c7
+  acosst2, lines 236-237 (2 unrun) 722407c7
     | case NEGATIVE: acos3_plus1(); return;
     | case IS_MINUS_ZERO: acos3_plus2(); return;
     why: [impossible] SQRTSUB leaves its shift count in MPTEMP: it starts it
          at +0 and only adds 7 and 1 to it, so it is never negative and never
          -0 here.
-  tc_escape, lines 303-304 (2 unrun) 5b295392
+  tc_escape, lines 304-305 (2 unrun) 5b295392
     | else
     | continue_at((word)escape);
     why: [impossible] ESCAPE holds LASINEX or LDANZIG, which ARCSIN or ARCCOS
@@ -2911,12 +2939,13 @@ src/interpreter/unit_sqrt.c
          Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
          faithful core does (tests/interpreter_fuzz.c), so there is no
          faithful run to compare a MODE of -0 with.
-  sqrt_, line 290 (1 unrun) bd6aff35
+  sqrt_, lines 291-292 (2 unrun) 01905b29
+    | case NEGATIVE: break;
     | case IS_MINUS_ZERO: sqrtshft(); return; /* (A +0 passes the BZMF) */
     why: [impossible] SQRTSUB leaves its shift count in MPTEMP: it starts it
          at +0 and only adds 7 and 1 to it, so it is never negative and never
          -0 here.
-  push, line 363 (1 unrun) c669b68c
+  push, line 364 (1 unrun) c669b68c
     | case IS_MINUS_ZERO: ca(MPAC_AT(4u)); break;     /* (never) */
     why: [never] MODE is not -0 when an order tests it (CCS MODE, INDEX
          MODE). The interpreter's own orders leave +0, +1 or -1 there, as the
@@ -2940,7 +2969,7 @@ src/interpreter/unit_sqrt.c
          Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
          faithful core does (tests/interpreter_fuzz.c), so there is no
          faithful run to compare a MODE of -0 with.
-  sqrtneg, lines 506-507 (2 unrun) 461ede13
+  sqrtneg, lines 505-506 (2 unrun) 461ede13
     | case NEGATIVE: zeroans(); return false;
     | case IS_MINUS_ZERO: fixroot(); return false;
     why: [impossible] A is what SQRTSUB's CCS of a negative MPAC left: its
@@ -3011,7 +3040,7 @@ src/interpreter/vectors.c
          Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
          faithful core does (tests/interpreter_fuzz.c), so there is no
          faithful run to compare a MODE of -0 with.
-  v_sc, line 446 (1 unrun) c0ac66fb
+  v_sc, line 447 (1 unrun) c0ac66fb
     | case IS_MINUS_ZERO: vv_sc_plus1(); break; /* (never) */
     why: [never] MODE is not -0 when an order tests it (CCS MODE, INDEX
          MODE). The interpreter's own orders leave +0, +1 or -1 there, as the
@@ -3035,7 +3064,7 @@ src/interpreter/vectors.c
          Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
          faithful core does (tests/interpreter_fuzz.c), so there is no
          faithful run to compare a MODE of -0 with.
-  vv_sc_plus1, lines 457-460 (4 unrun) acaec3e9
+  vv_sc_plus1, lines 458-461 (4 unrun) acaec3e9
     | {
     | ca(indexed(1u, ADDRWD)); /* (never: only from V/SC's -0 slot) */
     | v_sc1();
@@ -3083,31 +3112,31 @@ src/keyrupt/keyrupt.c
     why: [open]
 
 src/landing_displays/landing_displays.c
-  newdata, lines 228-229 (2 unrun) 6e70beb8
+  newdata, lines 220-221 (2 unrun) 6e70beb8
     | case NEGATIVE: set_A(ZERO); /* fall through */
     | case IS_MINUS_ZERO: ts(ADDRESS_OF(ALTSAVE) + 1u); break;
     why: [open]
-  newdata, lines 236-237 (2 unrun) c899a662
+  newdata, lines 228-229 (2 unrun) c899a662
     | case NEGATIVE: break;
     | case IS_MINUS_ZERO: not_modelled();
     why: [open]
 
 src/landing_guidance/exits.c
-  unwcloop, lines 167-168 (2 unrun) 9ee49c66
+  unwcloop, lines 165-166 (2 unrun) 9ee49c66
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled();
     why: [not-modelled]
 
 src/landing_guidance/indexing.h
-  das_indexed, line 77 (1 unrun) 7a17fe30
+  das_indexed, line 69 (1 unrun) 7a17fe30
     | not_modelled();
     why: [not-modelled]
 
 src/landing_guidance/quadguid.c
-  cgcalc, line 178 (1 unrun) 7a17fe30
+  cgcalc, line 176 (1 unrun) 7a17fe30
     | not_modelled();
     why: [not-modelled]
-  cgcalc, line 196 (1 unrun) fc32edf5
+  cgcalc, line 194 (1 unrun) fc32edf5
     | case IS_MINUS_ZERO: break; /* NOOP */
     why: [open]
 
@@ -3120,39 +3149,39 @@ src/landing_guidance/redesignator.c
          negative and never -0.
 
 src/p20_p25/designate.c
-  stdesig1, line 458 (1 unrun) 66eecf0b
+  stdesig1, line 456 (1 unrun) 66eecf0b
     | case IS_MINUS_ZERO: not_modelled();
     why: [not-modelled]
-  signlchk, line 681 (1 unrun) 59686b98
+  signlchk, line 679 (1 unrun) 59686b98
     | default: not_modelled(); /* (MPAC +1 is 0 or 1) */
     why: [not-modelled]
-  notp20_after_killtask, line 762 (1 unrun) f292c364
+  notp20_after_killtask, line 760 (1 unrun) f292c364
     | case NEGATIVE: not_modelled(); return;
     why: [not-modelled]
 
 src/p20_p25/lrs22.c
-  chexerr, lines 250-251 (2 unrun) 9ee49c66
+  chexerr, lines 248-249 (2 unrun) 9ee49c66
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled();
     why: [not-modelled]
 
 src/p20_p25/p20_p25.h
-  bit_set_in_A, line 98 (1 unrun) 810a982d
+  bit_set_in_A, line 90 (1 unrun) 810a982d
     | default: not_modelled(); return false;
     why: [not-modelled]
 
 src/p20_p25/programs.c
-  p20lemd1, lines 797-798 (2 unrun) 9ee49c66
+  p20lemd1, lines 795-796 (2 unrun) 9ee49c66
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled();
     why: [not-modelled]
 
 src/p20_p25/r22_r21.c
-  lunsfchk, lines 512-513 (2 unrun) 9ee49c66
+  lunsfchk, lines 510-511 (2 unrun) 9ee49c66
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled();
     why: [not-modelled]
-  r21lem5, lines 563-564 (2 unrun) 9ee49c66
+  r21lem5, lines 561-562 (2 unrun) 9ee49c66
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled();
     why: [not-modelled]
@@ -3166,7 +3195,7 @@ src/p20_p25/r29dodes.c
     why: [not-modelled]
 
 src/p20_p25/r61.c
-  r61c_l06, lines 235-236 (2 unrun) 2232d9e9
+  r61c_l06, lines 233-234 (2 unrun) 2232d9e9
     | case NEGATIVE: tc_to(R61C_L06 + 5u, R61C_L06 + 7u); return; /* TC +2 */
     | case IS_MINUS_ZERO: continue_at(R61C_L06 + 6u); return;
     why: [open]
@@ -3197,17 +3226,17 @@ src/p20_p25/rr_routines.c
     why: [open]
 
 src/p20_p25_cm/crs61.c
-  dapck, lines 89-90 (2 unrun) 9ee49c66
+  dapck, lines 87-88 (2 unrun) 9ee49c66
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled();
     why: [not-modelled]
-  stktest_after_exit, lines 201-202 (2 unrun) 9ee49c66
+  stktest_after_exit, lines 199-200 (2 unrun) 9ee49c66
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled();
     why: [not-modelled]
 
 src/p20_p25_cm/p22.c
-  s22dsppa_after_knownflg, lines 443-446 (4 unrun) 26b09a7d
+  s22dsppa_after_knownflg, lines 441-444 (4 unrun) 26b09a7d
     | case IS_PLUS_ZERO:               /* (never: A=2 less BIT14 is -0, not +0) */
     | tc_at(S22DSPP + 1u);         /* TC S22DSPPA */
     | s22dsppa_display();
@@ -3217,29 +3246,29 @@ src/p20_p25_cm/p22.c
          not. (A 22SUBSCL of BIT14 gives -0, which has its own case.)
 
 src/p20_p25_cm/r57.c
-  r57_after_exit, line 57 (1 unrun) fccab479
+  r57_after_exit, line 55 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
 
 src/p40_p47_cm/dap_data.c
-  s41_2, line 321 (1 unrun) 2df08fb8
+  s41_2, line 315 (1 unrun) 2df08fb8
     | default: not_modelled(); /* a masked word is neither */
     why: [not-modelled]
-  s41_2, line 328 (1 unrun) fccab479
+  s41_2, line 322 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
-  s41_2, line 346 (1 unrun) fccab479
+  s41_2, line 340 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
-  s41_2, line 353 (1 unrun) fccab479
+  s41_2, line 347 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
 
 src/p51_p53/gyrotrim_surfline.c
-  initby_after_exit, line 255 (1 unrun) fccab479
+  initby_after_exit, line 253 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
-  b2f8_plus1, line 357 (1 unrun) fccab479
+  b2f8_plus1, line 355 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
 
@@ -3249,59 +3278,59 @@ src/p51_p53/indexed.c
     why: [not-modelled]
 
 src/p51_p53/p57.c
-  pack_flag, line 205 (1 unrun) 126f7bdf
+  pack_flag, line 203 (1 unrun) 126f7bdf
     | default: not_modelled(); return;
     why: [not-modelled]
-  dspoptn_proceed, line 252 (1 unrun) 126f7bdf
+  dspoptn_proceed, line 250 (1 unrun) 126f7bdf
     | default: not_modelled(); return;
     why: [not-modelled]
-  dspoptn_proceed, line 259 (1 unrun) 126f7bdf
+  dspoptn_proceed, line 257 (1 unrun) 126f7bdf
     | default: not_modelled(); return;
     why: [not-modelled]
-  dspoptn_proceed, line 266 (1 unrun) fccab479
+  dspoptn_proceed, line 264 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
-  bylmatt_after_upflag, line 397 (1 unrun) fccab479
+  bylmatt_after_upflag, line 395 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
-  attchk_after_phaschng, line 416 (1 unrun) fccab479
+  attchk_after_phaschng, line 414 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
-  imuchk, line 553 (1 unrun) fccab479
+  imuchk, line 551 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
 
 src/p51_p53/planet_gvdeter.c
-  planet_after_exit, line 63 (1 unrun) fccab479
+  planet_after_exit, line 61 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
-  prograv_after_exit, line 305 (1 unrun) fccab479
+  prograv_after_exit, line 303 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
 
 src/p51_p53_cm/advtrack_r56_planet.c
-  nosam_after_exit, line 325 (1 unrun) fccab479
+  nosam_after_exit, line 323 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
 
 src/p51_p53_cm/p51.c
-  p51, lines 47-48 (2 unrun) 03c8bf14
+  p51, lines 45-46 (2 unrun) 03c8bf14
     | case IS_MINUS_ZERO: p51_pooh(); break;
     | default: not_modelled();
     why: [open]
 
 src/p51_p53_cm/r51_r55.c
-  r51a_sighted, line 225 (1 unrun) fccab479
+  r51a_sighted, line 223 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
 
 src/p51_p53_cm/r53_sr52_1.c
-  r53a_marked, lines 83-85 (3 unrun) 0eb43d23
+  r53a_marked, lines 81-83 (3 unrun) 0eb43d23
     | r53b();
     | return;
     | }
     why: [open]
-  r53a_marked, lines 89-91 (3 unrun) 0eb43d23
+  r53a_marked, lines 87-89 (3 unrun) 0eb43d23
     | r53b();
     | return;
     | }
@@ -3313,15 +3342,15 @@ src/p70_p71/contabrt.c
     why: [open]
 
 src/p_axis/p_axis.c
-  subdivde, lines 85-86 (2 unrun) 8acb8780
+  subdivde, lines 78-79 (2 unrun) 8acb8780
     | case IS_PLUS_ZERO:
     | case IS_MINUS_ZERO: break;
     why: [open]
-  selectp, lines 547-548 (2 unrun) 22de002c
+  selectp, lines 540-541 (2 unrun) 22de002c
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled(); /* TEMPNUM counts down from SIX */
     why: [not-modelled]
-  manmode, line 645 (1 unrun) 66eecf0b
+  manmode, line 638 (1 unrun) 66eecf0b
     | case IS_MINUS_ZERO: not_modelled();
     why: [not-modelled]
 
@@ -3360,10 +3389,10 @@ src/pinball/display_words.c
     why: [open]
 
 src/pinball/enter.c
-  mixnoun, line 373 (1 unrun) fa9d72bc
+  mixnoun, line 374 (1 unrun) fa9d72bc
     | case IS_MINUS_ZERO: tc_at(MIXNOUN + 4u); break;        /* TC +1: "-0 IN USE" */
     why: [open]
-  mixnoun, lines 409-410 (2 unrun) 6b3a09b2
+  mixnoun, lines 410-411 (2 unrun) 6b3a09b2
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled(); /* the CCS would run MIXAD */
     why: [not-modelled]
@@ -3398,10 +3427,10 @@ src/pinball/load_verbs.c
     why: [open]
 
 src/pinball/monitor.c
-  monitor, lines 50-53 (4 unrun) c3002bbf
+  monitor, lines 50-53 (4 unrun) 29c19056
     | case IS_PLUS_ZERO:
     | ad_at(A_ADDRESS); /* BIT15/14, OCT 60000, run as AD A */
-    | tc_at(MONITOR + 8u);
+    | tc_at(MONITOR + 010u);
     | break;
     why: [open]
 
@@ -3410,9 +3439,9 @@ src/pinball/nvsub.c
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled(); /* CODE counts down from 7 to 10 */
     why: [not-modelled]
-  nvsub1, lines 198-199 (2 unrun) 44e7acb7
-    | case NEGATIVE: tc(NVSUB1 + 17u, UPDATVB - 1u); return;
-    | case IS_MINUS_ZERO: continue_at(NVSUB1 + 18u); return;
+  nvsub1, lines 198-199 (2 unrun) 975fe3b4
+    | case NEGATIVE: tc(NVSUB1 + 021u, UPDATVB - 1u); return;
+    | case IS_MINUS_ZERO: continue_at(NVSUB1 + 022u); return;
     why: [open]
   nvsub2, lines 231-232 (2 unrun) 2ef12378
     | case NEGATIVE: tc(NVSUB2 + 3u, UPDATNN - 1u); return;
@@ -3501,42 +3530,42 @@ src/powered_flight/ax_sr_t.c
     why: [not-modelled]
 
 src/powered_flight/cdutrig.c
-  tr_star_gl_star_star_p_after_sine, line 159 (1 unrun) fccab479
+  tr_star_gl_star_star_p_after_sine, line 151 (1 unrun) fccab479
     | default: not_modelled();
     why: [not-modelled]
 
 src/q_r_axis/q_r_axis.c
-  ccs_positive, line 30 (1 unrun) 810a982d
+  ccs_positive, line 23 (1 unrun) 810a982d
     | default: not_modelled(); return false;
     why: [not-modelled]
-  trygts, line 554 (1 unrun) cf9f77b2
+  trygts, line 547 (1 unrun) cf9f77b2
     | case IS_MINUS_ZERO: not_modelled(); return; /* READ CHAN5 without its EXTEND */
     why: [not-modelled]
-  trygts, line 565 (1 unrun) 126f7bdf
+  trygts, line 558 (1 unrun) 126f7bdf
     | default: not_modelled(); return;
     why: [not-modelled]
 
 src/r60_62/r60_62.c
-  toballc_after_g_n_auto, line 266 (1 unrun) 66eecf0b
+  toballc_after_g_n_auto, line 264 (1 unrun) 66eecf0b
     | case IS_MINUS_ZERO: not_modelled();
     why: [not-modelled]
-  chklinus, lines 329-330 (2 unrun) 7013710f
+  chklinus, lines 327-328 (2 unrun) 7013710f
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled(); /* (a masked bit) */
     why: [not-modelled]
-  relinus_after_priochng, lines 378-379 (2 unrun) 7013710f
+  relinus_after_priochng, lines 376-377 (2 unrun) 7013710f
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled(); /* (a masked bit) */
     why: [not-modelled]
-  relinus_after_priochng, lines 390-391 (2 unrun) 7013710f
+  relinus_after_priochng, lines 388-389 (2 unrun) 7013710f
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled(); /* (a masked bit) */
     why: [not-modelled]
-  g_n_auto, lines 462-463 (2 unrun) 9ee49c66
+  g_n_auto, lines 460-461 (2 unrun) 9ee49c66
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled();
     why: [not-modelled]
-  chklinus, lines 745-746 (2 unrun) 7013710f
+  chklinus, lines 743-744 (2 unrun) 7013710f
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled(); /* (a masked bit) */
     why: [not-modelled]
@@ -3548,11 +3577,11 @@ src/radar_leadin/radar_leadin.c
     why: [not-modelled]
 
 src/reentry/kep.c
-  back, lines 84-85 (2 unrun) 99658675
+  back, lines 82-83 (2 unrun) 99658675
     | case NEGATIVE: ts(ADDRESS_OF(TEM1B)); return;
     | case IS_MINUS_ZERO: return;
     why: [open]
-  back, lines 87-88 (2 unrun) ec31eb76
+  back, lines 85-86 (2 unrun) ec31eb76
     | return;
     | case IS_PLUS_ZERO: continue; /* TCF BACK, with JJ +0 */
     why: [open]
@@ -3574,13 +3603,13 @@ src/restart/restarts.c
     why: [open]
 
 src/rtb_op_codes/rtb_op_codes.c
-  cduinc, line 341 (1 unrun) 62d2ee86
+  cduinc, line 334 (1 unrun) 62d2ee86
     | case IS_PLUS_ZERO: break;          /* TCF +2 */
     why: [open]
-  cduinc, line 343 (1 unrun) 0039665b
+  cduinc, line 336 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
     why: [open]
-  cduinc, lines 351-353 (3 unrun) a2b86310
+  cduinc, lines 344-346 (3 unrun) a2b86310
     | pulseimu();
     | return 0u;
     | }
@@ -3744,16 +3773,16 @@ src/tjet_law/tjet_law.c
     why: [open]
 
 src/trim_gimbal/trim_gimbal.c
-  gtsqrt, line 149 (1 unrun) 1bc8d0aa
+  gtsqrt, line 142 (1 unrun) 1bc8d0aa
     | default: not_modelled(); return; /* a MASK of BIT13 is never negative */
     why: [not-modelled]
-  axis_inputs, line 180 (1 unrun) 1467e5e0
+  axis_inputs, line 173 (1 unrun) 1467e5e0
     | case IS_MINUS_ZERO: not_modelled(); return false; /* QRCNTR is 2, +-1 or 0 */
     why: [not-modelled]
-  gts, line 419 (1 unrun) cdcaa1d6
+  gts, line 412 (1 unrun) cdcaa1d6
     | case IS_MINUS_ZERO: not_modelled(); return; /* QRCNTR is 2, +-1 or 0 */
     why: [not-modelled]
-  timegmbl, line 559 (1 unrun) 12708606
+  timegmbl, line 552 (1 unrun) 12708606
     | default: not_modelled(); return; /* QRNDXER is 2 or 0 */
     why: [not-modelled]
 
@@ -3813,7 +3842,7 @@ src/update_program/verbs.c
     why: [not-modelled]
 
 src/waitlist/waitlist.c
-  longcycl, lines 518-520 (3 unrun) 699f2831
+  longcycl, lines 523-525 (3 unrun) 699f2831
     | case IS_PLUS_ZERO: /* never (the DAS added -0): it would land on DPBIT14's words */
     | continue_at((word)ADDRESS_OF(DPBIT14));
     | return;

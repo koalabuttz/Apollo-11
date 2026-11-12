@@ -462,10 +462,10 @@ static void dndump2(void)
     ts(Q_ADDRESS);
     set_A(NEG0);
     ts(L_ADDRESS);
-    continue_at(DNDUMP2 + 8u);
+    continue_at(DNDUMP2 + 010u);
     mask_at(indexed(01401u, Q)); /* INDEX Q; MASK 1401 */
     xch(L_ADDRESS);
-    continue_at(DNDUMP2 + 11u);
+    continue_at(DNDUMP2 + 013u);
     mask_at(indexed(01400u, Q)); /* INDEX Q; MASK 1400 */
     dntmexit();
 }

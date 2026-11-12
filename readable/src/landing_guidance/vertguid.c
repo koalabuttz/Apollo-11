@@ -12,8 +12,6 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* VERTGUID: WCHVERT "POSITIVE NON-ZERO ---> P67", +0 P66, negative P65.
  * Not modelled: WCHVERT -0 (P65's interpretive code would run as basic
  * code). */

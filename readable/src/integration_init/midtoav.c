@@ -148,14 +148,6 @@ static const word midtoav_words[] = {
 const struct interpretive_code MIDTOAV_CODE = {CODE_BANK(I_MIDTOAV2), CODE_Z(I_MIDTOAV2),
                                                COUNT(midtoav_words), midtoav_words};
 
-/* TC at "at" to a routine outside the file (TPAGREE, BANKJUMP, ALARM),
- * which reads the words after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* After ENTMID1's EXIT -- LM p. 1224 (CM p. 1330): MPAC (TAT) less the
  * time (TIME2, TIME1), brought to one sign (TPAGREE); then back to the
  * caller (BANKJUMP to IRETURN1). The words are just before CKMID2's. */

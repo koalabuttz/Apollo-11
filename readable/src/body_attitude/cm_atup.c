@@ -9,8 +9,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- CORANGOV -- pp. 888-889 ---- */
 
 /* TC CORANGOV at `at`, "CORRECT FOR OVFL IF ANY": an angle (over 180, in

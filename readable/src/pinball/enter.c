@@ -93,15 +93,15 @@ static void entpashi(void)
     set_A(THREE);
     mask_at(ADDRESS_OF(DECBRNCH)); /* CCS A: MASK leaves 0 to 3 */
     if (ccs_at(A_ADDRESS) != POSITIVE) {
-        tc_at(ENTPASHI + 8u); /* TC ACCEPTWD: "OCTAL. ANY NUMBER OF CHAR OK." */
+        tc_at(ENTPASHI + 010u); /* TC ACCEPTWD: "OCTAL. ANY NUMBER OF CHAR OK." */
         acceptwd();
         return;
     }
     tc_at(ENTPASHI + 7u); /* TC +2 */
     switch (ccs_at(ADDRESS_OF(DSPCOUNT))) {
-    case POSITIVE: tc(ENTPASHI + 10u, GODSPALM); return; /* "LESS THAN 5 CHAR DEC" */
-    case IS_PLUS_ZERO: tc(ENTPASHI + 11u, GODSPALM); return;
-    case NEGATIVE: tc_at(ENTPASHI + 12u); break; /* TC +1: "5 CHAR IN" */
+    case POSITIVE: tc(ENTPASHI + 012u, GODSPALM); return; /* "LESS THAN 5 CHAR DEC" */
+    case IS_PLUS_ZERO: tc(ENTPASHI + 013u, GODSPALM); return;
+    case NEGATIVE: tc_at(ENTPASHI + 014u); break; /* TC +1: "5 CHAR IN" */
     case IS_MINUS_ZERO: break;
     }
     acceptwd();
@@ -177,15 +177,15 @@ void testnn(void)
     tc_at(TESTNN + 4u);
     tc_at(TESTNN + 5u); /* TC +2: "NORMAL" */
     switch (ccs_at(ADDRESS_OF(NNADTEM))) {
-    case POSITIVE: tc(TESTNN + 8u, VERBFAN - 2u); return;
-    case IS_PLUS_ZERO: tc(TESTNN + 9u, GODSPALM); return;
-    case NEGATIVE: tc(TESTNN + 10u, REQADD); return;
+    case POSITIVE: tc(TESTNN + 010u, VERBFAN - 2u); return;
+    case IS_PLUS_ZERO: tc(TESTNN + 011u, GODSPALM); return;
+    case NEGATIVE: tc(TESTNN + 012u, REQADD); return;
     case IS_MINUS_ZERO: break;
     }
     incr(ADDRESS_OF(NOUNCADR));
-    tc_at(TESTNN + 12u);
+    tc_at(TESTNN + 014u);
     setnadd(); /* "ECADR FROM NOUNCADR, SETS EB, NOUNADD." */
-    tc(TESTNN + 13u, INTMCTBS + 2u);
+    tc(TESTNN + 015u, INTMCTBS + 2u);
 }
 
 /* ---- A machine address the operator gives ---- */
@@ -215,7 +215,7 @@ void reqadd(void)
 void reqadd_after_reqdatz(void)
 {
     switch (ccs_at(ADDRESS_OF(DECBRNCH))) {
-    case POSITIVE: tc(REQADD + 9u, ALMCYCLE); return;
+    case POSITIVE: tc(REQADD + 011u, ALMCYCLE); return;
     case IS_PLUS_ZERO:
         set_A(negate(VD1)); /* CS VD1 */
         /* fall through */
@@ -225,12 +225,12 @@ void reqadd_after_reqdatz(void)
     case IS_MINUS_ZERO: break;
     }
     switch (ccs_at(ADDRESS_OF(CADRSTOR))) {
-    case POSITIVE: tc_at(REQADD + 13u); break; /* TC +3 */
-    case IS_PLUS_ZERO: tc(REQADD + 14u, USEADD); return;
-    case NEGATIVE: tc_at(REQADD + 15u); break; /* TC +1 */
+    case POSITIVE: tc_at(REQADD + 015u); break; /* TC +3 */
+    case IS_PLUS_ZERO: tc(REQADD + 016u, USEADD); return;
+    case NEGATIVE: tc_at(REQADD + 017u); break; /* TC +1 */
     case IS_MINUS_ZERO: break;
     }
-    tc_at(REQADD + 16u);
+    tc_at(REQADD + 020u);
     flashon();
     useadd_on();
 }
@@ -280,12 +280,12 @@ static void intmctbs_plus2(void)
     set_A(R3D1); /* "VB NOT = 05. DISPLAY CADR." */
     ts(ADDRESS_OF(DSPCOUNT));
     ca(ADDRESS_OF(NOUNCADR));
-    tc(INTMCTBS + 9u, DSPOCTWD);
+    tc(INTMCTBS + 011u, DSPOCTWD);
 }
 
 void intmctbs_after_dspoctwd(void)
 {
-    tc(INTMCTBS + 10u, VERBFAN);
+    tc(INTMCTBS + 012u, VERBFAN);
 }
 
 /* VERBFAN -2: TESTNN's normal noun, its ECADR from NOUNCADR (NNADTEM, one
@@ -323,7 +323,7 @@ void verbfan(void)
 /* VERBFAN +8, where RELDSP returns. */
 void verbfan_after_reldsp(void)
 {
-    tc(VERBFAN + 8u, POSTJUMP); /* CADR GOEXTVB */
+    tc(VERBFAN + 010u, POSTJUMP); /* CADR GOEXTVB */
 }
 
 /* VBFANDIR -- LM p. 408, CM p. 325. VERBTAB's CADR for the verb, by
@@ -340,8 +340,9 @@ void vbfandir(void)
 
 /* DPTEST -- LM pp. 410-411, CM pp. 327-328. "ENTER WITH SF ROUT NUMBER IN
  * A. RETURNS TO L+1 IF NO DP. RETURNS TO L+2 IF DP." INDEX A; TCF +1 runs
- * the routine's word of the table: TC Q, or TCF DPTEST1 (the table starts at DPTEST +2, where TCF +1 goes), whose INDEX Q;
- * TC 1 is "RETURN TO L+2". True for a double-precision routine. */
+ * the routine's word of the table: TC Q, or TCF DPTEST1 (the table starts
+ * at DPTEST +2, where TCF +1 goes), whose INDEX Q; TC 1 is "RETURN TO
+ * L+2". True for a double-precision routine. */
 bool dptest(void)
 {
     word routine = a_word();
@@ -375,7 +376,7 @@ void mixnoun(void)
     set_A(negate(SIX));
     ad_at(ADDRESS_OF(VERBREG));
     if (!A_is_zero_or_minus()) { /* EXTEND; BZMF +2: "VERB L/E 6" */
-        tc(MIXNOUN + 9u, VERBFAN);
+        tc(MIXNOUN + 011u, VERBFAN);
         return;
     }
     set_A(TWO);
@@ -395,7 +396,7 @@ void mixnoun(void)
         if (dptest())
             incr(ADDRESS_OF(NOUNTEM)); /* "DP GET MINOR PART" */
         else
-            tc_at(MIXNN1 + 8u); /* TC MIXNN2: "NO DP" */
+            tc_at(MIXNN1 + 010u); /* TC MIXNN2: "NO DP" */
         /* MIXNN2 */
         ca(ADDRESS_OF(NOUNTEM));
         mask(LOW11); /* "ESUBK (NO DP) OR (ESUBK)+1 FOR DP" */
@@ -404,8 +405,8 @@ void mixnoun(void)
         ca(indexed_by(0u, a_word())); /* INDEX A; CA 0: "PICK UP C(ESUBK)" */
         xch(indexed_erasable(0u, fetch(ADDRESS_OF(NOUNADD)))); /* "STORE IN MIXTEM + K" */
         switch (ccs_at(ADDRESS_OF(DECOUNT))) {
-        case POSITIVE: tc_at(MIXNN2 + 8u); continue; /* TC MIXNN1 */
-        case IS_PLUS_ZERO: tc(MIXNN2 + 9u, VERBFAN); return;
+        case POSITIVE: tc_at(MIXNN2 + 010u); continue; /* TC MIXNN1 */
+        case IS_PLUS_ZERO: tc(MIXNN2 + 011u, VERBFAN); return;
         case NEGATIVE:
         case IS_MINUS_ZERO: not_modelled(); /* the CCS would run MIXAD */
         }

@@ -24,8 +24,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- LRS24.1 and CHKSRCH ---- */
 
 /* CHKSRCH -- pp. 588-589: "ISSUE AUTO TRACK ENABLE TO RADAR" (channel 12

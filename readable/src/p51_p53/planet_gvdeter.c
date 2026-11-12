@@ -25,8 +25,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void planet_flash(void);
 static void notplan(void);
 static void calsam1(void);

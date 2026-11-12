@@ -38,8 +38,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void r23_7(void);
 
 /* R23.55, which P23.85 goes to: "RCLL IS IN MPAC". */

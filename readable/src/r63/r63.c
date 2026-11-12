@@ -29,8 +29,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* The words of the basic code the C names. */
 #define TC_BANKCALL_GOFLASH_V0412 (V89CALL + 7u)    /* TC BANKCALL; CADR GOFLASH */
 #define TC_ENDEXT_V0412           (V89CALL + 011u)  /* TC ENDEXT "TERMINATE" */

@@ -20,8 +20,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- ADVANCE (bank 37, p. 675) ---- */
 
 static const word advance_words[] = {

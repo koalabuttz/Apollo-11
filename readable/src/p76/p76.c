@@ -26,8 +26,7 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-#define P76_BANK     013u
+#define P76_BANK 013u
 
 /* A label's address in its bank (02000-03777). */
 #define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
@@ -46,15 +45,6 @@
 #define PHASCHNG_AT (P76 + 0104u)
 #define INTWAKE_AT  (P76 + 0116u)
 #endif
-
-/* TC at, to a routine out of the file or to INTPRET: Q gets the return
- * (for INTPRET, the first interpretive word), and the routine runs
- * next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
 
 /* ---- P76 -- LM p. 709, CM p. 511 ---- */
 

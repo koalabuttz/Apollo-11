@@ -110,9 +110,9 @@ void sload2_plus2(void)
  * is done; DANZIG takes the next one. */
 void newmode(void)
 {
-    /* (An overflow in A, which no order leaves, skips DANZIG's CA.) */
+    /* (An overflow in A would skip DANZIG's CA.) */
     if (ts(ADDRESS_OF(MODE)))
-        continue_at(DANZIG + 1u);
+        continue_at(DANZIG + 1u); /* (never: no order leaves an overflow in A) */
     else
         continue_at(DANZIG);
 }
@@ -194,11 +194,13 @@ static void opjump(void)
     switch (ccs_at(CYR_ADDRESS)) {
     case POSITIVE: opjump2(); return;
     case IS_PLUS_ZERO: exit_(); return;
-    default: break; /* (CYR cannot be -0: the code has seven bits) */
+    case NEGATIVE:
+        /* ADDRESS -- LM p. 1004, CM p. 1109. "SEE IF ADDRESS IS INDEXED.
+         * CYR CONTAINED 400XX, SO BIT 1 IS NOW AS IT WAS IN CYR." */
+        mask(BIT1);
+        break;
+    case IS_MINUS_ZERO: break; /* (never: the code has seven bits. To ADDRESS +1, past the MASK.) */
     }
-    /* ADDRESS -- LM p. 1004, CM p. 1109. "SEE IF ADDRESS IS INDEXED. CYR
-     * CONTAINED 400XX, SO BIT 1 IS NOW AS IT WAS IN CYR." */
-    mask(BIT1);
     if (ccs_at(A_ADDRESS) == POSITIVE)
         index_(); /* A is 1 or +0 */
     else

@@ -21,8 +21,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void r52d(void);
 static void r52f(void);
 static void r52f_plus1(void);

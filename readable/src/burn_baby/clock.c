@@ -14,14 +14,6 @@
 
 #if LUMINARY099
 
-/* TC at, to a routine out of the file: Q gets the return and the routine
- * runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* EXTEND; DCA NEG0; DXCH -PHASEn: restart group n ends. */
 static void end_group(unsigned minus_phase)
 {

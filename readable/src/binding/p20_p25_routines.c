@@ -10,14 +10,14 @@
  * and is whole. The side-by-side test (tests/p20_p25_cases.c) checks that
  * no key is left without one.
  *
- * Plumbing only. A basic routine runs from its key until control leaves
- * the file (BANKCALL, PHASCHNG, UPFLAG, ENDOFJOB, ...), reaches a label the
+ * Plumbing only. A basic routine runs from its key until control leaves the
+ * file (BANKCALL, PHASCHNG, UPFLAG, ENDOFJOB, ...), reaches a label the
  * faithful port keys a routine at, or reaches NEWOPS through a TC INTPRET.
  * An order pair is one pass of the readable interpreter over the listing's
  * words (interpret_listing()); a pass that ends at RTB LOADTIME or RTB
- * CDULOGIC (DODES's) runs the routine (src/rtb_op_codes/) and the DANZIG
- * it ends at, as the faithful pair does. A pass that ends at an EXIT or a CALL out of its table stops
- * there, as the faithful pair does.
+ * CDULOGIC (DODES's) runs the routine (src/rtb_op_codes/) and the DANZIG it
+ * ends at, as the faithful pair does. A pass that ends at an EXIT or a CALL
+ * out of its table stops there, as the faithful pair does.
  *
  * The device is the LM's io record with the input channels after it
  * (lm_channel_io): P20LEMB7 and R22 read channel 33. Channel 12 (R22

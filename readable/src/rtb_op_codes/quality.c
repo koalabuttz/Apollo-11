@@ -17,7 +17,6 @@
 
 #if !LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 /* A table's bank and first address, from an I_ name. */
 #define CODE_BANK(i) ((unsigned)((i) >> 10))
 #define CODE_Z(i)    ((word)(02000u + ((i) & 01777u)))

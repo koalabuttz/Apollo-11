@@ -14,8 +14,6 @@
 #include "p34_p35.h"
 #include "../agc/names.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* A label's bank, and its address in the bank (02000-03777). */
 #define BANK_OF(label) ((word)(I_##label / 02000u))
 #define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))

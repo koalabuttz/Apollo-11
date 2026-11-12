@@ -21,14 +21,6 @@ static void speedrun(void);
 static void disprset(void);
 static void aborton(void);
 
-/* TC at, to a routine out of the file: Q gets the return and the routine
- * runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* TC LADQSAVE at at: the word in LADQSAVE runs as an instruction. DISINDAT
  * leaves ALTROUT +1 or ALTOUT +1 there, a TC back to the pass that called
  * it (Q gets LADQSAVE +1). Any other word runs at LADQSAVE, out of the

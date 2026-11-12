@@ -46,8 +46,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- The state vectors to the mark time ---- */
 
 /* LSR22.3 -- p. 575. "ARE WE ON LUNAR SURFACE": "YES", LSR22.4. Else

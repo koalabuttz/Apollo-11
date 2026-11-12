@@ -20,8 +20,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void r51_4(void);
 
 /* ---- R51 -- pp. 941-943 ---- */

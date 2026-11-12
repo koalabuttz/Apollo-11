@@ -66,7 +66,7 @@ void unit_plus1(void)
     dca(MPAC_AT(0u));                            /* "LEAVE THE SQUARE OF THE LENGTH OF THE */
     dxch(indexed(ADDRESS_OF(LVSQUARE), FIXLOC)); /* ARGUMENT IN LVSQUARE." */
 
-    tc_at(UNIT + 15u);
+    tc_at(UNIT + 017u);
     if (sqrtsub()) return; /* "GO TAKE THE NORMALIZED SQUARE ROOT." */
     unit_plus16();
 }
@@ -170,13 +170,13 @@ static void large2(void)
     dxch(VBUF_AT(2u));
     dxch(MPAC_AT(0u));
     dxch(MPAC_AT(3u));
-    tc_at(LARGE2 + 11u);
+    tc_at(LARGE2 + 013u);
     unitdv();
 
     dxch(VBUF_AT(4u));
     dxch(MPAC_AT(0u));
     dxch(MPAC_AT(5u));
-    tc_at(LARGE2 + 15u);
+    tc_at(LARGE2 + 017u);
     unitdv();
     vrotatex(); /* "AND EXIT." */
 }
@@ -286,9 +286,10 @@ void sqrt_(void)
     if (sqrtsub()) return;
 
     switch (ccs_at(ADDRESS_OF(MPTEMP))) {
+    case POSITIVE: break; /* TCF +2 */
     case IS_PLUS_ZERO: continue_at(DANZIG); return;
+    case NEGATIVE: break;
     case IS_MINUS_ZERO: sqrtshft(); return; /* (A +0 passes the BZMF) */
-    default: break;
     }
     ad(NEG12); /* "A RIGHT SHIFT OF MORE THAN 13 COULD BE REQUIRED IF INPUT
                 * WAS ZERO IN MPAC,+1." */
@@ -419,7 +420,7 @@ void vsqsub(void)
     ca(MPAC_AT(2u));
     ts(BUF_AT(2u));
 
-    tc_at(VSQSUB + 8u);
+    tc_at(VSQSUB + 010u);
     dsqsub(); /* "SQUARE Y COMPONENT." */
     dxch(MPAC_AT(1u));
     das(BUF_AT(1u));
@@ -429,7 +430,7 @@ void vsqsub(void)
 
     dxch(MPAC_AT(5u));
     dxch(MPAC_AT(0u));
-    tc_at(VSQSUB + 18u);
+    tc_at(VSQSUB + 022u);
     dsqsub(); /* "SQUARE Z COMPONENT." */
     enddot(); /* "END AS IN DOTSUB." */
 }
@@ -458,10 +459,9 @@ bool sqrtsub(void)
      * REGISTER INTO MPAC ITSELF." */
     switch (ccs_at(MPAC_AT(0u))) {
     case POSITIVE: smpac_plus(); return false;
-    case NEGATIVE:
-        return sqrtneg(); /* "SEE IF MAG OF ARGUMENT LESS THAN
-                                      * 10(-4)." */
-    default: break;
+    case IS_PLUS_ZERO: break;        /* TCF +2 */
+    case NEGATIVE: return sqrtneg(); /* "SEE IF MAG OF ARGUMENT LESS THAN 10(-4)." */
+    case IS_MINUS_ZERO: break;
     }
 
     xch(MPAC_AT(2u)); /* "MPAC IS ZERO -- SHIFT LEFT 14." */
@@ -472,11 +472,9 @@ bool sqrtsub(void)
 
     switch (ccs_at(MPAC_AT(0u))) { /* "SEE IF MPAC NOW PNZ." */
     case POSITIVE: smpac_plus(); return false;
-    case NEGATIVE:
-        zeroans();
-        return false; /* "NEGATIVE BUT LESS THAN 10(-4)
-                                             * IN MAG." */
-    default: break;
+    case IS_PLUS_ZERO: break;               /* TCF +2 */
+    case NEGATIVE: zeroans(); return false; /* "NEGATIVE BUT LESS THAN 10(-4) IN MAG." */
+    case IS_MINUS_ZERO: break;
     }
 
     xch(MPAC_AT(1u)); /* "XERO -- SHIFT LEFT 14 AGAIN." */
@@ -503,15 +501,17 @@ static bool sqrtneg(void)
 {
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: return sqrtabrt();
+    case IS_PLUS_ZERO: break; /* to the CCS of the minor part, below */
     case NEGATIVE: zeroans(); return false;
     case IS_MINUS_ZERO: fixroot(); return false;
-    case IS_PLUS_ZERO: break;
     }
     switch (ccs_at(MPAC_AT(1u))) {
-    case POSITIVE: zeroans(); return false;
+    case POSITIVE: zeroans(); break;
+    case IS_PLUS_ZERO: fixroot(); break;
     case NEGATIVE: return sqrtabrt();
-    default: fixroot(); return false;
+    case IS_MINUS_ZERO: fixroot(); break;
     }
+    return false;
 }
 
 /* ZEROANS: "FORCE ANSWER TO ZERO HERE." */

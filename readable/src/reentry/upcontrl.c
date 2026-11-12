@@ -10,8 +10,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- UPCONTRL -- pp. 864-866 ---- */
 
 /* UPCONTRL: "IF D-140 POS, NOSWITCH =1" "(SUPPRESS LATERAL SWITCH)" (C21).

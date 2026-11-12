@@ -32,8 +32,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- LRS22.1 ---- */
 
 /* READRDOT -- p. 569: "READ RANGE-RATE (ONE SAMPLE)". */
