@@ -94,8 +94,11 @@ void dodowntm(void)
     switch (ccs_register(A_ADDRESS)) {
     case POSITIVE: /* already set */ tc_dntmgoto(WOTEST + 4u); return;
     case IS_PLUS_ZERO: set_A(BIT7); break;
-    case NEGATIVE: break;               /* TCF WO1 */
-    case IS_MINUS_ZERO: not_modelled(); /* RAND of BIT7 is never -0 */
+    case NEGATIVE: break; /* TCF WO1 */
+    case IS_MINUS_ZERO:
+        /* (never: RAND of BIT7 is BIT7 or +0) TCF WO1 is the last word of
+         * the bank's program: the listing has no word after it. */
+        not_modelled();
     }
     /* WO1 */
     wor_channel(CHAN13);
@@ -203,12 +206,12 @@ static void nextincl(void)
     ts(ADDRESS_OF(DNECADR));
     ad(MINTIME2);
     switch (ccs_register(A_ADDRESS)) {
+    case POSITIVE: setwo_plus1(); return; /* TCF SETWO +1 */
     case IS_PLUS_ZERO:
         cs(ADDRESS_FIELD(MINB1314)); /* MINB1314 runs as CS 7777 */
     /* fall through */
-    case POSITIVE:
-    case NEGATIVE: setwo_plus1(); return;
-    case IS_MINUS_ZERO: setwo(); return; /* TIME2 */
+    case NEGATIVE: setwo_plus1(); return; /* TCF SETWO +1 */
+    case IS_MINUS_ZERO: setwo(); return;  /* TIME2 */
     }
 }
 
@@ -449,6 +452,13 @@ void dndump1(void)
     dndump2();
 }
 
+/* Z while the instruction at at runs: the address of the word after it.
+ * (An instruction that reads Z finds that there.) */
+static void running(word at)
+{
+    Z = (word)(at + 1u);
+}
+
 /* DNDUMP2 -- LM p. 996, CM p. 1101.
  * Send the double word at DUMPLOC: EBANK from it, the address in the bank
  * in Q. MASK reads the words, so the editing registers (020-023) are read
@@ -462,10 +472,10 @@ static void dndump2(void)
     ts(Q_ADDRESS);
     set_A(NEG0);
     ts(L_ADDRESS);
-    continue_at(DNDUMP2 + 010u);
+    running(DNDUMP2 + 7u);
     mask_at(indexed(01401u, Q)); /* INDEX Q; MASK 1401 */
     xch(L_ADDRESS);
-    continue_at(DNDUMP2 + 013u);
+    running(DNDUMP2 + 012u);
     mask_at(indexed(01400u, Q)); /* INDEX Q; MASK 1400 */
     dntmexit();
 }

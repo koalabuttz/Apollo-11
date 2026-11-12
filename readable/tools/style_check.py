@@ -22,7 +22,10 @@ The rules, each named as the ledger names it:
                     listing has a word for each (STYLE.md, Structure).
   ccs-not-modelled  An outcome of a CCS is followed, not refused: a case
                     of a CCS switch does not begin with not_modelled()
-                    (STYLE.md, Fidelity).
+                    (STYLE.md, Fidelity). One whose comment says the
+                    listing has no word there (the CCS's last words fall
+                    past the end of a bank's program) is let be: there is
+                    nothing to follow.
   raw-channel       A channel is written by its name, not a bare number
                     (STYLE.md, Naming).
   continue-offset   A place inside its own directory that a routine ends
@@ -81,6 +84,7 @@ HELPER = re.compile(r'^[ \t]*#[ \t]*define[ \t]+(?:COUNT|IN_BANK|BANK_OF)\('
                     r'|^(?:static )?(?:inline )?void tc_to\(', re.M)
 DECIMAL = re.compile(r'\b(?:K_)?([A-Z][A-Z0-9_]*) \+ ([89]|[1-9][0-9]+)u\b')
 LABEL = re.compile(r'^#define (\w+) +\(\(word\)K_\w+\)', re.M)
+NO_WORD = re.compile(r'\bno word\b')
 NEVER = re.compile(r'/\*[^\n]*\bnever\b|^[^\n]*\bnever\b[^\n]*\*/', re.M)
 NAMES = 'agc/names.h'
 WIDTH = 100
@@ -192,7 +196,9 @@ def breaks(file, text, routines=(), labels=()):
                 if name in ORDER and re.match(r'\s*not_modelled\(\)', statements) and \
                         ('ccs-not-modelled', where) not in seen:
                     seen.add(('ccs-not-modelled', where))
-                    out.append(('ccs-not-modelled', line_of(mission, where), name))
+                    first, last = line_of(mission, where), line_of(mission, mission.index('not_modelled', where))
+                    if not NO_WORD.search('\n'.join(lines[first - 1:last])):
+                        out.append(('ccs-not-modelled', first, name))
     for found in CHANNEL.finditer(code):
         out.append(('raw-channel', line_of(code, found.start()), found.group().strip()))
     for found in CONTINUE.finditer(code):
@@ -333,6 +339,10 @@ def self_check():
     expect('an outcome of a CCS refused', refused, [('ccs-default', 1), ('ccs-not-modelled', 3)])
     followed = refused.replace('    not_modelled();', '    a();\n    not_modelled();')
     expect('an outcome that is followed to a refusal', followed, [('ccs-default', 1)])
+    expect('an outcome the listing has no word for',
+           'switch (ccs_at(X)) {\ncase POSITIVE: break;\ncase IS_PLUS_ZERO: break;\ncase NEGATIVE: break;\n'
+           'case IS_MINUS_ZERO:\n    /* (never) TCF X is the last word: the listing has no word\n     * after it. */\n'
+           '    not_modelled();\n}\n', [])
     expect('a value outside a table refused', 'switch (a_word()) {\ncase 1: break;\ndefault: not_modelled();\n}\n', [])
     expect('a channel by number', 'x = rand_channel(031);\nwor_channel(013u);\nwrite_channel(6, A);\n',
            [('raw-channel', 1), ('raw-channel', 2), ('raw-channel', 3)])

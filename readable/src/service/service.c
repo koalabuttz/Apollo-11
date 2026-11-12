@@ -330,7 +330,7 @@ void gentran_plus1(void)
     switch (ccs_at(ADDRESS_OF(ITEMP1))) {
     case POSITIVE: continue_at((word)(GENTRAN + 1u)); return; /* "LOOP UNTIL N-1 = 0." */
     case IS_PLUS_ZERO: neg(); return; /* TCF Q+2 (NEG): "RETURN TO CALLER." */
-    case NEGATIVE: b5off(); return;
+    case NEGATIVE: b5off(); return;   /* never: no caller's count is negative */
     case IS_MINUS_ZERO: b5off_plus1(); return;
     }
 }

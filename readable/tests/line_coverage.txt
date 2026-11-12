@@ -4,8 +4,8 @@
 #
 # Measured with Ubuntu clang version 18.1.3 (1ubuntu1).
 # 422 files hold lines of C to run (406 of the 474 .c files under src/,
-# and 16 headers); 59897 such lines; 1511 of them unrun
-# (2.52%), in 634 stretches of 214 files.
+# and 16 headers); 59930 such lines; 1527 of them unrun
+# (2.55%), in 634 stretches of 214 files.
 # Built and never run: x86-flight-cm-core, x86-flight-lm-core, x86-link-check.
 #
 # These are lines of C only. Interpretive code is tables of words, which
@@ -15,13 +15,13 @@
 # this measure does not see.
 #
 # By reason:
-#   impossible: 145 lines in 67 stretches
-#   never: 59 lines in 27 stretches
-#   not-modelled: 123 lines in 94 stretches
-#   open: 417 lines in 158 stretches
+#   impossible: 185 lines in 83 stretches
+#   never: 69 lines in 31 stretches
+#   not-modelled: 122 lines in 91 stretches
+#   open: 384 lines in 141 stretches
 #   refusal: 767 lines in 288 stretches
 #
-# Run, and compared with nothing: 84 lines of 81 functions ran
+# Run, and compared with nothing: 85 lines of 82 functions ran
 # and refuse (not_modelled() first on the line). A case or a scenario
 # brought the routine there and its binding refused the state: the tests
 # hold only that a refusal leaves the state as it found it. They are
@@ -155,21 +155,30 @@ src/aostask/aostask.c
     why: [not-modelled]
 
 src/aotmark/aotmark.c
-  markrupt, line 756 (1 unrun) efd3f0b5
-    | case IS_MINUS_ZERO: break;            /* (on with A +0) */
+  markrupt, lines 760-761 (2 unrun) 0f3b9ab6
+    | case NEGATIVE: set_A(BIT12); break;
+    | case IS_MINUS_ZERO: break; /* (on with A +0) */
     why: [impossible] A is channel 16 masked with OCT34, or with the +1 or -1
          that a TS of an overflow leaves in A: a word with a bit clear, never
          -0.
-  verifymk, line 959 (1 unrun) f4215585
-    | case IS_MINUS_ZERO: not_modelled(); return;
-    why: [not-modelled]
-  after_marktype, line 1097 (1 unrun) b08570b4
+  verifymk, lines 966-970 (5 unrun) 32f5c09c
+    | case NEGATIVE: break;
+    | case IS_MINUS_ZERO:
+    | tc_at(VERIFYMK + 6u); /* OCT 114, run as TC 114 */
+    | not_modelled();
+    | return;
+    why: [impossible] A is XYMARK masked with MARKSTAT, and no store of this
+         file leaves bit 15 in XYMARK: BIT10 or BIT11 (the mark interrupts),
+         +0 (GETMKS), MARKSTAT masked with LOW9 (MARKCHEX), and the detent
+         code, AOTCODE masked with HIGH9 and shifted down by the MP of BIT9
+         (DODAT). So A is positive or +0.
+  after_marktype, line 1110 (1 unrun) b08570b4
     | default: return; /* (Z holds it) */
     why: [impossible] Every TC MARKTYPE of the file returns to one of the
          words named above this line (the word after the TC, or the next one
          in flight), and MARKTYPE entered on its own comes here only with Q
          at VACSTOR +027 to +032, each of which is named.
-  surfend, lines 1305-1307 (3 unrun) 68695019
+  surfend, lines 1318-1320 (3 unrun) 68695019
     | surfagan_plus1();
     | return;
     | }
@@ -2095,17 +2104,20 @@ src/downtelemetry/downlink_lists.c
          so that the switch names every kind.
 
 src/downtelemetry/downtelemetry.c
-  dodowntm, lines 97-98 (2 unrun) 8d46d754
-    | case NEGATIVE: break;               /* TCF WO1 */
-    | case IS_MINUS_ZERO: not_modelled(); /* RAND of BIT7 is never -0 */
+  dodowntm, lines 97-101 (3 unrun) 04e18db4
+    | case NEGATIVE: break; /* TCF WO1 */
+    | case IS_MINUS_ZERO:
+    | /* (never: RAND of BIT7 is BIT7 or +0) TCF WO1 is the last word of
+    | * the bank's program: the listing has no word after it. */
+    | not_modelled();
     why: [impossible] A is channel 13 masked with BIT7: BIT7 or +0.
-  nextincl, lines 206-207 (2 unrun) d9c1b805
+  nextincl, lines 210-211 (2 unrun) d9c1b805
     | case IS_PLUS_ZERO:
     | cs(ADDRESS_FIELD(MINB1314)); /* MINB1314 runs as CS 7777 */
     why: [impossible] A is the list word just stored in DNECADR plus
          MINTIME2. In the AGC's adder a sum is +0 only when both numbers are
          +0, and MINTIME2 is not.
-  dodnptr, line 283 (1 unrun) 853bd30c
+  dodnptr, line 286 (1 unrun) 853bd30c
     | case IS_PLUS_ZERO: dosublst(); return; /* (never: no sublist starts with a zero) */
     why: [never] No downlist has a sublist that starts with a zero word, and
          no state gives the faithful routine one: it reads a fixed word only
@@ -2123,7 +2135,7 @@ src/downtelemetry/downtelemetry.c
          downtelemetry-cases counts these words on every run
          (pointer_census() of tests/downtelemetry_cases.c) and fails if a run
          could come here.
-  dodnptr, line 285 (1 unrun) 0e42ad5f
+  dodnptr, line 288 (1 unrun) 0e42ad5f
     | case IS_MINUS_ZERO: break; /* (never) */
     why: [never] No downlist has a sublist that starts with a zero word, and
          no state gives the faithful routine one: it reads a fixed word only
@@ -2141,7 +2153,7 @@ src/downtelemetry/downtelemetry.c
          downtelemetry-cases counts these words on every run
          (pointer_census() of tests/downtelemetry_cases.c) and fails if a run
          could come here.
-  snaploop, lines 317-320 (4 unrun) c576de33
+  snaploop, lines 320-323 (4 unrun) c576de33
     | case IS_PLUS_ZERO: /* (never) LDNPHAS2 (GENADR DNPHASE2) would run as TC DNPHASE2 */
     | tc_at(ADDRESS_OF(LDNPHAS2));
     | dnphase2();
@@ -2158,7 +2170,7 @@ src/downtelemetry/downtelemetry.c
          make downtelemetry-cases counts these words on every run
          (pointer_census() of tests/downtelemetry_cases.c) and fails if a run
          could come here.
-  snaploop, line 322 (1 unrun) e3a7273a
+  snaploop, line 325 (1 unrun) e3a7273a
     | default: break;                                /* (-0: never) */
     why: [never] SNAPLOOP reads on from the DNPTR's own list, word after
          word, to the first that is not positive. No snapshot of a downlist
@@ -2172,7 +2184,7 @@ src/downtelemetry/downtelemetry.c
          make downtelemetry-cases counts these words on every run
          (pointer_census() of tests/downtelemetry_cases.c) and fails if a run
          could come here.
-  dndump, lines 435-439 (5 unrun) 270a0086
+  dndump, lines 438-442 (5 unrun) 270a0086
     | case NEGATIVE: dndump1(); return;
     | case IS_MINUS_ZERO:
     | ts(ADDRESS_OF(DNTMGOTO));
@@ -2241,13 +2253,16 @@ src/executive/executive.c
 src/extended_verbs/align.c
   rdruseck, line 880 (1 unrun) 19fd4a0a
     | case POSITIVE: tc(RDRUSECK + 017u, ALM_END); return; /* "YES" */
-    why: [open]
+    why: [impossible] A is a word masked with LRBYBIT, bit 15 alone: +0 or
+         negative, never positive.
 
 src/extended_verbs/front.c
   testxact, lines 231-232 (2 unrun) 64c5eeba
     | case NEGATIVE: setxtact(); return;
     | case IS_MINUS_ZERO: setxtact_plus1(); return;
-    why: [open]
+    why: [impossible] A is FLAGWRD4, or what the first CCS left of a negative
+         EXTVBACT, masked with OC24100, which has no bit 15; or the +0 that
+         CCS left of -0: positive or +0.
 
 src/findcduw/gimbal_angles.c
   after_lag_angle, line 327 (1 unrun) 72d0b46c
@@ -2260,15 +2275,17 @@ src/findcduw/subroutines.c
     why: [open]
 
 src/fresh_start/fresh_start.c
-  back_into_coarse_align, line 153 (1 unrun) 0039665b
+  back_into_coarse_align, line 154 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
-    why: [open]
-  back_into_coarse_align, lines 155-157 (3 unrun) 59828d4b
+    why: [impossible] A is the complement of DSPTAB +11D masked with BITS4&6,
+         which has no bit 15: positive or +0, never -0.
+  back_into_coarse_align, lines 156-158 (3 unrun) 59828d4b
     | tc_at(WOR_CHAN12);
     | continue_at(05012u);
     | return false;
-    why: [open]
-  setinfl, lines 503-506 (4 unrun) 64eb8607
+    why: [impossible] A is the complement of DSPTAB +11D masked with BITS4&6,
+         which has no bit 15: positive or +0, never -0.
+  setinfl, lines 504-507 (4 unrun) 64eb8607
     | case IS_MINUS_ZERO:                          /* never: the WOR's word alone, TC 5011 */
     | tc_at(WOR_ENGINE_ON);
     | continue_at(05011u);
@@ -2276,7 +2293,7 @@ src/fresh_start/fresh_start.c
     why: [impossible] A is FLAGWRD5's complement masked with ENGONBIT: +0 or
          the one bit, never -0. (Nor negative: the line above runs only as
          the fall through from +0.)
-  nocoarse, lines 632-635 (4 unrun) 64eb8607
+  nocoarse, lines 633-636 (4 unrun) 64eb8607
     | case IS_MINUS_ZERO:                          /* never: the WOR's word alone, TC 5011 */
     | tc_at(WOR_ENGINE_ON);
     | continue_at(05011u);
@@ -2284,14 +2301,17 @@ src/fresh_start/fresh_start.c
     why: [impossible] A is FLAGWRD5's complement masked with ENGONBIT: +0 or
          the one bit, never -0. (Nor negative: the line above runs only as
          the fall through from +0.)
-  nxtrst, line 805 (1 unrun) 7a17fe30
+  nxtrst, line 806 (1 unrun) 7a17fe30
     | not_modelled();
     why: [not-modelled]
-  pinact_end, lines 853-855 (3 unrun) 11522be5
+  pinact_end, lines 862-864 (3 unrun) 11522be5
     | case NEGATIVE: groups = POSITIVE; break;          /* on TCF ENDRSTRT */
     | case IS_MINUS_ZERO: groups = IS_PLUS_ZERO; break; /* on CAF BIT15 */
     | case POSITIVE: break;
-    why: [open]
+    why: [impossible] MPAC +5 is the number of the group less one: this file
+         sets it from NUMGRPS and stores in it only what PINACT's CCS leaves
+         (NXTRST's TS), so it is never negative and never -0. (Positive,
+         PINACT goes to NXTRST and does not call this.)
 
 src/fresh_start/v37.c
   checktab, lines 447-448 (2 unrun) 12cb6933
@@ -2304,7 +2324,11 @@ src/fresh_start/v37.c
   checktab, lines 450-451 (2 unrun) 2a3ce007
     | break;
     | case IS_PLUS_ZERO: continue;      /* TCF AGAINMM, with +0 */
-    why: [open]
+    why: [impossible] +0: A is MMNUMBER with a negative number or -0 added
+         (the COM of the entry's low seven bits), and such a sum is +0 only
+         of two +0s; an entry equal to MMNUMBER leaves -0. The break above
+         it: MPAC +1 holds NOV37MM counted down by the CCS there, never
+         negative, never -0.
 
 src/imu_calibration/drift_loop.c
   finetime_plus1, lines 185-187 (3 unrun) 7a730130
@@ -3109,7 +3133,10 @@ src/kalman_filter/kalman_filter.c
 src/keyrupt/keyrupt.c
   uptest, line 169 (1 unrun) 8f59ce8f
     | case IS_PLUS_ZERO:
-    why: [open]
+    why: [impossible] At both calls A is negative or -0 (the middle five bits
+         less 37; the complement of the high five), and KEYTEMP1 is the code,
+         +0 to 37. Such a sum is +0 only of two +0s: a group that agrees
+         leaves -0.
 
 src/landing_displays/landing_displays.c
   newdata, lines 221-222 (2 unrun) 6e70beb8
@@ -3357,7 +3384,8 @@ src/p_axis/p_axis.c
 src/phase_table/phase_table.c
   below1, line 234 (1 unrun) 9ad67b86
     | case POSITIVE: /* NOOP: "CAN'T GET HERE" */
-    why: [open]
+    why: [impossible] TEMPSW2 was not positive at the CCS above (positive
+         went to BELOW2), and nothing between stores in it.
 
 src/pinball/display_verbs.c
   nountest, line 166 (1 unrun) 9fea65de
@@ -3587,20 +3615,33 @@ src/reentry/kep.c
     why: [open]
 
 src/restart/restarts.c
-  getpart2, lines 119-121 (3 unrun) efe058b3
-    | case IS_PLUS_ZERO: itsatbl(); return;
+  getpart2, lines 119-121 (3 unrun) 0bdff7ee
+    | case IS_PLUS_ZERO: itsatbl(); return; /* never: the phase is positive here */
     | case NEGATIVE: set_A(PRIO14); break;
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [never] RESTARTS comes here with the phase NXTRST left in MPAC: what
+         its CCS left of the group's phase, and one more (PACTIVE: TS MPAC;
+         INCR MPAC), so positive. GOLOC +2 comes here with a type B phase's
+         low seven bits, which name its table phase, 1 or more. The faithful
+         routine takes only a positive phase below 2000 (the binding refuses
+         the others, phase_as_expected()), so no case compares these lines.
   itsavar, line 157 (1 unrun) 202f522a
     | case IS_PLUS_ZERO: tc_rtrncadr(); return; /* "CANT GET HERE" */
-    why: [open]
+    why: [impossible] A is the phase's low three bits with MINUS2 added: a
+         sum with a negative number is +0 only of two +0s, and 2 less 2
+         leaves -0, the job's way.
   itsatbl, line 292 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
-    why: [open]
-  contbl2, line 320 (1 unrun) 0039665b
-    | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] A is what a CCS of GETPART2 left, positive or +0, and
+         CYR holds it cycled right once: all ones, -0, comes only of -0.
+  contbl2, line 320 (1 unrun) 9be46d65
+    | case IS_MINUS_ZERO: break;      /* never: a 2CADR's first word is not -0 */
+    why: [never] POINTER is at an entry of the restart tables (ITSATBL's sum;
+         for PHSPART2 the even phase's first entry), and the word read is the
+         first of the entry's 2CADR or -2CADR: an address of fixed memory or
+         its complement, never -0. (The tables' OCT 77777 words are the
+         entries' first words, which PRDTTAB reads.) tests/restart_cases.c
+         runs every phase the tables hold.
 
 src/rtb_op_codes/rtb_op_codes.c
   cduinc, line 335 (1 unrun) 62d2ee86
@@ -3621,14 +3662,19 @@ src/service/service.c
     | tc_at(OK2DELAY - 1u); /* OCT 1104, run as TC 1104 */
     | continue_at(01104u);
     | return;
-    why: [open]
+    why: [impossible] RUPTREG1 holds DELAYNUM, or the +1 or -1 an overflowed
+         delay leaves in A, or what this CCS left: never -0.
   delayjob, line 237 (1 unrun) d362fbec
     | case IS_MINUS_ZERO: ok2delay(); return;
-    why: [open]
-  gentran_plus1, lines 333-334 (2 unrun) 24446946
-    | case NEGATIVE: b5off(); return;
+    why: [impossible] RUPTREG1 holds DELAYNUM, or the +1 or -1 an overflowed
+         delay leaves in A, or what this CCS left: never -0.
+  gentran_plus1, lines 333-334 (2 unrun) ba9b0eb7
+    | case NEGATIVE: b5off(); return;   /* never: no caller's count is negative */
     | case IS_MINUS_ZERO: b5off_plus1(); return;
-    why: [open]
+    why: [never] ITEMP1 is the count N-1 the caller gave in A, counted down
+         by this CCS. Each TC GENTRAN and TC GENTRAN +1 of the listings (3 in
+         Luminary099, 13 in Comanche055) follows a CA or CAF of a positive
+         constant, and none copies onto ITEMP1.
 
 src/servicer/lr_jobs.c
   lrvjob_after_waitlist, line 38 (1 unrun) 0039665b
@@ -3662,20 +3708,30 @@ src/sxtmark/sxtmark.c
     why: [open]
 
 src/t4rupt/imu_monitor.c
-  nxtifbit, line 133 (1 unrun) 2134de0c
+  nxtifbit, line 135 (1 unrun) 2134de0c
     | default: not_modelled(); break; /* 30RDMSK: bit 10 is never scanned */
     why: [not-modelled]
-  nxtifail, lines 149-150 (2 unrun) dd70af12
-    | case NEGATIVE:
-    | case IS_MINUS_ZERO: not_modelled(); return; /* the changes left are never negative */
-    why: [not-modelled]
-  nxtibt_plus1, line 463 (1 unrun) 852a95ab
+  nxtifail, lines 153-154 (2 unrun) 40a0b564
+    | case NEGATIVE: tnontest_plus1(); return;
+    | case IS_MINUS_ZERO: tnontest_plus2(); return;
+    why: [impossible] RUPTREG2 holds what this file stores in it: the changes
+         left after a change overflowed (the XCH RUPTREG2 after the TS A; a
+         positive word doubled overflows only positive, so what is left is
+         positive or +0), or the changes masked with POSMAX (TLIM). Never
+         negative, never -0. (The binding goes on with a scan only with
+         RUPTREG2 so: scan_as_left, src/binding/t4rupt_imu_routines.c.)
+  nxtibt_plus1, line 479 (1 unrun) 852a95ab
     | default: not_modelled(); break; /* past the table: channel 33 has three bits */
     why: [not-modelled]
-  nxtfl33, lines 477-478 (2 unrun) dd70af12
-    | case NEGATIVE:
-    | case IS_MINUS_ZERO: not_modelled(); return; /* the changes left are never negative */
-    why: [not-modelled]
+  nxtfl33, lines 495-496 (2 unrun) cee4b6f8
+    | case NEGATIVE: glockchk(); return;      /* TCF GLOCKCHK */
+    | case IS_MINUS_ZERO: setglock(); return; /* TCF SETGLOCK */
+    why: [impossible] RUPTREG2 holds what this file stores in it: the changes
+         left after a change overflowed (the XCH RUPTREG2 after the TS A; a
+         positive word doubled overflows only positive, so what is left is
+         positive or +0), or the changes masked with POSMAX (TLIM). Never
+         negative, never -0. (The binding goes on with a scan only with
+         RUPTREG2 so: scan_as_left, src/binding/t4rupt_imu_routines.c.)
 
 src/t4rupt/optics.c
   zoptdes, line 196 (1 unrun) 6de9c986
@@ -3705,51 +3761,76 @@ src/t4rupt/optics.c
          differ, which is negative and not -0.
 
 src/t4rupt/t4rupt.c
-  dspoutsb, line 139 (1 unrun) 4416096f
+  dspoutsb, line 140 (1 unrun) 4416096f
     | case IS_PLUS_ZERO: continue; /* (never: the display programs leave no DSPTAB word zero) */
     why: [never] The binding takes no state with a DSPTAB word (0 to 10) of
          +0 or -0 (display_kept, src/binding/t4rupt_routines.c), as the
          faithful core does: the display programs never leave one. There is
          no faithful run to compare one with.
-  dspoutsb, line 141 (1 unrun) e031ba26
-    | case IS_MINUS_ZERO: not_modelled(); return false; /* runs TABLNTH (OCT 12) as TC 12 */
+  dspoutsb, lines 142-147 (4 unrun) 405ac6cb
+    | case IS_MINUS_ZERO:
+    | /* (never: no DSPTAB word is zero) TABLNTH (OCT 12) runs as TC 12:
+    | * the word in QRUPT, the interrupted program's Q, would run next. */
+    | tc_at((word)(DSPSCAN + 5u));
+    | not_modelled();
+    | return false;
     why: [not-modelled]
-  dspoutsb, lines 146-147 (2 unrun) 359f159b
-    | case IS_PLUS_ZERO: dsplay(); return true;
-    | case NEGATIVE: not_modelled(); return false; /* runs TABLNTH: no producer */
+  dspoutsb, lines 151-157 (5 unrun) ab737c33
+    | case IS_PLUS_ZERO: dsplay(); return true; /* TCF DSPLAY */
+    | case NEGATIVE:
+    | /* (never: DSPCNT is 0 to 012, or -0) TABLNTH runs as TC 12 here
+    | * too. */
+    | tc_at((word)(DSPSCAN + 5u));
+    | not_modelled();
+    | ... (1 more)
     why: [impossible] DSPCNT was stored just above: A plus -0, which is never
          +0 (the listing's "TO PREVENT +0"), or TABLNTH. It is negative only
          if it came so, and the binding takes no such state (display_kept:
          DSPCNT 0 to 012 or -0), as the faithful core does.
-  dspoutsb, line 151 (1 unrun) 524e92dc
-    | case POSITIVE: not_modelled(); return false; /* runs 120MRUPT: no producer */
-    why: [not-modelled]
-  dspoutsb, line 156 (1 unrun) 05313dd4
+  dspoutsb, lines 161-164 (2 unrun) 5a521617
+    | case POSITIVE:
+    | /* (never: DSRUPTEM is the -0 or the +0 stored here) 120MRUPT (DEC
+    | * 16372) runs as CA 7764. */
+    | ca(ADDRESS_FIELD(HUNDRED20_MS_RUPT));
+    why: [impossible] DSRUPTEM is the -0 stored at the routine's start or the
+         +0 its own -0 slot stores: never positive.
+  dspoutsb, line 170 (1 unrun) 05313dd4
     | case NEGATIVE: tc_through(Q_ADDRESS); return false;
     why: [impossible] DSRUPTEM is the -0 stored at the routine's start or the
          +0 its own -0 slot stores: never negative.
-  proceede, lines 238-239 (2 unrun) 63c5460d
-    | case NEGATIVE: break;
-    | case IS_MINUS_ZERO: not_modelled(); return; /* runs the 2CADR: no producer */
+  proceede, lines 252-259 (5 unrun) a15ba37b
+    | case NEGATIVE: break;                     /* TC NOVAC is the next word */
+    | case IS_MINUS_ZERO:
+    | /* (never: A is BIT14 or +0) The 2CADR's first word, PROCKEY's
+    | * address, runs as a TC to that address in this bank, which is no
+    | * place of this program. */
+    | tc_at((word)(PROCEEDE + 017u));
+    | ... (2 more)
     why: [impossible] A is BIT14 exclusive-ored with L, and L came from the
          erasable word IMODES33, its two top bits alike. So the TS finds no
          overflow, the MASK BIT14 runs, and A is BIT14 or +0.
-  nodspy, line 367 (1 unrun) 6b708858
+  nodspy, line 383 (1 unrun) 6b708858
     | case IS_PLUS_ZERO:                                /* OCT37737 */
     why: [impossible] DSRUPTSW has just had BIT9 added. In the AGC's adder a
          sum is +0 only when both numbers are +0.
 
 src/t6rupt/t6rupt.c
-  t6jobchk, lines 52-55 (4 unrun) f406125b
-    | case NEGATIVE: /* TC T6JOBCHK +3: this word, for ever */
-    | tc_at((word)(T6JOBCHK + 3u));
+  t6jobchk, lines 52-56 (4 unrun) 47509794
+    | case NEGATIVE:
+    | tc_at((word)(T6JOBCHK + 3u)); /* TC T6JOBCHK +3: this word, for ever */
+    | /* (never: only a positive number is stored in TIME6, and it counts down to -0) */
     | continue_at((word)(T6JOBCHK + 3u));
     | return;
-    why: [open]
-  goch56, lines 118-119 (2 unrun) 6191208d
+    why: [never] The listing stores in TIME6 four times: POSMAX twice
+         (DAPIDLER; T6JOB's last), and twice a time of the jet list (JTLST's
+         TS TIME6, T6JOB's from T6NEXT), the times the autopilot asks for
+         (followed no further than JTLST's own tests, its BZMFs). The counter
+         takes a positive time down to -0. The faithful routine refuses a
+         negative TIME6, so no case compares the line.
+  goch56, lines 119-120 (2 unrun) 6191208d
     | else
     | not_modelled(); /* NXT6ADR names no writer */
-    why: [open]
+    why: [not-modelled]
 
 src/tjet_law/tjet_law.c
   zone2_3, lines 153-156 (4 unrun) 62671ac8
@@ -3854,6 +3935,7 @@ Lines that ran and refuse (not_modelled() first on the line), by function:
   * src/aostask/aostask.c: spscont (1)
   * src/aotmark/aotmark.c: aotmark_after_ccs (1)
   * src/aotmark/aotmark.c: markrupt_after_resume (1)
+  * src/aotmark/aotmark.c: mkvac (1)
   * src/aotmark/aotmark.c: ts_indexed (1)
   * src/binding/pinball_routines.c: channel_out (1)
   * src/binding/q_r_axis_routines.c: rope_word (1)

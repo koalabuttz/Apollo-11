@@ -116,7 +116,7 @@ void getpart2(void)
         }
         set_A(PRIO14); /* "IT IS AN X.1 RESTART, THEREFORE START THE DISPLAY RESTART JOB" */
         break;
-    case IS_PLUS_ZERO: itsatbl(); return;
+    case IS_PLUS_ZERO: itsatbl(); return; /* never: the phase is positive here */
     case NEGATIVE: set_A(PRIO14); break;
     case IS_MINUS_ZERO: break;
     }
@@ -317,7 +317,7 @@ static void contbl2(void)
         return; /* "POSITIVE. MUST BE A JOB" */
     case IS_PLUS_ZERO: itsajob2(); return;
     case NEGATIVE: incr_A(); break; /* "MUST BE EITHER A WAITLIST OR LONGCALL" */
-    case IS_MINUS_ZERO: break;
+    case IS_MINUS_ZERO: break;      /* never: a 2CADR's first word is not -0 */
     }
     ts(GOLOC_ADDRESS(0)); /* "LET'S STORE THE CORRECT CADR" */
     set_A(WTLTCADR);      /* "SET UP OUR EXIT TO WAITLIST" */

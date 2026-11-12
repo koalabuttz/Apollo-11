@@ -217,8 +217,8 @@ void rwaitk_after_radstall_bad(void)
     continue_at(RWAITK + 3u);
 }
 
-/* RWAITK +3 -- LM p. 265. */
-void rwaitk_after_radstall_good(void)
+/* RWAITK +3 -- LM p. 265: RADSTALL's good return. */
+void rwaitk_plus3(void)
 {
     tc(RWAITK + 3u, GOPIN);
 }

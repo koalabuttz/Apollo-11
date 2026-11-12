@@ -49,8 +49,9 @@ void t6jobchk(void)
         tc_at((word)(T6JOBCHK + 2u));
         continue_at(CCSHOLE);
         return;
-    case NEGATIVE: /* TC T6JOBCHK +3: this word, for ever */
-        tc_at((word)(T6JOBCHK + 3u));
+    case NEGATIVE:
+        tc_at((word)(T6JOBCHK + 3u)); /* TC T6JOBCHK +3: this word, for ever */
+        /* (never: only a positive number is stored in TIME6, and it counts down to -0) */
         continue_at((word)(T6JOBCHK + 3u));
         return;
     case IS_MINUS_ZERO: t6job(); return;

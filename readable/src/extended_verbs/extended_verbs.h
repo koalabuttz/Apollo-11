@@ -271,7 +271,7 @@ void rrzerok(void);
 void rrzerok_after_rdruseck(void);
 void rwaitk(void); /* where RRZERO returns */
 void rwaitk_after_radstall_bad(void);
-void rwaitk_after_radstall_good(void);
+void rwaitk_plus3(void);
 void lrpos2k(void);
 void lrpos2k_after_rdruseck(void);
 void lrpos2k_after_lrpos2(void);

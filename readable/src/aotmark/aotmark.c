@@ -181,7 +181,8 @@ void extvbchk(void)
  *
  * Never, as a VACnUSE is never negative: a negative word goes to MKVACFND
  * too (VAC5USE's to the TC BAILOUT1, past the DXCH), and -0 skips the next
- * area's CCS (VAC5USE's would run the OCT 1207: not modelled). */
+ * area's CCS (VAC5USE's would run the OCT 01207 as TC 1207, and the
+ * listing's lines do not say what erasable word 1207 holds then). */
 static void mkvac(unsigned area)
 {
     while (area <= VAC_AREAS) {
@@ -197,7 +198,11 @@ static void mkvac(unsigned area)
             mkvacfnd();
             return;
         case IS_MINUS_ZERO:
-            if (area == VAC_AREAS) not_modelled();
+            if (area == VAC_AREAS) {
+                tc_at(MKVAC + 014u); /* OCT 01207, run as TC 1207 */
+                not_modelled();
+                return;
+            }
             area += 2u;
             break;
         }
@@ -612,10 +617,10 @@ static void markchex(void)
         avestar();
         return;
     }
-    switch (ccs_at(ADDRESS_OF(MARKCNTR))) { /* CNTCHK */
-    case POSITIVE:                          /* TCF +2 */
-    case NEGATIVE: ts(ADDRESS_OF(MARKCNTR)); break;
+    switch (ccs_at(ADDRESS_OF(MARKCNTR))) {         /* CNTCHK */
+    case POSITIVE: ts(ADDRESS_OF(MARKCNTR)); break; /* TCF +2 */
     case IS_PLUS_ZERO: mkalarm(); return;
+    case NEGATIVE: ts(ADDRESS_OF(MARKCNTR)); break;
     case IS_MINUS_ZERO: break;
     }
     avestar();
@@ -750,10 +755,10 @@ void markrupt(void)
     if (!ts(ADDRESS_OF(QRUPT))) set_A(OCT34);
     rand_channel(NAVKEYIN); /* EXTEND; RAND NAVKEYIN */
     switch (ccs_at(A_ADDRESS)) {
-    case POSITIVE: /* TCF +2: "ITS A LIVE ONE -- SEE IF ITS WANTED" */
-    case NEGATIVE: set_A(BIT12); break;
+    case POSITIVE: set_A(BIT12); break;   /* TCF +2: "ITS A LIVE ONE -- SEE IF ITS WANTED" */
     case IS_PLUS_ZERO: somekey(); return; /* "ITS SOME OTHER KEY" */
-    case IS_MINUS_ZERO: break;            /* (on with A +0) */
+    case NEGATIVE: set_A(BIT12); break;
+    case IS_MINUS_ZERO: break; /* (on with A +0) */
     }
     mask_at(ADDRESS_OF(MARKSTAT));
     if (ccs_at(A_ADDRESS) == POSITIVE) { /* (a masked word: never negative) */
@@ -767,7 +772,8 @@ void markrupt(void)
 /* MARKRUPT +026 -- LM p. 254: "ARE MARKS BEING ACCEPTED" (MARKSTAT's VAC
  * area): "THEY ARE -- WHICH ONE IS IT". "MARKS NOT BEING ACCEPTED -- DO
  * ALARM" (112). (MARKSTAT is never negative: -0 would go on to the TC
- * RESUME, negative run the OCT 112 as TC 112, not modelled.) */
+ * RESUME; negative would run the OCT 112 as TC 112, and the listing's lines
+ * do not say what erasable word 112 holds then.) */
 void markrupt_after_resume(void)
 {
     switch (ccs_at(ADDRESS_OF(MARKSTAT))) {
@@ -776,7 +782,10 @@ void markrupt_after_resume(void)
         tc_at(MARKRUPT + 030u);
         continue_at(ALARM);
         return;
-    case NEGATIVE: not_modelled(); return;
+    case NEGATIVE:
+        tc_at(MARKRUPT + 031u); /* OCT 112, run as TC 112 */
+        not_modelled();
+        return;
     case IS_MINUS_ZERO: markrupt_after_alarm(); return;
     }
 }
@@ -944,20 +953,24 @@ static void ymkrupt_in_flight(void)
 
 /* VERIFYMK -- LM p. 255. Is this mark wanted (its bit, 10 or 11, still
  * clear in MARKSTAT)? "MARK DESIRED -- STORE CDUS"; "THIS MARK NOT
- * DESIRED": alarm 114. (-0 would run the OCT 114 as TC 114: not modelled.) */
+ * DESIRED": alarm 114. (A masked word is never negative or -0: negative
+ * would go to the alarm too; -0 would run the OCT 114 as TC 114, and the
+ * listing's lines do not say what erasable word 114 holds then.) */
 static void verifymk(void)
 {
     ca(ADDRESS_OF(XYMARK));
     mask_at(ADDRESS_OF(MARKSTAT));
     switch (ccs_at(A_ADDRESS)) {
-    case POSITIVE: /* TCF +2 */
-    case NEGATIVE:
-        tc_at(VERIFYMK + 5u);
-        continue_at(ALARM);
-        return;
+    case POSITIVE: break; /* TCF +2 */
     case IS_PLUS_ZERO: vacstor(); return;
-    case IS_MINUS_ZERO: not_modelled(); return;
+    case NEGATIVE: break;
+    case IS_MINUS_ZERO:
+        tc_at(VERIFYMK + 6u); /* OCT 114, run as TC 114 */
+        not_modelled();
+        return;
     }
+    tc_at(VERIFYMK + 5u);
+    continue_at(ALARM);
 }
 
 /* VERIFYMK +7 -- LM p. 255: "RESUME -- DISPLAY UNCHANGED -- WAIT FOR
@@ -1067,9 +1080,9 @@ void reject(void)
 static void surfrej(void)
 {
     switch (ccs_at(ADDRESS_OF(MARKCNTR))) {
-    case POSITIVE: /* TCF +2 */
-    case NEGATIVE: ts(ADDRESS_OF(MARKCNTR)); break;
+    case POSITIVE: ts(ADDRESS_OF(MARKCNTR)); break; /* TCF +2 */
     case IS_PLUS_ZERO: rejalm(); return;
+    case NEGATIVE: ts(ADDRESS_OF(MARKCNTR)); break;
     case IS_MINUS_ZERO: break;
     }
     tc_at(SURFREJ + 4u);

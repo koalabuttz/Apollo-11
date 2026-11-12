@@ -53,10 +53,10 @@ void t4rupt(void)
     ts(ADDRESS_OF(BANKRUPT));
     qxch(ADDRESS_OF(QRUPT)); /* EXTEND; QXCH QRUPT */
     switch (ccs_at(ADDRESS_OF(DSRUPTSW))) {
-    case POSITIVE: break; /* TCF NORMT4 +1, with DSRUPTSW - 1 */
-    case NEGATIVE: quikdsp(); return;
-    case IS_PLUS_ZERO: /* TCF NORMT4 */
-    case IS_MINUS_ZERO: set_A(SEVEN); break;
+    case POSITIVE: break;                    /* TCF NORMT4 +1, with DSRUPTSW - 1 */
+    case IS_PLUS_ZERO: set_A(SEVEN); break;  /* TCF NORMT4 */
+    case NEGATIVE: quikdsp(); return;        /* TCF QUIKDSP */
+    case IS_MINUS_ZERO: set_A(SEVEN); break; /* NORMT4 is the next word */
     }
     /* NORMT4 +1 -- LM p. 155, CM p. 133. */
     ts(ADDRESS_OF(RUPTREG1));
@@ -136,19 +136,33 @@ static bool dspoutsb(word at)
         count_down = true;
         /* DSPSCAN: INDEX DSPCNT; CCS DSPTAB. */
         switch (ccs_at(indexed(ADDRESS_OF(DSPTAB), fetch(ADDRESS_OF(DSPCNT))))) {
+        case POSITIVE: break;        /* "IF DSPTAB ENTRY +, SKIP": on to CCS DSPCNT */
         case IS_PLUS_ZERO: continue; /* (never: the display programs leave no DSPTAB word zero) */
-        case NEGATIVE: dsplay(); return true;             /* "IF DSPTAB ENTRY -, DISPLAY" */
-        case IS_MINUS_ZERO: not_modelled(); return false; /* runs TABLNTH (OCT 12) as TC 12 */
-        case POSITIVE: break;                             /* "IF DSPTAB ENTRY +, SKIP" */
+        case NEGATIVE: dsplay(); return true; /* "IF DSPTAB ENTRY -, DISPLAY" */
+        case IS_MINUS_ZERO:
+            /* (never: no DSPTAB word is zero) TABLNTH (OCT 12) runs as TC 12:
+             * the word in QRUPT, the interrupted program's Q, would run next. */
+            tc_at((word)(DSPSCAN + 5u));
+            not_modelled();
+            return false;
         }
         switch (ccs_at(ADDRESS_OF(DSPCNT))) {
-        case POSITIVE: continue; /* "IF DSPCNT +, TRY AGAIN" */
-        case IS_PLUS_ZERO: dsplay(); return true;
-        case NEGATIVE: not_modelled(); return false; /* runs TABLNTH: no producer */
-        case IS_MINUS_ZERO: break;
+        case POSITIVE: continue;                  /* "IF DSPCNT +, TRY AGAIN" */
+        case IS_PLUS_ZERO: dsplay(); return true; /* TCF DSPLAY */
+        case NEGATIVE:
+            /* (never: DSPCNT is 0 to 012, or -0) TABLNTH runs as TC 12 here
+             * too. */
+            tc_at((word)(DSPSCAN + 5u));
+            not_modelled();
+            return false;
+        case IS_MINUS_ZERO: break; /* on to CCS DSRUPTEM */
         }
         switch (ccs_at(ADDRESS_OF(DSRUPTEM))) {
-        case POSITIVE: not_modelled(); return false; /* runs 120MRUPT: no producer */
+        case POSITIVE:
+            /* (never: DSRUPTEM is the -0 or the +0 stored here) 120MRUPT (DEC
+             * 16372) runs as CA 7764. */
+            ca(ADDRESS_FIELD(HUNDRED20_MS_RUPT));
+            /* fall through */
         case IS_PLUS_ZERO: /* "2ND PASS THRU DSPTAB (DSPCNT = 0). +0 INTO NOUT." */
             ts(ADDRESS_OF(NOUT));
             tc_through(Q_ADDRESS);
@@ -235,8 +249,14 @@ static void proceede(void)
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: t4jump(); return;          /* "WAS ON -- NOW OFF" */
     case IS_PLUS_ZERO: set_A(CHRPRIO); break; /* "WAS OFF -- NOW ON" */
-    case NEGATIVE: break;
-    case IS_MINUS_ZERO: not_modelled(); return; /* runs the 2CADR: no producer */
+    case NEGATIVE: break;                     /* TC NOVAC is the next word */
+    case IS_MINUS_ZERO:
+        /* (never: A is BIT14 or +0) The 2CADR's first word, PROCKEY's
+         * address, runs as a TC to that address in this bank, which is no
+         * place of this program. */
+        tc_at((word)(PROCEEDE + 017u));
+        not_modelled();
+        return;
     }
     tc_at((word)(PROCEEDE + 016u)); /* TC NOVAC; 2CADR PROCKEY */
     continue_at(NOVAC);
@@ -360,12 +380,12 @@ static void nodspy(void)
             tc_at((word)(SYNCT4 + 5u)); /* TC RESUME */
             continue_at(RESUME);
             return;
+        case IS_PLUS_ZERO:                                /* OCT37737 */
+        case NEGATIVE: tc_at((word)(SYNCT4 + 7u)); break; /* TC SYNCT4 */
         case IS_MINUS_ZERO:
             tc_at((word)(SYNCT4 + 010u)); /* TC RESUME */
             continue_at(RESUME);
             return;
-        case IS_PLUS_ZERO:                                /* OCT37737 */
-        case NEGATIVE: tc_at((word)(SYNCT4 + 7u)); break; /* TC SYNCT4 */
         }
     }
 }

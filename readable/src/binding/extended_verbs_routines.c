@@ -489,7 +489,7 @@ static const struct entry align[] = {
     {RRZEROK + 1u, rrzerok_after_rdruseck},
     {RWAITK, rwaitk},
     {RWAITK + 2u, rwaitk_after_radstall_bad},
-    {RWAITK + 3u, rwaitk_after_radstall_good},
+    {RWAITK + 3u, rwaitk_plus3},
     {LRPOS2K, lrpos2k},
     {LRPOS2K + 1u, lrpos2k_after_rdruseck},
     {LRPOS2K + 3u, lrpos2k_after_lrpos2},

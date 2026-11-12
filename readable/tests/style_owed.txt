@@ -3,15 +3,12 @@
 # the tree to these counts; `tools/style_check.py --write` writes them.
 # A directory that is not here owes nothing and may not break a rule.
 #
-# Owed in all: ccs-order 86, ccs-default 63, ccs-not-modelled 72, continue-offset 49, goto 2.
+# Owed in all: ccs-order 72, ccs-default 63, ccs-not-modelled 62, continue-offset 45, goto 2.
 
 ccs-order aostask 3
-ccs-order aotmark 4
 ccs-order burn_baby 2
 ccs-order dapidler 1
 ccs-order display_interface 1
-ccs-order downtelemetry 2
-ccs-order fresh_start 2
 ccs-order imu_performance 1
 ccs-order kalcmanu_steering 4
 ccs-order kalman_filter 3
@@ -25,7 +22,6 @@ ccs-order q_r_axis 4
 ccs-order radar_leadin 1
 ccs-order servicer 5
 ccs-order sps_backup 4
-ccs-order t4rupt 6
 ccs-order throttle 1
 ccs-order tjet_law 4
 ccs-order trim_gimbal 8
@@ -44,9 +40,7 @@ ccs-default tjet_law 1
 ccs-default trim_gimbal 2
 ccs-default update_program 2
 ccs-not-modelled aostask 2
-ccs-not-modelled aotmark 2
 ccs-not-modelled burn_baby 3
-ccs-not-modelled downtelemetry 1
 ccs-not-modelled imu_performance 1
 ccs-not-modelled integration_init 2
 ccs-not-modelled kalcmanu_steering 1
@@ -61,20 +55,16 @@ ccs-not-modelled r60_62 8
 ccs-not-modelled radar_leadin 2
 ccs-not-modelled servicer 4
 ccs-not-modelled sps_backup 1
-ccs-not-modelled t4rupt 7
 ccs-not-modelled trim_gimbal 2
 ccs-not-modelled update_program 1
 continue-offset cm_dap 13
-continue-offset downtelemetry 2
 continue-offset entry_dap 9
-continue-offset extended_verbs 1
 continue-offset imu_calibration 1
 continue-offset imu_performance 2
 continue-offset p20_p25 14
 continue-offset p_axis 1
 continue-offset powered_flight 1
 continue-offset r31 1
-continue-offset t6rupt 1
 continue-offset tvc 3
 goto imu_performance 1
 goto landing_guidance 1

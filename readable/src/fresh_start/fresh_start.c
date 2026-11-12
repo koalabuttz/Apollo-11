@@ -89,6 +89,7 @@ static void elrskip(void);
 static void endrstrt(void);
 static void pcloop(void);
 static void nxtrst(void);
+static void pactive(void);
 static void pactive_plus1(void);
 static void pinact_end(enum sign mpac5);
 static bool lightset(void);
@@ -804,14 +805,22 @@ static void nxtrst(void)
         if ((instruction & CCS_CODE_MASK) != CCS_CODE || (instruction & 01777u) < FIRST_ERASABLE)
             not_modelled();
         switch (ccs_at(instruction & 01777u)) {
-        case POSITIVE:                       /* TCF PACTIVE: "PNZ -- GROUP ACTIVE." */
-        case NEGATIVE: ts(ADDRESS_OF(MPAC)); /* fall through */
+        case POSITIVE: pactive(); return; /* TCF PACTIVE: "PNZ -- GROUP ACTIVE." */
+        case IS_PLUS_ZERO: break;         /* TCF PINACT: "+0 -- GROUP NOT RUNNING." */
+        case NEGATIVE: pactive(); return; /* PACTIVE is the next word */
         case IS_MINUS_ZERO: pactive_plus1(); return;
-        case IS_PLUS_ZERO: break; /* TCF PINACT: "GROUP NOT RUNNING." */
         }
         more = ccs_at(MPAC5); /* PINACT */
     } while (more == POSITIVE);
     pinact_end(more);
+}
+
+/* PACTIVE -- LM p. 217, CM p. 189.
+ * MPAC gets the phase less one (the CCS took one off). */
+static void pactive(void)
+{
+    ts(ADDRESS_OF(MPAC));
+    pactive_plus1();
 }
 
 /* PACTIVE +1 -- LM p. 217, CM p. 189.

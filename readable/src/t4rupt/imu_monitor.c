@@ -32,6 +32,8 @@
 static void nxtifbit(void);
 static void nxtifail(void);
 static void tnontest(void);
+static void tnontest_plus1(void);
+static void tnontest_plus2(void);
 static void proctnon(void);
 static void retnon(void);
 static void endtnon2(void);
@@ -146,8 +148,10 @@ static void nxtifail(void)
         nxtifbit();
         return;
     case IS_PLUS_ZERO: tnontest(); return;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); return; /* the changes left are never negative */
+    /* (never: the changes left are never negative) The CCS's last two words
+     * are TNONTEST's second and third. */
+    case NEGATIVE: tnontest_plus1(); return;
+    case IS_MINUS_ZERO: tnontest_plus2(); return;
     }
 }
 
@@ -159,7 +163,19 @@ static void nxtifail(void)
 static void tnontest(void)
 {
     cs(ADDRESS_OF(IMODES30));
+    tnontest_plus1();
+}
+
+/* TNONTEST +1 -- LM p. 164, CM p. 142: MASK BIT7. */
+static void tnontest_plus1(void)
+{
     mask(BIT7);
+    tnontest_plus2();
+}
+
+/* TNONTEST +2 -- LM p. 164, CM p. 142: the CCS, and on. */
+static void tnontest_plus2(void)
+{
     if (ccs_A_positive()) { /* "NO -- EXAMINE CHANNEL 33" */
         c33test();
         return;
@@ -474,8 +490,10 @@ static void nxtfl33(void)
         nxtibt();
         return;
     case IS_PLUS_ZERO: glockmon(); return;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); return; /* the changes left are never negative */
+    /* (never: the changes left are never negative) The CCS's last two words
+     * are GLOCKMON's first two TCFs. */
+    case NEGATIVE: glockchk(); return;      /* TCF GLOCKCHK */
+    case IS_MINUS_ZERO: setglock(); return; /* TCF SETGLOCK */
     }
 }
 
@@ -490,10 +508,10 @@ static void nxtfl33(void)
 static void glockmon(void)
 {
     switch (ccs_at(ADDRESS_OF(CDUZ))) {
-    case POSITIVE:
-    case NEGATIVE: glockchk(); return;
-    case IS_PLUS_ZERO:
-    case IS_MINUS_ZERO: setglock(); return;
+    case POSITIVE: glockchk(); return;      /* TCF GLOCKCHK */
+    case IS_PLUS_ZERO: setglock(); return;  /* TCF SETGLOCK */
+    case NEGATIVE: glockchk(); return;      /* TCF GLOCKCHK */
+    case IS_MINUS_ZERO: setglock(); return; /* TCF SETGLOCK */
     }
 }
 

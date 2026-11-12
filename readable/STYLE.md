@@ -55,7 +55,10 @@ there too.
   lists these steps), and a comment at the call says what the AGC would
   do there. It is not for an outcome that never comes but that the
   listing's lines do say. Every outcome of a CCS is followed, whatever
-  its word can hold: the words after the CCS are in the listing.
+  its word can hold: the words after the CCS are in the listing. (Where
+  one is not, because the CCS's last words fall past the end of the
+  bank's program, the call stands, and its comment says that the listing
+  has no word there.)
 - Say what a thing is compared with. What a routine does is what the AGC
   does (`the AGC would run OCT 1104 as TC 1104`). What a test shows is
   that it matches the faithful port, or Virtual AGC in gate 3. Write
