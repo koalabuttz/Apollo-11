@@ -227,7 +227,10 @@ void setup29d_after_exit(void)
         break;
     case IS_PLUS_ZERO: ad(ONE_SEC); break; /* "0 +100D = 100D." */
     case NEGATIVE: break;
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO:
+        /* never: while the servicer runs PIPCTR is R10's count, the SEVEN of READACCS and then
+         * what R10,R11's CCS left of it. The next word is an address word, 2CADR BEGDES29. */
+        not_modelled();
     }
     tc_to(SETUP29D + 020u, WAITLIST); /* 2CADR BEGDES29 */
 }

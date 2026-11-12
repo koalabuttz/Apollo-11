@@ -288,10 +288,12 @@ enum jets { MIN_JETS, MAX_JETS, NUMBERT_KEPT };
 static enum jets senstest(void)
 {
     switch (ccs_at(ADDRESS_OF(SENSETYP))) {
+    case POSITIVE: return MIN_JETS; /* TCF TJCALC */
     case IS_PLUS_ZERO: return MAX_JETS;
-    case IS_MINUS_ZERO: return NUMBERT_KEPT;
-    default: return MIN_JETS;
+    case NEGATIVE: return MIN_JETS; /* TJCALC is the next word */
+    case IS_MINUS_ZERO: break;
     }
+    return NUMBERT_KEPT;
 }
 
 /* From SCALEDOT ("*** FINELAW STARTS HERE ***"), with E rescaled: EDOTSQ;

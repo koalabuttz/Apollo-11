@@ -150,7 +150,10 @@ static void three_axis_test(void (*yes)(void), word intpret_at)
         intpret();
         return;
     case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO:
+        /* never: A is the caller's one bit masked with FLAGWRD5. The next words are
+         * interpretive words: CALL, VECPOINT. */
+        not_modelled();
     }
 }
 
@@ -262,7 +265,10 @@ void toballc_after_g_n_auto(void)
         tc_at(AUTOMANV + 1u);
         continue_at(BANKCALL); /* CADR GODSPR */
         return;
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO:
+        /* never: the answer is a channel masked with one bit. The next word is an address word,
+         * CADR GODSPR. */
+        not_modelled();
     }
 }
 
@@ -325,14 +331,17 @@ static bool chklinus(void)
     mask(PDSPFBIT);
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: tc_q(); return true; /* "NO - EXIT" */
-    case IS_PLUS_ZERO: break;
+    case IS_PLUS_ZERO:
+        ca(Q_ADDRESS); /* fall through */
+    /* (A masked bit is never negative or -0. Negative would skip the CA Q, and -0 the TS
+     * MPAC +2 too.) */
     case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); /* (a masked bit) */
+        if (ts(MPAC_AT(2))) not_modelled(); /* "SAVE RETURN" (an address: no overflow) */
+        /* fall through */
+    case IS_MINUS_ZERO: break;
     }
-    ca(Q_ADDRESS);
-    if (ts(MPAC_AT(2))) not_modelled(); /* "SAVE RETURN" (an address: no overflow) */
-    set_A(negate(THREE));               /* "OBTAIN LOCATION FOR RESTART" */
-    ad_at(BUF2_AT(0));                  /* "HOLDS Q OF LAST DISPLAY" */
+    set_A(negate(THREE)); /* "OBTAIN LOCATION FOR RESTART" */
+    ad_at(BUF2_AT(0));    /* "HOLDS Q OF LAST DISPLAY" */
     if (ts(ADDRESS_OF(TBASE2))) not_modelled();
     tc_at(CHKLINUS + 011u);
     continue_at(PHASCHNG); /* OCT 00132 */
@@ -374,12 +383,13 @@ void relinus_after_priochng(void)
     mask_at(ADDRESS_OF(FLAGWRD1));
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: rer60(); return;
-    case IS_PLUS_ZERO: break;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); /* (a masked bit) */
+    case IS_PLUS_ZERO:
+        set_A(RNDVZBIT); /* fall through */
+    /* (A masked bit is never negative or -0. Negative would skip the CAF RNDVZBIT, and -0
+     * the MASK too.) */
+    case NEGATIVE: mask_at(ADDRESS_OF(FLAGWRD0)); /* fall through */
+    case IS_MINUS_ZERO: break;
     }
-    set_A(RNDVZBIT);
-    mask_at(ADDRESS_OF(FLAGWRD0));
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE:             /* "YES" */
         tc_at(RELINUS + 011u); /* TC +4 */
@@ -387,8 +397,13 @@ void relinus_after_priochng(void)
         continue_at(PHASCHNG); /* OCT 40072: "SET 2.7 SPOT FOR P20" */
         return;
     case IS_PLUS_ZERO: relinus_not_p20(); return;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); /* (a masked bit) */
+    /* (A masked bit is never negative or -0. Negative would run the OCT 40112 as the instruction it
+     * is, CS 0112, and the TC ENDOFJOB after it; -0 that TC alone.) */
+    case NEGATIVE: cs(ADDRESS_FIELD(040112u)); /* fall through */
+    case IS_MINUS_ZERO:
+        tc_at(RELINUS + 014u);
+        continue_at(ENDOFJOB);
+        return;
     }
 }
 
@@ -459,8 +474,16 @@ void g_n_auto(void)
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: tc_q(); return;
     case IS_PLUS_ZERO: isitauto(); return;
+    /* (A masked bit is never negative or -0. Negative would skip ISITAUTO's EXTEND, and its READ
+     * CHAN31 run as TC 0031, the register TIME6; -0 goes on at its MASK BIT14.) */
     case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled();
+        tc_at(ISITAUTO + 1u);
+        not_modelled();
+        return;
+    case IS_MINUS_ZERO:
+        mask(BIT14);
+        tc_q();
+        return;
     }
 }
 
@@ -599,7 +622,10 @@ static void three_axis_test(void (*yes)(void), word intpret_at)
         intpret();
         return;
     case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO:
+        /* never: A is the caller's one bit masked with FLAGWRD5. The next words are
+         * interpretive words: CALL, VECPOINT. */
+        not_modelled();
     }
 }
 
@@ -742,14 +768,17 @@ static bool chklinus(void)
     mask(BIT12);
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: tc_q(); return true; /* "NO - EXIT" */
-    case IS_PLUS_ZERO: break;
+    case IS_PLUS_ZERO:
+        ca(Q_ADDRESS); /* fall through */
+    /* (A masked bit is never negative or -0. Negative would skip the CA Q, and -0 the TS
+     * MPAC +2 too.) */
     case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); /* (a masked bit) */
+        if (ts(MPAC_AT(2))) not_modelled(); /* "SAVE RETURN" (an address: no overflow) */
+        /* fall through */
+    case IS_MINUS_ZERO: break;
     }
-    ca(Q_ADDRESS);
-    if (ts(MPAC_AT(2))) not_modelled(); /* "SAVE RETURN" (an address: no overflow) */
-    set_A(negate(THREE));               /* "OBTAIN LOCATION FOR RESTART." */
-    ad_at(BUF2_AT(0));                  /* "HOLDS Q OF LAST DISPLAY" */
+    set_A(negate(THREE)); /* "OBTAIN LOCATION FOR RESTART." */
+    ad_at(BUF2_AT(0));    /* "HOLDS Q OF LAST DISPLAY" */
     if (ts(ADDRESS_OF(TBASE1))) not_modelled();
     tc_at(CHKLINUS + 011u);
     continue_at(PHASCHNG); /* OCT 71 */

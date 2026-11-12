@@ -62,16 +62,14 @@ static void subdivde(word at, bool plus3)
     dca(ADDRESS_OF(OMEGAU));
     dxch(ADDRESS_OF(DAPTEMP5));
     switch (ccs_at(ADDRESS_OF(OMEGAU))) {
-    case POSITIVE: /* TCF +2 */
-    case NEGATIVE:
-        ad(MOCT630);
-        if (A_is_zero_or_minus()) { /* EXTEND; BZMF DIVIDER */
-            divider();
-            return;
-        }
-        break;
-    case IS_PLUS_ZERO:
-    case IS_MINUS_ZERO: divider(); return; /* TCF DIVIDER; -0: EXTEND; BZMF DIVIDER, A +0 */
+    case POSITIVE: ad(MOCT630); break;    /* TCF +2 */
+    case IS_PLUS_ZERO: divider(); return; /* TCF DIVIDER */
+    case NEGATIVE: ad(MOCT630); break;
+    case IS_MINUS_ZERO: break; /* on at the EXTEND, A +0 */
+    }
+    if (A_is_zero_or_minus()) { /* EXTEND; BZMF DIVIDER */
+        divider();
+        return;
     }
     switch (ccs_at(ADDRESS_OF(OMEGAU))) {
     case POSITIVE: set_A(POSMAX); break;
@@ -544,8 +542,13 @@ static bool selectp(word at, bool selectyz)
         case IS_PLUS_ZERO:
             tc_to(SELECTP + 015u, ALARM); /* OCT 02003 */
             return false;
+        /* (never: TEMPNUM counts down from SIX. Negative would run the OCT 02003 as
+         * TC 2003; -0 the TCF JETSOFF, where ALARM returns.) */
         case NEGATIVE:
-        case IS_MINUS_ZERO: not_modelled(); /* TEMPNUM counts down from SIX */
+            tc_at(SELECTP + 016u);
+            continue_at(02003u);
+            return false;
+        case IS_MINUS_ZERO: /* never */ jetsoff(); return false;
         }
         selectyz = true;
     }
@@ -619,7 +622,8 @@ void chkvisfz(void)
  * TJP ("+XMIN" or "-XMIN": "ANYTHING LESS THAN 14MS. CORRECTED" "IN JET
  * SELECTION ROUTINE"), OLDPMIN ONE, to PJETSLEC -6; none, JETSOFF. Not in
  * the pulse mode, DETENTCK. (A negative OLDPMIN enters FIREP at its RAND's
- * EXTEND; the faithful port takes no -0 OLDPMIN.) */
+ * EXTEND; a -0 one at the RAND CHAN31, which is then TC 2031. The faithful
+ * port takes no -0 OLDPMIN.) */
 static void manmode(void)
 {
     set_A(PULSES);
@@ -642,7 +646,10 @@ static void manmode(void)
         return;
     case IS_PLUS_ZERO: set_A(BIT3); break; /* FIREP */
     case NEGATIVE: break;
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO: /* the RAND CHAN31, not extended, is TC 2031 */
+        tc_at(MANMODE + 014u);
+        continue_at(02031u);
+        return;
     }
     rand_channel(CHAN31);
     if (A_is_zero()) { /* +XMIN */

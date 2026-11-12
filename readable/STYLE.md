@@ -65,7 +65,9 @@ there too.
   it stands in a helper that is one CCS at several places, since what the
   listing would run differs with the place, which the comment says. In
   each of these the comment also says that the outcome never comes and
-  what rules it out: `never: the caller's MASK leaves no sign`.)
+  what rules it out: `never: the caller's MASK leaves no sign`. So does
+  the comment of an outcome that is followed as far as such a call, as
+  when a constant runs as a TC into the erasable memory.)
 - Say what a thing is compared with. What a routine does is what the AGC
   does (`the AGC would run OCT 1104 as TC 1104`). What a test shows is
   that it matches the faithful port, or Virtual AGC in gate 3. Write
@@ -279,7 +281,10 @@ describes each in full, and `.github/workflows/readable-ci.yml` runs them.
      label plus an offset, a helper defined twice, a decimal offset, a
      long line, `goto`, the wording). `tests/style_owed.txt` lists what each directory of `src/`
      still owes of the whole-tree review (issue #1334); a new break
-     anywhere fails, and the list only gets shorter. What a script cannot
+     anywhere fails, and the list only gets shorter. `tools/ccs_helpers.py`
+     holds every call of a helper that is one CCS at several places to
+     the helper's premise, a mask whose sign bit is clear: the C compiler
+     checks a static assert of each mask. What a script cannot
      count (names, comments, whether the C says what the listing does) a
      person reads;
    - the `*-cases` targets, over a hundred, one or more for each listing

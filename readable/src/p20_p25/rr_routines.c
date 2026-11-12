@@ -508,15 +508,21 @@ void rr1ax2_plus022(void)
  * modelled: an ITEMP1 or RRINDEX other than RR1AX2 and RR1AXIS leave. */
 void rr1ax2_command(void)
 {
+    enum sign other = POSITIVE; /* how the CCS RRINDEX comes out */
+
     switch (ccs_at(ADDRESS_OF(ITEMP1))) {
     case POSITIVE: continue_at(RR1AX2 + 022u); return; /* "NO.  IF RR OUT OF AUTO MODE, EXIT." */
-    case IS_PLUS_ZERO: break;
-    default: not_modelled();
+    case IS_PLUS_ZERO:
+        other = ccs_at(ADDRESS_OF(RRINDEX));
+        break;                                       /* "COMMAND FOR OTHER AXIS IS ZERO." */
+    case NEGATIVE: other = POSITIVE; break;          /* (on at that CCS's TCF +2) */
+    case IS_MINUS_ZERO: other = IS_PLUS_ZERO; break; /* (on at its XCH L) */
     }
-    switch (ccs_at(ADDRESS_OF(RRINDEX))) { /* "COMMAND FOR OTHER AXIS IS ZERO." */
-    case POSITIVE: break;                  /* TCF +2: "SETTING A TO 0." */
+    switch (other) {
+    case POSITIVE: break; /* TCF +2: "SETTING A TO 0." */
     case IS_PLUS_ZERO: xch(L_ADDRESS); break;
-    default: not_modelled();
+    case NEGATIVE: break;
+    case IS_MINUS_ZERO: tc_to(RR1AX2 + 027u, RROUT); return; /* (past the DXCH TANG) */
     }
     dxch(ADDRESS_OF(TANG));
     tc_to(RR1AX2 + 027u, RROUT);
@@ -570,11 +576,13 @@ static void count_out(void)
     ad(NEG0);                                                /* "PREVENT +0 IN OUTCOUNTER" */
     if (ts(rrout_axis(ADDRESS_OF(CDUTCMD)))) not_modelled(); /* (commands of 384 pulses at most) */
     switch (ccs_at(ADDRESS_OF(ITEMP2))) {
-    case POSITIVE: rrout2(); return; /* "PROCESS BOTH INPUTS." */
-    case IS_PLUS_ZERO: break;
-    default: not_modelled();
+    case POSITIVE: rrout2(); return;        /* "PROCESS BOTH INPUTS." */
+    case IS_PLUS_ZERO: set_A(PRIO6); break; /* "ENABLE COUNTERS." */
+    case NEGATIVE: break;                   /* never: ITEMP2 is 1, then 0 */
+    case IS_MINUS_ZERO:                     /* never: the WOR CHAN14, not extended, is TC 5014 */
+        continue_at(05014u);
+        return;
     }
-    set_A(PRIO6);                             /* "ENABLE COUNTERS." */
     wor_channel(CHAN14);                      /* "PUT ON CDU DRIVES S AND T" */
     tc_return_in(SETRRCTR + 015u, L_ADDRESS); /* "RETURN." */
 }
@@ -593,8 +601,9 @@ void rroutlim(void)
 {
     switch (ccs_at(ADDRESS_OF(ITEMP1))) {
     case POSITIVE: set_A(negate(MINUS_RRLIMIT)); break; /* CS -RRLIMIT */
+    case IS_PLUS_ZERO: break;                           /* TCF +2: CCS leaves +0 */
     case NEGATIVE: set_A(MINUS_RRLIMIT); break;
-    default: break; /* CCS leaves +0 */
+    case IS_MINUS_ZERO: break;
     }
     ts(ADDRESS_OF(ITEMP1));
     count_out(); /* TCF SETRRCTR +1 */

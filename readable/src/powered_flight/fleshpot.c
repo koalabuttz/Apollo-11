@@ -169,7 +169,7 @@ void fleshpot(void)
      * in EDOP. */
     ca(ADDRESS_OF(TEM1));
     ts(ADDRESS_OF(ADDRWD));
-    continue_at(FLESHPOT + 0130u);
+    Z = (word)(FLESHPOT + 0130u); /* (as the DCA Z finds it) */
     dca(Z_ADDRESS);
     ad(FOUR);
     dxch(ADDRESS_OF(LOC));

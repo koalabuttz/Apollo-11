@@ -1524,6 +1524,8 @@ line-coverage-check:
 style-check:
 	@python3 tools/style_check.py --self-check
 	@python3 tools/style_check.py
+	@python3 tools/ccs_helpers.py --self-check
+	@python3 tools/ccs_helpers.py
 	@python3 tools/header_pages.py --self-check
 	@python3 tools/header_pages.py
 

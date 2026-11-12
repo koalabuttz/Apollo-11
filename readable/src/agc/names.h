@@ -2012,6 +2012,7 @@ static const word MORECADR[2] = KW_MORECADR; /* 2CADR CHEKMORE */
 #define QRAXIS      ((word)K_QRAXIS)
 #define ACDTPC12    ((word)K_ACDTPC12) /* ACDT+C12 */
 #define RATELOOP    ((word)K_RATELOOP)
+#define SMALLTJU    ((word)K_SMALLTJU)
 #define CALLQERR    ((word)K_CALLQERR)
 #define SPSRCS      ((word)K_SPSRCS)
 #define TJETLAW     ((word)K_TJETLAW)
@@ -4269,6 +4270,7 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define ROOTLOOP ((word)K_ROOTLOOP)
 #define ROOTPSRS ((word)K_ROOTPSRS)
 #define SHORTMP  ((word)K_SHORTMP)
+#define STEER_Q  ((word)K_STEER_Q) /* STEER? */
 #define TARGTDEX ((word)K_TARGTDEX)
 #define VHORCOMP ((word)K_VHORCOMP)
 #define BRSPOT1   ((word)K_BRSPOT1)

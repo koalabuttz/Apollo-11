@@ -135,6 +135,7 @@
 #define K_QRAXIS 03624u
 #define K_ACDTPC12 03736u
 #define K_RATELOOP 03641u
+#define K_SMALLTJU 03707u
 #define K_CALLQERR 02072u
 #define K_SPSRCS 03727u
 #define K_TJETLAW 03252u

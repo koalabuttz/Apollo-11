@@ -33,12 +33,18 @@ void radsamp(void)
 {
     switch (ccs_at(ADDRESS_OF(RSAMPDT))) {
     case POSITIVE: /* TCF +2 */
-    case NEGATIVE:
         tc_at(RADSAMP + 3u);
         continue_at(WAITLIST); /* 2CADR RADSAMP */
         return;
     case IS_PLUS_ZERO: continue_at(TASKOVER); return;
-    case IS_MINUS_ZERO: not_modelled();
+    case NEGATIVE:
+        tc_at(RADSAMP + 3u);
+        continue_at(WAITLIST);
+        return;
+    case IS_MINUS_ZERO:
+        /* never from the program, whose stores in RSAMPDT are 1SEC+1, 250MS+1 and +0. A -0 keyed
+         * in by hand would run the next word, an address word, 2CADR RADSAMP. */
+        not_modelled();
     }
 }
 
@@ -116,8 +122,9 @@ void dorsamp2(void)
         dxch(ADDRESS_OF(SAMPLSUM));
         dxch_rstack_indexed();
         break;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); /* (a masked bit is never negative) */
+    /* (never: a masked bit. The INDEX RTSTLOC; and the DXCH RSTACK, not indexed.) */
+    case NEGATIVE: continue_at(DORSAMP2 + 6u); return;
+    case IS_MINUS_ZERO: continue_at(DORSAMP2 + 7u); return; /* never */
     }
     cs(ADDRESS_OF(RTSTLOC));
     ad_at(ADDRESS_OF(RTSTMAX));

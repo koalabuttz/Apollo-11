@@ -452,15 +452,18 @@ static void moredes(void)
 /* STDESIG1 -- p. 546: "SEE IF THE TIME LIMIT HAS EXPIRED". Out of time: "IF
  * OUT OF TIME, REMOVE ECR ENABLE + TRKR" (channel 12 bits 14 and 2), and
  * BADDES. With DESCOUNT negative the WAND takes CCS's result in A, as the
- * listing runs it. Not modelled: DESCOUNT -0, which runs WAND CHAN12 as a
- * WRITE. */
+ * listing runs it. DESCOUNT -0 never comes (R21LEM10 loads MAXTRIES, and
+ * MOREDES stores what this CCS leaves): it would skip the EXTEND too. */
 static void stdesig1(void)
 {
     switch (ccs_at(ADDRESS_OF(DESCOUNT))) {
     case POSITIVE: moredes(); return; /* TCF MOREDES */
     case IS_PLUS_ZERO: set_A(negate(B14_B2)); break;
     case NEGATIVE: break;
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO: /* never. The WAND CHAN12, not extended, is TC 3012, in this bank */
+        tc_at(STDESIG1 + 4u);
+        continue_at(03012u);
+        return;
     }
     wand_channel(CHAN12);
     baddes();
@@ -684,7 +687,9 @@ static void signlchk(void)
     switch (ccs_at(ADDRESS_OF(MPAC) + 1u)) {
     case POSITIVE: dgoodchk(); return; /* TCF DGOODCHK */
     case IS_PLUS_ZERO: break;
-    default: not_modelled(); /* (MPAC +1 is 0 or 1) */
+    /* (never: MPAC +1 is 0 or 1. Negative would skip the CS STATE, and -0 the MASK too.) */
+    case NEGATIVE: continue_at(SIGNLCHK + 3u); return;
+    case IS_MINUS_ZERO: continue_at(SIGNLCHK + 4u); return; /* never */
     }
     cs(ADDRESS_OF(STATE));
     mask(LOKONBIT);
@@ -745,7 +750,10 @@ void notp20_plus5(void)
     case POSITIVE: tc_to(NOTP20 + 012u, DODESEND); return;
     case IS_PLUS_ZERO: continue_at(NOTP20 + 013u); return;
     case NEGATIVE: tc_to(NOTP20 + 014u, KILLTASK); return; /* CADR DESLOOP +2 */
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO:
+        /* never: LOSCOUNT is the THREE of R21LEM2, then what this CCS left of it. The next word
+         * is an address word, CADR DESLOOP +2. */
+        not_modelled();
     }
 }
 
@@ -765,7 +773,11 @@ void notp20_after_killtask(void)
     switch (ccs_at(ADDRESS_OF(NEWJOB))) {
     case POSITIVE: tc_to(NOTP20 + 020u, CHANG1); return;
     case IS_PLUS_ZERO: continue_at(NOTP20 + 021u); return;
-    case NEGATIVE: not_modelled(); return;
+    case NEGATIVE:
+        /* never: the Executive leaves +0, -0 (DUMMYJOB) or a core set's place, a positive word,
+         * in NEWJOB. The next word is an address word, CADR R21LEM2. */
+        not_modelled();
+        return;
     case IS_MINUS_ZERO: continue_at(DODESEND); return;
     }
 }

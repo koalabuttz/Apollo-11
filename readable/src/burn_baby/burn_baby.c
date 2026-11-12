@@ -372,7 +372,11 @@ void redo4_2(void)
     switch (ccs_at(ADDRESS_OF(PHASE5))) {
     case POSITIVE: continue_at(TASKOVER); break;
     case IS_PLUS_ZERO: tc_to(REDO4_2 + 2u, POSTJUMP); break; /* CADR PREREAD */
-    case NEGATIVE: not_modelled(); break;
+    case NEGATIVE:
+        /* never: a phase is +0 or positive, and -PHASE5 its complement, at every store of
+         * one. The next word is an address word, CADR PREREAD. */
+        not_modelled();
+        break;
     case IS_MINUS_ZERO: ullgtask(); break;
     }
 }
@@ -424,9 +428,9 @@ void tig_5_after_second_downflag(void)
 }
 
 /* P40SJUNK -- p. 737: P40's and P42's word 11. "S40.13 IN PROGRESS?"
- * (PHASE3): if not, S40.13 as a job (FINDVAC). Not modelled: a negative or
- * -0 PHASE3, whose CCS would run the FINDVAC with A not a priority, or a
- * 2CADR word. */
+ * (PHASE3): if not, S40.13 as a job (FINDVAC). (A negative PHASE3 would run
+ * the TC FINDVAC with A not a priority, and a -0 one the 2CADR's first word:
+ * neither comes.) */
 void p40sjunk(void)
 {
     switch (ccs_at(ADDRESS_OF(PHASE3))) {
@@ -435,7 +439,15 @@ void p40sjunk(void)
         set_A(PRIO20);
         tc_to(P40SJUNK + 3u, FINDVAC); /* 2CADR S40.13 */
         break;
-    default: not_modelled();
+    case NEGATIVE:
+        /* The TC FINDVAC, with A what the CCS left and no PRIO20. A phase is +0 or positive at
+         * every store of one, so this outcome never comes. */
+        continue_at(P40SJUNK + 3u);
+        break;
+    case IS_MINUS_ZERO:
+        /* never: a phase is +0 or positive, and -PHASE3 its complement, at every store of
+         * one. The next word is an address word, 2CADR S40.13. */
+        not_modelled();
     }
 }
 
@@ -637,7 +649,12 @@ void p42ign(void)
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: continue_at(IMPLBURN); break;
     case IS_PLUS_ZERO: dvmoncon(); break;
-    default: not_modelled();
+    case NEGATIVE:
+        /* never: A is IMPULBIT or +0 after the MASK. The next word is an address word, ADRES
+         * IGNFLAG. */
+        not_modelled();
+        break;
+    case IS_MINUS_ZERO: tc_to(DVMONCON + 2u, DOWNFLAG); break; /* never: its second TC DOWNFLAG */
     }
 }
 
@@ -770,8 +787,12 @@ void comfail_after_second_upflag(void)
     switch (ccs_at(ADDRESS_OF(PHASE6))) {                      /* "CLOCKTASK ACTIVE?" */
     case POSITIVE: comfail_after_stclok1(); break;             /* TCF +3 */
     case IS_PLUS_ZERO: tc_to(COMFAIL + 010u, BANKCALL); break; /* CADR STCLOK1 */
-    case NEGATIVE: not_modelled(); break;
-    case IS_MINUS_ZERO: comfail_after_stclok1(); break; /* TCF +3 */
+    case NEGATIVE:
+        /* never: a phase is +0 or positive, and -PHASE6 its complement, at every store of
+         * one. The next word is an address word, CADR STCLOK1. */
+        not_modelled();
+        break;
+    case IS_MINUS_ZERO: comfail_after_stclok1(); break; /* (the CS VB97DEX is the next word) */
     }
 }
 

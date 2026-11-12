@@ -1392,8 +1392,17 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    `make style-check` counts the breaks of STYLE.md that a script can
    know by their form (tools/style_check.py) and holds each directory of
    src/ to tests/style_owed.txt, the list of what the whole-tree review
-   (issue #1334) found and is still to fix. A new break fails, and the
-   list only gets shorter. It also holds each function's header to the
+   (issue #1334) found and was still to fix. The list owes nothing now,
+   so any break fails. A switch on a CCS names its four outcomes in the
+   listing's order and follows each as the listing's words say. One
+   that refuses an outcome (`not_modelled()`) must say in its comment
+   that the outcome never comes and what rules it out. Three helpers
+   stand for one CCS at several places and refuse the two outcomes a
+   masked bit never has: tools/ccs_helpers.py finds every call of them
+   and has the C compiler check, by a static assert, that the call's
+   mask has a clear sign bit (the five calls with no constant mask are
+   listed in it, each with what bounds its mask). It also holds each
+   function's header to the
    listing page of the word the function stands at
    (tools/header_pages.py): the page is read from the assembled listing
    for the place the function's key names, and a header without it, one
@@ -1556,9 +1565,9 @@ builds the x86 flight program the same way and flies gate 2's 86
 scenarios. Each program that ran left its counts, and a line of `src/` is
 run if any of them ran it. What is counted is every line the build
 compiled, in a program that ran or not: each compile leaves the lines of
-its object, and a line no program holds counts as unrun. Of the 59,974
-lines of C with code in them, 1,558 (2.6%) are run by none, in 651
-stretches of 216 files. That is a figure for the C alone: interpretive
+its object, and a line no program holds counts as unrun. Of the 60,161
+lines of C with code in them, 1,663 (2.8%) are run by none, in 658
+stretches of 220 files. That is a figure for the C alone: interpretive
 code is tables of words, and none of its words is among those lines
 (below).
 
@@ -1585,10 +1594,13 @@ the measure on made-up data (`line-coverage-check`), with no build. Each
 reason is one of five kinds. The ledger says what each means, and the
 check holds each stretch to its kind's rule:
 
-- **refusal** (767 lines): how a binding refuses a state its routines do
+- **refusal** (770 lines): how a binding refuses a state its routines do
   not model. No case's state and no scenario makes those files refuse.
-  Only a stretch of `src/binding` may say this.
-- **not-modelled** (111 lines): the source marks the line
+  Outside `src/binding` only a `not_modelled()` may say this, with the
+  reason: a state that can come, though no line of the program brings
+  it, only a word keyed in by hand. There is one, ALFLT with a keyed -0
+  in GEOCOMPS, where the listing would run an address word.
+- **not-modelled** (97 lines): the source marks the line
   `not_modelled()`, an outcome that cannot come there. The stretch must
   hold the call.
 - **impossible** (221 lines): no state brings the routine to the line,
@@ -1604,12 +1616,12 @@ check holds each stretch to its kind's rule:
   negative of a sine there, which can be -0, and a core set is not
   cleared for its next job), so no line of the interpreter rules it out
   and no check proves it of every entry.
-- **open** (383 lines, 150 stretches): not looked at yet. Each is owed a
+- **open** (499 lines, 195 stretches): not looked at yet. Each is owed a
   case that runs it or the reason none can, and the count is in the
   ledger's head.
 
 A line can also run and be compared with nothing: one that refuses
-(`not_modelled()` first on the line). 84 such lines of 81 functions ran:
+(`not_modelled()` first on the line). 77 such lines of 75 functions ran:
 a case or a scenario brought the routine there, its binding refused the
 state, and the test held only that the refusal left the state as it
 found it. They are not unrun, so they are in no stretch; the ledger
@@ -1632,7 +1644,7 @@ measure cannot see which of its words the interpreter ran. `src/` holds
 811 such programs (each a `struct interpretive_code`) in 199 files. 55
 of those files are among the 68 with no line of C at all; the other 144
 have C lines of their own, which are counted, beside tables that are
-not. So "2.6% unrun" says nothing of the interpretive words, in any
+not. So "2.8% unrun" says nothing of the interpretive words, in any
 file. What holds those programs today is that each table is compared
 with the rope word for word and that the cases and scenarios compare
 what the programs compute. Which words run, and which way each branch

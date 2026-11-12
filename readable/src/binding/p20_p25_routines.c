@@ -675,6 +675,24 @@ static bool known_rrlimchk_caller(void)
     return false;
 }
 
+/* Two outcomes of a CCS that never come, where the readable routine follows
+ * the listing's words and the faithful port stops, since the next word is
+ * an instruction whose EXTEND the CCS skipped. The binding refuses the
+ * state as the faithful port does: no case runs the routine's lines for it
+ * (tests/line_coverage.txt has them, with why the outcome never comes).
+ *   RADIN: a negative Q (the DCS RDOTBIAS without its EXTEND).
+ *   LRPOSNXT +3: SAMPLIM -0 when the position inbit, bit 7 of channel 33, is
+ *   not yet there (the WAND CHAN12 without its EXTEND). */
+static bool port_stops_at(uint16_t key)
+{
+    if (key == KEY(025u, RADIN))
+        return overflow_of(Q) < 0 ||
+               (overflow_of(Q) == 0 && sign_of(overflow_corrected(Q)) == NEGATIVE);
+    if (key == KEY(025u, LRPOSNXT + 3u))
+        return (channel_in(033u) & BIT7) != 0u && fetch(ADDRESS_OF(SAMPLIM)) == MINUS_ZERO;
+    return false;
+}
+
 static const struct basic_entry *basic_entry(uint16_t key)
 {
     unsigned i;
@@ -883,6 +901,7 @@ static enum exec_status basic(uint16_t key, const agc_native_program *program,
     if ((key / 1024u >= 4u && !in_bank(key / 1024u)) || !sane(entry->with_work_area))
         return EXEC_OUT_OF_SCOPE;
     if (key == KEY(02u, RRLIMCHK) && !known_rrlimchk_caller()) return EXEC_OUT_OF_SCOPE;
+    if (port_stops_at(key)) return EXEC_OUT_OF_SCOPE;
 
     before = *state;
     kept = *io;

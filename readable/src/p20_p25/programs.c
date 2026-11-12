@@ -793,16 +793,19 @@ void p20lemd_after_twiddle(void)
 
 /* P20LEMD1 -- p. 499, a task. "IS TRACK FLAG SET": "YES -- SCHEDULE
  * DESIGNATE JOB" (P20LEMD2), "NO -- WAIT 15 SECONDS". (A masked flag word
- * is never negative: not modelled.) */
+ * is never negative or -0: the cases say what would run.) */
 void p20lemd1(void)
 {
     ca(ADDRESS_OF(FLAGWRD1));
     mask(TRACKBIT);
     switch (ccs_at(A_ADDRESS)) {
-    case POSITIVE: continue_at(P20LEMD2); return;              /* TCF P20LEMD2 */
-    case IS_PLUS_ZERO: tc_to(P20LEMD1 + 4u, FIXDELAY); return; /* DEC 1500 */
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled();
+    case POSITIVE: continue_at(P20LEMD2); return; /* TCF P20LEMD2 */
+    case IS_PLUS_ZERO:
+        tc_to(P20LEMD1 + 4u, FIXDELAY); /* DEC 1500 */
+        return;
+    /* (never: a masked bit. Negative would run the DEC 1500 as an instruction, TC 2734.) */
+    case NEGATIVE: continue_at(P20LEMD1 + 5u); return;
+    case IS_MINUS_ZERO: tc_to(P20LEMD1 + 6u, P20LEMD1); return; /* never */
     }
 }
 

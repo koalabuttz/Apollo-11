@@ -109,13 +109,15 @@ static void scale(void)
  * steps, and TC FUNCTION +1: the saved return, PRODUCT. */
 static void gtsqrt(void)
 {
-    bool zero_root = false;
+    bool zero_root = false, high_zero = false;
 
     switch (ccs_at(ADDRESS_OF(FUNCTION))) {
-    case POSITIVE: set_A(ZERO); break; /* GOODARG */
-    case NEGATIVE: zero_root = true; break;
-    case IS_PLUS_ZERO:
-    case IS_MINUS_ZERO:
+    case POSITIVE: set_A(ZERO); break;          /* GOODARG */
+    case IS_PLUS_ZERO: high_zero = true; break; /* TCF +2 */
+    case NEGATIVE: zero_root = true; break;     /* TCF ZEROOT */
+    case IS_MINUS_ZERO: high_zero = true; break;
+    }
+    if (high_zero) {
         ca(ADDRESS_OF(FUNCTION) + 1u);
         if (A_is_zero_or_minus()) {
             zero_root = true;
@@ -124,7 +126,6 @@ static void gtsqrt(void)
             xch(ADDRESS_OF(FUNCTION) + 1u);
             set_A(SEVEN);
         }
-        break;
     }
     if (zero_root) {
         set_A(ZERO); /* ZEROOT */
@@ -138,12 +139,14 @@ static void gtsqrt(void)
     ts(ADDRESS_OF(HALFARG));
     mask(BIT13);
     switch (ccs_at(A_ADDRESS)) {
-    case POSITIVE: set_A(OCT11276); break;
-    case IS_PLUS_ZERO: break;
-    default: not_modelled(); return; /* a MASK of BIT13 is never negative */
+    case POSITIVE: set_A(OCT11276); /* fall through */
+    case IS_PLUS_ZERO:
+        ad(ROOTHALF); /* fall through */
+    /* (never: a MASK of BIT13. Negative would skip the AD ROOTHALF, and -0 the first
+     * TC ROOTCYCL too.) */
+    case NEGATIVE: rootcycl(SCALDONE + 011u); /* fall through */
+    case IS_MINUS_ZERO: break;                /* never */
     }
-    ad(ROOTHALF);
-    rootcycl(SCALDONE + 011u);
     rootcycl(SCALDONE + 012u);
     rootcycl(SCALDONE + 013u);
     tc_through(ADDRESS_OF(FUNCTION) + 1u);
@@ -171,8 +174,11 @@ static bool axis_inputs(void)
     switch (ccs_at(ADDRESS_OF(QRCNTR))) {
     case POSITIVE: ca(indexed(ADDRESS_OF(EDOTQ), a_word())); break;
     case IS_PLUS_ZERO: ca(ADDRESS_OF(EDOTQ)); break;
-    case NEGATIVE: break;                             /* to GTSQAXIS */
-    case IS_MINUS_ZERO: not_modelled(); return false; /* QRCNTR is 2, +-1 or 0 */
+    case NEGATIVE: break; /* to GTSQAXIS */
+    case IS_MINUS_ZERO:   /* never: QRCNTR is 2, +-1 or 0. Past GTSQAXIS's DXCH WCENTRAL */
+        ca(by_axis(ADDRESS_OF(KQ)));
+        ts(ADDRESS_OF(KCENTRAL));
+        return !A_is_zero();
     }
     dxch(ADDRESS_OF(WCENTRAL));  /* GTSQAXIS */
     ca(by_axis(ADDRESS_OF(KQ))); /* "COLLECT K FOR THIS AXIS" */
@@ -415,7 +421,7 @@ void gts(void)
             ts(SR_ADDRESS);
             more = false;
             break;
-        case IS_MINUS_ZERO: not_modelled(); return; /* QRCNTR is 2, +-1 or 0 */
+        case IS_MINUS_ZERO: more = false; break; /* never: QRCNTR is 2, +-1 or 0. On at GOCLOSE */
         }
     }
     set_A(CLOSEADR[0]); /* GOCLOSE: EXTEND; DCA CLOSEADR; DTCB */
@@ -557,7 +563,13 @@ void timegmbl(void)
         switch (ccs_at(ADDRESS_OF(QRNDXER))) { /* DONEYET */
         case POSITIVE: set_A(ZERO); break;     /* TIMQGMBL: "NOW DO THE Q-AXIS" */
         case IS_PLUS_ZERO: more = false; break;
-        default: not_modelled(); return; /* QRNDXER is 2 or 0 */
+        /* (never: QRNDXER is 2, then 0. Negative would skip the DXCH RUPTREG3, and -0 the
+         * DXCH ITEMP2 too.) */
+        case NEGATIVE:
+            dxch(ADDRESS_OF(ITEMP2));
+            tc_to(DONEYET + 4u, IBNKCALL);
+            return;
+        case IS_MINUS_ZERO: /* never */ tc_to(DONEYET + 4u, IBNKCALL); return;
         }
     }
     dxch(ADDRESS_OF(RUPTREG3));

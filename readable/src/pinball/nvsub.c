@@ -303,6 +303,7 @@ static bool islist_returns(void)
     case IS_PLUS_ZERO: tc_return(Q_ADDRESS); return true;
     case NEGATIVE: break; /* the word after is DSPABORT */
     case IS_MINUS_ZERO:
+        /* (never: DSPLIST holds +0 or the CADR that NVSUBSY1 left there) */
         tc_at(DSPABORT + 1u); /* OCT 01206, run as TC 1206 */
         not_modelled();
         return false;

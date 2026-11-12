@@ -251,7 +251,12 @@ void initby_after_exit(void)
         set_A(DISPGYRO);
         tc_to(INITBY + 012u, BANKCALL); /* CADR GOFLASH */
         break;
-    default: not_modelled();
+    /* (never: a masked bit. Negative would skip the CAF DISPGYRO.) */
+    case NEGATIVE: tc_to(INITBY + 012u, BANKCALL); break;
+    case IS_MINUS_ZERO:
+        /* never: A is INITABIT or +0 after the MASK. The next word is an address word, CADR
+         * GOFLASH. */
+        not_modelled();
     }
 }
 
@@ -354,7 +359,9 @@ static void b2f8_plus1(void)
         tc_at(B2F8 + 4u);
         intpret();
         break;
-    default: not_modelled();
+    /* (never: a masked bit) */
+    case NEGATIVE:
+    case IS_MINUS_ZERO: not_modelled(); /* the next words are interpretive words: CALL, REFMF */
     }
 }
 

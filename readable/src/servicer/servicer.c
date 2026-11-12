@@ -322,8 +322,9 @@ void lothrust(void)
  *
  * The CCSs' other outcomes, as the AGC runs them: DVCNTR negative,
  * SERVOUT; DVCNTR -0, the PHASCHNG; PHASE4 -0, the job without the
- * PHASCHNG. Not modelled: PHASE4 negative, which would run the OCT 00374
- * as an instruction. */
+ * PHASCHNG. PHASE4 negative would run the OCT 00374 as the instruction TC
+ * 374, and the listing's lines do not say what erasable word 374 holds
+ * then. */
 void lothrust_after_quikfaz5(void)
 {
     switch (ccs_at(ADDRESS_OF(DVCNTR))) {
@@ -335,7 +336,11 @@ void lothrust_after_quikfaz5(void)
     switch (ccs_at(ADDRESS_OF(PHASE4))) {
     case POSITIVE: servout(); return;
     case IS_PLUS_ZERO: tc_to(LOTHRUST + 5u, PHASCHNG); return;
-    case NEGATIVE: not_modelled(); return;
+    case NEGATIVE:
+        /* (never: a phase is +0 or positive at every store of one) */
+        tc_at(LOTHRUST + 6u); /* OCT 00374, run as TC 374 */
+        not_modelled();
+        return;
     case IS_MINUS_ZERO: lothrust_after_phaschng(); return;
     }
 }

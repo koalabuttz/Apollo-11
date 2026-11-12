@@ -500,7 +500,7 @@ void r22rstrt_good_read(void)
 /* LUNSFCHK -- p. 507. "LUNSFCHECK -- CLOSED SUBROUTINE TO CHECK IF ON
  * LUNAR SURFACE (P22FLAG) RETURNS TO CALLER +1 IF P22FLAG SET TO CALLER +2
  * IF P22FLAG NOT SET": the flag is FLAGWRD8's SURFFLAG. (The masked
- * complement is never negative: not modelled.) */
+ * complement is never negative.) */
 void lunsfchk(void)
 {
     cs(ADDRESS_OF(FLAGWRD8)); /* "CHECK IF ON LUNAR SURFACE" */
@@ -508,11 +508,14 @@ void lunsfchk(void)
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE:
         incr(Q_ADDRESS);
-        tc_q();
-        return;                        /* "NOT SET" */
-    case IS_PLUS_ZERO: tc_q(); return; /* "P22FLAG SET" */
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled();
+        tc_q(); /* "NOT SET" */
+        return;
+    case IS_PLUS_ZERO:
+        tc_q(); /* "P22FLAG SET" */
+        return;
+    /* (never: a masked bit. The words after the TC Q.) */
+    case NEGATIVE: continue_at(LUNSFCHK + 5u); return;
+    case IS_MINUS_ZERO: continue_at(LUNSFCHK + 6u); return; /* never */
     }
 }
 
@@ -554,7 +557,7 @@ void r21lem_in_orbit(void)
 
 /* R21LEM5 -- p. 508. On the surface: RADMODES bit 12 set goes straight to
  * R21LEM10; else the antenna to mode 2's center (T = BIT15, S = -HALF).
- * (A masked bit 12 is never negative: not modelled.) */
+ * (A masked bit 12 is never negative or -0: the cases say what would run.) */
 void r21lem5(void)
 {
     set_A(BIT12);
@@ -562,8 +565,9 @@ void r21lem5(void)
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: tc_to(R21LEM5 + 3u, R21LEM10); return;
     case IS_PLUS_ZERO: continue_at(R21LEM5 + 4u); return;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled();
+    /* (never: a masked bit. On at the TS TANG; and at the CS HALF.) */
+    case NEGATIVE: continue_at(R21LEM5 + 5u); return;
+    case IS_MINUS_ZERO: continue_at(R21LEM5 + 6u); return; /* never */
     }
 }
 

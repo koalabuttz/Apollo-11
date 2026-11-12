@@ -73,7 +73,10 @@ void newdelhi_after_isitauto(void)
     case POSITIVE: continue_at(NOGO - 2u); return; /* TCF NOGO -2 */
     case IS_PLUS_ZERO: newangl(); return;
     case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); /* (into NEWANGL's interpretive words) */
+    case IS_MINUS_ZERO:
+        /* never: the answer is channel 31 masked with BIT14. The next words are
+         * interpretive words, NEWANGL's. */
+        not_modelled();
     }
 }
 

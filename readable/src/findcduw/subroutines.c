@@ -409,10 +409,11 @@ void limitsub(void)
     switch (ccs_register(A_ADDRESS)) {
     case POSITIVE:
         lxch(ADDRESS_OF(TEM1));
-        ca(L_ADDRESS);
+        ca(L_ADDRESS); /* TCF +2 */
         break;
-    case NEGATIVE: cs(ADDRESS_OF(TEM1)); break;
-    default: ca(L_ADDRESS); break;
+    case IS_PLUS_ZERO: ca(L_ADDRESS); break;    /* TCF +2 */
+    case NEGATIVE: cs(ADDRESS_OF(TEM1)); break; /* TCF +3 */
+    case IS_MINUS_ZERO: ca(L_ADDRESS); break;
     }
     return_to_q();
 }
@@ -425,8 +426,9 @@ void onesto2s(void)
 {
     switch (ccs_register(A_ADDRESS)) {
     case POSITIVE: ad(ONE); break;
+    case IS_PLUS_ZERO: break; /* TC Q */
     case NEGATIVE: cs(A_ADDRESS); break;
-    default: break;
+    case IS_MINUS_ZERO: break; /* TC Q */
     }
     return_to_q();
 }

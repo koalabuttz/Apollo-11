@@ -420,20 +420,22 @@ void pipjobb(void)
  * its time into DATAPL +5 (RESULTCT 5). */
 void pipjobb_plus2(void)
 {
-    switch ((word)(Z - PIPJOBB)) {
+    word at = (word)(Z - PIPJOBB);
+
+    if (at == 03u) {
+        ca(E(LENGTHOT));
+        at = 04u;
+    }
+    if (at == 04u) at = A_is_zero_or_minus() ? 07u : 06u; /* EXTEND; BZMF +2 */
+    switch (at) {
     case 02u:
         tc_at(PIPJOBB + 2u);
         continue_at(EARTHR_STAR);
         return;
-    case 03u: ca(E(LENGTHOT)); /* fall through */
-    case 04u:
-        if (A_is_zero_or_minus()) goto closing; /* EXTEND; BZMF +2 */
-        /* fall through */
     case 06u:
         tc_at(PIPJOBB + 6u);
         continue_at(ENDOFJOB);
         return;
-    closing:
     case 07u: set_A(FIVE);      /* fall through */
     case 010u: ts(E(RESULTCT)); /* fall through */
     case 011u:
@@ -776,7 +778,11 @@ void zeroing(void)
         switch (ccs_at(E(ZERONDX))) {
         case POSITIVE: ts(E(ZERONDX)); continue; /* TCF ZEROING1 */
         case IS_PLUS_ZERO: back_to_caller(Q_ADDRESS); return;
-        default: not_modelled(); /* (the next words are ERTHRVSE's) */
+        case NEGATIVE:
+        case IS_MINUS_ZERO:
+            /* never: ZERONDX is the count a caller loaded, 77DECML or DEC17, then what this CCS
+             * left of it. The next words are interpretive words: ERTHRVSE's. */
+            not_modelled();
         }
     }
 }
@@ -1082,7 +1088,11 @@ void alflt(void)
         continue_at(NORMLOP);
         return;
     case NEGATIVE: break;
-    case IS_MINUS_ZERO: not_modelled(); return;
+    case IS_MINUS_ZERO:
+        /* never from the program: no line of it stores GEOCOMPS, which is keyed in for the test.
+         * A keyed -0 would run the next word, an address word, CADR 1/PIPA. */
+        not_modelled();
+        return;
     }
     tc_at(ALFLT + 3u);
     continue_at(BANKCALL); /* CADR 1/PIPA */
@@ -1339,7 +1349,11 @@ void geostrt4(void)
         tc_at(GEOSTRT4 + 2u);
         intpret();
         return;
-    default: not_modelled(); return;
+    case NEGATIVE:
+    case IS_MINUS_ZERO:
+        /* never: TORQNDX holds the ZERO of IMUBACK or the POSMAX of GUESS1. The next words are
+         * interpretive words: CALL, ERTHRVSE. */
+        not_modelled();
     }
 }
 

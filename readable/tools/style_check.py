@@ -33,7 +33,10 @@ The rules, each named as the ledger names it:
                     each the comment (on the case's lines, or right above
                     them) also says that the outcome never comes, and
                     what rules it out; the check holds it to the word
-                    never.
+                    never. So does the comment of a case that follows
+                    its words as far as a not_modelled() of its own (a
+                    constant run as a TC into the erasable memory): a
+                    call that is no guard, if (...) not_modelled().
   raw-channel       A channel is written by its name, not a bare number
                     (STYLE.md, Naming).
   continue-offset   A place inside its own directory that a routine ends
@@ -93,7 +96,8 @@ HELPER = re.compile(r'^[ \t]*#[ \t]*define[ \t]+(?:COUNT|IN_BANK|BANK_OF)\('
 DECIMAL = re.compile(r'\b(?:K_)?([A-Z][A-Z0-9_]*) \+ ([89]|[1-9][0-9]+)u\b')
 LABEL = re.compile(r'^#define (\w+) +\(\(word\)K_\w+\)', re.M)
 NO_WORD = re.compile(r'\b(?:no word|interpretive words?|address words?|differs with the place)\b')
-NEVER = re.compile(r'\bnever\b', re.I)
+SAID_NEVER = re.compile(r'\bnever\b', re.I)
+REFUSAL = re.compile(r'[;{}:]\s*not_modelled\(\);')  # a statement of its own, not a guard's
 ABOVE = re.compile(r'\s*(?:/\*|\*|case \w+:\s*(?:/\*.*\*/)?\s*$)')  # a comment's line, or a case's label alone
 NEVER = re.compile(r'/\*[^\n]*\bnever\b|^[^\n]*\bnever\b[^\n]*\*/', re.M)
 NAMES = 'agc/names.h'
@@ -196,22 +200,26 @@ def breaks(file, text, routines=(), labels=()):
         mission = for_mission(code, lm)
         for at, cases in ccs_switches(mission):
             names = [name for name, _, _ in cases if name in ORDER]
-            if names != sorted(names, key=ORDER.index) and ('ccs-order', at) not in seen:
-                seen.add(('ccs-order', at))
+            if names != sorted(names, key=ORDER.index) and ('ccs-order', line_of(mission, at)) not in seen:
+                seen.add(('ccs-order', line_of(mission, at)))
                 out.append(('ccs-order', line_of(mission, at), ', '.join(names)))
-            if 'default' in [name for name, _, _ in cases] and ('ccs-default', at) not in seen:
-                seen.add(('ccs-default', at))
+            if 'default' in [name for name, _, _ in cases] and ('ccs-default', line_of(mission, at)) not in seen:
+                seen.add(('ccs-default', line_of(mission, at)))
                 out.append(('ccs-default', line_of(mission, at), 'default:'))
             for name, where, statements in cases:
-                if name in ORDER and re.match(r'\s*not_modelled\(\)', statements) and \
-                        ('ccs-not-modelled', where) not in seen:
-                    seen.add(('ccs-not-modelled', where))
-                    first, last = line_of(mission, where), line_of(mission, mission.index('not_modelled', where))
+                begins = re.match(r'\s*not_modelled\(\)', statements)
+                later = None if begins else REFUSAL.search(statements)
+                if name in ORDER and (begins or later) and \
+                        ('ccs-not-modelled', line_of(mission, where)) not in seen:
+                    seen.add(('ccs-not-modelled', line_of(mission, where)))
+                    call = mission.index('not_modelled', where) if begins else \
+                        mission.index(statements, where) + later.end()
+                    first, last = line_of(mission, where), line_of(mission, call)
                     top = first
                     while top > 1 and ABOVE.match(lines[top - 2]):
                         top -= 1
                     said = '\n'.join(lines[top - 1:last])
-                    if not (NO_WORD.search(said) and NEVER.search(said)):
+                    if not (SAID_NEVER.search(said) and (NO_WORD.search(said) or later)):
                         out.append(('ccs-not-modelled', first, name))
     for found in CHANNEL.finditer(code):
         out.append(('raw-channel', line_of(code, found.start()), found.group().strip()))
@@ -352,7 +360,12 @@ def self_check():
               'default: break;\n}\n'
     expect('an outcome of a CCS refused', refused, [('ccs-default', 1), ('ccs-not-modelled', 3)])
     followed = refused.replace('    not_modelled();', '    a();\n    not_modelled();')
-    expect('an outcome that is followed to a refusal', followed, [('ccs-default', 1)])
+    expect('an outcome that is followed to a refusal', followed, [('ccs-default', 1), ('ccs-not-modelled', 3)])
+    expect('one that says the outcome never comes',
+           followed.replace('    a();', '    a(); /* (never: a masked bit) OCT 7, run as TC 7 */'),
+           [('ccs-default', 1)])
+    expect('an outcome with a guard', refused.replace('    not_modelled();', '    if (A > 7u) not_modelled();'),
+           [('ccs-default', 1)])
     expect('an outcome the listing has no word for',
            'switch (ccs_at(X)) {\ncase POSITIVE: break;\ncase IS_PLUS_ZERO: break;\ncase NEGATIVE: break;\n'
            'case IS_MINUS_ZERO:\n    /* (never) TCF X is the last word: the listing has no word\n     * after it. */\n'

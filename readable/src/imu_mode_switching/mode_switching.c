@@ -284,22 +284,26 @@ void coars2(void)
  * ERROR."). All within: ENDIMU. */
 void nextcdu_after_fixdelay(void)
 {
+    bool off = false; /* the gimbal is not at its angle: COARSERR */
+
     set_A(TWO);
     for (;;) {
         ts(ADDRESS_OF(ITEMP1)); /* CHKCORS */
         ca(indexed(ADDRESS_OF(CDUX), a_word()));
         msu_at(indexed(ADDRESS_OF(THETAD), ITEMP1)); /* EXTEND; INDEX ITEMP1; MSU THETAD */
         switch (ccs_register(A_ADDRESS)) {
-        case POSITIVE:
-        case NEGATIVE:
+        case POSITIVE: off = true; break;      /* TCF COARSERR */
+        case IS_PLUS_ZERO: off = false; break; /* TCF CORSCHK2 */
+        case NEGATIVE: off = true; break;      /* TCF COARSERR */
+        case IS_MINUS_ZERO: off = false; break;
+        }
+        if (off) {
             ad(COARSTOL); /* COARSERR: "2 DEGREES." */
             if (!A_is_zero_or_minus()) {
                 tc_at((word)(COARSERR + 3u)); /* TC ALARM; OCT 211 */
                 continue_at(ALARM);
                 return;
             }
-            break;
-        default: break;
         }
         if (ccs_at(ADDRESS_OF(ITEMP1)) != POSITIVE) break; /* CORSCHK2 */
     }

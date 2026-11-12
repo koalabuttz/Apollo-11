@@ -100,6 +100,8 @@ static void resetrpt(void)
  * L's - and -0 run TCF PREMON1 and RESETRPT, and CCS ZERLINA's - runs the
  * WOR with A |ZERLINA| - 1, its -0 the WOR's word without its EXTEND: TC
  * 5013. */
+static void redesmon_plus012(void);
+
 void redesmon(void)
 {
     read_channel(CHAN31);
@@ -111,7 +113,7 @@ void redesmon(void)
     case POSITIVE: premon2(); return;     /* "Y: CONTINUE MONITOR" */
     case IS_PLUS_ZERO: break;
     case NEGATIVE: count_em(); return; /* (never) */
-    case IS_MINUS_ZERO: goto zerlina;  /* (never) */
+    case IS_MINUS_ZERO: /* (never) */ redesmon_plus012(); return;
     }
     switch (ccs_at(L_ADDRESS)) {       /* "N: ANY LAST PASS?" */
     case POSITIVE: count_em(); return; /* "Y: COUNT 'EM, RESET RUPT, TERMINATE" */
@@ -119,7 +121,12 @@ void redesmon(void)
     case NEGATIVE: premon1(); return;       /* (never) */
     case IS_MINUS_ZERO: resetrpt(); return; /* (never) */
     }
-zerlina:
+    redesmon_plus012();
+}
+
+/* REDESMON +012 -- p. 821: the CCS ZERLINA. */
+static void redesmon_plus012(void)
+{
     switch (ccs_at(ADDRESS_OF(ZERLINA))) { /* "N: HAS ZERLINA REACHED ZERO YET?" */
     case POSITIVE: premon1(); return;      /* "N: DIMINISH ZERLINA, CONTINUE" */
     case IS_PLUS_ZERO: resetrpt(); return; /* "Y: RESET RUPT. TERMINATE" */

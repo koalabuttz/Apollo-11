@@ -21,7 +21,10 @@ void vertguid(void)
     case POSITIVE: p67vert(); return;
     case IS_PLUS_ZERO: p66vert(); return;
     case NEGATIVE: p65vert(); return;
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO:
+        /* never: the program stores +0 (P66), TEN (P67) or -2 (P65) in WCHVERT. The next words
+         * are interpretive words: P65VERT's VLOAD VSU. */
+        not_modelled();
     }
 }
 

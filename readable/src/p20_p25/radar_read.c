@@ -174,7 +174,10 @@ void radaread(void)
     case POSITIVE: continue_at(PLENTY); break;
     case IS_PLUS_ZERO: continue_at(NOMORE); break;
     case NEGATIVE: tc_to(TRYCOUNT + 3u, ALARM); break; /* OCT 520 */
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO:
+        /* (never: SAMPLIM is a count of tries, what this CCS left of one, or -1) */
+        tc_at(TRYCOUNT + 4u); /* OCT 520, run as TC 520: an erasable word, run */
+        not_modelled();
     }
 }
 
@@ -469,8 +472,9 @@ static void dasampl(void)
 /* RADIN -- p. 557: the count, bits 1-14 to ITEMP4 and bit 15 to ITEMP3 (the
  * sample, double precision). Not the RR RDOT (Q positive): SCALADJ, "NO, BUT
  * SCALE CHANGING MAY BE NEEDED."; else "IF RR RANGE RATE, THROW OUT BIAS"
- * (RDOTBIAS, "BIAS COUNT FOR RR RANGE RATE."). (Q -0 adds +0; not modelled:
- * a negative Q.) */
+ * (RDOTBIAS, "BIAS COUNT FOR RR RANGE RATE."). (Q is RENDRAD's: a bit of
+ * channel 13, or +0. Q -0 would add +0, and a negative Q the complement of
+ * RDOTBIAS's second word alone.) */
 void radin(void)
 {
     set_A(POSMAX);
@@ -483,8 +487,10 @@ void radin(void)
     switch (ccs_at(Q_ADDRESS)) { /* "SEE IF RR RDOT." */
     case POSITIVE: scaladj(); return;
     case IS_PLUS_ZERO: dcs(RDOTBIAS); break;
+    /* (never: Q holds a bit of channel 13. The DCS RDOTBIAS, not extended, is CS of its
+     * second word.) */
+    case NEGATIVE: cs(RDOTBIAS + 1u); break;
     case IS_MINUS_ZERO: break;
-    case NEGATIVE: not_modelled();
     }
     dasampl();
 }
@@ -569,11 +575,11 @@ static void scaladj(void)
  * (ITEMP3 1), or one over HISCALIM ("2481.7 FT"), clears the scale-bad flag
  * (FLGWRD11 bit 3, SCABBIT, set when the LR's low scale discrete is not
  * present when it should be), a lower one sets it. The sample times 5
- * (DASAMPL adds it times 4). Not modelled: a negative ITEMP3, or -0 (RADIN
- * sets 0 or 1). */
+ * (DASAMPL adds it times 4). ITEMP3 is never negative or -0 (RADIN sets 0
+ * or 1): the cases say what would run. */
 static void lrsck(void)
 {
-    bool scale_bad;
+    bool scale_bad = false;
 
     switch (ccs_at(ADDRESS_OF(ITEMP3))) {
     case POSITIVE: scale_bad = false; break;
@@ -582,7 +588,13 @@ static void lrsck(void)
         ad(HISCALIM);
         scale_bad = !A_is_zero_or_minus(); /* EXTEND; BZMF +5 */
         break;
-    default: not_modelled(); return;
+    /* (ITEMP3 is 0 or 1: never negative, which would skip the CS ITEMP4, or -0, the AD
+     * HISCALIM too.) */
+    case NEGATIVE:
+        ad(HISCALIM);
+        scale_bad = !A_is_zero_or_minus();
+        break;
+    case IS_MINUS_ZERO: scale_bad = !A_is_zero_or_minus(); break;
     }
     if (scale_bad) {
         cs(ADDRESS_OF(FLGWRD11));
@@ -714,7 +726,8 @@ void lrposnxt(void)
 /* LRPOSNXT +3 -- p. 561: "SEE IF LR POS2 IS ON": "IF THERE, WAIT FINAL
  * SECOND FOR BOUNCE." (LASTLRDT). "SEE IF MAX TIME UP.": "IF TIME UP,
  * DISABLE COMMAND AND ALARM." (A negative SAMPLIM takes the WAND with A as
- * CCS leaves it; not modelled: -0.) */
+ * CCS leaves it. SAMPLIM -0 never comes, a count of tries or -1: it would
+ * skip the EXTEND too.) */
 void lrposnxt_after_fixdelay(void)
 {
     set_A(BIT7);
@@ -727,7 +740,10 @@ void lrposnxt_after_fixdelay(void)
     case POSITIVE: continue_at(LRPOSNXT); return;
     case IS_PLUS_ZERO: set_A(negate(BIT13)); break;
     case NEGATIVE: break;
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO: /* never. The WAND CHAN12, not extended, is TC 3012, in this bank */
+        tc_at(LRPOSNXT + 014u);
+        continue_at(03012u);
+        return;
     }
     wand_channel(CHAN12);
     rdbadend();

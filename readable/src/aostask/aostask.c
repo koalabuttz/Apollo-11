@@ -162,13 +162,15 @@ static void one_accont(void);
 
 /* DOCKTEST -- LM p. 1491: "BYPASS 1/ACCONT WHEN DOCKED." DOCKTEMP holds the
  * CSMDOCKD bit or +0 (1/ACCS's own TS DOCKTEMP); a negative one would fall
- * into DVOVSUB, which is not modelled. */
+ * into DVOVSUB, the routine after this one, and -0 into its second word. */
 void docktest(void)
 {
     switch (ccs_at(ADDRESS_OF(DOCKTEMP))) {
     case POSITIVE: one_accret(); return;
     case IS_PLUS_ZERO: one_accont(); return;
-    default: not_modelled(); return;
+    /* (never: a masked bit) */
+    case NEGATIVE: continue_at(DVOVSUB); return;
+    case IS_MINUS_ZERO: continue_at(DVOVSUB + 1u); return; /* never */
     }
 }
 
@@ -236,7 +238,11 @@ static void spscont(void)
     switch (ccs_at(ADDRESS_OF(INGTS))) {
     case POSITIVE: docktest(); return;
     case IS_PLUS_ZERO: tc_to(DOCKTEST - 2u, IBNKCALL); return; /* CADR TIMEGMBL */
-    case NEGATIVE: not_modelled(); return;                     /* the CADR as an instruction */
+    case NEGATIVE:
+        /* never: the program stores +0 or TWO in INGTS, nothing else. The next word is an
+         * address word, CADR TIMEGMBL. */
+        not_modelled();
+        return;
     case IS_MINUS_ZERO: docktest(); return;
     }
 }
@@ -380,7 +386,9 @@ static void inertias(bool skip_stctr)
  * to 0 or 6, and +1 less 1 is -0: so CCS COEFCTR goes on at CA MPAC for the
  * inertia (the result is true) and leaves the loop for the CG: "IF COEFCTR
  * IS POS, EXIT FROM LOOP" (as a negative MASSCTR does). +0 and a negative
- * COEFCTR, or a -0 MASSCTR, run TORQCONS as instructions: not modelled. */
+ * COEFCTR, or a -0 MASSCTR, would run TORQCONS as instructions: its first
+ * word, +0, is TC A, and A holds +0 then, a TC A again, with no end; its
+ * second, 20354, is DAS 0353, and the CA MPAC follows. */
 static bool docked_polynomial(void)
 {
     bool spsloop2;
@@ -407,12 +415,19 @@ static bool docked_polynomial(void)
         case POSITIVE: spsloop2 = true; continue;
         case IS_PLUS_ZERO: break;
         case NEGATIVE: return false;
-        case IS_MINUS_ZERO: not_modelled(); return false;
+        case IS_MINUS_ZERO: /* (never: MASSCTR is 1, then +0) TORQCONS's first word */
+            tc_at(SPSLOOP2 + 022u);
+            not_modelled();
+            return false;
         }
         switch (ccs_at(ADDRESS_OF(COEFCTR))) {
-        case POSITIVE: return false;
+        case POSITIVE: return false; /* TCF +7 */
+        case IS_PLUS_ZERO:           /* (never: COEFCTR is 6 or -0) TORQCONS's first word */
+            tc_at(SPSLOOP2 + 022u);
+            not_modelled();
+            return false;
+        case NEGATIVE: /* (never) TORQCONS's second word */ das(0353u); return true;
         case IS_MINUS_ZERO: return true;
-        default: not_modelled(); return false;
         }
     }
 }
@@ -892,7 +907,7 @@ static void bothaxes(void)
  * overflows skips CA 1JACC. */
 void getaosuv_plus6(void)
 {
-    bool dopaxis;
+    bool dopaxis = true;
 
     dxch(ADDRESS_OF(AOSU));
     relint();
@@ -905,7 +920,7 @@ void getaosuv_plus6(void)
     case POSITIVE: set_A(FLATVAL);              /* fall through */
     case IS_PLUS_ZERO: ts(ADDRESS_OF(FLATEMP)); /* fall through */
     case NEGATIVE: dopaxis = A_is_zero(); break;
-    default: dopaxis = true; break; /* BZF without its EXTEND: TCF DOPAXIS */
+    case IS_MINUS_ZERO: dopaxis = true; break; /* BZF without its EXTEND: TCF DOPAXIS */
     }
     if (!dopaxis) {
         if (ccs_at(ADDRESS_OF(DRIFTER)) == POSITIVE) set_A(ZONE3MAX);

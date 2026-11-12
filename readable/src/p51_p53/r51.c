@@ -200,7 +200,10 @@ void r51_marked(void)
         r51_4();
         break;
     case NEGATIVE: r51_both_marked(); break;
-    case IS_MINUS_ZERO: not_modelled(); /* (its word is interpretive code) */
+    case IS_MINUS_ZERO:
+        /* never: STARIND is 0 or 1 at each of its stores. The next word is an interpretive word,
+         * VLOAD. */
+        not_modelled();
     }
 }
 

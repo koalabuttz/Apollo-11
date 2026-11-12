@@ -58,7 +58,12 @@ void planet_after_exit(void)
     switch (ccs_register(A_ADDRESS)) {                             /* CCS A */
     case POSITIVE: notplan(); break;                               /* TCF NOTPLAN */
     case IS_PLUS_ZERO: planet_flash(); break;
-    default: not_modelled();
+    /* (never. Negative would skip the CAF VNPLANV.) */
+    case NEGATIVE: continue_at(PLANET + 017u); break;
+    case IS_MINUS_ZERO:
+        /* never: A is the product of six masked bits and REVCNT, 6. The next word is an
+         * address word, CADR GOFLASH. */
+        not_modelled();
     }
 }
 
@@ -298,10 +303,15 @@ void prograv_after_exit(void)
 {
     set_A(FREEFBIT);
     mask_at(ADDRESS_OF(FLAGWRD0));
-    switch (ccs_register(A_ADDRESS)) {  /* CCS A */
-    case POSITIVE: gvdeter(); break;    /* TCF GVDETER */
-    case IS_PLUS_ZERO: attchk(); break; /* TCF ATTCHK */
-    default: not_modelled();
+    switch (ccs_register(A_ADDRESS)) { /* CCS A */
+    case POSITIVE: gvdeter(); break;   /* TCF GVDETER */
+    case IS_PLUS_ZERO:
+        attchk(); /* TCF ATTCHK */
+        break;
+    /* (never: a masked bit) */
+    case NEGATIVE:
+    case IS_MINUS_ZERO:
+        not_modelled(); /* the next words are interpretive words: LUNG's STQ VLOAD, QMIN */
     }
 }
 

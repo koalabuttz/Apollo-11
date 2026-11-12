@@ -48,21 +48,22 @@ static void zaptj(void)
  * INHIBITION COUNTER IS NOT POSITIVE", or "SET JET TIME TO ZERO AND RETURN
  * IF INHIBITION COUNTER IS POSITIVE". At CTRCHECK a negative counter takes
  * the positive one's way, to ZAPTJ, and -0 returns like +0. OLDSENSE is
- * never -0 here: every way in sets it to +1, -1 or +0. */
+ * never -0 here: every way in sets it to +1, -1 or +0. It would enter
+ * NEGCHECK past its INDEX AXISCTR, at a CS TJU. */
 static void inhibition(void)
 {
     switch (ccs_at(ADDRESS_OF(OLDSENSE))) {
     case POSITIVE: ca(by_axis(ADDRESS_OF(TJU))); break; /* POSCHECK */
     case IS_PLUS_ZERO:
         switch (ccs_at(by_axis(ADDRESS_OF(UJETCTR)))) { /* CTRCHECK */
-        case POSITIVE:
-        case NEGATIVE: zaptj(); return; /* "CTR IS POSITIVE.  INHIBIT FIRINGS" */
-        case IS_PLUS_ZERO:
-        case IS_MINUS_ZERO: tc_q(); return; /* "CTR IS NOT POSITIVE.  RETURN" */
+        case POSITIVE: zaptj(); return;    /* TCF +2: "CTR IS POSITIVE.  INHIBIT FIRINGS" */
+        case IS_PLUS_ZERO: tc_q(); return; /* "CTR IS NOT POSITIVE.  RETURN" */
+        case NEGATIVE: zaptj(); return;
+        case IS_MINUS_ZERO: tc_q(); return;
         }
         return;
     case NEGATIVE: cs(by_axis(ADDRESS_OF(TJU))); break; /* NEGCHECK */
-    case IS_MINUS_ZERO: not_modelled(); return;
+    case IS_MINUS_ZERO: cs(ADDRESS_OF(TJU)); break;     /* never */
     }
     if (ccs_at(A_ADDRESS) == POSITIVE) { /* NEGCHECK +2 */
         tc_q();                          /* "RETURN" */

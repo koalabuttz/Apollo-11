@@ -213,21 +213,21 @@ static void olddata_plus1(void)
  * UNSIGNED OUTPUT.": "THE HI-ORDER PART IS +1 OR +0.", so a high word of +1
  * sets bit 15 over the low word. Then DATAOUT, "DISPATCH UNSIGNED BITS TO
  * ALTM REG." (OLDDATA and ZERODATA leave ALTSAVE +0 or positive; the CCS's
- * negative exit, TCF DATAOUT, is followed as written, and its -0 exit, which
- * would run on into DISINDAT, is not modelled.) */
+ * negative exit, TCF DATAOUT, is followed as written, and so is its -0 exit,
+ * which runs on into DISINDAT.) */
 static void newdata(void)
 {
     switch (ccs_at(ADDRESS_OF(ALTSAVE) + 1u)) {
+    case POSITIVE: break;       /* TCF +4 */
+    case IS_PLUS_ZERO: break;   /* TCF +3 */
     case NEGATIVE: set_A(ZERO); /* fall through */
     case IS_MINUS_ZERO: ts(ADDRESS_OF(ALTSAVE) + 1u); break;
-    case POSITIVE:
-    case IS_PLUS_ZERO: break;
     }
     switch (ccs_at(ADDRESS_OF(ALTSAVE))) {
     case POSITIVE: set_A(BIT15); /* fall through */
     case IS_PLUS_ZERO: ad_at(ADDRESS_OF(ALTSAVE) + 1u); break;
-    case NEGATIVE: break;
-    case IS_MINUS_ZERO: not_modelled();
+    case NEGATIVE: break; /* TCF DATAOUT */
+    case IS_MINUS_ZERO: disindat(); return;
     }
     dataout();
 }

@@ -686,10 +686,14 @@ void nolite(void)
     ca(ADDRESS_OF(LRMCTR));
     ts(ADDRESS_OF(LRSCTR));
     switch (ccs_at(ADDRESS_OF(VSELECT))) {
-    case POSITIVE:
-    case IS_MINUS_ZERO: valtchk(); return;                 /* ENDVDAT */
+    case POSITIVE: valtchk(); return;                      /* ENDVDAT */
     case IS_PLUS_ZERO: tc_to(NOLITE + 4u, UPFLAG); return; /* ADRES VXINH */
-    case NEGATIVE: not_modelled();
+    case NEGATIVE:
+        /* never: VSELECT goes 0, 2, 1, 0 (ENDLRV), from the ZERO of its start. The next word is
+         * an address word, ADRES VXINH. */
+        not_modelled();
+        return;
+    case IS_MINUS_ZERO: valtchk(); return; /* TCF ENDVDAT */
     }
 }
 

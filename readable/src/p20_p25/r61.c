@@ -126,7 +126,10 @@ void r61lem1_after_auto_check(void)
         return;
     case IS_PLUS_ZERO: continue_at(R61LEM1 + 027u); return;
     case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO:
+        /* never: the answer is a channel masked with one bit (BIT10 of 30, BIT14 of 31). The
+         * next words are interpretive words: VLOAD CALL, RRTARGET. */
+        not_modelled();
     }
 }
 

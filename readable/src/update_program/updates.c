@@ -40,7 +40,8 @@ static void lxch_indexed(void)
  * AND SAVE IT IN L", "CALCULATE NEXT RECEIVING ADDRESS", and store it, as
  * long as "THERE ANY WORDS LEFT TO BE STORED". Then "EXIT UPDATE
  * PROGRAM". A negative count would run ADUPBFM1's word, ADRES UPBUFF -1,
- * as an instruction: not modelled. */
+ * as an instruction: not modelled. A -0 one takes the TCF UPOUT after
+ * it. */
 void upend71(void)
 {
     ca(ADDRESS_OF(UPBUFF) + 1u);
@@ -67,8 +68,13 @@ void upend71(void)
         lxch_indexed();
         switch (ccs_at(ADDRESS_OF(MPAC))) {
         case POSITIVE: continue;
-        case NEGATIVE: not_modelled(); /* fall through */
-        default: upout(); return;
+        case IS_PLUS_ZERO: upout(); return;
+        case NEGATIVE:
+            /* never: the count is II - 3, and II was let in from 3 to 20 alone. The next word is
+             * an address word, ADUPBFM1's ADRES. */
+            not_modelled();
+            return;
+        case IS_MINUS_ZERO: upout(); return;
         }
     }
 }
@@ -88,9 +94,10 @@ void upend72(void)
     set_A(BIT1);
     mask_at(ADDRESS_OF(COMPNUMB));
     switch (ccs_register(A_ADDRESS)) {
+    case POSITIVE: set_A(negate(BIT2)); break; /* TCF +2: "YES" */
     case IS_PLUS_ZERO: uperrout(); return;
+    case NEGATIVE: set_A(negate(BIT2)); break;
     case IS_MINUS_ZERO: break;
-    default: set_A(negate(BIT2)); break; /* TCF +2: "YES" */
     }
     ad_at(ADDRESS_OF(COMPNUMB));
     for (;;) { /* LDLOOP72 */

@@ -248,8 +248,9 @@ void chexerr(void)
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: readrdot(); return;
     case IS_PLUS_ZERO: erexit1(); return;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled();
+    /* (never: a masked bit. EREXIT1's TS MPAC; and its TC OUT22.1.) */
+    case NEGATIVE: continue_at(EREXIT1 + 1u); return;
+    case IS_MINUS_ZERO: continue_at(EREXIT1 + 2u); return; /* never */
     }
 }
 

@@ -46,8 +46,9 @@ const struct interpretive_code EXGSUB_CODE = {031u, EXGSUB + 1u, COUNT(exgsub_wo
  * still to run, GUIDSUB again; then, with the ignition algorithm's loop
  * count NIGNLOOP not +0, on to DDUMCALC (POSTJUMP); at +0, alarm 1412 first.
  * The CCSs follow the listing's words: NGUIDSUB negative goes on at the TCF
- * +3, -0 at the alarm. Not modelled: NIGNLOOP negative (the alarm's code
- * would run as an instruction). */
+ * +3, -0 at the alarm. NIGNLOOP negative: the alarm's code would run as
+ * the instruction TC 1412, and the listing's lines do not say what erasable
+ * word 1412 holds then. */
 void exgsub_after_exit(void)
 {
     switch (ccs_at(ADDRESS_OF(NGUIDSUB))) {
@@ -57,10 +58,14 @@ void exgsub_after_exit(void)
     case IS_MINUS_ZERO: tc_to(EXGSUB + 015u, ALARM); return;
     }
     switch (ccs_at(ADDRESS_OF(NIGNLOOP))) {
-    case POSITIVE:
-    case IS_MINUS_ZERO: exgsub_postjump(); return;
+    case POSITIVE: exgsub_postjump(); return;               /* TCF +3 */
     case IS_PLUS_ZERO: tc_to(EXGSUB + 015u, ALARM); return; /* OCT 01412 */
-    case NEGATIVE: not_modelled();
+    case NEGATIVE:
+        /* (never: NIGNLOOP is the 40 of P63's SSP, then what this CCS left of it) */
+        tc_at(EXGSUB + 016u); /* OCT 01412, run as TC 1412 */
+        not_modelled();
+        return;
+    case IS_MINUS_ZERO: exgsub_postjump(); return;
     }
 }
 
@@ -163,8 +168,10 @@ void unwcloop(void)
             incr(BBANK_ADDRESS);
             steer();
             return;
-        case NEGATIVE:
-        case IS_MINUS_ZERO: not_modelled();
+        /* (never: Q is a count masked with SIX. Negative would skip the INCR BBANK,
+         * and -0 STEER?'s first word too.) */
+        case NEGATIVE: steer(); return;
+        case IS_MINUS_ZERO: continue_at(STEER_Q + 1u); return; /* never */
         }
     }
 }

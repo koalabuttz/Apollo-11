@@ -78,9 +78,13 @@ void rateloop(void)
         }
         ads(indexed(ADDRESS_OF(DOWNTORK), Q)); /* STORTORK */
         switch (ccs_at(ADDRESS_OF(DAPTEMP6))) {
-        case POSITIVE: break;                   /* TCF RATELOOP +1, A the next axis */
-        case IS_PLUS_ZERO: more = false; break; /* TCF ROTORQUE */
-        default: not_modelled(); return;        /* DAPTEMP6 is never negative */
+        case POSITIVE: break; /* TCF RATELOOP +1, A the next axis */
+        case IS_PLUS_ZERO:
+            more = false; /* TCF ROTORQUE */
+            break;
+        /* (never: DAPTEMP6 counts 2, 1, 0. The next words are SMALLTJU's.) */
+        case NEGATIVE: continue_at(SMALLTJU); return;
+        case IS_MINUS_ZERO: continue_at(SMALLTJU + 1u); return; /* never */
         }
     }
     ca(ADDRESS_OF(DAPTEMP2)); /* ROTORQUE */

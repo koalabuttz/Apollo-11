@@ -160,10 +160,10 @@ void killclok(void)
 /* CLOKJOB: TTOGO, TIME2 - TIG, then the display DISPDEX picks: DISPNOT
  * -n for a DISPDEX of -n (INDEX A; TCF DISPNOT -1 after CCS and COM). A
  * positive or +0 DISPDEX, which a task or a higher priority job set since
- * the last CLOKTASK, ends the job. Not modelled: a -0 DISPDEX ("DISPDEX
- * MUST NEVER BE -0") and a negative one that picks no display (the file
- * stores -CNTDNDEX, -VB97DEX, -VB99DEX and -BLANKDEX; -25 is a display's
- * too). -- p. 744 */
+ * the last CLOKTASK, ends the job. Not modelled: a DISPDEX that picks no
+ * display. One is -0, which skips the COM and picks DISPNOT -1 ("DISPDEX
+ * MUST NEVER BE -0"); the others are negative (the file stores -CNTDNDEX,
+ * -VB97DEX, -VB99DEX and -BLANKDEX; -25 is a display's too). -- p. 744 */
 void clokjob(void)
 {
     word display;
@@ -176,10 +176,9 @@ void clokjob(void)
     switch (ccs_at(ADDRESS_OF(DISPDEX))) {
     case POSITIVE:
     case IS_PLUS_ZERO: continue_at(ENDOFJOB); return;
-    case NEGATIVE: break;
-    case IS_MINUS_ZERO: not_modelled(); break;
+    case NEGATIVE: com(); break;
+    case IS_MINUS_ZERO: break; /* on at the RELINT, A +0: DISPNOT -1, no display */
     }
-    com();
     relint();
     display = (word)indexed(DISPNOT - 1u, a_word());
     if (display != DISPNOT - 035u && display != DISPNOT - 025u && display != DISPNOT - 017u &&
@@ -475,7 +474,12 @@ void ignite(void)
         inhint();
         tc_to(IGNITE + 6u, TWIDDLE); /* ADRES IGNITION */
         break;
-    default: not_modelled();
+    /* (never: a masked bit. Negative would skip the CAF BIT1, and -0 the INHINT too.) */
+    case NEGATIVE:
+        inhint();
+        tc_to(IGNITE + 6u, TWIDDLE);
+        break;
+    case IS_MINUS_ZERO: tc_to(IGNITE + 6u, TWIDDLE); break; /* never */
     }
 }
 
@@ -573,10 +577,13 @@ void p40a_p_after_gpn_auto(void)
     }
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: goback(); return;
-    case IS_PLUS_ZERO: break;
-    default: not_modelled();
+    case IS_PLUS_ZERO: set_A(BIT5); break; /* "YES, CHECK FOR AUTOTHROTTLE MODE" */
+    case NEGATIVE: break;                  /* never: a masked bit, or what a CCS left */
+    case IS_MINUS_ZERO:                    /* never: the RAND CHAN30, not extended, is TC 2030 */
+        tc_at(P40A_P + 012u);
+        continue_at(02030u);
+        return;
     }
-    set_A(BIT5); /* "YES, CHECK FOR AUTOTHROTTLE MODE" */
     rand_channel(ADDRESS_OF(CHAN30));
     if (A_is_zero()) { /* EXTEND; BZF GOBACK */
         goback();

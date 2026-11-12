@@ -117,13 +117,15 @@ static void r29dvbeg(void)
         /* R29DVEND: "BRANCH TO CONTINUE VECTOR LOOP." */
         switch (ccs_at(Q_ADDRESS)) {
         case POSITIVE: continue;
-        case IS_PLUS_ZERO: break;
-        default: not_modelled();
+        case IS_PLUS_ZERO:
+            dxch(ADDRESS_OF(MPAC) + 1u); /* fall through */
+        /* (Q counts 4, 2, 0: never negative, which would skip the DXCH MPAC +1, or -0,
+         * the DXCH MPAC too.) */
+        case NEGATIVE: dxch(ADDRESS_OF(MPAC)); /* fall through */
+        case IS_MINUS_ZERO: break;
         }
         break;
     }
-    dxch(ADDRESS_OF(MPAC) + 1u);
-    dxch(ADDRESS_OF(MPAC));
     set_A(R29FXLOC); /* "= ADRES INTB15 + -34D" */
     ts(ADDRESS_OF(FIXLOC));
     tc_to(R29DODES + 036u, USPRCADR); /* CADR UNIT */
@@ -152,9 +154,10 @@ void r29dodes_after_unit(void)
 void r29dodes_after_mpacvbuf(void)
 {
     switch (ccs_at(ADDRESS_OF(TANG))) {
+    case POSITIVE: inhint(); break;                   /* TCF +2 */
     case IS_PLUS_ZERO: continue_at(GOTANGLS); return; /* TCF GOTANGLS */
+    case NEGATIVE: inhint(); break;
     case IS_MINUS_ZERO: break;
-    default: inhint(); /* (TCF +2) */
     }
     dca(ADDRESS_OF(CDUT)); /* EXTEND; DCA CDUT */
     dxch(ADDRESS_OF(SAVECDUT));
@@ -228,9 +231,10 @@ static void r29dpas2(void)
 void gotangls_after_axsrt(void)
 {
     switch (ccs_at(ADDRESS_OF(TANG))) {
+    case POSITIVE: inhint(); break;        /* TCF +2 */
     case IS_PLUS_ZERO: r29dpas2(); return; /* TCF R29DPAS2 */
+    case NEGATIVE: inhint(); break;
     case IS_MINUS_ZERO: break;
-    default: inhint(); /* (TCF +2) */
     }
     ts(ADDRESS_OF(TANG)); /* "INDICATE 2ND PASS THRU VECTOR LOOP." */
     ca(ADDRESS_OF(SAVECDUT));
@@ -289,7 +293,9 @@ void gotangls_after_cos_s(void)
     case POSITIVE: set_A(BIT14); break;
     case IS_PLUS_ZERO:
     case NEGATIVE: break; /* (NOOP; A +0) */
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO: /* never: the DAS leaves +1, +0 or -1. WOR CHAN12, not extended: TC 5012 */
+        continue_at(05012u);
+        return;
     }
     wor_channel(CHAN12); /* "IF PLUS OVERFLOW, SET SELFTRACK ENABLE." */
     relint();
@@ -328,7 +334,10 @@ void r29lokon(void)
         break;
     case IS_PLUS_ZERO: ad(ONE_SEC); break; /* "0 + 100D = 100D." */
     case NEGATIVE: break;
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO:
+        /* never: while the servicer runs PIPCTR is R10's count, the SEVEN of READACCS and then
+         * what R10,R11's CCS left of it. The next word is an address word, 2CADR R29READ. */
+        not_modelled();
     }
     tc_to(R29LOKON + 013u, WAITLIST); /* 2CADR R29READ */
 }

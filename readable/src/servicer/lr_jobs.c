@@ -58,17 +58,20 @@ void lrvjob_bad_exit(void)
  * one). Else, interrupts held, "GOOD RETURN -- STOW AWAY VMEAS" (SAMPLSUM);
  * "FOR DOWNLINK" (E bank 4) the reading's time and CDUs (LRVTIMDL, LRXCDUDL,
  * LRZCDUDL); "SET BIT TO INDICATE VELOCITY" "MEASUREMENT MADE" (VELDABIT),
- * and ENDLRV. (A negative STILBADV skips the INHINT; a -0 one, onto the DCA
- * after its EXTEND, is not modelled.) */
+ * and ENDLRV. (A negative STILBADV skips the INHINT; a -0 one the EXTEND
+ * too, and the DCA SAMPLSUM is then CA SAMPLSUM +1.) */
 void lrvjob_good_exit(void)
 {
     switch (ccs_at(ADDRESS_OF(STILBADV))) {
     case POSITIVE: vstilbad(); return;
-    case IS_PLUS_ZERO: inhint(); break;
-    case NEGATIVE: break;
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_PLUS_ZERO: inhint();                     /* fall through */
+    case NEGATIVE: dca(ADDRESS_OF(SAMPLSUM)); break; /* "GOOD RETURN -- STOW AWAY VMEAS" */
+    case IS_MINUS_ZERO:
+        /* The DCA SAMPLSUM, not extended: CA SAMPLSUM +1. STILBADV is TWO (VBAD, SETPOS1), then
+         * what this CCS left of it, so this outcome never comes. */
+        continue_at(LRVJOB + 021u);
+        return;
     }
-    dca(ADDRESS_OF(SAMPLSUM));
     dxch(ADDRESS_OF(VMEAS));
     set_A(EBANK4); /* "FOR DOWNLINK" */
     ts(EBANK_ADDRESS);
@@ -147,17 +150,21 @@ void lrhjob_bad_exit(void)
  * "LRH DATA 1.079 FT/BIT"), and "FOR DOWNLINK" its time (MKTIME) and the
  * CDUs, "CDUY,Z = AIG,AMG" and "CDUX = AOG"; "SET BIT TO INDICATE RANGE"
  * "MEASUREMENT MADE." (RNGEDBIT), and ENDLRH. (A negative STILBADH skips the
- * INHINT; a -0 one, onto the DCA after its EXTEND, is not modelled.) */
+ * INHINT; a -0 one the EXTEND too, and the DCA SAMPLSUM is then CA SAMPLSUM
+ * +1.) */
 void lrhjob_good_exit(void)
 {
     switch (ccs_at(ADDRESS_OF(STILBADH))) {
     case POSITIVE: hstilbad(); return;
-    case IS_PLUS_ZERO: inhint(); break;
-    case NEGATIVE: break;
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_PLUS_ZERO: inhint();                     /* fall through */
+    case NEGATIVE: dca(ADDRESS_OF(SAMPLSUM)); break; /* "GOOD RETURN -- STORE AWAY LRH DATA" */
+    case IS_MINUS_ZERO:
+        /* The DCA SAMPLSUM, not extended: CA SAMPLSUM +1. STILBADH is TWO (HBAD, SETPOS1), then
+         * what this CCS left of it, so this outcome never comes. */
+        continue_at(LRHJOB + 011u);
+        return;
     }
-    dca(ADDRESS_OF(SAMPLSUM)); /* "GOOD RETURN -- STORE AWAY LRH DATA" */
-    dxch(ADDRESS_OF(HMEAS));   /* "LRH DATA 1.079 FT/BIT" */
+    dxch(ADDRESS_OF(HMEAS)); /* "LRH DATA 1.079 FT/BIT" */
     dca(ADDRESS_OF(PIPTIME1));
     dxch(ADDRESS_OF(MKTIME));
     dca(ADDRESS_OF(CDUTEMPY)); /* "CDUY,Z = AIG,AMG" */

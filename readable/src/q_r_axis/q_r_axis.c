@@ -15,14 +15,19 @@ static void tc_q(void)
 /* CCS of a word that is never negative here (a MASK of a positive
  * constant or of a channel bit, POLYTEMP, NUMBERT counting down): whether
  * it was positive (A then one less). Its negative and -0 exits are never
- * taken. */
+ * taken. This one helper stands for that CCS at each place it is used, so
+ * it cannot follow the two: what the listing would run differs with the
+ * place. (make style-check holds each place's mask to a clear sign bit, and
+ * lists the three places with no constant mask: tools/ccs_helpers.py.) */
 static bool ccs_positive(unsigned address)
 {
     switch (ccs_at(address)) {
     case POSITIVE: return true;
     case IS_PLUS_ZERO: return false;
-    default: not_modelled(); return false;
+    case NEGATIVE:
+    case IS_MINUS_ZERO: not_modelled(); /* never; what would run differs with the place */
     }
+    return false;
 }
 
 /* AXISCTR: "0,1 FOR U,V", what INDEX AXISCTR adds. */
@@ -546,9 +551,14 @@ void trygts(void)
         return;
     }
     switch (ccs_at(ADDRESS_OF(ALLOWGTS))) { /* "DOES AOSTASK OK CONTROL FOR GTS?" */
+    case POSITIVE: break;                   /* TCF +2 */
     case IS_PLUS_ZERO: continue_at(RCS); return;
-    case IS_MINUS_ZERO: not_modelled(); return; /* READ CHAN5 without its EXTEND */
-    default: break;
+    case NEGATIVE: break;
+    case IS_MINUS_ZERO: /* the READ CHAN5, not extended, is TC 5: the word in Z would run next */
+        /* (never: the program stores +0 or ONE in ALLOWGTS) */
+        tc_at(TRYGTS + 010u);
+        not_modelled();
+        return;
     }
     read_channel(CHAN5);
     switch (ccs_register(A_ADDRESS)) { /* eight jet bits: never negative */
@@ -558,12 +568,19 @@ void trygts(void)
         set_A(GTSCADR[0]);
         dtcb(GOTOGTS + 2u);
         return;
-    default: not_modelled(); return;
+    /* (never. Negative would skip GOTOGTS's EXTEND: its DCA GTSCADR is then CA of the
+     * 2CADR's second word. And -0 the DCA too.) */
+    case NEGATIVE:
+        set_A(GTSCADR[1]);
+        dtcb(GOTOGTS + 2u);
+        return;
+    case IS_MINUS_ZERO: /* never */ dtcb(GOTOGTS + 2u); return;
     }
     switch (ccs_at(ADDRESS_OF(INGTS))) { /* CHKINGTS */
+    case POSITIVE: inhint(); break;      /* TCF +2 */
     case IS_PLUS_ZERO: continue_at(RCS); return;
+    case NEGATIVE: inhint(); break;
     case IS_MINUS_ZERO: break; /* to TC IBNKCALL, with no INHINT */
-    default: inhint(); break;
     }
     tc_to(CHKINGTS + 4u, IBNKCALL); /* CADR TIMEGMBL */
 }

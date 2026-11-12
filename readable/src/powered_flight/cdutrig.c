@@ -137,8 +137,9 @@ void tr_star_gl_star_star_p_after_cosine(void)
 /* TR*GL**P +026 -- LM p. 1260, CM p. 1366: After SINE: MPAC back as it was
  * ("BRINGING UP PRIOR MPAC TO BE RESTORED"), the sine to SINCDU; then the
  * next angle (CCS TEM3 leaves A one less, which MASK SIX makes the next
- * offset down), or, after the last, back by TEM2. Not modelled: TEM3
- * negative, which TR*GL**P's MASK never leaves. */
+ * offset down), or, after the last, back by TEM2. TEM3 is never negative,
+ * TR*GL**P's MASK leaves none: it would run on into QUICTRIG, the routine
+ * after this one. */
 void tr_star_gl_star_star_p_after_sine(void)
 {
     word to;
@@ -153,6 +154,7 @@ void tr_star_gl_star_star_p_after_sine(void)
         if (to < 010u || to > 07777u) not_modelled();
         tc_through(ADDRESS_OF(TEM2));
         return;
-    default: not_modelled();
+    case NEGATIVE: continue_at(QUICTRIG); return;           /* never */
+    case IS_MINUS_ZERO: continue_at(QUICTRIG + 1u); return; /* never */
     }
 }

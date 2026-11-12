@@ -239,7 +239,8 @@ void eraswak2(void)
  * LOCCTR is the woken job's core set, so wake another ("MAY BE MORE TO WAKE
  * UP"); or -1, none, and the stall area's bits are cleared ("RELEASE STALL
  * AREA"). A +0 (the core set's offset can't be) runs FORTYONE, a constant,
- * and is not modelled; at -0 the CCS skips the CS (in the CM, the INDEX). */
+ * as TC 51, and the listing's lines do not say what erasable word 51 holds
+ * then; at -0 the CCS skips the CS (in the CM, the INDEX). */
 void intwake1_after_jobwake(void)
 {
     switch (ccs_at(ADDRESS_OF(LOCCTR))) {
@@ -250,7 +251,15 @@ void intwake1_after_jobwake(void)
         wake1(); /* TCF WAKE1 */
 #endif
         return;
-    case IS_PLUS_ZERO: not_modelled(); return; /* FORTYONE DEC 41 */
+    case IS_PLUS_ZERO:
+        /* (never: core set 0 is the running job's, awake) FORTYONE (DEC 41), run as TC 51 */
+#if LUMINARY099
+        tc_at(INTWAKE1 + 5u);
+#else
+        tc_at(WAKE1 + 6u);
+#endif
+        not_modelled();
+        return;
     case NEGATIVE:
 #if LUMINARY099
         cs(INTBITAB);

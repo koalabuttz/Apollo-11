@@ -297,9 +297,10 @@ static void lag_angle(void)
         skipped ? ADDRESS_OF(OMEGAPD) : indexed_operand(CCS_CODE | ADDRESS_OF(OMEGAPD), TEM2);
 
     switch (ccs_at(rate)) {
-    case POSITIVE:
+    case POSITIVE: ad(ONE); break; /* TCF +2 */
+    case IS_PLUS_ZERO: break;      /* TCF +2 */
     case NEGATIVE: ad(ONE); break;
-    default: break;
+    case IS_MINUS_ZERO: break;
     }
     mp_at(indexed_operand(MP_CODE | ADDRESS_OF(OMEGAPD), TEM2));
     mp(BIT11);

@@ -199,6 +199,7 @@ static void mkvac(unsigned area)
             return;
         case IS_MINUS_ZERO:
             if (area == VAC_AREAS) {
+                /* (never: a VACnUSE holds its own address, or +0) */
                 tc_at(MKVAC + 014u); /* OCT 01207, run as TC 1207 */
                 not_modelled();
                 return;
@@ -783,6 +784,7 @@ void markrupt_after_resume(void)
         continue_at(ALARM);
         return;
     case NEGATIVE:
+        /* (never: no store sets bit 15 of MARKSTAT) */
         tc_at(MARKRUPT + 031u); /* OCT 112, run as TC 112 */
         not_modelled();
         return;
@@ -965,6 +967,7 @@ static void verifymk(void)
     case IS_PLUS_ZERO: vacstor(); return;
     case NEGATIVE: break;
     case IS_MINUS_ZERO:
+        /* (never: a MASK of two words that are not negative leaves +0, not -0) */
         tc_at(VERIFYMK + 6u); /* OCT 114, run as TC 114 */
         not_modelled();
         return;

@@ -157,7 +157,11 @@ void p51c_star(void)
         tc_at(P51C + 012u);
         intpret();
         break;
-    default: not_modelled();
+    case NEGATIVE:
+    case IS_MINUS_ZERO:
+        /* never: STARIND is 0 or 1 at each of its stores. The next words are interpretive words:
+         * VLOAD, STARAD +6. */
+        not_modelled();
     }
 }
 
@@ -184,8 +188,13 @@ void p51d_star(void)
     switch (ccs_at(ADDRESS_OF(STARIND))) {
     case POSITIVE: p51e(); break;                         /* TCF P51E */
     case IS_PLUS_ZERO: tc_to(P51D + 5u, PHASCHNG); break; /* OCT 04024 */
+    case NEGATIVE:
+        /* never: STARIND is 0 or 1 at each of its stores. The OCT 04024 runs as TC 4024: a place
+         * of fixed-fixed memory. */
+        tc_at(P51D + 6u);
+        continue_at(04024u);
+        break;
     case IS_MINUS_ZERO: p51d_planet(); break;
-    default: not_modelled();
     }
 }
 

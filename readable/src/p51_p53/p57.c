@@ -193,7 +193,9 @@ const struct interpretive_code P57AA_TIME_CODE = {015u, P57AA + 7u, COUNT(p57aa_
 /* ---- The option display -- pp. 976-977 ---- */
 
 /* One flag's bit in the display: the flag's bit masked (CCS A: +0 if
- * clear) and, if set, the display's bit, added to OPTION1 +2. */
+ * clear) and, if set, the display's bit, added to OPTION1 +2. (make
+ * style-check holds each flag's bit to a clear sign bit:
+ * tools/ccs_helpers.py.) */
 static void pack_flag(word flag_bit, unsigned flagword, word display_bit)
 {
     set_A(flag_bit);
@@ -201,7 +203,9 @@ static void pack_flag(word flag_bit, unsigned flagword, word display_bit)
     switch (ccs_register(A_ADDRESS)) {
     case POSITIVE: set_A(display_bit); break; /* "SET" */
     case IS_PLUS_ZERO: break;                 /* "CLEAR -- ZERO IN A" */
-    default: not_modelled(); return;
+    case NEGATIVE:
+    case IS_MINUS_ZERO:
+        not_modelled(); /* never: a masked bit; what would run differs with the place */
     }
     ads(ADDRESS_OF(OPTION1) + 2u);
 }
@@ -248,21 +252,29 @@ void dspoptn_proceed(void)
     switch (ccs_register(A_ADDRESS)) {
     case POSITIVE: getlmatt(); return;
     case IS_PLUS_ZERO: break;
-    default: not_modelled(); return;
+    /* (never: a masked bit. Negative would skip the CAF ATTFLBIT, and -0 the MASK too.) */
+    case NEGATIVE: continue_at(DSPOPTN + 013u); return;
+    case IS_MINUS_ZERO: continue_at(DSPOPTN + 014u); return; /* never */
     }
     set_A(ATTFLBIT);
     mask_at(ADDRESS_OF(FLAGWRD6));
     switch (ccs_register(A_ADDRESS)) {
     case POSITIVE: bylmatt(); return;
     case IS_PLUS_ZERO: break;
-    default: not_modelled(); return;
+    /* (never: a masked bit. Negative would skip the CAF BIT2, and -0 the MASK too.) */
+    case NEGATIVE: continue_at(DSPOPTN + 017u); return;
+    case IS_MINUS_ZERO: continue_at(DSPOPTN + 020u); return; /* never */
     }
     set_A(BIT2); /* "SEE IF OPTION 2 OR 3" */
     mask_at(ADDRESS_OF(OPTION2));
     switch (ccs_register(A_ADDRESS)) {
     case POSITIVE: bylmatt(); break; /* "OPTION 2 OR 3 BUT DON'T HAVE ATTITUDE" */
-    case IS_PLUS_ZERO: tc_to(DSPOPTN + 022u, ALARM); break; /* OCT 701 */
-    default: not_modelled();
+    case IS_PLUS_ZERO:
+        tc_to(DSPOPTN + 022u, ALARM); /* OCT 701 */
+        break;
+    /* (never: a masked bit. Negative would run the OCT 701 as TC 701; -0 the CAF VB05N09.) */
+    case NEGATIVE: continue_at(DSPOPTN + 023u); break;
+    case IS_MINUS_ZERO: continue_at(DSPOPTN + 024u); break; /* never */
     }
 }
 
@@ -393,7 +405,9 @@ void bylmatt_after_upflag(void)
     switch (ccs_register(A_ADDRESS)) {
     case POSITIVE: gvdeter(); break; /* TCF GVDETER */
     case IS_PLUS_ZERO: attchk(); break;
-    default: not_modelled();
+    /* (never: a masked bit. Negative would run ATTCHK's OCT 04024 as TC 4024; -0 its CAF.) */
+    case NEGATIVE: continue_at(ATTCHK + 1u); break;
+    case IS_MINUS_ZERO: continue_at(ATTCHK + 2u); break; /* never */
     }
 }
 
@@ -413,7 +427,9 @@ void attchk_after_phaschng(void)
     switch (ccs_register(A_ADDRESS)) {
     case POSITIVE: p57opt0(); break; /* TCF P57OPT0 */
     case IS_PLUS_ZERO: p57jump(); break;
-    default: not_modelled();
+    /* (never: a masked bit. P57JUMP's OCT 04024, run as TC 4024; and its TC DOWNFLAG.) */
+    case NEGATIVE: continue_at(P57JUMP + 1u); break;
+    case IS_MINUS_ZERO: continue_at(P57JUMP + 2u); break; /* never */
     }
 }
 
@@ -548,10 +564,14 @@ void imuchk(void)
 {
     cs(ADDRESS_OF(IMODES30));
     mask(BIT9);
-    switch (ccs_register(A_ADDRESS)) {                   /* "IS IMU ON" */
-    case POSITIVE: tc_to(IMUCHK + 7u, UPFLAG); break;    /* ADRES IMUSE */
-    case IS_PLUS_ZERO: tc_to(IMUCHK + 4u, ALARM); break; /* OCT 210 */
-    default: not_modelled();
+    switch (ccs_register(A_ADDRESS)) {                /* "IS IMU ON" */
+    case POSITIVE: tc_to(IMUCHK + 7u, UPFLAG); break; /* ADRES IMUSE */
+    case IS_PLUS_ZERO:
+        tc_to(IMUCHK + 4u, ALARM); /* OCT 210 */
+        break;
+    /* (never: a masked bit. Negative would run the OCT 210 as TC 210; -0 the TC GOTOPOOH.) */
+    case NEGATIVE: continue_at(IMUCHK + 5u); break;
+    case IS_MINUS_ZERO: continue_at(IMUCHK + 6u); break; /* never */
     }
 }
 
