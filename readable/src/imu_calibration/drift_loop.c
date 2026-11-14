@@ -181,8 +181,8 @@ void finetime_plus1(void)
     read_channel(LOSCALAR);
     ts(L_ADDRESS);
     rxor_channel(LOSCALAR);
-    if (!A_is_zero()) { /* EXTEND; BZF +4 */
-        read_channel(LOSCALAR);
+    if (!A_is_zero()) {         /* EXTEND; BZF +4 */
+        read_channel(LOSCALAR); /* (never in these runs: the two reads above give one word) */
         ts(L_ADDRESS);
     }
     set_A(negate(POSMAX)); /* +4: CS POSMAX; AD L */
@@ -778,6 +778,7 @@ const struct interpretive_code NORMLOP_CODE = {033u, NORMLOP + 1u, COUNT(normlop
 /* SOMEERRR -- p. 442. Alarm 1600, "OVERFLOW IN DRIFT TEST" (p. 432). */
 void someerrr(void)
 {
+    /* (never run: no word of Comanche055 names SOMEERRR) */
     tc_at(SOMEERRR);
     continue_at(ALARM); /* OCT 1600 */
 }

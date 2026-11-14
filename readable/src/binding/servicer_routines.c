@@ -83,26 +83,24 @@ static word rope_word(unsigned physical)
     return (word)(value & MINUS_ZERO);
 }
 
-/* The file's channels: 11 (DSALMOUT), 12, 32 and 33. */
-static agc_word *channel(unsigned number)
+/* The channels the file reads: 12, 32 and 33. */
+static word channel_in(unsigned number)
 {
     switch (number) {
-    case 011u: return &io_record->chan11;
-    case 012u: return &io_record->chan12;
-    case 032u: return &io_record->chan32;
-    case 033u: return &io_record->chan33;
-    default: not_modelled(); return NULL;
+    case 012u: return io_record->chan12;
+    case 032u: return io_record->chan32;
+    case 033u: return io_record->chan33;
+    default: not_modelled(); return 0;
     }
 }
 
-static word channel_in(unsigned number)
-{
-    return *channel(number);
-}
-
+/* It writes none but channel 11, DSALMOUT, which the machine has by its
+ * own name (bind(), below). */
 static void channel_out(unsigned number, word value)
 {
-    *channel(number) = (agc_word)value;
+    (void)number;
+    (void)value;
+    not_modelled();
 }
 
 static void bind(const agc_native_program *program, apollo_overlay_state *state, lm_sv_io *io)

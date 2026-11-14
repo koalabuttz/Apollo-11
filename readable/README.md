@@ -418,7 +418,9 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    (the port's own fuzz generator, 20,000 programs per seed, 40 seeds per
    mission), pass by pass, and compares memory and channels word for word;
    it leaves out the operands no assembled program has (the test's header
-   lists them), but still compares MPAC, which flight code names. After
+   lists them), but still compares MPAC, which flight code names. One
+   program in 16 is entered at SWRETURN, as an RTB's routine leaves it,
+   with RTB's return in BUF2. After
    the random programs come the shift orders, made on purpose (the
    test's `shifts`): each of the sixteen short shifts, and the general
    shift on every address word YUL can make of a count of 0 to 127, a
@@ -518,7 +520,10 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    the port's 2,304 cases, and 4,096 states at each of the 48 entries of
    both missions) and for the LM's interpretive words of those verbs (its
    55 words checked against the rope, 41 oracle rows, the port's 1,856
-   cases, and 4,096 states at each of the 29 entries) and for the CM's
+   cases, and 4,096 states at each of the 29 entries; and TC INTPRET from
+   the file's basic code, the binding's table of one key that the flight
+   program names and the interpreter's own table answers first, beside
+   the port's from 4,096 states) and for the CM's
    whole file, readable against the faithful port's compiled copy of it
    (its 35 interpretive words checked against the rope, the port's 5,864
    frozen cases of the file, each run to its stop, those cases stirred
@@ -908,7 +913,10 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    rope, then every key against the faithful tables' (each must run a
    readable routine); then readable and faithful side by side, each key
    from 4,096 states, with OPTION2, DSPTEM1, TIME2, MODREG, the flag words,
-   the vectors and times and NEWJOB stirred, and the same per-key floor.
+   the vectors and times and NEWJOB stirred, and the same per-key floor;
+   and RDCDUS by itself, the binding's table of one key for a pass that
+   ends at an RTB to it (the RTB routines' own table answers that key
+   first in the flight program), the same way.
    `make cm-p51-p53-cases` does the same for the CM's P51-P53: the same
    frozen cases through the readable CM tables, then tests/cm_p51_cases.c
    side by side, each key from 4,096 states (each must run a readable
@@ -983,7 +991,9 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    MASSPROP or FIXCW, which the faithful port runs on at after the TC Q);
    each side runs in a child process with 20 ms of its own processor time
    to finish, and a state where the AGC's loop never ends must loop on
-   both sides; each key must run a readable routine.
+   both sides; each key must run a readable routine. (A child ends by
+   exit(), not _exit(), so that a build for line coverage writes the
+   lines the child ran.)
    `make cm-tvc-restarts-cases` runs the CM's TVCRESTARTS: the port's test
    (its frozen cases, each run to its stop against yaAGC digests) through
    the readable table, then tests/cm_tvc_restarts_cases.c: readable and
@@ -1374,7 +1384,15 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    flight, where no faithful routine stands behind the readable one.
    pin-noun-z points each display verb's read of a noun at the Z
    register (tests/pinball_noun_z_cases.c), against Virtual AGC and
-   step for step.
+   step for step. pin-edges takes three ways through Pinball that the
+   suites before it leave out (tests/pinball_edge_cases.c: a degrees
+   display of a zero and of the ends of its scale, a time display from
+   59 minutes 58.5 seconds up, a load into a channel), 90 chains against
+   Virtual AGC. Last, the binding's table for MPAC +3 after an operator's
+   request (verbs 30 and 31: the TC ENDOFJOB that REQUESTC leaves there),
+   which those tests do not enter since they run the port's tables,
+   beside the port's own from 4,096 states of each mission
+   (tests/pinball_request_cases.c).
    The step check is relative to the faithful port, not independent of
    it: Pinball's stop table comes from the faithful trampoline's steps
    (the tests link it beside the readable one). What a chain computes
@@ -1417,20 +1435,29 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    src/agc/agc.h, for a word that is never negative: it follows the
    positive and the +0 outcome and refuses the other two.
    (`pack_flag()` of src/p51_p53/p57.c is the same for two flags.)
-   tools/ccs_helpers.py finds every call of the two (325) and holds each
-   to that premise, one of two ways. 257 are a CCS of A after a mask by
-   a constant: the C compiler checks, by a static assert under the
-   mission that compiles the call, that the mask has a clear sign bit.
-   The other 68 (a count that runs down to +0, a major mode, an A whose
-   mask is not one constant) have a comment at the call in one form,
-   `CCS SPNDX, never negative:` and a reason, and the script holds the
-   comment to that form, to the word of the call and to a reason of
-   three words. In 20 of them the reason names the constants the word
-   was masked with, and those get the static assert too (297 asserts in
-   all). The other 48 rest on the reason alone, which a person reads
-   (`tools/ccs_helpers.py --list` prints every call with its mask or
-   its reason). The style check lets no other function refuse in the
-   helpers' words, so a new helper has to be named to both.
+   tools/ccs_helpers.py finds every call of the two (325: 323 of
+   `ccs_positive()` and 2 of `pack_flag()`) and holds each to that
+   premise, one of two ways. 257 are a CCS of A after a mask by a
+   constant: the C compiler checks, by a static assert under the
+   mission that compiles the call, that the mask has a clear sign bit
+   (an exchange with A itself between the mask and the CCS, `lxch` or
+   `qxch` of A, breaks that proof). The other 68 (a count that runs
+   down to +0, a major mode, an A whose mask is not one constant) have
+   a comment at the call in one form, `CCS SPNDX, never negative:` and
+   a reason, and the script holds the comment to that form, to the word
+   of the call and to a reason of three words. "Never negative" there
+   stands for both outcomes the helper refuses, negative and -0: the
+   reason has to rule out both, and the form does not hold it to that.
+   All 68 rest on the reason, which a person reads against the listing.
+   In 20 of them the reason names the constants the word was masked
+   with, and the script asserts those too (297 asserts in all): that
+   holds the names in the comment to a clear sign bit, not the code at
+   the call to the comment (`tools/ccs_helpers.py --list` prints every
+   call with its mask or its reason). The style check lets no other
+   function refuse in the helpers' words, so a new helper has to be
+   named to both; and it holds src/agc and src/binding to the rule as
+   well, where only the CCS's own definitions and a binding's tests of
+   a state's sign (`sign_of()`, which is no CCS) are let be.
    "Owes nothing" is still said of what the script sees. It does not
    see whether a reason is right: it holds a reason to its form and to
    three words, so three words that say nothing pass. It does not
@@ -1440,9 +1467,14 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    leave (a channel's number in octal, decimal or hexadecimal, an
    offset with or without its `u`, the wording in any case of letters
    and over a comment's lines), not every spelling C allows: a number
-   behind a macro of the file's own is not seen. And
-   tools/ccs_helpers.py, where a function begins before a mask is
-   found, follows the function's callers only in its own file.
+   behind a macro of the file's own is not seen. A CCS kept in a
+   variable that is no `enum sign` (`int s = ccs_at(X);`) is not
+   followed. The ledger's key (rule, file, function, the line's text
+   and its number among equal lines) would take a new break for an old
+   one of the same text in the same function, and names a function only
+   by the return types the tree uses. And tools/ccs_helpers.py, where a
+   function begins before a mask is found, follows the function's
+   callers only in its own file.
    `make style-check` also holds each function's header to the
    listing page of the word the function stands at
    (tools/header_pages.py): the page is read from the assembled listing
@@ -1606,9 +1638,9 @@ builds the x86 flight program the same way and flies gate 2's 86
 scenarios. Each program that ran left its counts, and a line of `src/` is
 run if any of them ran it. What is counted is every line the build
 compiled, in a program that ran or not: each compile leaves the lines of
-its object, and a line no program holds counts as unrun. Of the 60,508
-lines of C with code in them, 1,745 (2.9%) are run by none, in 695
-stretches of 227 files. That is a figure for the C alone: interpretive
+its object, and a line no program holds counts as unrun. Of the 60,368
+lines of C with code in them, 1,546 (2.6%) are run by none, in 643
+stretches of 223 files. That is a figure for the C alone: interpretive
 code is tables of words, and none of its words is among those lines
 (below).
 
@@ -1632,22 +1664,22 @@ whose reason does not stand. A stretch is known by its file, its function
 and its text, so an edit elsewhere in a file does not move it. `make all`
 tries the check itself on made-up measures and ledgers, and each part of
 the measure on made-up data (`line-coverage-check`), with no build. Each
-reason is one of five kinds. The ledger says what each means, and the
+reason is one of four kinds. The ledger says what each means, and the
 check holds each stretch to its kind's rule:
 
-- **refusal** (770 lines): how a binding refuses a state its routines do
+- **refusal** (798 lines): how a binding refuses a state its routines do
   not model. No case's state and no scenario makes those files refuse.
   Outside `src/binding` only a `not_modelled()` may say this, with the
   reason: a state that can come, though no line of the program brings
   it, only a word keyed in by hand. There is one, ALFLT with a keyed -0
   in GEOCOMPS, where the listing would run an address word.
-- **not-modelled** (93 lines): the source marks the line
+- **not-modelled** (99 lines): the source marks the line
   `not_modelled()`, an outcome that cannot come there. The stretch must
   hold the call.
-- **impossible** (293 lines): no state brings the routine to the line,
+- **impossible** (491 lines): no state brings the routine to the line,
   and the reason says what in the routine's own lines, or its file's,
   rules the outcome out. An argument, not a run. The reason must say why.
-- **never** (85 lines): no program brings the state, though the routine's
+- **never** (158 lines): no program brings the state, though the routine's
   own lines do not rule it out. The reason rests on what the rest of the
   program stores there or on what the assembler makes, and says what was
   looked at. The comment at the line must say never, and the reason why.
@@ -1657,9 +1689,20 @@ check holds each stretch to its kind's rule:
   negative of a sine there, which can be -0, and a core set is not
   cleared for its next job), so no line of the interpreter rules it out
   and no check proves it of every entry.
-- **open** (504 lines, 195 stretches): not looked at yet. Each is owed a
-  case that runs it or the reason none can, and the count is in the
-  ledger's head.
+
+No stretch is without one of those. The ledger had a fifth kind, open,
+for a stretch not looked at yet (195 of them at the last count); the
+closing pass gave each a case that runs it or its reason, and the check
+has no such kind now: a new unrun stretch fails it until a case runs the
+lines or the ledger says why none can. About fifty of the 195 are
+stretches no more. About half of those were helpers in the bindings that
+nothing called, which are taken out; the others run now, through states
+planted in the cases that were there and through new side by side cases.
+Two of the new states showed the readable code apart from the
+faithful port (an overflow at SETRRCTR's TS, which the routine refused,
+and L's sign after the TC at MPAC +3 in the binding of Pinball's
+requests); both follow it now. The rest of the 195 are arguments, and an
+argument is not a run: nothing compares those lines.
 
 The unrun lines grew with issue #1334's style parts, and that is what
 those parts are for: a routine that used to refuse an outcome that never
@@ -1694,10 +1737,10 @@ and on one named that has lines now.
 **What this measure leaves out: all interpretive code.** An interpretive
 program is a table of words to the compiler, with no line to run, so the
 measure cannot see which of its words the interpreter ran. `src/` holds
-811 such programs (each a `struct interpretive_code`) in 199 files. 55
-of those files are among the 68 with no line of C at all; the other 144
+821 such programs (each a `struct interpretive_code`) in 200 files. 55
+of those files are among the 68 with no line of C at all; the other 145
 have C lines of their own, which are counted, beside tables that are
-not. So "2.9% unrun" says nothing of the interpretive words, in any
+not. So "2.6% unrun" says nothing of the interpretive words, in any
 file. What holds those programs today is that each table is compared
 with the rope word for word and that the cases and scenarios compare
 what the programs compute. Which words run, and which way each branch

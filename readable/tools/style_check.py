@@ -68,9 +68,11 @@ The rules, each named as the ledger names it:
                     not tested, if (sign). The one test of a CCS is
                     ccs_positive() of src/agc/agc.h, for a word that is
                     never negative; tools/ccs_helpers.py holds each call
-                    of it to that (STYLE.md, Structure). Not asked of
-                    src/agc (the machine) and src/binding (a binding
-                    judges a state in C and runs no CCS).
+                    of it to that (STYLE.md, Structure). Nor is an
+                    outcome put in an order, ccs_at(X) < NEGATIVE. Held
+                    in src/agc and src/binding too; only a binding's own
+                    tests of a state's sign (sign_of(), which is no CCS)
+                    are let be.
   raw-channel       A channel is written by its name, not a bare number,
                     octal, decimal or hexadecimal (STYLE.md, Naming).
   continue-offset   A place inside its own directory that a routine ends
@@ -155,7 +157,9 @@ COMPARED = re.compile(r'[=!]=\s*' + SIGNS + r'|\b' + SIGNS + r'\s*[=!]=')
 # function's argument (the function then has the switch).
 TAKEN = re.compile(r'(?:\bswitch\s*\(|(?<![=!<>])=|\breturn|\b(?!(?:if|while|for)\b)[a-z_]\w*\(|,)\s*$')
 CHOICE = re.compile(r'\?[^;{}]*:\s*$|\?\s*$')                 # ... or one side of a ?: that goes to one
-NO_CCS = ('agc', 'binding')
+# A binding tells states apart by sign_of(), which is no CCS: only its CCS calls are held to the rule.
+NO_SIGN_RULE = ('binding',)
+ORDERED = re.compile(r'[<>]=?\s*' + SIGNS + r'|\b' + SIGNS + r'\s*[<>]=?')  # an outcome put in an order
 # The helpers that are one CCS at several places (tools/ccs_helpers.py holds every call of one to its
 # premise): only in these may a refusal say that what would run differs with the place.
 CCS_HELPERS = ('ccs_positive', 'pack_flag')
@@ -317,31 +321,35 @@ def breaks(file, text, routines=(), labels=()):
                 seen.add(('ccs-not-modelled', line))
                 if not reasoned(*said_at(line_of(mission, found.start()), line), True):
                     out.append(('ccs-not-modelled', line, 'if (' + ' '.join(found.group(1).split()) + ')'))
-    if file.split('/')[0] not in NO_CCS:
-        tests = {line_of(code, found.start()) for found in COMPARED.finditer(code)}
-        for found in CCS_CALL.finditer(code):
-            depth, close = 0, found.end() - 1
-            for close in range(found.end() - 1, len(code)):
-                depth += (code[close] == '(') - (code[close] == ')')
-                if not depth:
-                    break
-            before = code[max(0, code.rfind(';', 0, found.start())):found.start()]
-            if re.match(r'\s*[=!]=', code[close + 1:]) or not (TAKEN.search(before) or CHOICE.search(before)):
-                tests.add(line_of(code, found.start()))
-        for kept in KEPT.finditer(code):
-            # the function the outcome is kept in: from its first line to the next function's
-            first = ([line for line, _ in defined if line <= line_of(code, kept.start())] or [1])[-1]
-            last = ([line for line, _ in defined if line > first] or [len(lines) + 1])[0]
-            begins = len('\n'.join(lines[:first - 1])) + (first > 1)
-            ends = len('\n'.join(lines[:last - 1]))
-            for use in re.finditer(r'\b' + kept.group(1) + r'\b', code[begins:ends]):
-                before, after = code[begins:begins + use.start()].rstrip(), code[begins + use.end():].lstrip()
-                handed = before[-1:] in '(,' and after[:1] in ',)' and \
-                    not re.search(r'\b(?:if|while|for)\s*\($', before)
-                if not (before.endswith('enum sign') or re.match(r'=(?!=)', after) or handed or
-                        before.endswith('return') or re.search(r'(?<![=!<>])=$', before) and after[:1] == ';'):
-                    tests.add(line_of(code, begins + use.start()))
-        out += [('ccs-test', line, ' '.join(lines[line - 1].split())[:72]) for line in tests]
+    signs_held = file.split('/')[0] not in NO_SIGN_RULE
+    tests = {line_of(code, found.start()) for rule in (COMPARED, ORDERED) for found in rule.finditer(code)
+             } if signs_held else set()
+    for found in CCS_CALL.finditer(code):
+        depth, close = 0, found.end() - 1
+        for close in range(found.end() - 1, len(code)):
+            depth += (code[close] == '(') - (code[close] == ')')
+            if not depth:
+                break
+        before = code[max(0, code.rfind(';', 0, found.start())):found.start()]
+        if re.search(r'\benum sign\s*$', before):
+            continue  # the CCS's own definition, or its prototype
+        if re.match(r'\s*(?:[=!]=|[<>])', code[close + 1:]) or \
+                not (TAKEN.search(before) or CHOICE.search(before)):
+            tests.add(line_of(code, found.start()))
+    for kept in KEPT.finditer(code) if signs_held else ():
+        # the function the outcome is kept in: from its first line to the next function's
+        first = ([line for line, _ in defined if line <= line_of(code, kept.start())] or [1])[-1]
+        last = ([line for line, _ in defined if line > first] or [len(lines) + 1])[0]
+        begins = len('\n'.join(lines[:first - 1])) + (first > 1)
+        ends = len('\n'.join(lines[:last - 1]))
+        for use in re.finditer(r'\b' + kept.group(1) + r'\b', code[begins:ends]):
+            before, after = code[begins:begins + use.start()].rstrip(), code[begins + use.end():].lstrip()
+            handed = before[-1:] in '(,' and after[:1] in ',)' and \
+                not re.search(r'\b(?:if|while|for)\s*\($', before)
+            if not (before.endswith('enum sign') or re.match(r'=(?!=)', after) or handed or
+                    before.endswith('return') or re.search(r'(?<![=!<>])=$', before) and after[:1] == ';'):
+                tests.add(line_of(code, begins + use.start()))
+    out += [('ccs-test', line, ' '.join(lines[line - 1].split())[:72]) for line in tests]
     for found in CHANNEL.finditer(code):
         out.append(('raw-channel', line_of(code, found.start()), found.group().strip()))
     for found in CONTINUE.finditer(code):
@@ -579,6 +587,14 @@ def self_check():
         expect(f'a CCS whose outcome goes to a switch ({taken[:32]})', taken + '\n', [])
     expect('a binding\'s test of a sign', 'return sign_of(fetch(X)) == NEGATIVE || first == POSITIVE;\n', [],
            file='binding/x.c')
+    for home in ('agc/x.c', 'binding/x.c'):
+        expect(f'a CCS as a test in {home}', 'if (ccs_at(X) == POSITIVE) a();\n', [('ccs-test', 1)], file=home)
+    expect('a CCS\'s definition and its prototype',
+           'enum sign ccs_at(unsigned address);\nenum sign ccs(word value)\n{\n    return ccs_register(value);\n}\n',
+           [], file='agc/x.c')
+    for ordered in ('g(ccs_at(X) < NEGATIVE);', 'bool b = ccs_at(X) < NEGATIVE;', 'return ccs_at(X) <= IS_PLUS_ZERO;',
+                    'if (kept >= NEGATIVE) a();'):
+        expect(f'an outcome put in an order ({ordered[:28]})', ordered + '\n', [('ccs-test', 1)])
     expect('a refusal behind another test',
            'if (ts(X)) not_modelled();\nif (index > 7u) {\n    not_modelled();\n}\n', [])
     expect('one that says why above its cases\' labels',

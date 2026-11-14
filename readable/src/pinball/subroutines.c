@@ -63,7 +63,7 @@ static void noun_address(void)
 void setncadr(void)
 {
     if (ts(ADDRESS_OF(NOUNCADR))) { /* an overflow skips TS EBANK */
-        noun_address();
+        noun_address();             /* never: no caller brings an overflow */
         return;
     }
     setncadr_plus1();
@@ -72,7 +72,7 @@ void setncadr(void)
 void setncadr_plus1(void)
 {
     if (ts(EBANK_ADDRESS)) { /* an overflow skips MASK LOW8 */
-        ad(OCT1400);
+        ad(OCT1400);         /* never, likewise */
         put_noun_address();
         return;
     }

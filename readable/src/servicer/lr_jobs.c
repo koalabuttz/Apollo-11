@@ -35,7 +35,7 @@ void lrvjob_after_waitlist(void)
         double_A();
         break;
     case NEGATIVE: double_A(); break;
-    case IS_MINUS_ZERO: break;
+    case IS_MINUS_ZERO: break; /* (never: VSELECT is +0, 2 or 1) */
     }
     tc_to(LRVJOB + 010u, BANKCALL); /* CADR LRVEL */
 }
@@ -100,7 +100,7 @@ void endlrv(void)
         ts(ADDRESS_OF(VSELECT));
         break;
     case NEGATIVE: ts(ADDRESS_OF(VSELECT)); break;
-    case IS_MINUS_ZERO: break;
+    case IS_MINUS_ZERO: break; /* (never: VSELECT is +0, 2 or 1) */
     }
     continue_at(ENDOFJOB);
 }

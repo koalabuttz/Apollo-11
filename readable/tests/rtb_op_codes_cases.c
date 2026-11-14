@@ -85,6 +85,15 @@ static unsigned pick(unsigned n)
     return (unsigned)((rnd() >> 6) % n);
 }
 
+/* A stream of its own for states added later, so that the states of the
+ * first stay as they were. */
+static uint32_t later_seed = 1618u;
+static unsigned later(unsigned n)
+{
+    later_seed = later_seed * 1103515245u + 12345u;
+    return (unsigned)((later_seed >> 18) % n);
+}
+
 static uint16_t any_word(void)
 {
     return (uint16_t)(rnd() & 077777u);
@@ -245,6 +254,13 @@ static void state(apollo_overlay_state *s, mission_io *io, agc_hardware *hw, uin
         if (pick(16u) == 0u) {
             w[3] = pick(4u) ? (uint16_t)(pick(8u) << 8) : any_word();
             if (w[3] <= 03400u && !(w[3] & 0377u)) eb = (uint16_t)(w[3] >> 8);
+        }
+        /* Now and then CDUINC's angle and its count cancelling: both +0
+         * (their sum +0), or an angle and its complement (the sum -0). */
+        if (later(16u) == 0u && w[AT(BUF)] >= 010u && w[AT(BUF)] < 01400u) {
+            uint16_t angle = later(2u) ? 0u : (uint16_t)(1u + later(037776u));
+            w[w[AT(BUF)]] = angle;
+            w[0] = angle ? (uint16_t)~angle : 0u;
         }
         /* Now and then a work area the routines do not take. */
         if (pick(64u) == 0u) w[AT(FIXLOC)] = pick(2u) ? (uint16_t)pick(02000u) : any_word();

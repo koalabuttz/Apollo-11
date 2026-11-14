@@ -27,17 +27,10 @@
 #include <setjmp.h>
 #include <stddef.h>
 #include "binding.h"
-#include "rope_image.h"
 #include "../sband_antenna/sband_antenna.h"
 #include "../interpreter/interpreter.h"
 #include "../rtb_op_codes/rtb_op_codes.h"
 #include "../agc/names.h"
-
-#if LUMINARY099
-#define ROPE 0u /* the LM's rope */
-#else
-#define ROPE 1u /* the CM's */
-#endif
 
 /* Bank 42 is FB 32 with the superbank bit; a word's key in it. */
 #define FB_32         064000u
@@ -54,19 +47,9 @@ static void leave(void)
     longjmp(back, 1);
 }
 
-/* The interpreter's fixed operands are the rope's. */
-static word rope_word(unsigned physical)
-{
-    agc_word value = 0;
-
-    if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    return (word)(value & MINUS_ZERO);
-}
-
 static void bind(const agc_native_program *program, apollo_overlay_state *state, mission_io *io)
 {
     bind_machine(program, state, io);
-    agc.fixed_memory = rope_word;
     agc.leave = leave;
 }
 

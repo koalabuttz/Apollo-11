@@ -35,36 +35,42 @@
 #include "lm_downtelemetry.h"
 #include "lm_downtelemetry_data.inc"
 typedef lm_dntm_io dntm_io;
-#define MISSION     "LM"
-#define TABLE       lm_downtelemetry_routines
-#define FAITHFUL    faithful_lm_downtelemetry_routines
-#define DATA        lm_dntm_data
-#define DATA_COUNT  LM_DNTM_DATA_COUNT
-#define LISTS       6u
-#define DODOWNTM    LM_DNTM_DODOWNTM
-#define DNPHASE1    LM_DNTM_DNPHASE1
-#define DNPHASE2    LM_DNTM_DNPHASE2
-#define DNDUMPI     LM_DNTM_DNDUMPI
-#define RESUME      LM_DNTM_RESUME
-#define CONTROL(io) ((io)->control)
-#define CH(io, n)   ((io)->channel##n)
+#define MISSION          "LM"
+#define CENSUS_WORDS     259u /* pointer_census()'s counts, as the ledger quotes them */
+#define CENSUS_POINTERS  42u
+#define CENSUS_SNAPSHOTS 13u
+#define TABLE            lm_downtelemetry_routines
+#define FAITHFUL         faithful_lm_downtelemetry_routines
+#define DATA             lm_dntm_data
+#define DATA_COUNT       LM_DNTM_DATA_COUNT
+#define LISTS            6u
+#define DODOWNTM         LM_DNTM_DODOWNTM
+#define DNPHASE1         LM_DNTM_DNPHASE1
+#define DNPHASE2         LM_DNTM_DNPHASE2
+#define DNDUMPI          LM_DNTM_DNDUMPI
+#define RESUME           LM_DNTM_RESUME
+#define CONTROL(io)      ((io)->control)
+#define CH(io, n)        ((io)->channel##n)
 #else
 #include "cm_downtelemetry.h"
 #include "cm_downtelemetry_data.inc"
 typedef cm_dntm_io dntm_io;
-#define MISSION    "CM"
-#define TABLE      cm_downtelemetry_routines
-#define FAITHFUL   faithful_cm_downtelemetry_routines
-#define DATA       cm_dntm_data
-#define DATA_COUNT CM_DNTM_DATA_COUNT
-#define LISTS      5u
-#define DODOWNTM   CM_DNTM_DODOWNTM
-#define DNPHASE1   CM_DNTM_DNPHASE1
-#define DNPHASE2   CM_DNTM_DNPHASE2
-#define DNDUMPI    CM_DNTM_DNDUMPI
-#define RESUME     CM_DNTM_RESUME
-#define CONTROL(x) ((x)->io)
-#define CH(x, n)   ((x)->io.channel##n)
+#define MISSION          "CM"
+#define CENSUS_WORDS     244u
+#define CENSUS_POINTERS  43u
+#define CENSUS_SNAPSHOTS 20u
+#define TABLE            cm_downtelemetry_routines
+#define FAITHFUL         faithful_cm_downtelemetry_routines
+#define DATA             cm_dntm_data
+#define DATA_COUNT       CM_DNTM_DATA_COUNT
+#define LISTS            5u
+#define DODOWNTM         CM_DNTM_DODOWNTM
+#define DNPHASE1         CM_DNTM_DNPHASE1
+#define DNPHASE2         CM_DNTM_DNPHASE2
+#define DNDUMPI          CM_DNTM_DNDUMPI
+#define RESUME           CM_DNTM_RESUME
+#define CONTROL(x)       ((x)->io)
+#define CH(x, n)         ((x)->io.channel##n)
 #endif
 
 extern const agc_routine_table TABLE, FAITHFUL;
@@ -424,6 +430,15 @@ static void pointer_census(void)
     if (at_zero || with_zero || minus_zero_low) {
         printf("FAIL: a faithful run can come to a zero slot of DODNPTR's CCS or SNAPLOOP's: make "
                "the state (as zero_list_words does) and take the [never] out of the ledger\n");
+        ++failures;
+    }
+    /* The counts the ledger's reasons quote (tests/line_coverage.txt, dodnptr
+     * and snaploop): held to them, so that a reason does not go stale. */
+    if (DATA_COUNT != CENSUS_WORDS || pointers != CENSUS_POINTERS || outside != 1u ||
+        snapshots != CENSUS_SNAPSHOTS || run_out != 0u) {
+        printf("FAIL: the census is not the ledger's (%u words, %u pointers, 1 outside, %u "
+               "snapshots, none run out): write its reasons again\n",
+               CENSUS_WORDS, CENSUS_POINTERS, CENSUS_SNAPSHOTS);
         ++failures;
     }
     printf("downtelemetry-cases %s: of the %u words the faithful routines read, %u pass for a "

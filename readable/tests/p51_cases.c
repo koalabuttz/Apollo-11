@@ -58,6 +58,9 @@ extern const struct interpretive_code P52E_CODE, P52V_CODE, P52W_CODE, P52H_CODE
     P57OPT3_CODE, LSORIENT_CODE;
 extern const agc_routine_table lm_p51_p53_basic, lm_p51_p53_interpretive;
 extern const agc_routine_table faithful_lm_p51_p53_basic, faithful_lm_p51_p53_interpretive;
+/* RDCDUS by itself, the table of one key that a pass ending at an RTB to
+ * it finds (src/binding/p51_routines.c, c64-port/src/lm_p51_p53_rtb_routines.c). */
+extern const agc_routine_table lm_p51_p53_rtb_routines, faithful_lm_p51_p53_rtb_routines;
 bool p51_readable(uint16_t key, bool order_pair);
 
 /* The addresses of the words the routines use. */
@@ -582,6 +585,7 @@ static const struct interpretive_code *const codes[] = {
 int main(int argc, char **argv)
 {
     unsigned i, words = 0, failures = 0, runs = 0, readable_basic = 0, readable_pairs = 0;
+    unsigned rtb_runs = 0, rtb_keys = 0;
 
     if (argc < 3 || !apollo_rope_load(0, argv[1]) || !apollo_rope_load(1, argv[2])) {
         printf("usage: %s ROPE_LM ROPE_CM\n", argv[0]);
@@ -596,6 +600,7 @@ int main(int argc, char **argv)
     failures += tables_differ(&lm_p51_p53_basic, &faithful_lm_p51_p53_basic, "basic");
     failures +=
         tables_differ(&lm_p51_p53_interpretive, &faithful_lm_p51_p53_interpretive, "interpretive");
+    failures += tables_differ(&lm_p51_p53_rtb_routines, &faithful_lm_p51_p53_rtb_routines, "RTB");
     failures += keys_unwritten(&faithful_lm_p51_p53_basic, false);
     failures += keys_unwritten(&faithful_lm_p51_p53_interpretive, true);
     if (failures) {
@@ -605,10 +610,13 @@ int main(int argc, char **argv)
     failures += keys(&lm_p51_p53_basic, &faithful_lm_p51_p53_basic, 0, &runs, &readable_basic);
     failures += keys(&lm_p51_p53_interpretive, &faithful_lm_p51_p53_interpretive, 1, &runs,
                      &readable_pairs);
+    failures +=
+        keys(&lm_p51_p53_rtb_routines, &faithful_lm_p51_p53_rtb_routines, 0, &rtb_runs, &rtb_keys);
     printf("p51-p53-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
-           "pairs) from %u states each, %u run by the faithful routines, %u failures\n",
+           "pairs) from %u states each, %u run by the faithful routines; RDCDUS by itself, %u "
+           "run; %u failures\n",
            words, readable_basic + readable_pairs,
            lm_p51_p53_basic.count + lm_p51_p53_interpretive.count, readable_basic, readable_pairs,
-           CASES, runs, failures);
+           CASES, runs, rtb_runs, failures);
     return failures != 0;
 }

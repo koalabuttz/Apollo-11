@@ -108,6 +108,15 @@ static uint16_t rnd(void)
     return (uint16_t)(seed >> 12);
 }
 
+/* A stream of its own for states added later, so that the states of the
+ * first stay as they were. */
+static uint32_t later_seed = 1729u;
+static unsigned later(unsigned n)
+{
+    later_seed = later_seed * 1103515245u + 12345u;
+    return (unsigned)((later_seed >> 18) % n);
+}
+
 static unsigned words_differ(const struct interpretive_code *code)
 {
     unsigned i, failures = 0;
@@ -322,6 +331,13 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
         if (rnd() % 32u == 0u) w[4] = (uint16_t)(rnd() & 076000u);
         if (rnd() % 32u == 0u) w[INTBIT15_AT] = any_word();
         if (rnd() % 64u == 0u) w[3] = any_word();
+        /* Now and then, in the braking phase, a time to go that is
+         * TCGIBRAK's complement (E7,1642 and E5,1435): CGCALC's CCS A, of
+         * their sum, meets -0. */
+        if (later(32u) == 0u) {
+            w[WCHPHASE_AT] = 0u;
+            w[03642u] = (uint16_t)(~w[02435u] & 077777u);
+        }
         eb = (uint16_t)(w[3] >> 8);
     }
     /* Now and then a work area the routines do not take: a NOVAC job's

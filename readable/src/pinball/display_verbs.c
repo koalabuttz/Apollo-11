@@ -424,7 +424,7 @@ void dspdcend_plus2(void)
     case POSITIVE: tc_at(DSPDCEND + 3u); break;                       /* TC +2 */
     case IS_PLUS_ZERO: tc(DSPDCEND + 4u, ADDRESS_OF(ENTRET)); return; /* TC ENTEXIT */
     case NEGATIVE: break;
-    case IS_MINUS_ZERO: tc(DSPDCEND + 6u, DSPDCPUT); return;
+    case IS_MINUS_ZERO: tc(DSPDCEND + 6u, DSPDCPUT); return; /* never */
     }
     ts(ADDRESS_OF(DECOUNT));
     tc(DSPDCEND + 6u, DSPDCPUT);

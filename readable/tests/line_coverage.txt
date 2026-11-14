@@ -4,22 +4,21 @@
 #
 # Measured with Ubuntu clang version 18.1.3 (1ubuntu1).
 # 422 files hold lines of C to run (406 of the 474 .c files under src/,
-# and 16 headers); 60508 such lines; 1745 of them unrun
-# (2.88%), in 695 stretches of 227 files.
+# and 16 headers); 60368 such lines; 1546 of them unrun
+# (2.56%), in 643 stretches of 223 files.
 # Built and never run: x86-flight-cm-core, x86-flight-lm-core, x86-link-check.
 #
 # These are lines of C only. Interpretive code is tables of words, which
-# hold no line to run: 811 interpretive programs in 199 files of src/
-# (144 of them files with C lines that are counted, the rest among the
+# hold no line to run: 821 interpretive programs in 200 files of src/
+# (145 of them files with C lines that are counted, the rest among the
 # files not counted, below). Which of their words the interpreter ran,
 # this measure does not see.
 #
 # By reason:
-#   impossible: 293 lines in 139 stretches
-#   never: 85 lines in 36 stretches
-#   not-modelled: 93 lines in 36 stretches
-#   open: 504 lines in 195 stretches
-#   refusal: 770 lines in 289 stretches
+#   impossible: 491 lines in 239 stretches
+#   never: 158 lines in 64 stretches
+#   not-modelled: 99 lines in 38 stretches
+#   refusal: 798 lines in 302 stretches
 #
 # Run, and compared with nothing: 77 lines of 74 functions ran
 # and refuse (not_modelled() first on the line). A case or a scenario
@@ -55,8 +54,6 @@
     and its binding refuse the state. One that a case or a scenario does
     bring a routine to is run, and so is in no stretch here, but nothing was
     compared at it: those are listed at the end.
-[open] Not looked at yet: owed a case that runs it, or the reason none can.
-    Item 3 of the validation plan is not done while a stretch says this.
 [refusal] Part of how a binding refuses a state its routines do not model: a
     hook that only refuses (a channel or a fixed-memory address the file's
     routines do not use), the jump out (leave), a key its table does not
@@ -192,10 +189,17 @@ src/aostask/aostask.c
   docktest, lines 197-198 (2 unrun) 83bb6b4f
     | case NEGATIVE: continue_at(DVOVSUB); return;
     | case IS_MINUS_ZERO: continue_at(DVOVSUB + 1u); return; /* never */
-    why: [open]
+    why: [impossible] DOCKTEMP is MPAC +3 of the job, where 1/ACCS itself
+         stored DAPBOOLS masked with CSMDOCKD on the way here (its TS
+         DOCKTEMP, at 20,2465), and none of the lines between, nor DVOVSUB
+         and TIMEGMBL which they call, stores in MPAC +3: the word is the bit
+         or +0.
   inertias, line 388 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] The file's own lines: MPAC +1 is the TWO that F(MASS)
+         loads, what this CCS left of it (1, +0), the +1 or -1 that an
+         overflow at the TS 1JACC leaves for STCTR's TS, or the -1 that
+         JACCUV stores for the last pass: never -0.
   docked_polynomial, lines 443-447 (5 unrun) 08b66601
     | case NEGATIVE: return false;
     | case IS_MINUS_ZERO: /* (never: MASSCTR is 1, then +0) TORQCONS's first word */
@@ -302,25 +306,18 @@ src/binding/ascent_routines.c
     why: [refusal]
 
 src/binding/attitude_maneuver_routines.c
-  leave, lines 49-51 (3 unrun) 389b7f06
+  leave, lines 42-44 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
     | }
     why: [refusal]
-  rope_word, lines 56-61 (5 unrun) f86770db
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  basic, lines 131-134 (4 unrun) f1d421ac
+  basic, lines 113-116 (4 unrun) f1d421ac
     | *state = before;
     | *io = kept;
     | return EXEC_OUT_OF_SCOPE;
     | }
     why: [refusal]
-  interpretive, lines 187-189 (3 unrun) 0d3a7d6b
+  interpretive, lines 169-171 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
@@ -382,11 +379,13 @@ src/binding/cm_entry_dap_routines.c
   channel, line 62 (1 unrun) a8aeb527
     | default: not_modelled(); return NULL;
     why: [refusal]
-  channel_in, lines 67-69 (3 unrun) 60b19c8b
+  channel_in, lines 68-72 (5 unrun) 9b5cc81a
     | {
-    | return (word)*channel(number);
+    | (void)number;
+    | not_modelled();
+    | return 0;
     | }
-    why: [open]
+    why: [refusal]
 
 src/binding/cm_imu_cal_routines.c
   channel_in, lines 74-75 (2 unrun) 3a2338fb
@@ -457,71 +456,65 @@ src/binding/cm_p30_routines.c
     why: [refusal]
 
 src/binding/cm_p32_routines.c
-  leave, lines 48-50 (3 unrun) 389b7f06
+  leave, lines 47-49 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
     | }
     why: [refusal]
-  rope_word, lines 54-59 (5 unrun) e0ee539a
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(1u, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  basic_entry, line 143 (1 unrun) 9ff2bcca
+  basic_entry, line 132 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
-  store_spills, line 214 (1 unrun) 3705a9ac
+  store_spills, line 203 (1 unrun) 3705a9ac
     | a = (a + (~agc.memory[(FIXLOC + ADDRESS_OF(X1) + kind - 1u) & 03777u] & 077777u)) % 077777u;
-    why: [open]
-  basic, lines 249-252 (4 unrun) f1d421ac
+    why: [impossible] The word is the store word a pass of the file begins
+         at, one of the tables of src/p32_p33_cm, and none of their store
+         words has an index (no STORE_AT_X1, STORE_AT_X2 or STORE_X2_D among
+         them): kind is never 1 or 2.
+  basic, lines 238-241 (4 unrun) f1d421ac
     | *state = before;
     | *io = kept;
     | return EXEC_OUT_OF_SCOPE;
     | }
     why: [refusal]
-  loop_back, line 272 (1 unrun) 60864340
+  loop_back, line 261 (1 unrun) 60864340
     | return EXEC_OUT_OF_SCOPE;
     why: [refusal]
-  loop_back, line 274 (1 unrun) 2c4b3848
+  loop_back, line 263 (1 unrun) 2c4b3848
     | return EXEC_OK;
-    why: [open]
-  pair, line 294 (1 unrun) 60864340
+    why: [impossible] Each pass round P33/P73E takes 60MIN, 360,000
+         centiseconds, from the double-precision time in MPAC, which is below
+         2^28 centiseconds, and goes round only while it stays positive:
+         within 746 passes the pair leaves the loop. The limit of 4,096 is
+         the faithful pair's, kept so that the two would agree, and is never
+         met.
+  pair, line 283 (1 unrun) 60864340
     | return EXEC_OUT_OF_SCOPE;
     why: [refusal]
-  pair, lines 301-303 (3 unrun) 0d3a7d6b
+  pair, lines 290-292 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
     why: [refusal]
 
 src/binding/cm_p37_p70_routines.c
-  channel_in, lines 54-58 (5 unrun) 9b5cc81a
+  channel_in, lines 53-57 (5 unrun) 9b5cc81a
     | {
     | (void)number;
     | not_modelled();
     | return 0;
     | }
     why: [refusal]
-  channel_out, lines 61-65 (5 unrun) c19b1059
+  channel_out, lines 60-64 (5 unrun) c19b1059
     | {
     | (void)number;
     | (void)value;
     | not_modelled();
     | }
     why: [refusal]
-  rope_word, lines 70-75 (5 unrun) e0ee539a
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(1u, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  basic_entry, line 171 (1 unrun) 9ff2bcca
+  basic_entry, line 159 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
-  pair, lines 311-314 (4 unrun) f1d421ac
+  pair, lines 299-302 (4 unrun) f1d421ac
     | *state = before;
     | *io = kept;
     | return EXEC_OUT_OF_SCOPE;
@@ -577,78 +570,64 @@ src/binding/cm_p51_routines.c
     why: [refusal]
 
 src/binding/cm_p61_routines.c
-  leave, lines 48-50 (3 unrun) 389b7f06
+  leave, lines 47-49 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
     | }
     why: [refusal]
-  channel_in, lines 54-58 (5 unrun) 9b5cc81a
+  channel_in, lines 53-57 (5 unrun) 9b5cc81a
     | {
     | (void)number;
     | not_modelled();
     | return 0;
     | }
     why: [refusal]
-  channel_out, lines 61-65 (5 unrun) c19b1059
+  channel_out, lines 60-64 (5 unrun) c19b1059
     | {
     | (void)number;
     | (void)value;
     | not_modelled();
     | }
     why: [refusal]
-  rope_word, lines 70-75 (5 unrun) e0ee539a
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(1u, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  basic_entry, line 200 (1 unrun) 9ff2bcca
+  basic_entry, line 188 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
-  run_basic, lines 291-294 (4 unrun) f1d421ac
+  run_basic, lines 279-282 (4 unrun) f1d421ac
     | *state = before;
     | *io = kept;
     | return EXEC_OUT_OF_SCOPE;
     | }
     why: [refusal]
-  pair, lines 347-349 (3 unrun) 0d3a7d6b
+  pair, lines 335-337 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
     why: [refusal]
 
 src/binding/cm_rcs_dap_exec_routines.c
-  leave, lines 43-45 (3 unrun) 389b7f06
+  leave, lines 42-44 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
     | }
     why: [refusal]
-  channel_in, lines 49-53 (5 unrun) fcd01eb7
+  channel_in, lines 48-52 (5 unrun) fcd01eb7
     | {
     | (void)number;
     | not_modelled();
     | return 0u;
     | }
     why: [refusal]
-  channel_out, lines 56-60 (5 unrun) c19b1059
+  channel_out, lines 55-59 (5 unrun) c19b1059
     | {
     | (void)number;
     | (void)value;
     | not_modelled();
     | }
     why: [refusal]
-  rope_word, lines 64-69 (5 unrun) e0ee539a
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(1u, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  basic_entry, line 115 (1 unrun) 9ff2bcca
+  basic_entry, line 104 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
-  run_basic, lines 126-128 (3 unrun) 0615ff78
+  run_basic, lines 115-117 (3 unrun) 0615ff78
     | *state = before;
     | return EXEC_OUT_OF_SCOPE;
     | }
@@ -684,48 +663,34 @@ src/binding/cm_reentry_routines.c
     why: [refusal]
 
 src/binding/cm_servicer_routines.c
-  channel_in, lines 57-61 (5 unrun) 9b5cc81a
+  channel_in, lines 56-60 (5 unrun) 9b5cc81a
     | {
     | (void)number;
     | not_modelled();
     | return 0;
     | }
     why: [refusal]
-  channel_out, lines 64-68 (5 unrun) c19b1059
+  channel_out, lines 63-67 (5 unrun) c19b1059
     | {
     | (void)number;
     | (void)value;
     | not_modelled();
     | }
     why: [refusal]
-  rope_word, lines 73-78 (5 unrun) e0ee539a
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(1u, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  pair, lines 260-262 (3 unrun) 0d3a7d6b
+  pair, lines 248-250 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
     why: [refusal]
 
 src/binding/cm_tpi_search_routines.c
-  rope_word, lines 49-54 (5 unrun) e0ee539a
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(1u, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  basic_entry, line 125 (1 unrun) 9ff2bcca
+  basic_entry, line 114 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
-  code_at, line 160 (1 unrun) 9ff2bcca
+  code_at, line 149 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
-  pair, lines 221-223 (3 unrun) 0d3a7d6b
+  pair, lines 210-212 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
@@ -742,25 +707,18 @@ src/binding/cm_tvc_daps_routines.c
     why: [refusal]
 
 src/binding/cm_tvc_exec_routines.c
-  channel_in, lines 56-57 (2 unrun) 09cf72b4
+  channel_in, lines 55-56 (2 unrun) 09cf72b4
     | not_modelled(); /* the file reads no other channel */
     | return 0;
     why: [refusal]
-  channel_out, lines 62-66 (5 unrun) c19b1059
+  channel_out, lines 61-65 (5 unrun) c19b1059
     | {
     | (void)number;
     | (void)value;
     | not_modelled();
     | }
     why: [refusal]
-  rope_word, lines 70-75 (5 unrun) e0ee539a
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(1u, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  basic_entry, line 129 (1 unrun) 9ff2bcca
+  basic_entry, line 118 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
 
@@ -778,11 +736,6 @@ src/binding/cm_tvc_init_routines.c
     why: [refusal]
 
 src/binding/cm_tvc_massprop_routines.c
-  leave, lines 48-50 (3 unrun) 389b7f06
-    | {
-    | longjmp(back, 1);
-    | }
-    why: [refusal]
   channel_in, lines 54-58 (5 unrun) 9b5cc81a
     | {
     | (void)number;
@@ -795,19 +748,6 @@ src/binding/cm_tvc_massprop_routines.c
     | (void)number;
     | (void)value;
     | not_modelled();
-    | }
-    why: [refusal]
-  basic_sane, line 95 (1 unrun) 3fa97fd8
-    | return false;
-    why: [open]
-  run_on, lines 133-134 (2 unrun) b9317a52
-    | entry->routine();
-    | }
-    why: [open]
-  run_basic, lines 147-150 (4 unrun) f1d421ac
-    | *state = before;
-    | *io = kept;
-    | return EXEC_OUT_OF_SCOPE;
     | }
     why: [refusal]
 
@@ -855,50 +795,43 @@ src/binding/cm_tvc_stroke_routines.c
     why: [refusal]
 
 src/binding/conics_routines.c
-  leave, lines 57-59 (3 unrun) 389b7f06
+  leave, lines 54-56 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
     | }
     why: [refusal]
-  channel_in, lines 63-67 (5 unrun) 9b5cc81a
+  channel_in, lines 60-64 (5 unrun) 9b5cc81a
     | {
     | (void)number;
     | not_modelled();
     | return 0;
     | }
     why: [refusal]
-  channel_out, lines 70-74 (5 unrun) c19b1059
+  channel_out, lines 67-71 (5 unrun) c19b1059
     | {
     | (void)number;
     | (void)value;
     | not_modelled();
     | }
     why: [refusal]
-  rope_word, lines 78-83 (5 unrun) f86770db
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  basic_entry, line 137 (1 unrun) 9ff2bcca
+  basic_entry, line 124 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
-  code_at, line 158 (1 unrun) 9ff2bcca
+  code_at, line 145 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
-  run_basic, lines 252-255 (4 unrun) f1d421ac
+  run_basic, lines 239-242 (4 unrun) f1d421ac
     | *state = before;
     | *io = kept;
     | return EXEC_OUT_OF_SCOPE;
     | }
     why: [refusal]
-  pair, lines 299-301 (3 unrun) 0d3a7d6b
+  pair, lines 286-288 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
     why: [refusal]
-  checkctr_alone, line 372 (1 unrun) 60864340
+  checkctr_alone, line 359 (1 unrun) 60864340
     | return EXEC_OUT_OF_SCOPE;
     why: [refusal]
 
@@ -979,15 +912,6 @@ src/binding/extended_verbs_routines.c
   run_part, line 1301 (1 unrun) 60864340
     | return EXEC_OUT_OF_SCOPE;
     why: [refusal]
-  intpret_from_the_file, lines 1333-1350 (17 unrun) 9e7300a8
-    | {
-    | device_record *record = device;
-    | uint16_t word_after_tc, i;
-    | if (!program || !state || !record) return EXEC_OUT_OF_SCOPE;
-    | memset(&record_channels, 0, sizeof record_channels);
-    | record_channels.superbank = record->control.superbank;
-    | ... (11 more)
-    why: [open]
 
 src/binding/findcduw_routines.c
   channel_in, line 66 (1 unrun) ff46eace
@@ -1031,7 +955,7 @@ src/binding/geometry_routines.c
   run_basic, lines 144-145 (2 unrun) 0e0db687
     | return false;
     | }
-    why: [open]
+    why: [refusal]
   interpretive, lines 233-235 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
@@ -1046,19 +970,12 @@ src/binding/gimbal_lock_routines.c
     why: [refusal]
 
 src/binding/ground_track_routines.c
-  leave, lines 52-54 (3 unrun) 389b7f06
+  leave, lines 49-51 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
     | }
     why: [refusal]
-  rope_word, lines 58-63 (5 unrun) f86770db
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  basic, lines 117-120 (4 unrun) f1d421ac
+  basic, lines 104-107 (4 unrun) f1d421ac
     | *state = before;
     | *io = kept;
     | return EXEC_OUT_OF_SCOPE;
@@ -1080,7 +997,7 @@ src/binding/imu_compensation_routines.c
     why: [refusal]
   as_expected, line 43 (1 unrun) 3fa97fd8
     | return false;
-    why: [open]
+    why: [refusal]
   run, lines 92-95 (4 unrun) 7a9b28f2
     | *state = before;
     | *io = io_before;
@@ -1108,24 +1025,17 @@ src/binding/imu_mode_switching_routines.c
     why: [refusal]
 
 src/binding/imu_performance_routines.c
-  channel_in, lines 72-73 (2 unrun) 3a2338fb
+  channel_in, lines 71-72 (2 unrun) 3a2338fb
     | not_modelled();
     | return 0;
     why: [refusal]
-  channel_out, lines 77-81 (5 unrun) bf595406
+  channel_out, lines 76-80 (5 unrun) bf595406
     | {
     | (void)number;
     | (void)value;
     | not_modelled(); /* the test writes no channel */
     | }
     why: [refusal]
-  rope_word, lines 84-89 (5 unrun) 5db38b7e
-    | {
-    | uint16_t value;
-    | if (physical > 0xFFFFu || !apollo_rope_read(0u, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
 
 src/binding/inflight_align_routines.c
   leave, lines 50-52 (3 unrun) 389b7f06
@@ -1182,7 +1092,7 @@ src/binding/integration_init_routines.c
     why: [refusal]
   move_sane, line 142 (1 unrun) 3fa97fd8
     | return false;
-    why: [open]
+    why: [refusal]
   basic_entry, line 244 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
@@ -1196,39 +1106,37 @@ src/binding/integration_init_routines.c
     why: [refusal]
 
 src/binding/interbank_tables.c
-  fixed_memory, lines 31-33 (3 unrun) 59b504ec
-    | if (!fixed_word_at(program_now, physical, &value) && program_now->fixed_data)
-    | program_now->fixed_data(program_now, (uint16_t)physical, &value);
-    | return value;
-    why: [open]
-  run, line 138 (1 unrun) e07ad122
+  run, line 135 (1 unrun) e07ad122
     | default: return EXEC_OUT_OF_SCOPE;
     why: [refusal]
 
 src/binding/interpreter_basic.c
   as_expected, line 178 (1 unrun) 3fa97fd8
     | return false;
-    why: [open]
+    why: [refusal]
 
 src/binding/interpreter_core.c
-  code_word, line 114 (1 unrun) e51e4b7c
-    | address = 2048u + (address & 07777u) - 04000u;
-    why: [open]
+  code_word, line 114 (1 unrun) 8ff20c92
+    | address = 2048u + (address & 07777u) - 04000u; /* never: no program is in fixed-fixed */
+    why: [never] LOC holds a fixed-fixed address only for interpretive code
+         that stands there, and neither program has any: in the assembled
+         listings of both no TC INTPRET stands at 4000 to 7777 (each line of
+         the two listings was searched by its address), and the interpretive
+         tables of src/ are all of banks 04 to 43. The faithful core has the
+         same line; the passes that tests/interpreter_fuzz.c makes are of one
+         switched bank.
   as_expected, line 147 (1 unrun) 3fa97fd8
     | return false;
-    why: [open]
+    why: [refusal]
   order_taken, line 172 (1 unrun) 3fa97fd8
     | return false;
-    why: [open]
+    why: [refusal]
   run, line 272 (1 unrun) 60864340
     | return EXEC_OUT_OF_SCOPE;
     why: [refusal]
   run, line 274 (1 unrun) 60864340
     | return EXEC_OUT_OF_SCOPE;
     why: [refusal]
-  run, line 298 (1 unrun) 775cc72f
-    | swreturn();
-    why: [open]
   leave, lines 317-319 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
@@ -1271,19 +1179,12 @@ src/binding/keyrupt_routines.c
     why: [refusal]
 
 src/binding/lambert_aimpoint_routines.c
-  leave, lines 41-43 (3 unrun) 389b7f06
+  leave, lines 40-42 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
     | }
     why: [refusal]
-  rope_word, lines 47-52 (5 unrun) 1b47c921
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(0u, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  basic, lines 102-105 (4 unrun) f1d421ac
+  basic, lines 91-94 (4 unrun) f1d421ac
     | *state = before;
     | *io = kept;
     | return EXEC_OUT_OF_SCOPE;
@@ -1320,102 +1221,34 @@ src/binding/lat_long_routines.c
     why: [refusal]
 
 src/binding/llge_routines.c
-  channel_in, lines 75-76 (2 unrun) 88506bd0
-    | case 032u: return inputs_now->channel32;
-    | case 033u: return inputs_now->channel33;
-    why: [open]
-  channel_in, line 80 (1 unrun) ff46eace
+  channel_in, line 79 (1 unrun) ff46eace
     | default: not_modelled(); return 0;
     why: [refusal]
-  basic_entry, line 247 (1 unrun) 9ff2bcca
+  basic_entry, line 246 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
 
 src/binding/lunar_landing_routines.c
-  rope_word, lines 59-64 (5 unrun) 1b47c921
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(0u, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  channel, line 72 (1 unrun) a8aeb527
+  channel, line 62 (1 unrun) a8aeb527
     | default: not_modelled(); return NULL;
     why: [refusal]
-  basic_at, line 150 (1 unrun) 9ff2bcca
+  basic_at, line 139 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
-  code_at, line 167 (1 unrun) 9ff2bcca
+  code_at, line 156 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
 
-src/binding/measurement_inc_routines.c
-  leave, lines 60-62 (3 unrun) 389b7f06
+src/binding/machine.c
+  no_fixed_memory, lines 13-17 (5 unrun) 5b28b2b2
     | {
-    | longjmp(back, 1);
-    | }
-    why: [refusal]
-  channel_in, lines 66-70 (5 unrun) 9b5cc81a
-    | {
-    | (void)number;
+    | (void)physical;
     | not_modelled();
     | return 0;
     | }
     why: [refusal]
-  channel_out, lines 73-77 (5 unrun) c19b1059
-    | {
-    | (void)number;
-    | (void)value;
-    | not_modelled();
-    | }
-    why: [refusal]
-  rope_word, lines 81-86 (5 unrun) f86770db
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  move_sane, line 122 (1 unrun) 3fa97fd8
-    | return false;
-    why: [open]
-  basic_entry, line 148 (1 unrun) 9ff2bcca
-    | return NULL;
-    why: [refusal]
-  code_at, line 162 (1 unrun) 9ff2bcca
-    | return NULL;
-    why: [refusal]
-  basic, lines 214-217 (4 unrun) f1d421ac
-    | *state = before;
-    | *io = kept;
-    | return EXEC_OUT_OF_SCOPE;
-    | }
-    why: [refusal]
-  pair, lines 242-244 (3 unrun) 0d3a7d6b
-    | *state = before;
-    | *io = kept;
-    | }
-    why: [refusal]
-  measurement_inc_readable, lines 250-253 (4 unrun) 1525cab9
-    | {
-    | if (order_pair) return code_at(key / 1024u, (word)(02000u + key % 1024u)) != NULL;
-    | return basic_entry(key) != NULL;
-    | }
-    why: [open]
 
-src/binding/noun_reader_routines.c
-  leave, lines 35-37 (3 unrun) 389b7f06
-    | {
-    | longjmp(back, 1);
-    | }
-    why: [refusal]
-  apollo_noun_reader, lines 89-91 (3 unrun) d0f62799
-    | *state = before;
-    | return false;
-    | }
-    why: [open]
-
-src/binding/orbital_integration_routines.c
+src/binding/measurement_inc_routines.c
   leave, lines 53-55 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
@@ -1435,86 +1268,113 @@ src/binding/orbital_integration_routines.c
     | not_modelled();
     | }
     why: [refusal]
-  rope_word, lines 74-79 (5 unrun) f86770db
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
+  move_sane, line 105 (1 unrun) 3fa97fd8
+    | return false;
+    why: [refusal]
   basic_entry, line 131 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
-  code_at, line 154 (1 unrun) 9ff2bcca
+  code_at, line 145 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
-  basic, lines 195-198 (4 unrun) f1d421ac
+  basic, lines 197-200 (4 unrun) f1d421ac
     | *state = before;
     | *io = kept;
     | return EXEC_OUT_OF_SCOPE;
     | }
     why: [refusal]
-  pair, lines 223-225 (3 unrun) 0d3a7d6b
+  pair, lines 225-227 (3 unrun) 0d3a7d6b
+    | *state = before;
+    | *io = kept;
+    | }
+    why: [refusal]
+
+src/binding/noun_reader_routines.c
+  leave, lines 35-37 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  apollo_noun_reader, lines 89-91 (3 unrun) d0f62799
+    | *state = before;
+    | return false;
+    | }
+    why: [refusal]
+
+src/binding/orbital_integration_routines.c
+  leave, lines 50-52 (3 unrun) 389b7f06
+    | {
+    | longjmp(back, 1);
+    | }
+    why: [refusal]
+  channel_in, lines 56-60 (5 unrun) 9b5cc81a
+    | {
+    | (void)number;
+    | not_modelled();
+    | return 0;
+    | }
+    why: [refusal]
+  channel_out, lines 63-67 (5 unrun) c19b1059
+    | {
+    | (void)number;
+    | (void)value;
+    | not_modelled();
+    | }
+    why: [refusal]
+  basic_entry, line 118 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  code_at, line 141 (1 unrun) 9ff2bcca
+    | return NULL;
+    why: [refusal]
+  basic, lines 182-185 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
+    | }
+    why: [refusal]
+  pair, lines 210-212 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
     why: [refusal]
 
 src/binding/p12_routines.c
-  leave, lines 45-47 (3 unrun) 389b7f06
+  leave, lines 44-46 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
     | }
     why: [refusal]
-  rope_word, lines 51-56 (5 unrun) 1b47c921
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(0u, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  basic_entry, line 125 (1 unrun) 9ff2bcca
+  basic_entry, line 114 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
-  basic, lines 161-164 (4 unrun) f1d421ac
+  basic, lines 150-153 (4 unrun) f1d421ac
     | *state = before;
     | *io = kept;
     | return EXEC_OUT_OF_SCOPE;
     | }
     why: [refusal]
-  pair, lines 206-208 (3 unrun) 0d3a7d6b
+  pair, lines 195-197 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
     why: [refusal]
 
 src/binding/p20_p25_routines.c
-  channel_in, lines 85-87 (3 unrun) 31c02b0f
-    | case 030u: return inputs_now->channel30;
-    | case 031u: return inputs_now->channel31;
-    | case 032u: return inputs_now->channel32;
-    why: [open]
-  channel_in, line 98 (1 unrun) ff46eace
+  channel_in, line 95 (1 unrun) ff46eace
     | default: not_modelled(); return 0;
     why: [refusal]
-  basic_entry, line 705 (1 unrun) 9ff2bcca
+  basic_entry, line 702 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
 
 src/binding/p30_routines.c
-  leave, lines 42-44 (3 unrun) 389b7f06
+  leave, lines 41-43 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
     | }
     why: [refusal]
-  rope_word, lines 48-53 (5 unrun) 1b47c921
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(0u, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  basic, lines 103-106 (4 unrun) f1d421ac
+  basic, lines 92-95 (4 unrun) f1d421ac
     | *state = before;
     | *io = kept;
     | return EXEC_OUT_OF_SCOPE;
@@ -1527,13 +1387,21 @@ src/binding/p32_routines.c
     why: [refusal]
   store_spills, line 221 (1 unrun) 3705a9ac
     | a = (a + (~agc.memory[(FIXLOC + ADDRESS_OF(X1) + kind - 1u) & 03777u] & 077777u)) % 077777u;
-    why: [open]
+    why: [impossible] The word is the store word a pass of the file begins
+         at, one of the tables of src/p32_p35, and none of their store words
+         has an index (no STORE_AT_X1, STORE_AT_X2 or STORE_X2_D among them):
+         kind is never 1 or 2.
   loop_back, line 268 (1 unrun) 60864340
     | return EXEC_OUT_OF_SCOPE;
     why: [refusal]
   loop_back, line 270 (1 unrun) 2c4b3848
     | return EXEC_OK;
-    why: [open]
+    why: [impossible] Each pass round P33/P73E takes 60MIN, 360,000
+         centiseconds, from the double-precision time in MPAC, which is below
+         2^28 centiseconds, and goes round only while it stays positive:
+         within 746 passes the pair leaves the loop. The limit of 4,096 is
+         the faithful pair's, kept so that the two would agree, and is never
+         met.
   pair, lines 296-298 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
@@ -1578,28 +1446,19 @@ src/binding/p51_routines.c
     | not_modelled();
     | }
     why: [refusal]
-  basic_entry, line 367 (1 unrun) 9ff2bcca
-    | return NULL;
-    why: [refusal]
   pair, lines 604-606 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
     why: [refusal]
-  rtb_alone, lines 664-687 (22 unrun) 8ac87a7b
-    | {
-    | apollo_overlay_state before;
-    | p66_bias_io kept;
-    | unsigned i;
-    | if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
-    | bind(program, state, io);
-    | ... (16 more)
-    why: [open]
-  rdcdus_alone, lines 691-693 (3 unrun) 77378d7c
-    | {
-    | return rtb_alone(rdcdus, RDCDUS, I_RDCDUS & 076000u, true, program, state, device);
+  rtb_alone, lines 681-684 (4 unrun) f1d421ac
+    | *state = before;
+    | *io = kept;
+    | return EXEC_OUT_OF_SCOPE;
     | }
-    why: [open]
+    why: [refusal] How the table refuses. Its one routine, RDCDUS, holds no
+         not_modelled(), and the tests above keep its three stores in the VAC
+         areas, so no case of the side by side test comes to these lines.
 
 src/binding/p70_routines.c
   channel_out, lines 84-85 (2 unrun) 57af5f03
@@ -1613,28 +1472,21 @@ src/binding/p70_routines.c
     why: [refusal]
 
 src/binding/p76_routines.c
-  leave, lines 60-62 (3 unrun) 389b7f06
+  leave, lines 54-56 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
     | }
     why: [refusal]
-  rope_word, lines 66-71 (5 unrun) f86770db
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  run, lines 126-129 (4 unrun) 1384b7c3
+  run, lines 109-112 (4 unrun) 1384b7c3
     | *state = before;
     | memcpy(io, &kept, io_size);
     | return EXEC_OUT_OF_SCOPE;
     | }
     why: [refusal]
-  code_at, line 241 (1 unrun) 9ff2bcca
+  code_at, line 224 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
-  pair, lines 264-266 (3 unrun) 0d3a7d6b
+  pair, lines 247-249 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
@@ -1664,15 +1516,6 @@ src/binding/pinball_routines.c
   pinball_step_from_bankcall, line 817 (1 unrun) 60864340
     | return EXEC_OUT_OF_SCOPE;
     why: [refusal]
-  request_return, lines 837-847 (10 unrun) 208d25dd
-    | {
-    | const unsigned mpac3 = ADDRESS_OF(MPAC) + 3u;
-    | (void)p;
-    | (void)device;
-    | if (!state || (state->words[LANEC_Z] & 07777u) != mpac3 || state->words[mpac3] != ENDOFJOB)
-    | return EXEC_OUT_OF_SCOPE;
-    | ... (4 more)
-    why: [open]
 
 src/binding/planetary_routines.c
   interpretive, lines 76-78 (3 unrun) 0d3a7d6b
@@ -1714,25 +1557,18 @@ src/binding/q_r_axis_routines.c
     why: [refusal]
 
 src/binding/r30_routines.c
-  leave, lines 48-50 (3 unrun) 389b7f06
+  leave, lines 45-47 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
     | }
     why: [refusal]
-  rope_word, lines 54-59 (5 unrun) f86770db
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  basic, lines 110-113 (4 unrun) f1d421ac
+  basic, lines 97-100 (4 unrun) f1d421ac
     | *state = before;
     | *io = kept;
     | return EXEC_OUT_OF_SCOPE;
     | }
     why: [refusal]
-  pair, lines 247-249 (3 unrun) 0d3a7d6b
+  pair, lines 234-236 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
@@ -1766,25 +1602,18 @@ src/binding/r60_62_routines.c
     why: [refusal]
 
 src/binding/r63_routines.c
-  leave, lines 42-44 (3 unrun) 389b7f06
+  leave, lines 41-43 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
     | }
     why: [refusal]
-  rope_word, lines 48-53 (5 unrun) 1b47c921
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(0u, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  basic, lines 116-119 (4 unrun) f1d421ac
+  basic, lines 105-108 (4 unrun) f1d421ac
     | *state = before;
     | *io = kept;
     | return EXEC_OUT_OF_SCOPE;
     | }
     why: [refusal]
-  interpretive, lines 171-173 (3 unrun) 0d3a7d6b
+  interpretive, lines 160-162 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
@@ -1802,7 +1631,7 @@ src/binding/rcs_failure_monitor_routines.c
 src/binding/restart_routines.c
   takes, line 82 (1 unrun) 622e3586
     | default: return false;
-    why: [open]
+    why: [refusal]
 
 src/binding/rtb_op_codes_routines.c
   code_at, line 209 (1 unrun) 9ff2bcca
@@ -1827,25 +1656,18 @@ src/binding/rupt_routines.c
     why: [refusal]
 
 src/binding/sband_antenna_routines.c
-  leave, lines 53-55 (3 unrun) 389b7f06
+  leave, lines 46-48 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
     | }
     why: [refusal]
-  rope_word, lines 59-64 (5 unrun) f86770db
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  basic, lines 140-143 (4 unrun) f1d421ac
+  basic, lines 123-126 (4 unrun) f1d421ac
     | *state = before;
     | *io = kept;
     | return EXEC_OUT_OF_SCOPE;
     | }
     why: [refusal]
-  interpretive, lines 182-184 (3 unrun) 0d3a7d6b
+  interpretive, lines 165-167 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
@@ -1870,10 +1692,10 @@ src/binding/self_check_routines.c
 src/binding/service_routines.c
   gentran_call, line 162 (1 unrun) 3fa97fd8
     | return false;
-    why: [open]
+    why: [refusal]
   takes, line 199 (1 unrun) 622e3586
     | default: return false;
-    why: [open]
+    why: [refusal]
   run, line 232 (1 unrun) e07ad122
     | default: return EXEC_OUT_OF_SCOPE;
     why: [refusal]
@@ -1882,20 +1704,22 @@ src/binding/servicer_routines.c
   rope_word, line 82 (1 unrun) 7a17fe30
     | not_modelled();
     why: [refusal]
-  channel, line 90 (1 unrun) af11193e
-    | case 011u: return &io_record->chan11;
-    why: [open]
-  channel, line 94 (1 unrun) a8aeb527
-    | default: not_modelled(); return NULL;
+  channel_in, line 93 (1 unrun) ff46eace
+    | default: not_modelled(); return 0;
     why: [refusal]
-  channel_out, lines 104-106 (3 unrun) 69d05b30
+  channel_out, lines 100-104 (5 unrun) c19b1059
     | {
-    | *channel(number) = (agc_word)value;
+    | (void)number;
+    | (void)value;
+    | not_modelled();
     | }
-    why: [open]
-  store_spills, line 404 (1 unrun) 09afa7d3
+    why: [refusal]
+  store_spills, line 402 (1 unrun) 09afa7d3
     | a = (a + (~agc.memory[(FIXLOC + K_X1 + kind - 1u) & 03777u] & 077777u)) % 077777u;
-    why: [open]
+    why: [impossible] The word is the store word a pass of the file begins
+         at, one of the tables of src/servicer, and none of their store words
+         has an index (no STORE_AT_X1, STORE_AT_X2 or STORE_X2_D among them):
+         kind is never 1 or 2.
 
 src/binding/sp_routines.c
   fixed_memory, line 25 (1 unrun) f3ea7c18
@@ -1924,19 +1748,12 @@ src/binding/sps_backup_routines.c
     why: [refusal]
 
 src/binding/stable_orbit_routines.c
-  rope_word, lines 64-69 (5 unrun) f86770db
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  pair, lines 264-266 (3 unrun) 0d3a7d6b
+  pair, lines 251-253 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
     why: [refusal]
-  pending_dad, lines 294-296 (3 unrun) 0d3a7d6b
+  pending_dad, lines 281-283 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
@@ -1950,7 +1767,7 @@ src/binding/standard_lead_routines.c
     | *state = *before;
     | *(mission_io *)device = *io_before;
     | }
-    why: [open]
+    why: [refusal]
 
 src/binding/sxtmark_routines.c
   fixed_memory, lines 51-55 (5 unrun) 5b28b2b2
@@ -2001,45 +1818,38 @@ src/binding/throttle_routines.c
     why: [refusal]
 
 src/binding/time_free_fall_routines.c
-  leave, lines 49-51 (3 unrun) 389b7f06
+  leave, lines 42-44 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
     | }
     why: [refusal]
-  channel_in, lines 55-59 (5 unrun) 9b5cc81a
+  channel_in, lines 48-52 (5 unrun) 9b5cc81a
     | {
     | (void)number;
     | not_modelled();
     | return 0;
     | }
     why: [refusal]
-  channel_out, lines 62-66 (5 unrun) c19b1059
+  channel_out, lines 55-59 (5 unrun) c19b1059
     | {
     | (void)number;
     | (void)value;
     | not_modelled();
     | }
     why: [refusal]
-  rope_word, lines 70-75 (5 unrun) f86770db
-    | {
-    | agc_word value = 0;
-    | if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    | return (word)(value & MINUS_ZERO);
-    | }
-    why: [open]
-  basic_entry, line 121 (1 unrun) 9ff2bcca
+  basic_entry, line 104 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
-  code_at, line 132 (1 unrun) 9ff2bcca
+  code_at, line 115 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
-  run, lines 189-192 (4 unrun) f1d421ac
+  run, lines 172-175 (4 unrun) f1d421ac
     | *state = before;
     | *io = kept;
     | return EXEC_OUT_OF_SCOPE;
     | }
     why: [refusal]
-  pair, lines 234-236 (3 unrun) 0d3a7d6b
+  pair, lines 217-219 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
@@ -2114,28 +1924,41 @@ src/burn_baby/clock.c
     | tc_to(IGNITE + 6u, TWIDDLE);
     | break;
     | case IS_MINUS_ZERO: tc_to(IGNITE + 6u, TWIDDLE); break; /* never */
-    why: [open]
+    why: [impossible] The routine's own lines: A is a flag word masked with
+         one bit, the bit or +0: never negative or -0.
   p40a_p_after_gpn_auto, lines 581-585 (5 unrun) af734774
     | case NEGATIVE: break;                  /* never: a masked bit, or what a CCS left */
     | case IS_MINUS_ZERO:                    /* never: the RAND CHAN30, not extended, is TC 2030 */
     | tc_at(P40A_P + 012u);
     | continue_at(02030u);
     | return;
-    why: [open]
+    why: [impossible] The first CCS leaves A +0 or positive, and the MASK of
+         APSFLBIT, or of what that CCS left, with FLGWRD10 has no sign bit:
+         the second CCS finds A positive or +0.
 
 src/cm_dap/indexing.c
-  dca_indexed_in, lines 79-82 (4 unrun) 64613eea
-    | set_L(overflow_corrected(A));
+  dca_indexed_in, lines 79-82 (4 unrun) 43312b83
+    | set_L(overflow_corrected(A)); /* never: an index is an axis or twice it */
     | A = sign_extend(fetch(01777u));
     | return;
     | }
-    why: [open]
-  dcs_indexed_in, lines 91-94 (4 unrun) cd68e2d9
-    | set_L(negate(overflow_corrected(A)));
+    why: [never] No index of the CM's autopilots brings the double word's
+         field to 0. The seven indexed DCA and DCS of the two files were
+         read: each is indexed by DPNDX, twice the axis its loop counts (4, 2
+         or 0), or by A as the DOUBLE of SPNDX just left it, on an erasable
+         word of the 1400s. A field of 0 would need an index of minus that
+         address.
+  dcs_indexed_in, lines 91-94 (4 unrun) 95a512e5
+    | set_L(negate(overflow_corrected(A))); /* never, likewise */
     | A = sign_extend(negate(fetch(01777u)));
     | return;
     | }
-    why: [open]
+    why: [never] No index of the CM's autopilots brings the double word's
+         field to 0. The seven indexed DCA and DCS of the two files were
+         read: each is indexed by DPNDX, twice the axis its loop counts (4, 2
+         or 0), or by A as the DOUBLE of SPNDX just left it, on an erasable
+         word of the 1400s. A field of 0 would need an index of minus that
+         address.
 
 src/cm_dap/switching.c
   j8, line 173 (1 unrun) c002bb8c
@@ -2165,7 +1988,8 @@ src/dapidler/dapidler.c
   chekmore, lines 125-126 (2 unrun) e863f365
     | case NEGATIVE: dapidler(); return;
     | case IS_MINUS_ZERO: dapidler_plus1(); return;
-    why: [open]
+    why: [impossible] A is BIT10 masked with channel 30, the CAF and RAND
+         just before: BIT10 or +0.
 
 src/display_interface/endidle.c
   endout, line 175 (1 unrun) c37ec7b1
@@ -2319,11 +2143,6 @@ src/downtelemetry/downtelemetry.c
     why: [impossible] Every way to this CCS ends in MASK PRIO34 (34000): A is
          +0 or positive.
 
-src/entry_dap/cm_rcs.c
-  getlcx, line 109 (1 unrun) 99997b53
-    | case IS_MINUS_ZERO: continue_at(GETLCX + 015u); break;
-    why: [open]
-
 src/entry_dap/dapon.c
   cm_dap2c_jetem, lines 169-175 (4 unrun) c32cd11f
     | case IS_PLUS_ZERO:
@@ -2340,12 +2159,16 @@ src/entry_dap/dapon.c
          is -0), so A is never +0 here.
   cm_dap2c_after_waitlist, line 211 (1 unrun) bcd999b6
     | continue_at(CM_DAP2C + 026u);
-    why: [open]
+    why: [impossible] The MASK leaves a word of 15 bits with CM/FLAGS' sign,
+         and CM/SWIC2 is ten: a negative word and ten do not overflow, and a
+         positive one is at most 21760 octal. The TS never skips.
 
 src/entry_dap/dead_zone.c
   index_a_cs, line 64 (1 unrun) a21108f2
     | cs(at);
-    why: [open]
+    why: [impossible] The helper has one call, TRTAGXPI's INDEX A; CS HALFPR,
+         after a TS that skipped on overflow: A is +1 or -1, and the words on
+         both sides of HALFPR are words of fixed memory.
 
 src/executive/executive.c
   novac2, lines 202-206 (5 unrun) 19b3c054
@@ -2403,18 +2226,12 @@ src/extended_verbs/front.c
          EXTVBACT, masked with OC24100, which has no bit 15; or the +0 that
          CCS left of -0: positive or +0.
 
-src/findcduw/gimbal_angles.c
-  after_lag_angle, line 329 (1 unrun) 72d0b46c
-    | case IS_MINUS_ZERO: tcqcduw_intpret(); break;
-    why: [open]
-
 src/findcduw/subroutines.c
   arctrgsp, line 279 (1 unrun) a33ec75a
     | case IS_PLUS_ZERO: break;
-    why: [open]
-  usecos_after_sparcsin, line 343 (1 unrun) 2194ee9d
-    | case IS_MINUS_ZERO: break; /* TCF 1TO2&TCQ */
-    why: [open]
+    why: [impossible] TEM3 is the cosine, which is also the low half of the
+         dividend, under a high half of +0. A +0 cosine leaves a zero
+         quotient, and the BZF before this CCS has then gone to USECOS.
 
 src/fresh_start/fresh_start.c
   back_into_coarse_align, line 154 (1 unrun) 0039665b
@@ -2472,25 +2289,37 @@ src/fresh_start/v37.c
          negative, never -0.
 
 src/imu_calibration/drift_loop.c
-  finetime_plus1, lines 185-187 (3 unrun) 7a730130
-    | read_channel(LOSCALAR);
+  finetime_plus1, lines 185-187 (3 unrun) d5e679ab
+    | read_channel(LOSCALAR); /* (never in these runs: the two reads above give one word) */
     | ts(L_ADDRESS);
     | }
-    why: [open]
+    why: [never] In the AGC the scaler can move between the two reads, and
+         the computer reaches the line. No run of this program does: the
+         binding latches the scaler for a run (its read of LOSCALAR answers
+         the one word the caller latched), so the two reads agree and the
+         read after them is not taken. The faithful port latches it likewise,
+         so no run of either program meets the line, and nothing compares it.
   loadstdt_plus1, lines 449-450 (2 unrun) ef032f09
     | case NEGATIVE: alloop(); return;
     | case IS_MINUS_ZERO: alloop_plus1(); return;
-    why: [open]
+    why: [impossible] MPAC is the count LOADSTDT loads, DEC25, and then what
+         this CCS left of it: 25 down to +0.
   storedta, lines 475-476 (2 unrun) f2dfc286
     | case NEGATIVE: loadstdt(); return;
     | case IS_MINUS_ZERO: loadstdt_plus1(); return;
-    why: [open]
-  someerrr, lines 780-783 (4 unrun) 166d10fd
+    why: [impossible] MPAC is the DEC25 the routine loads at its first line,
+         and then what this CCS left of it: 25 down to +0.
+  someerrr, lines 780-784 (4 unrun) 12108f0f
     | {
+    | /* (never run: no word of Comanche055 names SOMEERRR) */
     | tc_at(SOMEERRR);
     | continue_at(ALARM); /* OCT 1600 */
     | }
-    why: [open]
+    why: [never] No word of Comanche055 names SOMEERRR: its label at line 833
+         of IMU_CALIBRATION_AND_ALIGNMENT.agc is the only place the name
+         stands (every .agc of the program was searched), so nothing jumps to
+         it, and the faithful port has no routine at its address for a case
+         to run beside it. No faithful run compares the lines.
 
 src/imu_calibration/imu_test.c
   zeroing, lines 698-704 (4 unrun) 1b867cf0
@@ -2507,17 +2336,22 @@ src/imu_calibration/optical_verification.c
   retarg_after_optstall, lines 599-600 (2 unrun) d2911b4c
     | case NEGATIVE: ca(ADDRESS_OF(QPRET)); break;
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] A is FLAGWRD1 masked with TRM03BIT, bit 4, the CA and
+         MASK just before: the bit or +0.
   retarg_after_optstall, lines 602-603 (2 unrun) 1aa86b2d
     | retarg_mark_taken();
     | }
-    why: [open]
+    why: [impossible] Only the CCS's negative and -0 outcomes come here, and
+         A is FLAGWRD1 masked with TRM03BIT, bit 4: the bit or +0.
 
 src/imu_compensation/imu_compensation.c
   another_axis, lines 46-47 (2 unrun) 4ea23f65
     | case IS_PLUS_ZERO: break;
     | case NEGATIVE: break;
-    why: [open]
+    why: [impossible] Each of the file's three loops over the axes stores its
+         counter itself: FOUR, then what this CCS left of it plus NEG1 (4, 2,
+         and the -0 of 1 + NEG1), and no line of a loop's body stores in the
+         counter. The CCS meets a positive word or -0.
   another_axis, lines 50-51 (2 unrun) 3b864e37
     | not_modelled();
     | return false;
@@ -2525,7 +2359,10 @@ src/imu_compensation/imu_compensation.c
   irigcomp, lines 332-333 (2 unrun) 794b2d45
     | case NEGATIVE: set_A(PRIO21); break;
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] The file's own lines: IRIGCOMP stores the +0 it is
+         reached with in GCOMPSW (1/PIPA1's CCS of -0 left it in A), and from
+         there to this CCS only DRFTSUB2 stores there, what its CCS A left of
+         a positive word masked with the complement of ONE: 1 or more.
 
 src/imu_mode_switching/gyro_torquing.c
   gselect, lines 258-262 (3 unrun) 6d1d9852
@@ -2534,12 +2371,15 @@ src/imu_mode_switching/gyro_torquing.c
     | * cannot come here: RUPTREG1 less one is +0 for no RUPTREG1.) */
     | mask(fetch_fixed(ADDRESS_FIELD(MINUS_GYROMIN)));
     | break;
-    why: [open]
+    why: [impossible] A is RUPTREG1 with -1 added, and in ones' complement no
+         word and -1 sum to +0: +1 and -1 leave -0.
 
 src/imu_mode_switching/mode_switching.c
   nextcdu_after_fixdelay, line 302 (1 unrun) a90cb04d
     | case IS_MINUS_ZERO: off = false; break;
-    why: [open]
+    why: [impossible] A is what the MSU just before left, the ones'
+         complement of a two's complement difference: +0 for equal words, and
+         never -0.
 
 src/imu_performance/imu_performance.c
   pipachk_plus2, line 356 (1 unrun) 5454f838
@@ -2555,10 +2395,15 @@ src/imu_performance/imu_performance.c
     | * left of it. The next words are interpretive words: ERTHRVSE's. */
     | not_modelled();
     why: [not-modelled]
-  finetime_plus1, lines 934-935 (2 unrun) a4b1d5ea
-    | finetime_reread();
+  finetime_plus1, lines 934-935 (2 unrun) 0c03ebab
+    | finetime_reread(); /* (never in these runs: the two reads above give one word) */
     | }
-    why: [open]
+    why: [never] In the AGC the scaler can move between the two reads, and
+         the computer reaches the line. No run of this program does: the
+         binding latches the scaler for a run (its read of LOSCALAR answers
+         the one word the caller latched), so the two reads agree and the
+         read after them is not taken. The faithful port latches it likewise,
+         so no run of either program meets the line, and nothing compares it.
   alflt, lines 1091-1095 (3 unrun) b552ed4e
     | case IS_MINUS_ZERO:
     | /* never from the program: no line of it stores GEOCOMPS, which is keyed in for the test.
@@ -2575,21 +2420,18 @@ src/imu_performance/imu_performance.c
          line.
 
 src/integration_init/intstall.c
-  intwake1_after_jobwake, line 257 (1 unrun) c4d4493e
-    | tc_at(INTWAKE1 + 5u);
-    why: [open]
-  intwake1_after_jobwake, line 267 (1 unrun) 0039665b
-    | case IS_MINUS_ZERO: break;
-    why: [open]
   intwake, lines 301-302 (2 unrun) 707235d9
     | case NEGATIVE: ca(ADDRESS_OF(QPRET)); break; /* CA QPRET, unindexed */
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] A is the complement of RASFLAG masked with REINTBIT,
+         bit 7, the CS and MASK just before: the bit or +0.
   intwake, lines 304-306 (3 unrun) 27a83c0b
     | ts(ADDRESS_OF(TBASE2));
     | tc_to((word)(INTWAKE + 7u), PHASCHNG);
     | }
-    why: [open]
+    why: [impossible] Only the CCS's negative and -0 outcomes come here, and
+         A is the complement of RASFLAG masked with REINTBIT, bit 7: the bit
+         or +0.
   intexit_after_exit, line 339 (1 unrun) b3db8cb8
     | not_modelled();            /* (the skip would run RVCON's words) */
     why: [not-modelled]
@@ -2599,11 +2441,6 @@ src/integration_init/moves.c
     | case NEGATIVE:
     | case IS_MINUS_ZERO: not_modelled();
     why: [not-modelled]
-
-src/interbank/interbank.c
-  prio12_as_ccs, line 164 (1 unrun) 0039665b
-    | case IS_MINUS_ZERO: break;
-    why: [open]
 
 src/interpreter/dispatcher.c
   noibnksw, lines 148-152 (5 unrun) d88c187d
@@ -2754,9 +2591,11 @@ src/interpreter/dispatcher.c
          proves of every entry: an order that tests MODE comes after a load
          that set it, and basic code that goes into the interpreter where a
          test comes first sets MODE itself (the landing guidance, the
-         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
-         faithful core does (tests/interpreter_fuzz.c), so there is no
-         faithful run to compare a MODE of -0 with.
+         Servicer). The fuzz keeps MODE to +0, +1 and -1, as the faithful
+         core does (tests/interpreter_fuzz.c), and no case of the basic
+         routines' test, which does make a MODE of -0 now and then
+         (tests/interpreter_side_cases.c), comes to this line: so no faithful
+         run compares a MODE of -0 here.
   indjump, line 509 (1 unrun) 8d701d3a
     | case 015: ccall(); return;  /* computed call (never: no program has the order) */
     why: [never] CCALL: no program has the order (neither mission's listing
@@ -2943,9 +2782,11 @@ src/interpreter/load_store.c
          proves of every entry: an order that tests MODE comes after a load
          that set it, and basic code that goes into the interpreter where a
          test comes first sets MODE itself (the landing guidance, the
-         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
-         faithful core does (tests/interpreter_fuzz.c), so there is no
-         faithful run to compare a MODE of -0 with.
+         Servicer). The fuzz keeps MODE to +0, +1 and -1, as the faithful
+         core does (tests/interpreter_fuzz.c), and no case of the basic
+         routines' test, which does make a MODE of -0 now and then
+         (tests/interpreter_side_cases.c), comes to this line: so no faithful
+         run compares a MODE of -0 here.
   pddl, line 287 (1 unrun) c2b25cf7
     | case IS_MINUS_ZERO: break;                  /* (never: MODE -0) */
     why: [never] MODE is not -0 when an order tests it (CCS MODE, INDEX
@@ -2967,9 +2808,11 @@ src/interpreter/load_store.c
          proves of every entry: an order that tests MODE comes after a load
          that set it, and basic code that goes into the interpreter where a
          test comes first sets MODE itself (the landing guidance, the
-         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
-         faithful core does (tests/interpreter_fuzz.c), so there is no
-         faithful run to compare a MODE of -0 with.
+         Servicer). The fuzz keeps MODE to +0, +1 and -1, as the faithful
+         core does (tests/interpreter_fuzz.c), and no case of the basic
+         routines' test, which does make a MODE of -0 now and then
+         (tests/interpreter_side_cases.c), comes to this line: so no faithful
+         run compares a MODE of -0 here.
   pdvl, lines 349-353 (5 unrun) c29b5b10
     | case IS_MINUS_ZERO: /* (never: MODE -0. VPDVL's DCA would run as CA.) */
     | ca(indexed(3u, ADDRWD));
@@ -2995,9 +2838,11 @@ src/interpreter/load_store.c
          proves of every entry: an order that tests MODE comes after a load
          that set it, and basic code that goes into the interpreter where a
          test comes first sets MODE itself (the landing guidance, the
-         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
-         faithful core does (tests/interpreter_fuzz.c), so there is no
-         faithful run to compare a MODE of -0 with.
+         Servicer). The fuzz keeps MODE to +0, +1 and -1, as the faithful
+         core does (tests/interpreter_fuzz.c), and no case of the basic
+         routines' test, which does make a MODE of -0 now and then
+         (tests/interpreter_side_cases.c), comes to this line: so no faithful
+         run compares a MODE of -0 here.
 
 src/interpreter/sequence.c
   ccall, lines 31-40 (10 unrun) 579bed02
@@ -3109,9 +2954,11 @@ src/interpreter/shifts.c
          proves of every entry: an order that tests MODE comes after a load
          that set it, and basic code that goes into the interpreter where a
          test comes first sets MODE itself (the landing guidance, the
-         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
-         faithful core does (tests/interpreter_fuzz.c), so there is no
-         faithful run to compare a MODE of -0 with.
+         Servicer). The fuzz keeps MODE to +0, +1 and -1, as the faithful
+         core does (tests/interpreter_fuzz.c), and no case of the basic
+         routines' test, which does make a MODE of -0 now and then
+         (tests/interpreter_side_cases.c), comes to this line: so no faithful
+         run compares a MODE of -0 here.
   vright2, lines 522-526 (5 unrun) 46cc12ac
     | case IS_PLUS_ZERO: continue;
     | case NEGATIVE:
@@ -3149,9 +2996,11 @@ src/interpreter/shifts.c
          proves of every entry: an order that tests MODE comes after a load
          that set it, and basic code that goes into the interpreter where a
          test comes first sets MODE itself (the landing guidance, the
-         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
-         faithful core does (tests/interpreter_fuzz.c), so there is no
-         faithful run to compare a MODE of -0 with.
+         Servicer). The fuzz keeps MODE to +0, +1 and -1, as the faithful
+         core does (tests/interpreter_fuzz.c), and no case of the basic
+         routines' test, which does make a MODE of -0 now and then
+         (tests/interpreter_side_cases.c), comes to this line: so no faithful
+         run compares a MODE of -0 here.
 
 src/interpreter/switches.c
   test, lines 121-124 (4 unrun) 018d974e
@@ -3208,9 +3057,11 @@ src/interpreter/unit_sqrt.c
          proves of every entry: an order that tests MODE comes after a load
          that set it, and basic code that goes into the interpreter where a
          test comes first sets MODE itself (the landing guidance, the
-         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
-         faithful core does (tests/interpreter_fuzz.c), so there is no
-         faithful run to compare a MODE of -0 with.
+         Servicer). The fuzz keeps MODE to +0, +1 and -1, as the faithful
+         core does (tests/interpreter_fuzz.c), and no case of the basic
+         routines' test, which does make a MODE of -0 now and then
+         (tests/interpreter_side_cases.c), comes to this line: so no faithful
+         run compares a MODE of -0 here.
   sqrt_, lines 301-302 (2 unrun) 01905b29
     | case NEGATIVE: break;
     | case IS_MINUS_ZERO: sqrtshft(); return; /* (A +0 passes the BZMF) */
@@ -3238,9 +3089,11 @@ src/interpreter/unit_sqrt.c
          proves of every entry: an order that tests MODE comes after a load
          that set it, and basic code that goes into the interpreter where a
          test comes first sets MODE itself (the landing guidance, the
-         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
-         faithful core does (tests/interpreter_fuzz.c), so there is no
-         faithful run to compare a MODE of -0 with.
+         Servicer). The fuzz keeps MODE to +0, +1 and -1, as the faithful
+         core does (tests/interpreter_fuzz.c), and no case of the basic
+         routines' test, which does make a MODE of -0 now and then
+         (tests/interpreter_side_cases.c), comes to this line: so no faithful
+         run compares a MODE of -0 here.
   sqrtneg, lines 517-518 (2 unrun) 461ede13
     | case NEGATIVE: zeroans(); return false;
     | case IS_MINUS_ZERO: fixroot(); return false;
@@ -3309,9 +3162,11 @@ src/interpreter/vectors.c
          proves of every entry: an order that tests MODE comes after a load
          that set it, and basic code that goes into the interpreter where a
          test comes first sets MODE itself (the landing guidance, the
-         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
-         faithful core does (tests/interpreter_fuzz.c), so there is no
-         faithful run to compare a MODE of -0 with.
+         Servicer). The fuzz keeps MODE to +0, +1 and -1, as the faithful
+         core does (tests/interpreter_fuzz.c), and no case of the basic
+         routines' test, which does make a MODE of -0 now and then
+         (tests/interpreter_side_cases.c), comes to this line: so no faithful
+         run compares a MODE of -0 here.
   v_sc, line 447 (1 unrun) c0ac66fb
     | case IS_MINUS_ZERO: vv_sc_plus1(); break; /* (never) */
     why: [never] MODE is not -0 when an order tests it (CCS MODE, INDEX
@@ -3333,9 +3188,11 @@ src/interpreter/vectors.c
          proves of every entry: an order that tests MODE comes after a load
          that set it, and basic code that goes into the interpreter where a
          test comes first sets MODE itself (the landing guidance, the
-         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
-         faithful core does (tests/interpreter_fuzz.c), so there is no
-         faithful run to compare a MODE of -0 with.
+         Servicer). The fuzz keeps MODE to +0, +1 and -1, as the faithful
+         core does (tests/interpreter_fuzz.c), and no case of the basic
+         routines' test, which does make a MODE of -0 now and then
+         (tests/interpreter_side_cases.c), comes to this line: so no faithful
+         run compares a MODE of -0 here.
   vv_sc_plus1, lines 458-461 (4 unrun) acaec3e9
     | {
     | ca(indexed(1u, ADDRWD)); /* (never: only from V/SC's -0 slot) */
@@ -3360,28 +3217,38 @@ src/interpreter/vectors.c
          proves of every entry: an order that tests MODE comes after a load
          that set it, and basic code that goes into the interpreter where a
          test comes first sets MODE itself (the landing guidance, the
-         Servicer). The side by side test keeps MODE to +0, +1 and -1, as the
-         faithful core does (tests/interpreter_fuzz.c), so there is no
-         faithful run to compare a MODE of -0 with. (Entered only from V/SC's
-         -0 slot.)
+         Servicer). The fuzz keeps MODE to +0, +1 and -1, as the faithful
+         core does (tests/interpreter_fuzz.c), and no case of the basic
+         routines' test, which does make a MODE of -0 now and then
+         (tests/interpreter_side_cases.c), comes to this line: so no faithful
+         run compares a MODE of -0 here. (Entered only from V/SC's -0 slot.)
 
 src/kalman_filter/kalman_filter.c
   jet_time, line 34 (1 unrun) f5365334
     | case IS_PLUS_ZERO: break; /* ADS of +0 */
-    why: [open]
+    why: [impossible] The first CCS of the same word, a few lines up, left
+         the routine at +0 (TCF LOOPRATE), and nothing between stores in the
+         word.
   jet_time, line 36 (1 unrun) 5ccc12c5
     | case IS_MINUS_ZERO: break; /* ADS of +0 */
-    why: [open]
+    why: [impossible] At -0 the first CCS of the same word left A +0, and the
+         BZMF after it went to SMALLTJU: this CCS is not reached.
   jet_time, line 41 (1 unrun) 7731fe4c
     | case IS_PLUS_ZERO: break;                         /* A +0 */
-    why: [open]
+    why: [impossible] The BZMF went on only for a time of magnitude 162 or
+         more (its magnitude less one, less 160, was positive), and the ADS
+         took 160 from it: the word is not zero.
   jet_time, line 43 (1 unrun) a75b8cf5
     | case IS_MINUS_ZERO: break; /* A +0 */
-    why: [open]
+    why: [impossible] The BZMF went on only for a time of magnitude 162 or
+         more (its magnitude less one, less 160, was positive), and the ADS
+         took 160 from it: the word is not zero.
   rateloop, lines 86-87 (2 unrun) 7a6d9a04
     | case NEGATIVE: continue_at(SMALLTJU); return;
     | case IS_MINUS_ZERO: continue_at(SMALLTJU + 1u); return; /* never */
-    why: [open]
+    why: [impossible] DAPTEMP6 is the TWO the routine loads, then what this
+         CCS left of it, stored at the top of each pass: 2, 1, 0. Nothing
+         between stores in it (the jet time only reads it).
 
 src/keyrupt/keyrupt.c
   uptest, line 169 (1 unrun) 8f59ce8f
@@ -3395,23 +3262,40 @@ src/landing_displays/landing_displays.c
   newdata, lines 223-224 (2 unrun) 6e70beb8
     | case NEGATIVE: set_A(ZERO); /* fall through */
     | case IS_MINUS_ZERO: ts(ADDRESS_OF(ALTSAVE) + 1u); break;
-    why: [open]
+    why: [impossible] NEWDATA is entered from OLDDATA +1, whose POSMAX + 1
+         added to the low word leaves it +0 or positive whether the sum
+         overflows or not (a negative low word takes the borrow), or after
+         ZERODATA, which zeroes both words: ALTSAVE +1 is never negative.
   newdata, lines 229-230 (2 unrun) ad5bc503
     | case NEGATIVE: break; /* TCF DATAOUT */
     | case IS_MINUS_ZERO: disindat(); return;
-    why: [open]
+    why: [impossible] NEWDATA is entered when OLDDATA +1's TS ALTSAVE skips
+         on the overflow of a sum with POSMAX, which stores a word with a
+         plus sign, or after ZERODATA's zeros: ALTSAVE is +0 or positive.
   vmonitor, line 494 (1 unrun) 9da23c0e
     | case IS_MINUS_ZERO: lvlimits(index); return;
-    why: [open]
+    why: [impossible] The file's own lines: LATVEL and FORVEL are each the
+         word LATFWDV has just stored, the DDOUBL of VELCONV (022316) times
+         RUPTREG1. A zero RUPTREG1 gives +0 (MP of a zero multiplier), and a
+         negative one a product of 022316 or more in size, whose double has
+         -1 or below in A: never -0.
 
 src/landing_guidance/exits.c
-  exgsub_after_exit, line 68 (1 unrun) 8c26c98c
-    | case IS_MINUS_ZERO: exgsub_postjump(); return;
-    why: [open]
-  unwcloop, lines 173-174 (2 unrun) 55bbee78
+  exgsub_after_exit, line 70 (1 unrun) 00ee6ebe
+    | case IS_MINUS_ZERO: exgsub_postjump(); return; /* never, likewise */
+    why: [never] NIGNLOOP's two stores were read (the other store at its
+         address is ECDUWUSR's, of another E-bank): the 40 of P63's SSP
+         (EXBRAK), and DDUMCALC's TS of A, which POSTJUMP keeps: what this
+         CCS left of the count (39 down to +0) or, after the alarm at +0, the
+         address of the OCT 01412 that ALARM's MULTEXIT has in A as it
+         returns, a positive word. Never negative or -0.
+  unwcloop, lines 175-176 (2 unrun) 55bbee78
     | case NEGATIVE: steer(); return;
     | case IS_MINUS_ZERO: continue_at(STEER_Q + 1u); return; /* never */
-    why: [open]
+    why: [impossible] Q is the count masked with SIX at the loop's head (MASK
+         SIX; TS Q), and no step of the pass stores Q after (the MP, DXCH and
+         DAS only index by it): 6, 4, 2 or +0 at this CCS, never negative and
+         never -0.
 
 src/landing_guidance/indexing.h
   das_indexed, line 69 (1 unrun) 7a17fe30
@@ -3422,9 +3306,6 @@ src/landing_guidance/quadguid.c
   cgcalc, line 177 (1 unrun) 7a17fe30
     | not_modelled();
     why: [not-modelled]
-  cgcalc, line 195 (1 unrun) fc32edf5
-    | case IS_MINUS_ZERO: break; /* NOOP */
-    why: [open]
 
 src/landing_guidance/redesignator.c
   redesmon, lines 115-116 (2 unrun) e083440c
@@ -3449,7 +3330,10 @@ src/p20_p25/designate.c
     | tc_at(STDESIG1 + 4u);
     | continue_at(03012u);
     | return;
-    why: [open]
+    why: [never] DESCOUNT is the MAXTRIES of R21LEM10 or the MAXTRYS of
+         RRDESNB, then what this CCS left of it, stored by MOREDES. Looked
+         at: every instruction of the assembled listing whose address is
+         DESCOUNT's; these three are its only stores.
   stdesig, line 491 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
     why: [impossible] The CCS just above took a RADMODES whose REPOSBIT is
@@ -3458,7 +3342,9 @@ src/p20_p25/designate.c
   signlchk, lines 693-694 (2 unrun) 42fc2efa
     | case NEGATIVE: continue_at(SIGNLCHK + 3u); return;
     | case IS_MINUS_ZERO: continue_at(SIGNLCHK + 4u); return; /* never */
-    why: [open]
+    why: [impossible] MPAC +1 is the ZERO or ONE that DODES +0115 stored just
+         before it came here (CA ZERO or CA ONE, TS MPAC +1), and this
+         routine has no other entry.
   dodes_after_dot, line 719 (1 unrun) 2182d1c7
     | case IS_PLUS_ZERO: break;          /* TCF +2 (the CCS left +0 in A) */
     why: [impossible] MPAC is what the DAS just before left: what it held,
@@ -3468,9 +3354,6 @@ src/p20_p25/designate.c
          word of fifteen bits and a carry does not overflow upward. A ones'
          complement sum is +0 only when every number added is +0 (a sum that
          comes to nothing is -0), so MPAC is not +0 at this CCS.
-  dodes_after_dot, line 728 (1 unrun) 4311ddba
-    | case IS_MINUS_ZERO: signlchk(); return; /* SIGNLCHK is the next word */
-    why: [open]
   notp20_after_killtask, lines 785-789 (3 unrun) 2923682c
     | case NEGATIVE:
     | /* never: the Executive leaves +0, -0 (DUMMYJOB) or a core set's place, a positive word,
@@ -3483,23 +3366,27 @@ src/p20_p25/lrs22.c
   chexerr, lines 252-253 (2 unrun) 08df6f42
     | case NEGATIVE: continue_at(EREXIT1 + 1u); return;
     | case IS_MINUS_ZERO: continue_at(EREXIT1 + 2u); return; /* never */
-    why: [open]
+    why: [impossible] A is FLAGWRD5 masked with RNGSCBIT, the CAE and MASK
+         just before: the bit or +0.
 
 src/p20_p25/programs.c
   p20lemd1, lines 807-808 (2 unrun) 4696cbe8
     | case NEGATIVE: continue_at(P20LEMD1 + 5u); return;
     | case IS_MINUS_ZERO: tc_to(P20LEMD1 + 6u, P20LEMD1); return; /* never */
-    why: [open]
+    why: [impossible] A is FLAGWRD1 masked with TRACKBIT, the CA and MASK
+         just before: the bit or +0.
 
 src/p20_p25/r22_r21.c
   lunsfchk, lines 517-518 (2 unrun) b33abbae
     | case NEGATIVE: continue_at(LUNSFCHK + 5u); return;
     | case IS_MINUS_ZERO: continue_at(LUNSFCHK + 6u); return; /* never */
-    why: [open]
+    why: [impossible] A is the complement of FLAGWRD8 masked with SURFFBIT,
+         the CS and MASK just before: the bit or +0.
   r21lem5, lines 569-570 (2 unrun) 44bb628f
     | case NEGATIVE: continue_at(R21LEM5 + 5u); return;
     | case IS_MINUS_ZERO: continue_at(R21LEM5 + 6u); return; /* never */
-    why: [open]
+    why: [impossible] A is BIT12 masked with RADMODES, the CAF and MASK just
+         before: the bit or +0.
 
 src/p20_p25/r29dodes.c
   add_by_tang, line 86 (1 unrun) 89d594bd
@@ -3519,61 +3406,84 @@ src/p20_p25/r29dodes.c
     why: [impossible] A is the FIVE loaded before the loop (R29DODES,
          GOTANGLS +034), then what the CCS of Q at the loop's end left of the
          4 or 2 that this CCS's TS Q stored: 5, 3 or 1.
-  gotangls_after_cos_s, lines 302-304 (3 unrun) f20c0ae3
+  gotangls_after_cos_s, lines 302-305 (4 unrun) ab0f097b
     | case IS_MINUS_ZERO: /* never: the DAS leaves +1, +0 or -1. WOR CHAN12, not extended: TC 5012 */
+    | tc_at(GOTANGLS + 050u);
     | continue_at(05012u);
     | return;
-    why: [open]
+    why: [impossible] A is what the DAS just before left there: +1, -1 or +0,
+         never -0.
 
 src/p20_p25/r61.c
   r61c_l06, lines 238-239 (2 unrun) 2232d9e9
     | case NEGATIVE: tc_to(R61C_L06 + 5u, R61C_L06 + 7u); return; /* TC +2 */
     | case IS_MINUS_ZERO: continue_at(R61C_L06 + 6u); return;
-    why: [open]
+    why: [impossible] A is FLAGWRD1 masked with R61FLBIT, the CA and MASK
+         just before: the bit or +0.
 
 src/p20_p25/radar_read.c
   radin, line 495 (1 unrun) c5e73d18
     | case NEGATIVE: cs(RDOTBIAS + 1u); break;
-    why: [open]
+    why: [impossible] The file's own lines: RADIN is reached two ways,
+         RENDRAD's TCF RADIN and out of SCALECHK. Q is then what RENDRAD's TS
+         Q stored, channel 13 masked with BIT1 (+0 or 1), or the address that
+         LRHEIGHT's TC SCALECHK -1 left: never negative.
   lrsck, lines 596-600 (5 unrun) e1334814
     | case NEGATIVE:
     | ad(HISCALIM);
     | scale_bad = !A_is_zero_or_minus();
     | break;
     | case IS_MINUS_ZERO: scale_bad = !A_is_zero_or_minus(); break;
-    why: [open]
+    why: [impossible] ITEMP3 is what RADIN left there, channel 33 or 13
+         masked with BIT1, and nothing between stores in it: the bit or +0.
   dgcheck_plus1, line 652 (1 unrun) 60515a87
     | case IS_MINUS_ZERO: tc_q(); break;
-    why: [open]
+    why: [impossible] The file's own lines: ITEMP1 is the data good bit's
+         place that this interrupt stored just before (BIT4 in RENDRAD, BIT5
+         in LRHEIGHT, BIT8 before the TC DGCHECK), and A is OLDATAGD masked
+         with it plus channel 33 masked with it: +0, the bit, or twice the
+         bit, never -0.
   lrposnxt_after_fixdelay, lines 746-749 (4 unrun) 1d8c8a25
     | case IS_MINUS_ZERO: /* never. The WAND CHAN12, not extended, is TC 3012, in this bank */
     | tc_at(LRPOSNXT + 014u);
     | continue_at(03012u);
     | return;
-    why: [open]
+    why: [never] SAMPLIM is never -0. Every instruction of the listing that
+         stores there was read, found by the assembled word (Luminary alone
+         has the landing radar): the fresh start's, BADRAD's and GOODRAD's CS
+         ONE; INITREAD's count plus ONE; PLENTY's and LRPOSNXT's TS of what a
+         CCS left of it; and LRPOSCAN's FOURTEEN. So -1, +0 or more.
   radlites, line 834 (1 unrun) dc0f93fa
     | case IS_PLUS_ZERO: vlight(); break;
-    why: [open]
+    why: [impossible] A is the sum of BIT5's complement and ITEMP1, the CS
+         and the AD just before. A ones' complement sum is +0 only when both
+         numbers are +0 (an ITEMP1 of BIT5 gives -0, the HLIGHT outcome), and
+         the constant is not.
 
 src/p20_p25/rr_routines.c
   rr1ax2_command, lines 518-519 (2 unrun) 16cc4f05
     | case NEGATIVE: other = POSITIVE; break;          /* (on at that CCS's TCF +2) */
     | case IS_MINUS_ZERO: other = IS_PLUS_ZERO; break; /* (on at its XCH L) */
-    why: [open]
+    why: [impossible] ITEMP1 is RADMODES masked with AUTOMBIT, RR1AX2's XCH
+         ITEMP1 just before the TC MAGSUB that comes back here: the bit or
+         +0.
   rr1ax2_command, lines 524-525 (2 unrun) 2960a73d
     | case NEGATIVE: break;
     | case IS_MINUS_ZERO: tc_to(RR1AX2 + 027u, RROUT); return; /* (past the DXCH TANG) */
-    why: [open]
-  count_out, lines 581-584 (4 unrun) 57a1928f
-    | case NEGATIVE: break;                   /* never: ITEMP2 is 1, then 0 */
+    why: [impossible] RRINDEX is the ZERO or the ONE that RR1AXIS stores, the
+         only instruction of the listing that stores the word (searched by
+         the assembled address): this CCS meets +0 or a positive word.
+  count_out, lines 588-592 (5 unrun) 5b8232d8
+    | case NEGATIVE: break;                   /* ITEMP2 -1, after an overflow at the TS */
     | case IS_MINUS_ZERO:                     /* never: the WOR CHAN14, not extended, is TC 5014 */
+    | tc_at(SETRRCTR + 014u);
     | continue_at(05014u);
     | return;
-    why: [open]
-  rroutlim, lines 605-606 (2 unrun) 4ce88171
-    | case NEGATIVE: set_A(MINUS_RRLIMIT); break;
-    | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] The file's own lines: ITEMP2 is the ONE that RROUT
+         loads (RROUT2's TS), the +0 that this CCS left for the TCF RROUT2,
+         or the +1 or -1 that an overflow at the TS above leaves for it, and
+         nothing between stores it (MAGSUB and the lines of the loop do not):
+         never -0.
 
 src/p20_p25/v67.c
   v06n99ds_proceed, lines 103-104 (2 unrun) 461f6e18
@@ -3665,7 +3575,12 @@ src/p51_p53/p51.c
     | tc_at(P51D + 6u);
     | continue_at(04024u);
     | break;
-    why: [open]
+    why: [never] STARIND is the ZERO that R51E stores or the BIT1 of P51D
+         +013 and 1STAR. Looked at: every instruction of the assembled
+         listing whose address is STARIND's; these are its stores under that
+         name (the word is also DELDEP and TERRLAMB, of programs that do not
+         run with P51). The binding refuses the state before the routine, as
+         the faithful port stops there.
 
 src/p51_p53/p57.c
   pack_flag, lines 206-208 (3 unrun) 6c94db8f
@@ -3676,27 +3591,33 @@ src/p51_p53/p57.c
   dspoptn_proceed, lines 256-257 (2 unrun) 9c6389e0
     | case NEGATIVE: continue_at(DSPOPTN + 013u); return;
     | case IS_MINUS_ZERO: continue_at(DSPOPTN + 014u); return; /* never */
-    why: [open]
+    why: [impossible] A is FLAGWRD3 masked with REFSMBIT, the CAF and MASK
+         just before, and REFSMBIT has no sign bit: the bit or +0.
   dspoptn_proceed, lines 265-266 (2 unrun) 7f6ad49e
     | case NEGATIVE: continue_at(DSPOPTN + 017u); return;
     | case IS_MINUS_ZERO: continue_at(DSPOPTN + 020u); return; /* never */
-    why: [open]
+    why: [impossible] A is FLAGWRD6 masked with ATTFLBIT, the CAF and MASK
+         just before, and ATTFLBIT has no sign bit: the bit or +0.
   dspoptn_proceed, lines 276-277 (2 unrun) 701c13d3
     | case NEGATIVE: continue_at(DSPOPTN + 023u); break;
     | case IS_MINUS_ZERO: continue_at(DSPOPTN + 024u); break; /* never */
-    why: [open]
+    why: [impossible] A is OPTION2 masked with BIT2, the CAF and MASK just
+         before, and BIT2 has no sign bit: the bit or +0.
   bylmatt_after_upflag, lines 409-410 (2 unrun) 4aa6ac8a
     | case NEGATIVE: continue_at(ATTCHK + 1u); break;
     | case IS_MINUS_ZERO: continue_at(ATTCHK + 2u); break; /* never */
-    why: [open]
+    why: [impossible] A is OPTION2 masked with BIT1, the CAF and MASK just
+         before, and BIT1 has no sign bit: the bit or +0.
   attchk_after_phaschng, lines 431-432 (2 unrun) 02edbde8
     | case NEGATIVE: continue_at(P57JUMP + 1u); break;
     | case IS_MINUS_ZERO: continue_at(P57JUMP + 2u); break; /* never */
-    why: [open]
+    why: [impossible] A is FLAGWRD6 masked with ATTFLBIT, the CAF and MASK
+         just before, and ATTFLBIT has no sign bit: the bit or +0.
   imuchk, lines 573-574 (2 unrun) eb4372a9
     | case NEGATIVE: continue_at(IMUCHK + 5u); break;
     | case IS_MINUS_ZERO: continue_at(IMUCHK + 6u); break; /* never */
-    why: [open]
+    why: [impossible] A is the complement of IMODES30 masked with BIT9, the
+         CS and MASK just before, and BIT9 has no sign bit: the bit or +0.
 
 src/p51_p53/planet_gvdeter.c
   planet_after_exit, lines 62-66 (3 unrun) 622acdbf
@@ -3767,41 +3688,61 @@ src/p51_p53_cm/r53_sr52_1.c
     | r53b();
     | return;
     | }
-    why: [open]
+    why: [impossible] The routine's own lines: the TS stores the A that the
+         CCS has just left, a word without overflow, so it does not skip the
+         TCF R53A.
   r53a_marked, lines 89-91 (3 unrun) 0eb43d23
     | r53b();
     | return;
     | }
-    why: [open]
-
-src/p70_p71/contabrt.c
-  abrtjask, line 62 (1 unrun) 6e949bbf
-    | ca(address);
-    why: [open]
+    why: [impossible] The routine's own lines: the TS stores the A that the
+         CCS has just left, a word without overflow, so it does not skip the
+         TCF R53A.
 
 src/p_axis/p_axis.c
   one_stotwos, line 36 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] The file's own lines: 1STOTWOS is entered three times,
+         each by the TC right after an MSU (CDUXD, CDUYD and CDUZD against
+         DELCDUX, Y and Z), and MSU leaves no -0: equal words give +0, and a
+         negative difference is made one's complement by taking one off,
+         which ends at -1 (msu_at(), src/agc/agc.c).
   subdivde, line 76 (1 unrun) a33ec75a
     | case IS_PLUS_ZERO: break;
-    why: [open]
+    why: [impossible] The first CCS of OMEGAU, a few lines above, took a +0
+         to DIVIDER, and of a -0 it left +0 in A, which the BZMF DIVIDER took
+         too. Nothing stores OMEGAU between the two CCS's, so the second
+         meets neither zero.
   subdivde, line 78 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
-    why: [open]
-  selectp, lines 549-553 (5 unrun) 3aeedfdd
+    why: [impossible] The first CCS of OMEGAU, a few lines above, took a +0
+         to DIVIDER, and of a -0 it left +0 in A, which the BZMF DIVIDER took
+         too. Nothing stores OMEGAU between the two CCS's, so the second
+         meets neither zero.
+  selectp, lines 550-554 (5 unrun) 3aeedfdd
     | case NEGATIVE:
     | tc_at(SELECTP + 016u);
     | continue_at(02003u);
     | return false;
     | case IS_MINUS_ZERO: /* never */ jetsoff(); return false;
-    why: [open]
-  manmode, lines 651-654 (4 unrun) b255a243
-    | case IS_MINUS_ZERO: /* the RAND CHAN31, not extended, is TC 2031 */
+    why: [impossible] The file's own lines: TEMPNUM is the SIX that SELECTP
+         loads or that TRYUORV brings to SELECTYZ, then what this CCS leaves
+         of it for SELECTYZ (the two TCs are the only ways in): 6 down to +0,
+         never negative or -0.
+  manmode, lines 652-655 (4 unrun) 5e449dcd
+    | case IS_MINUS_ZERO: /* (never) the RAND CHAN31, not extended, is TC 2031 */
     | tc_at(MANMODE + 014u);
     | continue_at(02031u);
     | return;
-    why: [open]
+    why: [never] OLDPMIN is never -0. The listing was searched by the
+         assembled word for every instruction that stores there (Luminary
+         alone has the word): three TS OLDPMIN. STARTDAP stores ZERO (the CAF
+         ZERO at the head of its stores), CHECKP the complement of channel 31
+         masked with OCT14, and +XMIN and -XMIN the ONE loaded just before.
+         (The DXCH AIG the search also finds are of another erasable bank's
+         word at the same address.) No interpretive store names it. No case
+         brings the state; the routine would end its step at 2031, where no
+         routine of the file starts, and its binding refuse.
 
 src/phase_table/phase_table.c
   below1, line 234 (1 unrun) 9ad67b86
@@ -3822,31 +3763,52 @@ src/pinball/display_verbs.c
     why: [impossible] DECTEM is DECOUNT, a word masked with THREE just above,
          then what this CCS left of it: 3 down to 0, never negative, never
          -0.
-  dspdcend_plus2, line 427 (1 unrun) f0045070
-    | case IS_MINUS_ZERO: tc(DSPDCEND + 6u, DSPDCPUT); return;
-    why: [open]
+  dspdcend_plus2, line 427 (1 unrun) 02ae9387
+    | case IS_MINUS_ZERO: tc(DSPDCEND + 6u, DSPDCPUT); return; /* never */
+    why: [never] DECOUNT is never -0 at this CCS. The listings were searched
+         by the assembled word for every instruction that stores there. In
+         the decimal display it is DECDSP's, a word masked with THREE, and
+         this routine's own TS of what the CCS left; the other stores are the
+         load verbs' and MIXNN1's, or name the word as CHAR, UPDATRET, ERCNT,
+         PWRPTR, POLISH or ACCRETRN, in routines that do not run between
+         DECDSP and here (the scale routines and DSPDECWD store none of
+         them).
 
 src/pinball/display_words.c
-  dspdecwd, lines 105-107 (3 unrun) e4995dd0
-    | dspdecwd_after_dspsign();
+  dspdecwd, lines 105-107 (3 unrun) 6ae106fc
+    | dspdecwd_after_dspsign(); /* never: Q holds an address */
     | return;
     | }
-    why: [open]
-  dspdecnr, lines 178-180 (3 unrun) 89b3f5c9
-    | dspdecnr_after_dspsign();
+    why: [never] Q holds no overflow here. Every caller in both listings
+         comes by TC BANKCALL with the CADR, or by TC to the label, and
+         either way Q is left an address (BANKJUMP's low ten bits of the
+         CADR, or the TC's return).
+  dspdecnr, lines 178-180 (3 unrun) c56ef13b
+    | dspdecnr_after_dspsign(); /* never: nothing calls DSPDECNR */
     | return;
     | }
-    why: [open]
-  dspdc2nr, lines 196-198 (3 unrun) edf2b73a
-    | dspdc2nr_plus3();
+    why: [never] Q holds no overflow here. No word of either listing names
+         DSPDECNR but its own label: nothing calls it, and a caller could
+         only come by TC or through BANKCALL, which leave an address in Q.
+  dspdc2nr, lines 196-198 (3 unrun) 16529255
+    | dspdc2nr_plus3();        /* never: Q holds an address */
     | return;
     | }
-    why: [open]
+    why: [never] Q holds no overflow here. Every caller in both listings
+         comes by TC BANKCALL with the CADR, or by TC to the label, and
+         either way Q is left an address (BANKJUMP's low ten bits of the
+         CADR, or the TC's return).
 
 src/pinball/enter.c
-  mixnoun, line 374 (1 unrun) fa9d72bc
-    | case IS_MINUS_ZERO: tc_at(MIXNOUN + 4u); break;        /* TC +1: "-0 IN USE" */
-    why: [open]
+  mixnoun, line 374 (1 unrun) 889361fa
+    | case IS_MINUS_ZERO: tc_at(MIXNOUN + 4u); break;        /* (never) "-0 IN USE" */
+    why: [never] NNADTEM is never -0 here. LODNNTAB's TS is Pinball's only
+         store there (the word's other names are the 1/ACCS job's and the
+         landing guidance's, which do not run between it and this CCS), and
+         it stores NNADTAB's word of the noun. MIXNOUN is reached for the
+         mixed nouns, 40 to 99, and no word of theirs is -0 in either
+         program's table (noun 15's is, a normal noun: all 100 words of each
+         were read).
   mixnoun, lines 410-416 (7 unrun) 9d5d6f9c
     | case NEGATIVE: /* never: DECOUNT counts 2, 1, 0. The next word is MIXAD's, TC MIXTEMP */
     | tc_at(MIXNN2 + 012u);
@@ -3874,7 +3836,12 @@ src/pinball/keys.c
     | case IS_PLUS_ZERO: tc(MORNUM + 2u, ENDOFJOB); break;
     | case NEGATIVE: tc(MORNUM + 3u, 022u); break;
     | case IS_MINUS_ZERO: tc(MORNUM + 4u, 020u); break;
-    why: [open]
+    why: [impossible] The file's own lines: MORNUM is reached only from
+         ENDNMTST's TC MORNUM. NUM's CCS DSPCOUNT ended the job on a negative
+         word or -0, and nothing stores DSPCOUNT from there to here. A
+         DSPCOUNT of +0 has INREL 4 (INRELTAB's first word), whose CRITCON is
+         0, and ENDNMTST's BZF ENDNUM took it. So this CCS meets a positive
+         word.
   legaltst_returns, line 641 (1 unrun) 3d840b13
     | case IS_PLUS_ZERO: tc(LEGALTST + 3u, CCSHOLE); return false;
     why: [impossible] A has just had NEG2 added. In the AGC's adder a sum is
@@ -3891,13 +3858,6 @@ src/pinball/lights.c
     why: [impossible] ERCNT is BINCON, DEC 10, loaded above the loop, then
          what this CCS left of it: 10 down to 0.
 
-src/pinball/load_verbs.c
-  put_by_decbrnch, lines 469-471 (3 unrun) 94bde98f
-    | continue_at(CHANLOAD);
-    | return;
-    | }
-    why: [open]
-
 src/pinball/monitor.c
   monitor, lines 50-53 (4 unrun) 29c19056
     | case IS_PLUS_ZERO:
@@ -3912,15 +3872,26 @@ src/pinball/nvsub.c
   blankdsp, lines 152-153 (2 unrun) a7cece5e
     | case NEGATIVE: more = false; break;
     | case IS_MINUS_ZERO: more = indexed = false; break;
-    why: [open]
+    why: [impossible] The file's own lines: BLANKDSP is entered only by the
+         TC BLANKDSP at NVSUB1 +5, from the negative outcome of the CCS
+         NVTEMP, which leaves a magnitude less one in A; AD SEVEN makes that
+         7 or more ("7,8,9, OR 10 (A HAD 0,1,2,OR 3)"). Each pass then stores
+         in CODE what this CCS left of it, or the +0 the CCS of a -0 relay
+         word left: never a negative word and never -0.
   nvsub1, lines 205-206 (2 unrun) 975fe3b4
     | case NEGATIVE: tc(NVSUB1 + 021u, UPDATVB - 1u); return;
     | case IS_MINUS_ZERO: continue_at(NVSUB1 + 022u); return;
-    why: [open]
+    why: [impossible] MPAC +3 is NVTEMP masked with LOW7, stored a few lines
+         above (CAF LOW7; MASK NVTEMP; TS MPAC +3) with nothing stored there
+         since: seven bits at most, never negative and never -0.
   nvsub2, lines 239-240 (2 unrun) 2ef12378
     | case NEGATIVE: tc(NVSUB2 + 3u, UPDATNN - 1u); return;
     | case IS_MINUS_ZERO: continue_at(NVSUB2 + 4u); return;
-    why: [open]
+    why: [impossible] The file's own lines: NVSUB2 is entered only by the TC
+         NVSUB2 at NVSUB1 +017 (the one TC NVSUB2 of either listing), and
+         MPAC +4 is then what NVSUB1 read back from EDOP (CA EDOP; TS MPAC
+         +4), an editing register that keeps seven bits: never negative and
+         never -0.
   islist_returns, lines 305-309 (4 unrun) 20d39789
     | case IS_MINUS_ZERO:
     | /* (never: DSPLIST holds +0 or the CADR that NVSUBSY1 left there) */
@@ -3931,62 +3902,75 @@ src/pinball/nvsub.c
   blanksub_plus010, lines 419-420 (2 unrun) ed92cec4
     | case NEGATIVE: blanksub_plus11(); return;
     | case IS_MINUS_ZERO: blanksub_plus12(); return;
-    why: [open]
+    why: [impossible] The file's own lines: BLANKSUB +010 is reached only
+         from BLANKSUB, which stores the blanking code in NVTEMP masked with
+         SEVEN (MASK SEVEN; TS NVTEMP): three bits, never negative and never
+         -0.
   testbit, lines 456-457 (2 unrun) b960739c
     | case NEGATIVE:
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] The file's own lines: TESTBIT is entered only by
+         BLANKSUB's three TC TESTBIT, each right after CAF BIT1, BIT2 or
+         BIT3, and its first step masks that with NVTEMP: the bit or +0,
+         never negative and never -0.
   testbit, lines 459-460 (2 unrun) 42a58747
     | not_modelled(); /* the code is three bits */
     | return false;
     why: [not-modelled]
-  nvsbwait, lines 723-724 (2 unrun) d0cfe4cc
-    | case NEGATIVE: nvsbwt1(); return;
-    | case IS_MINUS_ZERO: continue_at(PRENVBSY); return;
-    why: [open]
+  nvsbwait, lines 723-724 (2 unrun) 50c7071c
+    | case NEGATIVE: nvsbwt1(); return;                  /* never: DSPLOCK is +0 or 1 */
+    | case IS_MINUS_ZERO: continue_at(PRENVBSY); return; /* never, likewise */
+    why: [never] A is MONSAVE1 masked with BIT14 plus DSPLOCK, and DSPLOCK is
+         +0 or 1: every instruction of both listings that stores it was read.
+         The fresh start, MONIT2, UNSUSPEN, RELDSP and RELDSP1 store +0,
+         CHARIN the ONE it loads, and ERROR what CHARIN saved of it in
+         21/22REG. So A is never negative and never -0.
 
 src/pinball/output_scale.c
   negopt, line 174 (1 unrun) 5b760fb1
     | case IS_PLUS_ZERO: tc(NEGOPT + 4u, CCSHOLE); return;
     why: [impossible] A has just had 20BIAS added. In the AGC's adder a sum
          is +0 only when both numbers are +0.
-  opdegout, line 197 (1 unrun) 822498e9
-    | case IS_MINUS_ZERO: ad(NEG1); break; /* "IF NEG ZERO SUBTRACT 1" */
-    why: [open]
-  m_sout_plus2, lines 617-619 (3 unrun) 21d44afe
-    | m_slimit();
-    | return;
-    | }
-    why: [open]
 
 src/pinball/special_verbs.c
   vbrqexec, lines 106-107 (2 unrun) dad61f88
     | case NEGATIVE: continue_at(REQEX1); return;
     | case IS_MINUS_ZERO: reqex1_plus1(); return;
-    why: [open]
+    why: [impossible] A is DSPTEM1 masked with BIT1, the CAF and the MASK
+         just before: bit 1 or +0, never negative and never -0.
   vbreldsp, lines 263-266 (4 unrun) 25cf0b65
     | case NEGATIVE:
     | case IS_MINUS_ZERO: /* into TSTLTS4 +1 and +2 */
     | not_modelled_state("CCS A on a negative word (VBRELDSP)");
     | return;
-    why: [open]
+    why: [not-modelled]
 
 src/pinball/subroutines.c
-  setncadr, lines 66-68 (3 unrun) a50f3b83
-    | noun_address();
+  setncadr, lines 66-68 (3 unrun) d2f141cf
+    | noun_address();             /* never: no caller brings an overflow */
     | return;
     | }
-    why: [open]
-  setncadr_plus1, lines 75-78 (4 unrun) 93b18894
-    | ad(OCT1400);
+    why: [never] No caller brings an overflow in A. Every TC SETNCADR and TC
+         SETNADD of both listings was read: A is a CCS's count plus ONE
+         (UPDATNN's PUTADD, and VERBFAN -2), ZREG's word (USEADD's XCH), MPAC
+         +2 (INTMCTBS's CA), a word masked with LOW11, or, at SETNCADR +1,
+         NOUNCADR or XREG (CA), or what this routine's own TS found without
+         an overflow.
+  setncadr_plus1, lines 75-78 (4 unrun) bb50408a
+    | ad(OCT1400);         /* never, likewise */
     | put_noun_address();
     | return;
     | }
-    why: [open]
+    why: [never] No caller brings an overflow in A. Every TC SETNCADR and TC
+         SETNADD of both listings was read: A is a CCS's count plus ONE
+         (UPDATNN's PUTADD, and VERBFAN -2), ZREG's word (USEADD's XCH), MPAC
+         +2 (INTMCTBS's CA), a word masked with LOW11, or, at SETNCADR +1,
+         NOUNCADR or XREG (CA), or what this routine's own TS found without
+         an overflow.
   sfrutmix, lines 284-285 (2 unrun) 57af5f03
     | else
     | not_modelled();
-    why: [open]
+    why: [not-modelled]
   leftncom, lines 382-386 (5 unrun) 15744506
     | case NEGATIVE: two_round(); return; /* never: the callers' counts are 6, 2 and 6 */
     | case IS_MINUS_ZERO:
@@ -4006,50 +3990,74 @@ src/pinball_noun_tables/readers.c
 src/powered_flight/ax_sr_t.c
   r_star_tl_star_star_p, line 86 (1 unrun) 6ab47c2b
     | case IS_MINUS_ZERO: ca(INDEXI + 1u); break; /* never */
-    why: [open]
+    why: [never] DEXDEX is the +3 or -3 that AX*SR*T is entered with (CS
+         THREE at C*MM*N1 and at GOTANGLS, CA THREE at C*MM*N3), then what
+         LOOP1's DIM left of it, and R*TL**P runs again only where TSTPOINT's
+         CCS finds it positive or negative: it is not zero from R*TL**P to
+         the DIM. Looked at: every line of both listings that names AX*SR*T.
   loop1_after_sine_product, line 136 (1 unrun) 2be9411f
     | case IS_PLUS_ZERO: break;                             /* (never) TCF +3 */
-    why: [open]
+    why: [never] DEXDEX is the +3 or -3 that AX*SR*T is entered with (CS
+         THREE at C*MM*N1 and at GOTANGLS, CA THREE at C*MM*N3), then what
+         LOOP1's DIM left of it, and R*TL**P runs again only where TSTPOINT's
+         CCS finds it positive or negative: it is not zero from R*TL**P to
+         the DIM. Looked at: every line of both listings that names AX*SR*T.
   loop1_after_sine_product, line 138 (1 unrun) 96488921
     | case IS_MINUS_ZERO: cs(ADDRESS_OF(MPAC) + 1u); break; /* never */
-    why: [open]
+    why: [never] DEXDEX is the +3 or -3 that AX*SR*T is entered with (CS
+         THREE at C*MM*N1 and at GOTANGLS, CA THREE at C*MM*N3), then what
+         LOOP1's DIM left of it, and R*TL**P runs again only where TSTPOINT's
+         CCS finds it positive or negative: it is not zero from R*TL**P to
+         the DIM. Looked at: every line of both listings that names AX*SR*T.
   loop1_after_cosine_product, lines 173-177 (5 unrun) 7f3c7ff2
     | case NEGATIVE: /* never */
     | ads(ADDRESS_OF(DEXDEX));
     | tstpoint();
     | return;
     | case IS_MINUS_ZERO: /* never */ tstpoint(); return;
-    why: [open]
-  tstpoint, line 190 (1 unrun) 0616e400
-    | case IS_PLUS_ZERO: break; /* TC RTNSAVER */
-    why: [open]
+    why: [impossible] A is the index that the DXCH BUF just before brought
+         up: the ONE that R*TL**P stores there, or the +0 that this CCS left
+         of it, which LOOP2's DXCH BUF stored.
+  tstpoint, line 190 (1 unrun) 8e9fc32b
+    | case IS_PLUS_ZERO: break; /* TC RTNSAVER (never: the DIM leaves -0) */
+    why: [never] DEXDEX comes here from the DIM, which leaves -0 of +1 and of
+         -1 and no +0 of a word that is not zero; and it is not zero before
+         the DIM: the +3 or -3 that AX*SR*T is entered with (CS THREE at
+         C*MM*N1 and at GOTANGLS, CA THREE at C*MM*N3), counted down. Looked
+         at: every line of both listings that names AX*SR*T.
 
 src/powered_flight/cdutrig.c
   tr_star_gl_star_star_p_after_sine, lines 157-158 (2 unrun) 91d7cbe0
     | case NEGATIVE: continue_at(QUICTRIG); return;           /* never */
     | case IS_MINUS_ZERO: continue_at(QUICTRIG + 1u); return; /* never */
-    why: [open]
+    why: [impossible] TEM3 is what TR*GL**P's MASK SIX left, of FOUR or of
+         what this CCS left: 4, 2 or 0. None of what the loop calls stores in
+         it (COSINE, SINE +1, USPRCADR): the loop indexes by it after them.
 
 src/powered_flight/quictrig.c
   store_cosine, line 72 (1 unrun) 3fa97fd8
     | return false;
-    why: [open]
+    why: [impossible] Each case of the switch returns: the line is there for
+         the compiler alone.
 
 src/q_r_axis/q_r_axis.c
-  trygts, lines 548-552 (4 unrun) 43bbcc79
+  trygts, lines 549-553 (4 unrun) 43bbcc79
     | case IS_MINUS_ZERO: /* the READ CHAN5, not extended, is TC 5: the word in Z would run next */
     | /* (never: the program stores +0 or ONE in ALLOWGTS) */
     | tc_at(TRYGTS + 010u);
     | not_modelled();
     | return;
     why: [not-modelled]
-  trygts, lines 564-568 (5 unrun) 984527bb
+  trygts, lines 565-569 (5 unrun) 984527bb
     | case NEGATIVE:
     | set_A(GTSCADR[1]);
     | dtcb(GOTOGTS + 2u);
     | return;
     | case IS_MINUS_ZERO: /* never */ dtcb(GOTOGTS + 2u); return;
-    why: [open]
+    why: [never] Channel 5 holds the eight jet bits of the Q and R axes. The
+         program's three WRITE CHAN5s were read: zero (DAPIDLER, the restart)
+         and T6's WRITEU, NEXTU's jets over the bits kept. The faithful port
+         takes no negative channel 5, and the case test brings none.
 
 src/r30/r30.c
   v82gon_relint, lines 473-483 (6 unrun) 9b3c3504
@@ -4060,7 +4068,12 @@ src/r30/r30.c
     | tc_to(V82REDSP + 1u, BANKCALL);
     | return;
     | ... (5 more)
-    why: [open]
+    why: [never] The Executive's stores of NEWJOB were read (six in each
+         program): +0 (the fresh start, SPECTEST, CHANJOB), a core set's
+         place of 12 to 84 (SETLOC's LOCCTR, which its CCS found positive,
+         and the scan's sum after EJ2), and DUMMYJOB's -0, which SPECTEST
+         makes +0 as it loads a job into core set 0. V82GON runs as a job, so
+         its CCS meets +0 or a positive word.
 
 src/r60_62/r60_62.c
   toballc_after_g_n_auto, lines 268-271 (2 unrun) 0c0655b3
@@ -4075,7 +4088,8 @@ src/r60_62/r60_62.c
     | tc_at(RELINUS + 014u);
     | continue_at(ENDOFJOB);
     | return;
-    why: [open]
+    why: [impossible] The routine's own lines: A is a flag word masked with
+         one bit, the bit or +0: never negative or -0.
   g_n_auto, lines 479-486 (8 unrun) c0e29d22
     | case NEGATIVE:
     | tc_at(ISITAUTO + 1u);
@@ -4090,17 +4104,22 @@ src/radar_leadin/radar_leadin.c
   dorsamp2, lines 126-127 (2 unrun) 2e89165f
     | case NEGATIVE: continue_at(DORSAMP2 + 6u); return;
     | case IS_MINUS_ZERO: continue_at(DORSAMP2 + 7u); return; /* never */
-    why: [open]
+    why: [impossible] The routine's own lines: A is a flag word masked with
+         one bit, the bit or +0: never negative or -0.
 
 src/reentry/kep.c
   back, lines 82-83 (2 unrun) 99658675
     | case NEGATIVE: ts(ADDRESS_OF(TEM1B)); return;
     | case IS_MINUS_ZERO: return;
-    why: [open]
+    why: [impossible] The routine's own lines: JJ is the TWELVE loaded before
+         BACK, then what this CCS leaves of it for the TCF BACK: 12 down to
+         +0, never negative or -0.
   back, lines 85-86 (2 unrun) ec31eb76
     | return;
     | case IS_PLUS_ZERO: continue; /* TCF BACK, with JJ +0 */
-    why: [open]
+    why: [impossible] The return follows a switch whose every case returns or
+         loops. The +0: a sum is +0 only when both its words are, and the 13
+         words of the file's VREFER table (.019288 to .67918) hold no zero.
 
 src/restart/restarts.c
   getpart2, lines 120-122 (3 unrun) 0bdff7ee
@@ -4132,17 +4151,16 @@ src/restart/restarts.c
          runs every phase the tables hold.
 
 src/rtb_op_codes/rtb_op_codes.c
-  cduinc, line 335 (1 unrun) 62d2ee86
-    | case IS_PLUS_ZERO: break;          /* TCF +2 */
-    why: [open]
-  cduinc, line 337 (1 unrun) 0039665b
-    | case IS_MINUS_ZERO: break;
-    why: [open]
   cduinc, lines 345-347 (3 unrun) a2b86310
     | pulseimu();
     | return 0u;
     | }
-    why: [open]
+    why: [impossible] A cannot hold an overflow at this TS. Either the TS
+         TEM2 just before found none and A is as it was; or it found one, and
+         A is LIMITS' word of the other sign (BIT15 after +1, POSMAX after
+         -1; LIMITS is NEG1/2, between them in both programs) plus the 14
+         bits that TS kept with the overflow's sign: two words of unlike
+         signs.
   upper_half_zero, line 478 (1 unrun) 3fa97fd8
     | return false;
     why: [impossible] The switch above names the four outcomes of a CCS and
@@ -4170,22 +4188,45 @@ src/service/service.c
          constant, and none copies onto ITEMP1.
 
 src/servicer/lr_jobs.c
-  lrvjob_after_waitlist, line 38 (1 unrun) 0039665b
-    | case IS_MINUS_ZERO: break;
-    why: [open]
-  endlrv, line 103 (1 unrun) 0039665b
-    | case IS_MINUS_ZERO: break;
-    why: [open]
+  lrvjob_after_waitlist, line 38 (1 unrun) 56f5958f
+    | case IS_MINUS_ZERO: break; /* (never: VSELECT is +0, 2 or 1) */
+    why: [never] VSELECT is never -0. The listing was searched by the
+         assembled word for every instruction that stores there (Luminary
+         alone has the word): two, both TS VSELECT in the Servicer. One is
+         the ZERO that the landing radar's start stores ("INITIALIZE
+         VSELECT", before TC SETPOS); the other is ENDLRV's, which stores
+         what its CCS left of it, or TWO in place of +0: 0, 2, 1, 0. No
+         interpretive store names it. The side by side tests bring no VSELECT
+         of -0, and the lines follow the listing's words for it.
+  endlrv, line 103 (1 unrun) 56f5958f
+    | case IS_MINUS_ZERO: break; /* (never: VSELECT is +0, 2 or 1) */
+    why: [never] VSELECT is never -0. The listing was searched by the
+         assembled word for every instruction that stores there (Luminary
+         alone has the word): two, both TS VSELECT in the Servicer. One is
+         the ZERO that the landing radar's start stores ("INITIALIZE
+         VSELECT", before TC SETPOS); the other is ENDLRV's, which stores
+         what its CCS left of it, or TWO in place of +0: 0, 2, 1, 0. No
+         interpretive store names it. The side by side tests bring no VSELECT
+         of -0, and the lines follow the listing's words for it.
 
 src/servicer/lr_update.c
-  nolite, line 696 (1 unrun) 0331e28e
-    | case IS_MINUS_ZERO: valtchk(); return; /* TCF ENDVDAT */
-    why: [open]
+  nolite, line 696 (1 unrun) 669a24f7
+    | case IS_MINUS_ZERO: valtchk(); return; /* TCF ENDVDAT (never, likewise) */
+    why: [never] VSELECT is never -0. The listing was searched by the
+         assembled word for every instruction that stores there (Luminary
+         alone has the word): two, both TS VSELECT in the Servicer. One is
+         the ZERO that the landing radar's start stores ("INITIALIZE
+         VSELECT", before TC SETPOS); the other is ENDLRV's, which stores
+         what its CCS left of it, or TWO in place of +0: 0, 2, 1, 0. No
+         interpretive store names it. The side by side tests bring no VSELECT
+         of -0, and the lines follow the listing's words for it.
 
 src/servicer/readaccs.c
   readaccs, line 98 (1 unrun) c28570c8
     | case IS_PLUS_ZERO: break;                 /* TCF +2, A +0 */
-    why: [open]
+    why: [impossible] A is the sum of 37771's complement and TIME5, the CS
+         and the AD just before. A ones' complement sum is +0 only when both
+         numbers are +0 (TIME5 at 37771 gives -0), and the constant is not.
 
 src/servicer_cm/servicer.c
   piploop, lines 107-112 (3 unrun) 0a594680
@@ -4200,10 +4241,17 @@ src/servicer_cm/servicer.c
 src/sps_backup/sps_backup.c
   inhibition, line 64 (1 unrun) 8ed85277
     | return;
-    why: [open]
+    why: [impossible] Each of the four cases of the CTRCHECK switch above
+         returns: nothing comes to this line. It is there for the compiler,
+         which is not told that the four are all.
   inhibition, line 66 (1 unrun) 65bae77a
     | case IS_MINUS_ZERO: cs(ADDRESS_OF(TJU)); break;     /* never */
-    why: [open]
+    why: [impossible] The file's own lines: the inhibition logic is reached
+         only from SPSRCS, straight or through SPSSTART and POSTHRST +1, and
+         each outcome of SPSRCS's first CCS stores OLDSENSE (ONE, its
+         complement, or the +0 the CCS left). No step between stores that
+         word again (under any of its names: DEL, HOLDQ, JETRATE, DAPTREG1),
+         so OLDSENSE is +1, -1 or +0 here, never -0.
 
 src/sxtmark/sxtmark.c
   markrupt, lines 352-356 (3 unrun) 5f8ffbd9
@@ -4215,7 +4263,9 @@ src/sxtmark/sxtmark.c
     why: [not-modelled]
   difchk, line 481 (1 unrun) 1cc224b5
     | case IS_MINUS_ZERO: tc_q(); return;
-    why: [open]
+    why: [impossible] The routine's own lines: A is the difference MSU has
+         just left, which is never -0 (a two's complement difference of zero
+         is +0, and a negative one has one taken off it).
 
 src/t4rupt/imu_monitor.c
   nxtifbit, line 128 (1 unrun) 2134de0c
@@ -4353,25 +4403,40 @@ src/tjet_law/tjet_law.c
     | tc_at(ZONE3 + 3u);
     | continue_at(CCSHOLE);
     | return false;
-    why: [open]
+    why: [impossible] EDOT is not negative at ZONE3: NEGEDOT complemented a
+         negative one at the routine's start (the listing's comment at this
+         TC CCSHOLE), SCALEDOT's rescaling, an MP by BIT4, keeps its sign,
+         and the RUFLAWs, which add to it, go to RUFLAW12, FULLTIME or
+         COASTTJ, not to ZONE2,3.
   zone5, lines 231-234 (4 unrun) cfb823a7
     | case IS_PLUS_ZERO:
     | tc_at(ZONE5 + 3u);
     | continue_at(CCSHOLE);
     | return false;
-    why: [open]
+    why: [impossible] ROTSENSE is SENSOR (OCT 14400) or its complement, which
+         SETSENSE stores at the routine's start, and Z123COMP and RUFSETUP
+         only complement it (CS, TS): it is not zero.
   zone5, line 239 (1 unrun) 29d28b4a
     | case IS_MINUS_ZERO: ads(ADDRESS_OF(ADRSDIF2)); break;
-    why: [open]
+    why: [impossible] ROTSENSE is SENSOR (OCT 14400) or its complement, which
+         SETSENSE stores at the routine's start, and Z123COMP and RUFSETUP
+         only complement it (CS, TS): it is not zero.
   finelaw, line 318 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] E is what SCALEE's MP L stored just before FINELAW:
+         BIT13 times the low word of E times BIT5, where the high word was
+         zero. That is four times E, not zero for an E that is not; and for a
+         low word of +0 or -0 the product is +0 (a zero multiplier gives +0).
   ruflaw1, line 398 (1 unrun) f5365334
     | case IS_PLUS_ZERO: break; /* ADS of +0 */
-    why: [open]
+    why: [impossible] ROTSENSE is SENSOR (OCT 14400) or its complement, which
+         SETSENSE stores at the routine's start, and Z123COMP and RUFSETUP
+         only complement it (CS, TS): it is not zero.
   ruflaw1, line 400 (1 unrun) 5ccc12c5
     | case IS_MINUS_ZERO: break; /* ADS of +0 */
-    why: [open]
+    why: [impossible] ROTSENSE is SENSOR (OCT 14400) or its complement, which
+         SETSENSE stores at the routine's start, and Z123COMP and RUFSETUP
+         only complement it (CS, TS): it is not zero.
 
 src/trim_gimbal/trim_gimbal.c
   axis_inputs, lines 178-181 (4 unrun) 1c6eb3ff
@@ -4379,34 +4444,52 @@ src/trim_gimbal/trim_gimbal.c
     | ca(by_axis(ADDRESS_OF(KQ)));
     | ts(ADDRESS_OF(KCENTRAL));
     | return !A_is_zero();
-    why: [open]
+    why: [impossible] QRCNTR is what GTS stores at the top of each pass
+         (GOQTRIMG +1): the TWO of GTSGO+ON, the +1 or -1 that an overflow at
+         TS SAVESR leaves in A, or the ZERO of GOQTRIMG. Nothing else in the
+         file stores in it.
   second_term, lines 258-261 (4 unrun) 7a4bd431
     | case IS_MINUS_ZERO:
     | ts(ADDRESS_OF(K2CNTRAL)); /* DEFUNCT */
     | ts(ADDRESS_OF(K2CNTRAL) + 1u);
     | break;
-    why: [open]
+    why: [impossible] DEL is what HAVEQUOT's TS DEL stored of the sign
+         routine's A: BIT1, its complement, or the +0 that a CCS leaves of a
+         double zero. Nothing else in the file stores in it.
   gts, line 408 (1 unrun) 32a57f28
     | case IS_MINUS_ZERO: break; /* to NEGUSUM */
-    why: [open]
+    why: [impossible] DEL is what HAVEQUOT's TS DEL stored of the sign
+         routine's A: BIT1, its complement, or the +0 that a CCS leaves of a
+         double zero. Nothing else in the file stores in it.
   gts, line 424 (1 unrun) 99117a5a
     | case IS_MINUS_ZERO: more = false; break; /* never: QRCNTR is 2, +-1 or 0. On at GOCLOSE */
-    why: [open]
+    why: [impossible] QRCNTR is what GTS stores at the top of each pass
+         (GOQTRIMG +1): the TWO of GTSGO+ON, the +1 or -1 that an overflow at
+         TS SAVESR leaves in A, or the ZERO of GOQTRIMG. Nothing else in the
+         file stores in it.
   timegmbl, lines 568-572 (5 unrun) e7cf9ea7
     | case NEGATIVE:
     | dxch(ADDRESS_OF(ITEMP2));
     | tc_to(DONEYET + 4u, IBNKCALL);
     | return;
     | case IS_MINUS_ZERO: /* never */ tc_to(DONEYET + 4u, IBNKCALL); return;
-    why: [open]
+    why: [impossible] QRNDXER is the TWO the routine loads at its start, then
+         the ZERO of TIMQGMBL, stored at the top of each pass. Nothing else
+         in the file stores in it.
 
 src/tvc/tvcdaps.c
   limit, line 244 (1 unrun) 130605c9
     | case IS_PLUS_ZERO: break;                        /* (the CCS's +0) */
-    why: [open]
+    why: [impossible] limit() goes on to the CCS only when the high word of
+         the MP just before is not zero: the word (in ACTLIM, with its round
+         up of one) times the limit's reciprocal is one or more, so the word
+         is at least the limit, and not zero.
   limit, line 246 (1 unrun) 9d1ecb49
     | case IS_MINUS_ZERO: break;                       /* (the CCS's +0) */
-    why: [open]
+    why: [impossible] limit() goes on to the CCS only when the high word of
+         the MP just before is not zero: the word (in ACTLIM, with its round
+         up of one) times the limit's reciprocal is one or more, so the word
+         is at least the limit, and not zero.
 
 src/tvc/tvcinitialize.c
   swichovr_restart, lines 316-320 (5 unrun) c42df022
@@ -4428,21 +4511,36 @@ src/tvc/tvcmassprop.c
   massprop, lines 101-102 (2 unrun) d2fff9ba
     | case NEGATIVE:                      /* TCF FIXCW, at DXTEST +1 */
     | case IS_MINUS_ZERO: break;          /* TCF FIXCW, at DXTEST +2 */
-    why: [open]
-  massprop_finished, lines 125-126 (2 unrun) 954fe591
-    | case NEGATIVE: mask(BIT14); break;
+    why: [impossible] The file's own lines and tables: PHI333 is the NINE
+         that MASSPROP stores, what this CCS left of it (8 to +0), or the +1
+         or -1 of an overflow at the TS VARST0. LEMNO's word is a constant.
+         LEMYES's is four times the LM's mass (doubled, the overflow dropped,
+         then DDOUBL of the product) times SLOPEVAL's word, plus INTVALUE's;
+         of the ten pairs only the seventh's can pass 1 in size (2 x 2.21068
+         E-3 B+8 is 1.132, with 9.68 B-6, 0.151), and only upward: downward
+         it comes to -0.98 at the least. So PHI333 is never -1, and never -0.
+         Every mass word was run from MASSPROP in a scratch build as well,
+         and none reached these lines.
+  massprop_finished, line 126 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] The file's own lines: PSI333 is the BIT2 that FIXCW
+         stores, what this CCS left of it (BOKKEP2's TS), or the +1 or -1 of
+         an overflow at the TS WEIGHT/G, which BOKKEP2 stores too: never -0.
 
 src/tvc/tvcrestarts.c
   tvcdaphs, line 77 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] A is TVCPHASE masked with the complement of OCT37776,
+         the CS and MASK just before: bits 15 and 1 at most, which is not -0.
 
 src/tvc/tvcrolldap.c
   jetroll, line 110 (1 unrun) 85e0f5f4
     | case IS_PLUS_ZERO: t6enabl(); break;
-    why: [open]
+    why: [impossible] The file's own lines: JETROLL is reached only from
+         NOROLL and NOMXFIRE, and each stores ROLLFIRE just before (TS
+         ROLLFIRE): -0 in NOROLL, POSMAX or NEGMAX in NOMXFIRE. The +0 that
+         NOROLL1 stores there (the T6 task) is written over before this CCS
+         of ROLLFIRE.
   nomxfire, line 135 (1 unrun) 5c8dbe08
     | case IS_PLUS_ZERO: break;             /* TCF +2 (never: TEMREG is not zero here) */
     why: [impossible] The file's own lines: NOMXFIRE is reached only from
@@ -4469,10 +4567,18 @@ src/tvc/tvcrolldap.c
          step between: neither zero comes to the CCS.
   newroll, line 184 (1 unrun) a33ec75a
     | case IS_PLUS_ZERO: break;
-    why: [open]
+    why: [impossible] The file's own lines: NEWROLL is reached only from
+         ROLLSET, after its BZF NOROLL took a TEMREG of +0 or -0 away (TS
+         TEMREG; EXTEND; BZF NOROLL), and the CAE, the MP ROLLFIRE and the
+         CCS A between store nothing there: this CCS of TEMREG meets neither
+         zero.
   newroll, line 186 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] The file's own lines: NEWROLL is reached only from
+         ROLLSET, after its BZF NOROLL took a TEMREG of +0 or -0 away (TS
+         TEMREG; EXTEND; BZF NOROLL), and the CAE, the MP ROLLFIRE and the
+         CCS A between store nothing there: this CCS of TEMREG meets neither
+         zero.
   onroll, line 267 (1 unrun) ab2008b1
     | case IS_PLUS_ZERO: break;                    /* TCF ROLLSET (never: the BZF takes a zero) */
     why: [impossible] The BZF just above (EXTEND; BZF DVOK) takes a word of
@@ -4487,22 +4593,26 @@ src/tvc/tvcrolldap.c
 src/update_program/updates.c
   upend71, line 59 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] A is masked with BIT9, the MASK just before: bit 9 or
+         +0, never -0.
   upend72, lines 99-100 (2 unrun) ed33d4ef
     | case NEGATIVE: set_A(negate(BIT2)); break;
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] A is COMPNUMB masked with BIT1, the CAF and the MASK
+         just before: bit 1 or +0, never negative and never -0.
   upend72, line 111 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
-    why: [open]
-  upend72, line 120 (1 unrun) 3fb0da34
-    | case IS_MINUS_ZERO: upout_plus_2(); return;
-    why: [open]
+    why: [impossible] MPAC is what the TS at LDLOOP72 just stored. On the
+         first pass that is COMPNUMB less two (CS BIT2; AD COMPNUMB), which
+         is -0 only for a COMPNUMB of 2, and the test above let only an odd
+         COMPNUMB by. On each later pass it is what the loop's second CCS
+         left of a positive MPAC, +0 or more.
 
 src/update_program/verbs.c
   ckmdmore, line 59 (1 unrun) 0039665b
     | case IS_MINUS_ZERO: break;
-    why: [open]
+    why: [impossible] A is MODREG masked with the complement of TWO (CS TWO;
+         MASK MODREG): a word without bit 2, which is not -0.
   ckmdmore, lines 61-62 (2 unrun) 3b864e37
     | not_modelled();
     | return false;

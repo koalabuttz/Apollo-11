@@ -64,7 +64,8 @@ static void leave(void)
     longjmp(back, 1);
 }
 
-/* Channels 30-33, as the run latched them, and 13, the hardware's latch.
+/* Channels 30 and 31, as the run latched them (the file reads no other
+ * input channel), and 13, the hardware's latch.
  * Channel 13's bits 12-14 (the hand controller traps' resets) read back
  * +0, and a write leaves them as they were or sets them. */
 static word channel_in(unsigned number)
@@ -72,8 +73,6 @@ static word channel_in(unsigned number)
     switch (number) {
     case 030u: return inputs_now->channel30;
     case 031u: return inputs_now->channel31;
-    case 032u: return inputs_now->channel32;
-    case 033u: return inputs_now->channel33;
     case 013u:
         if (!hardware_now) not_modelled();
         return (word)(hardware_now->channel13 & 043777u);

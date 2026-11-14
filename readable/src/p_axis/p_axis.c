@@ -533,8 +533,9 @@ static bool selectp(word at, bool selectyz)
         mask_at(indexed(JETSALL, fetch(ADDRESS_OF(ROTINDEX))));
         ts(ADDRESS_OF(POLYTEMP));
         mask_at(ADDRESS_OF(CH6MASK));
-        /* CCS A, never negative: masked above with JETSALL's word, of bits 1
-         * to 8 only. */
+        /* CCS A, never negative: masked above with JETSALL's word for
+         * ROTINDEX, of bits 1 to 8 only (the ROTINDEX of 7776, which would
+         * index below the table, has left by now). */
         if (!ccs_positive(A_ADDRESS)) {
             tc_q();
             return true;
@@ -648,7 +649,7 @@ static void manmode(void)
         return;
     case IS_PLUS_ZERO: set_A(BIT3); break; /* FIREP */
     case NEGATIVE: break;
-    case IS_MINUS_ZERO: /* the RAND CHAN31, not extended, is TC 2031 */
+    case IS_MINUS_ZERO: /* (never) the RAND CHAN31, not extended, is TC 2031 */
         tc_at(MANMODE + 014u);
         continue_at(02031u);
         return;

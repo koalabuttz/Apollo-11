@@ -693,7 +693,7 @@ void nolite(void)
          * an address word, ADRES VXINH. */
         not_modelled();
         return;
-    case IS_MINUS_ZERO: valtchk(); return; /* TCF ENDVDAT */
+    case IS_MINUS_ZERO: valtchk(); return; /* TCF ENDVDAT (never, likewise) */
     }
 }
 

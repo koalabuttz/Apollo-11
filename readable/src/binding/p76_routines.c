@@ -33,7 +33,6 @@
 #include <string.h>
 #include <stddef.h>
 #include "binding.h"
-#include "rope_image.h"
 #include "../p76/p76.h"
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
@@ -42,13 +41,8 @@
 #endif
 
 /* Keys: bank 13, and the address in it. */
-#define P76_BANK 013u
-#define KEY(z)   (uint16_t)(P76_BANK * 1024u + ((z) - 02000u))
-#if LUMINARY099
-#define ROPE 0u /* the LM's rope */
-#else
-#define ROPE 1u /* the CM's */
-#endif
+#define P76_BANK      013u
+#define KEY(z)        (uint16_t)(P76_BANK * 1024u + ((z) - 02000u))
 #define SUPERBANK_BIT 0100u
 
 /* The older modules' io record. */
@@ -61,19 +55,9 @@ static void leave(void)
     longjmp(back, 1);
 }
 
-/* The interpreter's fixed operands are the rope's. */
-static word rope_word(unsigned physical)
-{
-    agc_word value = 0;
-
-    if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    return (word)(value & MINUS_ZERO);
-}
-
 static void bind(const agc_native_program *program, apollo_overlay_state *state, mission_io *io)
 {
     bind_machine(program, state, io);
-    agc.fixed_memory = rope_word;
     agc.leave = leave;
 }
 
@@ -88,7 +72,6 @@ static void bind_older(const agc_native_program *program, apollo_overlay_state *
     agc.in_interrupt = program->hardware ? &program->hardware->in_interrupt : NULL;
     agc.channel_in = NULL;
     agc.channel_out = NULL;
-    agc.fixed_memory = rope_word;
     agc.leave = leave;
 }
 

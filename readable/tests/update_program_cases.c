@@ -90,6 +90,15 @@ static unsigned rnd(void)
     return (unsigned)(seed >> 12) & 0xFFFFu;
 }
 
+/* A stream of its own for states added later, so that the states of the
+ * first stay as they were. */
+static uint32_t later_seed = 271828u;
+static unsigned later(unsigned n)
+{
+    later_seed = later_seed * 1103515245u + 12345u;
+    return (unsigned)((later_seed >> 18) % n);
+}
+
 static uint16_t any_word(void)
 {
     static const uint16_t v[8] = {0u, 077777u, 1u, 077776u, 2u, 3u, 4u, 037777u};
@@ -151,6 +160,13 @@ static void stir_basic(apollo_overlay_state *s, mission_io *io, int *no_hardware
         case 2: s->words[7] = 1u; break;
         default: *no_hardware = 1; break;
         }
+    }
+    /* Now and then a V72 update of MPAC itself with -0: three components,
+     * the pair an ECADR of MPAC and -0 (LDLOOP72's last CCS MPAC, of -0). */
+    if (later(64u) == 0u) {
+        s->words[COMPNUMB_AT] = 3u;
+        s->words[UPBUFF_AT + 1u] = MPAC_AT;
+        s->words[UPBUFF_AT + 2u] = 077777u;
     }
     s->words[6] = (uint16_t)((s->words[4] & 076000u) | (s->words[3] >> 8)); /* BBANK */
 }

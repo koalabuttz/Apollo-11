@@ -26,16 +26,9 @@
 #include <setjmp.h>
 #include <stddef.h>
 #include "binding.h"
-#include "rope_image.h"
 #include "../time_free_fall/time_free_fall.h"
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
-
-#if LUMINARY099
-#define ROPE 0u /* the LM's rope */
-#else
-#define ROPE 1u /* the CM's */
-#endif
 
 /* A key: the bank, and the address in it. */
 #define KEY(bank, address) (uint16_t)((bank) * 1024u + ((address) & 01777u))
@@ -65,21 +58,11 @@ static void channel_out(unsigned number, word value)
     not_modelled();
 }
 
-/* The file's constants are the rope's. */
-static word rope_word(unsigned physical)
-{
-    agc_word value = 0;
-
-    if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    return (word)(value & MINUS_ZERO);
-}
-
 static bool bind(const agc_native_program *program, apollo_overlay_state *state, mission_io *io)
 {
     if (!bind_machine(program, state, io)) return false;
     agc.channel_in = channel_in;
     agc.channel_out = channel_out;
-    agc.fixed_memory = rope_word;
     agc.leave = leave;
     return true;
 }

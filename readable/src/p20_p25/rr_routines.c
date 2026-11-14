@@ -547,12 +547,14 @@ void rrout(void)
     rrout2();
 }
 
-/* ITEMP2's axis, 1 or 0. Not modelled: any other, which would index past
- * TANG, LASTYCMD and CDUTCMD's pairs. */
+/* ITEMP2's axis: 1 or 0, or the -1 that an overflow at SETRRCTR's TS
+ * leaves there (the word below TANG, LASTYCMD or CDUTCMD). Not modelled:
+ * any other, which would index past the pairs. */
 static unsigned rrout_axis(unsigned address)
 {
     word axis = fetch(ADDRESS_OF(ITEMP2));
 
+    if (axis == NEG1) return address - 1u;
     if (axis > 1u) not_modelled();
     return address + axis;
 }
@@ -567,19 +569,25 @@ void rrout2(void)
 }
 
 /* SETRRCTR +1 -- p. 535: "COUNT OUT DIFFERENCE BETWEEN DESIRED STATE AND
- * PRESENT STATE AS RECORDED IN LASTYCMD AND LASTXCMD". */
+ * PRESENT STATE AS RECORDED IN LASTYCMD AND LASTXCMD". An overflow at the
+ * TS (a last command far from this one) skips the CCS ITEMP2, so the TCF
+ * RROUT2 stores the +1 or -1 it leaves in A as ITEMP2. */
 static void count_out(void)
 {
     xch(rrout_axis(ADDRESS_OF(LASTYCMD)));
     com();
     ad_at(ADDRESS_OF(ITEMP1));
-    ad(NEG0);                                                /* "PREVENT +0 IN OUTCOUNTER" */
-    if (ts(rrout_axis(ADDRESS_OF(CDUTCMD)))) not_modelled(); /* (commands of 384 pulses at most) */
+    ad(NEG0); /* "PREVENT +0 IN OUTCOUNTER" */
+    if (ts(rrout_axis(ADDRESS_OF(CDUTCMD)))) {
+        rrout2();
+        return;
+    }
     switch (ccs_at(ADDRESS_OF(ITEMP2))) {
     case POSITIVE: rrout2(); return;        /* "PROCESS BOTH INPUTS." */
     case IS_PLUS_ZERO: set_A(PRIO6); break; /* "ENABLE COUNTERS." */
-    case NEGATIVE: break;                   /* never: ITEMP2 is 1, then 0 */
+    case NEGATIVE: break;                   /* ITEMP2 -1, after an overflow at the TS */
     case IS_MINUS_ZERO:                     /* never: the WOR CHAN14, not extended, is TC 5014 */
+        tc_at(SETRRCTR + 014u);
         continue_at(05014u);
         return;
     }

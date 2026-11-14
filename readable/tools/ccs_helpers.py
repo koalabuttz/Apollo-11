@@ -161,7 +161,8 @@ def mask_before(code, defined, at, wanted='mask', depth=0):
             return None, f'the mask is {arguments}, no constant\'s name'
         if wanted == 'mask' and (name in MASKS_A or name == 'mask'):    # mask(FLAGWRD7): an erasable word
             wanted = 'set'
-        elif not (wanted == 'mask' and name in KEEPS_A):
+        elif not (wanted == 'mask' and name in KEEPS_A) or name in ('lxch', 'qxch') and \
+                arguments == 'A_ADDRESS':                               # (an exchange with A itself changes it)
             return None, f'{name}() comes before the CCS'
         at = len(before) - 1
 
@@ -354,12 +355,22 @@ void second(void)
     if (ccs_positive(A_ADDRESS)) return;
 #endif
 }
+void third(void)
+{
+    mask(BIT5);
+    lxch(A_ADDRESS);
+    if (ccs_positive(A_ADDRESS)) return;
+    mask(BIT6);
+    lxch(Q_ADDRESS);
+    if (ccs_positive(A_ADDRESS)) return;
+}
 """
     expect = [('lamp', [('both', 'BIT8')], None), ('first', [('both', 'RNDVZBIT')], None),
               ('first', [('both', 'BIT4')], None), ('first', None, ['BIT1', 'BIT2']), ('first', None, None),
               ('first', None, []), ('first', None, None), ('first', None, None), ('first', None, ['BIT9', 'BIT3']),
               ('first', [('both', 'REFSMBIT')], None),
-              ('second', [('lm', 'IMUSEBIT'), ('cm', 'IMUSEFLG')], None), ('second', [('cm', 'BIT7')], None)]
+              ('second', [('lm', 'IMUSEBIT'), ('cm', 'IMUSEFLG')], None), ('second', [('cm', 'BIT7')], None),
+              ('third', None, None), ('third', [('both', 'BIT6')], None)]
     got = [(function, masks, None if masks or reasoned(said, first) is None else
             [name for _, name in masks_named(reasoned(said, first), here)])
            for function, _, _, masks, _, said, first, here in sites('made/up.c', made)]
@@ -383,7 +394,7 @@ def main():
     if '--self-check' in sys.argv:
         return self_check()
     found, listing, bad, calls, told, named = [], [], [], 0, 0, 0
-    for path in sorted(SRC.glob('*/*.[ch]')):
+    for path in sorted(path for path in SRC.rglob('*') if path.suffix in ('.c', '.h', '.inc')):
         file = str(path.relative_to(SRC))
         for function, line, helper, masks, why, said, first, here in sites(file, path.read_text()):
             calls += 1
@@ -399,8 +410,8 @@ def main():
                 named += bool(constants)
                 found += [(mission, name, f'src/{file}:{line}') for mission, name in constants]
                 listing.append(f'{where}: no constant mask ({why}); CCS {first}, never negative: {reason} [' + (
-                    'asserted: ' + ', '.join(name for _, name in constants) if constants else
-                    'by the reason alone') + ']')
+                    'the reason\'s names asserted: ' + ', '.join(name for _, name in constants) if constants
+                    else 'by the reason alone') + ']')
             else:
                 bad.append(f'{where} has no constant mask ({why}), and no comment at the call says CCS '
                            f'{first}, never negative: and why')
@@ -412,8 +423,8 @@ def main():
     for line in bad:
         print('FAIL ' + line)
     print(f"{'FAIL' if bad else 'ok  '} ccs helpers: {calls} calls of {', '.join(HELPERS)}; "
-          f'{len(listing) - told} after constant masks; {told} more with a reason at the call, {named} of '
-          f'them naming constants that mask the word and {told - named} by the reason alone; {len(found)} '
+          f'{len(listing) - told} after constant masks; {told} more on a reason at the call, which a person '
+          f'reads ({named} of the reasons name constants, asserted as named); {len(found)} '
           f'static asserts of a clear bit 15 compiled; {calls - len(listing)} with neither')
     return 1 if bad else 0
 

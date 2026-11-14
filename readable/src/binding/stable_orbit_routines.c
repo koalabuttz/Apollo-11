@@ -30,7 +30,6 @@
 #include <string.h>
 #include "agc_transfer.h"
 #include "binding.h"
-#include "rope_image.h"
 #include "../stable_orbit/stable_orbit.h"
 #include "../rtb_op_codes/rtb_op_codes.h"
 #include "../interpreter/interpreter.h"
@@ -40,11 +39,9 @@
 /* Keys: the file's bank, and the address in it. */
 #if LUMINARY099
 #define STABLE_ORBIT_BANK 034u
-#define ROPE              0u   /* the LM's rope */
 #define BASIC_IN_A_JOB    true /* the LM's basic code takes a job's state */
 #else
 #define STABLE_ORBIT_BANK 04u
-#define ROPE              1u /* the CM's */
 #define BASIC_IN_A_JOB    false
 #endif
 #define KEY(z)        (uint16_t)(STABLE_ORBIT_BANK * 1024u + ((z) - 02000u))
@@ -59,19 +56,9 @@ static void leave(void)
     longjmp(back, 1);
 }
 
-/* The interpreter's fixed operands are the rope's. */
-static word rope_word(unsigned physical)
-{
-    agc_word value = 0;
-
-    if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    return (word)(value & MINUS_ZERO);
-}
-
 static void bind(const agc_native_program *program, apollo_overlay_state *state, mission_io *io)
 {
     bind_machine(program, state, io);
-    agc.fixed_memory = rope_word;
     agc.leave = leave;
 }
 

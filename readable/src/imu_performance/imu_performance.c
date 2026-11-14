@@ -931,7 +931,7 @@ void finetime_plus1(void)
         finetime_read();
         return;
     }
-    finetime_reread();
+    finetime_reread(); /* (never in these runs: the two reads above give one word) */
 }
 
 /* FINETIME +010 -- p. 381: the scaler moved between the two reads; read it

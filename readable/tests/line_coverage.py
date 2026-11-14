@@ -77,6 +77,7 @@ class's form, and a person reads the argument.
 """
 import collections
 import hashlib
+import inspect
 import os
 import re
 import shutil
@@ -611,7 +612,7 @@ def fits(name, why, file, text):
         return 'is [never] with no comment at its lines that says never'
     if name in ('never', 'impossible'):
         return '' if why else f'is [{name}] and does not say why'
-    return '' if name == 'open' else f'has a class this check has no rule for ([{name}])'
+    return f'has a class this check has no rule for ([{name}])'
 
 
 def source_fits(name, why, built):
@@ -678,8 +679,8 @@ def interpretive(lines):
     files have lines of C that are counted."""
     programs, files = 0, set()
     for file in files_of_src():
-        held = len(re.findall(r'^(?:static )?const struct interpretive_code \w+ = \{',
-                              (SRC / file).read_text(), re.M))
+        held = len(re.findall(r'^(?:static )?const struct interpretive_code \w+ = (?:\{|[A-Z_]+\()',
+                              (SRC / file).read_text(), re.M))  # (= {...}, or by a macro of the file, = CODE(...))
         if held:
             programs += held
             files.add(file)
@@ -833,7 +834,6 @@ def self_check():
                         'to wrap it onto a second line of its head.',
                'impossible': 'The lines before rule it out.',
                'not-modelled': 'Marked so.',
-               'open': 'Not looked at yet.',
                'refusal': 'How a binding refuses.',
                'no-code': 'A source of tables.',
                'not-built': 'A source no target compiles.'}
@@ -907,7 +907,8 @@ def self_check():
     expect('one there that says why and is no not_modelled()', found,
            swap(never, 'why: [refusal] Only a word keyed in by hand brings it.'), (0, 0, 1, 0))
     expect('a [not-modelled] with no not_modelled()', found, swap(never, 'why: [not-modelled]'), (0, 0, 1, 0))
-    expect('an [open] stretch', found, swap(never, 'why: [open]'), (0, 0, 0, 0))
+    expect('an [open] stretch, a class the ledger had until its last one was closed', found,
+           swap(never, 'why: [open]'), (0, 0, 1, 0))
     # The sources with no line counted.
     expect('a source with no lines that the ledger does not name', found, same, (0, 0, 0, 1),
            sources={**named, 't/new.c': ''})
@@ -953,6 +954,12 @@ def self_check():
     part('a program that holds a measured name twice', bool(refused('p', {'fetch'}, {'fetch', 'store'})), True)
     part('a program that holds only a name of its own twice', refused('p', {'main'}, {'fetch', 'store'}), '')
     part('a program that holds no name twice', refused('p', set(), {'fetch', 'store'}), '')
+    # The two are of use only where they are called, which a made-up measure cannot show: held by the
+    # callers' own text (the guard before anything is built; each counted program put to refused()).
+    part('fly() runs the guard before it builds',
+         'if guard_check():' in inspect.getsource(fly).split('PROFILES.mkdir')[0], True)
+    part('measure() refuses a program that holds a measured name twice', bool(re.search(
+        r'why = refused\(program\.name, held, measured\)\s+if why:\s+sys\.exit\(', inspect.getsource(measure))), True)
     src = str(SRC) + os.sep
     maps = [f'SOURCE:a/a.c\nSF:{src}a/a.c\nFN:3,readable/src/a/a.c:helper\nFN:9,first\nDA:4,0\nDA:10,0\n'
             f'SF:/elsewhere/{"x" * len(src)}/other.h\nFN:1,theirs\nDA:1,0\nSF:{src}a/a.h\nFN:2,inlined\nDA:2,0\n',
