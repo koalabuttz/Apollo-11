@@ -58,6 +58,7 @@ static const struct interpretive_code *const codes[] = {
 #define MISSION               "LM"
 #define NEWOPS_AT             06070u
 #define V82FLAGS_AT           01537u /* in E-bank 4, with TFF */
+#define MTPER_AT              02142u /* -TPER, in E-bank 4 */
 #define STORE_MPAC4_AT        03604u /* SR30.1 +33 */
 typedef p66_bias_io mission_io;
 #else
@@ -69,6 +70,7 @@ typedef p66_bias_io mission_io;
 #define MISSION               "CM"
 #define NEWOPS_AT             06037u
 #define V82FLAGS_AT           01742u /* in E-bank 4, with TFF */
+#define MTPER_AT              02345u /* -TPER, in E-bank 4 */
 #define STORE_MPAC4_AT        02722u /* SR30.1 +33 */
 typedef cm_native_io mission_io;
 #endif
@@ -144,6 +146,15 @@ static unsigned mission_cases[R30_VECTORS], mission_count;
 static unsigned in_ebank(uint16_t eb, unsigned address)
 {
     return (eb & 7u) * 0400u + (address - 01400u);
+}
+
+/* A stream of its own for states added later, so that the states of the
+ * first stay as they were. */
+static uint32_t later_seed = 282842u;
+static unsigned later(unsigned n)
+{
+    later_seed = later_seed * 1103515245u + 12345u;
+    return (unsigned)((later_seed >> 18) % n);
 }
 
 static uint16_t any_word(void)
@@ -261,6 +272,9 @@ static void state(apollo_overlay_state *s, mission_io *io, agc_hardware *hardwar
     if (n % 4u != 0u && rnd() % 64u == 0u) w[3u + rnd() % 03775u] |= 0100000u;
     if (n % 4u != 0u && rnd() % 64u == 0u) w[2] |= 0100000u; /* Q, which may hold 16 bits */
     w[BANKSET_AT] = rnd() % 32u ? w[6] : any_word();
+    /* Now and then -TPER a zero of either sign, as SR30.1 sets it below
+     * HPERMIN, for the BZE TICKTFF after BOTHPAD. */
+    if (later(16u) == 0u) w[MTPER_AT] = w[MTPER_AT + 1u] = later(4u) ? 0u : 077777u;
 }
 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,

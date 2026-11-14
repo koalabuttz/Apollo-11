@@ -18,6 +18,10 @@ typedef cm_native_io mission_io;
 /* Point agc at the program's memory and channels. False if any is missing. */
 bool bind_machine(const agc_native_program *program, apollo_overlay_state *state, void *device);
 
+/* The fixed-memory hook bind_machine() sets, for a binding that points agc
+ * at its record by hand: any read of fixed memory refuses the state. */
+word no_fixed_memory(unsigned physical);
+
 /* The word of fixed memory at a physical address, for a routine that reads
  * the word after its caller's TC (a CADR, an alarm's code). A program's
  * operand sets name those addresses: the call sites each table of

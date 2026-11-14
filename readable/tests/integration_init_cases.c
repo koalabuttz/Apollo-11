@@ -103,7 +103,8 @@ typedef cm_native_io mission_io;
 #define BANKSET_AT  0165u
 #define PUSHLOC_AT  0166u
 #define NEWJOB_AT   0067u
-#define STATE_AT    0074u /* the flagwords, STATE to STATE +11 */
+#define STATE_AT    0074u  /* the flagwords, STATE to STATE +11 */
+#define UPSVFLAG_AT 01501u /* in E-bank 3 */
 #if LUMINARY099
 #define GRP2SVQ_AT 02711u
 #else
@@ -388,6 +389,13 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
     /* Now and then LOCCTR (ITEMP4) a zero of either sign, for the CCS after
      * JOBWAKE. */
     if (later(32u) == 0u) w[0064u] = later(2u) ? 077777u : 0u;
+    /* Now and then UPSVFLAG the code of a moon state vector (2, UPMNSVCD)
+     * of either sign, and MPAC that code, for INTWAKEU's BZE INTWAKEM. */
+    if (later(32u) == 0u) w[UPSVFLAG_AT] = later(2u) ? 077775u : 2u;
+    if (later(32u) == 0u) {
+        w[MPAC_AT] = 2u;
+        w[MPAC_AT + 1u] = w[MPAC_AT + 2u] = 0u;
+    }
 }
 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,

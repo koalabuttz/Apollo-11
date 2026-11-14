@@ -17,7 +17,9 @@
 # stretch of lines that none runs must stand with its reason in
 # readable/tests/line_coverage.txt, and each source file with no line to
 # run must be named there. A PR that changes what runs, or a stretch's
-# text, changes that ledger with it.
+# text, changes that ledger with it. The same run says which words of
+# interpretive code the interpreter ran (readable/tests/word_coverage.py),
+# held to readable/tests/word_coverage.txt in the same way.
 name: readable-ci
 # It runs on a change to readable/ and on a change to what readable/ is
 # built from and checked against: the faithful port's sources, its tests
@@ -202,5 +204,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: readable-line-coverage
-          path: readable/build/linecov/line_coverage.txt
+          path: |
+            readable/build/linecov/line_coverage.txt
+            readable/build/linecov/word_coverage.txt
           if-no-files-found: ignore

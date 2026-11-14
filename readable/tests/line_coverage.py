@@ -17,7 +17,8 @@ no run line between them), and each stretch must stand in
 tests/line_coverage.txt with the reason it does not run. The check fails on
 a stretch that is not there, on one that is there and now runs, and on one
 whose reason does not stand: none, one of no class, or one of a class that
-does not fit the stretch (fits(), below: a [refusal] outside the bindings
+does not fit the stretch (fits(), below: a [refusal] in a binding with no
+line that refuses, one outside the bindings
 that is no not_modelled() or does not say why, a [not-modelled] with no
 not_modelled() at its lines, a [never] with no comment there that says
 never, a [never] or an [impossible] that does not say why). A stretch is
@@ -47,9 +48,11 @@ and the check fails when a function's count is not the measure's
 moves to that list, and does not just go.
 
 What is measured is C. An interpretive program is a table of words to the
-compiler, with no line to run: the measure does not see which of its words
+compiler, with no line to run: this measure does not see which of its words
 the interpreter ran, in a [no-code] source or in a source that has C lines
-of its own beside its tables.
+of its own beside its tables. That is the word measure's
+(tests/word_coverage.py), which reads what this one's run left under
+build/linecov/words.
 
   line_coverage.py             build, run, measure, and hold to the ledger
   line_coverage.py --measure   measure the counts of the last run again
@@ -91,6 +94,7 @@ READABLE = Path(__file__).resolve().parents[1]
 SRC = READABLE / 'src'
 BUILD = READABLE / 'build/linecov'
 PROFILES = BUILD / 'profiles'
+WORDS = BUILD / 'words'
 MAPS = BUILD / 'maps'
 LEDGER = READABLE / 'tests/line_coverage.txt'
 JOBS = 4           # of make all
@@ -141,6 +145,11 @@ def fly(jobs):
         sys.exit('line_coverage: the guard does not hold; nothing built')
     PROFILES.mkdir(parents=True, exist_ok=True)
     for old in PROFILES.glob('*.profraw'):
+        old.unlink()
+    # The interpreter's binding writes which interpretive words each program
+    # ran beside them (tests/word_coverage.inc, for tests/word_coverage.py).
+    WORDS.mkdir(parents=True, exist_ok=True)
+    for old in WORDS.glob('*.words'):
         old.unlink()
     # Each program writes its counts to files of its own name there
     # (tests/coverage_cc.py links the name in; its counts are added up over
@@ -596,13 +605,20 @@ def class_of(reason):
     return (told.group(1), (told.group(2) or '').strip()) if told else (None, reason or '')
 
 
+# What a binding refuses a state by: the routine's stop (not_modelled()),
+# the jump out (leave(), its longjmp), an answer of no routine, false, none
+# or out of scope, or the state and the io record put back.
+BINDING_REFUSES = re.compile(r'not_modelled\(\)|leave\(\)|longjmp\(|\*state = |\*io = |'
+                     r'return (NULL|false|0u?|EXEC_OUT_OF_SCOPE|EXEC_UNMAPPED|LANEC_OUT_OF_SCOPE);')
+
+
 def fits(name, why, file, text):
     """What is wrong with a reason of class name, saying why, for a stretch
     of file with that text; nothing if it fits. Each class of the ledger's
     head has its rule here."""
     if name == 'refusal':
         if file.startswith('binding/'):
-            return ''
+            return '' if BINDING_REFUSES.search(text) else 'is [refusal] in a binding, with no line that refuses'
         if 'not_modelled' not in text:
             return 'is [refusal], not in a binding (src/binding), with no not_modelled() at its lines'
         return '' if why else 'is [refusal], not in a binding (src/binding), and does not say why'
@@ -722,7 +738,7 @@ def write_ledger(path, version, lines, found, never, classes, reasons, sources, 
            f'# hold no line to run: {programs} interpretive programs in {program_files} files of src/',
            f'# ({with_lines} of them files with C lines that are counted, the rest among the',
            '# files not counted, below). Which of their words the interpreter ran,',
-           '# this measure does not see.',
+           '# this measure does not see: tests/word_coverage.txt says.',
            '#',
            '# By reason:',
            *[f'#   {line}' for line in by_reason(found, reasons)],
@@ -934,6 +950,9 @@ def self_check():
     refuser = ['void first(void)', '{', '    switch (x) {', '    case A: not_modelled(); return;',
                '    case B:', '    default: not_modelled();', '    }', '    if (y) not_modelled();',
                '    not_modelled();', '}', 'void other(void)', '{', '    not_modelled();', '}']
+    part('a [refusal] in a binding at a line that refuses', fits('refusal', '', 'binding/a.c', 'return false;'), '')
+    part('one at lines that do not refuse', bool(fits('refusal', '', 'binding/a.c', 'x += 1;\nreturn EXEC_OK;')),
+         True)
     part('the lines that ran and refuse',
          refusals_run({'a/a.c': {4: 3, 6: 1, 8: 9, 9: 0, 13: 0}}, {'a/a.c': {(1, 'first'), (11, 'other')}},
                       lambda file: '\n'.join(refuser)), {('a/a.c', 'first'): 2})

@@ -70,6 +70,7 @@ static void bind_older(const agc_native_program *program, apollo_overlay_state *
     agc.interrupts = &io->interrupt_enabled;
     agc.dsalmout = NULL;
     agc.in_interrupt = program->hardware ? &program->hardware->in_interrupt : NULL;
+    agc.fixed_memory = no_fixed_memory; /* (the older routines read no fixed word) */
     agc.channel_in = NULL;
     agc.channel_out = NULL;
     agc.leave = leave;

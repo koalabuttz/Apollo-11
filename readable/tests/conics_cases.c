@@ -190,6 +190,15 @@ static int code_in(uint16_t fb, uint16_t loc)
 /* The frozen cases of the mission. */
 static unsigned mission_cases[CONIC_VECTORS], mission_count;
 
+/* A stream of its own for states added later, so that the states of the
+ * first stay as they were. */
+static uint32_t later_seed = 264575u;
+static unsigned later(unsigned n)
+{
+    later_seed = later_seed * 1103515245u + 12345u;
+    return (unsigned)((later_seed >> 18) % n);
+}
+
 static uint16_t any_word(void)
 {
     return (uint16_t)(rnd() & 077777u);
@@ -348,6 +357,10 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
     for (k = 0; interpretive && k < sizeof dp_store_keys / sizeof dp_store_keys[0]; ++k)
         if (key == dp_store_keys[k]) w[MODE_AT] = 0u;
 #endif
+    /* Now and then MPAC a zero in all its words, of either sign, for the
+     * BZEs a number that is only often an edge value never takes (KEPLER's
+     * at MODDONE and after CMNTOVFL, LAMBERT's after LAMBLOOP). */
+    if (later(32u) == 0u) w[MPAC_AT] = w[MPAC_AT + 1u] = w[MPAC_AT + 2u] = later(4u) ? 0u : 077777u;
 }
 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,

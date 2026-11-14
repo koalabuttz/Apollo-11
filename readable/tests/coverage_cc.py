@@ -179,7 +179,8 @@ def compile_one(flags, source, out=None, name=None):
     path = os.path.realpath(source)
     measured = path.startswith(SRC) and all(f in flags for f in COUNTING)
     if measured:
-        flags = [*flags, '-Xclang', '-main-file-name', '-Xclang', os.path.relpath(path, REPOSITORY)]
+        flags = [*flags, '-DWORD_COVERAGE=1', '-Xclang', '-main-file-name', '-Xclang',
+                 os.path.relpath(path, REPOSITORY)]
     else:
         flags = [f for f in flags if f not in COUNTING]
     status = subprocess.run(['clang', *flags, *(['-c', source, '-o', out] if out else [])]).returncode

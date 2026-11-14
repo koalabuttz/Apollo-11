@@ -4,7 +4,7 @@
 #
 # Measured with Ubuntu clang version 18.1.3 (1ubuntu1).
 # 422 files hold lines of C to run (406 of the 474 .c files under src/,
-# and 16 headers); 60368 such lines; 1546 of them unrun
+# and 16 headers); 60376 such lines; 1547 of them unrun
 # (2.56%), in 643 stretches of 223 files.
 # Built and never run: x86-flight-cm-core, x86-flight-lm-core, x86-link-check.
 #
@@ -12,13 +12,13 @@
 # hold no line to run: 821 interpretive programs in 200 files of src/
 # (145 of them files with C lines that are counted, the rest among the
 # files not counted, below). Which of their words the interpreter ran,
-# this measure does not see.
+# this measure does not see: tests/word_coverage.txt says.
 #
 # By reason:
 #   impossible: 491 lines in 239 stretches
 #   never: 158 lines in 64 stretches
 #   not-modelled: 99 lines in 38 stretches
-#   refusal: 798 lines in 302 stretches
+#   refusal: 799 lines in 302 stretches
 #
 # Run, and compared with nothing: 77 lines of 74 functions ran
 # and refuse (not_modelled() first on the line). A case or a scenario
@@ -30,9 +30,11 @@
 
 [impossible] No state brings the routine to the line: the routine's own
     lines, or its file's, rule the outcome out (what they leave in the word
-    the branch tests), and the reason says how. The line follows the
-    listing's instructions for the outcome. An argument, not a run: nothing
-    compares the line.
+    the branch tests), and the reason says how. Where the reason is that
+    nothing else stores the word, it speaks of the program's own stores: a
+    word of erasable memory can also be loaded from the keyboard, and no such
+    reason covers that. The line follows the listing's instructions for the
+    outcome. An argument, not a run: nothing compares the line.
 [never] No program brings the state to the line, though the routine's own
     lines do not rule it out: the reason rests on what the rest of the
     program stores there or on what the assembler makes, and says what, and
@@ -1116,7 +1118,7 @@ src/binding/interpreter_basic.c
     why: [refusal]
 
 src/binding/interpreter_core.c
-  code_word, line 114 (1 unrun) 8ff20c92
+  code_word, line 130 (1 unrun) 8ff20c92
     | address = 2048u + (address & 07777u) - 04000u; /* never: no program is in fixed-fixed */
     why: [never] LOC holds a fixed-fixed address only for interpretive code
          that stands there, and neither program has any: in the assembled
@@ -1125,27 +1127,28 @@ src/binding/interpreter_core.c
          tables of src/ are all of banks 04 to 43. The faithful core has the
          same line; the passes that tests/interpreter_fuzz.c makes are of one
          switched bank.
-  as_expected, line 147 (1 unrun) 3fa97fd8
+  as_expected, line 163 (1 unrun) 3fa97fd8
     | return false;
     why: [refusal]
-  order_taken, line 172 (1 unrun) 3fa97fd8
+  order_taken, line 188 (1 unrun) 3fa97fd8
     | return false;
     why: [refusal]
-  run, line 272 (1 unrun) 60864340
+  run, line 292 (1 unrun) 60864340
     | return EXEC_OUT_OF_SCOPE;
     why: [refusal]
-  run, line 274 (1 unrun) 60864340
+  run, line 294 (1 unrun) 60864340
     | return EXEC_OUT_OF_SCOPE;
     why: [refusal]
-  leave, lines 317-319 (3 unrun) 389b7f06
+  leave, lines 337-339 (3 unrun) 389b7f06
     | {
     | longjmp(back, 1);
     | }
     why: [refusal]
-  entry, lines 338-342 (5 unrun) 3afa58ba
+  entry, lines 358-363 (6 unrun) ffb0d000
     | *state = before;
     | *io = kept_io;
     | CORE_MCT = clock;
+    | words_end(EXEC_OUT_OF_SCOPE);
     | return EXEC_OUT_OF_SCOPE;
     | }
     why: [refusal]
@@ -1477,16 +1480,16 @@ src/binding/p76_routines.c
     | longjmp(back, 1);
     | }
     why: [refusal]
-  run, lines 109-112 (4 unrun) 1384b7c3
+  run, lines 110-113 (4 unrun) 1384b7c3
     | *state = before;
     | memcpy(io, &kept, io_size);
     | return EXEC_OUT_OF_SCOPE;
     | }
     why: [refusal]
-  code_at, line 224 (1 unrun) 9ff2bcca
+  code_at, line 225 (1 unrun) 9ff2bcca
     | return NULL;
     why: [refusal]
-  pair, lines 247-249 (3 unrun) 0d3a7d6b
+  pair, lines 248-250 (3 unrun) 0d3a7d6b
     | *state = before;
     | *io = kept;
     | }
