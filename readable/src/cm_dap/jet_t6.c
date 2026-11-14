@@ -50,9 +50,10 @@ void t6start_plus1(void)
 {
     qxch(ADDRESS_OF(QRUPT));
     switch (ccs_at(ADDRESS_OF(TIME6))) {
-    case POSITIVE:
+    case POSITIVE: continue_at(RESUME); return;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: continue_at(RESUME); return;
-    default: break;
+    case IS_MINUS_ZERO: break;
     }
     cs(ADDRESS_OF(RCSFLAGS));
     mask(BIT1);
@@ -83,8 +84,9 @@ void t6ruptor(void)
 {
     switch (ccs_at(ADDRESS_OF(BLAST))) {
     case POSITIVE: continue_at(ZBLAST); break; /* "ZERO BLAST1" */
+    case IS_PLUS_ZERO: replace(); break;
     case NEGATIVE: t6l1(); break;
-    default: replace(); break;
+    case IS_MINUS_ZERO: replace(); break;
     }
 }
 
@@ -93,8 +95,9 @@ static void t6l1(void)
 {
     switch (ccs_at(ADDRESS_OF(BLAST1))) {
     case POSITIVE: continue_at(ZBLAST1); break;
+    case IS_PLUS_ZERO: continue_at(REPLACE1); break;
     case NEGATIVE: t6l2(); break;
-    default: continue_at(REPLACE1); break;
+    case IS_MINUS_ZERO: continue_at(REPLACE1); break;
     }
 }
 
@@ -103,8 +106,9 @@ void t6l2(void)
 {
     switch (ccs_at(ADDRESS_OF(BLAST2))) {
     case POSITIVE: continue_at(ZBLAST2); break;
+    case IS_PLUS_ZERO: continue_at(REPLACE2); break;
     case NEGATIVE: continue_at(RESUME); break;
-    default: continue_at(REPLACE2); break;
+    case IS_MINUS_ZERO: continue_at(REPLACE2); break;
     }
 }
 

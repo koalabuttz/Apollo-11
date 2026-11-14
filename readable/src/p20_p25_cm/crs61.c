@@ -86,8 +86,9 @@ void dapck(void)
         step3ck();
         break;
     case IS_PLUS_ZERO: aset(); break;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled();
+    /* (never: a masked bit. On at ASET's TS MPAC; and at its TC INTPRET.) */
+    case NEGATIVE: continue_at(ASET + 1u); break;
+    case IS_MINUS_ZERO: continue_at(ASET + 2u); break; /* never */
     }
 }
 
@@ -168,7 +169,11 @@ void cduloop_after_exit(void)
         cduloop();
         break;
     case IS_PLUS_ZERO: cduloop_done(); break;
-    case NEGATIVE: not_modelled(); break;
+    case NEGATIVE:
+        /* never: DTHETASM is the TWO that CDULOOP begins with, then what this CCS left of it.
+         * The next word is an interpretive word, STKTEST's EXIT. */
+        not_modelled();
+        break;
     case IS_MINUS_ZERO: stktest_after_exit(); break;
     }
 }
@@ -198,8 +203,9 @@ void stktest_after_exit(void)
         manuexis();
         break;
     case IS_PLUS_ZERO: stktest_upacty(); break;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled();
+    /* (never: a masked bit. On at the EXTEND; and at the WOR's word alone.) */
+    case NEGATIVE: continue_at(STKTEST + 6u); break;
+    case IS_MINUS_ZERO: continue_at(STKTEST + 7u); break; /* never */
     }
 }
 

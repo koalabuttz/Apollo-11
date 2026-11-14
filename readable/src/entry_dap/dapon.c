@@ -155,22 +155,27 @@ void cm_dapic(void)
 /* CM/DAP2C +5 -- p. 1068: into JETEM; then less 5, then less 10 at a time
  * (CCS A, AD -CDUT+1, TCF -2) until CCS finds it negative or -0, then one
  * more ("SEND NO ZERO TO WTLST"): READGYMB's first wait, kept in CM/GYMDT
- * "FOR RESTART". (TCF -2 would take a +0 round again for ever: the sums
- * never give one, a ones' complement sum being -0, so it is not
- * modelled.) */
+ * "FOR RESTART". */
 void cm_dap2c_jetem(void)
 {
     ads(ADDRESS_OF(JETEM));
     set_A(negate(FIVE)); /* CS */
     ad_at(ADDRESS_OF(JETEM));
     for (;;) {
-        enum sign sign = ccs_register(A_ADDRESS);
-
-        if (sign == POSITIVE) {
-            ad(MINUS_CDUT1);
+        switch (ccs_register(A_ADDRESS)) {
+        case POSITIVE:
+            ad(MINUS_CDUT1); /* AD -CDUT+1; TCF -2 */
             continue;
+        case IS_PLUS_ZERO:
+            /* (never: the sums give no +0, a ones' complement sum of unlike signs
+             * being -0. The TCF -2 would come back to this CCS with A still +0,
+             * and so on until the TC trap's restart.) */
+            continue_at(CM_DAP2C + 012u);
+            not_modelled();
+            return;
+        case NEGATIVE: break;      /* NOOP */
+        case IS_MINUS_ZERO: break; /* past the NOOP */
         }
-        if (sign == IS_PLUS_ZERO) not_modelled();
         break;
     }
     ad(ONE);

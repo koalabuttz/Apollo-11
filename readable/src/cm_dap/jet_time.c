@@ -39,8 +39,9 @@ void jtime_ccs(void)
 {
     switch (ccs_at(ADDRESS_OF(KMPAC))) {
     case POSITIVE: set_A(POSMAX); break;
+    case IS_PLUS_ZERO: ca(ADDRESS_OF(KMPAC) + 1u); break; /* TAUNORM */
     case NEGATIVE: set_A(NEGMAX); break;
-    default: ca(ADDRESS_OF(KMPAC) + 1u); break; /* TAUNORM */
+    case IS_MINUS_ZERO: ca(ADDRESS_OF(KMPAC) + 1u); break;
     }
     ts(index_ts(ADDRESS_OF(TAU), spndx())); /* DOJET */
     dojet_next();
@@ -56,7 +57,7 @@ void dojet_next(void)
     case POSITIVE: continue_at(JLOOP); return;
     case IS_PLUS_ZERO: continue_at(T6PROG); return;
     case NEGATIVE: set_A(ZERO); break; /* ZEROCMDS */
-    default: break;
+    case IS_MINUS_ZERO: break;
     }
     ts(ADDRESS_OF(TAU));
     ts(ADDRESS_OF(TAU1));

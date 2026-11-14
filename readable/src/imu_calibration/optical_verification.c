@@ -557,7 +557,11 @@ static void retarg1(void)
     case POSITIVE: ts(indexed_erasable(0u, a_word(), INDEXED_STORE)); break;
     case IS_PLUS_ZERO: ts(A_ADDRESS); break;
     case NEGATIVE: break;
-    case IS_MINUS_ZERO: not_modelled(); return; /* (PIPASC, data) */
+    case IS_MINUS_ZERO:
+        /* (never: MARKSTAT is +0 or positive, a VAC area's address under the marks' bits) */
+        ca(0341u); /* PIPASC's first word, 30341, run as CA 0341; the constants after it follow */
+        not_modelled();
+        return;
     }
     retarg(); /* TCF RETARG */
 }

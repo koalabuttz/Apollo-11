@@ -16,7 +16,10 @@ The rules, each named as the ledger names it:
   ccs-order         A switch on a CCS has its cases in the listing's
                     order: POSITIVE, IS_PLUS_ZERO, NEGATIVE, IS_MINUS_ZERO
                     (STYLE.md, Structure). Each mission's text is looked
-                    at apart (#if LUMINARY099 and the like).
+                    at apart (#if LUMINARY099 and the like). A switch is
+                    on a CCS when its head calls one, and also when it
+                    names one of the four outcomes: the outcome was kept
+                    in a variable first, or a function returned it.
   ccs-default       A switch on a CCS names its four outcomes: no default:
                     that stands for two or three of them, since the
                     listing has a word for each (STYLE.md, Structure).
@@ -33,10 +36,18 @@ The rules, each named as the ledger names it:
                     each the comment (on the case's lines, or right above
                     them) also says that the outcome never comes, and
                     what rules it out; the check holds it to the word
-                    never. So does the comment of a case that follows
-                    its words as far as a not_modelled() of its own (a
-                    constant run as a TC into the erasable memory): a
-                    call that is no guard, if (...) not_modelled().
+                    never and to three words more than these, a reason
+                    (whether the reason is right, a person reads). So
+                    does the comment of a case that follows its words as
+                    far as a not_modelled() of its own (a constant run as
+                    a TC into the erasable memory), or refuses in an
+                    else. "Differs with the place" is taken only in a
+                    helper that tools/ccs_helpers.py holds to its premise
+                    (CCS_HELPERS below). A refusal behind a test of a
+                    CCS's outcome, if (ccs_at(X) != POSITIVE)
+                    not_modelled(), is held to the same comment as a
+                    case that begins with one. A guard on anything else,
+                    if (ts(X)) not_modelled(), is no CCS's outcome.
   raw-channel       A channel is written by its name, not a bare number
                     (STYLE.md, Naming).
   continue-offset   A place inside its own directory that a routine ends
@@ -87,6 +98,7 @@ ORDER = ('POSITIVE', 'IS_PLUS_ZERO', 'NEGATIVE', 'IS_MINUS_ZERO')
 RULES = ('ccs-order', 'ccs-default', 'ccs-not-modelled', 'raw-channel', 'continue-offset', 'own-helper',
          'decimal-offset', 'long-line', 'file-header', 'goto', 'wording')
 CCS = re.compile(r'\bswitch \(ccs(?:_at|_register)?\(')
+SWITCH = re.compile(r'\bswitch \(')
 CASE = re.compile(r'\bcase (\w+):')
 CHANNEL = re.compile(r'\b(?:read|write|rand|wand|wor|rxor|ror)_channel\('
                      r'\s*\(?(?:word|unsigned)?\)?\s*0?[0-9]+u?\s*[,)]')
@@ -97,7 +109,15 @@ DECIMAL = re.compile(r'\b(?:K_)?([A-Z][A-Z0-9_]*) \+ ([89]|[1-9][0-9]+)u\b')
 LABEL = re.compile(r'^#define (\w+) +\(\(word\)K_\w+\)', re.M)
 NO_WORD = re.compile(r'\b(?:no word|interpretive words?|address words?|differs with the place)\b')
 SAID_NEVER = re.compile(r'\bnever\b', re.I)
-REFUSAL = re.compile(r'[;{}:]\s*not_modelled\(\);')  # a statement of its own, not a guard's
+REFUSAL = re.compile(r'(?:[;{}:]|\belse)\s*not_modelled\(\);')  # a statement of its own, not a guard's
+GUARD = re.compile(r'\bif \(([^;{}]*)\)\s*\{?\s*not_modelled\(\);')
+SIGN_TEST = re.compile(r'\b(?:POSITIVE|IS_PLUS_ZERO|NEGATIVE|IS_MINUS_ZERO)\b|\bccs(?:_at|_register)?\(')
+COMMENT = re.compile(r'/\*(.*?)\*/', re.S)
+WORD = re.compile(r"[A-Za-z0-9][\w+']*")
+REASON_WORDS = 3
+# The helpers that are one CCS at several places (tools/ccs_helpers.py holds every call of one to its
+# premise): only in these may a refusal say that what would run differs with the place.
+CCS_HELPERS = ('bit_set_in_A', 'pack_flag', 'ccs_positive', 'masked_is_set', 'ccs_A_positive', 'positive')
 ABOVE = re.compile(r'\s*(?:/\*|\*|case \w+:\s*(?:/\*.*\*/)?\s*$)')  # a comment's line, or a case's label alone
 NEVER = re.compile(r'/\*[^\n]*\bnever\b|^[^\n]*\bnever\b[^\n]*\*/', re.M)
 NAMES = 'agc/names.h'
@@ -130,7 +150,7 @@ def for_mission(text, lm):
             if word in ('if', 'ifdef', 'ifndef'):
                 found = re.fullmatch(r'(!?)\s*(?:defined\s*\(?\s*)?(LUMINARY099|COMANCHE055)\s*\)?', rest)
                 if found and word == 'if':
-                    kept.append((found.group(2) == 'LUMINARY099') == lm != bool(found.group(1)))
+                    kept.append(((found.group(2) == 'LUMINARY099') == lm) != bool(found.group(1)))
                 else:
                     kept.append(None)
             elif word == 'else' and kept and kept[-1] is not None:
@@ -162,9 +182,12 @@ def body_of(text, start):
 
 def ccs_switches(code):
     """Each switch on a CCS in code (comments blanked): (where it is, its
-    cases in order, each (name, where, the code up to the next case))."""
+    cases in order, each (name, where, the code up to the next case)).
+    A switch is on a CCS when its head calls one, and also when one of
+    its cases is a CCS's outcome by name: the outcome was kept in a
+    variable, or a function returned it."""
     out = []
-    for found in CCS.finditer(code):
+    for found in SWITCH.finditer(code):
         span = body_of(code, found.end())
         if not span:
             continue
@@ -181,7 +204,8 @@ def ccs_switches(code):
                     labels.append((label.group(1) or 'default', at, label.end()))
         cases = [(name, at, code[end:(labels[i + 1][1] if i + 1 < len(labels) else last)])
                  for i, (name, at, end) in enumerate(labels)]
-        out.append((found.start(), cases))
+        if CCS.match(code, found.start()) or any(name in ORDER for name, _, _ in cases):
+            out.append((found.start(), cases))
     return out
 
 
@@ -195,7 +219,26 @@ def breaks(file, text, routines=(), labels=()):
 
     def line_of(source, at):
         return source.count('\n', 0, at) + 1
-    seen = set()
+    defined = [(line_of(code, found.start()), found.group(1)) for found in FUNCTION.finditer(code)]
+
+    def said_at(first, last):
+        """The comments on the lines first to last and right above them, and the function they are in."""
+        top = first
+        while top > 1 and ABOVE.match(lines[top - 2]):
+            top -= 1
+        function = ([name for line, name in defined if line <= first] or [None])[-1]
+        return ' '.join(COMMENT.findall('\n'.join(lines[top - 1:last]))), function
+
+    def reasoned(said, function, kind_wanted):
+        """Whether a refusal's comment says that the outcome never comes, what kind of word the listing
+        has there (where that is wanted), and a reason: some words besides those."""
+        kind = NO_WORD.search(said)
+        if not SAID_NEVER.search(said) or kind_wanted and not kind:
+            return False
+        if kind and kind.group() == 'differs with the place':
+            return function in CCS_HELPERS
+        return len(WORD.findall(SAID_NEVER.sub(' ', NO_WORD.sub(' ', said)))) >= REASON_WORDS
+    seen, judged = set(), set()
     for lm in (True, False):
         mission = for_mission(code, lm)
         for at, cases in ccs_switches(mission):
@@ -215,12 +258,16 @@ def breaks(file, text, routines=(), labels=()):
                     call = mission.index('not_modelled', where) if begins else \
                         mission.index(statements, where) + later.end()
                     first, last = line_of(mission, where), line_of(mission, call)
-                    top = first
-                    while top > 1 and ABOVE.match(lines[top - 2]):
-                        top -= 1
-                    said = '\n'.join(lines[top - 1:last])
-                    if not (SAID_NEVER.search(said) and (NO_WORD.search(said) or later)):
+                    judged.add(last)
+                    if not reasoned(*said_at(first, last), not later):
                         out.append(('ccs-not-modelled', first, name))
+        for found in GUARD.finditer(mission):
+            line = line_of(mission, found.end())
+            if SIGN_TEST.search(found.group(1)) and line not in judged and \
+                    ('ccs-not-modelled', line) not in seen:
+                seen.add(('ccs-not-modelled', line))
+                if not reasoned(*said_at(line_of(mission, found.start()), line), True):
+                    out.append(('ccs-not-modelled', line, 'if (' + ' '.join(found.group(1).split()) + ')'))
     for found in CHANNEL.finditer(code):
         out.append(('raw-channel', line_of(code, found.start()), found.group().strip()))
     for found in CONTINUE.finditer(code):
@@ -356,7 +403,21 @@ def self_check():
     expect('one mission\'s cases out of order', missions.replace('case NEGATIVE: return;\ncase IS_MINUS_ZERO: c',
                                                                  'case IS_MINUS_ZERO: return;\ncase NEGATIVE: c'),
            [('ccs-order', 1)])
-    expect('a switch that is not on a CCS', 'switch (step(X)) {\ncase NEGATIVE: break;\ncase POSITIVE: break;\n}\n', [])
+    # (a part of one mission alone is still checked: each way of writing the #if)
+    for condition in ('LUMINARY099', 'COMANCHE055', '!LUMINARY099', '!COMANCHE055', 'defined(COMANCHE055)',
+                      'OTHER'):
+        expect(f'a default under #if {condition} alone',
+               f'#if {condition}\nswitch (ccs(X)) {{\ncase IS_PLUS_ZERO: return;\ndefault: break;\n}}\n#endif\n',
+               [('ccs-default', 2)])
+    expect('a switch that names no outcome of a CCS', 'switch (step(X)) {\ncase 1: break;\ndefault: break;\n}\n', [])
+    expect('a switch on an outcome that was kept, out of order',
+           'enum sign s = ccs_at(X);\nswitch (s) {\ncase NEGATIVE: break;\ncase POSITIVE: break;\n}\n',
+           [('ccs-order', 2)])
+    expect('one with a default', 'enum sign s = ccs_at(X);\nwhile (x) {\n}\nswitch (s) {\ncase IS_PLUS_ZERO: break;\n'
+           'default: break;\n}\n', [('ccs-default', 4)])
+    expect('a switch on an outcome a function returned, refusing',
+           'switch (kept()) {\ncase POSITIVE: break;\ncase IS_PLUS_ZERO: break;\ncase NEGATIVE: break;\n'
+           'case IS_MINUS_ZERO: not_modelled();\n}\n', [('ccs-not-modelled', 5)])
     refused = 'switch (ccs_at(X)) {\ncase POSITIVE: break;\ncase IS_PLUS_ZERO:\n    not_modelled();\n    return;\n' \
               'default: break;\n}\n'
     expect('an outcome of a CCS refused', refused, [('ccs-default', 1), ('ccs-not-modelled', 3)])
@@ -371,11 +432,36 @@ def self_check():
            'switch (ccs_at(X)) {\ncase POSITIVE: break;\ncase IS_PLUS_ZERO: break;\ncase NEGATIVE: break;\n'
            'case IS_MINUS_ZERO:\n    /* (never) TCF X is the last word: the listing has no word\n     * after it. */\n'
            '    not_modelled();\n}\n', [])
-    for words in ('never: a bit. Next are interpretive words', 'never: a count. Next is an address word',
-                  'never; what would run differs with the place'):
+    for words in ('never: a masked bit. Next are interpretive words',
+                  'never: it counts down. Next is an address word'):
         expect(f'an outcome whose next word is no instruction ({words.split(". ")[-1]})',
                'switch (ccs_at(X)) {\ncase POSITIVE: break;\ncase IS_PLUS_ZERO: break;\ncase NEGATIVE:\n'
                f'case IS_MINUS_ZERO: not_modelled(); /* {words} */\n}}\n', [])
+    for words in ('never: no word', 'never; an address word', '(never) interpretive words'):
+        expect(f'one that gives the words and no reason ({words})',
+               'switch (ccs_at(X)) {\ncase POSITIVE: break;\ncase IS_PLUS_ZERO: break;\ncase NEGATIVE:\n'
+               f'case IS_MINUS_ZERO: not_modelled(); /* {words} */\n}}\n', [('ccs-not-modelled', 5)])
+    helper = ('static bool %s(void)\n{\n    switch (ccs_at(A_ADDRESS)) {\n    case POSITIVE: return true;\n'
+              '    case IS_PLUS_ZERO: return false;\n    case NEGATIVE:\n'
+              '    case IS_MINUS_ZERO: not_modelled(); /* never; what would run differs with the place */\n    }\n'
+              '    return false;\n}\n')
+    expect('a helper that is one CCS at several places', helper % CCS_HELPERS[0], [])
+    expect('the same words in a function that is no such helper', helper % 'some_bit', [('ccs-not-modelled', 7)])
+    expect('an outcome followed to a refusal that says never and no reason',
+           followed.replace('    a();', '    a(); /* never */'), [('ccs-default', 1), ('ccs-not-modelled', 3)])
+    expect('an outcome refused in an else',
+           refused.replace('    not_modelled();', '    if (x)\n        a();\n    else\n        not_modelled();'),
+           [('ccs-default', 1), ('ccs-not-modelled', 3)])
+    for guard in ('if (ccs_at(X) != POSITIVE) not_modelled(); /* CCS X */',
+                  'enum sign s = ccs_at(X); if (s == NEGATIVE || s == IS_MINUS_ZERO) not_modelled();',
+                  'if (s != IS_PLUS_ZERO) {\n    not_modelled();\n    return;\n}'):
+        expect(f'a refusal behind a test of a CCS\'s outcome ({guard[:28]})', guard + '\n',
+               [('ccs-not-modelled', 1 + guard.count('\n', 0, guard.index('not_modelled')))])
+    expect('one that says never, the kind of word and why',
+           '/* (never: it counts down from 41. Next come interpretive words.) */\n'
+           'if (ccs_at(X) != IS_PLUS_ZERO) not_modelled();\n', [])
+    expect('a refusal behind another test',
+           'if (ts(X)) not_modelled();\nif (index > 7u) {\n    not_modelled();\n}\n', [])
     expect('one that says why above its cases\' labels',
            'switch (ccs_at(X)) {\ncase POSITIVE: break;\ncase IS_PLUS_ZERO: break;\n/* (never: a masked bit) */\n'
            'case NEGATIVE:\ncase IS_MINUS_ZERO: not_modelled(); /* the next word is an address word */\n}\n', [])

@@ -18,7 +18,7 @@ static void tc_q(void)
  * taken. This one helper stands for that CCS at each place it is used, so
  * it cannot follow the two: what the listing would run differs with the
  * place. (make style-check holds each place's mask to a clear sign bit, and
- * lists the three places with no constant mask: tools/ccs_helpers.py.) */
+ * lists the places with no constant mask: tools/ccs_helpers.py.) */
 static bool ccs_positive(unsigned address)
 {
     switch (ccs_at(address)) {

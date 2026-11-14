@@ -53,7 +53,12 @@ void r57_after_exit(void)
         p23abrt();
         break;
     case IS_PLUS_ZERO: r57_not_set(); break;
-    default: not_modelled();
+    /* (never: the MASK leaves no sign. Negative would skip the CAF BIT2, and -0 the ADS too.) */
+    case NEGATIVE:
+        ads(ADDRESS_OF(EXTVBACT));
+        r57a();
+        break;
+    case IS_MINUS_ZERO: r57a(); break; /* never */
     }
 }
 

@@ -321,7 +321,15 @@ void nosam_after_exit(void)
     switch (ccs_register(A_ADDRESS)) {                             /* CCS A */
     case POSITIVE: notplan(); return;                              /* TCF NOTPLAN */
     case IS_PLUS_ZERO: nosam_flash(); return;
-    default: not_modelled();
+    case NEGATIVE:
+        /* (never: A is the low word of a product of two positive words. The TC BANKCALL
+         * without the CAF VNPLANV.) */
+        tc_to(NOSAM + 013u, BANKCALL);
+        return;
+    case IS_MINUS_ZERO:
+        /* never, for the same reason. The next word is an address word, CADR GOFLASH. */
+        not_modelled();
+        return;
     }
 }
 

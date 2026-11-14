@@ -70,9 +70,10 @@ void rblastok(void)
 void asmblwp(void)
 {
     switch (ccs_at(ADDRESS_OF(RACFAIL))) {
-    case POSITIVE:
+    case POSITIVE: fpx2(); return;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: fpx2(); return;
-    default: break;
+    case IS_MINUS_ZERO: break;
     }
     ca(table(ADDRESS_OF(XLNNDX), fetch(ADDRESS_OF(XNDX1))));
     ca(table(ADDRESS_OF(PYTABLE), a_word()));
@@ -178,14 +179,16 @@ void no2z_plus1(void)
 static void acbd2y(void)
 {
     switch (ccs_at(ADDRESS_OF(ACORBD))) {
-    case POSITIVE:
+    case POSITIVE: continue_at(AC2Y); return;
     case IS_PLUS_ZERO: continue_at(AC2Y); return;
-    default: break;
+    case NEGATIVE: break;
+    case IS_MINUS_ZERO: break;
     }
     switch (ccs_at(ADDRESS_OF(RACFAIL))) {
-    case POSITIVE:
+    case POSITIVE: no2y(); return;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: no2y(); return;
-    default: break;
+    case IS_MINUS_ZERO: break;
     }
     ca(table(ADDRESS_OF(XLNNDX), fetch(ADDRESS_OF(YNDX)))); /* "NO FAILURES, CAN DO Y" */
     continue_at(ACBD2Y + 012u);
@@ -247,9 +250,10 @@ void ac2y_acyjets(void)
 void acbd2z(void)
 {
     switch (ccs_at(ADDRESS_OF(ACORBD))) {
-    case POSITIVE:
+    case POSITIVE: continue_at(BDF2Z); return;
     case IS_PLUS_ZERO: continue_at(BDF2Z); return;
-    default: break;
+    case NEGATIVE: break;
+    case IS_MINUS_ZERO: break;
     }
     translation_bias(ADDRESS_OF(RBDFAIL));
     acbd2z_index();
@@ -288,9 +292,10 @@ void acbd2z_plus026(void)
 void bdf2z(void)
 {
     switch (ccs_at(ADDRESS_OF(RBDFAIL))) {
-    case POSITIVE:
+    case POSITIVE: continue_at(NO2Z); return;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: continue_at(NO2Z); return;
-    default: break;
+    case IS_MINUS_ZERO: break;
     }
     bdf2z_index();
 }
@@ -330,9 +335,10 @@ void rbypass_blast(void)
 void asmblwy(void)
 {
     switch (ccs_at(ADDRESS_OF(RBDFAIL))) {
-    case POSITIVE:
+    case POSITIVE: fyx2(); return;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: fyx2(); return;
-    default: break;
+    case IS_MINUS_ZERO: break;
     }
     asmblwy_index();
 }

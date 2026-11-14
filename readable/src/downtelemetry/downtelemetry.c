@@ -317,12 +317,13 @@ static void snaploop(void)
     } while (next == POSITIVE);
 
     switch (next) {
-    case IS_PLUS_ZERO: /* (never) LDNPHAS2 (GENADR DNPHASE2) would run as TC DNPHASE2 */
+    case POSITIVE: break; /* (not here: the loop went on, TCF SNAPLOOP) */
+    case IS_PLUS_ZERO:    /* (never) LDNPHAS2 (GENADR DNPHASE2) would run as TC DNPHASE2 */
         tc_at(ADDRESS_OF(LDNPHAS2));
         dnphase2();
         return;
     case NEGATIVE: ts(ADDRESS_OF(SUBLIST)); break; /* the last word */
-    default: break;                                /* (-0: never) */
+    case IS_MINUS_ZERO: break;                     /* (never) past the TS SUBLIST */
     }
     set_A(NEGONE);
     ts(ADDRESS_OF(DNECADR));

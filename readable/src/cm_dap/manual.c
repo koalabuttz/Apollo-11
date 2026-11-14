@@ -248,14 +248,23 @@ void merupdat(void)
 
 /* CCS SPNDX: the next axis, or, after the last, JETS, the jet selection
  * logic. A negative SPNDX or -0 would run the constants after TCF JETS as
- * orders: the faithful port refuses that, and it is not modelled here. */
+ * instructions, TCs into the erasable memory: the faithful port refuses
+ * that, and it is not modelled here. */
 static void next_axis(void)
 {
     switch (ccs_at(ADDRESS_OF(SPNDX))) {
     case POSITIVE: continue_at(SETWBODY); break;
     case IS_PLUS_ZERO: continue_at(JETS); break;
     case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); break;
+        /* (never: SPNDX is the TWO the loop begins with, then what this CCS left of it) */
+        tc_at(SPNDXCHK + 7u); /* OCT 01760, run as TC 1760: an erasable word, run */
+        not_modelled();
+        break;
+    case IS_MINUS_ZERO:
+        /* (never, for the same reason) */
+        tc_at(SPNDXCHK + 010u); /* OCT 01400, run as TC 1400 */
+        not_modelled();
+        break;
     }
 }
 

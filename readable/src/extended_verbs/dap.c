@@ -42,10 +42,21 @@ static void tc(word at, word routine)
     continue_at(routine);
 }
 
-/* CCS A: the masked word is positive (not +0). */
+/* CCS A after a MASK of positive bits: true when a bit was set (A then
+ * holds the masked word less one), false for +0. Such a MASK leaves neither
+ * a negative word nor -0. This one helper stands for that CCS at each place
+ * it is used, so it cannot follow the two outcomes that never come: what
+ * the listing would run differs with the place. (make style-check holds
+ * each place's mask to a clear sign bit: tools/ccs_helpers.py.) */
 static bool masked_is_set(void)
 {
-    return ccs_register(A_ADDRESS) == POSITIVE;
+    switch (ccs_register(A_ADDRESS)) {
+    case POSITIVE: return true;
+    case IS_PLUS_ZERO: return false;
+    case NEGATIVE:
+    case IS_MINUS_ZERO: not_modelled(); /* never; what would run differs with the place */
+    }
+    return false;
 }
 
 /* A flashing display from the word at: CAF <verb-noun>, TC BANKCALL, CADR

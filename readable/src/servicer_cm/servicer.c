@@ -91,16 +91,24 @@ void pipcheck_after_alarm(void)
 }
 
 /* PIPLOOP -- p. 828: the next count; after X, "RESTART REREADAC + SERVICER"
- * (PHASCHNG, OCT 16035, OCT 20000, 2CADR DVTOTUP). (A
- * negative RUPTREG1 would leave the CCS on those data words: not
- * modelled.) */
+ * (PHASCHNG, OCT 16035, OCT 20000, 2CADR DVTOTUP). (A negative RUPTREG1 or
+ * -0 would leave the CCS on those data words, run as instructions.) */
 void piploop(void)
 {
     switch (ccs_at(ADDRESS_OF(RUPTREG1))) {
     case POSITIVE: pipcheck(); return;
     case IS_PLUS_ZERO: tc_to(PIPLOOP + 2u, PHASCHNG); return;
     case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled();
+        /* (never: RUPTREG1 is the TWO of SERVICER, then what this CCS left of it. The OCT 16035
+         * runs as TCF 6035: a place of fixed-fixed memory, where the faithful port stops too.) */
+        continue_at(06035u);
+        not_modelled();
+        return;
+    case IS_MINUS_ZERO:
+        /* (never, for the same reason) */
+        ddoubl(); /* OCT 20000, run as DAS A; the 2CADR's words follow */
+        not_modelled();
+        return;
     }
 }
 

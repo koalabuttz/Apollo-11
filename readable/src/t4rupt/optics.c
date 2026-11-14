@@ -73,11 +73,21 @@ static void delopcmd(void);
 static void sendocmd(void);
 static void setbit(void);
 
-/* A word MASKed to one bit is + or +0, so a CCS of it either goes on
- * (the bit set) or skips one word (clear). */
+/* CCS A after a MASK of positive bits: true when a bit was set (A then
+ * holds the masked word less one), false for +0. Such a MASK leaves neither
+ * a negative word nor -0. This one helper stands for that CCS at each place
+ * it is used, so it cannot follow the two outcomes that never come: what
+ * the listing would run differs with the place. (make style-check holds
+ * each place's mask to a clear sign bit: tools/ccs_helpers.py.) */
 static bool ccs_A_positive(void)
 {
-    return ccs_at(A_ADDRESS) == POSITIVE;
+    switch (ccs_at(A_ADDRESS)) {
+    case POSITIVE: return true;
+    case IS_PLUS_ZERO: return false;
+    case NEGATIVE:
+    case IS_MINUS_ZERO: not_modelled(); /* never; what would run differs with the place */
+    }
+    return false;
 }
 
 /* The listing's ABS(X) less a constant (CCS X; AD K; TCF +2; TCF -2, K
@@ -309,13 +319,14 @@ static enum back_to zopfini(void)
  * L+2 (INCR Q; TC Q), else to L+1. */
 static enum back_to zopfin2(void)
 {
-    bool set;
-
     mask_at(ADDRESS_OF(OPTMODES));
-    set = ccs_A_positive();   /* ZOPFIN3: CCS A */
-    if (set) incr(Q_ADDRESS); /* INCR Q */
-    tc_through(Q_ADDRESS);    /* TC Q */
-    return set ? L_PLUS_2 : L_PLUS_1;
+    if (ccs_A_positive()) {    /* ZOPFIN3: CCS A */
+        incr(Q_ADDRESS);       /* INCR Q */
+        tc_through(Q_ADDRESS); /* TC Q */
+        return L_PLUS_2;
+    }
+    tc_through(Q_ADDRESS); /* TC Q */
+    return L_PLUS_1;
 }
 
 /* CANZOPT -- CM p. 161: "CANCEL ZERO OPTICS": "ZERO ZOPT PROCESSING
@@ -859,11 +870,15 @@ static void truncmd(void)
         getopcmd();
         return;
     }
-    if (ccs_A_positive()) {          /* CCS A */
-        set_A(POSMAX);               /* CA POSMAX */
-        tc_at((word)(TRUNCMD + 6u)); /* TC +2 */
-    } else {
-        set_A(negate(POSMAX)); /* CS POSMAX */
+    /* (After the TS's skip A is +1 or -1, never a zero: a +0 would go on at
+     * the TC +2 and a -0 at the TS L, each with the +0 the CCS leaves.) */
+    switch (ccs_at(A_ADDRESS)) {
+    case POSITIVE:
+        set_A(POSMAX); /* CA POSMAX */
+        /* fall through */
+    case IS_PLUS_ZERO: tc_at((word)(TRUNCMD + 6u)); break; /* TC +2 */
+    case NEGATIVE: set_A(negate(POSMAX)); break;           /* CS POSMAX */
+    case IS_MINUS_ZERO: break;
     }
     ts(L_ADDRESS);
     tc_at((word)(TRUNCMD + 011u)); /* TC STORCMD */

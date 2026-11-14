@@ -47,8 +47,9 @@ static void rotation_index(unsigned tau, unsigned rotation)
 {
     switch (ccs_at(tau)) {
     case POSITIVE: set_A(ONE); break;
+    case IS_PLUS_ZERO: break; /* "0 = NO PITCH": A +0 */
     case NEGATIVE: set_A(TWO); break;
-    default: break; /* "0 = NO PITCH": A +0 */
+    case IS_MINUS_ZERO: break; /* A +0 here too */
     }
     ts(rotation);
 }
@@ -60,8 +61,9 @@ static void table_bias(unsigned failure, unsigned translation)
 {
     switch (ccs_at(failure)) {
     case POSITIVE: set_A(NINE); break;
+    case IS_PLUS_ZERO: ca(table(ADDRESS_OF(XLNNDX), fetch(translation))); break;
     case NEGATIVE: set_A(TWELVE); break;
-    default: ca(table(ADDRESS_OF(XLNNDX), fetch(translation))); break;
+    case IS_MINUS_ZERO: ca(table(ADDRESS_OF(XLNNDX), fetch(translation))); break;
     }
 }
 
@@ -72,8 +74,9 @@ void translation_bias(unsigned failure)
 {
     switch (ccs_at(failure)) {
     case POSITIVE: set_A(THREE); break;
+    case IS_PLUS_ZERO: break; /* A +0 */
     case NEGATIVE: set_A(SIX); break;
-    default: break; /* A +0 */
+    case IS_MINUS_ZERO: break; /* A +0 here too */
     }
 }
 
@@ -135,8 +138,9 @@ void jetslect(void)
     ts(ADDRESS_OF(ATTKALMN));
     switch (ccs_at(ADDRESS_OF(XTRANS))) {
     case POSITIVE: ts(ADDRESS_OF(XNDX1)); break;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: ts(ADDRESS_OF(XNDX2)); break;
-    default: break;
+    case IS_MINUS_ZERO: break;
     }
     pword();
 }
@@ -177,9 +181,10 @@ void tabpcom_pjets(void)
     ts(ADDRESS_OF(NYJETS));
     rotation_index(ADDRESS_OF(TAU), ADDRESS_OF(RINDEX)); /* RWORD */
     switch (ccs_at(ADDRESS_OF(ACORBD))) {
-    case POSITIVE:
+    case POSITIVE: continue_at(BDROLL); return;
     case IS_PLUS_ZERO: continue_at(BDROLL); return;
-    default: break;
+    case NEGATIVE: break;      /* TCF +1 */
+    case IS_MINUS_ZERO: break; /* ACROLL is the next word */
     }
     table_bias(ADDRESS_OF(RACFAIL), ADDRESS_OF(YNDX)); /* ACROLL */
     ad_at(ADDRESS_OF(RINDEX));                         /* TABRCOM */
@@ -251,9 +256,10 @@ static void acrbdz(void)
 static void taucheck(void)
 {
     switch (ccs_at(ADDRESS_OF(TAU))) {
-    case POSITIVE:
+    case POSITIVE: nobdz(); break;
+    case IS_PLUS_ZERO: acrbdz(); break;
     case NEGATIVE: nobdz(); break;
-    default: acrbdz(); break;
+    case IS_MINUS_ZERO: acrbdz(); break;
     }
 }
 
@@ -338,9 +344,10 @@ void bdracz_rolltime(void)
 void tauchck(void)
 {
     switch (ccs_at(ADDRESS_OF(TAU))) {
-    case POSITIVE:
+    case POSITIVE: noacy(); break;
+    case IS_PLUS_ZERO: bdracz(); break;
     case NEGATIVE: noacy(); break;
-    default: bdracz(); break;
+    case IS_MINUS_ZERO: bdracz(); break;
     }
 }
 

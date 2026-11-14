@@ -261,10 +261,14 @@ const struct interpretive_code RSTGTS1_CODE = {033u, RSTGTS1 + 015u, COUNT(rstgt
 void estims_after_exit(void)
 {
     switch (ccs_at(E(GEOCOMP1))) {
-    case POSITIVE:
-    case NEGATIVE: estims_compass(); return; /* TC +2 */
+    case POSITIVE: estims_compass(); return; /* TC +2 */
     case IS_PLUS_ZERO: estims_drift_test(); return;
-    case IS_MINUS_ZERO: not_modelled();
+    case NEGATIVE: estims_compass(); return; /* the TC INTPRET */
+    case IS_MINUS_ZERO:
+        /* never: GEOCOMP1 is the ZERO of IMUTEST or the ONE of GTSCPSSA. The next word is an
+         * interpretive word, CALL. */
+        not_modelled();
+        return;
     }
 }
 

@@ -1395,22 +1395,32 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    (issue #1334) found and was still to fix. The list owes nothing now,
    so any break the script sees fails. A switch on a CCS names its four
    outcomes in the listing's order and follows each as the listing's
-   words say. One that refuses an outcome (`not_modelled()`) must say
-   in its comment that the outcome never comes and what rules it out.
-   The script does not see all of the tree yet, so "owes nothing" is
-   said of what it sees. A slip in how it reads an `#if` on a mission's
-   name blanks the code that only the CM builds, where 61 places in 25
-   files still break one of these rules. It knows a CCS's switch only
-   by `switch (ccs_at(...))` and the like, not one on a sign that was
-   kept in a variable first. And of a refusal's comment it asks only
-   for the word "never" and, where the rule wants one, a word for the
-   kind of word that follows, not that a reason is given. Issue #1334's
-   next part mends the first and takes up the others. Three helpers
-   stand for one CCS at several places and refuse the two outcomes a
-   masked bit never has: tools/ccs_helpers.py finds every call of them
-   and has the C compiler check, by a static assert, that the call's
-   mask has a clear sign bit (the five calls with no constant mask are
-   listed in it, each with what bounds its mask). It also holds each
+   words say; the script takes for one every switch whose head calls a
+   CCS or that names one of the four outcomes (the outcome was kept in
+   a variable, or a function returned it). It reads each mission's code
+   apart, also the code that only one of them builds. One that refuses
+   an outcome (`not_modelled()`), in a case, in an else or behind a test
+   of the outcome, must say in its comment that the outcome never
+   comes, what kind of word the listing has there, and what rules it
+   out: the script holds the comment to those words and to a reason's
+   three words more, and a person reads whether the reason is right.
+   "Owes nothing" is still said of what the script sees, and three
+   things it does not see yet. A CCS whose outcome is compared and not
+   switched on (`if (ccs_at(X) == POSITIVE)`) folds three outcomes into
+   one else, which STYLE.md's rule for a CCS does not allow: 252 places,
+   160 of them a CCS of A right after a mask by a constant (issue
+   #1334's next part proves those by the helpers' static assert and
+   makes the rest switches). The files of tables (`.inc`, 66 of them)
+   are not read. And the list is kept by rule, directory and count, so
+   a new break beside a mended one of its rule and directory would not
+   show while the list owed anything there. Six helpers stand for one
+   CCS at several places and refuse the two outcomes a masked bit never
+   has: tools/ccs_helpers.py finds every call of them (112) and has the
+   C compiler check, by a static assert under the mission that compiles
+   the call, that the call's mask has a clear sign bit (the 15 calls
+   with no constant mask are listed in it, each with what bounds its
+   word). The style check lets no other function refuse in the helpers'
+   words, so a new helper has to be named to both. It also holds each
    function's header to the
    listing page of the word the function stands at
    (tools/header_pages.py): the page is read from the assembled listing
@@ -1574,9 +1584,9 @@ builds the x86 flight program the same way and flies gate 2's 86
 scenarios. Each program that ran left its counts, and a line of `src/` is
 run if any of them ran it. What is counted is every line the build
 compiled, in a program that ran or not: each compile leaves the lines of
-its object, and a line no program holds counts as unrun. Of the 60,161
-lines of C with code in them, 1,663 (2.8%) are run by none, in 658
-stretches of 220 files. That is a figure for the C alone: interpretive
+its object, and a line no program holds counts as unrun. Of the 60,311
+lines of C with code in them, 1,727 (2.9%) are run by none, in 682
+stretches of 227 files. That is a figure for the C alone: interpretive
 code is tables of words, and none of its words is among those lines
 (below).
 
@@ -1609,13 +1619,13 @@ check holds each stretch to its kind's rule:
   reason: a state that can come, though no line of the program brings
   it, only a word keyed in by hand. There is one, ALFLT with a keyed -0
   in GEOCOMPS, where the listing would run an address word.
-- **not-modelled** (97 lines): the source marks the line
+- **not-modelled** (106 lines): the source marks the line
   `not_modelled()`, an outcome that cannot come there. The stretch must
   hold the call.
-- **impossible** (221 lines): no state brings the routine to the line,
+- **impossible** (270 lines): no state brings the routine to the line,
   and the reason says what in the routine's own lines, or its file's,
   rules the outcome out. An argument, not a run. The reason must say why.
-- **never** (76 lines): no program brings the state, though the routine's
+- **never** (85 lines): no program brings the state, though the routine's
   own lines do not rule it out. The reason rests on what the rest of the
   program stores there or on what the assembler makes, and says what was
   looked at. The comment at the line must say never, and the reason why.
@@ -1625,12 +1635,24 @@ check holds each stretch to its kind's rule:
   negative of a sine there, which can be -0, and a core set is not
   cleared for its next job), so no line of the interpreter rules it out
   and no check proves it of every entry.
-- **open** (499 lines, 195 stretches): not looked at yet. Each is owed a
+- **open** (496 lines, 193 stretches): not looked at yet. Each is owed a
   case that runs it or the reason none can, and the count is in the
   ledger's head.
 
+The unrun lines grew with issue #1334's style parts, and that is what
+those parts are for: a routine that used to refuse an outcome that never
+comes now follows the listing's words for it, and no state brings a run
+there. At five places the faithful port stops where the readable routine
+goes on, so the binding refuses the state before the routine, as the
+faithful port does, and nothing compares the lines that follow
+(`port_stops_at()` in `src/binding/p20_p25_routines.c`, `p51_routines.c`
+and `cm_p51_routines.c`: RADIN with a negative Q, LRPOSNXT +3 with
+SAMPLIM -0, GOTANGLS +033 with a negative TANG, P51D +3 with a negative
+STARIND, and the CM's P51E +6 with STARIND negative or -0). Each is in
+the ledger with why the state never comes.
+
 A line can also run and be compared with nothing: one that refuses
-(`not_modelled()` first on the line). 77 such lines of 75 functions ran:
+(`not_modelled()` first on the line). 77 such lines of 74 functions ran:
 a case or a scenario brought the routine there, its binding refused the
 state, and the test held only that the refusal left the state as it
 found it. They are not unrun, so they are in no stretch; the ledger
@@ -1653,7 +1675,7 @@ measure cannot see which of its words the interpreter ran. `src/` holds
 811 such programs (each a `struct interpretive_code`) in 199 files. 55
 of those files are among the 68 with no line of C at all; the other 144
 have C lines of their own, which are counted, beside tables that are
-not. So "2.8% unrun" says nothing of the interpretive words, in any
+not. So "2.9% unrun" says nothing of the interpretive words, in any
 file. What holds those programs today is that each table is compared
 with the rope word for word and that the cases and scenarios compare
 what the programs compute. Which words run, and which way each branch

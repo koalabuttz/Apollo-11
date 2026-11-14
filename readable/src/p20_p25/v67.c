@@ -84,8 +84,8 @@ void v06n99ds_loaded(void)
 /* V06N99DS +4 -- p. 608, GOXDSPF's second return, proceed (TCF V6N99PRO).
  * V6N99PRO: L sums WWPOS +Q subtracted from its saved copy (WWPOS +6 +Q) for
  * Q 5 down to 0. "THE SUM OF ALL DIFFERENCES MUST BE ZERO." (V06N9933); else
- * V67FLAG is set. (A TS of 5 ... 0 does not skip; Q is never negative, and
- * CCS Q takes Q less one back to TS Q.) */
+ * V67FLAG is set. (A TS of 5 ... 0 does not skip, and CCS Q takes Q less one
+ * back to TS Q.) */
 void v06n99ds_proceed(void)
 {
     zl();
@@ -95,12 +95,16 @@ void v06n99ds_proceed(void)
         cs(indexed(ADDRESS_OF(WWPOS), fetch(Q_ADDRESS)));         /* INDEX Q; CS WWPOS */
         ad_at(indexed(ADDRESS_OF(WWPOS) + 6u, fetch(Q_ADDRESS))); /* INDEX Q; AD WWPOS +6 */
         ads(L_ADDRESS);
-        enum sign q = ccs_at(Q_ADDRESS); /* "THE SUM OF ALL DIFFERENCES MUST BE ZERO." */
-        if (q == POSITIVE) continue;     /* TCF N99LOOP */
-        if (q != IS_PLUS_ZERO) not_modelled();
+        switch (ccs_at(Q_ADDRESS)) { /* "THE SUM OF ALL DIFFERENCES MUST BE ZERO." */
+        case POSITIVE: continue;     /* TCF N99LOOP */
+        case IS_PLUS_ZERO: lxch(A_ADDRESS); break;
+        /* (never: Q counts from 5 down to +0. A negative Q would skip the LXCH A; a
+         * -0 the EXTEND too, and the BZF's word runs as TCF V06N9933.) */
+        case NEGATIVE: break;
+        case IS_MINUS_ZERO: continue_at(V06N9933); return;
+        }
         break;
     }
-    lxch(A_ADDRESS);
     if (A_is_zero()) { /* EXTEND; BZF V06N9933 */
         continue_at(V06N9933);
         return;

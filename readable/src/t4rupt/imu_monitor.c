@@ -70,11 +70,22 @@ static bool lamptest(void);
  * ATT), as T4RUPT sends it. */
 #define LAMPS (ADDRESS_OF(DSPTAB) + 11u)
 
-/* A word MASKed to one bit is + or +0, so a CCS of it either goes on
- * (the bit set) or skips one word (clear). */
+/* CCS A after a MASK of positive bits: true when a bit was set (A then
+ * holds the masked word less one), false for +0. Such a MASK leaves neither
+ * a negative word nor -0. This one helper stands for that CCS at each place
+ * it is used, so it cannot follow the two outcomes that never come: what
+ * the listing would run differs with the place. (make style-check holds
+ * each place's mask to a clear sign bit, and lists the places with no
+ * constant mask: tools/ccs_helpers.py.) */
 static bool ccs_A_positive(void)
 {
-    return ccs_at(A_ADDRESS) == POSITIVE;
+    switch (ccs_at(A_ADDRESS)) {
+    case POSITIVE: return true;
+    case IS_PLUS_ZERO: return false;
+    case NEGATIVE:
+    case IS_MINUS_ZERO: not_modelled(); /* never; what would run differs with the place */
+    }
+    return false;
 }
 
 /* ======================================================================

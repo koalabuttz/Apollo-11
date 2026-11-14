@@ -30,6 +30,24 @@ void smallmp(void)
     tc_through(Q_ADDRESS);      /* TC Q */
 }
 
+/* DPADD +7 -- p. 999: the upper word zero (its +0 by a TCF +2, its -0 by
+ * the CCS's fourth way): by the lower word's sign. */
+static void dpadd_plus7(void)
+{
+    enum sign lower = ccs_at(KMPAC_LOW);
+
+    if (lower == POSITIVE) { /* "UPPER = 0, LOWER +" */
+        ad(NEGMAX);          /* DPADD2+ */
+        ts(KMPAC_LOW);       /* "CAN NOT OVERFLOW" */
+        set_A(NEGMAX);       /* CA: "UPPER WAS = 0" */
+    } else {
+        if (lower == NEGATIVE) com(); /* "UPPER = 0, LOWER -" */
+        ad(POSMAX);                   /* "LOWER = 0, A=0" */
+        ts(KMPAC_LOW);                /* "CAN NOT OVERFLOW" */
+        set_A(POSMAX);                /* CA: "UPPER WAS = 0" */
+    }
+}
+
 /* DPADD -- pp. 999-1000.
  * A,L added into KMPAC. When the sum overflows, it is taken round: the
  * upper word gets NEGMAX or POSMAX added the other way (DPADD+ and DPADD-),
@@ -37,8 +55,6 @@ void smallmp(void)
  * becomes NEGMAX or POSMAX (DPADD2+, and the steps after CCS KMPAC +1). */
 void dpadd(void)
 {
-    enum sign lower;
-
     das(KMPAC_HIGH);
     if (A_is_zero()) {         /* EXTEND; BZF TSK +1: "NO OVERFLOW" */
         tc_through(Q_ADDRESS); /* TC Q */
@@ -48,24 +64,12 @@ void dpadd(void)
     case POSITIVE:  /* "+ OVERFLOW" */
         ad(NEGMAX); /* DPADD+: "KMPAC GREATER THAN 0" */
         break;
-    case NEGATIVE:  /* "- OVERFLOW" */
-        com();      /* DPADD- */
-        ad(POSMAX); /* "KMPAC LESS THAN 0" */
+    case IS_PLUS_ZERO: dpadd_plus7(); break; /* TCF +2 */
+    case NEGATIVE:                           /* "- OVERFLOW" */
+        com();                               /* DPADD- */
+        ad(POSMAX);                          /* "KMPAC LESS THAN 0" */
         break;
-    case IS_PLUS_ZERO:
-    case IS_MINUS_ZERO:
-        lower = ccs_at(KMPAC_LOW);
-        if (lower == POSITIVE) { /* "UPPER = 0, LOWER +" */
-            ad(NEGMAX);          /* DPADD2+ */
-            ts(KMPAC_LOW);       /* "CAN NOT OVERFLOW" */
-            set_A(NEGMAX);       /* CA: "UPPER WAS = 0" */
-        } else {
-            if (lower == NEGATIVE) com(); /* "UPPER = 0, LOWER -" */
-            ad(POSMAX);                   /* "LOWER = 0, A=0" */
-            ts(KMPAC_LOW);                /* "CAN NOT OVERFLOW" */
-            set_A(POSMAX);                /* CA: "UPPER WAS = 0" */
-        }
-        break;
+    case IS_MINUS_ZERO: dpadd_plus7(); break; /* the next word */
     }
     ts(KMPAC_HIGH);        /* TSK */
     tc_through(Q_ADDRESS); /* TC Q */

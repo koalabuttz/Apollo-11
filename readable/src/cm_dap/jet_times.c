@@ -36,17 +36,17 @@ static unsigned table(unsigned field, unsigned jets)
 void pitchtim(void)
 {
     switch (ccs_at(ADDRESS_OF(TAU1))) {
-    case POSITIVE: ptaupos(); break;
+    case POSITIVE: ptaupos(); return;
+    case IS_PLUS_ZERO: break; /* TCF +2 */
     case NEGATIVE:
         cs(ADDRESS_OF(NPJETS)); /* PTAUNEG */
         ts(ADDRESS_OF(NPJETS));
         ptaupos();
-        break;
-    default:
-        ts(ADDRESS_OF(DFT1)); /* "NO PITCH ROTATION", A +0 */
-        continue_at(PBYPASS);
-        break;
+        return;
+    case IS_MINUS_ZERO: break;
     }
+    ts(ADDRESS_OF(DFT1)); /* "NO PITCH ROTATION", A +0 */
+    continue_at(PBYPASS);
 }
 
 /* PTAUPOS -- p. 1050: BLAST1, TAU1 over the number of jets. Over .1 s: DFT1
@@ -100,8 +100,9 @@ void yawtime(void)
 {
     switch (ccs_at(ADDRESS_OF(TAU2))) {
     case POSITIVE: ytaupos(); break;
+    case IS_PLUS_ZERO: yawtime_dft2(); break;
     case NEGATIVE: ytauneg(); break;
-    default: yawtime_dft2(); break;
+    case IS_MINUS_ZERO: yawtime_dft2(); break;
     }
 }
 
@@ -196,14 +197,14 @@ void ad14msy(void)
 void rolltime(void)
 {
     switch (ccs_at(ADDRESS_OF(TAU))) {
-    case POSITIVE:
-    case NEGATIVE: rblast(); break;
-    default:
-        ca(table(ADDRESS_OF(DFTMAX), ADDRESS_OF(NRJETS)));
-        ts(ADDRESS_OF(DFT));
-        continue_at(RBYPASS);
-        break;
+    case POSITIVE: rblast(); return;
+    case IS_PLUS_ZERO: break; /* TCF +2 */
+    case NEGATIVE: rblast(); return;
+    case IS_MINUS_ZERO: break;
     }
+    ca(table(ADDRESS_OF(DFTMAX), ADDRESS_OF(NRJETS)));
+    ts(ADDRESS_OF(DFT));
+    continue_at(RBYPASS);
 }
 
 /* RBLAST -- p. 1053: BLAST ("AN INTERMEDIATE VARIABLE USED IN DETERMINING

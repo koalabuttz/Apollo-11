@@ -146,7 +146,11 @@ void torqinch_after_imustllg(void)
         return;
     case IS_PLUS_ZERO: torqinch_erate(); return;
     case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); return; /* (CALL, ERTHRVSE: data words) */
+    case IS_MINUS_ZERO:
+        /* never: TORQNDX is the ZERO of IMUBACK or the POSMAX of GUESS1. The next words are
+         * interpretive words: CALL, ERTHRVSE. */
+        not_modelled();
+        return;
     }
 }
 
@@ -375,7 +379,11 @@ void endgtsal_after_chkcomed(void)
     case POSITIVE: sleepie_plus1(); return; /* TCF SLEEPIE +1 */
     case IS_PLUS_ZERO: lastgts(); return;
     case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); return; /* (VLOAD, ERCOMP1: data words) */
+    case IS_MINUS_ZERO:
+        /* never: LGYRO is +0, or the ECADR that IMUPULSE reserved the gyros with, under a count
+         * in bits 13 and 14. The next words are interpretive words: VLOAD, ERCOMP1. */
+        not_modelled();
+        return;
     }
 }
 
@@ -485,7 +493,12 @@ void restest1_after_exit(void)
         nochorld();
         return;
     case IS_PLUS_ZERO: restest1_phaschng(); return;
-    case NEGATIVE: not_modelled(); return; /* (OCT 00255, data) */
+    case NEGATIVE:
+        /* (never: PREMTRXC is the ZERO or ONE its routines store, or one more than that, by
+         * RESTEST3's DAD) */
+        tc_at(RESTEST1 + 010u); /* OCT 00255, run as TC 255: an erasable word, run */
+        not_modelled();
+        return;
     case IS_MINUS_ZERO: restest3(); return;
     }
 }

@@ -338,8 +338,9 @@ void usecos_after_sparcsin(void)
     ad(HALF);
     switch (ts(ADDRESS_OF(TEM3)) ? POSITIVE : ccs_at(ADDRESS_OF(TEM2))) {
     case POSITIVE: ca(ADDRESS_OF(TEM3)); break;
+    case IS_PLUS_ZERO: break; /* TCF 1TO2&TCQ */
     case NEGATIVE: cs(ADDRESS_OF(TEM3)); break;
-    default: break;
+    case IS_MINUS_ZERO: break; /* TCF 1TO2&TCQ */
     }
     one_to2_tcq();
 }

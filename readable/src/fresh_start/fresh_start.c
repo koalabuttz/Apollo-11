@@ -858,10 +858,10 @@ static void pinact_end(enum sign mpac5)
     enum sign groups = POSITIVE;
 
     switch (mpac5) {
+    case POSITIVE: break; /* (not here: PINACT went on to NXTRST) */
     case IS_PLUS_ZERO: groups = ccs_at(MPAC6); break;
     case NEGATIVE: groups = POSITIVE; break;          /* on TCF ENDRSTRT */
     case IS_MINUS_ZERO: groups = IS_PLUS_ZERO; break; /* on CAF BIT15 */
-    case POSITIVE: break;
     }
     switch (groups) {
     case POSITIVE: endrstrt(); return;
