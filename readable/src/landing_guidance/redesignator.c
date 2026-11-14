@@ -150,7 +150,9 @@ static void add_if(word bit, word step, unsigned increment)
 {
     ca(L_ADDRESS);
     mask(bit);
-    if (ccs_at(A_ADDRESS) == POSITIVE) set_A(step);
+    /* CCS A, never negative: L masked with BIT1, BIT2, BIT5 or BIT6, the
+     * pulse's bit. */
+    if (ccs_positive(A_ADDRESS)) set_A(step);
     ads(increment);
 }
 
@@ -183,7 +185,7 @@ static void count_em(void)
 void descbits(void)
 {
     mask(BIT7);
-    if (ccs_at(A_ADDRESS) == POSITIVE) set_A(negate(TWO));
+    if (ccs_positive(A_ADDRESS)) set_A(negate(TWO));
     ad(ONE);
     ads(ADDRESS_OF(RODCOUNT));
     continue_at(RESUME);

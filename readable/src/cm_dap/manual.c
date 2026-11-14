@@ -23,9 +23,11 @@
  * otherwise. */
 void t5phase2(void)
 {
-    if (ccs_at(ADDRESS_OF(ATTKALMN)) == POSITIVE) {
-        continue_at(KALUPDT);
-        return;
+    switch (ccs_at(ADDRESS_OF(ATTKALMN))) {
+    case POSITIVE: /* "IF (+) INITIALIZE RATE ESTIMATE" */ continue_at(KALUPDT); return;
+    case IS_PLUS_ZERO:         /* TCF +2 */
+    case NEGATIVE:             /* TCF +1 */
+    case IS_MINUS_ZERO: break; /* each to the CA DELTATT2 */
     }
     set_A(DELTATT2);
     xch(ADDRESS_OF(TIME5));
@@ -123,7 +125,7 @@ void nochange_after_stickchk(void)
     }
     ca(ADDRESS_OF(RCSFLAGS));
     mask(BIT14);
-    if (ccs_register(A_ADDRESS) == POSITIVE) { /* CCS A; TCF REINIT */
+    if (ccs_positive(A_ADDRESS)) { /* CCS A; TCF REINIT */
         continue_at(REINIT);
         return;
     }

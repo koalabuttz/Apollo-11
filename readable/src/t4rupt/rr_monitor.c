@@ -39,8 +39,8 @@ void rrautchk(void)
     rxor_lchan(); /* EXTEND; RXOR LCHAN */
     mask(OCT05776);
     ts(ADDRESS_OF(RADMODES));
-    mask(BIT2);                          /* "SEE IF JUST ON" */
-    if (ccs_at(A_ADDRESS) == POSITIVE) { /* CCS A; TCF RRCDUCHK -3: "OFF" */
+    mask(BIT2);                    /* "SEE IF JUST ON" */
+    if (ccs_positive(A_ADDRESS)) { /* CCS A; TCF RRCDUCHK -3: "OFF" */
         rrcduchk_minus3();
         return;
     }
@@ -83,7 +83,7 @@ static void rrcduchk(void)
     }
     set_A(AUTOMBIT);
     mask_at(ADDRESS_OF(RADMODES));
-    if (ccs_at(A_ADDRESS) == POSITIVE) { /* TCF NORRGMON */
+    if (ccs_positive(A_ADDRESS)) { /* TCF NORRGMON */
         gpmatrix();
         return;
     }
@@ -93,13 +93,13 @@ static void rrcduchk(void)
     ts(ADDRESS_OF(RADMODES));
     ca(ADDRESS_OF(RADMODES)); /* "DID RR CDU FAIL" */
     mask(RCDUFBIT);
-    if (ccs_at(A_ADDRESS) == POSITIVE) { /* "NO" */
+    if (ccs_positive(A_ADDRESS)) { /* "NO" */
         trkflcdu();
         return;
     }
     cs(ADDRESS_OF(FLAGWRD0)); /* "RNDVFLG P20 OR P22 OPERATING" */
     mask(RNDVZBIT);
-    if (ccs_at(A_ADDRESS) == POSITIVE) { /* "NO" */
+    if (ccs_positive(A_ADDRESS)) { /* "NO" */
         trkflcdu();
         return;
     }
@@ -126,23 +126,23 @@ void rrgimon(void)
 {
     ca(ADDRESS_OF(FLAGWRD5)); /* CAE FLAGWRD5 */
     mask(NORRMBIT);
-    if (ccs_at(A_ADDRESS) == POSITIVE) { /* "YES -- SKIP LIMIT CHECK" */
+    if (ccs_positive(A_ADDRESS)) { /* "YES -- SKIP LIMIT CHECK" */
         gpmatrix();
         return;
     }
     cs(ADDRESS_OF(FLAGWRD7)); /* "IS SERVICER RUNNING?" */
     mask(AVEGFBIT);
-    if (ccs_at(A_ADDRESS) != POSITIVE) { /* "YES. IS MUNFLAG SET?" */
+    if (!ccs_positive(A_ADDRESS)) { /* "YES. IS MUNFLAG SET?" */
         ca(ADDRESS_OF(FLAGWRD6));
         mask(MUNFLBIT);
-        if (ccs_at(A_ADDRESS) == POSITIVE) { /* "YES. DON'T DO R25" */
+        if (ccs_positive(A_ADDRESS)) { /* "YES. DON'T DO R25" */
             gpmatrix();
             return;
         }
     }
     set_A(OCT32002); /* +5 */
     mask_at(ADDRESS_OF(RADMODES));
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         gpmatrix();
         return;
     }

@@ -424,8 +424,10 @@ static void endtslc(void)
 void genshift(void)
 {
     mask_at(ADDRESS_OF(ADDRWD));
-    if (ccs_at(A_ADDRESS) == POSITIVE) { /* (the count is 0 to 177) */
-        genshft2();                      /* "IF NON-ZERO, PROCEED WITH DECREMENTED CT" */
+    /* CCS A, never negative: A arrives as LOW7, so the mask leaves the count,
+     * 0 to 177. */
+    if (ccs_positive(A_ADDRESS)) {
+        genshft2(); /* "IF NON-ZERO, PROCEED WITH DECREMENTED CT" */
         return;
     }
     /* "ZERO SHIFT COUNT. NO SHIFTS NEEDED BUT WE MIGHT HAVE TO ROUND MPAC
@@ -440,7 +442,7 @@ static void round_if_asked(word tc_site)
 {
     set_A(BIT10);
     mask_at(ADDRESS_OF(ADDRWD));
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(tc_site);
         roundsub();
     }
@@ -597,7 +599,7 @@ static void dosshft(void)
     ts(ADDRESS_OF(MPTEMP));
     set_A(BIT10);
     mask_at(ADDRESS_OF(ADDRWD));
-    if (ccs_at(A_ADDRESS) == POSITIVE)
+    if (ccs_positive(A_ADDRESS))
         rightr(); /* "YES." */
     else
         mpacshr(); /* "JUST SHIFT RIGHT." */
@@ -628,10 +630,12 @@ static void left_minus(void)
  * ROUND DESIRED. FOR VECTORS, SHIFT IMMEDIATELY." */
 static void left(void)
 {
-    if (ccs_at(ADDRESS_OF(MODE)) == NEGATIVE)
-        vssl();
-    else
-        genscl();
+    switch (ccs_at(ADDRESS_OF(MODE))) {
+    case POSITIVE:
+    case IS_PLUS_ZERO: genscl(); return;
+    case NEGATIVE: vssl(); return;
+    case IS_MINUS_ZERO: genscl(); return; /* (never: MODE is never -0. GENSCL is the next word.) */
+    }
 }
 
 /* GENSCL -- LM p. 1056, CM p. 1161: "PUT ROUNDING BIT (BIT 10 OF ADDRWD)

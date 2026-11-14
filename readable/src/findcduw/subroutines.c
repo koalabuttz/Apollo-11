@@ -349,10 +349,12 @@ void usecos_after_sparcsin(void)
  * below zero ("PI, 2'S COMP"); CCS L leaves +0 for the others. */
 static void sinzero(void)
 {
-    if (ccs_register(L_ADDRESS) == NEGATIVE)
-        set_A(NEGMAX);
-    else
-        set_A(ZERO);
+    switch (ccs_register(L_ADDRESS)) {
+    case POSITIVE: set_A(ZERO); break;   /* CA ZERO; TC Q */
+    case IS_PLUS_ZERO: break;            /* TC Q, with the +0 the CCS leaves */
+    case NEGATIVE: set_A(NEGMAX); break; /* "PI, 2'S COMP"; TC Q */
+    case IS_MINUS_ZERO: break;           /* TC Q, with the +0 the CCS leaves */
+    }
     return_to_q();
 }
 

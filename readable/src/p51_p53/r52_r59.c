@@ -200,8 +200,8 @@ void r59(void)
 {
     cs(ADDRESS_OF(FLAGWRD3));
     mask(REFSMBIT);
-    if (ccs_register(A_ADDRESS) == POSITIVE) { /* CCS A */
-        r59out();                              /* "NO REFSMMAT GO TO AOTMARK" */
+    if (ccs_positive(A_ADDRESS)) { /* CCS A */
+        r59out();                  /* "NO REFSMMAT GO TO AOTMARK" */
         return;
     }
     set_A(V01N70_STAR);

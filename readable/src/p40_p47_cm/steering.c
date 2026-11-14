@@ -194,7 +194,12 @@ void steering_after_e7setter(void)
 void steering_after_dpagree(void)
 {
     ca(ADDRESS_OF(MPAC) + 1u);
-    if (ccs_register(A_ADDRESS) == NEGATIVE) set_A(ZERO); /* "PROTECT AGAINST NEG/ZRO" */
+    switch (ccs_register(A_ADDRESS)) { /* "PROTECT AGAINST NEG/ZRO W.L. CALL" */
+    case POSITIVE: break;              /* TCF +3 */
+    case IS_PLUS_ZERO: break;          /* TCF +2 */
+    case NEGATIVE: set_A(ZERO); break; /* CAF ZERO */
+    case IS_MINUS_ZERO: break;         /* (the AD ONE is the next word) */
+    }
     ad(ONE);
     xch(L_ADDRESS);
     set_A(ZERO);

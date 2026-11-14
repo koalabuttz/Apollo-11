@@ -37,8 +37,8 @@ void agsinit(void)
 {
     set_A(REFSMBIT); /* CAF REFSMBIT */
     mask_at(ADDRESS_OF(FLAGWRD3));
-    if (ccs_at(A_ADDRESS) == POSITIVE) { /* CCS A */
-        tc_at((word)(AGSINIT + 3u));     /* TC REDSPTEM: "REFSMMAT IS OK" */
+    if (ccs_positive(A_ADDRESS)) {   /* CCS A */
+        tc_at((word)(AGSINIT + 3u)); /* TC REDSPTEM: "REFSMMAT IS OK" */
         redsptem();
         return;
     }
@@ -159,8 +159,8 @@ void agsvcalc_after_delayjob(void)
     ts(ADDRESS_OF(DNLSTCOD));
     set_A(IMUSEBIT); /* CAF IMUSEBIT */
     mask_at(ADDRESS_OF(FLAGWRD0));
-    if (ccs_at(A_ADDRESS) == POSITIVE) { /* CCS A */
-        tc_at((word)(AGSVCALC + 046u));  /* TC AGSEND */
+    if (ccs_positive(A_ADDRESS)) {      /* CCS A */
+        tc_at((word)(AGSVCALC + 046u)); /* TC AGSEND */
         agsend();
         return;
     }
@@ -174,12 +174,15 @@ void agsvcalc_after_delayjob(void)
  * .1 SEC AND TRY AGAIN" (+3, DELAYJOB). */
 static void ckstall(void)
 {
-    if (ccs_at(ADDRESS_OF(IMUCADR)) == IS_PLUS_ZERO) { /* CCS IMUCADR; TCF +6 */
-        tc_at((word)(CKSTALL + 010u));                 /* TC BANKCALL; CADR IMUZERO */
+    switch (ccs_at(ADDRESS_OF(IMUCADR))) {
+    case POSITIVE: break;              /* TCF +3 */
+    case IS_PLUS_ZERO:                 /* TCF +6 */
+        tc_at((word)(CKSTALL + 010u)); /* TC BANKCALL; CADR IMUZERO */
         continue_at(BANKCALL);
         return;
+    case NEGATIVE: break;      /* TCF +1 */
+    case IS_MINUS_ZERO: break; /* on to +3 */
     }
-    /* TCF +3 (positive), TCF +1 (negative, on to +3), or -0, at +3 */
     set_A(TEN);                  /* +3 CAF TEN */
     tc_at((word)(CKSTALL + 5u)); /* TC BANKCALL; CADR DELAYJOB */
     continue_at(BANKCALL);

@@ -12,24 +12,6 @@ static void tc_q(void)
     tc_through(Q_ADDRESS);
 }
 
-/* CCS of a word that is never negative here (a MASK of a positive
- * constant or of a channel bit, POLYTEMP, NUMBERT counting down): whether
- * it was positive (A then one less). Its negative and -0 exits are never
- * taken. This one helper stands for that CCS at each place it is used, so
- * it cannot follow the two: what the listing would run differs with the
- * place. (make style-check holds each place's mask to a clear sign bit, and
- * lists the places with no constant mask: tools/ccs_helpers.py.) */
-static bool ccs_positive(unsigned address)
-{
-    switch (ccs_at(address)) {
-    case POSITIVE: return true;
-    case IS_PLUS_ZERO: return false;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); /* never; what would run differs with the place */
-    }
-    return false;
-}
-
 /* AXISCTR: "0,1 FOR U,V", what INDEX AXISCTR adds. */
 static word axis(void)
 {
@@ -193,6 +175,8 @@ static void x_translation(void)
         two_jets();
     }
     if (!selctsub(TSNUMBRT + 1u)) return;
+    /* CCS POLYTEMP, never negative: POLICY's word, a word of the table ALLJETS
+     * masked with one of TYPEPOLY, jet bits of channel 5 (bits 1 to 8). */
     if (!ccs_positive(ADDRESS_OF(POLYTEMP))) {
         tc_to(TSNUMBRT + 4u, ALARM); /* TC ALARM; OCT 02002 */
         return;
@@ -340,7 +324,14 @@ void minrtn(void)
  * it). */
 static void commanded_rate(unsigned hand, unsigned last, bool at_ccs)
 {
-    if (at_ccs) (void)ccs_at(hand); /* TCF +3, +2, +1: the magnitude -1 */
+    if (at_ccs) {
+        switch (ccs_at(hand)) {    /* (for A: the deflection's magnitude less one) */
+        case POSITIVE:             /* TCF +3 */
+        case IS_PLUS_ZERO:         /* TCF +2 */
+        case NEGATIVE:             /* TCF +1 */
+        case IS_MINUS_ZERO: break; /* each to the DOUBLE */
+        }
+    }
     double_A();
     double_A();
     ad(LINRAT);
@@ -1000,12 +991,16 @@ static bool selctsub(word at)
 {
     tc_at(at);
     policy();
+    /* CCS A, never negative: POLYTEMP masked with CH5MASK in POLICY, jet bits
+     * of channel 5 again. */
     if (ccs_positive(A_ADDRESS)) {
         set_A(THREE);
         for (;;) {
             ts(ADDRESS_OF(NUMBERT)); /* FAILOOP */
             policy();
             if (A_is_zero()) break; /* BZF FAILOOP -2: TC Q */
+            /* CCS NUMBERT, never negative: the THREE loaded above the loop,
+             * then what this CCS left of it. */
             if (!ccs_positive(ADDRESS_OF(NUMBERT))) {
                 ts(indexed(ADDRESS_OF(TJU), axis()));
                 tc_to(SELCTSUB + 027u, ALARM);

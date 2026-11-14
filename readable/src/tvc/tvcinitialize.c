@@ -90,12 +90,19 @@ void mrclean(void)
 {
     set_A(NZERO);
     do {
-        ccs_register(A_ADDRESS); /* MRCLEAN +1 */
-        ts(ADDRESS_OF(CNTR));
-        set_A(ZERO);
-        ts(L_ADDRESS);
+        switch (ccs_register(A_ADDRESS)) { /* MRCLEAN +1 */
+        case POSITIVE:
+            ts(ADDRESS_OF(CNTR)); /* fall through */
+        /* (never: A is odd and positive here, NZERO or an even CNTR less one.
+         * A +0 would skip the TS CNTR, a negative A the CAF ZERO too, and a
+         * -0 the TS L.) */
+        case IS_PLUS_ZERO: set_A(ZERO); /* fall through */
+        case NEGATIVE: ts(L_ADDRESS);   /* fall through */
+        case IS_MINUS_ZERO: break;
+        }
         dxch(indexed(ADDRESS_OF(OMEGAYC), index_at(ADDRESS_OF(CNTR))));
-    } while (ccs_at(ADDRESS_OF(CNTR)) == POSITIVE); /* TCF MRCLEAN +1 */
+        /* CCS CNTR, never negative: the pass's even count, counted down to +0. */
+    } while (ccs_positive(ADDRESS_OF(CNTR))); /* TCF MRCLEAN +1 */
     dca(ADDRESS_OF(INITLOC2));
     dxch(ADDRESS_OF(T5LOC));
     set_A(POSMAX);
@@ -131,7 +138,7 @@ void tvcinit1_after_massprop(void)
     ad_at(ADDRESS_OF(CSMMASS));
     if (!ts(ADDRESS_OF(MASSTMP))) ca(ADDRESS_OF(DAPDATR1));
     mask(BIT14);
-    if (ccs_register(A_ADDRESS) == POSITIVE) set_A(BIT1); /* else +0 */
+    if (ccs_positive(A_ADDRESS)) set_A(BIT1); /* else +0 */
     ts(ADDRESS_OF(CNTR));
     ca_indexed(ADDRESS_OF(CSMCFADR), index_at(ADDRESS_OF(CNTR)));
     ts(ADDRESS_OF(COEFFADR));
@@ -198,7 +205,8 @@ static void attinit(void)
             set_A(A_is_zero_or_minus() ? negate(ATTLIM) : ATTLIM); /* BZMF +3 */
             ts(error);
         }
-    } while (ccs_at(ADDRESS_OF(TTMP1)) == POSITIVE); /* +8: "BACK TO REPEAT FOR PITCH ERROR" */
+        /* CCS TTMP1, never negative: the "TEMPORARY COUNTER", 1 and then 0. */
+    } while (ccs_positive(ADDRESS_OF(TTMP1))); /* +8: "BACK TO REPEAT FOR PITCH ERROR" */
     ca(ADDRESS_OF(ERRBTMP)); /* "ERRORS ESTABLISHED AND LIMITED" */
     ts(ADDRESS_OF(PERRB));
     ca(ADDRESS_OF(ERRBTMP) + 1u);
@@ -293,13 +301,26 @@ void swichovr_restart(void)
 {
     qxch(ADDRESS_OF(RTRNLOC));
     set_A(NZEROJR);
-    do {
+    for (;;) {
         ts(ADDRESS_OF(CNTRTMP)); /* SWICHOVR +8D */
         /* MCLEANJR */ set_A(ZERO);
         ts(L_ADDRESS);
         dxch(indexed(ADDRESS_OF(PTMP1) - 1u, index_at(ADDRESS_OF(CNTRTMP))));
-    } while (ccs_at(ADDRESS_OF(CNTRTMP)) == POSITIVE && ccs_register(A_ADDRESS) == POSITIVE);
-    cs(ADDRESS_OF(FLAGWRD9));
+        switch (ccs_at(ADDRESS_OF(CNTRTMP))) {
+        case POSITIVE:
+            /* CCS A, never negative: what the CCS of CNTRTMP left, the count
+             * less one. */
+            if (ccs_positive(A_ADDRESS)) continue; /* TCF SWICHOVR +8D */
+            cs(ADDRESS_OF(FLAGWRD9));
+            break;
+        case IS_PLUS_ZERO: continue; /* (never: the count is odd) TCF SWICHOVR +8D */
+        case NEGATIVE:
+            cs(ADDRESS_OF(FLAGWRD9)); /* (never: the count is positive) */
+            break;
+        case IS_MINUS_ZERO: break; /* (never: the count is positive. Past the CS FLAGWRD9.) */
+        }
+        break;
+    }
     mask(BIT15);
     ads(ADDRESS_OF(FLAGWRD9));
     ca(ADDRESS_OF(EKTLX_I) + 2u);

@@ -77,8 +77,12 @@ static void dvovsub(word at)
         set_A(POSMAX); /* MAXPLUS */
     } else {
         ts(ADDRESS_OF(SCRATCHZ));
-        (void)ccs_at(A_ADDRESS); /* "GET ABS(DIVISOR) IN THE A REGISTER." */
-        ad(BIT1);
+        switch (ccs_at(A_ADDRESS)) {    /* "GET ABS(DIVISOR) IN THE A REGISTER." */
+        case POSITIVE: ad(BIT1); break; /* AD BIT1; TCF ZEROPLUS */
+        case IS_PLUS_ZERO: break;       /* TCF ZEROPLUS (never: the BZF above took a zero) */
+        case NEGATIVE: ad(BIT1); break; /* AD BIT1 */
+        case IS_MINUS_ZERO: break;      /* (never, likewise) */
+        }
         xch(ADDRESS_OF(SCRATCHY));        /* ZEROPLUS: "STORE ABS(DIVISOR)." */
         if (!A_is_zero_or_minus()) com(); /* "GET -ABS(DIVIDEND)" */
         ad_at(ADDRESS_OF(SCRATCHY));      /* GOODNEG: "ABS(DIVISOR) - ABS(DIVIDEND)" */
@@ -86,10 +90,31 @@ static void dvovsub(word at)
             ca(ADDRESS_OF(SCRATCHX)); /* "RE-ESTABLISH THE DIVIDEND" */
             dv_at(ADDRESS_OF(SCRATCHZ));
         } else {
-            /* MAKEMAX: "DETERMINE THE SIGN OF THE QUOTIENT." */
-            bool dividend_up = ccs_at(ADDRESS_OF(SCRATCHX)) == POSITIVE;
-            bool divisor_up = ccs_at(ADDRESS_OF(SCRATCHZ)) == POSITIVE;
-            set_A(dividend_up == divisor_up ? POSMAX : NEGMAX);
+            /* MAKEMAX: "DETERMINE THE SIGN OF THE QUOTIENT." "SCRATCHX AND
+             * SCRATCHZ ARE NON-ZERO.", so no zero's outcome ever comes. The
+             * first CCS's four words are a CCS SCRATCHZ, TCF MAXPLUS, a second
+             * CCS SCRATCHZ and CAF NEGMAX; each CCS SCRATCHZ's are the four
+             * words after it. */
+            switch (ccs_at(ADDRESS_OF(SCRATCHX))) {
+            case POSITIVE:
+                switch (ccs_at(ADDRESS_OF(SCRATCHZ))) {
+                case POSITIVE: set_A(POSMAX); break; /* TCF MAXPLUS: "-,- OR +,+" */
+                case IS_PLUS_ZERO: break; /* (never) the second CCS, +0 again: its TC Q */
+                case NEGATIVE: set_A(NEGMAX); break; /* CAF NEGMAX: "+,- OR -,+" */
+                case IS_MINUS_ZERO: break;           /* (never) TC Q */
+                }
+                break;
+            case IS_PLUS_ZERO: set_A(POSMAX); break; /* (never) TCF MAXPLUS */
+            case NEGATIVE:
+                switch (ccs_at(ADDRESS_OF(SCRATCHZ))) {
+                case POSITIVE: set_A(NEGMAX); break; /* CAF NEGMAX */
+                case IS_PLUS_ZERO: break;            /* (never) TC Q */
+                case NEGATIVE: set_A(POSMAX); break; /* MAXPLUS: CAF POSMAX */
+                case IS_MINUS_ZERO: break;           /* (never) MAXPLUS +1: TC Q */
+                }
+                break;
+            case IS_MINUS_ZERO: set_A(NEGMAX); break; /* (never) CAF NEGMAX */
+            }
         }
     }
     tc_through(Q_ADDRESS);
@@ -220,7 +245,8 @@ static void spscont(void)
                 cs(at_index(ADDRESS_OF(ACCDOTQ), ADDRESS_OF(MPAC)));
         }
         ts(at_index(ADDRESS_OF(QACCDOT), ADDRESS_OF(MPAC))); /* STACCDOT */
-        if (ccs_at(ADDRESS_OF(MPAC)) != POSITIVE) break;
+        /* CCS MPAC, never negative: the loop's index, BIT2 (R) and then +0 (Q). */
+        if (!ccs_positive(ADDRESS_OF(MPAC))) break;
         set_A(ZERO); /* "NOW DO QACCDOT." */
     }
     cs(ADDRESS_OF(DAPBOOLS)); /* "IS GIMBAL USABLE?" */
@@ -485,7 +511,9 @@ static void docked(void)
 static void f_mass(void)
 {
     relint();
-    if (ccs_at(ADDRESS_OF(DOCKTEMP)) == POSITIVE) {
+    /* CCS DOCKTEMP, never negative: DAPBOOLS masked with CSMDOCKD, BIT13,
+     * in 1/ACCS. */
+    if (ccs_positive(ADDRESS_OF(DOCKTEMP))) {
         docked();
         return;
     }
@@ -511,7 +539,7 @@ void one_accs_plus3(void)
     if (!ts(ADDRESS_OF(ACCRETRN))) ca(ADDRESS_OF(DAPBOOLS));
     mask(CSMDOCKD);
     ts(ADDRESS_OF(DOCKTEMP)); /* "STORE RECORD OF STATE IN TEMP" */
-    if (ccs_at(A_ADDRESS) == POSITIVE) cs(ADDRESS_OF(CSMMASS));
+    if (ccs_positive(A_ADDRESS)) cs(ADDRESS_OF(CSMMASS));
     ad_at(ADDRESS_OF(MASS));
     if (!ts(ADDRESS_OF(LEMMASS))) inhint();
     ca(ADDRESS_OF(FLGWRD10));
@@ -547,7 +575,9 @@ void one_accs_plus3(void)
     if (massfix) {
         ads(ADDRESS_OF(LEMMASS)); /* MASSFIX */
         zl();
-        if (ccs_at(ADDRESS_OF(DOCKTEMP)) == POSITIVE) ca(ADDRESS_OF(CSMMASS));
+        /* CCS DOCKTEMP, never negative: DAPBOOLS masked with CSMDOCKD, BIT13,
+         * in 1/ACCS. */
+        if (ccs_positive(ADDRESS_OF(DOCKTEMP))) ca(ADDRESS_OF(CSMMASS));
         ad_at(ADDRESS_OF(LEMMASS));
         dxch(ADDRESS_OF(MASS));
     }
@@ -776,7 +806,9 @@ static void notmuch(void)
  * AMIN"; else "L HAS ACCFUN". On to STMIN- either way. */
 static void fixmin(void)
 {
-    if (ccs_at(ADDRESS_OF(SIGNAOS)) == POSITIVE) set_A(TWO);
+    /* CCS SIGNAOS, never negative: +0 from BOTHAXES, or 1 after its INCR, "TO
+     * SHOW AOS NEG". */
+    if (ccs_positive(ADDRESS_OF(SIGNAOS))) set_A(TWO);
     ad(NEGONE);
     ts(ADDRESS_OF(ACCSW));
     ad_at(ADDRESS_OF(UV));
@@ -881,7 +913,8 @@ static void bothaxes(void)
     ad_at(ADDRESS_OF(DBB2));
     ad_at(ADDRESS_OF(FLATEMP));
     if (!ts(ADDRESS_OF(AXDSTEM) + 1u)) inhint();
-    if (ccs_at(ADDRESS_OF(UV)) == POSITIVE) {
+    /* CCS UV, never negative: "ZERO FOR U AXIS, ONE FOR V AXIS." */
+    if (ccs_positive(ADDRESS_OF(UV))) {
         ca(ADDRESS_OF(ACCSW)); /* STORV */
         ts(ADDRESS_OF(ACCSWV));
         set_A(NINE);
@@ -913,7 +946,7 @@ void getaosuv_plus6(void)
     relint();
     ca(ADDRESS_OF(DAPBOOLS));
     mask(DRIFTBIT); /* "ZERO DURING ULLAGE AND POWERED FLIGHT." */
-    if (ccs_at(A_ADDRESS) == POSITIVE) set_A(ONE);
+    if (ccs_positive(A_ADDRESS)) set_A(ONE);
     ts(ADDRESS_OF(DRIFTER));
     ad_at(ADDRESS_OF(ALLOWGTS)); /* "NON-ZERO IF DRIFT OR GTS NEAR" */
     switch (ccs_at(A_ADDRESS)) {
@@ -923,7 +956,9 @@ void getaosuv_plus6(void)
     case IS_MINUS_ZERO: dopaxis = true; break; /* BZF without its EXTEND: TCF DOPAXIS */
     }
     if (!dopaxis) {
-        if (ccs_at(ADDRESS_OF(DRIFTER)) == POSITIVE) set_A(ZONE3MAX);
+        /* CCS DRIFTER, never negative: +0, or the ONE that GETAOSUV loads "IF
+         * DRIFTING LIGHT". */
+        if (ccs_positive(ADDRESS_OF(DRIFTER))) set_A(ZONE3MAX);
         ts(ADDRESS_OF(Z3TEM));
     }
     ca(ADDRESS_OF(1JACC)); /* DOPAXIS */
@@ -943,7 +978,9 @@ void getaosuv_plus6(void)
     ts(ADDRESS_OF(1_ACOSTP) + 1u);
     relint();
     zl();
-    if (ccs_at(ADDRESS_OF(DRIFTER)) == POSITIVE) dxch(ADDRESS_OF(AOSU));
+    /* CCS DRIFTER, never negative: +0, or the ONE that GETAOSUV loads "IF
+     * DRIFTING LIGHT". */
+    if (ccs_positive(ADDRESS_OF(DRIFTER))) dxch(ADDRESS_OF(AOSU));
     set_A(ZERO); /* UAXIS */
     ts(ADDRESS_OF(UV));
     bothaxes();

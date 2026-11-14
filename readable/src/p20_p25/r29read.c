@@ -48,8 +48,8 @@ void r29read_after_vardelay(void)
 {
     ca(ADDRESS_OF(FLAGWRD3));
     mask(READRBIT);
-    if (bit_set_in_A())       /* CCS A */
-        continue_at(R29READ); /* TCF R29READ: "IT'S OK:  CALL IT AGAIN." */
+    if (ccs_positive(A_ADDRESS)) /* CCS A */
+        continue_at(R29READ);    /* TCF R29READ: "IT'S OK:  CALL IT AGAIN." */
     else
         continue_at(TASKOVER); /* "IT AIN'T:  WAIT FOR REDESIGNATE." */
 }
@@ -73,14 +73,14 @@ void r29rdjob(void)
 {
     ca(ADDRESS_OF(FLAGWRD3));
     mask(NR29FBIT);
-    if (bit_set_in_A()) { /* CCS A: test "NOR29FLG". */
-        endrrd29();       /* "R29 IS NOW OVER, STOP AT ONCE." */
+    if (ccs_positive(A_ADDRESS)) { /* CCS A: test "NOR29FLG". */
+        endrrd29();                /* "R29 IS NOW OVER, STOP AT ONCE." */
         return;
     }
     ca(ADDRESS_OF(RADMODES));
     mask(AUTOMBIT);
-    if (bit_set_in_A()) { /* CCS A */
-        endrrd29();       /* "ASTRO TOOK RR OUT OF AUTO MODE." */
+    if (ccs_positive(A_ADDRESS)) { /* CCS A */
+        endrrd29();                /* "ASTRO TOOK RR OUT OF AUTO MODE." */
         return;
     }
     tc_to(R29RDJOB + 010u, BANKCALL); /* CADR RRRDOT */
@@ -137,8 +137,8 @@ void r29range_bad_read(void)
 {
     cs(ADDRESS_OF(FLAGWRD5));
     mask(BIT10);
-    if (bit_set_in_A()) { /* CCS A: "WAS IT A SCALE CHANGE (REAL OR PHONY)?" */
-        endrrd29();       /* "NO, A BAD READ; REDESIGNATE." */
+    if (ccs_positive(A_ADDRESS)) { /* CCS A: "WAS IT A SCALE CHANGE (REAL OR PHONY)?" */
+        endrrd29();                /* "NO, A BAD READ; REDESIGNATE." */
         return;
     }
     tc_to(R29RRR_Q + 4u, DOWNFLAG); /* ADRES RNGSCFLG */

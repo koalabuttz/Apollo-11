@@ -142,7 +142,8 @@ void mgaret(void)
         com();
         ts(indexed_store(TS_CODE | ADDRESS_OF(MDELGMB), TEM2));
         ts(L_ADDRESS); /* "FOR PRECEDING TEST ON NEXT LOOP PASS" */
-    } while (ccs_at(ADDRESS_OF(TEM2)) == POSITIVE);
+        /* CCS TEM2, never negative: the loop's index, TWO counted down. */
+    } while (ccs_positive(ADDRESS_OF(TEM2))); /* TCF DELGMBLP */
 
     switch (ccs_at(ADDRESS_OF(FLPAUTNO))) {
     case POSITIVE: noattcnt_plus2(); return;

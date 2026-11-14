@@ -166,7 +166,7 @@ void extvbchk(void)
 {
     set_A(SIX);
     mask_at(ADDRESS_OF(EXTVBACT));
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         mkabort();
         return;
     }
@@ -258,7 +258,7 @@ void mkreleas(void)
     set_A(ZERO);
     xch(ADDRESS_OF(MARKSTAT));
     mask(LOW9);
-    if (ccs_at(A_ADDRESS) == POSITIVE) ts_indexed(TS_0, a_word());
+    if (ccs_positive(A_ADDRESS)) ts_indexed(TS_0, a_word());
     set_A(ONE);
     tc_at(MKRELEAS + 7u); /* TC IBNKCALL; CADR GOODEND */
     continue_at(IBNKCALL);
@@ -765,8 +765,10 @@ void markrupt(void)
     case IS_MINUS_ZERO: break; /* (on with A +0) */
     }
     mask_at(ADDRESS_OF(MARKSTAT));
-    if (ccs_at(A_ADDRESS) == POSITIVE) { /* (a masked word: never negative) */
-        tc_at(MARKRUPT + 025u);          /* TC RESUME */
+    /* CCS A, never negative: MARKSTAT masked with BIT12, or with the +0 that the
+     * CCS above leaves of a -0. */
+    if (ccs_positive(A_ADDRESS)) {
+        tc_at(MARKRUPT + 025u); /* TC RESUME */
         continue_at(RESUME);
         return;
     }
@@ -1036,7 +1038,7 @@ static void mkrej_in_flight(void)
 {
     set_A(PRIO3);
     mask_at(ADDRESS_OF(MARKSTAT));
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         reject();
         return;
     }
@@ -1071,7 +1073,7 @@ void reject(void)
     ad(BIT13);
     xch(ADDRESS_OF(MARKSTAT));
     mask(BIT13);
-    if (ccs_at(A_ADDRESS) == POSITIVE)
+    if (ccs_positive(A_ADDRESS))
         set_A(negate(PRIO3)); /* REJECT2: CS PRIO3; TCF RENEWMK */
     else
         cs(ADDRESS_OF(XYMARK));
@@ -1126,7 +1128,7 @@ static void marktype_run(void)
 {
     cs(ADDRESS_OF(FLAGWRD8));
     mask(BIT8);
-    if (ccs_at(A_ADDRESS) == POSITIVE) incr(Q_ADDRESS);
+    if (ccs_positive(A_ADDRESS)) incr(Q_ADDRESS);
     after_marktype(tc_q());
 }
 
@@ -1139,7 +1141,7 @@ void marktype(void)
 {
     cs(ADDRESS_OF(FLAGWRD8));
     mask(BIT8);
-    if (ccs_at(A_ADDRESS) == POSITIVE) incr(Q_ADDRESS);
+    if (ccs_positive(A_ADDRESS)) incr(Q_ADDRESS);
     if (Q >= VACSTOR + 027u && Q <= VACSTOR + 032u)
         after_marktype(tc_q());
     else
@@ -1306,7 +1308,7 @@ void dspv6n79_after_enter(void)
 {
     set_A(BIT6);
     mask_at(ADDRESS_OF(MPAC));
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         surfagan(); /* "VB32 -- RECYCLE" */
         return;
     }

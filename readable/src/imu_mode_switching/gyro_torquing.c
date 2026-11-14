@@ -205,8 +205,8 @@ static void maj_minus(void)
  * True if the next gyro is to be done (TCF STRTGYR2). */
 static bool gselect(void)
 {
-    enum sign major;
-    enum sign minor;
+    bool positive = false; /* a positive command: MAJ+, not MAJ- */
+    bool minor = false;    /* the major part is zero: by the minor part */
 
     set_A(read_word(Q)); /* INDEX Q; CAF 0 */
     ts(ADDRESS_OF(ITEMP4));
@@ -220,15 +220,23 @@ static bool gselect(void)
     ts(ADDRESS_OF(ITEMP4));
     dca(indexed(E1400, ITEMP1)); /* EXTEND; INDEX ITEMP1; DCA 1400 */
     dxch(ADDRESS_OF(RUPTREG1));
-    major = ccs_at(ADDRESS_OF(RUPTREG1));
-    if (major == IS_PLUS_ZERO || major == IS_MINUS_ZERO) {
-        minor = ccs_at(ADDRESS_OF(RUPTREG2));
-        if (minor == IS_PLUS_ZERO || minor == IS_MINUS_ZERO) return true;
+    switch (ccs_at(ADDRESS_OF(RUPTREG1))) {
+    case POSITIVE: positive = true; break;  /* TCF MAJ+ */
+    case IS_PLUS_ZERO: minor = true; break; /* TCF +2 */
+    case NEGATIVE: break;                   /* TCF MAJ- */
+    case IS_MINUS_ZERO: minor = true; break;
+    }
+    if (minor) {
+        switch (ccs_at(ADDRESS_OF(RUPTREG2))) {
+        case POSITIVE: positive = true; break; /* TCF MIN+ */
+        case IS_PLUS_ZERO: return true;        /* TCF STRTGYR2 */
+        case NEGATIVE: break;                  /* TCF MIN- */
+        case IS_MINUS_ZERO: return true;       /* TCF STRTGYR2 */
+        }
         ad(MINUS_GYROMIN);                     /* MIN+ or MIN- */
         if (A_is_zero_or_minus()) return true; /* EXTEND; BZMF STRTGYR2 */
-        major = minor;
     }
-    if (major == POSITIVE)
+    if (positive)
         maj_plus();
     else
         maj_minus();
@@ -345,7 +353,7 @@ void eighty_one_ninety_two_aug(void)
     if (!cagetest()) return;
     set_A(BIT4);
     rand_channel(CHAN12);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         imubad();
         return;
     }

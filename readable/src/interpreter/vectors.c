@@ -507,10 +507,12 @@ void sign(void)
 
 static void ccsl(void)
 {
-    if (ccs_at(indexed(1u, ADDRWD)) == NEGATIVE)
-        comp();
-    else
-        continue_at(DANZIG);
+    switch (ccs_at(indexed(1u, ADDRWD))) {
+    case POSITIVE:
+    case IS_PLUS_ZERO: continue_at(DANZIG); break;
+    case NEGATIVE: comp(); break;
+    case IS_MINUS_ZERO: continue_at(DANZIG); break;
+    }
 }
 
 /* COMP -- LM p. 1046, CM p. 1151.

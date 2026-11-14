@@ -95,7 +95,9 @@ void copycyc_plus_1(void)
         ts(ADDRESS_OF(ITEMP1));
         dca(indexed(ADDRESS_OF(RN1), fetch(ADDRESS_OF(ITEMP1))));
         dxch(indexed(ADDRESS_OF(RN), fetch(ADDRESS_OF(ITEMP1))));
-    } while (ccs_at(ADDRESS_OF(ITEMP1)) == POSITIVE);
+        /* CCS ITEMP1, never negative: the loop's index, an even count (20 or
+         * 18) counted down. */
+    } while (ccs_positive(ADDRESS_OF(ITEMP1)));
     return_to_q();
 }
 

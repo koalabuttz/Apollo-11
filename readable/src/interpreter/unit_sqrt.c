@@ -213,16 +213,24 @@ static void small(void)
  * UNITDV's caller. */
 static void unitdv(void)
 {
-    enum sign major = ccs_at(MPAC_AT(0u));
+    bool negative = false; /* to UMPAC-, not UMPAC+ */
+    bool minor = false;    /* the major part is zero: by the minor part */
 
-    if (major != POSITIVE && major != NEGATIVE) {
-        major = ccs_at(MPAC_AT(1u));
-        if (major != POSITIVE && major != NEGATIVE) {
-            tc_through(Q_ADDRESS);
-            return;
+    switch (ccs_at(MPAC_AT(0u))) {
+    case POSITIVE: break;                   /* TCF UMPAC+ */
+    case IS_PLUS_ZERO: minor = true; break; /* TCF +2 */
+    case NEGATIVE: negative = true; break;  /* TCF UMPAC- */
+    case IS_MINUS_ZERO: minor = true; break;
+    }
+    if (minor) {
+        switch (ccs_at(MPAC_AT(1u))) {
+        case POSITIVE: break;                             /* TCF UMPAC+ */
+        case IS_PLUS_ZERO: tc_through(Q_ADDRESS); return; /* "EXIT IMMEDIATELY ON ZERO." */
+        case NEGATIVE: negative = true; break;            /* TCF UMPAC- */
+        case IS_MINUS_ZERO: tc_through(Q_ADDRESS); return;
         }
     }
-    if (major == NEGATIVE) {    /* UMPAC- */
+    if (negative) {             /* UMPAC- */
         set_A(negate(ZERO));    /* "IF NEGATIVE, SET -0 IN DVSIGN FOR FINAL */
         ts(ADDRESS_OF(DVSIGN)); /* COMPLEMENT." */
         dcs(MPAC_AT(0u));       /* "PICK UP ABSOLUTE VALUE OF ARG AND JUMP." */

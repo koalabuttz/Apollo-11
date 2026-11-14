@@ -1518,9 +1518,10 @@ line-coverage-check:
 	@python3 tests/line_coverage.py --self-check
 
 # The style guide's rules that a program can count (tools/style_check.py,
-# issue #1334): what each directory of src/ still owes stands in
-# tests/style_owed.txt, and no count may go up. First the check itself, on
-# made-up sources.
+# issue #1334): what the tree still owes stands in tests/style_owed.txt,
+# place by place, and the tree is held to exactly those lines (nothing now).
+# First the check itself, on made-up sources. Then every call of the one CCS
+# written as a test (tools/ccs_helpers.py), and each header's listing page.
 style-check:
 	@python3 tools/style_check.py --self-check
 	@python3 tools/style_check.py

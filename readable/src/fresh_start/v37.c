@@ -21,7 +21,8 @@
  * Every TC out of the file leaves through Z (Q holds the return), and the
  * place it returns to is its own routine. A CCS of a word that is never
  * negative (a MASK by a positive constant, a count, a major mode) uses
- * positive(), which does not model the other two cases: they never come. */
+ * ccs_positive(), which does not model the other two cases: they never
+ * come. */
 #include "v37.h"
 #include "../agc/names.h"
 
@@ -250,24 +251,6 @@ static word table_word(const word *table, unsigned address)
     return table[index];
 }
 
-/* CCS of a word that is never negative (a MASK of positive bits, a count,
- * a major mode): true if positive (A gets it less one), false for +0 (A
- * gets +0). This one helper stands for that CCS at each place it is used,
- * so it cannot follow the two outcomes that never come: what the listing
- * would run differs with the place. (make style-check holds each place's
- * mask to a clear sign bit, and lists the places with no constant mask:
- * tools/ccs_helpers.py.) */
-static bool positive(enum sign sign)
-{
-    switch (sign) {
-    case POSITIVE: return true;
-    case IS_PLUS_ZERO: return false;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); /* never; what would run differs with the place */
-    }
-    return false;
-}
-
 /* EXTEND; DCA NEG0; DXCH -PHASEn: end restart group n (-PHASEn gets -0,
  * PHASEn +0). */
 static void kill_group(unsigned minus_phase)
@@ -361,7 +344,7 @@ void v37(void)
     ts(ADDRESS_OF(RESTREG));
     ca(ADDRESS_OF(IMODES30)); /* "IS IMU BEING INITIALIZED" */
     mask(BIT6);
-    if (positive(ccs_register(A_ADDRESS))) {
+    if (ccs_positive(A_ADDRESS)) {
         cantrod();
         return;
     }
@@ -380,7 +363,7 @@ void v37(void)
 #else
     set_A(BIT13); /* "IS ENGINE ON" */
     rand_channel(DSALMOUT);
-    if (positive(ccs_register(A_ADDRESS))) {
+    if (ccs_positive(A_ADDRESS)) {
         r00top00(); /* "YES, SET UP FOR P00" */
         return;
     }
@@ -406,7 +389,7 @@ static void isitp00(void)
     }
     cs(ADDRESS_OF(FLAGWRD2)); /* "NO, IS NODO V37 FLAG SET" */
     mask(NODOBIT);
-    if (positive(ccs_register(A_ADDRESS))) {
+    if (ccs_positive(A_ADDRESS)) {
         checktab(); /* "NO" */
         return;
     }
@@ -476,7 +459,7 @@ static void isservon(void)
 {
     cs(ADDRESS_OF(FLAGWRD7));
     mask(V37FLBIT);
-    if (positive(ccs_register(A_ADDRESS))) {
+    if (ccs_positive(A_ADDRESS)) {
         canv37(); /* "NO" */
         return;
     }
@@ -508,11 +491,11 @@ void v37ret(void)
 {
     cs(ADDRESS_OF(FLAGWRD0));
     mask(RNDVZBIT);
-    if (positive(ccs_register(A_ADDRESS))) { /* "NO. CHECK FOR P25." */
+    if (ccs_positive(A_ADDRESS)) { /* "NO. CHECK FOR P25." */
         cs(ADDRESS_OF(FLAGWRD0));
         mask(P25FLBIT);
-        if (positive(ccs_register(A_ADDRESS))) set_A(OCT37667); /* 2.0SPT */
-        ad(BIT5);                                               /* 2.11SPT */
+        if (ccs_positive(A_ADDRESS)) set_A(OCT37667); /* 2.0SPT */
+        ad(BIT5);                                     /* 2.11SPT */
     }
     ad(OCT40072); /* 2.7SPT */
     tc_out(TC_PHSCHNGA, PHSCHNGA);
@@ -575,7 +558,9 @@ void r00_after_downflag_munflag(void)
 /* "IS THIS A POOH REQUEST": no, NOUVEAU; yes, POOH. */
 void r00_after_downflag_xovinflg(void)
 {
-    if (positive(ccs_at(ADDRESS_OF(MMNUMBER)))) {
+    /* CCS MMNUMBER, never negative: the major mode V37 was entered with (TS
+     * MMNUMBER at V37), a program's number. */
+    if (ccs_positive(ADDRESS_OF(MMNUMBER))) {
         nouveau(); /* "NO, PICK UP NEW PROGRAM" */
         return;
     }
@@ -630,7 +615,9 @@ void roc_after_downflag_vhfrflag(void)
 /* "IS THIS A POOH REQUEST": no, NOUVEAU; yes, POOH. */
 void roc_after_downflag_r21mark(void)
 {
-    if (positive(ccs_at(ADDRESS_OF(MMNUMBER)))) {
+    /* CCS MMNUMBER, never negative: the major mode V37 was entered with (TS
+     * MMNUMBER at V37, and at R00TOP00), a program's number. */
+    if (ccs_positive(ADDRESS_OF(MMNUMBER))) {
         nouveau(); /* "NO, PICK UP NEW PROGRAM" */
         return;
     }
@@ -716,7 +703,9 @@ void seudop00_after_v37klean(void)
 void groupkil_after_v37klean(void)
 #endif
 {
-    if (positive(ccs_at(ADDRESS_OF(MMNUMBER)))) {
+    /* CCS MMNUMBER, never negative: the major mode V37 was entered with (TS
+     * MMNUMBER at V37, and in the CM at R00TOP00), a program's number. */
+    if (ccs_positive(ADDRESS_OF(MMNUMBER))) {
         rendv00();
         return;
     }
@@ -844,7 +833,7 @@ static void rendv00(void)
     }
     set_A(OCT500); /* "NO, IS EITHER P20 OR P25 RUNNING" */
     mask_at(ADDRESS_OF(FLAGWRD0));
-    if (positive(ccs_register(A_ADDRESS))) {
+    if (ccs_positive(A_ADDRESS)) {
         p00fizz(); /* "YES, LEAVE GROUP 2 TO PICK UP P20 OR P25" */
         return;
     }
@@ -868,7 +857,7 @@ static void p00fizz_cm(void)
 {
     set_A(RNDVZBIT);
     mask_at(ADDRESS_OF(FLAGWRD0));
-    if (positive(ccs_register(A_ADDRESS))) {
+    if (ccs_positive(A_ADDRESS)) {
         p00fizz(); /* REV37 */
         return;
     }
@@ -895,7 +884,7 @@ static void rendv00(void)
     }
     ca(ADDRESS_OF(FLAGWRD0));
     mask(RNDVZBIT);
-    if (!positive(ccs_register(A_ADDRESS))) {
+    if (!ccs_positive(A_ADDRESS)) {
         p00fizz_cm();
         return;
     }
@@ -919,7 +908,7 @@ static void nouveau(void)
     set_A(RNDVZBIT);
 #endif
     mask_at(ADDRESS_OF(FLAGWRD0));
-    if (positive(ccs_register(A_ADDRESS))) {
+    if (ccs_positive(A_ADDRESS)) {
         nouveau_after_downflag(); /* TCF +3: "YES" */
         return;
     }
@@ -1092,7 +1081,7 @@ void initsub_after_stoprate(void)
 {
     ca(ADDRESS_OF(FLAGWRD9));
     mask(MAXDBBIT);
-    if (positive(ccs_register(A_ADDRESS))) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_out(TC_SETMAXDB, BANKCALL); /* SETMAXER: CADR SETMAXDB */
         return;
     }
@@ -1115,7 +1104,9 @@ void rake(void)
         mask_at(indexed(ADDRESS_OF(FLAGWRD0), fetch(ADDRESS_OF(MPAC))));
         /* "PUT REVISED FLAGWORD BACK." */
         ts(indexed(ADDRESS_OF(FLAGWRD0), fetch(ADDRESS_OF(MPAC))));
-    } while (positive(ccs_at(ADDRESS_OF(MPAC)))); /* "GET THE NEXT FLAGWORD." */
+        /* CCS MPAC, never negative: the ELEVEN loaded above the loop, then what
+         * this CCS left of it. */
+    } while (ccs_positive(ADDRESS_OF(MPAC))); /* "GET THE NEXT FLAGWORD." */
     relint();
     tc_out(TC_UPFLAG_IMPULSW, UPFLAG); /* ADRES IMPULSW */
 }

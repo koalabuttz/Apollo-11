@@ -286,7 +286,7 @@ void mkreleas(void)
     set_A(ZERO);
     xch(ADDRESS_OF(MARKSTAT));
     mask(LOW9);
-    if (ccs_at(A_ADDRESS) == POSITIVE) ts_indexed(A_ADDRESS, a_word());
+    if (ccs_positive(A_ADDRESS)) ts_indexed(A_ADDRESS, a_word());
     mkrlees();
 }
 
@@ -356,8 +356,9 @@ void markrupt(void)
         return;
     }
     rand_channel(NAVKEYIN);
-    /* CCS A: + or +0 (a positive word's bits of channel 16). */
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    /* CCS A, never negative: channel 16 masked with BIT7 (RAND), or with what
+     * the CCS above left. */
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(MARKRUPT + 034u); /* TC MKREJECT */
         mkreject();
         return;
@@ -395,7 +396,12 @@ void keycall_after_alarm(void)
  * negative): WAITLIST runs MARKDIF then. */
 static void markit(void)
 {
-    if (ccs_at(ADDRESS_OF(CDUCHKWD)) == NEGATIVE) set_A(ZERO);
+    switch (ccs_at(ADDRESS_OF(CDUCHKWD))) {
+    case POSITIVE: break;              /* TCF +3 */
+    case IS_PLUS_ZERO: break;          /* TCF +2 */
+    case NEGATIVE: set_A(ZERO); break; /* CAF ZERO */
+    case IS_MINUS_ZERO: break;         /* (the AD ONE is the next word) */
+    }
     ad(ONE);
     tc_at(MARKIT + 5u); /* TC WAITLIST; 2CADR MARKDIF */
     continue_at(WAITLIST);
@@ -784,7 +790,7 @@ static void reject2(void)
     mask_at(ADDRESS_OF(MARKSTAT));
     xch(ADDRESS_OF(MARKSTAT));
     mask(BIT10);
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(REJECT2 + 5u); /* TC REJECT3 */
         reject3();
         return;
@@ -816,7 +822,7 @@ static void reject3(void)
     ad_at(ADDRESS_OF(MARKSTAT));
     xch(ADDRESS_OF(MARKSTAT));
     mask(PRIO34);
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(REJECT3 + 013u); /* TC RESUME */
         continue_at(RESUME);
         return;
@@ -971,7 +977,7 @@ void mkvb5x(void)
 {
     set_A(PRIO34);
     mask_at(ADDRESS_OF(MARKSTAT));
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         mkvb51(); /* TCF MKVB51 */
         return;
     }

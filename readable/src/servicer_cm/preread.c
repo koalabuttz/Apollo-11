@@ -134,7 +134,7 @@ void redo5_5(void)
 
     cs(ADDRESS_OF(CM_FLAGS));
     mask(BIT2); /* CM/DSTBY */
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(REDO5_5 + 7u);
         chekaveg();
         return;
@@ -225,7 +225,7 @@ void chekaveg(void)
 {
     cs(ADDRESS_OF(FLAGWRD1));
     mask(BIT1);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(CHEKAVEG + 3u);
         avegout();
         return;
@@ -301,7 +301,8 @@ void quikread(void)
         ca(indexed(ADDRESS_OF(PIPAX), i)); /* "SAVE ACTUAL PIPAS FOR TM." */
         xch(indexed(ADDRESS_OF(XPIPBUF), i));
         ts(indexed(ADDRESS_OF(XOLDBUF), i));
-    } while (ccs_at(ADDRESS_OF(RUPTREG1)) == POSITIVE); /* "LOOP AGAIN" */
+        /* CCS RUPTREG1, never negative: the loop's index, counted down 2, 1, 0. */
+    } while (ccs_positive(ADDRESS_OF(RUPTREG1))); /* "LOOP AGAIN" */
 
     switch (ccs_at(ADDRESS_OF(PIPCTR))) {
     case POSITIVE: onmnitor(); return;

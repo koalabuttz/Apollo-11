@@ -49,7 +49,7 @@ void normbnch_after_upflag(void)
     set_A(BIT14);
 #endif
     mask_at(ADDRESS_OF(FLAGWRD4));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(KEEPPRIO);
         return;
     }
@@ -220,7 +220,7 @@ void goanidle_plus4(void)
 {
     cs(ADDRESS_OF(TEMPOR2));
     mask(BIT6);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         isitn00();
         return;
     }
@@ -233,7 +233,7 @@ void goanidle(void)
 {
     set_A(BIT4);
     mask_at(ADDRESS_OF(TEMPOR2));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(FLASHSUB); /* "IT IS" */
         return;
     }
@@ -279,7 +279,7 @@ void first_or_second(void)
 {
     ca(ADDRESS_OF(TEMPOR2));
     mask(BIT13);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         goanidle();
         return;
     }
@@ -292,7 +292,7 @@ void perfchek(void)
 {
     set_A(BIT5);
     mask_at(ADDRESS_OF(TEMPOR2));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         first_or_second();
         return;
     }
@@ -309,7 +309,7 @@ void witchone(void)
     wand_dsalmout();
     ca(ADDRESS_OF(FLAGWRD4));
     mask(NVBUSMSK);
-    if (ccs_register(A_ADDRESS) == POSITIVE) set_A(ONE);
+    if (ccs_positive(A_ADDRESS)) set_A(ONE);
     ts(L_ADDRESS);
     set_A(ZERO);
     xch(indexed(ADDRESS_OF(CADRSTOR), L));

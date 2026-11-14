@@ -248,14 +248,15 @@ static void compat_errors(void)
  * too). */
 static void whichalf(void)
 {
-    enum sign vt = POSITIVE;
-
     double_A();
     com();
     ad(BUFLIM);
-    if (!ts(L_ADDRESS)) vt = ccs_at(ADDRESS_OF(MVT_180));
-    if (vt == POSITIVE) cs(L_ADDRESS);
-    if (vt == NEGATIVE) ca(L_ADDRESS);
+    switch (ts(L_ADDRESS) ? POSITIVE : ccs_at(ADDRESS_OF(MVT_180))) {
+    case POSITIVE: cs(L_ADDRESS); break; /* CS L; TCF +2 */
+    case IS_PLUS_ZERO: break;            /* TCF +2 */
+    case NEGATIVE: ca(L_ADDRESS); break; /* CA L */
+    case IS_MINUS_ZERO: break;
+    }
     ad_at(ADDRESS_OF(LCX_360));
     ad(BUFLIM);
     if (A_is_zero_or_minus()) { /* EXTEND; BZMF REFLECT */

@@ -133,11 +133,12 @@ void three_d_dz(void)
  * overflow at TS JETEM2 skips the CCS: CS CM/BIAS.) */
 void biasedz(void)
 {
-    enum sign rate = POSITIVE;
-
-    if (!ts(ADDRESS_OF(JETEM2))) rate = ccs_register(A_ADDRESS);
-    if (rate == POSITIVE) set_A(negate(CM_BIAS)); /* CS */
-    if (rate == NEGATIVE) set_A(CM_BIAS);         /* CA */
+    switch (ts(ADDRESS_OF(JETEM2)) ? POSITIVE : ccs_register(A_ADDRESS)) {
+    case POSITIVE: set_A(negate(CM_BIAS)); break; /* CS CM/BIAS; TCF +2 */
+    case IS_PLUS_ZERO: break;                     /* TCF +2 */
+    case NEGATIVE: set_A(CM_BIAS); break;         /* CA CM/BIAS */
+    case IS_MINUS_ZERO: break;
+    }
     ad_at(L_ADDRESS);
     lxch(Q_ADDRESS);
     tc_at(BIASEDZ + 7u);

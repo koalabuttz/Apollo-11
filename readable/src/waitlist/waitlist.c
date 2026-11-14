@@ -167,30 +167,31 @@ static void wait2(void)
 static void wtlst5(void)
 {
     unsigned n;
-    enum sign sign;
 
     for (n = 1; n < 8u; ++n) {
-        sign = ccs_register(A_ADDRESS);
-        if (sign == POSITIVE) add_to_A(LST1(n));
-        if (sign == POSITIVE || sign == IS_PLUS_ZERO) continue;
-        if (sign == NEGATIVE) add_to_A(ONE);
-        tc_at((word)(WTLST5 + 6u * n - 2u));
+        switch (ccs_register(A_ADDRESS)) {
+        case POSITIVE: add_to_A(LST1(n)); continue; /* AD LST1 +n; TCF +4 */
+        case IS_PLUS_ZERO: continue;                /* TCF +4 */
+        case NEGATIVE: add_to_A(ONE); break;        /* AD ONE */
+        case IS_MINUS_ZERO: break;
+        }
+        tc_at((word)(WTLST5 + 6u * n - 2u)); /* TC WTLST2; OCT n */
         wtlst2(n);
         return;
     }
-    sign = ccs_register(A_ADDRESS);
-    if (sign == POSITIVE) {
-        wtabort();
-        return;
-    }
+    switch (ccs_register(A_ADDRESS)) {
+    case POSITIVE: wtabort(); return;
+    case IS_PLUS_ZERO:
 #if COMANCHE055
-    if (sign == IS_PLUS_ZERO) { /* lands on the OCT 1203, which runs as TC 1203 */
-        tc_at((word)(WTABORT + 1u));
+        tc_at((word)(WTABORT + 1u)); /* lands on the OCT 1203, which runs as TC 1203 */
         continue_at(01203u);
         return;
-    }
+#else
+        /* (the NOOP, "CAN'T GET HERE") */
 #endif
-    if (sign != IS_MINUS_ZERO) add_to_A(ONE);
+    case NEGATIVE: add_to_A(ONE); break;
+    case IS_MINUS_ZERO: break;
+    }
     tc_at((word)(WTABORT + 3u)); /* TC WTLST2; OCT 10 */
     wtlst2(8u);
 }
@@ -420,13 +421,21 @@ void noqbrsm_plus1(void)
  * then it waits 5 seconds (SVCT3X) and looks again. */
 void svct3(void)
 {
-    enum sign flag = ccs(FLAGWRD2);
+    bool busy = true;
 
-    if (flag == POSITIVE || flag == IS_PLUS_ZERO) { /* drift flag off */
-        continue_at(TASKOVER);
-        return;
+    switch (ccs(FLAGWRD2)) { /* "DRIFT FLAG" */
+    case POSITIVE:
+    case IS_PLUS_ZERO: continue_at(TASKOVER); return; /* drift flag off */
+    case NEGATIVE:                                    /* TCF +1 */
+    case IS_MINUS_ZERO: break;
     }
-    if (ccs(IMUCADR) != IS_PLUS_ZERO) { /* IMU busy: SVCT3X */
+    switch (ccs(IMUCADR)) {                 /* CKIMUSE */
+    case POSITIVE: break;                   /* TCF SVCT3X */
+    case IS_PLUS_ZERO: busy = false; break; /* TCF +3 */
+    case NEGATIVE:
+    case IS_MINUS_ZERO: break; /* TCF SVCT3X */
+    }
+    if (busy) { /* IMU busy: SVCT3X */
         tc_at(SVCT3X);
         continue_at(FIXDELAY);
         return;
@@ -518,10 +527,14 @@ void longcycl(void)
     set_L(negate(DPBIT14[1]));
     set_A(negate(DPBIT14[0]));
     das(ADDRESS_OF(LONGTIME));
-    if (ccs(LONGTIME(1)) != POSITIVE) {
+    switch (ccs(LONGTIME(1))) {
+    case POSITIVE: break; /* TCF MUCHTIME */
+    case IS_PLUS_ZERO:    /* the NOOP, "CAN'T GET HERE" */
+    case NEGATIVE:        /* TCF +1 */
+    case IS_MINUS_ZERO:
         switch (ccs(LONGTIME(0))) {
-        case POSITIVE: break;
-        case IS_PLUS_ZERO: /* never (the DAS added -0): it would land on DPBIT14's words */
+        case POSITIVE: break; /* TCF MUCHTIME */
+        case IS_PLUS_ZERO:    /* never (the DAS added -0): it would land on DPBIT14's words */
             continue_at((word)ADDRESS_OF(DPBIT14));
             return;
         case NEGATIVE: continue_at((word)(ADDRESS_OF(DPBIT14) + 1u)); return;
@@ -534,6 +547,7 @@ void longcycl(void)
             continue_at(WAITLIST);
             return;
         }
+        break;
     }
     /* MUCHTIME */
     set_A(BIT14);

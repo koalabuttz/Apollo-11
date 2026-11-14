@@ -54,7 +54,8 @@ void redap_zerot5(void)
         ts(ADDRESS_OF(SPNDX)); /* ZEROT5 */
         set_A(ZERO);
         ts(index_ts(ADDRESS_OF(WBODY), spndx()));
-    } while (ccs_at(ADDRESS_OF(SPNDX)) == POSITIVE); /* TCF ZEROT5 */
+        /* CCS SPNDX, never negative: the loop's index, NO.T5VAR counted down. */
+    } while (ccs_positive(ADDRESS_OF(SPNDX))); /* TCF ZEROT5 */
     tc_at(ZEROT5 + 6u); /* TCR ZEROJET */
     zerojet();
 }
@@ -115,7 +116,7 @@ void redap_imu(void)
 {
     cs(ADDRESS_OF(IMODES33));
     mask(BIT6);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         set_A(PRIO34); /* IMUAOK */
         tc_to(IMUAOK + 1u, NOVAC);
         return;
@@ -145,7 +146,8 @@ void zerojet(void)
         ts(ADDRESS_OF(SPNDX));
         set_A(ZERO);
         ts(index_ts(ADDRESS_OF(RWORD1), spndx()));
-    } while (ccs_at(ADDRESS_OF(SPNDX)) == POSITIVE); /* TCF ZEROJET +1 */
+        /* CCS SPNDX, never negative: the loop's index, ELEVEN counted down. */
+    } while (ccs_positive(ADDRESS_OF(SPNDX))); /* TCF ZEROJET +1 */
     set_A(FOUR);
     ts(ADDRESS_OF(BLAST1) + 1u);
     set_A(ELEVEN);

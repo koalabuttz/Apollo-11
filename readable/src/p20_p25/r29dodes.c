@@ -54,7 +54,7 @@ void r29dloop_after_vardelay(void)
 {
     cs(ADDRESS_OF(RADMODES));
     mask(DESIGBIT);
-    if (bit_set_in_A()) { /* CCS A */
+    if (ccs_positive(A_ADDRESS)) { /* CCS A */
         continue_at(TASKOVER);
         return;
     }
@@ -71,19 +71,22 @@ void r29dloop_after_vardelay(void)
 
 /* ---- The vector loop ---- */
 
-/* The DCA after CCS TANG's +0 way: EXTEND; INDEX Q; DCA from the word at
- * address + Q. (TANG is the ONE of the first pass or the +0 of the second,
- * never negative.) On a negative TANG the CCS would skip the EXTEND, and
- * the DCA's word, which holds the address + 1, runs as CA of that, with
- * the INDEX: CA LOSVDT/4 +1 +Q. On -0 it would skip the INDEX too. */
-static void dca_by_tang(enum sign tang, unsigned address)
+/* The four words after a CCS TANG and the DAS that follows them. On the
+ * first pass (TANG the ONE) nothing: the TCF, past the DAS. On the second
+ * (+0) EXTEND; INDEX Q; DCA from the word at from + Q, and INDEX Q; DAS to
+ * the word at to + Q. (TANG is never negative. On a negative TANG the CCS
+ * would skip the EXTEND, and the DCA's word, which holds the address + 1,
+ * runs as CA of that, with the INDEX: CA LOSVDT/4 +1 +Q. On -0 it would
+ * skip the INDEX too.) */
+static void add_by_tang(enum sign tang, unsigned from, unsigned to)
 {
     switch (tang) {
-    case POSITIVE: break; /* (not here: TCF R29DPAS1, or TCF R29DVEND) */
-    case IS_PLUS_ZERO: dca(indexed(address, fetch(Q_ADDRESS))); break;
-    case NEGATIVE: ca(indexed(address + 1u, fetch(Q_ADDRESS))); break; /* never */
-    case IS_MINUS_ZERO: ca(address + 1u); break;
+    case POSITIVE: return; /* TCF R29DPAS1, or TCF R29DVEND */
+    case IS_PLUS_ZERO: dca(indexed(from, fetch(Q_ADDRESS))); break;
+    case NEGATIVE: ca(indexed(from + 1u, fetch(Q_ADDRESS))); break; /* never */
+    case IS_MINUS_ZERO: ca(from + 1u); break;                       /* never */
     }
+    das(indexed(to, fetch(Q_ADDRESS))); /* INDEX Q; DAS */
 }
 
 /* R29DVBEG -- p. 600, A 5: "COUNT DOWN BY TWO'S IN VECTOR LOOP." (Q 4, 2
@@ -109,19 +112,14 @@ static void r29dvbeg(void)
         case NEGATIVE: tang = POSITIVE; break;
         case IS_MINUS_ZERO: tang = IS_PLUS_ZERO; break;
         }
-        if (tang != POSITIVE) { /* (TCF R29DPAS1 "ON 1ST PASS THRU LOOP.") */
-            dca_by_tang(tang, ADDRESS_OF(LOSVDT_4));
-            das(indexed(ADDRESS_OF(LOSSM), fetch(Q_ADDRESS))); /* INDEX Q; DAS LOSSM */
-        }
+        /* (TCF R29DPAS1 "ON 1ST PASS THRU LOOP."; else DAS LOSSM) */
+        add_by_tang(tang, ADDRESS_OF(LOSVDT_4), ADDRESS_OF(LOSSM));
         /* R29DPAS1: "MOVE CURRENT LOS (1ST PASS) OR LOS PRO- JECTED 1/2
          * SEC AHEAD (2ND PASS)." */
         dca(indexed(ADDRESS_OF(LOSSM), fetch(Q_ADDRESS)));
         dxch(indexed(ADDRESS_OF(MPAC) + 1u, fetch(Q_ADDRESS)));
-        tang = ccs_at(ADDRESS_OF(TANG));
-        if (tang != POSITIVE) { /* ("BUG OUT HERE IN 1ST PASS.") */
-            dca_by_tang(tang, ADDRESS_OF(LOSVDT_4));
-            das(indexed(ADDRESS_OF(MPAC) + 1u, fetch(Q_ADDRESS))); /* INDEX Q; DAS MPAC +1 */
-        }
+        /* ("BUG OUT HERE IN 1ST PASS."; else DAS MPAC +1) */
+        add_by_tang(ccs_at(ADDRESS_OF(TANG)), ADDRESS_OF(LOSVDT_4), ADDRESS_OF(MPAC) + 1u);
         /* R29DVEND: "BRANCH TO CONTINUE VECTOR LOOP." */
         switch (ccs_at(Q_ADDRESS)) {
         case POSITIVE: continue;

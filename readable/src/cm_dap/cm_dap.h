@@ -185,29 +185,30 @@ void deloop_after_dpadd(void);      /* DELOOP +013 */
 void deloop_next(void);             /* DELOOP +021: CCS SPNDX */
 
 /* ---- RCS-CSM_DIGITAL_AUTOPILOT.agc, the needles -- needles.c ---- */
-void dacndls(void);                /* DACNDLS */
-void dacndls_ccs(enum sign entry); /* DACNDLS, entered by a CCS */
-void kresume1(void);               /* KRESUME1 */
-void needler(void);                /* NEEDLER */
-void needler_plus5(void);          /* NEEDLER +5 */
-void needle11(void);               /* NEEDLE11 */
-void needler2(void);               /* NEEDLER2 */
-void needler2_plus3(void);         /* NEEDLER2 +3 */
-void needler2_mask(void);          /* NEEDLER2 +4 */
-void needles3(void);               /* NEEDLES3 */
-void needles3_test(void);          /* NEEDLES3 +3: EXTEND; BZF NEEDLER +5 */
-void needles(void);                /* NEEDLES */
-void dacloop(void);                /* DACLOOP */
-void dacloop_limit(void);          /* DACLOOP +6: CCS A */
-void dacloop_return(void);         /* DACLOOP +034: TC Q */
-void fdaidsp2(void);               /* FDAIDSP2 */
-void fdaidsp2_ak(void);            /* FDAIDSP2 +011: DXCH AK */
-void fdaitotl(void);               /* FDAITOTL */
-void wrtn22(void);                 /* WRTN22 */
-void wrtn22_wtemp(void);           /* WRTN22 +2: DXCH WTEMP */
-void getaks(void);                 /* GETAKS */
-void getaks_amgb5(void);           /* GETAKS +026: MP AMGB5 */
-void wrtn17(void);                 /* WRTN17 */
+void dacndls(void);        /* DACNDLS */
+void dacndls_plus1(void);  /* DACNDLS +1: MASK BIT4 */
+void dacndls_plus2(void);  /* DACNDLS +2: EXTEND; BZF FDAIDSP2 */
+void kresume1(void);       /* KRESUME1 */
+void needler(void);        /* NEEDLER */
+void needler_plus5(void);  /* NEEDLER +5 */
+void needle11(void);       /* NEEDLE11 */
+void needler2(void);       /* NEEDLER2 */
+void needler2_plus3(void); /* NEEDLER2 +3 */
+void needler2_mask(void);  /* NEEDLER2 +4 */
+void needles3(void);       /* NEEDLES3 */
+void needles3_test(void);  /* NEEDLES3 +3: EXTEND; BZF NEEDLER +5 */
+void needles(void);        /* NEEDLES */
+void dacloop(void);        /* DACLOOP */
+void dacloop_limit(void);  /* DACLOOP +6: CCS A */
+void dacloop_return(void); /* DACLOOP +034: TC Q */
+void fdaidsp2(void);       /* FDAIDSP2 */
+void fdaidsp2_ak(void);    /* FDAIDSP2 +011: DXCH AK */
+void fdaitotl(void);       /* FDAITOTL */
+void wrtn22(void);         /* WRTN22 */
+void wrtn22_wtemp(void);   /* WRTN22 +2: DXCH WTEMP */
+void getaks(void);         /* GETAKS */
+void getaks_amgb5(void);   /* GETAKS +026: MP AMGB5 */
+void wrtn17(void);         /* WRTN17 */
 
 /* ---- RCS-CSM_DIGITAL_AUTOPILOT.agc, starting the DAP -- initialize.c ---- */
 void reinit(void);              /* REINIT */

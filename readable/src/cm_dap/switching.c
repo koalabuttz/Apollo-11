@@ -81,12 +81,12 @@ void inhold(void)
 /* SIGNCK1 -- p. 1030: the lower word's sign (+0 counts as +). */
 void signck1(void)
 {
-    enum sign sign = ccs_at(ADDRESS_OF(EDOT) + 1u);
-
-    if (sign == POSITIVE || sign == IS_PLUS_ZERO)
-        posvel();
-    else
-        negvel();
+    switch (ccs_at(ADDRESS_OF(EDOT) + 1u)) {
+    case POSITIVE:
+    case IS_PLUS_ZERO: /* TCF POSVEL, twice */ posvel(); return;
+    case NEGATIVE:
+    case IS_MINUS_ZERO: /* TCF NEGVEL, twice */ negvel(); return;
+    }
 }
 
 /* POSVEL -- p. 1030: the rate error positive: EDOTVEL, ADBVEL and AERRVEL
@@ -179,12 +179,12 @@ static void j8(void)
 /* SIGNCK2 -- p. 1031: the lower word's sign (+0 counts as +). */
 static void signck2(void)
 {
-    enum sign sign = ccs_at(ADDRESS_OF(WTEMP) + 1u);
-
-    if (sign == POSITIVE || sign == IS_PLUS_ZERO)
-        continue_at(J22);
-    else
-        nj22();
+    switch (ccs_at(ADDRESS_OF(WTEMP) + 1u)) {
+    case POSITIVE:
+    case IS_PLUS_ZERO: /* TCF J22, twice */ continue_at(J22); return;
+    case NEGATIVE:
+    case IS_MINUS_ZERO: /* TCF NJ22, and NJ22 is the next word */ nj22(); return;
+    }
 }
 
 /* NJ22 -- p. 1031: the rate error, on at NJ22 +2 (EXTEND; DV SLOPE), a key
@@ -206,9 +206,11 @@ void nj22_plus2(void)
     dv_at(ADDRESS_OF(SLOPE));
     ad_at(ADDRESS_OF(T5TEMP));
     ad_at(ADDRESS_OF(AERRVEL));
-    if (ccs_register(A_ADDRESS) != NEGATIVE) { /* CCS A */
-        continue_at(J23);
-        return;
+    switch (ccs_register(A_ADDRESS)) {
+    case POSITIVE:
+    case IS_PLUS_ZERO: /* TCF J23, twice */ continue_at(J23); return;
+    case NEGATIVE: break; /* TCF +2 */
+    case IS_MINUS_ZERO: /* TCF J23 */ continue_at(J23); return;
     }
     dcs(ADDRESS_OF(WLMH));
     dxch(ADDRESS_OF(WTEMP));
@@ -231,12 +233,12 @@ void tcf_nj23(void)
 /* SIGNCK3 -- p. 1032: the lower word's sign (+0 counts as +). */
 void signck3(void)
 {
-    enum sign sign = ccs_at(ADDRESS_OF(WTEMP) + 1u);
-
-    if (sign == POSITIVE || sign == IS_PLUS_ZERO)
-        continue_at(J23);
-    else
-        nj23();
+    switch (ccs_at(ADDRESS_OF(WTEMP) + 1u)) {
+    case POSITIVE:
+    case IS_PLUS_ZERO: /* TCF J23, twice */ continue_at(J23); return;
+    case NEGATIVE:
+    case IS_MINUS_ZERO: /* TCF NJ23, and NJ23 is the next word */ nj23(); return;
+    }
 }
 
 /* NJ23 -- p. 1032: the attitude error plus ADB+AF plus WL-H/SLP: + (or +0),
@@ -293,12 +295,12 @@ void j21(void)
 /* SIGNCK4 -- p. 1032: the lower word's sign. */
 static void signck4(void)
 {
-    enum sign sign = ccs_at(ADDRESS_OF(EDOT) + 1u);
-
-    if (sign == POSITIVE || sign == IS_PLUS_ZERO)
-        jp();
-    else
-        jn();
+    switch (ccs_at(ADDRESS_OF(EDOT) + 1u)) {
+    case POSITIVE:
+    case IS_PLUS_ZERO: /* TCF JP, twice */ jp(); return;
+    case NEGATIVE:
+    case IS_MINUS_ZERO: /* TCF JN, and JN is the next word */ jn(); return;
+    }
 }
 
 /* JN -- p. 1033: KMPAC = WL - EDOT, the change that leaves the rate error at
@@ -358,12 +360,12 @@ void j22_plus2(void)
  * -0). */
 void signck5(void)
 {
-    enum sign sign = ccs_at(ADDRESS_OF(EDOT) + 1u);
-
-    if (sign == POSITIVE || sign == IS_PLUS_ZERO)
-        continue_at(JN);
-    else
-        continue_at(JP);
+    switch (ccs_at(ADDRESS_OF(EDOT) + 1u)) {
+    case POSITIVE:
+    case IS_PLUS_ZERO: /* TCF JN, twice */ continue_at(JN); return;
+    case NEGATIVE:
+    case IS_MINUS_ZERO: /* TCF JP, twice */ continue_at(JP); return;
+    }
 }
 
 /* ---- J23, J24 -- pp. 1033-1034 ---- */

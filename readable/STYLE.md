@@ -61,7 +61,10 @@ there too.
   has no word there. It stands too where the word is not an instruction's
   line, and the comment says which: an interpretive word, or an address
   word the assembler makes, such as a CADR. A constant with a value, an
-  OCT or a DEC, is not such a word: it runs as the instruction it is. And
+  OCT or a DEC, is not such a word: it runs as the instruction it is
+  (unless its value is no instruction's word, as OCT 20000 is, a DAS with
+  an address field of 0 that the assembler makes of no line: the call
+  stands there too, and the comment says so). And
   it stands in a helper that is one CCS at several places, since what the
   listing would run differs with the place, which the comment says. In
   each of these the comment also says that the outcome never comes and
@@ -238,7 +241,19 @@ so a reader sees both versions together.
   (`POSITIVE`, `IS_PLUS_ZERO`, `NEGATIVE`, `IS_MINUS_ZERO`), each falling
   through with a `/* fall through */` comment where the listing does. All
   four are named: the listing has a word for each, so no `default:` stands
-  for two of them.
+  for two of them and none is left without a case. An outcome that is
+  wanted later is kept in an `enum sign` variable and the switch is on
+  that. A CCS is not compared (`if (ccs(word) == POSITIVE)`) and a kept
+  outcome is not tested: a test folds outcomes that the listing tells
+  apart. One CCS is written as a test, `if (ccs_positive(A_ADDRESS))`
+  (`src/agc/agc.h`), for a word that is never negative: A after a MASK
+  with a constant whose sign bit is clear (`make style-check` has the C
+  compiler check the constant), or another word, and then a comment at
+  the call names the word and says what keeps it from being negative, in
+  this form: `/* CCS SPNDX, never negative: the loop's index, counted
+  down 2, 1, 0. */`. Where the reason is a mask, it names the constants
+  right after the words "masked with" (`FLAGWRD8 masked with SURFFBIT`),
+  and the compiler checks those too.
 - Register effects that carry state from one step to the next use the
   instruction helpers (`dxch()`, `xch()`, `ts()`), named as the instruction.
   Effects that do not are plain C on named words.
@@ -277,18 +292,20 @@ describes each in full, and `.github/workflows/readable-ci.yml` runs them.
      on, each tried on what it must fail;
    - `style-check`: the rules of this guide that a script can count
      (`tools/style_check.py`: the order of a CCS's cases, a `default:`
-     among them, a CCS outcome refused, a channel by number, a jump to a
-     label plus an offset, a helper defined twice, a decimal offset, a
-     long line, `goto`, the wording). `tests/style_owed.txt` lists what each directory of `src/`
-     still owes of the whole-tree review (issue #1334); a new break
-     that the script sees fails, wherever it is, and the list only gets
-     shorter. (README.md, *Gates*, says what the script does not see yet:
-     the list owing nothing is said of what it sees.) `tools/ccs_helpers.py`
-     holds every call of a helper that is one CCS at several places to
-     the helper's premise, a mask whose sign bit is clear: the C compiler
-     checks a static assert of each mask. Such a helper is named in
-     `tools/style_check.py` (`CCS_HELPERS`), and no other function may
-     refuse in its words. What a script cannot
+     among them or an outcome with no case, a CCS outcome refused, a CCS
+     compared or dropped, a channel by number, a jump to a label plus an
+     offset, a helper defined twice, a decimal offset, a long line,
+     `goto`, the wording). `tests/style_owed.txt` lists, place by place,
+     what the tree still owes of the whole-tree review (issue #1334): a
+     break that is not on it fails, and so does a line of it that the
+     tree no longer has. It owes nothing. (README.md, *Gates*, says what
+     the script does not see: the list owing nothing is said of what it
+     sees.) `tools/ccs_helpers.py` holds every call of `ccs_positive()`,
+     the one CCS written as a test, to its premise, a word that is never
+     negative: the C compiler checks a static assert of each constant
+     mask, and a call with none has its comment held to the form above.
+     The helper is named in `tools/style_check.py` (`CCS_HELPERS`), and
+     no other function may refuse in its words. What a script cannot
      count (names, comments, whether the C says what the listing does) a
      person reads;
    - the `*-cases` targets, over a hundred, one or more for each listing

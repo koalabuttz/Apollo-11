@@ -186,19 +186,19 @@ void r29_q(void)
 {
     ca(ADDRESS_OF(FLAGWRD3));
     mask(NR29_RDR);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         r29nodes();
         return;
     }
     ca(ADDRESS_OF(RADMODES));
     mask(OCT10002);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         r29nodes();
         return;
     }
     ca(ADDRESS_OF(RADMODES));
     mask(PRIO22);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         nor29now();
         return;
     }

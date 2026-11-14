@@ -300,7 +300,7 @@ static void fwdfltr(void)
     forward_cascade(ADDRESS_OF(DAP2), ADDRESS_OF(DAP1), ADDRESS_OF(N10) + 5u, ADDRESS_OF(TMP3));
     ca(ADDRESS_OF(DAPDATR1));
     mask(BIT14);
-    if (ccs_register(A_ADDRESS) == POSITIVE) { /* (A BIT14 or +0) */
+    if (ccs_positive(A_ADDRESS)) { /* (A BIT14 or +0) */
         forward_cascade(ADDRESS_OF(DAP3), ADDRESS_OF(DAP2), ADDRESS_OF(N10) + 10u,
                         ADDRESS_OF(TMP5));
     } else {
@@ -352,7 +352,7 @@ static void precomp(void)
     precompute_cascade(ADDRESS_OF(DAP1), ADDRESS_OF(DAP2), ADDRESS_OF(N10) + 6u, ADDRESS_OF(TMP3));
     ca(ADDRESS_OF(DAPDATR1));
     mask(BIT13);
-    if (ccs_register(A_ADDRESS) == POSITIVE) return; /* (A BIT13 or +0) */
+    if (ccs_positive(A_ADDRESS)) return; /* (A BIT13 or +0) */
     precompute_cascade(ADDRESS_OF(DAP2), ADDRESS_OF(DAP3), ADDRESS_OF(N10) + 11u, ADDRESS_OF(TMP5));
 }
 

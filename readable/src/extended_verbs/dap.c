@@ -42,23 +42,6 @@ static void tc(word at, word routine)
     continue_at(routine);
 }
 
-/* CCS A after a MASK of positive bits: true when a bit was set (A then
- * holds the masked word less one), false for +0. Such a MASK leaves neither
- * a negative word nor -0. This one helper stands for that CCS at each place
- * it is used, so it cannot follow the two outcomes that never come: what
- * the listing would run differs with the place. (make style-check holds
- * each place's mask to a clear sign bit: tools/ccs_helpers.py.) */
-static bool masked_is_set(void)
-{
-    switch (ccs_register(A_ADDRESS)) {
-    case POSITIVE: return true;
-    case IS_PLUS_ZERO: return false;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); /* never; what would run differs with the place */
-    }
-    return false;
-}
-
 /* A flashing display from the word at: CAF <verb-noun>, TC BANKCALL, CADR
  * GOXDSPF (or GOXDSPFR, GOMARK3R). */
 static void show(word at, word verb_noun)
@@ -80,7 +63,7 @@ void dapdata1(void)
     ts(ADDRESS_OF(DAPDATR1));
     cs(ADDRESS_OF(FLGWRD10));
     mask(APSFLBIT);
-    if (masked_is_set()) set_A(BIT14);
+    if (ccs_positive(A_ADDRESS)) set_A(BIT14);
     ads(ADDRESS_OF(DAPDATR1));
     chkdata1();
 }
@@ -170,13 +153,13 @@ void dpdat1(void)
     ts(L_ADDRESS);
     cs(ADDRESS_OF(DAPDATR1));
     mask(BIT14);
-    if (masked_is_set()) set_A(APSFLBIT);
+    if (ccs_positive(A_ADDRESS)) set_A(APSFLBIT);
     ad_at(L_ADDRESS);
     ts(ADDRESS_OF(FLGWRD10));
 
     cs(ADDRESS_OF(DAPDATR1));
     mask(BIT13_14);
-    if (masked_is_set()) set_A(negate(CSMDOCKD)); /* CS CSMDOCKD */
+    if (ccs_positive(A_ADDRESS)) set_A(negate(CSMDOCKD)); /* CS CSMDOCKD */
     ad(BOOLSMSK);
     mask_at(ADDRESS_OF(DAPDATR1));
     ts(L_ADDRESS);
@@ -186,7 +169,7 @@ void dpdat1(void)
     ts(ADDRESS_OF(DAPBOOLS));
 
     mask(CSMDOCKD);
-    if (masked_is_set()) ca(ADDRESS_OF(CSMMASS));
+    if (ccs_positive(A_ADDRESS)) ca(ADDRESS_OF(CSMMASS));
     ad_at(ADDRESS_OF(LEMMASS));
     if (!ts(ADDRESS_OF(MASS))) /* an overflow skips the CAE */
         ca(ADDRESS_OF(DAPBOOLS));
@@ -223,7 +206,7 @@ void stikload(void)
     ts(EBANK_ADDRESS);
     set_A(RHCSCALE);
     mask_at(ADDRESS_OF(DAPBOOLS));
-    if (masked_is_set()) set_A(NORMAL);
+    if (ccs_positive(A_ADDRESS)) set_A(NORMAL);
     ad(FINE);
     ts(ADDRESS_OF(STIKSENS));
     set_A(MINUS_0_6_DEG_SEC);
@@ -302,7 +285,7 @@ void dapdat2(void)
 {
     cs(ADDRESS_OF(FLGWRD10));
     mask(APSFLBIT);
-    if (masked_is_set()) set_A(MINLMD);
+    if (ccs_positive(A_ADDRESS)) set_A(MINLMD);
     ad(MINMINLM);
     ad_at(ADDRESS_OF(LEMMASS));
     if (A_is_zero_or_minus()) { /* EXTEND; BZMF DAPDATA2 */
@@ -525,7 +508,7 @@ void donoun46_plus6(void)
 {
     ca(ADDRESS_OF(DAPDATR1));
     mask(BIT4);
-    if (masked_is_set()) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(MAXIN); /* TCF MAXIN */
         return;
     }

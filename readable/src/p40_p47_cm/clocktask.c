@@ -77,9 +77,11 @@ static void setupdyn(void);
  * (SETUPDYN); any other, CLOCKJOB as a job (NOVAC, PRIO27). */
 void setclock_after_waitlist(void)
 {
-    if (ccs_at(ADDRESS_OF(NVWORD1)) == IS_PLUS_ZERO) {
-        settb6();
-        return;
+    switch (ccs_at(ADDRESS_OF(NVWORD1))) {
+    case POSITIVE: break;                /* TCF +3 */
+    case IS_PLUS_ZERO: settb6(); return; /* TCF SETTB6 */
+    case NEGATIVE: break;                /* TCF +1 */
+    case IS_MINUS_ZERO: break;
     }
     set_A(negate(V06N85B)); /* "CHECK FOR V06N85B (P41)" */
     ad_at(ADDRESS_OF(NVWORD1));

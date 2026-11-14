@@ -15,7 +15,7 @@ static bool ck4v32(void)
 {
     cs(ADDRESS_OF(MPAC));
     mask(BIT6);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         return_through_q();
         return true;
     }

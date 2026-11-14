@@ -34,18 +34,19 @@ void smallmp(void)
  * the CCS's fourth way): by the lower word's sign. */
 static void dpadd_plus7(void)
 {
-    enum sign lower = ccs_at(KMPAC_LOW);
-
-    if (lower == POSITIVE) { /* "UPPER = 0, LOWER +" */
-        ad(NEGMAX);          /* DPADD2+ */
-        ts(KMPAC_LOW);       /* "CAN NOT OVERFLOW" */
-        set_A(NEGMAX);       /* CA: "UPPER WAS = 0" */
-    } else {
-        if (lower == NEGATIVE) com(); /* "UPPER = 0, LOWER -" */
-        ad(POSMAX);                   /* "LOWER = 0, A=0" */
-        ts(KMPAC_LOW);                /* "CAN NOT OVERFLOW" */
-        set_A(POSMAX);                /* CA: "UPPER WAS = 0" */
+    switch (ccs_at(KMPAC_LOW)) {
+    case POSITIVE:     /* TCF DPADD2+: "UPPER = 0, LOWER +" */
+        ad(NEGMAX);    /* DPADD2+ */
+        ts(KMPAC_LOW); /* "CAN NOT OVERFLOW" */
+        set_A(NEGMAX); /* CA: "UPPER WAS = 0" */
+        return;
+    case IS_PLUS_ZERO: break;    /* TCF +2 */
+    case NEGATIVE: com(); break; /* "UPPER = 0, LOWER -" */
+    case IS_MINUS_ZERO: break;
     }
+    ad(POSMAX);    /* "LOWER = 0, A=0" */
+    ts(KMPAC_LOW); /* "CAN NOT OVERFLOW" */
+    set_A(POSMAX); /* CA: "UPPER WAS = 0" */
 }
 
 /* DPADD -- pp. 999-1000.

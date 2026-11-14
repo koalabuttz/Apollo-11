@@ -90,12 +90,15 @@ void p61_3_after_phaschng(void)
  * ROLLC is left as it was. Then the interpretive code at NEWRNVN. */
 static void p61_4(void)
 {
-    enum sign headsup;
-
     zl();
-    headsup = ccs_at(ADDRESS_OF(HEADSUP));
-    if (headsup == POSITIVE) set_A(BIT14); /* then the NOOP */
-    if (headsup != IS_MINUS_ZERO) dxch(ADDRESS_OF(ROLLC));
+    switch (ccs_at(ADDRESS_OF(HEADSUP))) {
+    case POSITIVE:
+        set_A(BIT14); /* CA BIT14 */
+        /* fall through */
+    case IS_PLUS_ZERO:                             /* the NOOP */
+    case NEGATIVE: dxch(ADDRESS_OF(ROLLC)); break; /* DXCH ROLLC */
+    case IS_MINUS_ZERO: break;                     /* past the DXCH */
+    }
     tc_at(P61_4 + 5u);
     intpret();
 }
@@ -336,10 +339,14 @@ void p62_1_enter(void)
  * ENTRYDSP). (No TS here finds an overflow in A: none skips.) */
 void p62_1_after_phaschng(void)
 {
-    enum sign headsup = ccs_at(ADDRESS_OF(HEADSUP));
-
-    if (headsup == POSITIVE) set_A(BIT14); /* then the NOOP */
-    if (headsup != IS_MINUS_ZERO) ts(ADDRESS_OF(ROLLC));
+    switch (ccs_at(ADDRESS_OF(HEADSUP))) {
+    case POSITIVE:
+        set_A(BIT14); /* CA BIT14 */
+        /* fall through */
+    case IS_PLUS_ZERO:                           /* the NOOP */
+    case NEGATIVE: ts(ADDRESS_OF(ROLLC)); break; /* TS ROLLC */
+    case IS_MINUS_ZERO: break;                   /* past the TS */
+    }
     ca(ADDRESS_OF(ALFAPAD));
     zl();
     dxch(ADDRESS_OF(ALFACOM));

@@ -100,8 +100,8 @@ void r29_after_setrrecr(void)
 {
     set_A(ANTENBIT);
     mask_at(ADDRESS_OF(RADMODES));
-    if (bit_set_in_A()) { /* CCS A */
-        setprpos();       /* "MODE 2." */
+    if (ccs_positive(A_ADDRESS)) { /* CCS A */
+        setprpos();                /* "MODE 2." */
         return;
     }
     set_A(PRIO21);            /* "MODE 1: MUST REMODE." */

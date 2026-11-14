@@ -130,10 +130,12 @@ static void noroll(void)
  * SHORTENED". */
 static void nomxfire(void)
 {
-    if (ccs_at(ADDRESS_OF(TEMREG)) == POSITIVE)
-        set_A(POSMAX); /* "POSITIVE TORQUE REQUIRED" */
-    else
-        set_A(NEGMAX); /* "NEGATIVE TORQUE REQUIRED" */
+    switch (ccs_at(ADDRESS_OF(TEMREG))) { /* "FOR TORQUE SIGN" */
+    case POSITIVE: set_A(POSMAX); break;  /* "POSITIVE TORQUE REQUIRED" */
+    case IS_PLUS_ZERO: break;             /* TCF +2 (never: TEMREG is not zero here) */
+    case NEGATIVE: set_A(NEGMAX); break;  /* "NEGATIVE TORQUE REQUIRED" */
+    case IS_MINUS_ZERO: break;            /* (never: TEMREG is not zero here) */
+    }
     ts(ADDRESS_OF(ROLLFIRE));
     com();
     if (!A_is_zero_or_minus()) { /* EXTEND; BZMF +3 */
@@ -161,10 +163,12 @@ static void maxtfire(void)
     ca(ADDRESS_OF(TEMREG));
     mp(ONE_OVER_TMXFIR);
     if (!A_is_zero()) { /* EXTEND; BZF NOMXFIRE */
-        if (ccs_register(A_ADDRESS) == POSITIVE)
-            set_A(TMAXFIRE); /* "USE MAXIMUM" */
-        else
-            set_A(negate(TMAXFIRE)); /* CS */
+        switch (ccs_register(A_ADDRESS)) {
+        case POSITIVE: set_A(TMAXFIRE); break;         /* "USE MAXIMUM" */
+        case IS_PLUS_ZERO: break;                      /* TCF +2 (never: the BZF takes a zero) */
+        case NEGATIVE: set_A(negate(TMAXFIRE)); break; /* CS */
+        case IS_MINUS_ZERO: break;                     /* (never: the BZF takes a zero) */
+        }
         ts(ADDRESS_OF(TEMREG));
     }
     nomxfire();
@@ -258,10 +262,12 @@ static void onroll(void)
     set_A(ZERO);
     dv_at(ADDRESS_OF(TEMREG));
     if (!A_is_zero()) { /* MINLIMAP */
-        if (ccs_register(A_ADDRESS) == POSITIVE)
-            set_A(POSMAX); /* "POSITIVE OVERFLOW" */
-        else
-            set_A(negate(POSMAX)); /* CS: "NEGATIVE OVERFLOW" */
+        switch (ccs_register(A_ADDRESS)) {
+        case POSITIVE: set_A(POSMAX); break;         /* "POSITIVE OVERFLOW" */
+        case IS_PLUS_ZERO: break;                    /* TCF ROLLSET (never: the BZF takes a zero) */
+        case NEGATIVE: set_A(negate(POSMAX)); break; /* CS: "NEGATIVE OVERFLOW" */
+        case IS_MINUS_ZERO: break;                   /* TCF ROLLSET (never: the BZF takes a zero) */
+        }
         rollset();
         return;
     }

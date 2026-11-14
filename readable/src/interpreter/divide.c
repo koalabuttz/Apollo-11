@@ -260,7 +260,8 @@ static void dvnorm(void)
  * "FORCING SIGN AGREEMENT MAY CAUSE BUF TO BECOME ZERO." */
 static void bufpos(void)
 {
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    /* CCS A, never negative: what the CCS of BUF left, a magnitude less one. */
+    if (ccs_positive(A_ADDRESS)) {
         buf_plus(); /* "TO BUF+ IF BUF IS GREATER THAN +1." */
         return;
     }
@@ -284,7 +285,8 @@ static void bufpos_plus6(void)
 
 static void bufneg(void)
 {
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    /* CCS A, never negative: what the CCS of BUF left, a magnitude less one. */
+    if (ccs_positive(A_ADDRESS)) {
         buf_minus(); /* "TO BUF- IF BUF IS LESS THAN -1." */
         return;
     }
@@ -455,9 +457,11 @@ static void finaldv(void)
  * skips the CCS, to the first TC Q: DVOVF's quotient.) */
 void finaldv_plus3(void)
 {
-    if (ts(MPAC_AT(1u)) || ccs_at(ADDRESS_OF(DVSIGN)) != IS_MINUS_ZERO) {
-        tc_through(Q_ADDRESS);
-        return;
+    switch (ts(MPAC_AT(1u)) ? POSITIVE : ccs_at(ADDRESS_OF(DVSIGN))) {
+    case POSITIVE:
+    case IS_PLUS_ZERO:
+    case NEGATIVE: tc_through(Q_ADDRESS); return; /* TC Q, in each of the three words */
+    case IS_MINUS_ZERO: break;
     }
     dcs(MPAC_AT(0u));
     dxch(MPAC_AT(0u));
@@ -600,21 +604,28 @@ static void slash_buf_plus(void)
  * result says whether it ended the order at DVOVF instead of returning. */
 static bool v_scdv(void)
 {
-    enum sign major;
+    bool negative = false; /* to /MPAC-, not /MPAC+ */
+    bool minor = false;    /* the major part is zero: by the minor part */
     bool near_one = true;
 
     ca(ADDRESS_OF(VBUF) + 5u); /* "REFLECTS SIGN OF SCALAR." */
     ts(ADDRESS_OF(DVSIGN));
 
-    major = ccs_at(MPAC_AT(0u));
-    if (major != POSITIVE && major != NEGATIVE) {
-        major = ccs_at(MPAC_AT(1u));
-        if (major != POSITIVE && major != NEGATIVE) {
-            tc_through(Q_ADDRESS);
-            return false;
+    switch (ccs_at(MPAC_AT(0u))) {
+    case POSITIVE: break;                   /* TCF /MPAC+ */
+    case IS_PLUS_ZERO: minor = true; break; /* TCF +2 */
+    case NEGATIVE: negative = true; break;  /* TCF /MPAC- */
+    case IS_MINUS_ZERO: minor = true; break;
+    }
+    if (minor) {
+        switch (ccs_at(MPAC_AT(1u))) {
+        case POSITIVE: break;                                    /* TCF /MPAC+ */
+        case IS_PLUS_ZERO: tc_through(Q_ADDRESS); return false;  /* TC Q */
+        case NEGATIVE: negative = true; break;                   /* TCF /MPAC- */
+        case IS_MINUS_ZERO: tc_through(Q_ADDRESS); return false; /* TC Q */
         }
     }
-    if (major == NEGATIVE) { /* /MPAC-: "USUAL COMPLEMENTING AND SETTING OF SIGN." */
+    if (negative) { /* /MPAC-: "USUAL COMPLEMENTING AND SETTING OF SIGN." */
         dcs(MPAC_AT(0u));
         dxch(MPAC_AT(0u));
         incr(ADDRESS_OF(DVSIGN));

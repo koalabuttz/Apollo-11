@@ -125,7 +125,7 @@ void r52ja(void)
 {
     set_A(BIT10);
     mask_at(ADDRESS_OF(STATE) + 1u);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(R52JA + 3u); /* TC R52E */
         r52e();
         return;
@@ -139,7 +139,7 @@ void r52ja_not_lem(void)
 {
     set_A(BIT6);
     mask_at(ADDRESS_OF(STATE));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         r52e(); /* TCF R52E */
         return;
     }
@@ -159,7 +159,7 @@ void r52e(void)
     }
     cs(ADDRESS_OF(STATE));
     mask(BIT4);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(R52E + 6u); /* TC +3 */
         ca(ADDRESS_OF(SAC));
         ts(ADDRESS_OF(DESOPTS));
@@ -199,7 +199,7 @@ void r52f_after_delayjob(void)
 {
     set_A(BIT10);
     mask_at(ADDRESS_OF(STATE) + 1u);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         r52ha(); /* TCF R52HA */
         return;
     }
@@ -247,13 +247,13 @@ void r52ha_after_r61csm(void)
     }
     cs(ADDRESS_OF(STATE) + 1u);
     mask(BIT7);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         r52sync(); /* TCF R52SYNC */
         return;
     }
     ca(ADDRESS_OF(STATE) + 5u);
     mask(BIT10);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(R52I + 3u); /* TC R52D */
         r52d();
         return;
@@ -293,7 +293,7 @@ void r52m(void)
 {
     set_A(BIT6);
     mask_at(ADDRESS_OF(STATE));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(R52M + 3u); /* TC R52F */
         r52f();
         return;
@@ -344,7 +344,7 @@ static void r52l(void)
 {
     set_A(BIT10);
     mask_at(ADDRESS_OF(STATE) + 1u);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(R52L + 3u); /* TC R52J */
         r52j();
         return;

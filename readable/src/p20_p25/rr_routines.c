@@ -62,7 +62,7 @@ void rrlimchk(void)
     lxch(Q_ADDRESS); /* "L(CALLER +2) TO L." */
     set_A(ANTENBIT); /* "SEE WHICH MODE RR IS IN." */
     mask_at(ADDRESS_OF(RADMODES));
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(MODE2CHK); /* TCF MODE2CHK */
         return;
     }
@@ -145,7 +145,7 @@ void settrkf(void)
 {
     set_A(BIT1); /* "NO ACTION IF DURING LAMP TEST" */
     mask_at(ADDRESS_OF(IMODES33));
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_q();
         return;
     }
@@ -165,7 +165,7 @@ void rrtrkf(void)
     } else {
         set_A(RRDATABT); /* RRCHECK: "SEE IF RR DATA FAILED." */
         mask_at(ADDRESS_OF(RADMODES));
-        if (bit_set_in_A()) ca(L_ADDRESS); /* the lamp on; else A +0, off */
+        if (ccs_positive(A_ADDRESS)) ca(L_ADDRESS); /* the lamp on; else A +0, off */
     }
     trkflon_plus1();
 }
@@ -302,7 +302,7 @@ void dorrepos_trunnion(void)
 {
     set_A(ANTENBIT); /* "MANEUVER TRUNNION ANGLE TO NOMINAL POS." */
     mask_at(ADDRESS_OF(RADMODES));
-    if (bit_set_in_A()) set_A(BIT15); /* "0 FOR MODE 1 AND 180 FOR MODE 2." */
+    if (ccs_positive(A_ADDRESS)) set_A(BIT15); /* "0 FOR MODE 1 AND 180 FOR MODE 2." */
     tc_at(DORREPOS + 7u);
     rrtonly();
 }
@@ -311,7 +311,7 @@ void dorrepos_shaft(void)
 {
     set_A(ANTENBIT); /* "NOT PUT SHAFT IN RIGHT POSITION" */
     mask_at(ADDRESS_OF(RADMODES));
-    if (bit_set_in_A()) set_A(negate(HALF)); /* "-90 FOR MODE 2." */
+    if (ccs_positive(A_ADDRESS)) set_A(negate(HALF)); /* "-90 FOR MODE 2." */
     tc_at(DORREPOS + 014u);
     rrsonly();
 }
@@ -325,7 +325,7 @@ void reposrpt(void)
     mask_at(ADDRESS_OF(RADMODES)); /* "REMOVE REPOSITION BIT." */
     ts(ADDRESS_OF(RADMODES));
     mask(DESIGBIT); /* "SEE IF SOMEONE IS WAITING TO DESIGNATE." */
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(BEGDES); /* TCF BEGDES */
         return;
     }
@@ -342,7 +342,7 @@ void setrrecr(void)
 {
     set_A(BIT2);
     rand_channel(CHAN12);
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_q(); /* "DO NOT CLEAR LAST COMMAND IF ERROR COUNTERS ARE ENABLED" */
         return;
     }
@@ -363,7 +363,7 @@ void remode(void)
 {
     set_A(ANTENBIT); /* "DRIVE TRUNNION TO 0 (180)" */
     mask_at(ADDRESS_OF(RADMODES));
-    if (bit_set_in_A()) set_A(BIT15);
+    if (ccs_positive(A_ADDRESS)) set_A(BIT15);
     tc_at(REMODE + 4u);
     rrtonly();
 }
@@ -379,7 +379,7 @@ void remode_trunnion_out(void)
 {
     cs(ADDRESS_OF(RADMODES));
     mask(ANTENBIT);
-    if (bit_set_in_A()) set_A(MINUS_80DEGSR); /* "GO TO T = -130 (-50)." */
+    if (ccs_positive(A_ADDRESS)) set_A(MINUS_80DEGSR); /* "GO TO T = -130 (-50)." */
     ad(MINUS_50DEGSR);
     tc_at(REMODE + 014u);
     rrtonly();
@@ -389,7 +389,7 @@ void remode_trunnion_back(void)
 {
     cs(ADDRESS_OF(RADMODES));
     mask(ANTENBIT);
-    if (bit_set_in_A()) set_A(BIT15); /* "GO TO T = -180 (+0)." */
+    if (ccs_positive(A_ADDRESS)) set_A(BIT15); /* "GO TO T = -180 (+0)." */
     tc_at(REMODE + 021u);
     rrtonly();
 }
@@ -398,7 +398,7 @@ void remode_shaft_back(void)
 {
     cs(ADDRESS_OF(RADMODES)); /* "GO TO S = -90 (+0)." */
     mask(ANTENBIT);
-    if (bit_set_in_A()) set_A(negate(HALF));
+    if (ccs_positive(A_ADDRESS)) set_A(negate(HALF));
     tc_at(REMODE + 026u);
     rrsonly();
 }
@@ -631,7 +631,7 @@ void endradar(void)
 {
     set_A(RCDUFBIT);
     mask_at(ADDRESS_OF(RADMODES));
-    if (bit_set_in_A())
+    if (ccs_positive(A_ADDRESS))
         continue_at(RGOODEND); /* TCF RGOODEND */
     else
         rdbadend(); /* TCF RDBADEND */
@@ -645,7 +645,7 @@ void rrzero(void)
 {
     set_A(BIT11_1);                /* "SEE IF MONITOR REPOSITION OR NOT IN AUTO */
     mask_at(ADDRESS_OF(RADMODES)); /* IF SO, DON'T RE-ZERO CDUS." */
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         radnoop(); /* "(IMMEDIATE TASK TO RGOODEND)." */
         return;
     }
@@ -662,7 +662,7 @@ void rrzero_after_waitlist(void)
 {
     cs(ADDRESS_OF(RADMODES)); /* "SEE IF IN AUTO MODE." */
     mask(AUTOMBIT);
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(ROADBACK); /* TCF ROADBACK */
         return;
     }

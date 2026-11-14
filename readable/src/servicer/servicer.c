@@ -133,7 +133,7 @@ void massmon(void)
     }
     ca(ADDRESS_OF(FLGWRD10)); /* "NO:  WHICH VEX SHOULD BE USED?" */
     mask(APSFLBIT);
-    if (ccs_register(A_ADDRESS) == POSITIVE)
+    if (ccs_positive(A_ADDRESS))
         dca_constant(APSVEX);
     else
         set_A(DPSVEX);
@@ -227,13 +227,13 @@ void copycycl_after_copycyc(void)
 
     set_A(IDLEFBIT); /* "IS THE IDLE FLAG SET?" */
     mask_at(ADDRESS_OF(FLAGWRD7));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         nodvmon1();
         return;
     }
     cs(ADDRESS_OF(FLAGWRD6));
     mask(AUXFLBIT);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         nodvmon2();
         return;
     }
@@ -267,7 +267,7 @@ void dvcntset(void)
     ts(ADDRESS_OF(DVCNTR));
     ca(ADDRESS_OF(FLGWRD10)); /* "BRANCH IF APSFLAG IS SET." */
     mask(APSFLBIT);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         usejets();
         return;
     }

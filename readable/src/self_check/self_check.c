@@ -104,11 +104,20 @@ static void tc_register(unsigned address)
  * second, on |A| - 1, is +0 (|A| - 1 is never negative). */
 static bool minus_1chk(void)
 {
-    if (ccs_register(A_ADDRESS) == NEGATIVE && ccs_register(A_ADDRESS) == IS_PLUS_ZERO) {
-        tc_register(Q_ADDRESS); /* TC Q */
-        return true;
+    switch (ccs_register(A_ADDRESS)) {
+    case POSITIVE:
+    case IS_PLUS_ZERO: break; /* TCF PRERRORS */
+    case NEGATIVE:
+        /* CCS A, never negative: what the CCS above left, a magnitude less
+         * one. */
+        if (!ccs_positive(A_ADDRESS)) {
+            tc_register(Q_ADDRESS); /* TC Q */
+            return true;
+        }
+        break;                 /* TCF PRERRORS */
+    case IS_MINUS_ZERO: break; /* the TCF PRERRORS after the second CCS */
     }
-    prerrors(); /* TCF PRERRORS */
+    prerrors();
     return false;
 }
 
@@ -486,7 +495,6 @@ void eloopfin_plus2(void)
  * CYCLSHFT starts at its first word. */
 static void cntrchk(void)
 {
-    enum sign count;
     word counter;
 
     set_A(CNTRCON);
@@ -496,20 +504,20 @@ static void cntrchk(void)
         counter = index_value(A);
         if (counter < 3u || counter > 01777u) not_modelled(); /* (never: 010 to 060) */
         cs(counter);                                          /* INDEX A; CS 0000 */
-        count = ccs_at(ADDRESS_OF(SKEEP2));
-        if (count != POSITIVE) break;
-        tc_at(CNTRLOOP + 5u); /* TC CNTRLOOP */
-    }
-    /* CYCLSHFT -- LM p. 1290, CM p. 1400.
-     * "CYCLSHFT CHECKS THE CYCLE AND SHIFT REGISTERS": 25252 into each,
-     * then the sum of what each holds, read twice (each read edits it
-     * again), must come to -1 each time. A negative or -0 SKEEP2 would
-     * go on at TS CYR or TS CYL; it never happens. */
-    switch (count) {
-    case POSITIVE: break;                   /* (not here: the loop went on, TC CNTRLOOP) */
-    case IS_PLUS_ZERO: set_A(CONC_PLUS_S1); /* fall through */
-    case NEGATIVE: ts(ADDRESS_OF(CYR));     /* fall through: "C(CYR) = 12525" */
-    case IS_MINUS_ZERO: break;
+        switch (ccs_at(ADDRESS_OF(SKEEP2))) {
+        case POSITIVE:
+            tc_at(CNTRLOOP + 5u); /* TC CNTRLOOP */
+            continue;
+        /* CYCLSHFT -- LM p. 1290, CM p. 1400.
+         * "CYCLSHFT CHECKS THE CYCLE AND SHIFT REGISTERS": 25252 into each,
+         * then the sum of what each holds, read twice (each read edits it
+         * again), must come to -1 each time. A negative or -0 SKEEP2 would
+         * go on at TS CYR or TS CYL; it never happens. */
+        case IS_PLUS_ZERO: set_A(CONC_PLUS_S1); /* fall through */
+        case NEGATIVE: ts(ADDRESS_OF(CYR));     /* fall through: "C(CYR) = 12525" */
+        case IS_MINUS_ZERO: break;
+        }
+        break;
     }
     ts(ADDRESS_OF(CYL));  /* "C(CYL) = 52524" */
     ts(ADDRESS_OF(SR));   /* "C(SR) = 12525" */

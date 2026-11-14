@@ -266,8 +266,10 @@ static void drftsub2(void)
     case NEGATIVE: mask_minus_one(); break;
     case IS_MINUS_ZERO: break;
     }
-    if (ccs_at(A_ADDRESS) == POSITIVE) ts(ADDRESS_OF(GCOMPSW)); /* YES - SET GCOMPSW POSITIVE */
-    tc_through(ADDRESS_OF(BUF) + 1u);                           /* TC BUF +1 */
+    /* CCS A, never negative: what the CCS above left, a magnitude less one
+     * (the MASK of DEC -1 gives it no sign), or its +0. */
+    if (ccs_positive(A_ADDRESS)) ts(ADDRESS_OF(GCOMPSW)); /* YES - SET GCOMPSW POSITIVE */
+    tc_through(ADDRESS_OF(BUF) + 1u);                     /* TC BUF +1 */
 }
 
 /* DRIFTSUB -- LM p. 332, CM p. 302.
@@ -451,9 +453,10 @@ static void nbd3(void)
     mp(BIT10); /* SHIFT RIGHT 5 */
     dxch(ADDRESS_OF(VBUF) + 2u);
     set_A(ZERO);
-    ts(ADDRESS_OF(GCOMPSW));                    /* INDICATE COMMANDS 2 PULSES OR LESS. */
-    ts(ADDRESS_OF(BUF));                        /* INDEX  X, Y, Z. */
-    if (ccs_at(ADDRESS_OF(TEM1)) == POSITIVE) { /* IF SURFACE FLAG IS SET, */
+    ts(ADDRESS_OF(GCOMPSW)); /* INDICATE COMMANDS 2 PULSES OR LESS. */
+    ts(ADDRESS_OF(BUF));     /* INDEX  X, Y, Z. */
+    /* CCS TEM1, never negative: FLAGWRD8 masked with SURFFBIT (LASTBIAS). */
+    if (ccs_positive(ADDRESS_OF(TEM1))) { /* IF SURFACE FLAG IS SET, */
         tc_at(NBD3 + 7u);
         irigx(); /* COMPENSATE ACCELERATION TERMS. */
     }
@@ -462,7 +465,8 @@ static void nbd3(void)
     cs(ADDRESS_OF(NBDX));
     tc_at(NBD3 + 014u);
     fbiassub(); /* -(NBDX)(DELTAT)   (GYRO PULSES) X 2(+14) */
-    if (ccs_at(ADDRESS_OF(TEM1)) == POSITIVE) {
+    /* CCS TEM1, never negative: FLAGWRD8 masked with SURFFBIT (LASTBIAS). */
+    if (ccs_positive(ADDRESS_OF(TEM1))) {
         tc_at(NBD3 + 016u);
         irigy();
     }
@@ -471,7 +475,8 @@ static void nbd3(void)
     ca(ADDRESS_OF(NBDY));
     tc_at(NBD3 + 023u);
     fbiassub(); /* -(NBDY)(DELTAT) */
-    if (ccs_at(ADDRESS_OF(TEM1)) == POSITIVE) {
+    /* CCS TEM1, never negative: FLAGWRD8 masked with SURFFBIT (LASTBIAS). */
+    if (ccs_positive(ADDRESS_OF(TEM1))) {
         tc_at(NBD3 + 025u);
         irigz();
     }
@@ -502,7 +507,9 @@ static void nbd3(void)
     tc_at(NBD3 + 024u);
     fbiassub(); /* +(NBDZ)(DELTAT) */
 #endif
-    if (ccs_at(ADDRESS_OF(GCOMPSW)) == POSITIVE)
+    /* CCS GCOMPSW, never negative: the +0 stored above, or the positive word
+     * that DRFTSUB2 stores over it. */
+    if (ccs_positive(ADDRESS_OF(GCOMPSW)))
         one_gyro(); /* YES: TCF 1/GYRO */
     else
         continue_at(ENDOFJOB); /* NO */

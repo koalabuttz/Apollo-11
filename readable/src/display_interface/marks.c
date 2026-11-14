@@ -173,7 +173,7 @@ void makemark(void)
     copies();
     ca(ADDRESS_OF(FLAGWRD4));
     mask(OCT34300);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         chkprio();
         return;
     }
@@ -204,7 +204,7 @@ void gogomark(void)
 {
     cs(ADDRESS_OF(MARKFLAG));
     mask(BIT5);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         markcop();
         return;
     }

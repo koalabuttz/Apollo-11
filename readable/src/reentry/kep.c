@@ -96,13 +96,11 @@ static void back(void)
 /* BACK2 -- p. 871: the six other columns of the table at the same place,
  * each "FX = AK + GRAD (AK+1 - AK)", MM from 5 to 0 (FX +5 to FX), JJ 13 on
  * each time. Its CCS MM: on (TCF BACK2) while positive; at +0 on to the end,
- * "ZERO FX +1 AND GET DREFR". (A TS FX that overflows skips the CCS, back to
- * BACK2 with A +1 or -1; a negative MM skips the XCH, a -0 the AD D too:
- * none happens in flight.) The result: how the end goes on. */
-static enum sign back2(void)
+ * "ZERO FX +1 AND GET DREFR", and the AD D after it. (A TS FX that overflows
+ * skips the CCS, back to BACK2 with A +1 or -1; a negative MM skips the XCH,
+ * a -0 the AD D too: none happens in flight.) */
+static void back2(void)
 {
-    enum sign mm;
-
     set_A(FIVE);
     for (;;) {
         ts(ADDRESS_OF(MM));
@@ -114,8 +112,16 @@ static enum sign back2(void)
         ad_at(indexed(ADDRESS_OF(VREFER), fetch(ADDRESS_OF(JJ))));
         if (ts(indexed(ADDRESS_OF(FX), fetch(ADDRESS_OF(MM)))))
             continue; /* "FX = AK + GRAD (AK+1 - AK)" */
-        mm = ccs_at(ADDRESS_OF(MM));
-        if (mm != POSITIVE) return mm;
+        switch (ccs_at(ADDRESS_OF(MM))) {
+        case POSITIVE: continue; /* TCF BACK2 */
+        case IS_PLUS_ZERO:
+            xch(ADDRESS_OF(FX) + 1u); /* "ZERO FX +1 AND GET DREFR" */
+            /* fall through */
+        case NEGATIVE:
+            ad_at(ADDRESS_OF(D));
+            /* fall through */
+        case IS_MINUS_ZERO: return;
+        }
     }
 }
 
@@ -127,8 +133,6 @@ static enum sign back2(void)
  * interpreter. */
 void predict3_after_exit(void)
 {
-    enum sign mm;
-
     set_A(EBENTRY); /* "PRECAUTIONARY." */
     ts(EBANK_ADDRESS);
     set_A(TWELVE);
@@ -139,9 +143,7 @@ void predict3_after_exit(void)
     zl();
     dv_at(ADDRESS_OF(TEM1B));
     ts(ADDRESS_OF(GRAD)); /* "GRAD = (V-VREF)/(VK+1 - VK)" */
-    mm = back2();
-    if (mm == IS_PLUS_ZERO) xch(ADDRESS_OF(FX) + 1u); /* "ZERO FX +1 AND GET DREFR" */
-    if (mm != IS_MINUS_ZERO) ad_at(ADDRESS_OF(D));
+    back2();
     mp_at(ADDRESS_OF(FX) + 5u); /* "F1" */
     dxch(ADDRESS_OF(MPAC));     /* "MPAC = F1(D-DREF)" */
     dcs(ADDRESS_OF(RDOT));      /* "FORM RDOTREF - RDOT" */

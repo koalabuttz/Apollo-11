@@ -196,8 +196,8 @@ static void upok(void)
     set_A(BIT4);
 #endif
     mask_at(ADDRESS_OF(FLAGWRD7));
-    if (ccs_register(A_ADDRESS) == POSITIVE) { /* UPLOCKFL = 1 */
-        tc_at(UPOK + 7u);                      /* TC RESUME */
+    if (ccs_positive(A_ADDRESS)) { /* UPLOCKFL = 1 */
+        tc_at(UPOK + 7u);          /* TC RESUME */
         continue_at(RESUME);
         return;
     }

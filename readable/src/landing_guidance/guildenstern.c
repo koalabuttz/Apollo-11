@@ -27,7 +27,7 @@ void guilden(void)
 {
     read_channel(CHAN30);
     mask(BIT5);
-    if (ccs_at(A_ADDRESS) == POSITIVE)
+    if (ccs_positive(A_ADDRESS))
         startp67();
     else
         tc_to(P67NOW_Q, CHECKMM); /* DEC 67 */
@@ -167,7 +167,7 @@ static void stabl_q(void)
 {
     set_A(BIT13);
     rand_channel(CHAN31);
-    if (ccs_at(A_ADDRESS) == POSITIVE)
+    if (ccs_positive(A_ADDRESS))
         guildret();
     else
         p66now_q();

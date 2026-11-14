@@ -428,7 +428,7 @@ void lothrust_test_after_exit(void)
 {
     ca(ADDRESS_OF(DAPDATR1)); /* CAE: "ENABLE TVCDAP CG TRACKING" */
     mask(BIT14);
-    if (ccs_register(A_ADDRESS) == POSITIVE) set_A(BIT1);
+    if (ccs_positive(A_ADDRESS)) set_A(BIT1);
     ca(ADDRESS_OF(EREPFRAC) + A); /* INDEX A: "LM-OFF, LM-ON VALUE" */
     ts(ADDRESS_OF(REPFRAC));
     tc_at(TGOCALC - 1u);

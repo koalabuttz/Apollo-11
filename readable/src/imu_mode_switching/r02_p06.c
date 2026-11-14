@@ -39,7 +39,7 @@ void r02both(void)
     set_A(BIT13);
     mask_at(ADDRESS_OF(STATE) + 3u); /* FLAGWRD3 */
 #endif
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at((word)(R02BOTH + 3u)); /* TC R02ZERO: "ZERO IMUS" */
         r02zero();
         return;
@@ -171,8 +171,8 @@ void scalprep_after_finetime(void)
     mask_at(ADDRESS_OF(MPAC) + 1u);
     xch(ADDRESS_OF(MPAC) + 1u);
     mask(LOW5);
-    if (ccs_register(A_ADDRESS) == POSITIVE) incr(ADDRESS_OF(MPAC) + 2u); /* "NO" */
-    tc_through(ADDRESS_OF(MPAC) + 2u);                                    /* "YES" */
+    if (ccs_positive(A_ADDRESS)) incr(ADDRESS_OF(MPAC) + 2u); /* "NO" */
+    tc_through(ADDRESS_OF(MPAC) + 2u);                        /* "YES" */
 }
 
 /* POSTAND +3 -- LM p. 1336, CM p. 1447: "CLEAR TIME1TIME2", and

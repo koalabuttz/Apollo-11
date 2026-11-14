@@ -83,7 +83,7 @@ static void startdes_plus1(void)
     mask(DESIGBIT);
     ads(ADDRESS_OF(RADMODES));
     mask(REPOSBIT); /* "SEE IF REPOSITIONING IN PROGRESS." */
-    if (bit_set_in_A())
+    if (ccs_positive(A_ADDRESS))
         continue_at(DESRETRN); /* TCF DESRETRN */
     else
         tc_to(STARTDES + 7u, SETRRECR);
@@ -191,7 +191,7 @@ void lundesch(void)
     }
     ca(ADDRESS_OF(STATE));
     mask(RNDVZBIT);
-    if (bit_set_in_A()) { /* "TEST RNDVZFLG" */
+    if (ccs_positive(A_ADDRESS)) { /* "TEST RNDVZFLG" */
         tc_at(LUNDESCH + 7u);
         nodessm();
     } else {
@@ -263,7 +263,7 @@ static void rrlimnb(void)
     lxch(Q_ADDRESS);
     set_A(ANTENBIT); /* "SEE WHICH MODE RR IS IN" */
     mask_at(ADDRESS_OF(RADMODES));
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(MODE2CHK); /* "MODE 2 CAN USE RRLIMCHK CODING" */
         return;
     }
@@ -407,7 +407,7 @@ void begdes(void)
 {
     cs(ADDRESS_OF(RADMODES));
     mask(REMODBIT);
-    if (bit_set_in_A())
+    if (ccs_positive(A_ADDRESS))
         tc_to(BEGDES + 3u, STDESIG);
     else
         continue_at(BEGDES + 4u);
@@ -480,17 +480,19 @@ void stdesig(void)
 {
     set_A(REPOSBIT);
     mask_at(ADDRESS_OF(RADMODES));
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         baddes(); /* TCF BADDES */
         return;
     }
-    if (ccs_at(ADDRESS_OF(RADMODES)) == NEGATIVE) {
-        moredes_plus1(); /* TCF MOREDES +1 */
-        return;
+    switch (ccs_at(ADDRESS_OF(RADMODES))) { /* "SEE IF CONTINUOUS DESIGNATE WANTED." */
+    case POSITIVE:                          /* TCF +3 */
+    case IS_PLUS_ZERO: break;               /* TCF +2 */
+    case NEGATIVE: moredes_plus1(); return; /* TCF MOREDES +1 */
+    case IS_MINUS_ZERO: break;
     }
     cs(ADDRESS_OF(RADMODES)); /* (TCF +3, TCF +2, or on: here) */
     mask(DESIGBIT);
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         endradar(); /* TCF ENDRADAR */
         return;
     }
@@ -673,7 +675,7 @@ static void dgoodchk(void)
 {
     set_A(BIT4);
     rand_channel(CHAN33);
-    if (bit_set_in_A())
+    if (ccs_positive(A_ADDRESS))
         dorrout();
     else
         rrdesdun();
@@ -693,7 +695,7 @@ static void signlchk(void)
     }
     cs(ADDRESS_OF(STATE));
     mask(LOKONBIT);
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         rrdesdun(); /* TCF RRDESDUN */
         return;
     }
@@ -712,12 +714,19 @@ void dodes_after_dot(void)
 {
     dcs(COS1_2DG); /* EXTEND; DCS COS1/2DG */
     das(ADDRESS_OF(MPAC));
-    set_A(ccs_at(ADDRESS_OF(MPAC)) == NEGATIVE ? ONE : ZERO); /* CCS MPAC, CA ZERO or CA ONE */
+    switch (ccs_at(ADDRESS_OF(MPAC))) {
+    case POSITIVE: set_A(ZERO); break; /* "IF COS ERROR BIGGER, ERROR IS SMALLER" */
+    case IS_PLUS_ZERO: break;          /* TCF +2 (the CCS left +0 in A) */
+    case NEGATIVE: set_A(ONE); break;  /* CA ONE */
+    case IS_MINUS_ZERO: break;         /* (the CCS left +0 in A) */
+    }
     ts(ADDRESS_OF(MPAC) + 1u);
-    if (ccs_at(ADDRESS_OF(RADMODES)) == NEGATIVE)
-        dorrout(); /* TCF DORROUT */
-    else
-        signlchk(); /* TCF SIGNLCHK, or on */
+    switch (ccs_at(ADDRESS_OF(RADMODES))) {
+    case POSITIVE:
+    case IS_PLUS_ZERO: signlchk(); return;  /* TCF SIGNLCHK */
+    case NEGATIVE: dorrout(); return;       /* TCF DORROUT */
+    case IS_MINUS_ZERO: signlchk(); return; /* SIGNLCHK is the next word */
+    }
 }
 
 /* NOTP20 -- p. 552: "PUT OUT COMMAND UNLESS MONITOR REPOSITION HAS TAKEN OVER". */
@@ -726,7 +735,7 @@ void notp20(void)
     inhint();
     cs(ADDRESS_OF(RADMODES));
     mask(REPOSBIT);
-    if (bit_set_in_A())
+    if (ccs_positive(A_ADDRESS))
         tc_to(NOTP20 + 4u, RROUT);
     else
         continue_at(NOTP20 + 5u);

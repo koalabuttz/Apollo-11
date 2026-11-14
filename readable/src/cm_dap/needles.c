@@ -18,13 +18,24 @@
 
 /* DACNDLS -- p. 1009: "ALTERNATE BETWEEN FDAIDSP1 AND FDAIDSP2" by bit 4 of
  * RCSFLAGS. FDAIDSP1 sets the bit and calls NEEDLER, and NEEDLER's TC Q
- * comes back to KRESUME1. (DELOOP's CCS SPNDX comes in at CS RCSFLAGS on
- * +0, at MASK BIT4 on a negative SPNDX and at EXTEND; BZF FDAIDSP2, with A
- * +0, on -0, where MASK BIT4 changes nothing.) */
-void dacndls_ccs(enum sign entry)
+ * comes back to KRESUME1. (DELOOP's CCS SPNDX comes in at DACNDLS on +0, at
+ * DACNDLS +1 on a negative SPNDX and at DACNDLS +2, with A +0, on -0.) */
+void dacndls(void)
 {
-    if (entry == IS_PLUS_ZERO) cs(ADDRESS_OF(RCSFLAGS));
+    cs(ADDRESS_OF(RCSFLAGS));
+    dacndls_plus1();
+}
+
+/* DACNDLS +1 -- p. 1009: MASK BIT4. */
+void dacndls_plus1(void)
+{
     mask(BIT4);
+    dacndls_plus2();
+}
+
+/* DACNDLS +2 -- p. 1009: EXTEND; BZF FDAIDSP2, and FDAIDSP1. */
+void dacndls_plus2(void)
+{
     if (A_is_zero()) { /* EXTEND; BZF */
         continue_at(FDAIDSP2);
         return;
@@ -32,11 +43,6 @@ void dacndls_ccs(enum sign entry)
     ads(ADDRESS_OF(RCSFLAGS)); /* FDAIDSP1 */
     tc_at(FDAIDSP1 + 1u);      /* TC NEEDLER */
     needler();
-}
-
-void dacndls(void)
-{
-    dacndls_ccs(IS_PLUS_ZERO);
 }
 
 /* KRESUME1 -- p. 1009: "END PHASE 1". */
@@ -170,21 +176,6 @@ static void dac_input(void)
     ts(L_ADDRESS);
 }
 
-/* Channel 14's bits 13, 14 and 15, "SET DAC ACTIVITY BITS", and TC Q.
- * (The end of DACLOOP's CCS SPNDX: +0 comes in at CAF 13,14,15, a negative
- * SPNDX at EXTEND; WOR CHAN14, and -0 at WOR CHAN14 without its EXTEND,
- * which runs as TC to the word at 05014, BIT4's.) */
-static void dac_activity(enum sign entry)
-{
-    if (entry == IS_MINUS_ZERO) {
-        tc_to(DACLOOP + 033u, ADDRESS_OF(BIT4));
-        return;
-    }
-    if (entry == IS_PLUS_ZERO) set_A(BITS13_14_15);
-    wor_channel(CHAN14);
-    dacloop_return();
-}
-
 void dacloop(void)
 {
     dac_input();
@@ -195,11 +186,12 @@ void dacloop(void)
  * ("ON OVERFLOW LIMIT OUTPUT TO +-384") or, with no overflow, as it is; the
  * pulses to send, the change from the "CURRENT VALUE OF DAC" in EDRIVEX,
  * added into CDUXCMD; and the new value kept in EDRIVEX. CCS SPNDX: the next
- * axis, or the DAC activity bits. */
+ * axis, or channel 14's bits 13, 14 and 15, "SET DAC ACTIVITY BITS", and TC
+ * Q. (+0 comes in at CAF 13,14,15, a negative SPNDX at EXTEND; WOR CHAN14,
+ * and -0 at WOR CHAN14 without its EXTEND, which runs as TC to the word at
+ * 05014, BIT4's.) */
 void dacloop_limit(void)
 {
-    enum sign axis;
-
     for (;;) {
         switch (ccs_register(A_ADDRESS)) {
         case POSITIVE: ca(ADDRESS_OF(DACLIMIT)); break;
@@ -216,11 +208,21 @@ void dacloop_limit(void)
         ad_at(L_ADDRESS);
         ads(index_store(ADDRESS_OF(CDUXCMD), spndx()));
         lxch(index_store(ADDRESS_OF(EDRIVEX), spndx()));
-        axis = ccs_at(ADDRESS_OF(SPNDX));
-        if (axis != POSITIVE) break;
-        dac_input(); /* TCF DACLOOP */
+        switch (ccs_at(ADDRESS_OF(SPNDX))) {
+        case POSITIVE: break; /* TCF DACLOOP */
+        case IS_PLUS_ZERO:
+            set_A(BITS13_14_15); /* CAF 13,14,15 */
+            /* fall through */
+        case NEGATIVE: /* EXTEND; WOR CHAN14 */
+            wor_channel(CHAN14);
+            dacloop_return();
+            return;
+        case IS_MINUS_ZERO: /* (never: SPNDX is 2, 1 or +0) WOR CHAN14, run as TC 5014 */
+            tc_to(DACLOOP + 033u, ADDRESS_OF(BIT4));
+            return;
+        }
+        dac_input(); /* DACLOOP */
     }
-    dac_activity(axis);
 }
 
 /* DACLOOP +034 -- p. 1012: TC Q. */

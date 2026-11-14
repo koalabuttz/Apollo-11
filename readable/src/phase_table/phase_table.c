@@ -208,7 +208,7 @@ void phschng2(void)
     xch(ADDRESS_OF(TEMPSW));
     mask(OCT14000);
     /* CCS A: never negative, as A is masked. */
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         oneortwo();
         return;
     }
@@ -292,14 +292,14 @@ static void oneortwo(void)
     lxch(BBANK_ADDRESS); /* the caller's banks; bank 10's to TEMPBBCN */
     lxch(ADDRESS_OF(TEMPBBCN));
     mask(OCT14000); /* "SEE WHAT KIND OF PHASE CHANGE IT IS" */
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         checkb(); /* "IT IS OF TYPE `B'." */
         return;
     }
     set_A(TEMPP);
     mask(BIT7);
-    if (ccs_register(A_ADDRESS) == POSITIVE) /* "SHALL WE USE THE OLD PRIORITY" */
-        getprio();                           /* "NO GET A NEW PRIORITY (OR DELTA T)" */
+    if (ccs_positive(A_ADDRESS)) /* "SHALL WE USE THE OLD PRIORITY" */
+        getprio();               /* "NO GET A NEW PRIORITY (OR DELTA T)" */
     else
         oldprio();
 }
@@ -309,7 +309,7 @@ static void oneortwo(void)
 static void checkb(void)
 {
     mask(BIT12);
-    if (ccs_register(A_ADDRESS) == POSITIVE)
+    if (ccs_positive(A_ADDRESS))
         getprio(); /* "IT IS, SO GET NEW PRIORITY" */
     else
         oldprio(); /* "IT ISN'T, USE THE OLD PRIORITY." */
@@ -340,7 +340,7 @@ static void con1_minus1(void)
     ts(ADDRESS_OF(TEMPPR));
     set_A(TEMPP);
     mask(BIT8);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         getnewnm();
         return;
     }

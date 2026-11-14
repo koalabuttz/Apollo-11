@@ -425,7 +425,7 @@ void gopoodoo_after_flags(void)
     ca(ADDRESS_OF(FLAGWRD7));
     mask(V37FLBIT);
     /* CCS A: positive or +0 (a masked word is never negative). */
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         set_A(BBSERVDL);              /* STRTIDLE */
         tc_at((word)(STRTIDLE + 1u)); /* TC SUPERSW */
         continue_at(SUPERSW);
@@ -577,7 +577,7 @@ void poodoo_after_alarm(void)
     set_A(V37FLBIT);
     mask(FLAGWRD7);
     /* CCS A: positive or +0 (a masked word is never negative). */
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at((word)(POODOO + 014u)); /* TC WHIMPER -1 */
         whimper_minus1();
         return;
