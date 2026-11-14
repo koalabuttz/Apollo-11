@@ -38,7 +38,11 @@ void nodisky(void)
     switch (ccs_at(ADDRESS_OF(NEWJOB))) { /* "PROTECT READACCS GRP 5, IF SIDETRACKED." */
     case POSITIVE: tc_to(NODISKY + 2u, CHANG1); return;
     case IS_PLUS_ZERO: servnout(); return;
-    case NEGATIVE: not_modelled(); return;
+    case NEGATIVE:
+        /* never: NEWJOB is +0 or a core set's address, the Executive's stores. The next word is
+         * an address word, CADR SERVEXIT. */
+        not_modelled();
+        return;
     case IS_MINUS_ZERO: steeroff_after_exit(); return;
     }
 }

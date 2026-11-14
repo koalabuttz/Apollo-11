@@ -21,7 +21,7 @@
  * Every TC out of the file leaves through Z (Q holds the return), and the
  * place it returns to is its own routine. A CCS of a word that is never
  * negative (a MASK by a positive constant, a count, a major mode) uses
- * positive(), which does not model the other two cases. */
+ * positive(), which does not model the other two cases: they never come. */
 #include "v37.h"
 #include "../agc/names.h"
 
@@ -250,12 +250,22 @@ static word table_word(const word *table, unsigned address)
     return table[index];
 }
 
-/* CCS of a word that is never negative: true if positive (A gets it less
- * one), false for +0 (A gets +0). */
+/* CCS of a word that is never negative (a MASK of positive bits, a count,
+ * a major mode): true if positive (A gets it less one), false for +0 (A
+ * gets +0). This one helper stands for that CCS at each place it is used,
+ * so it cannot follow the two outcomes that never come: what the listing
+ * would run differs with the place. (make style-check holds each place's
+ * mask to a clear sign bit, and lists the places with no constant mask:
+ * tools/ccs_helpers.py.) */
 static bool positive(enum sign sign)
 {
-    if (sign == NEGATIVE || sign == IS_MINUS_ZERO) not_modelled();
-    return sign == POSITIVE;
+    switch (sign) {
+    case POSITIVE: return true;
+    case IS_PLUS_ZERO: return false;
+    case NEGATIVE:
+    case IS_MINUS_ZERO: not_modelled(); /* never; what would run differs with the place */
+    }
+    return false;
 }
 
 /* EXTEND; DCA NEG0; DXCH -PHASEn: end restart group n (-PHASEn gets -0,

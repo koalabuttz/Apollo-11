@@ -72,8 +72,9 @@ void inhold(void)
     ts(ADDRESS_OF(AERR));
     switch (ccs_at(ADDRESS_OF(EDOT))) {
     case POSITIVE: posvel(); return;
+    case IS_PLUS_ZERO: signck1(); return;
     case NEGATIVE: negvel(); return;
-    default: signck1(); return;
+    case IS_MINUS_ZERO: signck1(); return;
     }
 }
 
@@ -169,8 +170,9 @@ static void j8(void)
     das(ADDRESS_OF(WTEMP));
     switch (ccs_at(ADDRESS_OF(WTEMP))) {
     case POSITIVE: continue_at(J22); return;
+    case IS_PLUS_ZERO: signck2(); return;
     case NEGATIVE: nj22(); return;
-    default: signck2(); return;
+    case IS_MINUS_ZERO: signck2(); return;
     }
 }
 
@@ -214,8 +216,9 @@ void nj22_plus2(void)
     das(ADDRESS_OF(WTEMP));
     switch (ccs_at(ADDRESS_OF(WTEMP))) {
     case POSITIVE: continue_at(J23); return;
+    case IS_PLUS_ZERO: signck3(); return;
     case NEGATIVE: nj23(); return;
-    default: signck3(); return;
+    case IS_MINUS_ZERO: signck3(); return;
     }
 }
 
@@ -244,9 +247,10 @@ static void nj23(void)
     ad_at(ADDRESS_OF(T5TEMP));
     ad(WL_H_SLP);
     switch (ccs_register(A_ADDRESS)) { /* CCS A */
-    case POSITIVE:
+    case POSITIVE: continue_at(J24); return;
     case IS_PLUS_ZERO: continue_at(J24); return;
-    default: j22(); return;
+    case NEGATIVE: j22(); return;
+    case IS_MINUS_ZERO: j22(); return;
     }
 }
 
@@ -280,8 +284,9 @@ void j21(void)
 {
     switch (ccs_at(ADDRESS_OF(EDOT))) {
     case POSITIVE: jp(); return;
+    case IS_PLUS_ZERO: signck4(); return;
     case NEGATIVE: jn(); return;
-    default: signck4(); return;
+    case IS_MINUS_ZERO: signck4(); return;
     }
 }
 
@@ -327,7 +332,7 @@ void j22(void)
     case POSITIVE: continue_at(J22 + 1u); return;
     case IS_PLUS_ZERO: continue_at(J22 + 2u); return;
     case NEGATIVE: continue_at(J22 + 3u); return;
-    default: continue_at(SIGNCK5); return;
+    case IS_MINUS_ZERO: continue_at(SIGNCK5); return;
     }
 }
 

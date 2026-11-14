@@ -758,7 +758,11 @@ static void mrkrejct(void)
         tc_at(MRKREJCT + 2u); /* TC ALARM; OCT 112 */
         continue_at(ALARM);
         return;
-    case NEGATIVE: not_modelled(); return;
+    case NEGATIVE:
+        /* (never: MARKSTAT is +0 or positive, a VAC area's address under the marks' bits) */
+        tc_at(MRKREJCT + 3u); /* OCT 112, run as TC 112: an erasable word, run */
+        not_modelled();
+        return;
     case IS_MINUS_ZERO: mrkrejct_after_alarm(); return;
     }
 }

@@ -334,7 +334,8 @@ void rep11(void)
             return;
         }
         break;
-    default: break;
+    case NEGATIVE: break;
+    case IS_MINUS_ZERO: break;
     }
     cs(ADDRESS_OF(TLIFTOFF));
     if (A_is_zero_or_minus()) { /* ENDREP11 */

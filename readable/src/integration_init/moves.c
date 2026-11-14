@@ -29,9 +29,14 @@ static void move(word at, unsigned from, unsigned to)
         if (ts(ADDRESS_OF(DIFEQCNT))) not_modelled(); /* (41 to 0: no overflow) */
         ca(indexed(from, fetch(ADDRESS_OF(DIFEQCNT))));
         if (ts(indexed(to, fetch(ADDRESS_OF(DIFEQCNT))))) not_modelled(); /* (after CA) */
-        enum sign count = ccs_at(ADDRESS_OF(DIFEQCNT));
-        if (count == POSITIVE) continue;           /* TCF MOVE... +1, "NO-LOOP" */
-        if (count != IS_PLUS_ZERO) not_modelled(); /* (it counts down from 41) */
+        switch (ccs_at(ADDRESS_OF(DIFEQCNT))) {
+        case POSITIVE: continue; /* TCF MOVE... +1, "NO-LOOP" */
+        case IS_PLUS_ZERO: break;
+        /* (never: DIFEQCNT counts down from 41 to +0. After the TC DANZIG of
+         * each of the four routines come interpretive words.) */
+        case NEGATIVE:
+        case IS_MINUS_ZERO: not_modelled();
+        }
         break;
     }
     tc_at((word)(at + 010u)); /* TC DANZIG */

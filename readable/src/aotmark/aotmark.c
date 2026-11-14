@@ -126,8 +126,7 @@ void aotmark(void)
 }
 
 /* CCS MARKSTAT's four ways: TC +2 (busy), TC EXTVBCHK (+0), TC POODOO,
- * and the alarm's code, OCT 00105, which -0 would run as TC 105 (never:
- * MARKSTAT is never negative; not modelled). */
+ * and the alarm's code, OCT 00105, which -0 would run as TC 105. */
 static void aotmark_after_ccs(enum sign markstat)
 {
     switch (markstat) {
@@ -137,7 +136,11 @@ static void aotmark_after_ccs(enum sign markstat)
         return;
     case IS_PLUS_ZERO: aotmark_plus3(); return;
     case NEGATIVE: aotmark_plus4(); return;
-    case IS_MINUS_ZERO: not_modelled(); return;
+    /* (never: MARKSTAT is +0 or the VAC area of a sighting, never negative) */
+    case IS_MINUS_ZERO:
+        tc_at(AOTMARK + 5u); /* OCT 00105, run as TC 105: an erasable word, run */
+        not_modelled();
+        return;
     }
 }
 

@@ -286,7 +286,9 @@ describes each in full, and `.github/workflows/readable-ci.yml` runs them.
      the list owing nothing is said of what it sees.) `tools/ccs_helpers.py`
      holds every call of a helper that is one CCS at several places to
      the helper's premise, a mask whose sign bit is clear: the C compiler
-     checks a static assert of each mask. What a script cannot
+     checks a static assert of each mask. Such a helper is named in
+     `tools/style_check.py` (`CCS_HELPERS`), and no other function may
+     refuse in its words. What a script cannot
      count (names, comments, whether the C says what the listing does) a
      person reads;
    - the `*-cases` targets, over a hundred, one or more for each listing

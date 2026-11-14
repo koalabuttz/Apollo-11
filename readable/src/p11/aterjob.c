@@ -369,7 +369,11 @@ void attdisp2_after_exit(void)
         akload();
         return;
     case NEGATIVE: steersat(); return;
-    case IS_MINUS_ZERO: not_modelled(); return;
+    case IS_MINUS_ZERO:
+        /* never: SATSW is BIT1, its complement or ZERO at each of its stores. The next word is
+         * an interpretive word, STEERSAT's TLOAD TAD. */
+        not_modelled();
+        return;
     }
 }
 

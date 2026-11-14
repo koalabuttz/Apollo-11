@@ -506,9 +506,10 @@ static void cntrchk(void)
      * again), must come to -1 each time. A negative or -0 SKEEP2 would
      * go on at TS CYR or TS CYL; it never happens. */
     switch (count) {
+    case POSITIVE: break;                   /* (not here: the loop went on, TC CNTRLOOP) */
     case IS_PLUS_ZERO: set_A(CONC_PLUS_S1); /* fall through */
     case NEGATIVE: ts(ADDRESS_OF(CYR));     /* fall through: "C(CYR) = 12525" */
-    default: break;
+    case IS_MINUS_ZERO: break;
     }
     ts(ADDRESS_OF(CYL));  /* "C(CYL) = 52524" */
     ts(ADDRESS_OF(SR));   /* "C(SR) = 12525" */

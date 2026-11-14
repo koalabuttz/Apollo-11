@@ -43,8 +43,12 @@ void p51(void)
         p51a();
         break;
     case IS_PLUS_ZERO: p51_alarm(); break;
-    case IS_MINUS_ZERO: p51_pooh(); break;
-    default: not_modelled();
+    case NEGATIVE:
+        /* (never: a masked bit) */
+        tc_at(P51 + 5u); /* OCT 210, run as TC 210: an erasable word, run */
+        not_modelled();
+        break;
+    case IS_MINUS_ZERO: p51_pooh(); break; /* never */
     }
 }
 
@@ -276,7 +280,16 @@ void p51e_star(void)
     switch (ccs_at(ADDRESS_OF(STARIND))) {
     case POSITIVE: p51f(); break;                           /* TCF P51F, "STAR 2" */
     case IS_PLUS_ZERO: tc_to(P51E + 010u, PHASCHNG); break; /* OCT 05024 */
-    default: not_modelled();
+    case NEGATIVE:
+        /* never: STARIND is 0 or 1 at each of its stores. The OCT 05024 runs as TC 5024: a place
+         * of fixed-fixed memory. */
+        tc_at(P51E + 011u);
+        continue_at(05024u);
+        break;
+    case IS_MINUS_ZERO:
+        /* never, for the same reason. The OCT 13000 runs as TCF 3000: a place of this bank. */
+        continue_at(03000u);
+        break;
     }
 }
 

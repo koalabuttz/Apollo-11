@@ -675,16 +675,19 @@ static bool known_rrlimchk_caller(void)
     return false;
 }
 
-/* Two outcomes of a CCS that never come, where the readable routine follows
- * the listing's words and the faithful port stops, since the next word is
- * an instruction whose EXTEND the CCS skipped. The binding refuses the
- * state as the faithful port does: no case runs the routine's lines for it
- * (tests/line_coverage.txt has them, with why the outcome never comes).
+/* Three outcomes of a CCS that never come, where the readable routine
+ * follows the listing's words and the faithful port stops, since the next
+ * word is an instruction whose EXTEND the CCS skipped. The binding refuses
+ * the state as the faithful port does: no case runs the routine's lines for
+ * it (tests/line_coverage.txt has them, with why the outcome never comes).
  *   RADIN: a negative Q (the DCS RDOTBIAS without its EXTEND).
  *   LRPOSNXT +3: SAMPLIM -0 when the position inbit, bit 7 of channel 33, is
- *   not yet there (the WAND CHAN12 without its EXTEND). */
+ *   not yet there (the WAND CHAN12 without its EXTEND).
+ *   GOTANGLS +033, the second pass of R29DVBEG's loop: a negative TANG (the
+ *   DCA LOSVDT/4 without its EXTEND). */
 static bool port_stops_at(uint16_t key)
 {
+    if (key == KEY(032u, GOTANGLS + 033u)) return sign_of(fetch(ADDRESS_OF(TANG))) == NEGATIVE;
     if (key == KEY(025u, RADIN))
         return overflow_of(Q) < 0 ||
                (overflow_of(Q) == 0 && sign_of(overflow_corrected(Q)) == NEGATIVE);

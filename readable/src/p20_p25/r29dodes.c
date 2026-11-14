@@ -72,16 +72,17 @@ void r29dloop_after_vardelay(void)
 /* ---- The vector loop ---- */
 
 /* The DCA after CCS TANG's +0 way: EXTEND; INDEX Q; DCA from the word at
- * address + Q. On TANG -0 the CCS skips the EXTEND and the INDEX, and the
- * DCA's word, which holds the address + 1, runs as CA of that: CA
- * LOSVDT/4 +1. Not modelled: TANG negative, where the DCA's word runs
- * after an INDEX with no EXTEND. */
+ * address + Q. (TANG is the ONE of the first pass or the +0 of the second,
+ * never negative.) On a negative TANG the CCS would skip the EXTEND, and
+ * the DCA's word, which holds the address + 1, runs as CA of that, with
+ * the INDEX: CA LOSVDT/4 +1 +Q. On -0 it would skip the INDEX too. */
 static void dca_by_tang(enum sign tang, unsigned address)
 {
     switch (tang) {
-    case IS_PLUS_ZERO: dca(indexed(address, fetch(Q_ADDRESS))); return;
-    case IS_MINUS_ZERO: ca(address + 1u); return;
-    default: not_modelled();
+    case POSITIVE: break; /* (not here: TCF R29DPAS1, or TCF R29DVEND) */
+    case IS_PLUS_ZERO: dca(indexed(address, fetch(Q_ADDRESS))); break;
+    case NEGATIVE: ca(indexed(address + 1u, fetch(Q_ADDRESS))); break; /* never */
+    case IS_MINUS_ZERO: ca(address + 1u); break;
     }
 }
 
@@ -95,12 +96,19 @@ static void dca_by_tang(enum sign tang, unsigned address)
  * and no TS skips.) */
 static void r29dvbeg(void)
 {
-    enum sign tang;
+    enum sign tang = POSITIVE;
 
     for (;;) {
-        if (ccs_at(A_ADDRESS) != POSITIVE) not_modelled(); /* CCS A */
-        ts(Q_ADDRESS);
-        tang = ccs_at(ADDRESS_OF(TANG));
+        switch (ccs_at(A_ADDRESS)) {
+        case POSITIVE:
+            ts(Q_ADDRESS); /* fall through */
+        /* (never: A is 5, 3 or 1 here. A +0 would skip the TS Q, a negative A
+         * the CCS TANG too, on the TCF R29DPAS1, and a -0 would go on at the
+         * EXTEND, as a TANG of +0 does.) */
+        case IS_PLUS_ZERO: tang = ccs_at(ADDRESS_OF(TANG)); break;
+        case NEGATIVE: tang = POSITIVE; break;
+        case IS_MINUS_ZERO: tang = IS_PLUS_ZERO; break;
+        }
         if (tang != POSITIVE) { /* (TCF R29DPAS1 "ON 1ST PASS THRU LOOP.") */
             dca_by_tang(tang, ADDRESS_OF(LOSVDT_4));
             das(indexed(ADDRESS_OF(LOSSM), fetch(Q_ADDRESS))); /* INDEX Q; DAS LOSSM */

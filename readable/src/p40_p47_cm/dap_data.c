@@ -315,14 +315,18 @@ void s41_2(void)
             set_A(negate(ONE));
             ts(ADDRESS_OF(RACFAIL));
             break;
-        default: not_modelled(); /* a masked word is neither */
+        /* (never: a masked bit. The TS alone; and BDFAIL, the next word.) */
+        case NEGATIVE: ts(ADDRESS_OF(RACFAIL)); break;
+        case IS_MINUS_ZERO: break; /* never */
         }
         break;
     case IS_PLUS_ZERO:
         set_A(ONE);
         ts(ADDRESS_OF(RACFAIL));
         break; /* TCF BDFAIL */
-    default: not_modelled();
+    /* (never: a masked bit. The TS alone; and the TCF BDFAIL.) */
+    case NEGATIVE: ts(ADDRESS_OF(RACFAIL)); break;
+    case IS_MINUS_ZERO: break; /* never */
     }
 
     /* BDFAIL */
@@ -340,14 +344,18 @@ void s41_2(void)
             set_A(negate(ONE));
             ts(ADDRESS_OF(RBDFAIL));
             break;
-        default: not_modelled();
+        /* (never: a masked bit. The TS alone; and the last TC Q.) */
+        case NEGATIVE: ts(ADDRESS_OF(RBDFAIL)); break;
+        case IS_MINUS_ZERO: break; /* never */
         }
         break;
     case IS_PLUS_ZERO:
         set_A(ONE);
         ts(ADDRESS_OF(RBDFAIL));
         break;
-    default: not_modelled();
+    /* (never: a masked bit. The TS alone; and the TC Q.) */
+    case NEGATIVE: ts(ADDRESS_OF(RBDFAIL)); break;
+    case IS_MINUS_ZERO: break; /* never */
     }
     tc_q();
 }

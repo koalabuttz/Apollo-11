@@ -71,7 +71,9 @@ void r53a_marked(void)
     if ((instruction & 076000u) != 010000u) not_modelled(); /* (past 01777, a TCF) */
     switch (ccs_at(ADDRESS_FIELD(instruction))) {           /* CCS QPRET */
     case POSITIVE: r53b(); return;                          /* TCF R53B */
-    default: break;                                         /* TCF +2, TCF +1 ("CCS HOLE"), or on */
+    case IS_PLUS_ZERO: break;                               /* TCF +2 */
+    case NEGATIVE: break;                                   /* TCF +1 ("CCS HOLE") */
+    case IS_MINUS_ZERO: break;                              /* or on */
     }
     set_A(ZERO); /* "HOUSEKEEP VAC AREA SAVE" */
     xch(ADDRESS_OF(MARKSTAT));
@@ -89,7 +91,7 @@ void r53a_marked(void)
         }
         break;
     case NEGATIVE: break;
-    default: r53b(); return;
+    case IS_MINUS_ZERO: r53b(); return;
     }
     r53a(); /* TCF R53A */
 }

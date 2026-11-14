@@ -105,7 +105,10 @@ void vargains(void)
         return;
     case IS_PLUS_ZERO: gainchng(); return;
     case NEGATIVE:
-        not_modelled(); /* TCF +0 */
+        /* VCNTR is the NINETEEN of TVCINIT counted down by this CCS, or the -0 that stops the
+         * updates. The TCF +0, which never runs, goes to itself until the TC trap's restart. */
+        continue_at(VARGAINS + 013u);
+        not_modelled();
         return;
     case IS_MINUS_ZERO: bypass_updates(); return;
     }

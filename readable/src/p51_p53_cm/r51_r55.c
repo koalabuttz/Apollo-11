@@ -222,7 +222,11 @@ void r51a_sighted(void)
         r51_4();
         break;
     case IS_PLUS_ZERO: r51a_both_sighted(); break;
-    default: not_modelled();
+    case NEGATIVE:
+    case IS_MINUS_ZERO:
+        /* never: STARIND is 0 or 1 at each of its stores. The next words are interpretive words:
+         * MXV UNIT, REFSMMAT. */
+        not_modelled();
     }
 }
 
@@ -355,7 +359,7 @@ const struct interpretive_code R51B_CODE = {014u, R51B + 1u, COUNT(r51b_words), 
  * (Z, with Q 3), whose words the caller runs. */
 bool chkscode(void)
 {
-    bool good;
+    bool good = false;
     word to;
 
     switch (ccs_at(ADDRESS_OF(STARCODE))) {
@@ -363,8 +367,9 @@ bool chkscode(void)
         ad(NEG47); /* -0 at code 50 */
         good = ccs_register(A_ADDRESS) != POSITIVE;
         break;
-    case NEGATIVE: good = false; break;
-    default: good = true; /* +0 (CCS A: +0 again) or -0 */
+    case IS_PLUS_ZERO: good = true; break;  /* the CCS A: +0 again, and its TCF +2 */
+    case NEGATIVE: good = false; break;     /* the TC Q */
+    case IS_MINUS_ZERO: good = true; break; /* the TCF +2 */
     }
     if (!good) {
         tc_through(Q_ADDRESS); /* TC Q */

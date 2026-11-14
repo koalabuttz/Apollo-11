@@ -209,7 +209,11 @@ void nbpospl_after_imustllg(void)
         pipachk();
         return;
     case IS_PLUS_ZERO: nbpospl_fine_align(); return;
-    case NEGATIVE: not_modelled(); return; /* (CADR IMUFINE, a data word) */
+    case NEGATIVE:
+        /* never: NDXCTR is the ZERO of IMUBACK, or one more in gimbal lock (the INCR). The next
+         * word is an address word, CADR IMUFINE. */
+        not_modelled();
+        return;
     case IS_MINUS_ZERO: nbpospl_after_imufine(); return;
     }
 }
@@ -691,7 +695,13 @@ void zeroing(void)
         switch (ccs_at(E(ZERONDX1))) {
         case POSITIVE: ts(E(ZERONDX1)); continue; /* TCF ZEROING1 */
         case IS_PLUS_ZERO: tc_q(); return;
-        default: not_modelled(); /* (the next words are EARTHR's) */
+        case NEGATIVE:
+        case IS_MINUS_ZERO:
+            /* never: each caller loads ZERONDX1 with a count just before (DEC17, 77DECML), and
+             * the loop stores what this CCS left of it. The next words are interpretive words,
+             * EARTHR's ITA RTB and S2. */
+            not_modelled();
+            return;
         }
     }
 }
