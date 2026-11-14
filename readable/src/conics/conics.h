@@ -39,18 +39,6 @@
 #include "../agc/agc.h"
 #include "../interpreter/notation.h"
 
-#ifndef COUNT
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-#endif
-
-/* TC at, to a routine out of the file: Q gets the return, and the routine
- * runs next. */
-static inline void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* Part 1: KEPLER, and DELTIME's three stretches of interpretive code
  * (its EXIT, the store between its POLYs, and the rest after the second
  * POLY). */

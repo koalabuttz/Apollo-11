@@ -132,7 +132,7 @@ KEY(paxis, ANY)
 KEY(paxis_plus10, ANY)
 KEY(paxis_after_chekbits, ANY)
 KEY(backp, FLOW)
-KEY(estimator_gains_after_trapeds, FLOW)
+KEY(backp_plus0133, FLOW)
 KEY(q_rate, FLOW)
 KEY(r_rate, FLOW)
 KEY(paxfilt_after_acdt_c12, ANY)
@@ -165,7 +165,7 @@ static const agc_routine_entry keys[] = {
     {B16(PAXIS + 010u), key_paxis_plus10},
     {B16(PAXIS + 011u), key_paxis_after_chekbits},
     {B16(BACKP), key_backp},
-    {B16(BACKP + 0133u), key_estimator_gains_after_trapeds},
+    {B16(BACKP + 0133u), key_backp_plus0133},
     {B16(Q_RATE), key_q_rate},
     {B16(R_RATE), key_r_rate},
     {B16(PAXFILT + 4u), key_paxfilt_after_acdt_c12},
@@ -194,7 +194,7 @@ static const agc_routine_entry keys[] = {
 /* The keys one 100 ms DAP pass reaches in attitude hold or jet firing. */
 static const agc_routine_entry hot_keys[] = {
     {B16(PAXIS), key_paxis},       {B16(PAXIS + 011u), key_paxis_after_chekbits},
-    {B16(BACKP), key_backp},       {B16(BACKP + 0133u), key_estimator_gains_after_trapeds},
+    {B16(BACKP), key_backp},       {B16(BACKP + 0133u), key_backp_plus0133},
     {B16(Q_RATE), key_q_rate},     {B16(R_RATE), key_r_rate},
     {B16(SUPERJOB), key_superjob}, {B16(PRETIMCK), key_pretimck},
     {B16(CHKVISFZ), key_chkvisfz}, {B16(TSNEXTP), key_tsnextp},

@@ -1,8 +1,10 @@
 /* SPDX-License-Identifier: MIT */
 /* INDEX in the CM's RCS autopilot (cm_dap.h): the address an indexed order
- * names, and the sums the faithful port refuses, which are not modelled
- * here either. The faithful C reads fixed memory under INDEX only from
- * copies of each file's tables; so does this code. */
+ * names, and the sums the faithful port refuses, which are not modelled here
+ * either. The faithful C reads fixed memory under INDEX only from copies of
+ * each file's tables; so does this code. The faithful C is
+ * c64-port/src/cm_rcs_dap.c, cm_auto_man.c and cm_jet_select.c, each with
+ * its own. */
 #include "cm_dap.h"
 #include "../agc/names.h"
 

@@ -174,7 +174,7 @@ void normbnch_after_upflag(void);   /* NORMBNCH +2 */
 void nvdsp(void);                   /* NVDSP (GOPLAY) */
 void nvdsp_after_copypacs(void);    /* NVDSP +1 */
 void nvdsp_mark(void);              /* NVDSP +022: CS MARKNV */
-void nvdsp_mark_plus1(void);        /* NVDSP +023: TS MARKNV */
+void nvdsp_plus023(void);           /* NVDSP +023: TS MARKNV */
 void nvdsp1(void);                  /* NVDSP1 */
 void nv50dsp(void);                 /* NV50DSP */
 void nv50dsp_busy(void);            /* NV50DSP +1: NVMONOPT busy */
@@ -188,7 +188,7 @@ void blankchk_after_blanksub(void); /* BLANKCHK +2 */
 void perfchek(void);                /* PERFCHEK */
 void goanidle(void);                /* GOANIDLE */
 void goanidle_plus4(void);          /* GOANIDLE +4 */
-void goanidle_plus8(void);          /* GOANIDLE +010 */
+void goanidle_plus010(void);        /* GOANIDLE +010 */
 void isitn00(void);                 /* ISITN00 */
 void first_or_second(void);         /* 1STOR2ND */
 void first_or_second_plus4(void);   /* 1STOR2ND +4 */
@@ -231,8 +231,8 @@ void markret(void);                 /* MARKRET */
 void markover(void);                /* MARKOVER */
 void normret(void);                 /* NORMRET */
 void normret_plus4(void);           /* NORMRET +4 */
-void normret_plus8(void);           /* NORMRET +010 */
-void normret_plus12(void);          /* NORMRET +014 */
+void normret_plus010(void);         /* NORMRET +010 */
+void normret_plus014(void);         /* NORMRET +014 */
 void normret_after_novac(void);     /* NORMRET +024 */
 void marsleep(void);                /* MARSLEEP */
 void loaditis(void);                /* LOADITIS */

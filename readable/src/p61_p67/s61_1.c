@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P61-P67.agc of the CM, part 1 (Comanche055 pp. 803-805, bank 26):
- * S61.1, which P61 and P62 call.
+/* P61-P67.agc of the CM, part 1 (Comanche055 pp. 803-805, bank 26): S61.1,
+ * which P61 and P62 call. The faithful C is c64-port/src/cm_p61_p67.c.
  *
  * "FIRST, TEST TO SEE IF AVERAGEG IS ON. IF NOT, UPDATE THE STATE VECTOR
  * TO PRESENT TIME + TOLERANCE AND TURN ON AVERAGEG AT THAT TIME, AND
@@ -19,12 +19,10 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void retrn2_display(void);
 
-/* S61.1, from TC S61.1 at at: the return (Q, the word after the TC) to
- * 60GENRET; the IMU checked (R02BOTH). */
+/* S61.1 -- p. 803, from TC S61.1 at at: the return (Q, the word after the
+ * TC) to 60GENRET; the IMU checked (R02BOTH). */
 void s61_1(word at)
 {
     tc_at(at);
@@ -50,9 +48,10 @@ static const word s61_1_words[] = {
 
 const struct interpretive_code S61_1_CODE = {026u, S61_1 + 5u, COUNT(s61_1_words), s61_1_words};
 
-/* S61.1 +011: "RETURN INHINTED ***": the wait to S61DT, "FOR RESTART.",
- * and S61.1C as a task after it (WAITLIST); a restart point (PHASCHNG, OCT
- * 40434); ENDOFJOB. (CA leaves no overflow in A: TS does not skip.) */
+/* S61.1 +011 -- p. 804: "RETURN INHINTED ***": the wait to S61DT, "FOR
+ * RESTART.", and S61.1C as a task after it (WAITLIST); a restart point
+ * (PHASCHNG, OCT 40434); ENDOFJOB. (CA leaves no overflow in A: TS does not
+ * skip.) */
 void s61_1_future_state(void)
 {
     ca(ADDRESS_OF(MPAC) + 1u);
@@ -70,16 +69,17 @@ void s61_1_after_phaschng(void)
     tc_to(S61_1 + 020u, ENDOFJOB);
 }
 
-/* S61.1C, the task: the IMU check as a job (FINDVAC, priority 13, at
- * S61.1A -1). */
+/* S61.1C -- p. 804, the task: the IMU check as a job (FINDVAC, priority 13,
+ * at S61.1A -1). */
 void s61_1c(void)
 {
     set_A(PRIO13);
     tc_to(S61_1C + 1u, FINDVAC); /* 2CADR S61.1A -1 */
 }
 
-/* S61.1C +4: "HE WHO START AVERAGEG MUST SERVICE THE EXIT." (SERVCAD1 to
- * AVEGEXIT); a restart point (2PHSCHNG, OCT 00454 and OCT 00415). */
+/* S61.1C +4 -- p. 804: "HE WHO START AVERAGEG MUST SERVICE THE EXIT."
+ * (SERVCAD1 to AVEGEXIT); a restart point (2PHSCHNG, OCT 00454 and OCT
+ * 00415). */
 void s61_1c_after_findvac(void)
 {
     dca_2cadr(SERVCAD1);
@@ -87,8 +87,8 @@ void s61_1c_after_findvac(void)
     tc_to(S61_1C + 7u, TWO_PHSCHNG); /* OCT 00454, OCT 00415 */
 }
 
-/* S61.1C +012: "SET EB= 7 FOR PREREAD." (EBENTRY); "PREREAD DOES TC
- * TASKOVER." (POSTJUMP). (A is a constant: TS does not skip.) */
+/* S61.1C +012 -- p. 804: "SET EB= 7 FOR PREREAD." (EBENTRY); "PREREAD DOES
+ * TC TASKOVER." (POSTJUMP). (A is a constant: TS does not skip.) */
 void s61_1c_after_2phschng(void)
 {
     set_A(EBENTRY);
@@ -96,7 +96,7 @@ void s61_1c_after_2phschng(void)
     tc_to(S61_1C + 014u, POSTJUMP); /* CADR PREREAD */
 }
 
-/* S61.1A -1, where FINDVAC's job starts. */
+/* S61.1A -1 -- p. 804, where FINDVAC's job starts. */
 void s61_1a_job(void)
 {
     tc_at(S61_1C + 016u);
@@ -133,8 +133,8 @@ static const word s61_1a_words[] = {
 const struct interpretive_code S61_1A_CODE = {026u, S61_1C + 017u, COUNT(s61_1a_words),
                                               s61_1a_words};
 
-/* RETRN3: "IMU UNSATISFACTORY" (ALARM, OCT 01426); then as RETRN2 after
- * its alarm (TC RETRN2 +2). The EXIT of S61.1B comes on here too. */
+/* RETRN3 -- p. 805: "IMU UNSATISFACTORY" (ALARM, OCT 01426); then as RETRN2
+ * after its alarm (TC RETRN2 +2). The EXIT of S61.1B comes on here too. */
 void retrn3(void)
 {
     tc_to(RETRN3, ALARM); /* OCT 01426 */
@@ -146,7 +146,7 @@ void retrn3_after_alarm(void)
     retrn2_display();
 }
 
-/* RETRN2: "IMU REVERSED" (ALARM, OCT 01427). */
+/* RETRN2 -- p. 805: "IMU REVERSED" (ALARM, OCT 01427). */
 void retrn2(void)
 {
     tc_to(RETRN2, ALARM); /* OCT 01427 */
@@ -157,7 +157,7 @@ void retrn2_after_alarm(void)
     retrn2_display();
 }
 
-/* RETRN2 +2: "DO DISPLAY" (V05N09, GODSPR); then 10 seconds' wait
+/* RETRN2 +2 -- p. 805: "DO DISPLAY" (V05N09, GODSPR); then 10 seconds' wait
  * (DELAYJOB). */
 static void retrn2_display(void)
 {
@@ -171,7 +171,7 @@ void retrn2_after_godspr(void)
     tc_to(RETRN2 + 6u, BANKCALL); /* CADR DELAYJOB */
 }
 
-/* RETRN1: back to S61.1's caller (TC 60GENRET). */
+/* RETRN1 -- p. 805: back to S61.1's caller (TC 60GENRET). */
 void retrn1(void)
 {
     tc_to(RETRN1, ADDRESS_OF(60GENRET));

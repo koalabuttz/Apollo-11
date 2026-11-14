@@ -14,10 +14,10 @@
 
 /* ---- HIGATASK -- p. 873 ---- */
 
-/* HIGATASK: "IS ENTERED APPROXIMATELY 6 SECS PRIOR TO HIGATE DURING THE
- * DESCENT PHASE." "SET HIGATE AND LR INHIBIT FLAGS" (PRIO3, bits 11 and 10
- * of FLGWRD11), and "SET LR POSITIONING JOB (POS2)" (FINDVAC, HIGATJOB),
- * interrupts held; ... */
+/* HIGATASK -- p. 873: "IS ENTERED APPROXIMATELY 6 SECS PRIOR TO HIGATE
+ * DURING THE DESCENT PHASE." "SET HIGATE AND LR INHIBIT FLAGS" (PRIO3, bits
+ * 11 and 10 of FLGWRD11), and "SET LR POSITIONING JOB (POS2)" (FINDVAC,
+ * HIGATJOB), interrupts held; ... */
 void higatask(void)
 {
     inhint();
@@ -29,7 +29,7 @@ void higatask(void)
     tc_to(HIGATASK + 6u, FINDVAC);
 }
 
-/* ... and "CONTINUE SERVICER". */
+/* HIGATASK +011 -- p. 873: ... and "CONTINUE SERVICER". */
 void higatask_after_findvac(void)
 {
     contserv();
@@ -46,7 +46,8 @@ static const word munretrn_words[] = {
 const struct interpretive_code MUNRETRN_CODE = {033u, MUNRETRN, COUNT(munretrn_words),
                                                 munretrn_words};
 
-/* After it: "BYPASS LR LOGIC IF BIT15 IS SET." (LRBYBIT, CS FLGWRD11: on to
+/* MUNRETRN +1 -- p. 874: After it: "BYPASS LR LOGIC IF BIT15 IS SET."
+ * (LRBYBIT, CS FLGWRD11: on to
  * COPYCYC1). Else "SEE IF ALT < 35000 FT LAST CYCLE" (READLBIT): "ALT WAS >
  * 35000 FT LAST CYCLE   CHK NOW" (35KCHK); "WERE WE BELOW 30000 FT LAST
  * PASS?" (XORFLBIT): "NO -- TEST THIS PASS" (XORCHK); else HITEST. */
@@ -73,8 +74,8 @@ void munretrn_after_exit(void)
     hitest();
 }
 
-/* HITEST: "CHECK FOR HIGATE" (PSTHIBIT): "NOT AT HIGATE LAST CYCLE -- CHK
- * THIS CYCLE" (HIGATCHK); else POS2CHK. */
+/* HITEST -- p. 874: "CHECK FOR HIGATE" (PSTHIBIT): "NOT AT HIGATE LAST CYCLE
+ * -- CHK THIS CYCLE" (HIGATCHK); else POS2CHK. */
 void hitest(void)
 {
     set_A(PSTHIBIT);
@@ -86,20 +87,20 @@ void hitest(void)
     pos2chk();
 }
 
-/* POS2CHK: "VERIFY LR IN POS2" (bit 7 of channel 33 +0): "IT IS -- CHECK
- * FOR LR UPDATE" (UPDATCHK). Else with bit 13 of channel 12 +0, "LR NOT IN
- * POS2 OR REPOSITIONING -- BAD" (LRPOSALM); "LR BEING REPOSITIONED --
+/* POS2CHK -- p. 874: "VERIFY LR IN POS2" (bit 7 of channel 33 +0): "IT IS --
+ * CHECK FOR LR UPDATE" (UPDATCHK). Else with bit 13 of channel 12 +0, "LR
+ * NOT IN POS2 OR REPOSITIONING -- BAD" (LRPOSALM); "LR BEING REPOSITIONED --
  * CONTINUE SERV". */
 void pos2chk(void)
 {
     set_A(BIT7);
-    rand_channel(033u);
+    rand_channel(CHAN33);
     if (A_is_zero()) {
         continue_at(UPDATCHK);
         return;
     }
     set_A(BIT13);
-    rand_channel(012u);
+    rand_channel(CHAN12);
     if (A_is_zero()) {
         lrposalm();
         return;
@@ -107,7 +108,7 @@ void pos2chk(void)
     contserv();
 }
 
-/* HIGATCHK: "IS TTF > CRITERION?  (TTF IS NEGATIVE)" (TTF/8 plus
+/* HIGATCHK -- p. 874: "IS TTF > CRITERION?  (TTF IS NEGATIVE)" (TTF/8 plus
  * RPCRTIME): "NO" (POS1CHK). Else XNBPIP, "UXBXP IN GSOP CH5", from E bank
  * 4 ("MUST SWITCH EBANKS", the old one saved in L and restored): with
  * RPCRTQSW less it +0 or less, "IF UXBXP > QSW, THEN REPOSITION"
@@ -133,12 +134,12 @@ void higatchk(void)
     pos1chk();
 }
 
-/* POS1CHK: "HIGATE NOT IN SIGHT -- DO POS1 CHK" (bit 6 of channel 33 +0):
- * "LR IN POS1 -- CHECK FOR LR UPDATE" (UPDATCHK); else LRPOSALM. */
+/* POS1CHK -- p. 875: "HIGATE NOT IN SIGHT -- DO POS1 CHK" (bit 6 of channel
+ * 33 +0): "LR IN POS1 -- CHECK FOR LR UPDATE" (UPDATCHK); else LRPOSALM. */
 void pos1chk(void)
 {
     set_A(BIT6);
-    rand_channel(033u);
+    rand_channel(CHAN33);
     if (A_is_zero()) {
         continue_at(UPDATCHK);
         return;
@@ -146,15 +147,15 @@ void pos1chk(void)
     lrposalm();
 }
 
-/* LRPOSALM: "LR NOT IN PROPER POS-ALARM-BYPASS UPDATE" "AND CONTINUE
- * SERVICER" (ALARM, OCT 511, which returns to CONTSERV). */
+/* LRPOSALM -- p. 875: "LR NOT IN PROPER POS-ALARM-BYPASS UPDATE" "AND
+ * CONTINUE SERVICER" (ALARM, OCT 511, which returns to CONTSERV). */
 void lrposalm(void)
 {
     tc_to(LRPOSALM, ALARM);
 }
 
-/* CONTSERV: "CLEAR LR MEASUREMENT MADE DISCRETES." (BITS4-7 of FLGWRD11),
- * interrupts held, and "SET LR LITES PROPERLY" (R12LITES, through
+/* CONTSERV -- p. 875: "CLEAR LR MEASUREMENT MADE DISCRETES." (BITS4-7 of
+ * FLGWRD11), interrupts held, and "SET LR LITES PROPERLY" (R12LITES, through
  * IBNKCALL), which returns to COPYCYC1. */
 void contserv(void)
 {
@@ -167,13 +168,15 @@ void contserv(void)
 
 /* ---- COPYCYC1, R29?, NOR29NOW, COPYCYC2 -- pp. 876-877 ---- */
 
-/* COPYCYC1: the restart point (QUIKFAZ5), which returns to R29?. */
+/* COPYCYC1 -- p. 876: the restart point (QUIKFAZ5), which returns to
+ * R29?. */
 void copycyc1(void)
 {
     tc_to(COPYCYC1, QUIKFAZ5);
 }
 
-/* R29?: "IS NOR29FLG OR READRFLG SET?" (NR29&RDR of FLAGWRD3): "YES, SO
+/* R29? -- p. 876: "IS NOR29FLG OR READRFLG SET?" (NR29&RDR of FLAGWRD3):
+ * "YES, SO
  * DON'T DESIGNATE." (R29NODES). "IS THE RR NOT ZEROING ITS CDUS, AND IS
  * THE RENDEZVOUS RADAR IN AUTO MODE?" (OCT10002 of RADMODES +0): "NO, SO
  * DON'T DESIGNATE." "IS RR REPOSITIONING OR REMODING?" (PRIO22 of
@@ -202,8 +205,8 @@ void r29_q(void)
     continue_at(R29);
 }
 
-/* R29NODES: "R29 NOT ALLOWED THIS CYCLE.", interrupts held: "SHOW THAT
- * DESIGNATION IS OFF." (DESIGBIT of RADMODES). */
+/* R29NODES -- p. 876: "R29 NOT ALLOWED THIS CYCLE.", interrupts held: "SHOW
+ * THAT DESIGNATION IS OFF." (DESIGBIT of RADMODES). */
 void r29nodes(void)
 {
     inhint();
@@ -213,7 +216,7 @@ void r29nodes(void)
     nor29now();
 }
 
-/* NOR29NOW: to the interpreter ("INTPRET DOES A RELINT."), for
+/* NOR29NOW -- p. 876: to the interpreter ("INTPRET DOES A RELINT."), for
  * NOR29NOW_CODE. */
 void nor29now(void)
 {
@@ -265,9 +268,9 @@ static const word nor29now_words[] = {
 const struct interpretive_code NOR29NOW_CODE = {033u, NOR29NOW + 1u, COUNT(nor29now_words),
                                                 nor29now_words};
 
-/* After COPYCYC2's EXIT, interrupts held: "UPDATE RUNIT FOR R10." (UNIT/R/,
- * its three high words), "LOAD NEW DALTRATE FOR R10." (MPAC), R and V from
- * R1S and V1S, and "COMPLETE THE COPYCYCL." */
+/* COPYCYC2 +1 -- p. 877: After COPYCYC2's EXIT, interrupts held: "UPDATE
+ * RUNIT FOR R10." (UNIT/R/, its three high words), "LOAD NEW DALTRATE FOR
+ * R10." (MPAC), R and V from R1S and V1S, and "COMPLETE THE COPYCYCL." */
 void copycyc2_after_exit(void)
 {
     unsigned i;
@@ -292,9 +295,9 @@ void copycyc2_after_exit(void)
 
 /* ---- ALTCHK, XORCHK, 35KCHK -- pp. 878-879 ---- */
 
-/* ALTCHK "COMPARES CURRENT ALTITUDE (IN HCALC) WITH A SPECIFIED ALTITUDE
- * FROM A TABLE BEGINNING AT ALTCRIT.", the criterion N words on (in A):
- * 25KFT, 50KFT, 50FT, 30KFT. The criterion less HCALC to MPAC +1 and +2,
+/* ALTCHK -- p. 878 "COMPARES CURRENT ALTITUDE (IN HCALC) WITH A SPECIFIED
+ * ALTITUDE FROM A TABLE BEGINNING AT ALTCRIT.", the criterion N words on (in
+ * A): 25KFT, 50KFT, 50FT, 30KFT. The criterion less HCALC to MPAC +1 and +2,
  * and BRANCH +4 on it (and MPAC +2)... */
 void altchk(void)
 {
@@ -306,43 +309,44 @@ void altchk(void)
     tc_to(ALTCHK + 7u, BRANCH + 4u);
 }
 
-/* ... positive (HCALC under the criterion): A +0 ("BETTER THAN A NOOP,
- * PERHAPS"), ... */
+/* ALTCHK +010 -- p. 878: ... positive (HCALC under the criterion): A +0
+ * ("BETTER THAN A NOOP, PERHAPS"), ... */
 void altchk_after_branch(void)
 {
     set_A(ZERO);
     altchk_after_branch_zero();
 }
 
-/* ... and with +0 too, the return a word on ("RETURN HERE IF HCALC < OR =
- * SPECIFIED CRITERION."); ... */
+/* ALTCHK +011 -- p. 878: ... and with +0 too, the return a word on ("RETURN
+ * HERE IF HCALC < OR = SPECIFIED CRITERION."); ... */
 void altchk_after_branch_zero(void)
 {
     incr(ADDRESS_OF(BUF2));
     altchk_after_branch_negative();
 }
 
-/* ... back through SWRETURN ("ALTCHK MUST BE BANKCALLED EVEN FROM ITS OWN
- * BANK."). */
+/* ALTCHK +012 -- p. 878: ... back through SWRETURN ("ALTCHK MUST BE
+ * BANKCALLED EVEN FROM ITS OWN BANK."). */
 void altchk_after_branch_negative(void)
 {
     continue_at(SWRETURN);
 }
 
-/* XORCHK: "ARE WE BELOW 30000 FT?" (ALTCHK, 30KFT): ... */
+/* XORCHK -- p. 878: "ARE WE BELOW 30000 FT?" (ALTCHK, 30KFT): ... */
 void xorchk(void)
 {
     set_A(SIX);
     tc_to(XORCHK + 1u, BANKCALL); /* CADR ALTCHK */
 }
 
-/* ... no: "CONTINUE LR UPDATE" (HITEST); ... */
+/* XORCHK +3 -- p. 878: ... no: "CONTINUE LR UPDATE" (HITEST); ... */
 void xorchk_after_altchk(void)
 {
     hitest();
 }
 
-/* ... "YES: INHIBIT X-AXIS OVERRIDE" (XOVINFLG), and XORFLG set; ... */
+/* XORCHK +4 -- p. 878: ... "YES: INHIBIT X-AXIS OVERRIDE" (XOVINFLG), and
+ * XORFLG set; ... */
 void xorchk_below(void)
 {
     tc_to(XORCHK + 4u, UPFLAG); /* ADRES XOVINFLG */
@@ -353,32 +357,33 @@ void xorchk_after_xovinflg(void)
     tc_to(XORCHK + 6u, UPFLAG); /* ADRES XORFLG */
 }
 
-/* ... and "CONTINUE LR UPDATE". */
+/* XORCHK +010 -- p. 878: ... and "CONTINUE LR UPDATE". */
 void xorchk_after_xorflg(void)
 {
     hitest();
 }
 
-/* 35KCHK: "ARE WE BELOW 35000 FT?" (ALTCHK, 50KFT): ... */
+/* 35KCHK -- p. 878: "ARE WE BELOW 35000 FT?" (ALTCHK, 50KFT): ... */
 void thirty_five_kchk(void)
 {
     set_A(TWO);
     tc_to(THIRTY_FIVE_KCHK + 1u, BANKCALL); /* CADR ALTCHK */
 }
 
-/* ... no: CONTSERV; ... */
+/* 35KCHK +3 -- p. 879: ... no: CONTSERV; ... */
 void thirty_five_kchk_after_altchk(void)
 {
     contserv();
 }
 
-/* ... yes: "SET READLR FLAG TO ENABLE LR READING.", ... */
+/* 35KCHK +4 -- p. 879: ... yes: "SET READLR FLAG TO ENABLE LR READING.",
+ * ... */
 void thirty_five_kchk_below(void)
 {
     tc_to(THIRTY_FIVE_KCHK + 4u, UPFLAG); /* ADRES READLR */
 }
 
-/* ... and CONTSERV. */
+/* 35KCHK +6 -- p. 879: ... and CONTSERV. */
 void thirty_five_kchk_after_readlr(void)
 {
     contserv();

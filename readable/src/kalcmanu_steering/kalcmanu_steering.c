@@ -34,8 +34,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* TC Q: the routine returns to the address in Q (bits 1-12), and Q
  * becomes 3. Not modelled: a Q that is not such an address (bits 13-15
  * set, or below 010). Returns the address. */
@@ -75,7 +73,10 @@ void newdelhi_after_isitauto(void)
     case POSITIVE: continue_at(NOGO - 2u); return; /* TCF NOGO -2 */
     case IS_PLUS_ZERO: newangl(); return;
     case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); /* (into NEWANGL's interpretive words) */
+    case IS_MINUS_ZERO:
+        /* never: the answer is channel 31 masked with BIT14. The next words are
+         * interpretive words, NEWANGL's. */
+        not_modelled();
     }
 }
 
@@ -171,14 +172,14 @@ static word timechk(void)
     das(ADDRESS_OF(TTEMP));
     switch (ccs_at(ADDRESS_OF(TTEMP))) {
     case POSITIVE: return tc_q();                  /* TC Q */
+    case IS_PLUS_ZERO: break;                      /* TCF +2 */
     case NEGATIVE: incr(Q_ADDRESS); return tc_q(); /* TCF 2NDRETRN */
-    case IS_PLUS_ZERO:                             /* TCF +2 */
     case IS_MINUS_ZERO: break;
     }
     switch (ccs_at(ADDRESS_OF(TTEMP) + 1u)) {
     case POSITIVE: return tc_q(); /* TC Q */
+    case IS_PLUS_ZERO: break;     /* TCF MANUOFF */
     case NEGATIVE: com(); break;
-    case IS_PLUS_ZERO: /* TCF MANUOFF */
     case IS_MINUS_ZERO: break;
     }
     /* MANUOFF */
@@ -486,17 +487,17 @@ static word timechk(void)
     das(ADDRESS_OF(TTEMP));
     switch (ccs_at(ADDRESS_OF(TTEMP))) {
     case POSITIVE: return tc_q(); /* TC Q */
+    case IS_PLUS_ZERO: break;     /* TCF +2 */
     case NEGATIVE:                /* TCF 2NDRETRN */
         incr(Q_ADDRESS);
         incr(Q_ADDRESS);
         return tc_q();
-    case IS_PLUS_ZERO: /* TCF +2 */
     case IS_MINUS_ZERO: break;
     }
     switch (ccs_at(ADDRESS_OF(TTEMP) + 1u)) {
     case POSITIVE: return tc_q(); /* TC Q */
+    case IS_PLUS_ZERO: break;     /* TCF MANUOFF */
     case NEGATIVE: com(); break;
-    case IS_PLUS_ZERO: /* TCF MANUOFF */
     case IS_MINUS_ZERO: break;
     }
     /* MANUOFF */
@@ -740,7 +741,8 @@ static void stopyz(void)
     ts(ADDRESS_OF(BIAS2));
 }
 
-/* STOPRATE entered on its own (from any bank): back to the caller. */
+/* STOPRATE -- CM p. 418 entered on its own (from any bank): back to the
+ * caller. */
 void stoprate(void)
 {
     stoprate_body();

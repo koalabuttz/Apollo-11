@@ -10,8 +10,8 @@
 
 /* ---- AVGEND -- pp. 863-864 (bank 22) ---- */
 
-/* AVGEND: "SET UP FREE FALL GYRO COMPENSATION." (1/PIPADT the time of the
- * PIPA reading's low word), and "SET DRIFT FLAG." (UPFLAG, ADRES
+/* AVGEND -- p. 863: "SET UP FREE FALL GYRO COMPENSATION." (1/PIPADT the time
+ * of the PIPA reading's low word), and "SET DRIFT FLAG." (UPFLAG, ADRES
  * DRIFTFLG); ... */
 void avgend(void)
 {
@@ -20,15 +20,16 @@ void avgend(void)
     tc_to(AVGEND + 2u, UPFLAG);
 }
 
-/* ... the PIPAs' free-fall compensation (PIPFREE, through BANKCALL), ... */
+/* AVGEND +4 -- p. 863: ... the PIPAs' free-fall compensation (PIPFREE,
+ * through BANKCALL), ... */
 void avgend_after_upflag(void)
 {
     tc_to(AVGEND + 4u, BANKCALL); /* CADR PIPFREE */
 }
 
-/* ... the test connector outbit off (DSALMOUT bit 9), and the restart
- * groups: "GROUP 5 OFF", "GROUP 2 ON" (2PHSCHNG, OCT 5, OCT 05022, OCT
- * 20000); ... */
+/* AVGEND +6 -- p. 863: ... the test connector outbit off (DSALMOUT bit 9),
+ * and the restart groups: "GROUP 5 OFF", "GROUP 2 ON" (2PHSCHNG, OCT 5, OCT
+ * 05022, OCT 20000); ... */
 void avgend_after_pipfree(void)
 {
     set_A(negate(BIT9));
@@ -36,7 +37,7 @@ void avgend_after_pipfree(void)
     tc_to(AVGEND + 011u, TWO_PHSCHNG);
 }
 
-/* ... and the interpreter, for AVGEND_CODE. */
+/* AVGEND +015 -- p. 863: ... and the interpreter, for AVGEND_CODE. */
 void avgend_after_2phschng(void)
 {
     tc_at(AVGEND + 015u);
@@ -60,8 +61,8 @@ static const word avgend_words[] = {
 const struct interpretive_code AVGEND_CODE = {022u, AVGEND + 016u, COUNT(avgend_words),
                                               avgend_words};
 
-/* AVERTRN (OUTGOAVE): "RETURN TO DESIRED POINT." (OUTROUTE's CADR, through
- * BANKJUMP). */
+/* AVERTRN -- p. 864 (OUTGOAVE): "RETURN TO DESIRED POINT." (OUTROUTE's CADR,
+ * through BANKJUMP). */
 void avertrn(void)
 {
     ca(ADDRESS_OF(OUTROUTE));
@@ -70,7 +71,7 @@ void avertrn(void)
 
 /* ---- SERVIDLE -- p. 865 (bank 27) ---- */
 
-/* SERVIDLE: "DISCONNECT SERVICER FROM ALL GUIDANCE" (AVGEXIT gets
+/* SERVIDLE -- p. 865: "DISCONNECT SERVICER FROM ALL GUIDANCE" (AVGEXIT gets
  * SVEXTADR's 2CADR SERVEXIT), "DISCONNECT THE DELTA-V MONITOR" (IDLEFLAG
  * set), "TERMINATE R12 IS RUNNING." (FLGWRD11 just LRBYBIT), and the
  * restart groups off: 1, 2 unless MUNFLAG is set ("DO NOT TURN OFF PHASE 2
@@ -106,14 +107,14 @@ void servidle(void)
 
 /* ---- SERVEXIT -- p. 866 (bank 32) ---- */
 
-/* SERVEXIT: restart group 5 at 5.3 (PHASCHNG, OCT 00035), ... */
+/* SERVEXIT -- p. 866: restart group 5 at 5.3 (PHASCHNG, OCT 00035), ... */
 void servexit(void)
 {
     tc_to(SERVEXIT, PHASCHNG);
 }
 
-/* ... and the job ends (SERVEXIT +2, where OUTROUTE points while average
- * G runs: ENDJBCAD). */
+/* SERVEXIT +2 -- p. 866: ... and the job ends (SERVEXIT +2, where OUTROUTE
+ * points while average G runs: ENDJBCAD). */
 void servexit_after_phaschng(void)
 {
     continue_at(ENDOFJOB);

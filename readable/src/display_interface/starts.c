@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* DISPLAY_INTERFACE_ROUTINES.agc, part 2: CHKPRIO and the display entries
- * without an immediate return (LM pages 1356-1358, CM pages 1467-1469),
- * bank 10.
+ * without an immediate return (LM pages 1356-1358, CM pages 1467-1469), bank
+ * 10. The faithful C is c64-port/src/lanec_di_*.c.
  *
  * Each entry stores the verb and noun in PLAYTEM1 and puts the display's
  * flags (DSPFLG's bits) in A for GOFLASH2, which runs MAKEPLAY as part of

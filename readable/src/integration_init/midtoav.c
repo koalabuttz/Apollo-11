@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: MIT */
-/* INTEGRATION_INITIALIZATION.agc, MIDTOAV1 and MIDTOAV2 to TIMEDELT (LM
- * pp. 1223-1225, CM pp. 1329-1331). The interpretive words are in the
- * listing's notation (src/interpreter/notation.h); the basic code between
- * them is C.
+/* INTEGRATION_INITIALIZATION.agc, MIDTOAV1 and MIDTOAV2 to TIMEDELT (LM pp.
+ * 1223-1225, CM pp. 1329-1331). The interpretive words are in the listing's
+ * notation (src/interpreter/notation.h); the basic code between them is C.
+ * The faithful C is c64-port/src/lm_integration_init.c and
+ * cm_integration_init.c.
  *
  * MIDTOAV1 and MIDTOAV2 bring this vehicle's state vector to the time a
  * burn's AVERAGEG starts from. MIDTOAV1 "INTEGRATES (PRECISION) TO THE
@@ -148,14 +149,6 @@ static const word midtoav_words[] = {
 const struct interpretive_code MIDTOAV_CODE = {CODE_BANK(I_MIDTOAV2), CODE_Z(I_MIDTOAV2),
                                                COUNT(midtoav_words), midtoav_words};
 
-/* TC at "at" to a routine outside the file (TPAGREE, BANKJUMP, ALARM),
- * which reads the words after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* After ENTMID1's EXIT -- LM p. 1224 (CM p. 1330): MPAC (TAT) less the
  * time (TIME2, TIME1), brought to one sign (TPAGREE); then back to the
  * caller (BANKJUMP to IRETURN1). The words are just before CKMID2's. */
@@ -238,9 +231,9 @@ static const word ckmid2_words[] = {
 const struct interpretive_code CKMID2_CODE = {CODE_BANK(I_CKMID2), CODE_Z(I_CKMID2),
                                               COUNT(ckmid2_words), ckmid2_words};
 
-/* After NOTIME's EXIT: the caller's return one on ("SET ERROR EXIT"),
- * alarm 1703 ("INSUFFICIENT TIME FOR INTEGRATION"), and back into the
- * interpreter. */
+/* NOTIME +2 -- LM p. 1225, CM p. 1331: After NOTIME's EXIT: the caller's
+ * return one on ("SET ERROR EXIT"), alarm 1703 ("INSUFFICIENT TIME FOR
+ * INTEGRATION"), and back into the interpreter. */
 void notime_after_exit(void)
 {
     incr(ADDRESS_OF(IRETURN1));        /* "SET ERROR EXIT" */

@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 4 (Comanche055 pp. 574-575): R61CSM, the "PREFERRED
- * TRACKING ATTITUDE ROUTINE" (bank 37).
+ * TRACKING ATTITUDE ROUTINE" (bank 37). The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * P20's tracking calls R61CSM by BANKCALL, again and again. It works out
  * the CSM's attitude for tracking the LM with the optics (CRS61.1) and, when
@@ -20,8 +21,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void r61csm_not_ready(void);
 static void decrm61(void);
 static void decrm61_plus1(void);
@@ -37,10 +36,10 @@ void r61csm(void)
     tc_to(R61CSM + 3u, MAKECADR);
 }
 
-/* R61CSM +4: the return to GENRET, and R61CNTR tested: positive, "NOT
- * READY TO DO R61"; +0, "DO R61"; negative, out; -0, R61 too. (MAKECADR's
- * CADR leaves no overflow; were there one, the TS would skip the CCS to
- * the TC DECRM61.) */
+/* R61CSM +4 -- p. 574: the return to GENRET, and R61CNTR tested: positive,
+ * "NOT READY TO DO R61"; +0, "DO R61"; negative, out; -0, R61 too.
+ * (MAKECADR's CADR leaves no overflow; were there one, the TS would skip the
+ * CCS to the TC DECRM61.) */
 void r61csm_after_makecadr(void)
 {
     if (ts(ADDRESS_OF(GENRET))) {
@@ -55,28 +54,29 @@ void r61csm_after_makecadr(void)
     }
 }
 
-/* R61CSM +6: TC DECRM61, A (after the CCS, R61CNTR less one) to R61CNTR. */
+/* R61CSM +6 -- p. 574: TC DECRM61, A (after the CCS, R61CNTR less one) to
+ * R61CNTR. */
 static void r61csm_not_ready(void)
 {
     tc_at(R61CSM + 6u);
     decrm61();
 }
 
-/* R61CSM +7: "DO R61": TC +2. */
+/* R61CSM +7 -- p. 574: "DO R61": TC +2. */
 void r61csm_do_r61(void)
 {
     tc_at(R61CSM + 7u);
     r61csm_interpret();
 }
 
-/* R61CSM +010: TC DECRM61 +1, out with R61CNTR as it is. */
+/* R61CSM +010 -- p. 574: TC DECRM61 +1, out with R61CNTR as it is. */
 void r61csm_leave(void)
 {
     tc_at(R61CSM + 010u);
     decrm61_plus1();
 }
 
-/* R61CSM +011: CRS61.1, in interpretive code. */
+/* R61CSM +011 -- p. 574: CRS61.1, in interpretive code. */
 void r61csm_interpret(void)
 {
     tc_at(R61CSM + 011u);
@@ -91,10 +91,11 @@ static const word r61csm_words[] = {
     ORDER(EXIT),
 };
 
-/* R61CSM +015 -- after the EXIT: INDEX MPAC; TC +1. MPAC 0 runs the TC at
- * R61CSM +017 to R61END: no maneuver (a "SUBROUTINE DRIVING DAP", "AUTO
- * MODE NOT SET"); 1 the word after it, R61C1, the maneuver. Not modelled:
- * any other MPAC, which would run a word past them as an instruction. */
+/* R61CSM +015 -- p. 574: after the EXIT: INDEX MPAC; TC +1. MPAC 0 runs the
+ * TC at R61CSM +017 to R61END: no maneuver (a "SUBROUTINE DRIVING DAP",
+ * "AUTO MODE NOT SET"); 1 the word after it, R61C1, the maneuver. Not
+ * modelled: any other MPAC, which would run a word past them as an
+ * instruction. */
 void r61csm_after_exit(void)
 {
     word to = indexed_instruction((word)(R61CSM + 017u), fetch(ADDRESS_OF(MPAC)));
@@ -108,14 +109,14 @@ void r61csm_after_exit(void)
         not_modelled();
 }
 
-/* R61CSM +017: TC R61END. */
+/* R61CSM +017 -- p. 574: TC R61END. */
 void r61csm_no_maneuver(void)
 {
     tc_at(R61CSM + 017u);
     r61end();
 }
 
-/* R61C1: "RESET 3-AXIS FLAG" ("BIT 6 FLAG 5"). */
+/* R61C1 -- p. 574: "RESET 3-AXIS FLAG" ("BIT 6 FLAG 5"). */
 void r61c1(void)
 {
     tc_to(R61C1, DOWNFLAG); /* ADRES 3AXISFLG */
@@ -131,25 +132,25 @@ void r61c1_after_3axisflg(void)
     tc_to(R61C1 + 4u, UPFLAG); /* ADRES PDSPFLAG */
 }
 
-/* R61C1 +6: the maneuver, R60CSM. */
+/* R61C1 +6 -- p. 575: the maneuver, R60CSM. */
 void r61c1_after_pdspflag(void)
 {
     tc_to(R61C1 + 6u, BANKCALL); /* CADR R60CSM */
 }
 
-/* R61C1 +010: "RESET FLAG FOR PRIORITY DISPLAYS IN R60". */
+/* R61C1 +010 -- p. 575: "RESET FLAG FOR PRIORITY DISPLAYS IN R60". */
 void r61c1_after_r60csm(void)
 {
     tc_to(R61C1 + 010u, DOWNFLAG); /* ADRES PDSPFLAG */
 }
 
-/* R61C1 +012: a restart phase change (PHASCHNG, OCT 00111), */
+/* R61C1 +012 -- p. 575: a restart phase change (PHASCHNG, OCT 00111), */
 void r61c1_after_pdspflag_reset(void)
 {
     tc_to(R61C1 + 012u, PHASCHNG);
 }
 
-/* R61C1 +014: and R61CNTR +0, the next pass's R61 to run. */
+/* R61C1 +014 -- p. 575: and R61CNTR +0, the next pass's R61 to run. */
 void r61c1_after_phaschng(void)
 {
     set_A(ZERO);
@@ -157,16 +158,16 @@ void r61c1_after_phaschng(void)
     decrm61();
 }
 
-/* R61END: R61CNTR 3, three passes before the next R61. */
+/* R61END -- p. 575: R61CNTR 3, three passes before the next R61. */
 void r61end(void)
 {
     set_A(THREE);
     decrm61();
 }
 
-/* DECRM61: A to R61CNTR, and back: "RETURN IS IN L", "RESTORE EBANK",
- * "RETURN IS NOW BACK IN A", and "EXIT R61" by BANKJUMP. (No A that comes
- * here overflows, for the TS to skip on.) */
+/* DECRM61 -- p. 575: A to R61CNTR, and back: "RETURN IS IN L", "RESTORE
+ * EBANK", "RETURN IS NOW BACK IN A", and "EXIT R61" by BANKJUMP. (No A that
+ * comes here overflows, for the TS to skip on.) */
 static void decrm61(void)
 {
     if (ts(ADDRESS_OF(R61CNTR))) not_modelled();

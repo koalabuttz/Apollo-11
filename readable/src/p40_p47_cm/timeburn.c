@@ -23,17 +23,9 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* ---- S40.9 -- pp. 723-725 ---- */
 
-/* S40.9: to the interpreter, for S40_9_CODE. */
+/* S40.9 -- p. 723: to the interpreter, for S40_9_CODE. */
 void s40_9(void)
 {
     tc_at(S40_9);
@@ -52,14 +44,14 @@ static const word s40_9_words[] = {
     ADDRESS(HAVEGUES),          ORDER(EXIT),
 };
 
-/* After the EXIT: restart group 1 (PHASCHNG, OCT 05021, OCT 10000), "SAVE
- * TIME BY NOT REDOING LAMBERT CALCS", */
+/* S40.9 +017 -- p. 723: After the EXIT: restart group 1 (PHASCHNG, OCT
+ * 05021, OCT 10000), "SAVE TIME BY NOT REDOING LAMBERT CALCS", */
 void s40_9_after_exit(void)
 {
     tc_to(S40_9 + 017u, PHASCHNG); /* "SAVE TIME BY NOT REDOING LAMBERT CALCS" */
 }
 
-/* and to the interpreter, for ENDLAMB_CODE. */
+/* S40.9 +022 -- p. 724: and to the interpreter, for ENDLAMB_CODE. */
 void s40_9_after_phaschng(void)
 {
     tc_at(S40_9 + 022u);
@@ -109,13 +101,14 @@ static const word endlamb_words[] = {
     /* MOONCASE */ ORDER(EXIT),
 };
 
-/* After the EXIT: restart group 1 (PHASCHNG, OCT 04021, "C, JOB BELOW"). */
+/* MOONCASE +1 -- p. 724: After the EXIT: restart group 1 (PHASCHNG, OCT
+ * 04021, "C, JOB BELOW"). */
 void mooncase_after_exit(void)
 {
     tc_to(MOONCASE + 1u, PHASCHNG);
 }
 
-/* COPY40.9: to the interpreter, for COPY40_9_CODE. */
+/* COPY40.9 -- p. 724: to the interpreter, for COPY40_9_CODE. */
 void copy40_9(void)
 {
     tc_at(COPY40_9);
@@ -129,8 +122,8 @@ static const word copy40_9_words[] = {
     STORE(VRPREV), ORDERS(CLEAR, EXIT),    SWITCH(CLEAR, FIRSTFLG),
 };
 
-/* ENDS40.9 -2, "REDO40.9 (RESTART) ENTRY TO END S40.9": NBRCYCLS -1;
- * ENDS40.9: restart group 1 ended (PHASCHNG, OCT 00001). */
+/* ENDS40.9 -2 -- p. 724, "REDO40.9 (RESTART) ENTRY TO END S40.9": NBRCYCLS
+ * -1; ENDS40.9: restart group 1 ended (PHASCHNG, OCT 00001). */
 static void ends40_9_minus_2(void)
 {
     set_A(negate(ONE)); /* CS ONE */
@@ -138,19 +131,19 @@ static void ends40_9_minus_2(void)
     tc_to(ENDS40_9, PHASCHNG);
 }
 
-/* After COPY40_9_CODE's EXIT: ENDS40.9 -2. */
+/* ENDS40.9 -2 -- p. 724: After COPY40_9_CODE's EXIT: ENDS40.9 -2. */
 void copy40_9_after_exit(void)
 {
     ends40_9_minus_2();
 }
 
-/* ENDS40.9 +2: the job ends (TCF ENDOFJOB). */
+/* ENDS40.9 +2 -- p. 725: the job ends (TCF ENDOFJOB). */
 void ends40_9_after_phaschng(void)
 {
     continue_at(ENDOFJOB);
 }
 
-/* REDO40.9, where "S40.9 RESTARTS COME HERE TO GRACEFULLY": to the
+/* REDO40.9 -- p. 725, where "S40.9 RESTARTS COME HERE TO GRACEFULLY": to the
  * interpreter, for REDO40_9_CODE. */
 void redo40_9(void)
 {
@@ -165,8 +158,8 @@ static const word redo40_9_words[] = {
     STOVL(NBRCYCLS), ADDRESS_PLUS_ONE(VGPREV),   STORE(VGTEMP),  ORDER(EXIT),
 };
 
-/* After the EXIT: TCF ENDS40.9 -2, "STORE 0,0 COVERED NBRCYCLS,P -- FIX UP
- * S". */
+/* REDO40.9 +011 -- p. 725: After the EXIT: TCF ENDS40.9 -2, "STORE 0,0
+ * COVERED NBRCYCLS,P -- FIX UP S". */
 void redo40_9_after_exit(void)
 {
     ends40_9_minus_2();
@@ -174,7 +167,7 @@ void redo40_9_after_exit(void)
 
 /* ---- S40.13 -- pp. 726-728 ---- */
 
-/* S40.13: to the interpreter, for S40_13_CODE. */
+/* S40.13 -- p. 726: to the interpreter, for S40_13_CODE. */
 void s40_13(void)
 {
     tc_at(S40_13);
@@ -192,13 +185,13 @@ static const word s40_13_words[] = {
 
 static void notaddul(void);
 
-/* After the EXIT: "TEST +X TRANSLATION" (bit 7 of channel 31, inverted
- * by RXOR): none, NOTADDUL; else to the interpreter, for
- * ULLAGE_CODE. */
+/* S40.13 +7 -- p. 726: After the EXIT: "TEST +X TRANSLATION" (bit 7 of
+ * channel 31, inverted by RXOR): none, NOTADDUL; else to the interpreter,
+ * for ULLAGE_CODE. */
 void s40_13_after_exit(void)
 {
-    set_A(BIT7);       /* "TEST +X TRANSLATION" */
-    rxor_channel(031); /* CHAN31 */
+    set_A(BIT7);          /* "TEST +X TRANSLATION" */
+    rxor_channel(CHAN31); /* CHAN31 */
     mask(BIT7);
     if (A_is_zero()) { /* EXTEND; BZF NOTADDUL */
         notaddul();
@@ -256,14 +249,15 @@ static const word ullage_words[] = {
 
 static void s40_134(void);
 
-/* After S40.132's EXIT: MPAC's three words made to agree in sign (TC
- * TPAGREE), */
+/* S40.132 +1 -- p. 727: After S40.132's EXIT: MPAC's three words made to
+ * agree in sign (TC TPAGREE), */
 void s40_132_after_exit(void)
 {
     tc_to(S40_132 + 1u, TPAGREE);
 }
 
-/* and TGO, +0 and MPAC, "TGO IN CS AT +28"; S40.134 (TC). */
+/* S40.132 +2 -- p. 727: and TGO, +0 and MPAC, "TGO IN CS AT +28"; S40.134
+ * (TC). */
 void s40_132_after_tpagree(void)
 {
     ca(ADDRESS_OF(MPAC));
@@ -280,25 +274,25 @@ static const word s40_133_words[] = {
     SWITCH(CLEAR, IMPULSW),
 };
 
-/* S40.134: "KILL GROUP 3" (PHASCHNG, OCT 3), */
+/* S40.134 -- p. 727: "KILL GROUP 3" (PHASCHNG, OCT 3), */
 static void s40_134(void)
 {
     tc_to(S40_134, PHASCHNG); /* "KILL GROUP 3" */
 }
 
-/* after S40.133's EXIT, */
+/* S40.134 -- p. 727: after S40.133's EXIT, */
 void s40_133_after_exit(void)
 {
     s40_134();
 }
 
-/* and the job ends (TCF ENDOFJOB). */
+/* S40.134 +2 -- p. 727: and the job ends (TCF ENDOFJOB). */
 void s40_134_after_phaschng(void)
 {
     continue_at(ENDOFJOB);
 }
 
-/* NOTADDUL: to the interpreter, for NOTADDUL_CODE. */
+/* NOTADDUL -- p. 727: to the interpreter, for NOTADDUL_CODE. */
 static void notaddul(void)
 {
     tc_at(NOTADDUL);

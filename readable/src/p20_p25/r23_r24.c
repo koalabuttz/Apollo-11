@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 3 (Luminary099 pp. 513-516): R23 and R24.
+/* P20-P25.agc, part 3 (Luminary099 pp. 513-516): R23 and R24. The faithful C
+ * is c64-port/src/lm_p20_p25.c.
  *
  * R23, "MANUAL ACQUISITION ROUTINE R23LEM": "TO ACQUIRE THE CSM BY MANUAL
  * OPERATION OF THE RENDEZVOUS RADAR". The radar's tracker enabled, verb
@@ -40,7 +41,7 @@ void r23lem(void)
     continue_at(UPFLAG); /* ADRES NORRMON */
 }
 
-/* R23LEM +2 -- "SELECT MINIMUM DEADBAND": SETMINDB, with interrupts
+/* R23LEM +2 -- p. 513: "SELECT MINIMUM DEADBAND": SETMINDB, with interrupts
  * held. */
 void r23lem_after_upflag(void)
 {
@@ -48,8 +49,8 @@ void r23lem_after_upflag(void)
     tc_to(R23LEM + 3u, IBNKCALL); /* CADR SETMINDB */
 }
 
-/* R23LEM1 -- "ENABLE TRACKER" (channel 12 bit 14), and verb 50 noun 25
- * flashing the checklist code 205 (GOPERF1: please perform). */
+/* R23LEM1 -- p. 513: "ENABLE TRACKER" (channel 12 bit 14), and verb 50 noun
+ * 25 flashing the checklist code 205 (GOPERF1: please perform). */
 static void r23lem1(void)
 {
     set_A(BIT14);
@@ -58,14 +59,14 @@ static void r23lem1(void)
     tc_to(R23LEM1 + 4u, BANKCALL); /* CADR GOPERF1 */
 }
 
-/* R23LEM +5. */
+/* R23LEM +5 -- p. 513. */
 void r23lem_after_setmindb(void)
 {
     relint();
     r23lem1();
 }
 
-/* R23LEM2 -- "CLEAR NO ANGLE MONITOR FLAG", "AND EXIT VIA V56". */
+/* R23LEM2 -- p. 514: "CLEAR NO ANGLE MONITOR FLAG", "AND EXIT VIA V56". */
 static void r23lem2(void)
 {
     tc_to(R23LEM2, DOWNFLAG); /* ADRES NORRMON */
@@ -76,61 +77,61 @@ void r23lem2_after_downflag(void)
     tc_to(R23LEM2 + 2u, GOTOV56);
 }
 
-/* R23LEM1 +6 -- "TERMINATE". */
+/* R23LEM1 +6 -- p. 513: "TERMINATE". */
 void r23lem1_terminate(void)
 {
     tc_at(R23LEM1 + 6u);
     r23lem2();
 }
 
-/* R23LEM1 +7 -- "PROCEDE". */
+/* R23LEM1 +7 -- p. 513: "PROCEDE". */
 void r23lem1_proceed(void)
 {
     tc_to(R23LEM1 + 7u, R23LEM11);
 }
 
-/* R23LEM1 +010 -- "ENTER -- DO ANOTHER MANEUVER". */
+/* R23LEM1 +010 -- p. 513: "ENTER -- DO ANOTHER MANEUVER". */
 void r23lem1_enter(void)
 {
     tc_to(R23LEM1 + 010u, R23LEM3);
 }
 
-/* R23LEM11 -- "YES -- CHECK IF ANTENNA IS WITHIN LIMITS": RRLIMCHK, with
- * interrupts held, on the radar's CDU angles (CDUT and CDUS). */
+/* R23LEM11 -- p. 513: "YES -- CHECK IF ANTENNA IS WITHIN LIMITS": RRLIMCHK,
+ * with interrupts held, on the radar's CDU angles (CDUT and CDUS). */
 void r23lem11(void)
 {
     inhint();
     tc_to(R23LEM11 + 1u, RRLIMCHK); /* ADRES CDUT */
 }
 
-/* R23LEM11 +3 -- "NOT WITHIN LIMITS". */
+/* R23LEM11 +3 -- p. 513: "NOT WITHIN LIMITS". */
 void r23lem11_out_of_limits(void)
 {
     tc_to(R23LEM11 + 3u, OUTOFLIM);
 }
 
-/* R23LEM11 +4 -- within them: "RESTORE DEADBAND TO ASTRONAUT SELECTED
- * VALUE". */
+/* R23LEM11 +4 -- p. 513: within them: "RESTORE DEADBAND TO ASTRONAUT
+ * SELECTED VALUE". */
 void r23lem11_within_limits(void)
 {
     tc_to(R23LEM11 + 4u, IBNKCALL); /* CADR RESTORDB */
 }
 
-/* R23LEM11 +6 -- "CLEAR NO ANGLE MONITOR FLAG". */
+/* R23LEM11 +6 -- p. 513: "CLEAR NO ANGLE MONITOR FLAG". */
 void r23lem11_after_restordb(void)
 {
     relint();
     tc_to(R23LEM11 + 7u, DOWNFLAG); /* ADRES NORRMON */
 }
 
-/* R23LEM11 +011 -- "RADAR IS LOCKED ON CONTINUE IN P20". */
+/* R23LEM11 +011 -- p. 513: "RADAR IS LOCKED ON CONTINUE IN P20". */
 void r23lem11_after_downflag(void)
 {
     tc_to(R23LEM11 + 011u, P20LEMB1);
 }
 
-/* OUTOFLIM +1 -- "ISSUE ALARM -- RR ANTENNA NOT WITHIN LIMITS": alarm 501
- * (PRIOLARM). */
+/* OUTOFLIM +1 -- p. 514: "ISSUE ALARM -- RR ANTENNA NOT WITHIN LIMITS":
+ * alarm 501 (PRIOLARM). */
 static void outoflim_alarm(void)
 {
     set_A(OCT501PV);
@@ -144,33 +145,34 @@ void outoflim(void)
     outoflim_alarm();
 }
 
-/* OUTOFLIM +4 -- "TERMINATE -- EXIT R23 TO R00 (GO TO POOH)". */
+/* OUTOFLIM +4 -- p. 514: "TERMINATE -- EXIT R23 TO R00 (GO TO POOH)". */
 void outoflim_terminate(void)
 {
     tc_at(OUTOFLIM + 4u);
     r23lem2();
 }
 
-/* OUTOFLIM +5 -- "PROCEED ILLEGAL": TC OUTOFLIM +1, the alarm again. */
+/* OUTOFLIM +5 -- p. 514: "PROCEED ILLEGAL": TC OUTOFLIM +1, the alarm
+ * again. */
 void outoflim_proceed(void)
 {
     tc_at(OUTOFLIM + 5u);
     outoflim_alarm();
 }
 
-/* OUTOFLIM +6 -- "RECYCLE -- TO ANOTHER MANEUVER". */
+/* OUTOFLIM +6 -- p. 514: "RECYCLE -- TO ANOTHER MANEUVER". */
 void outoflim_enter(void)
 {
     tc_to(OUTOFLIM + 6u, R23LEM3);
 }
 
-/* OUTOFLIM +7 -- PRIOLARM's immediate return. */
+/* OUTOFLIM +7 -- p. 514: PRIOLARM's immediate return. */
 void outoflim_immediate_return(void)
 {
     tc_to(OUTOFLIM + 7u, ENDOFJOB);
 }
 
-/* R23LEM3 -- R61, the preferred tracking attitude maneuver, and the
+/* R23LEM3 -- p. 514: R61, the preferred tracking attitude maneuver, and the
  * display again. */
 void r23lem3(void)
 {
@@ -192,21 +194,21 @@ void r24lem(void)
     continue_at(UPFLAG); /* ADRES SRCHOPTN */
 }
 
-/* R24LEM +2 -- "RESET LOS BEING COMPUTED FLAG TO MAKE SURE DODES DOESN'T
- * GO TO R21". */
+/* R24LEM +2 -- p. 515: "RESET LOS BEING COMPUTED FLAG TO MAKE SURE DODES
+ * DOESN'T GO TO R21". */
 void r24lem_after_upflag(void)
 {
     tc_to(R24LEM + 2u, DOWNFLAG); /* ADRES LOSCMFLG */
 }
 
-/* R24LEM2 -- restart group 2 at P20LEM1. */
+/* R24LEM2 -- p. 515: restart group 2 at P20LEM1. */
 static void r24lem2(void)
 {
     tc_to(R24LEM2, PHASCHNG); /* OCT 04022 */
 }
 
-/* R24LEM1 -- "ZERO OUT DATA INDICATOR", "ZERO OMEGA DISPLAY REGS". (A is
- * +0: no TS skips.) */
+/* R24LEM1 -- p. 515: "ZERO OUT DATA INDICATOR", "ZERO OMEGA DISPLAY REGS".
+ * (A is +0: no TS skips.) */
 void r24lem1(void)
 {
     set_A(ZERO);
@@ -216,20 +218,20 @@ void r24lem1(void)
     r24lem2();
 }
 
-/* R24LEM2 +2 -- verb 16 noun 80, a priority display (PRIODSPR). */
+/* R24LEM2 +2 -- p. 515: verb 16 noun 80, a priority display (PRIODSPR). */
 void r24lem2_after_phaschng(void)
 {
     set_A(V16N80);
     tc_to(R24LEM2 + 3u, BANKCALL); /* CADR PRIODSPR */
 }
 
-/* R24LEM2 +5 -- terminate: "REJECT BY TERMINATING", verb 56. */
+/* R24LEM2 +5 -- p. 515: terminate: "REJECT BY TERMINATING", verb 56. */
 void r24lem2_terminate(void)
 {
     tc_to(R24LEM2 + 5u, GOTOV56);
 }
 
-/* R24LEM2 +6 -- "PROCEED EXIT R24 TO P20LEM1". */
+/* R24LEM2 +6 -- p. 515: "PROCEED EXIT R24 TO P20LEM1". */
 void r24lem2_proceed(void)
 {
     tc_to(R24LEM2 + 6u, R24END);
@@ -241,51 +243,52 @@ static void r24lem3(void)
     tc_to(R24LEM3, PHASCHNG); /* OCT 04022 */
 }
 
-/* R24LEM2 +7 -- "RECYCLE -- CALL R61 TO MANEUVER S/C". */
+/* R24LEM2 +7 -- p. 515: "RECYCLE -- CALL R61 TO MANEUVER S/C". */
 void r24lem2_enter(void)
 {
     tc_at(R24LEM2 + 7u);
     r24lem3();
 }
 
-/* R24LEM2 +010 -- PRIODSPR's immediate return: the search, LRS24.1. */
+/* R24LEM2 +010 -- p. 516: PRIODSPR's immediate return: the search,
+ * LRS24.1. */
 void r24lem2_immediate_return(void)
 {
     tc_to(R24LEM2 + 010u, BANKCALL); /* CADR LRS24.1 */
 }
 
-/* R24END -- the designate's next task killed (CALLDGCH). */
+/* R24END -- p. 516: the designate's next task killed (CALLDGCH). */
 void r24end(void)
 {
     tc_to(R24END, KILLTASK); /* CADR CALLDGCH */
 }
 
-/* R24END +2 -- "CLEAR BITS 10 & 15 OF RADMODES." */
+/* R24END +2 -- p. 516: "CLEAR BITS 10 & 15 OF RADMODES." */
 void r24end_after_killtask(void)
 {
     tc_to(R24END + 2u, CLRADMOD);
 }
 
-/* R24END +3 -- "AND GO TO 400 MI. RANGE CHECK IN P20". */
+/* R24END +3 -- p. 516: "AND GO TO 400 MI. RANGE CHECK IN P20". */
 void r24end_after_clradmod(void)
 {
     continue_at(P20LEM1); /* TCF P20LEM1 */
 }
 
-/* R24LEM3 +2 -- "KILL WAITLIST FOR NEXT POINT IN PATTERN". */
+/* R24LEM3 +2 -- p. 516: "KILL WAITLIST FOR NEXT POINT IN PATTERN". */
 void r24lem3_after_phaschng(void)
 {
     tc_to(R24LEM3 + 2u, KILLTASK); /* CADR CALLDGCH */
 }
 
-/* R24LEM3 +4 -- "CLEAR BITS 10 + 15 OF RADMODES TO KILL HALF SECOND
+/* R24LEM3 +4 -- p. 516: "CLEAR BITS 10 + 15 OF RADMODES TO KILL HALF SECOND
  * DESIGNATE LOOP". */
 void r24lem3_after_killtask(void)
 {
     tc_to(R24LEM3 + 4u, CLRADMOD);
 }
 
-/* R24LEM3 +5 -- "WAIT FOR DESIGNATE LOOP TO DIE": half a second
+/* R24LEM3 +5 -- p. 516: "WAIT FOR DESIGNATE LOOP TO DIE": half a second
  * (DELAYJOB). */
 void r24lem3_after_clradmod(void)
 {
@@ -294,28 +297,29 @@ void r24lem3_after_clradmod(void)
     tc_to(R24LEM3 + 7u, BANKCALL); /* CADR DELAYJOB */
 }
 
-/* R24LEM3 +011 -- "CHECK IF ON LUNAR SURFACE". */
+/* R24LEM3 +011 -- p. 516: "CHECK IF ON LUNAR SURFACE". */
 void r24lem3_after_delayjob(void)
 {
     tc_at(R24LEM3 + 011u);
     lunsfchk();
 }
 
-/* R24LEM3 +012 -- "YES -- DON'T DO ATTITUDE MANEUVER". */
+/* R24LEM3 +012 -- p. 516: "YES -- DON'T DO ATTITUDE MANEUVER". */
 void r24lem3_on_surface(void)
 {
     tc_to(R24LEM3 + 012u, R24LEM4);
 }
 
-/* R24LEM3 +013 -- "CALL R61 TO DO PREFERRED TRACKING ATTITUDE MANEUVER". */
+/* R24LEM3 +013 -- p. 516: "CALL R61 TO DO PREFERRED TRACKING ATTITUDE
+ * MANEUVER". */
 void r24lem3_in_orbit(void)
 {
     tc_to(R24LEM3 + 013u, BANKCALL); /* CADR R61LEM */
 }
 
-/* R24LEM4 -- "ZERO OUT RADCADR (WHICH WAS SET BY ENDRADAR WHEN DESIGNATE
- * STOPPED) SO THAT RRDESSM WILL RETURN TO CALLER", "AND GO BACK TO PUT UP
- * V16 N80 DISPLAY". (A is +0: the TS does not skip.) */
+/* R24LEM4 -- p. 516: "ZERO OUT RADCADR (WHICH WAS SET BY ENDRADAR WHEN
+ * DESIGNATE STOPPED) SO THAT RRDESSM WILL RETURN TO CALLER", "AND GO BACK TO
+ * PUT UP V16 N80 DISPLAY". (A is +0: the TS does not skip.) */
 void r24lem4(void)
 {
     set_A(ZERO);

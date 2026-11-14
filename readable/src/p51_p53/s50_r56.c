@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P51-P53.agc, part 2 (Luminary099 pp. 934-940, bank 14): S50 and R56,
- * the stars to sight.
+/* P51-P53.agc, part 2 (Luminary099 pp. 934-940, bank 14): S50 and R56, the
+ * stars to sight. The faithful C is c64-port/src/lm_p51_p53.c.
  *
  * S50, alias LOCSAM, "COMPUTE INPUTS FOR PICAPAR AND PLANET": the unit
  * vectors to the sun, the earth and the moon from the LM at a time
@@ -22,8 +22,6 @@
 #include "../interpreter/interpreter.h"
 
 #if LUMINARY099
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* ---- S50 (LOCSAM) -- pp. 934-936 ---- */
 
@@ -106,7 +104,7 @@ const struct interpretive_code LOCSAM_CODE = {014u, LOCSAM, COUNT(locsam_words),
 
 static void picbxt(void);
 
-/* PICAPAR: the caller's return, as a CADR, to QMIN. */
+/* PICAPAR -- p. 937: the caller's return, as a CADR, to QMIN. */
 void picapar(void)
 {
     tc_to(PICAPAR, MAKECADR);
@@ -277,14 +275,14 @@ static const word picgxt_words[] = {
 
 const struct interpretive_code PICGXT_CODE = {014u, PICGXT, COUNT(picgxt_words), picgxt_words};
 
-/* PICNSWP +1: the caller's +3, the normal return. */
+/* PICNSWP +1 -- p. 940: the caller's +3, the normal return. */
 void picnswp_after_exit(void)
 {
     incr(ADDRESS_OF(QMIN));
     picbxt();
 }
 
-/* PICBXT: back to the caller through its CADR in QMIN (SWCALL). */
+/* PICBXT -- p. 940: back to the caller through its CADR in QMIN (SWCALL). */
 static void picbxt(void)
 {
     ca(ADDRESS_OF(QMIN));

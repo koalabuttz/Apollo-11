@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* ORBITAL_INTEGRATION.agc, KEPPREP and FBR3 (LM pp. 1227-1229, CM pp.
- * 1334-1336), in the listing's notation (src/interpreter/notation.h),
- * which the readable interpreter runs.
+ * 1334-1336), in the listing's notation (src/interpreter/notation.h), which
+ * the readable interpreter runs. The faithful C is
+ * c64-port/src/lm_orbital_integration.c and cm_orbital_integration.c.
  *
  * KEPPREP moves the conic (RCV, VCV) from its time TC to TAU.: it makes
  * the first guess of Kepler's universal variable for the time TAU. - TC,

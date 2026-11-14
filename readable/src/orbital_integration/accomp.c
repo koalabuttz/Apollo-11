@@ -2,7 +2,8 @@
 /* ORBITAL_INTEGRATION.agc, ACCOMP, GETRPSV, GAMCOMP, GOBAQUE and INT-ABRT
  * (LM pp. 1230-1233, CM pp. 1337-1340). The interpretive words are in the
  * listing's notation (src/interpreter/notation.h); the basic code after
- * INT-ABRT's EXIT is C.
+ * INT-ABRT's EXIT is C. The faithful C is
+ * c64-port/src/lm_orbital_integration.c and cm_orbital_integration.c.
  *
  * "AGC ROUTINE TO COMPUTE ACCELERATION COMPONENTS." ACCOMP sums, in FV,
  * the accelerations the conic leaves out. ALPHAV comes in as the
@@ -278,8 +279,8 @@ static const word accomp_words[] = {
 const struct interpretive_code ACCOMP_CODE = {CODE_BANK(I_ACCOMP), CODE_Z(I_ACCOMP),
                                               COUNT(accomp_words), accomp_words};
 
-/* After INT-ABRT's EXIT: POODOO, which reads the alarm code (OCT 00430)
- * in the word after the TC. */
+/* INT-ABRT +1 -- LM p. 1233, CM p. 1340: After INT-ABRT's EXIT: POODOO,
+ * which reads the alarm code (OCT 00430) in the word after the TC. */
 void int_abrt_after_exit(void)
 {
     tc_at((word)(INT_ABRT + 1u)); /* TC POODOO */

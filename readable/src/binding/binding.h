@@ -68,6 +68,5 @@ void rtb_run_on(void);
 #define FF(z)             (uint16_t)(2048u + ((z) - 04000u))
 #define B1(z)             (uint16_t)(1024u + ((z) - 02000u))
 #define SWITCHED(bank, z) (uint16_t)((bank) * 1024u + ((z) - 02000u))
-#define COUNT(table)      (uint16_t)(sizeof(table) / sizeof(table)[0])
 
 #endif

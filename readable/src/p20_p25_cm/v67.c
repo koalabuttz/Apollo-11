@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 19 (Comanche055 pp. 632-634): the W-matrix monitor,
- * verb 67 (V67CALL, bank 40).
+/* P20-P25.agc, part 19 (Comanche055 pp. 632-634): the W-matrix monitor, verb
+ * 67 (V67CALL, bank 40). The faithful C is c64-port/src/cm_p20_p25.c.
  *
  * V67 shows the astronaut, in noun 99, how big the W-matrix's errors are:
  * the root sum square of its position part and of its velocity part
@@ -33,11 +33,9 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- V67CALL and the display ---- */
 
-/* V67CALL: V67WW, by the interpreter. */
+/* V67CALL -- p. 632: V67WW, by the interpreter. */
 void v67call(void)
 {
     tc_at(V67CALL);
@@ -50,35 +48,35 @@ static const word v67call_words[] = {
     ORDER(EXIT),
 };
 
-/* V06N99DS -- after the EXIT: verb 06 noun 99 on the display (GOXDSPF),
- * waiting for the astronaut. */
+/* V06N99DS -- p. 632: after the EXIT: verb 06 noun 99 on the display
+ * (GOXDSPF), waiting for the astronaut. */
 void v06n99ds(void)
 {
     set_A(V06N99A);
     tc_to(V06N99DS + 1u, BANKCALL); /* CADR GOXDSPF */
 }
 
-/* V06N99DS +3: terminate: ENDEXT. */
+/* V06N99DS +3 -- p. 632: terminate: ENDEXT. */
 void v06n99ds_terminate(void)
 {
     continue_at(ENDEXT); /* TCF ENDEXT */
 }
 
-/* V06N9933: TC INTPRET. */
+/* V06N9933 -- p. 632: TC INTPRET. */
 void v06n9933(void)
 {
     tc_at(V06N9933);
     intpret();
 }
 
-/* V06N99DS +4: proceed: TC V06N9933. */
+/* V06N99DS +4 -- p. 632: proceed: TC V06N9933. */
 void v06n99ds_proceed(void)
 {
     tc_at(V06N99DS + 4u);
     v06n9933();
 }
 
-/* V06N99DS +5: data loaded: TC V06N99DS, the display again. */
+/* V06N99DS +5 -- p. 632: data loaded: TC V06N99DS, the display again. */
 void v06n99ds_loaded(void)
 {
     tc_at(V06N99DS + 5u);
@@ -95,7 +93,7 @@ static const word v06n9933_words[] = {
     ORDER(EXIT),
 };
 
-/* V06N9933 +7 -- after the EXIT: ENDEXT. */
+/* V06N9933 +7 -- p. 632: after the EXIT: ENDEXT. */
 void v06n9933_after_exit(void)
 {
     continue_at(ENDEXT); /* TCF ENDEXT */
@@ -132,7 +130,7 @@ static const word v6n99inp_words[] = {
     ORDER(EXIT),
 };
 
-/* V67EXITX +4 -- after the EXIT: ENDEXT. */
+/* V67EXITX +4 -- p. 633: after the EXIT: ENDEXT. */
 void v67exitx_after_exit(void)
 {
     continue_at(ENDEXT); /* TCF ENDEXT */
@@ -196,8 +194,9 @@ static const word v67ww_words[] = {
     ORDER(EXIT),
 };
 
-/* V67XXX +013 -- after the EXIT: INTWAKE wakes any job waiting for the
- * integration, releases it, and returns by QPRET (RVQ) to V67CALL's EXIT. */
+/* V67XXX +013 -- p. 634: after the EXIT: INTWAKE wakes any job waiting for
+ * the integration, releases it, and returns by QPRET (RVQ) to V67CALL's
+ * EXIT. */
 void v67xxx_after_exit(void)
 {
     tc_to(V67XXX + 013u, POSTJUMP); /* CADR INTWAKE */

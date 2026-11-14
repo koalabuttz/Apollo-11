@@ -26,11 +26,7 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-/* A label's address in its bank (02000-03777). */
-#define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
-#define R36TAG2        IN_BANK(R36TAG2)
+#define R36TAG2 IN_BANK(R36TAG2)
 
 /* The banks: the LM's all in 4; the CM's display code in 41, R36INT in
  * 42 and R36B in 40 (the superbank's, FB 30-32 with the superbank bit). */
@@ -44,20 +40,12 @@
 #define R36B_BANK   040u
 #endif
 
-/* TC at, to a routine out of the file: Q gets the return, and the
- * routine runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 #if COMANCHE055
 /* ---- The CM's R36 -- CM p. 502, bank 20 ---- */
 
-/* R36: verb 04 noun 12 (OPTION36) with option 2 and, in R2, 1 (the CSM),
- * for the astronaut to change (BANKCALL, CADR GOXDSPF). TS skips the next
- * CAF on an overflow, which a CAF never leaves. */
+/* R36 -- CM p. 502: verb 04 noun 12 (OPTION36) with option 2 and, in R2, 1
+ * (the CSM), for the astronaut to change (BANKCALL, CADR GOXDSPF). TS skips
+ * the next CAF on an overflow, which a CAF never leaves. */
 void r36(void)
 {
     set_A(TWO);
@@ -66,20 +54,21 @@ void r36(void)
     tc_to(R36 + 5u, BANKCALL);
 }
 
-/* GOXDSPF's returns: "TERMINATE" (ENDEXT), */
+/* R36 +7 -- CM p. 502: GOXDSPF's returns: "TERMINATE" (ENDEXT), */
 void r36_terminate(void)
 {
     tc_to(R36 + 7u, ENDEXT);
 }
 
-/* "PROCEED" (TC +2, to R36A by POSTJUMP), */
+/* R36 +010 -- CM p. 502: "PROCEED" (TC +2, to R36A by POSTJUMP), */
 void r36_proceed(void)
 {
     tc_at(R36 + 010u);
     r36_to_r36a();
 }
 
-/* and "R2 LOADED VIA DSKY" (TC -5: the display again). */
+/* R36 +011 -- CM p. 502: and "R2 LOADED VIA DSKY" (TC -5: the display
+ * again). */
 void r36_loaded(void)
 {
     tc_at(R36 + 011u);
@@ -87,7 +76,7 @@ void r36_loaded(void)
     tc_to(R36 + 5u, BANKCALL);
 }
 
-/* TC POSTJUMP, CADR R36A: on in bank 41. */
+/* R36 +012 -- CM p. 502: TC POSTJUMP, CADR R36A: on in bank 41. */
 void r36_to_r36a(void)
 {
     tc_to(R36 + 012u, POSTJUMP);
@@ -96,9 +85,10 @@ void r36_to_r36a(void)
 
 /* ---- R36 -- LM p. 701, CM p. 502 ---- */
 
-/* The CM's R36A, the LM's R36: L and the time (DSPTEMX) +0, "SET TIME OF
- * EVENT TO ZERO FOR FIRST DISPLAY". The CM's DSPTEMX is OPTIONX, so the
- * DXCH also brings the option's R2 into L: "SAVE VEH. OPTION" in OPTIONY. */
+/* LM R36, CM R36A -- LM p. 701, CM p. 502: The CM's R36A, the LM's R36: L
+ * and the time (DSPTEMX) +0, "SET TIME OF EVENT TO ZERO FOR FIRST DISPLAY".
+ * The CM's DSPTEMX is OPTIONX, so the DXCH also brings the option's R2 into
+ * L: "SAVE VEH. OPTION" in OPTIONY. */
 void r36_start(void)
 {
     zl();
@@ -123,15 +113,17 @@ void r36_ask_time(void)
     tc_to(at + 1u, BANKCALL);
 }
 
-/* GOMARKF's returns: "TERMINATE" (ENDEXT), */
+/* LM R36 +6, CM R36P3 +3 -- LM p. 701, CM p. 502: GOMARKF's returns:
+ * "TERMINATE" (ENDEXT), */
 void r36_time_terminate(void)
 {
     continue_at(ENDEXT); /* TCF ENDEXT */
 }
 
-/* "PROCEED": the time keyed in, double precision from DSPTEMX (DXCH),
- * and if A is zero the low word decides (LREGCHK); a time other than zero
- * to MPAC (ASTROTIM), and to the interpreter. */
+/* LM R36 +7, CM R36P3 +4 -- LM p. 701, CM p. 502: "PROCEED": the time keyed
+ * in, double precision from DSPTEMX (DXCH), and if A is zero the low word
+ * decides (LREGCHK); a time other than zero to MPAC (ASTROTIM), and to the
+ * interpreter. */
 void r36_time_proceed(void)
 {
     dxch(ADDRESS_OF(DSPTEMX)); /* TCF +2 */
@@ -142,13 +134,15 @@ void r36_time_proceed(void)
     astrotim();
 }
 
-/* and "RECYCLE FOR ASTRONAUT INPUT TIME" (TCF -5). */
+/* LM R36 +010, CM R36P3 +5 -- LM p. 701, CM p. 502: and "RECYCLE FOR
+ * ASTRONAUT INPUT TIME" (TCF -5). */
 void r36_time_recycle(void)
 {
     r36_ask_time();
 }
 
-/* ASTROTIM: "TIME = ASTRO INPUT TIME", to MPAC, and TC INTPRET. */
+/* ASTROTIM -- LM p. 701, CM p. 502: "TIME = ASTRO INPUT TIME", to MPAC, and
+ * TC INTPRET. */
 void astrotim(void)
 {
     dxch(ADDRESS_OF(MPAC));
@@ -156,9 +150,9 @@ void astrotim(void)
     intpret();
 }
 
-/* LREGCHK: the low word (XCH L) zero too: "SET TIME = PRESENT TIME"
- * (ENTTIM2, to the interpreter); else the time back as it was (XCH L)
- * and on at ASTROTIM. */
+/* LREGCHK -- LM p. 702, CM p. 504: the low word (XCH L) zero too: "SET TIME
+ * = PRESENT TIME" (ENTTIM2, to the interpreter); else the time back as it
+ * was (XCH L) and on at ASTROTIM. */
 void lregchk(void)
 {
     xch(L_ADDRESS);
@@ -319,16 +313,17 @@ static const word r36tag2_words[] = {
     ORDERS(DLOAD, RTB), ADDRESS_PLUS_ONE_D(30), ADDRESS(SGNAGREE), STORE(DSPTEMX), ORDER(EXIT),
 };
 
-/* After the EXIT: "DISPLAY Y, YDOT, AND PSI." (verb 06 noun 90, BANKCALL,
- * CADR GOMARKF). */
+/* R36TAG2 +5 -- LM p. 702, CM p. 504: After the EXIT: "DISPLAY Y, YDOT, AND
+ * PSI." (verb 06 noun 90, BANKCALL, CADR GOMARKF). */
 void r36_after_exit(void)
 {
     set_A(V06N90N);
     tc_to(R36TAG2 + 6u, BANKCALL);
 }
 
-/* GOMARKF's returns: "TERMINATE" and "PROCEED, END OF PROGRAM" (ENDEXT),
- * and "REDISPLAY OUTPUT" (the time asked for again). */
+/* R36TAG2 +010 -- LM p. 702, CM p. 504: GOMARKF's returns: "TERMINATE" and
+ * "PROCEED, END OF PROGRAM" (ENDEXT), and "REDISPLAY OUTPUT" (the time asked
+ * for again). */
 void r36_end_terminate(void)
 {
     continue_at(ENDEXT); /* TCF ENDEXT */

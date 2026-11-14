@@ -34,14 +34,16 @@ const struct interpretive_code CALCSMSC_RVQ_CODE = {CODE_BANK(I_CALCSMSC),
                                                     (word)(CODE_Z(I_CALCSMSC) + 4u),
                                                     COUNT(calcsmsc_rvq_words), calcsmsc_rvq_words};
 
-/* After CALCSMSC's EXIT: TC BANKCALL, CADR FLESHPOT -1. */
+/* CALCSMSC +1 -- LM p. 1265: After CALCSMSC's EXIT: TC BANKCALL, CADR
+ * FLESHPOT -1. */
 void calcsmsc_plus1(void)
 {
     tc_at(CALCSMSC + 1u);
     continue_at(BANKCALL);
 }
 
-/* FLESHPOT's return: back into the interpreter, to the RVQ. */
+/* CALCSMSC +3 -- LM p. 1265: FLESHPOT's return: back into the interpreter,
+ * to the RVQ. */
 void calcsmsc_plus3(void)
 {
     tc_at(CALCSMSC + 3u);
@@ -72,22 +74,21 @@ static void tc_dmpsub(word at)
     dmpsub();
 }
 
-/* FLESHPOT -1: CALCSMSC's ECADR, XNB's. */
+/* FLESHPOT -1 -- LM p. 1265: CALCSMSC's ECADR, XNB's. */
 void fleshpot_minus1(void)
 {
     set_A(XNBECADR);
     fleshpot();
 }
 
-/* FLESHPOT: the ECADR into EBANK and the user's EBANK into TEM2 (a TS of
- * an overflowing A skips the XCH EBANK); the matrix's address in the
- * E-bank's window into TEM1. Then the X axis, "= COSY COSZ", "= SINZ" and
- * "= - SINY COSZ", and the Z axis into MPAC, MPAC +3 and MPAC +5: "= -
- * SINY COSX + SINX SINZ COSY", "= - SINX COSZ" and "= COSX COSY - SINX
- * SINY SINZ", each product doubled (twice for the triple ones) to its
- * scale. The Z axis goes to the matrix too, and VXV makes the Y axis, the
- * Z axis times the X axis at ADDRWD; its EXIT comes back at the word after
- * TCF VXV. */
+/* FLESHPOT -- LM p. 1265: the ECADR into EBANK and the user's EBANK into
+ * TEM2 (a TS of an overflowing A skips the XCH EBANK); the matrix's address
+ * in the E-bank's window into TEM1. Then the X axis, "= COSY COSZ", "= SINZ"
+ * and "= - SINY COSZ", and the Z axis into MPAC, MPAC +3 and MPAC +5: "= -
+ * SINY COSX + SINX SINZ COSY", "= - SINX COSZ" and "= COSX COSY - SINX SINY
+ * SINZ", each product doubled (twice for the triple ones) to its scale. The
+ * Z axis goes to the matrix too, and VXV makes the Y axis, the Z axis times
+ * the X axis at ADDRWD; its EXIT comes back at the word after TCF VXV. */
 void fleshpot(void)
 {
     if (!ts(ADDRESS_OF(TEM2))) xch(EBANK_ADDRESS);
@@ -168,7 +169,7 @@ void fleshpot(void)
      * in EDOP. */
     ca(ADDRESS_OF(TEM1));
     ts(ADDRESS_OF(ADDRWD));
-    continue_at(FLESHPOT + 0130u);
+    Z = (word)(FLESHPOT + 0130u); /* (as the DCA Z finds it) */
     dca(Z_ADDRESS);
     ad(FOUR);
     dxch(ADDRESS_OF(LOC));
@@ -177,8 +178,8 @@ void fleshpot(void)
     continue_at(VXV);
 }
 
-/* After VXV's EXIT: the Y axis, doubled, to the matrix; the user's EBANK
- * back, and SWRETURN. */
+/* FLESHPOT +0135 -- LM p. 1267: After VXV's EXIT: the Y axis, doubled, to
+ * the matrix; the user's EBANK back, and SWRETURN. */
 void fleshpot_after_vxv(void)
 {
     dxch(ADDRESS_OF(MPAC));

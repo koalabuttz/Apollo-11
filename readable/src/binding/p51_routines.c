@@ -347,6 +347,17 @@ static const struct basic_entry {
     {KEY(015u, IMUCHK + 011u), imuchk_after_upflag, false},
 };
 
+/* An outcome of a CCS that never comes, where the readable routine follows
+ * the listing's words and the faithful port stops: P51D +3 with a negative
+ * STARIND (the OCT 04024 after the TC PHASCHNG, run as TC 4024). The binding
+ * refuses the state as the faithful port does: no case runs the routine's
+ * lines for it (tests/line_coverage.txt has them, with why the outcome never
+ * comes). */
+static bool port_stops_at(uint16_t key)
+{
+    return key == KEY(014u, P51D + 3u) && sign_of(fetch(ADDRESS_OF(STARIND))) == NEGATIVE;
+}
+
 static const struct basic_entry *basic_entry(uint16_t key)
 {
     unsigned i;
@@ -555,6 +566,7 @@ static enum exec_status basic(uint16_t key, const agc_native_program *program,
     bind(program, state, io);
     if (FBANK != (word)((key / 1024u) << 10) || !sane(entry->with_work_area))
         return EXEC_OUT_OF_SCOPE;
+    if (port_stops_at(key)) return EXEC_OUT_OF_SCOPE;
 
     before = *state;
     kept = *io;

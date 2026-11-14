@@ -10,14 +10,14 @@
  * and is whole. The side-by-side test (tests/p20_p25_cases.c) checks that
  * no key is left without one.
  *
- * Plumbing only. A basic routine runs from its key until control leaves
- * the file (BANKCALL, PHASCHNG, UPFLAG, ENDOFJOB, ...), reaches a label the
+ * Plumbing only. A basic routine runs from its key until control leaves the
+ * file (BANKCALL, PHASCHNG, UPFLAG, ENDOFJOB, ...), reaches a label the
  * faithful port keys a routine at, or reaches NEWOPS through a TC INTPRET.
  * An order pair is one pass of the readable interpreter over the listing's
  * words (interpret_listing()); a pass that ends at RTB LOADTIME or RTB
- * CDULOGIC (DODES's) runs the routine (src/rtb_op_codes/) and the DANZIG
- * it ends at, as the faithful pair does. A pass that ends at an EXIT or a CALL out of its table stops
- * there, as the faithful pair does.
+ * CDULOGIC (DODES's) runs the routine (src/rtb_op_codes/) and the DANZIG it
+ * ends at, as the faithful pair does. A pass that ends at an EXIT or a CALL
+ * out of its table stops there, as the faithful pair does.
  *
  * The device is the LM's io record with the input channels after it
  * (lm_channel_io): P20LEMB7 and R22 read channel 33. Channel 12 (R22
@@ -253,7 +253,7 @@ static const struct basic_entry {
     /* Part 2: R22 and R21 */
     {KEY(024u, R22LEM), r22lem, false},
     {KEY(024u, R22LEM + 2u), r22lem_after_phaschng, false},
-    {KEY(024u, R22LEM + 025u), r22lem_after_p20lemb5, false},
+    {KEY(024u, R22LEM + 025u), r22lem_plus025, false},
     {KEY(024u, R22LEM + 033u), r22lem_read, false},
     {KEY(024u, R22LEM + 035u), r22lem_after_read, false},
     {KEY(024u, R22LEM + 037u), r22lem_good_data, false},
@@ -305,7 +305,7 @@ static const struct basic_entry {
     {KEY(024u, R21LEM + 4u), r21lem_on_surface, false},
     {KEY(024u, R21LEM + 5u), r21lem_in_orbit, false},
     {KEY(024u, R21LEM5), r21lem5, false},
-    {KEY(024u, R21LEM5 + 4u), r21lem5_mode2_center, false},
+    {KEY(024u, R21LEM5 + 4u), r21lem5_plus4, false},
     {KEY(024u, R21LEM6 + 2u), r21lem6_after_downflag, false},
     {KEY(024u, R21LEM6 + 4u), r21lem6_after_rrdesnb, true},
     {KEY(024u, R21LEM6 + 5u), r21lem6_stall, false},
@@ -335,7 +335,7 @@ static const struct basic_entry {
     {KEY(024u, R21LEM12 + 013u), r21lem12_maneuver, false},
     {KEY(024u, R21LEM12 + 014u), r21lem12_in_coverage, false},
     {KEY(024u, R21LEM12 + 016u), r21lem12_after_killtask, true},
-    {KEY(024u, R21LEM13 + 2u), r21lem13_tried_enough, true},
+    {KEY(024u, R21LEM13 + 2u), r21lem13_plus2, true},
     {KEY(024u, R21LEM7), r21lem7, true},
     {KEY(024u, R21LEM8 + 5u), r21lem8_after_exit, false},
     {KEY(024u, R21LEM8 + 7u), r21lem8_after_cdesflag, false},
@@ -415,9 +415,9 @@ static const struct basic_entry {
     {KEY(023u, R61C_L05 + 017u), r61c_l05_after_restordb, false},
     {KEY(023u, R61C_L05 + 021u), r61c_l05_after_phaschng, false},
     {KEY(023u, R61C_L06), r61c_l06, false},
-    {KEY(023u, R61C_L06 + 4u), r61c_l06_r65, false},
-    {KEY(023u, R61C_L06 + 6u), r61c_l06_count_out, false},
-    {KEY(023u, R61C_L06 + 7u), r61c_l06_again, false},
+    {KEY(023u, R61C_L06 + 4u), r61c_l06_plus4, false},
+    {KEY(023u, R61C_L06 + 6u), r61c_l06_plus6, false},
+    {KEY(023u, R61C_L06 + 7u), r61c_l06_plus7, false},
     {KEY(023u, R61C_L06 + 013u), r61c_l06_after_twiddle, false},
     {KEY(023u, R61C_L2), r61c_l2, false},
     {KEY(023u, R61C_L2 + 4u), r61c_l2_after_findvac, false},
@@ -461,7 +461,7 @@ static const struct basic_entry {
     {KEY(025u, REMODE + 030u), remode_end, false},
     {KEY(025u, RR1AX2), rr1ax2, false},
     {KEY(025u, RR1AX2 + 021u), rr1ax2_command, false},
-    {KEY(025u, RR1AX2 + 022u), rr1ax2_done, false},
+    {KEY(025u, RR1AX2 + 022u), rr1ax2_plus022, false},
     {KEY(025u, RR1AX2 + 030u), rr1ax2_after_rrout, false},
     {KEY(025u, RROUT), rrout, false},
     {KEY(025u, SETRRCTR - 1u), rroutlim, false}, /* TCF RROUTLIM */
@@ -477,7 +477,7 @@ static const struct basic_entry {
     {KEY(025u, OKDESSM), okdessm, false},
     {KEY(025u, OKDESSM + 2u), okdessm_after_startdes, false},
     {KEY(025u, LUNDESCH), lundesch, false},
-    {KEY(025u, LUNDESCH + 010u), lundesch_not_rendezvous, false},
+    {KEY(025u, LUNDESCH + 010u), lundesch_plus010, false},
     {KEY(025u, STARTDES + 010u), startdes_after_setrrecr, false},
     {KEY(025u, DESRETRN), desretrn, false},
     {KEY(025u, TRYSWS + 1u), trysws_after_rmodinv, false},
@@ -504,7 +504,7 @@ static const struct basic_entry {
     {KEY(025u, SHAFTLIM + 3u), rrlimnb_shaft_in, false},
     {KEY(025u, NEGSHAFT), negshaft, false},
     {KEY(025u, BEGDES), begdes, false},
-    {KEY(025u, BEGDES + 4u), begdes_remode, false},
+    {KEY(025u, BEGDES + 4u), begdes_plus4, false},
     {KEY(025u, DESLOOP), desloop, false},
     {KEY(025u, STDESIG), stdesig, false},
     {KEY(025u, MOREDES + 5u), moredes_after_findvac, false},
@@ -513,10 +513,10 @@ static const struct basic_entry {
     {KEY(025u, DODES + 0115u), dodes_after_dot, true},
     {KEY(025u, RRDESDUN + 6u), rrdesdun_after_downflag, false},
     {KEY(025u, NOTP20), notp20, false},
-    {KEY(025u, NOTP20 + 5u), notp20_after_rrout, false},
-    {KEY(025u, NOTP20 + 013u), notp20_new_los, false},
+    {KEY(025u, NOTP20 + 5u), notp20_plus5, false},
+    {KEY(025u, NOTP20 + 013u), notp20_plus013, false},
     {KEY(025u, NOTP20 + 016u), notp20_after_killtask, false},
-    {KEY(025u, NOTP20 + 021u), notp20_after_chang1, false},
+    {KEY(025u, NOTP20 + 021u), notp20_plus021, false},
     {KEY(025u, DODESEND), dodesend, false},
     /* Part 7: the radar data read, and the landing radar's lamps */
     {KEY(025u, LRALT), lralt, false},
@@ -544,7 +544,7 @@ static const struct basic_entry {
     {KEY(025u, DGCHECK2 + 2u), dgcheck2_after_dgcheck, false},
     {KEY(025u, SCALCHNG), scalchng, false},
     {KEY(025u, SCALCHNG + 013u), scalchng_after_upflag, false},
-    {KEY(025u, DGCHECK + 014u), dgcheck_good, false},
+    {KEY(025u, DGCHECK + 014u), dgcheck_plus014, false},
     {KEY(025u, DATAFAIL + 7u), datafail_after_radlites, false},
     {KEY(025u, LRPOS2), lrpos2, false},
     {KEY(025u, LRPOS2 + 020u), lrpos2_after_waitlist, false},
@@ -672,6 +672,24 @@ static bool known_rrlimchk_caller(void)
 
     for (i = 0; i < COUNT(rrlimchk_callers); ++i)
         if (Q == rrlimchk_callers[i].q && FBANK == rrlimchk_callers[i].fb) return true;
+    return false;
+}
+
+/* Two outcomes of a CCS that never come, where the readable routine follows
+ * the listing's words and the faithful port stops, since the next word is
+ * an instruction whose EXTEND the CCS skipped. The binding refuses the
+ * state as the faithful port does: no case runs the routine's lines for it
+ * (tests/line_coverage.txt has them, with why the outcome never comes).
+ *   RADIN: a negative Q (the DCS RDOTBIAS without its EXTEND).
+ *   LRPOSNXT +3: SAMPLIM -0 when the position inbit, bit 7 of channel 33, is
+ *   not yet there (the WAND CHAN12 without its EXTEND). */
+static bool port_stops_at(uint16_t key)
+{
+    if (key == KEY(025u, RADIN))
+        return overflow_of(Q) < 0 ||
+               (overflow_of(Q) == 0 && sign_of(overflow_corrected(Q)) == NEGATIVE);
+    if (key == KEY(025u, LRPOSNXT + 3u))
+        return (channel_in(033u) & BIT7) != 0u && fetch(ADDRESS_OF(SAMPLIM)) == MINUS_ZERO;
     return false;
 }
 
@@ -883,6 +901,7 @@ static enum exec_status basic(uint16_t key, const agc_native_program *program,
     if ((key / 1024u >= 4u && !in_bank(key / 1024u)) || !sane(entry->with_work_area))
         return EXEC_OUT_OF_SCOPE;
     if (key == KEY(02u, RRLIMCHK) && !known_rrlimchk_caller()) return EXEC_OUT_OF_SCOPE;
+    if (port_stops_at(key)) return EXEC_OUT_OF_SCOPE;
 
     before = *state;
     kept = *io;

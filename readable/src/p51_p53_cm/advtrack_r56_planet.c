@@ -2,8 +2,8 @@
 /* P51-P53.agc of the CM, part 8 (Comanche055 pp. 778-784): ADVTRACK and
  * ROTA, the line of sight to a point ahead on the ground track (bank 26);
  * S52.3, the preferred orientation (bank 16); R56, the alternate line of
- * sight mark (bank 17); and PLANET, a star's or a planet's direction
- * (bank 15).
+ * sight mark (bank 17); and PLANET, a star's or a planet's direction (bank
+ * 15). The faithful C is c64-port/src/cm_p51_p53.c.
  *
  * Each call out of the file (BANKCALL, CLEARMRK, GOTOPOOH) leaves Z at
  * the routine and Q at the word after the TC, where the routine comes
@@ -15,8 +15,6 @@
 #include "../interpreter/interpreter.h"
 
 #if COMANCHE055
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 static void r56_flash(void);
 static void nosam_flash(void);
@@ -58,8 +56,8 @@ static const word advtrack_words[] = {
 const struct interpretive_code ADVTRACK_CODE = {026u, ADVTRACK, COUNT(advtrack_words),
                                                 advtrack_words};
 
-/* LANDMARK's low three bits, "GET NUMBER OF ADVANCE PERIODS", times
- * BIT11, "GET N/16", to the work area's 30D. */
+/* ADVTRACK +026 -- p. 778: LANDMARK's low three bits, "GET NUMBER OF ADVANCE
+ * PERIODS", times BIT11, "GET N/16", to the work area's 30D. */
 void advtrack_periods(void)
 {
     ca(ADDRESS_OF(LANDMARK));
@@ -190,9 +188,9 @@ void r56_enter(void)
     r56_flash();
 }
 
-/* R56A: SXTMARK +2, "INHIBIR EXT VB ACT AND FIND VAC AREA"; the display
- * cleared (CLEANDSP); R56A1: V53 flashed, "REQUESTING ALTERNATE MARK"
- * (GOMARK2): V34 terminates, V33 asks again, enter marks. */
+/* R56A -- p. 781: SXTMARK +2, "INHIBIR EXT VB ACT AND FIND VAC AREA"; the
+ * display cleared (CLEANDSP); R56A1: V53 flashed, "REQUESTING ALTERNATE
+ * MARK" (GOMARK2): V34 terminates, V33 asks again, enter marks. */
 void r56a(void)
 {
     tc_to(R56A, BANKCALL); /* CADR SXTMARK +2 */
@@ -239,10 +237,11 @@ static const word r56a1_words[] = {
 
 const struct interpretive_code R56A1_CODE = {017u, R56A1 + 6u, COUNT(r56a1_words), r56a1_words};
 
-/* With interrupts held off, the time (TIME2, TIME1) and the five angles
- * (CDUY, SAC, CDUZ, PAC, CDUX) to the mark area (INDEX MARKSTAT, each
- * time), as SXTMARK stores a mark: "THIS IS A BACKUP SYSTEM MARK". (A TS
- * after a CA never skips.) Then CLEARMRK, "ENABLE EXTENDED VERBS". */
+/* R56A1 +014 -- p. 782: With interrupts held off, the time (TIME2, TIME1)
+ * and the five angles (CDUY, SAC, CDUZ, PAC, CDUX) to the mark area (INDEX
+ * MARKSTAT, each time), as SXTMARK stores a mark: "THIS IS A BACKUP SYSTEM
+ * MARK". (A TS after a CA never skips.) Then CLEARMRK, "ENABLE EXTENDED
+ * VERBS". */
 void r56a1_store_mark(void)
 {
     static const unsigned angles[] = {ADDRESS_OF(CDUY), ADDRESS_OF(SAC), ADDRESS_OF(CDUZ),
@@ -260,9 +259,9 @@ void r56a1_store_mark(void)
     tc_to(R56A1 + 041u, CLEARMRK);
 }
 
-/* V50N25 with option 16 (GOPERF1, OCT16): terminate, proceed (the mark
- * completed: R56B, the display cleared and the star's code flashed at
- * R53C1) or enter (recycle, another mark: R56A +2). */
+/* R56A1 +042 -- p. 782: V50N25 with option 16 (GOPERF1, OCT16): terminate,
+ * proceed (the mark completed: R56B, the display cleared and the star's code
+ * flashed at R53C1) or enter (recycle, another mark: R56A +2). */
 void r56a1_after_clearmrk(void)
 {
     set_A(OCT16);
@@ -306,12 +305,12 @@ static const word planet_words[] = {
 
 const struct interpretive_code PLANET_CODE = {015u, PLANET, COUNT(planet_words), planet_words};
 
-/* NOSAM: the code (its low six bits: CS HIGH9; MASK STARCODE) times
- * SIGHTSIX to BESTI or BESTJ (INDEX STARIND). A star or the sun, earth or
- * moon (positive): NOTPLAN. A planet (code 0): its direction flashed
- * (VNPLANV, GOFLASH), for the crew to load: terminate, proceed or enter
- * (the flash again). (A is L, a word: the TS does not skip; nor is it
- * negative: the CCS takes its first two ways only.) */
+/* NOSAM +1 -- p. 783: the code (its low six bits: CS HIGH9; MASK STARCODE)
+ * times SIGHTSIX to BESTI or BESTJ (INDEX STARIND). A star or the sun, earth
+ * or moon (positive): NOTPLAN. A planet (code 0): its direction flashed
+ * (VNPLANV, GOFLASH), for the crew to load: terminate, proceed or enter (the
+ * flash again). (A is L, a word: the TS does not skip; nor is it negative:
+ * the CCS takes its first two ways only.) */
 void nosam_after_exit(void)
 {
     set_A(negate(HIGH9)); /* CS HIGH9 */
@@ -366,9 +365,9 @@ static const word nosam_words[] = {
 
 const struct interpretive_code NOSAM_CODE = {015u, NOSAM + 021u, COUNT(nosam_words), nosam_words};
 
-/* NOTPLAN: the code times 6, less one (CCS), against DEC227: past it (the
- * sun, the earth or the moon, codes 38 to 40), CALSAM1; else a star: its
- * index (BESTI or BESTJ) to X1 (INDEX FIXLOC), and its vector from the
+/* NOTPLAN -- p. 783: the code times 6, less one (CCS), against DEC227: past
+ * it (the sun, the earth or the moon, codes 38 to 40), CALSAM1; else a star:
+ * its index (BESTI or BESTJ) to X1 (INDEX FIXLOC), and its vector from the
  * catalog (CATLOG,1). (A is a word: TS does not skip.) */
 static void notplan(void)
 {

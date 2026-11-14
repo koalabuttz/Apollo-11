@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P11.agc of the CM (Comanche055 pp. 535-541, bank 34):
- * P11, its restart point REP11, VHHDOT (SERVICER's exit during the boost),
- * ATERTASK and GETDOWN.
+/* P11.agc of the CM (Comanche055 pp. 535-541, bank 34): P11, its restart
+ * point REP11, VHHDOT (SERVICER's exit during the boost), ATERTASK and
+ * GETDOWN. The faithful C is c64-port/src/cm_p11.c.
  *
  * P11 "WILL ... ZERO CMC CLOCK AT LIFTOFF (OR UPON RECEIPT OF BACKUP)",
  * "UPDATE TEPHEM TO TIME CMC CLOCK WAS ZEROED", "INITIATE SERVICER AT
@@ -23,14 +23,12 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- P11 and REP11A -- pp. 535-537 ---- */
 
-/* REP11A: TEPHEM, the ephemeris time of the clock's zero, moved on by
- * TLIFTOFF: TEPHEM1 gets TEPHEM + TLIFTOFF (triple precision; the ADS
- * "CORRECTFOR OVERFLOW" of the low words); then a restart point
- * (PHASCHNG, OCT 05023) before TEPHEM is replaced. */
+/* REP11A -- p. 535: TEPHEM, the ephemeris time of the clock's zero, moved on
+ * by TLIFTOFF: TEPHEM1 gets TEPHEM + TLIFTOFF (triple precision; the ADS
+ * "CORRECTFOR OVERFLOW" of the low words); then a restart point (PHASCHNG,
+ * OCT 05023) before TEPHEM is replaced. */
 void rep11a(void)
 {
     inhint();
@@ -44,23 +42,24 @@ void rep11a(void)
     tc_to(REP11A + 012u, PHASCHNG); /* OCT 05023, OCT 22000 */
 }
 
-/* REP11A-1: group 3's phase from A and L "RESET PHASE"; then REP11A. */
+/* REP11A-1 -- p. 535: group 3's phase from A and L "RESET PHASE"; then
+ * REP11A. */
 static void rep11a_minus1(void)
 {
     dxch(ADDRESS_OF(MINUS_PHASE3));
     rep11a();
 }
 
-/* REP11A-2: TLIFTOFF from A and L (the clock at liftoff); A and L get
- * what it held. */
+/* REP11A-2 -- p. 535: TLIFTOFF from A and L (the clock at liftoff); A and L
+ * get what it held. */
 static void rep11a_minus2(void)
 {
     dxch(ADDRESS_OF(TLIFTOFF));
     rep11a_minus1();
 }
 
-/* REP11A -5: the clock zeroed (TIME2 and TIME1 +0); A and L get its
- * reading. */
+/* REP11A -5 -- p. 535: the clock zeroed (TIME2 and TIME1 +0); A and L get
+ * its reading. */
 static void rep11a_minus5(void)
 {
     set_A(ZERO);
@@ -69,8 +68,8 @@ static void rep11a_minus5(void)
     rep11a_minus2();
 }
 
-/* P11+7: TLIFTOFF gets REP11SA (and A, L what it held); LIFTTEMP the
- * clock "FOR RESTARTS" (and A, L its -0 and second word); then the clock
+/* P11+7 -- p. 535: TLIFTOFF gets REP11SA (and A, L what it held); LIFTTEMP
+ * the clock "FOR RESTARTS" (and A, L its -0 and second word); then the clock
  * zeroed. */
 static void p11_plus7(void)
 {
@@ -81,9 +80,9 @@ static void p11_plus7(void)
     rep11a_minus5();
 }
 
-/* P11: "DIRECT RESTARTS TO REP11" (group 3's phase, REP11S); LIFTTEMP -0;
- * group 5 "INACTIVE GROUP 5, PRELAUNCH PROTECTION" (-PHASE5 -0, PHASE5
- * +0). */
+/* P11 -- p. 535: "DIRECT RESTARTS TO REP11" (group 3's phase, REP11S);
+ * LIFTTEMP -0; group 5 "INACTIVE GROUP 5, PRELAUNCH PROTECTION" (-PHASE5 -0,
+ * PHASE5 +0). */
 void p11(void)
 {
     set_A(EBANK3); /* EBANK= TEPHEM */
@@ -97,8 +96,8 @@ void p11(void)
     p11_plus7();
 }
 
-/* REP11A +015: TEPHEM replaced by TEPHEM1; then PREREAD1, "ZERO PIPS AND
- * INITIALIZE AVERAGEG" (IBNKCALL, under EBANK= DVCNTR). */
+/* REP11A +015 -- p. 536: TEPHEM replaced by TEPHEM1; then PREREAD1, "ZERO
+ * PIPS AND INITIALIZE AVERAGEG" (IBNKCALL, under EBANK= DVCNTR). */
 void rep11a_after_phaschng(void)
 {
     inhint();
@@ -111,33 +110,33 @@ void rep11a_after_phaschng(void)
     tc_to(REP11A + 025u, IBNKCALL); /* CADR PREREAD1 */
 }
 
-/* REP11A +027: a restart point, "CONTINUE HERE ON RESTART". */
+/* REP11A +027 -- p. 536: a restart point, "CONTINUE HERE ON RESTART". */
 void rep11a_after_preread1(void)
 {
     tc_to(REP11A + 027u, PHASCHNG); /* OCT 05023, OCT 22000 */
 }
 
-/* REP11A +032: "START ATT ERROR DISPLAY", ATERTASK "IN .5 SEC". */
+/* REP11A +032 -- p. 536: "START ATT ERROR DISPLAY", ATERTASK "IN .5 SEC". */
 void rep11a_start_display(void)
 {
     set_A(HALF_SEC);
     tc_to(REP11A + 033u, WAITLIST); /* 2CADR ATERTASK */
 }
 
-/* REP11A +036: "DISPLAY MM 11". */
+/* REP11A +036 -- p. 536: "DISPLAY MM 11". */
 void rep11a_after_waitlist(void)
 {
     tc_to(REP11A + 036u, NEWMODEX); /* MM 11 */
 }
 
-/* REP11A +040: NODOP01 set. */
+/* REP11A +040 -- p. 536: NODOP01 set. */
 void rep11a_after_newmodex(void)
 {
     tc_to(REP11A + 040u, UPFLAG); /* ADRES NODOP01 */
 }
 
-/* REP11A +042: "SWITCH TO POWERED FLIGHT DOWNLIST" (DNLSTCOD 3); then
- * "CLEAR DSKY IN CASE OF V75". */
+/* REP11A +042 -- p. 536: "SWITCH TO POWERED FLIGHT DOWNLIST" (DNLSTCOD 3);
+ * then "CLEAR DSKY IN CASE OF V75". */
 void rep11a_after_upflag(void)
 {
     set_A(POWDNCOD);
@@ -145,14 +144,14 @@ void rep11a_after_upflag(void)
     tc_to(REP11A + 044u, BANKCALL); /* CADR CLEANDSP */
 }
 
-/* REP11A +046: a restart point, "PROTECT ATERTASK". */
+/* REP11A +046 -- p. 536: a restart point, "PROTECT ATERTASK". */
 void rep11a_after_cleandsp(void)
 {
     tc_to(REP11A + 046u, TWO_PHSCHNG); /* OCT 40514, OCT 00073 */
 }
 
-/* REP11A +051: QPLACES gets P11XIT, "SET EXIT FROM PROUT IN EARTHR" (to
- * P11OUT); then the interpretive code (EBANK= QPLACES). */
+/* REP11A +051 -- p. 536: QPLACES gets P11XIT, "SET EXIT FROM PROUT IN
+ * EARTHR" (to P11OUT); then the interpretive code (EBANK= QPLACES). */
 void rep11a_after_2phschng(void)
 {
     set_A(EBQPLACE);
@@ -180,9 +179,9 @@ const struct interpretive_code P11_CODE = {034u, REP11A + 056u, COUNT(p11_words)
 
 /* ---- MATRXJOB -- pp. 537-539 ---- */
 
-/* MATRXJOB: "STORE DP GIMBAL ANGLES FOR ATTITUDE ERROR DISPLAY AFTER
- * LIFTOFF": OGC, IGC and MGC get CDUX, CDUY and CDUZ (each the high word,
- * the low +0). Then the interpretive code. */
+/* MATRXJOB -- p. 537: "STORE DP GIMBAL ANGLES FOR ATTITUDE ERROR DISPLAY
+ * AFTER LIFTOFF": OGC, IGC and MGC get CDUX, CDUY and CDUZ (each the high
+ * word, the low +0). Then the interpretive code. */
 void matrxjob(void)
 {
     zl();
@@ -269,15 +268,15 @@ static const word matrxjob_words[] = {
 const struct interpretive_code MATRXJOB_CODE = {034u, MATRXJOB + 012u, COUNT(matrxjob_words),
                                                 matrxjob_words};
 
-/* MATRXJOB +0101, after the REFSMMAT's EXIT: a restart point. */
+/* MATRXJOB +0101 -- p. 538, after the REFSMMAT's EXIT: a restart point. */
 void matrxjob_after_exit(void)
 {
     tc_to(MATRXJOB + 0101u, PHASCHNG); /* OCT 04023 */
 }
 
-/* MATRXJOB +0103: "SET AVGEXIT" to VHHDOT, and 1/PIPADT to "2 SECONDS AT
- * 2(+8)"; under EBANK= RCSFLAGS, READACCS restarted ("RESTART READACCS 2
- * SECONDS AFTER LIFTOFF", TBASE5 -0) and started by WAITLIST, "DO
+/* MATRXJOB +0103 -- p. 538: "SET AVGEXIT" to VHHDOT, and 1/PIPADT to "2
+ * SECONDS AT 2(+8)"; under EBANK= RCSFLAGS, READACCS restarted ("RESTART
+ * READACCS 2 SECONDS AFTER LIFTOFF", TBASE5 -0) and started by WAITLIST, "DO
  * READACCS 2 SECONDS AFTER LIFTOFF": in 2 seconds less TIME1, or 1
  * centisecond ("CHECK TO INSURE DT IS POSITIVE"). */
 void matrxjob_after_phaschng(void)
@@ -300,14 +299,14 @@ void matrxjob_after_phaschng(void)
     tc_to(MATRXJOB + 0124u, WAITLIST); /* 2CADR READACCS */
 }
 
-/* MATRXJOB +0127: a restart point, "TURN OFF GROUP 3" and "PROTECT
+/* MATRXJOB +0127 -- p. 539: a restart point, "TURN OFF GROUP 3" and "PROTECT
  * NORMLIZE AND READACCS". */
 void matrxjob_after_waitlist(void)
 {
     tc_to(MATRXJOB + 0127u, TWO_PHSCHNG); /* OCT 00003, OCT 00025 */
 }
 
-/* MATRXJOB +0132: "DO NORMLIZE AND ENDOFJOB". */
+/* MATRXJOB +0132 -- p. 539: "DO NORMLIZE AND ENDOFJOB". */
 void matrxjob_after_2phschng(void)
 {
     tc_to(MATRXJOB + 0132u, POSTJUMP); /* CADR NORMLIZE */
@@ -315,9 +314,9 @@ void matrxjob_after_2phschng(void)
 
 /* ---- REP11 -- p. 539 ---- */
 
-/* REP11, the restart: with group 5 active (PHASE5 positive), nothing to
- * do (ENDOFJOB). Else, with LIFTTEMP still -0, all of P11 again from
- * P11+7. A TLIFTOFF not negative is the clock at liftoff, stored:
+/* REP11 -- p. 539, the restart: with group 5 active (PHASE5 positive),
+ * nothing to do (ENDOFJOB). Else, with LIFTTEMP still -0, all of P11 again
+ * from P11+7. A TLIFTOFF not negative is the clock at liftoff, stored:
  * ENDREP11, the phase reset and REP11A again. A negative one is still
  * REP11SA, the clock perhaps half zeroed: "**TIME2 MUST BE NON-ZERO AT
  * LIFTOFF**", so with TIME2 positive "T2,T1 NOT YET ZEROED, GO AND DO IT"
@@ -354,8 +353,8 @@ void rep11(void)
 
 /* ---- VHHDOT, ATERTASK and GETDOWN -- pp. 540-541 ---- */
 
-/* VHHDOT: "EXECUTED EVERY 2 SECONDS TO DISPLAY ON DSKY" V1, HDOT and H:
- * S11.1, in interpretive code, loads them. */
+/* VHHDOT -- p. 540: "EXECUTED EVERY 2 SECONDS TO DISPLAY ON DSKY" V1, HDOT
+ * and H: S11.1, in interpretive code, loads them. */
 void vhhdot(void)
 {
     tc_at(VHHDOT);
@@ -371,20 +370,20 @@ static const word vhhdot_words[] = {
 
 const struct interpretive_code VHHDOT_CODE = {034u, VHHDOT + 1u, COUNT(vhhdot_words), vhhdot_words};
 
-/* VHHDOT +4, after the EXIT: a restart point. */
+/* VHHDOT +4 -- p. 540, after the EXIT: a restart point. */
 void vhhdot_after_exit(void)
 {
     tc_to(VHHDOT + 4u, PHASCHNG); /* OCT 00035 */
 }
 
-/* VHHDOT +6: "DISPLAY IN R1 R2 R3" (V06N62, REGODSP). */
+/* VHHDOT +6 -- p. 540: "DISPLAY IN R1 R2 R3" (V06N62, REGODSP). */
 void vhhdot_after_phaschng(void)
 {
     set_A(V06N62);
     tc_to(VHHDOT + 7u, BANKCALL); /* CADR REGODSP */
 }
 
-/* ATERTASK, the task WAITLIST starts half a second after liftoff:
+/* ATERTASK -- p. 540, the task WAITLIST starts half a second after liftoff:
  * "ESTABLISH JOB TO DISPLAY ATT ERRORS" (ATERJOB). */
 void atertask(void)
 {
@@ -392,8 +391,8 @@ void atertask(void)
     tc_to(ATERTASK + 1u, FINDVAC); /* 2CADR ATERJOB */
 }
 
-/* ATERTASK +4: RCSFLAGS' bit 3 set for NEEDLER's "INITIALIZATION PASS",
- * "AND GO DO IT". */
+/* ATERTASK +4 -- p. 540: RCSFLAGS' bit 3 set for NEEDLER's "INITIALIZATION
+ * PASS", "AND GO DO IT". */
 void atertask_after_findvac(void)
 {
     cs(ADDRESS_OF(RCSFLAGS));
@@ -402,7 +401,7 @@ void atertask_after_findvac(void)
     tc_to(ATERTASK + 7u, IBNKCALL); /* CADR NEEDLER */
 }
 
-/* ATERTASK +011: SATSW +1, "SET SW FOR DISPLAY". */
+/* ATERTASK +011 -- p. 540: SATSW +1, "SET SW FOR DISPLAY". */
 void atertask_after_needler(void)
 {
     set_A(BIT1);

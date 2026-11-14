@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 3 (Comanche055 pp. 572-573): R21 and R23 for the CSM,
- * the sighting marks of rendezvous navigation (bank 37).
+ * the sighting marks of rendezvous navigation (bank 37). The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * The crew calls R21 by verb 57 and R23 by verb 54. R21CSM sets R21MARK,
  * so that MARKRUPT keeps each mark in MRKBUF1; both clear the mark buffers
@@ -31,7 +32,7 @@ void r21csm(void)
     tc_to(R21CSM, UPFLAG); /* ADRES R21MARK */
 }
 
-/* R23CSM: MRKBUF1 and MRKBUF2 -1, no mark. "TEST R23FLG": "NOT SET
+/* R23CSM -- p. 572: MRKBUF1 and MRKBUF2 -1, no mark. "TEST R23FLG": "NOT SET
  * REGULAR R21 MARKING" (R21C1); set, "R23 BACKUP MARKING". (A CA of a
  * constant leaves no overflow for the TS to skip on.) */
 void r23csm(void)
@@ -48,28 +49,29 @@ void r23csm(void)
     r23csm_display();
 }
 
-/* R23CSM +7: verb 06 noun 94, by GOMARKF: "DISPLAY SHAFT + TRUNNION". */
+/* R23CSM +7 -- p. 572: verb 06 noun 94, by GOMARKF: "DISPLAY SHAFT +
+ * TRUNNION". */
 static void r23csm_display(void)
 {
     set_A(V0694);
     tc_to(R23CSM + 010u, BANKCALL); /* CADR GOMARKF */
 }
 
-/* R23CSM +012: "TERM". */
+/* R23CSM +012 -- p. 572: "TERM". */
 void r23csm_terminate(void)
 {
     tc_at(R23CSM + 012u);
     r21end();
 }
 
-/* R23CSM +013: "PROC": TC +2, to R23CSM1. */
+/* R23CSM +013 -- p. 572: "PROC": TC +2, to R23CSM1. */
 void r23csm_proceed(void)
 {
     tc_at(R23CSM + 013u);
     r23csm1();
 }
 
-/* R23CSM +014: "ENTER": TC -5, the display again. */
+/* R23CSM +014 -- p. 573: "ENTER": TC -5, the display again. */
 void r23csm_enter(void)
 {
     tc_at(R23CSM + 014u);
@@ -83,32 +85,31 @@ void r23csm1(void)
     tc_to(R23CSM1 + 1u, BANKCALL); /* CADR GOMARK2 */
 }
 
-/* R23CSM1 +3: "V34: TERMINATE R23". */
+/* R23CSM1 +3 -- p. 573: "V34: TERMINATE R23". */
 void r23csm1_terminate(void)
 {
     tc_at(R23CSM1 + 3u);
     r21end();
 }
 
-/* R23CSM1 +4: "PROCEED: END BACK UP MARKING (R23)". */
+/* R23CSM1 +4 -- p. 573: "PROCEED: END BACK UP MARKING (R23)". */
 void r23csm1_proceed(void)
 {
     r21csma(); /* TCF R21CSMA */
 }
 
-/* R23CSM1 +5: enter, a mark: "TRANSFER MRKBUF1 TO MRKBUF2" (GENTRAN, six
- * words), */
+/* R23CSM1 +5 -- p. 573: enter, a mark: "TRANSFER MRKBUF1 TO MRKBUF2"
+ * (GENTRAN, six words), */
 void r23csm1_mark(void)
 {
     set_A(SIX);
     tc_to(R23CSM1 + 6u, GENTRAN); /* ADRES MRKBUF1; ADRES MRKBUF2 */
 }
 
-/* R23CSM1 +011: and the new mark into MRKBUF1: "READ TIME" (TIME2 and
- * TIME1), "READ CDU ANGLES" (CDUY, CDUZ and CDUX, to MRKBUF1 +2, +4 and
- * +6). GENTRAN holds interrupts; RELINT releases them. Then verb 53
- * again. (The CDU counters hold 15 bits: no overflow for a TS to skip
- * on.) */
+/* R23CSM1 +011 -- p. 573: and the new mark into MRKBUF1: "READ TIME" (TIME2
+ * and TIME1), "READ CDU ANGLES" (CDUY, CDUZ and CDUX, to MRKBUF1 +2, +4 and
+ * +6). GENTRAN holds interrupts; RELINT releases them. Then verb 53 again.
+ * (The CDU counters hold 15 bits: no overflow for a TS to skip on.) */
 void r23csm1_after_gentran(void)
 {
     dca(ADDRESS_OF(TIME2)); /* EXTEND; DCA TIME2 */
@@ -124,34 +125,35 @@ void r23csm1_after_gentran(void)
     r23csm1();
 }
 
-/* R21C1: verb 51, by GOMARK2: the R21 marks. */
+/* R21C1 -- p. 573: verb 51, by GOMARK2: the R21 marks. */
 void r21c1(void)
 {
     set_A(V51NB);
     tc_to(R21C1 + 1u, BANKCALL); /* CADR GOMARK2 */
 }
 
-/* R21C1 +3: "V34: TERMINATE R21". */
+/* R21C1 +3 -- p. 573: "V34: TERMINATE R21". */
 void r21c1_terminate(void)
 {
     tc_at(R21C1 + 3u);
     r21end();
 }
 
-/* R21C1 +4: "PROCEED: END R21". */
+/* R21C1 +4 -- p. 573: "PROCEED: END R21". */
 void r21c1_proceed(void)
 {
     r21csma(); /* TCF R21CSMA */
 }
 
-/* R21C1 +5: "RECYCLE". */
+/* R21C1 +5 -- p. 573: "RECYCLE". */
 void r21c1_recycle(void)
 {
     r21c1(); /* TCF R21C1 */
 }
 
-/* R21CSMA: MRKBUF1 "IF -1 NO MARK": "ZERO = NO MARK" (MRKBUF1 +1); else
- * "MARK THEREFORE TRANSFER IT TO MRKBUF2" (GENTRAN, six words, R21CSM1). */
+/* R21CSMA -- p. 573: MRKBUF1 "IF -1 NO MARK": "ZERO = NO MARK" (MRKBUF1 +1);
+ * else "MARK THEREFORE TRANSFER IT TO MRKBUF2" (GENTRAN, six words,
+ * R21CSM1). */
 static void r21csma(void)
 {
     ca(ADDRESS_OF(MRKBUF1));
@@ -164,26 +166,26 @@ static void r21csma(void)
     tc_to(R21CSM1, GENTRAN); /* ADRES MRKBUF1; ADRES MRKBUF2 */
 }
 
-/* R21CSM1 +3: interrupts released, and on to R21END. */
+/* R21CSM1 +3 -- p. 573: interrupts released, and on to R21END. */
 void r21csm1_after_gentran(void)
 {
     relint();
     r21end();
 }
 
-/* R21END: KLEENEX, */
+/* R21END -- p. 573: KLEENEX, */
 static void r21end(void)
 {
     tc_to(R21END, BANKCALL); /* CADR KLEENEX */
 }
 
-/* R21END +2: "RESET R21MARK" ("BIT 14 FLAG 2"), */
+/* R21END +2 -- p. 573: "RESET R21MARK" ("BIT 14 FLAG 2"), */
 void r21end_after_kleenex(void)
 {
     tc_to(R21END + 2u, DOWNFLAG); /* ADRES R21MARK */
 }
 
-/* R21END +4: and "END MARKING AND ENDJOB". */
+/* R21END +4 -- p. 573: and "END MARKING AND ENDJOB". */
 void r21end_after_r21mark(void)
 {
     tc_to(R21END + 4u, ENDMARK);

@@ -28,8 +28,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* SBANDANT -- LM p. 486, CM p. 934. "CHECK IF IMU IS ON AND ALIGNED"
  * (R02BOTH, through BANKCALL). */
 void sbandant(void)
@@ -38,7 +36,8 @@ void sbandant(void)
     continue_at(BANKCALL); /* CADR R02BOTH */
 }
 
-/* SBANDANT +2 -- into the interpreter, at SBANDANT +3 (SBAND_CODE). */
+/* SBANDANT +2 -- LM p. 487, CM p. 934: into the interpreter, at SBANDANT +3
+ * (SBAND_CODE). */
 void sbandant_after_r02both(void)
 {
     tc_at(SBANDANT + 2u);
@@ -189,7 +188,8 @@ void sbandant_after_exit(void)
     continue_at(PRIOCHNG);
 }
 
-/* SBANDEX +7 -- "DISPLAY ANGLES": verb 06 noun 51, through GOMARKFR. */
+/* SBANDEX +7 -- LM p. 489: "DISPLAY ANGLES": verb 06 noun 51, through
+ * GOMARKFR. */
 void sbandant_after_prio5(void)
 {
     set_A(V06N51);
@@ -197,29 +197,29 @@ void sbandant_after_prio5(void)
     continue_at(BANKCALL); /* CADR GOMARKFR */
 }
 
-/* SBANDEX +012 -- "TERMINATE". */
+/* SBANDEX +012 -- LM p. 489: "TERMINATE". */
 void sbandant_terminate(void)
 {
     tc_at(TC_B5OFF_TERMINATE);
     continue_at(B5OFF);
 }
 
-/* SBANDEX +013 -- "PROCEED". */
+/* SBANDEX +013 -- LM p. 489: "PROCEED". */
 void sbandant_proceed(void)
 {
     tc_at(TC_B5OFF_PROCEED);
     continue_at(B5OFF);
 }
 
-/* SBANDEX +014 -- "RECYCLE": the job ends; the display's recycle starts
- * it again. */
+/* SBANDEX +014 -- LM p. 489: "RECYCLE": the job ends; the display's recycle
+ * starts it again. */
 void sbandant_recycle(void)
 {
     tc_at(TC_ENDOFJOB_RECYCLE);
     continue_at(ENDOFJOB);
 }
 
-/* SBANDEX +015 -- GOMARKFR's "IMMEDIATE RETURN": "BLANK R3". */
+/* SBANDEX +015 -- LM p. 489: GOMARKFR's "IMMEDIATE RETURN": "BLANK R3". */
 void sbandant_immediate_return(void)
 {
     set_A(BIT3);
@@ -227,7 +227,7 @@ void sbandant_immediate_return(void)
     continue_at(BLANKET);
 }
 
-/* SBANDEX +017 -- back to priority 4. */
+/* SBANDEX +017 -- LM p. 489: back to priority 4. */
 void sbandant_after_blanket(void)
 {
     set_A(PRIO4);
@@ -235,8 +235,8 @@ void sbandant_after_blanket(void)
     continue_at(PRIOCHNG);
 }
 
-/* SBANDEX +021 -- "YES, CONTINUE DISPLAYING ANGLES": the angles again,
- * from SBANDANT +2. */
+/* SBANDEX +021 -- LM p. 489: "YES, CONTINUE DISPLAYING ANGLES": the angles
+ * again, from SBANDANT +2. */
 void sbandant_after_prio4(void)
 {
     tc_at(TC_SBANDANT_PLUS2);
@@ -349,29 +349,29 @@ void sbandant_after_exit(void)
     continue_at(BANKCALL); /* CADR GOMARKFR */
 }
 
-/* SBANDANT +0106 -- "TERMINATE". */
+/* SBANDANT +0106 -- CM p. 935: "TERMINATE". */
 void sbandant_terminate(void)
 {
     tc_at(TC_B5OFF_TERMINATE);
     continue_at(B5OFF);
 }
 
-/* SBANDANT +0107 -- proceed. */
+/* SBANDANT +0107 -- CM p. 935: proceed. */
 void sbandant_proceed(void)
 {
     tc_at(TC_B5OFF_PROCEED);
     continue_at(B5OFF);
 }
 
-/* SBANDANT +0110 -- "RECYCLE": the job ends; the display's recycle
- * starts it again. */
+/* SBANDANT +0110 -- CM p. 935: "RECYCLE": the job ends; the display's
+ * recycle starts it again. */
 void sbandant_recycle(void)
 {
     tc_at(TC_ENDOFJOB_RECYCLE);
     continue_at(ENDOFJOB);
 }
 
-/* SBANDANT +0111 -- GOMARKFR's "IMMEDIATE RETURN": "BLANK R3". */
+/* SBANDANT +0111 -- CM p. 935: GOMARKFR's "IMMEDIATE RETURN": "BLANK R3". */
 void sbandant_immediate_return(void)
 {
     set_A(BIT3);
@@ -379,8 +379,8 @@ void sbandant_immediate_return(void)
     continue_at(BLANKET);
 }
 
-/* SBANDANT +0113 -- "DELAY MINIMUM TIME TO ALLOW DISPLAY IN" (DELAYJOB,
- * a delay of 1). */
+/* SBANDANT +0113 -- CM p. 935: "DELAY MINIMUM TIME TO ALLOW DISPLAY IN"
+ * (DELAYJOB, a delay of 1). */
 void sbandant_after_blanket(void)
 {
     set_A(BIT1);
@@ -388,7 +388,7 @@ void sbandant_after_blanket(void)
     continue_at(BANKCALL); /* CADR DELAYJOB */
 }
 
-/* SBANDANT +0116 -- the angles again, from SBANDANT +2 (TCF). */
+/* SBANDANT +0116 -- CM p. 935: the angles again, from SBANDANT +2 (TCF). */
 void sbandant_after_delayjob(void)
 {
     sbandant_after_r02both();

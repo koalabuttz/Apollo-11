@@ -11,9 +11,7 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-/* CALCRGVG: "IN IGNALG, COMPUTE V FROM INTEGRATION OUTPUT AND TRIM
+/* CALCRGVG -- p. 806: "IN IGNALG, COMPUTE V FROM INTEGRATION OUTPUT AND TRIM
  * CORRECTION TERM COMPUTED LAST PASS AND LEFT IN UNFC/2": V is VATT1 in
  * stable member coordinates (REFSMMAT) plus UNFC/2. The EXIT runs on
  * into RGVGCALC. */
@@ -36,7 +34,8 @@ static const word calcrgvg_words[] = {
 const struct interpretive_code CALCRGVG_CODE = {031u, CALCRGVG + 1u, COUNT(calcrgvg_words),
                                                 calcrgvg_words};
 
-/* RGVGCALC: "ENTER HERE TO RECOMPUTE RG AND VG". As the listing has it,
+/* RGVGCALC -- p. 806: "ENTER HERE TO RECOMPUTE RG AND VG". As the listing
+ * has it,
  *
  *     ANGTERM = V + R * WM
  *     RGU = CG (R - LAND)
@@ -87,9 +86,9 @@ static const word rgvgcalc_words[] = {
 const struct interpretive_code RGVGCALC_CODE = {031u, RGVGCALC + 1u, COUNT(rgvgcalc_words),
                                                 rgvgcalc_words};
 
-/* After the EXIT: "RESET PUSH DOWN POINTER", and "COMPUTE LOOKANGLE
- * ITSELF": the arcsine (SPARCSIN, through BANKCALL) of twice MPAC's high
- * word. (A is FIXLOC: TS PUSHLOC never skips.) */
+/* RGVGCALC +032 -- p. 806: After the EXIT: "RESET PUSH DOWN POINTER", and
+ * "COMPUTE LOOKANGLE ITSELF": the arcsine (SPARCSIN, through BANKCALL) of
+ * twice MPAC's high word. (A is FIXLOC: TS PUSHLOC never skips.) */
 void rgvgcalc_after_exit(void)
 {
     ca(ADDRESS_OF(FIXLOC));
@@ -99,9 +98,9 @@ void rgvgcalc_after_exit(void)
     tc_to(RGVGCALC + 036u, BANKCALL); /* CADR SPARCSIN -1 */
 }
 
-/* SPARCSIN's return: LOOKANGL, rounded (1/2DEG) and in degrees (times
- * 180DEGS), "FOR DISPLAY DURING P64"; then BRSPOT3. (MP leaves no
- * overflow: TS LOOKANGL never skips.) */
+/* RGVGCALC +040 -- p. 807: SPARCSIN's return: LOOKANGL, rounded (1/2DEG) and
+ * in degrees (times 180DEGS), "FOR DISPLAY DURING P64"; then BRSPOT3. (MP
+ * leaves no overflow: TS LOOKANGL never skips.) */
 void rgvgcalc_after_sparcsin(void)
 {
     ad(HALF_DEG);
@@ -110,7 +109,7 @@ void rgvgcalc_after_sparcsin(void)
     brspot3();
 }
 
-/* BRSPOT3: the phase's WHATGUID word. */
+/* BRSPOT3 -- p. 807: the phase's WHATGUID word. */
 void brspot3(void)
 {
     tcf_by_phase(WHATGUID, ADDRESS_OF(WCHPHASE));

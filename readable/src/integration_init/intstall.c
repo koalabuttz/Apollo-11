@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: MIT */
-/* INTEGRATION_INITIALIZATION.agc, INTSTALL and INTWAKE (LM pp. 1219-1220,
- * CM pp. 1324-1326), and the basic code after INTEXIT's EXIT (LM p. 1217,
- * CM p. 1321), which goes on into INTWAKE. Basic code in C; the EXITs and
- * GOBAC's RVQ are interpretive, in the listing's notation
- * (src/interpreter/notation.h).
+/* INTEGRATION_INITIALIZATION.agc, INTSTALL and INTWAKE (LM pp. 1219-1220, CM
+ * pp. 1324-1326), and the basic code after INTEXIT's EXIT (LM p. 1217, CM p.
+ * 1321), which goes on into INTWAKE. Basic code in C; the EXITs and GOBAC's
+ * RVQ are interpretive, in the listing's notation
+ * (src/interpreter/notation.h). The faithful C is
+ * c64-port/src/lm_integration_init.c and cm_integration_init.c.
  *
  * Orbital integration has one set of erasables, so one job at a time may
  * use it. INTSTALL takes it: with RASFLAG's INTBITAB bits clear, the job
@@ -72,14 +73,6 @@ const struct interpretive_code ERASTAL2_CODE = {CODE_BANK(I_ERASTAL2), CODE_Z(I_
 
 /* ---- The basic code ---- */
 
-/* TC at "at" to a routine outside the file (PHASCHNG, JOBSLEEP,
- * JOBWAKE), which reads the words after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* A word's value as a signed number (ones' complement). */
 static long value_of(word w)
 {
@@ -125,7 +118,7 @@ static unsigned qpret_store_at(void)
     return indexed_at(ADDRESS_OF(QPRET), FIXLOC, 01777u, true);
 }
 
-/* GOBAC: back into the interpreter, at the RVQ. */
+/* GOBAC -- LM p. 1220, CM p. 1325: back into the interpreter, at the RVQ. */
 static void gobac(void)
 {
     tc_at(GOBAC); /* TC INTPRET */
@@ -183,7 +176,7 @@ void intstall_after_exit(void)
     allstall();
 }
 
-/* ERASTAL1 and ERASTAL2 -- CM p. 1326: the second and third areas. */
+/* ERASTAL1 +1 and ERASTAL2 -- CM p. 1326: the second and third areas. */
 void erastal1_after_exit(void)
 {
     set_A(ONE);
@@ -242,11 +235,12 @@ void eraswak2(void)
 }
 #endif
 
-/* After JOBWAKE: LOCCTR is the woken job's core set, so wake another
- * ("MAY BE MORE TO WAKE UP"); or -1, none, and the stall area's bits
- * are cleared ("RELEASE STALL AREA"). A +0 (the core set's offset can't
- * be) runs FORTYONE, a constant, and is not modelled; at -0 the CCS skips
- * the CS (in the CM, the INDEX). */
+/* LM INTWAKE1 +3, CM WAKE1 +4 -- LM p. 1220, CM p. 1325: After JOBWAKE:
+ * LOCCTR is the woken job's core set, so wake another ("MAY BE MORE TO WAKE
+ * UP"); or -1, none, and the stall area's bits are cleared ("RELEASE STALL
+ * AREA"). A +0 (the core set's offset can't be) runs FORTYONE, a constant,
+ * as TC 51, and the listing's lines do not say what erasable word 51 holds
+ * then; at -0 the CCS skips the CS (in the CM, the INDEX). */
 void intwake1_after_jobwake(void)
 {
     switch (ccs_at(ADDRESS_OF(LOCCTR))) {
@@ -257,7 +251,15 @@ void intwake1_after_jobwake(void)
         wake1(); /* TCF WAKE1 */
 #endif
         return;
-    case IS_PLUS_ZERO: not_modelled(); return; /* FORTYONE DEC 41 */
+    case IS_PLUS_ZERO:
+        /* (never: core set 0 is the running job's, awake) FORTYONE (DEC 41), run as TC 51 */
+#if LUMINARY099
+        tc_at(INTWAKE1 + 5u);
+#else
+        tc_at(WAKE1 + 6u);
+#endif
+        not_modelled();
+        return;
     case NEGATIVE:
 #if LUMINARY099
         cs(INTBITAB);
@@ -304,15 +306,17 @@ void intwake(void)
 }
 
 #if LUMINARY099
-/* INTWAKE +4 in the LM, the return from INTWAKE +3's TC INTWAKE1. */
+/* INTWAKE +4 -- LM p. 1220 in the LM, the return from INTWAKE +3's TC
+ * INTWAKE1. */
 void intwake_after_intwake1(void)
 {
     keep_qpret();
 }
 #endif
 
-/* After the phase change: the return back in QPRET, and "DON'T INTWAKE
- * IF WE CAME HERE VIA RESTART" (REINTBIT clear); otherwise INTWAKE1. */
+/* INTWAKE +011 -- LM p. 1220, CM p. 1325: After the phase change: the return
+ * back in QPRET, and "DON'T INTWAKE IF WE CAME HERE VIA RESTART" (REINTBIT
+ * clear); otherwise INTWAKE1. */
 void intwake_after_phaschng(void)
 {
     ca(ADDRESS_OF(TBASE2));

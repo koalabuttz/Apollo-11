@@ -140,7 +140,7 @@ void op_inert(void)
         continue_at(XACT0Q);
         return;
     }
-    tc(OP_INERT + 8u, ALM_END); /* "ILLEGAL." */
+    tc(OP_INERT + 010u, ALM_END); /* "ILLEGAL." */
 #endif
 }
 
@@ -217,8 +217,8 @@ void rwaitk_after_radstall_bad(void)
     continue_at(RWAITK + 3u);
 }
 
-/* RWAITK +3 -- LM p. 265. */
-void rwaitk_after_radstall_good(void)
+/* RWAITK +3 -- LM p. 265: RADSTALL's good return. */
+void rwaitk_plus3(void)
 {
     tc(RWAITK + 3u, GOPIN);
 }
@@ -328,7 +328,7 @@ void icork2_after_imucoars(void)
     tc(ICORK2 + 5u, BANKCALL); /* CADR IMUSTALL */
 }
 
-/* ICORK2 +7 and +8 -- LM p. 268, CM p. 241: IMUSTALL's bad and good
+/* ICORK2 +7 and +010 -- LM p. 268, CM p. 241: IMUSTALL's bad and good
  * returns. */
 void icork2_after_imustall_bad(void)
 {
@@ -337,7 +337,7 @@ void icork2_after_imustall_bad(void)
 
 void icork2_after_imustall_good(void)
 {
-    tc(ICORK2 + 8u, ENDEXTVB);
+    tc(ICORK2 + 010u, ENDEXTVB);
 }
 
 #if LUMINARY099
@@ -370,52 +370,52 @@ void rrdesnbk_after_testxact(void)
     inhint();
     mask_at(ADDRESS_OF(RADMODES));
     ts(ADDRESS_OF(RADMODES));
-    rrdesnbk_plus10();
+    rrdesnbk_plus012();
 }
 
-/* RRDESNBK +10 -- LM p. 269: "ASK FOR GIMBAL ANGLES.", flashing V24 N73
+/* RRDESNBK +012 -- LM p. 269: "ASK FOR GIMBAL ANGLES.", flashing V24 N73
  * (VNLDRCDU). */
-void rrdesnbk_plus10(void)
+void rrdesnbk_plus012(void)
 {
     set_A(VNLDRCDU);
-    tc(RRDESNBK + 11u, BANKCALL); /* CADR GOXDSPF */
+    tc(RRDESNBK + 013u, BANKCALL); /* CADR GOXDSPF */
 }
 
-/* RRDESNBK +13 -- LM p. 269: terminate. */
+/* RRDESNBK +015 -- LM p. 269: terminate. */
 void rrdesnbk_after_terminate(void)
 {
-    tc(RRDESNBK + 13u, TERMEXTV);
+    tc(RRDESNBK + 015u, TERMEXTV);
 }
 
-/* RRDESNBK +14 -- LM p. 269: proceed (V33) asks again (TCF -4). */
+/* RRDESNBK +016 -- LM p. 269: proceed (V33) asks again (TCF -4). */
 void rrdesnbk_after_proceed(void)
 {
-    continue_at(RRDESNBK + 10u);
+    continue_at(RRDESNBK + 012u);
 }
 
-/* RRDESNBK +15 -- LM p. 269: enter. "ASK OP FOR LOCK ON REQUIREMENTS."
+/* RRDESNBK +017 -- LM p. 269: enter. "ASK OP FOR LOCK ON REQUIREMENTS."
  * (AURLOKON, in bank 23). */
 void rrdesnbk_after_enter(void)
 {
-    tc(RRDESNBK + 15u, BANKCALL); /* CADR AURLOKON */
+    tc(RRDESNBK + 017u, BANKCALL); /* CADR AURLOKON */
 }
 
-/* RRDESNBK +17 -- LM p. 269: "RE-DISPLAY OUR OWN VERB" (OPTCOARV, V41). */
+/* RRDESNBK +021 -- LM p. 269: "RE-DISPLAY OUR OWN VERB" (OPTCOARV, V41). */
 void rrdesnbk_after_aurlokon(void)
 {
     set_A(OPTCOARV);
-    tc(RRDESNBK + 18u, BANKCALL); /* CADR EXDSPRET */
+    tc(RRDESNBK + 022u, BANKCALL); /* CADR EXDSPRET */
 }
 
-/* RRDESNBK +20 -- LM p. 269: the job RRDESK2, at priority 20, does the
+/* RRDESNBK +024 -- LM p. 269: the job RRDESK2, at priority 20, does the
  * designate. */
 void rrdesnbk_after_exdspret(void)
 {
     set_A(PRIO20);
-    tc(RRDESNBK + 21u, FINDVAC); /* EBANK= LOSCOUNT; 2CADR RRDESK2 */
+    tc(RRDESNBK + 025u, FINDVAC); /* EBANK= LOSCOUNT; 2CADR RRDESK2 */
 }
 
-/* RRDESNBK +24 -- LM p. 269: "FREES DISPLAY". */
+/* RRDESNBK +030 -- LM p. 269: "FREES DISPLAY". */
 void rrdesnbk_after_findvac(void)
 {
     continue_at(TERMEXTV); /* TCF TERMEXTV */
@@ -459,32 +459,32 @@ void rrdesk2_plus3(void)
     }
     com();
     ads(ADDRESS_OF(PRIORITY));
-    tc(RRDESK2 + 10u, BANKCALL); /* CADR RADSTALL: "WAIT FOR COMPLETION OF DESIGNATE" */
+    tc(RRDESK2 + 012u, BANKCALL); /* CADR RADSTALL: "WAIT FOR COMPLETION OF DESIGNATE" */
 }
 
-/* RRDESK2 +12 -- LM p. 270: "BADEND-NO LOCKON OR OUT OF LIMITS" (TC +2,
+/* RRDESK2 +014 -- LM p. 270: "BADEND-NO LOCKON OR OUT OF LIMITS" (TC +2,
  * to the alarm). */
 void rrdesk2_after_radstall_bad(void)
 {
-    tc(RRDESK2 + 12u, RRDESK2 + 14u);
+    tc(RRDESK2 + 014u, RRDESK2 + 016u);
 }
 
-/* RRDESK2 +13 -- LM p. 270: "GOODEND-LOCKON ACHIEVED". */
+/* RRDESK2 +015 -- LM p. 270: "GOODEND-LOCKON ACHIEVED". */
 void rrdesk2_after_radstall_good(void)
 {
-    tc(RRDESK2 + 13u, ENDOFJOB);
+    tc(RRDESK2 + 015u, ENDOFJOB);
 }
 
-/* RRDESK2 +14 -- LM p. 270: alarm 503, "DESIGNATE FAIL". */
-void rrdesk2_plus14(void)
+/* RRDESK2 +016 -- LM p. 270: alarm 503, "DESIGNATE FAIL". */
+void rrdesk2_plus016(void)
 {
-    tc(RRDESK2 + 14u, ALARM); /* OCT 503 */
+    tc(RRDESK2 + 016u, ALARM); /* OCT 503 */
 }
 
-/* RRDESK2 +16 -- LM p. 270. */
+/* RRDESK2 +020 -- LM p. 270. */
 void rrdesk2_after_alarm(void)
 {
-    tc(RRDESK2 + 16u, ENDOFJOB);
+    tc(RRDESK2 + 020u, ENDOFJOB);
 }
 
 /* ---- V44: end the continuous designate ---- */
@@ -508,23 +508,23 @@ void rrdesend(void)
     inhint();
     mask_at(ADDRESS_OF(RADMODES));
     ts(ADDRESS_OF(RADMODES));
-    tc(RRDESEND + 8u, CLRADMOD);
+    tc(RRDESEND + 010u, CLRADMOD);
 }
 
-/* RRDESEND +9 -- LM p. 270. */
+/* RRDESEND +011 -- LM p. 270. */
 void rrdesend_after_clradmod(void)
 {
     set_A(ONE_SEC);
-    tc(RRDESEND + 10u, BANKCALL); /* CADR DELAYJOB */
+    tc(RRDESEND + 012u, BANKCALL); /* CADR DELAYJOB */
 }
 
-/* RRDESEND +12 -- LM p. 270: "ENABLE R25 GIMBAL MONITOR". */
+/* RRDESEND +014 -- LM p. 270: "ENABLE R25 GIMBAL MONITOR". */
 void rrdesend_after_delayjob(void)
 {
-    tc(RRDESEND + 12u, DOWNFLAG); /* ADRES NORRMON */
+    tc(RRDESEND + 014u, DOWNFLAG); /* ADRES NORRMON */
 }
 
-/* RRDESEND +14 -- LM p. 270. */
+/* RRDESEND +016 -- LM p. 270. */
 void rrdesend_after_downflag(void)
 {
     continue_at(GOPIN); /* TCF GOPIN */
@@ -559,42 +559,42 @@ void aurlokon_plus6(void)
     tc(AURLOKON + 7u, BANKCALL); /* CADR GOMARKFR */
 }
 
-/* AURLOKON +9 -- LM p. 271: V34, terminate. */
+/* AURLOKON +011 -- LM p. 271: V34, terminate. */
 void aurlokon_after_terminate(void)
 {
     continue_at(ENDEXT); /* TCF ENDEXT */
 }
 
-/* AURLOKON +10 -- LM p. 271: V33, proceed (TCF +5). */
+/* AURLOKON +012 -- LM p. 271: V33, proceed (TCF +5). */
 void aurlokon_after_proceed(void)
 {
-    continue_at(AURLOKON + 15u);
+    continue_at(AURLOKON + 017u);
 }
 
-/* AURLOKON +11 -- LM p. 271: V32, recycle, asks again (TCF -5). */
+/* AURLOKON +013 -- LM p. 271: V32, recycle, asks again (TCF -5). */
 void aurlokon_after_recycle(void)
 {
     continue_at(AURLOKON + 6u);
 }
 
-/* AURLOKON +12 -- LM p. 271: GOMARKFR's immediate return, with the
+/* AURLOKON +014 -- LM p. 271: GOMARKFR's immediate return, with the
  * display up: blank R3 (BIT3) and end the job; the crew's response comes
  * back at +9, +10 or +11. */
 void aurlokon_immediate_return(void)
 {
     set_A(BIT3);
-    tc(AURLOKON + 13u, BLANKET);
+    tc(AURLOKON + 015u, BLANKET);
 }
 
-/* AURLOKON +14 -- LM p. 271. */
+/* AURLOKON +016 -- LM p. 271. */
 void aurlokon_after_blanket(void)
 {
-    tc(AURLOKON + 14u, ENDOFJOB);
+    tc(AURLOKON + 016u, ENDOFJOB);
 }
 
-/* AURLOKON +15 -- LM p. 271 (the listing's +5).
+/* AURLOKON +017 -- LM p. 271 (the listing's +5).
  * OPTIONX +1's bit 2 set (R2 00002): no lock-on. Else LOKONSW up and on. */
-void aurlokon_plus15(void)
+void aurlokon_plus017(void)
 {
     ca(ADDRESS_OF(OPTIONX) + 1u);
     mask(BIT2);
@@ -602,10 +602,10 @@ void aurlokon_plus15(void)
         continue_at(NOLOKON); /* TCF NOLOKON */
         return;
     }
-    tc(AURLOKON + 19u, UPFLAG); /* ADRES LOKONSW */
+    tc(AURLOKON + 023u, UPFLAG); /* ADRES LOKONSW */
 }
 
-/* AURLOKON +21 -- LM p. 271. */
+/* AURLOKON +025 -- LM p. 271. */
 void aurlokon_after_upflag(void)
 {
     continue_at(AURLKON1); /* TCF AURLKON1 */
@@ -668,39 +668,39 @@ void optcoark_after_testxact(void)
     set_A(EBANK5);
     ts(EBANK_ADDRESS);
     switch (ccs_at(ADDRESS_OF(SWSAMPLE))) {
-    case POSITIVE: tc(OPTCOARK + 6u, OPTCOARK + 11u); return; /* "SWITCH AT COMPUTER" */
+    case POSITIVE: tc(OPTCOARK + 6u, OPTCOARK + 013u); return; /* "SWITCH AT COMPUTER" */
     case IS_PLUS_ZERO:
         tc_at(OPTCOARK + 7u); /* TC +1: "NOT ON COMPUTER" */
     /* fall through */
-    case NEGATIVE: tc(OPTCOARK + 8u, FALTON); return; /* "TURN ON OPERATOR ERR" */
-    case IS_MINUS_ZERO: tc(OPTCOARK + 9u, ALARM); return;
+    case NEGATIVE: tc(OPTCOARK + 010u, FALTON); return; /* "TURN ON OPERATOR ERR" */
+    case IS_MINUS_ZERO: tc(OPTCOARK + 011u, ALARM); return;
     }
 }
 
-/* OPTCOARK +9 -- CM p. 242: "AND ALARM", OCT 00115. */
+/* OPTCOARK +011 -- CM p. 242: "AND ALARM", OCT 00115. */
 void optcoark_after_falton(void)
 {
-    tc(OPTCOARK + 9u, ALARM);
+    tc(OPTCOARK + 011u, ALARM);
 }
 
-/* OPTCOARK +11 -- CM p. 242.
+/* OPTCOARK +013 -- CM p. 242.
  * "SEE IF OPTICS AVAILABLE": OPTIND anything but -0, OPTC1 (the three
  * TCs, "IN USE"); -0, alarm 117, "OPTICS RESERVED (OPTIND=-0)", and the
  * display released. */
-void optcoark_plus11(void)
+void optcoark_plus013(void)
 {
     switch (ccs_at(ADDRESS_OF(OPTIND))) {
-    case POSITIVE: tc(OPTCOARK + 12u, OPTC1); return;
-    case IS_PLUS_ZERO: tc(OPTCOARK + 13u, OPTC1); return;
-    case NEGATIVE: tc(OPTCOARK + 14u, OPTC1); return;
-    case IS_MINUS_ZERO: tc(OPTCOARK + 15u, ALARM); return; /* OCT 00117 */
+    case POSITIVE: tc(OPTCOARK + 014u, OPTC1); return;
+    case IS_PLUS_ZERO: tc(OPTCOARK + 015u, OPTC1); return;
+    case NEGATIVE: tc(OPTCOARK + 016u, OPTC1); return;
+    case IS_MINUS_ZERO: tc(OPTCOARK + 017u, ALARM); return; /* OCT 00117 */
     }
 }
 
-/* OPTCOARK +17 -- CM p. 242. */
+/* OPTCOARK +021 -- CM p. 242. */
 void optcoark_after_alarm(void)
 {
-    tc(OPTCOARK + 17u, ENDEXT);
+    tc(OPTCOARK + 021u, ENDEXT);
 }
 
 /* OPTC1 -- CM p. 242.
@@ -733,22 +733,22 @@ void optc1_after_enter(void)
     ts(ADDRESS_OF(DESOPTS));
     ca(ADDRESS_OF(PAC));
     ts(ADDRESS_OF(DESOPTT));
-    set_A(OPTCOARV);           /* "RE-DISPLAY OUR OWN VERB" */
-    tc(OPTC1 + 10u, BANKCALL); /* CADR EXDSPRET */
+    set_A(OPTCOARV);            /* "RE-DISPLAY OUR OWN VERB" */
+    tc(OPTC1 + 012u, BANKCALL); /* CADR EXDSPRET */
 }
 
-/* OPTC1 +12 -- CM p. 242: "SET COARS WORKING". */
+/* OPTC1 +014 -- CM p. 242: "SET COARS WORKING". */
 void optc1_after_exdspret(void)
 {
     set_A(ONE);
     ts(ADDRESS_OF(OPTIND));
-    tc(OPTC1 + 14u, ENDEXTVB);
+    tc(OPTC1 + 016u, ENDEXTVB);
 }
 
-/* OPTC1 +15 -- CM p. 242. */
-void optc1_plus15(void)
+/* OPTC1 +017 -- CM p. 242. */
+void optc1_plus017(void)
 {
-    tc(OPTC1 + 15u, ENDEXTVB);
+    tc(OPTC1 + 017u, ENDEXTVB);
 }
 #endif
 
@@ -794,26 +794,26 @@ void imufinek_after_proceed(void)
 void imufinek_after_enter(void)
 {
     set_A(IMUFINEV);
-    tc(IMUFINEK + 8u, BANKCALL); /* CADR EXDSPRET */
+    tc(IMUFINEK + 010u, BANKCALL); /* CADR EXDSPRET */
 }
 
-/* IMUFINEK +10 -- LM p. 273, CM p. 243: "CALL MODE SWITCH PROG". */
+/* IMUFINEK +012 -- LM p. 273, CM p. 243: "CALL MODE SWITCH PROG". */
 void imufinek_after_exdspret(void)
 {
-    tc(IMUFINEK + 10u, BANKCALL); /* CADR IMUFINE */
+    tc(IMUFINEK + 012u, BANKCALL); /* CADR IMUFINE */
 }
 
-/* IMUFINEK +12 -- LM p. 273, CM p. 243: "HIBERNATION". */
+/* IMUFINEK +014 -- LM p. 273, CM p. 243: "HIBERNATION". */
 void imufinek_after_imufine(void)
 {
-    tc(IMUFINEK + 12u, BANKCALL); /* CADR IMUSTALL */
+    tc(IMUFINEK + 014u, BANKCALL); /* CADR IMUSTALL */
 }
 
-/* IMUFINEK +14 -- LM p. 273, CM p. 243: IMUSTALL's bad return. The good
+/* IMUFINEK +016 -- LM p. 273, CM p. 243: IMUSTALL's bad return. The good
  * one is FINEK2. */
 void imufinek_after_imustall_bad(void)
 {
-    tc(IMUFINEK + 14u, ENDEXTVB);
+    tc(IMUFINEK + 016u, ENDEXTVB);
 }
 
 /* FINEK2 -- LM p. 273, CM p. 243.
@@ -877,7 +877,7 @@ void rdruseck(void)
     cs(ADDRESS_OF(FLGWRD11));
     mask(LRBYBIT);
     switch (ccs_register(A_ADDRESS)) {
-    case POSITIVE: tc(RDRUSECK + 15u, ALM_END); return; /* "YES" */
+    case POSITIVE: tc(RDRUSECK + 017u, ALM_END); return; /* "YES" */
     case IS_PLUS_ZERO: checkrr(); return;
     case NEGATIVE:
     case IS_MINUS_ZERO: checkrr_plus1(); return;
@@ -953,17 +953,17 @@ void imuattck_after_chkpooh(void)
 #else
     set_A(OCTAL30); /* "CHECK IF IMU ZERO AND IMU COARSE ARE ON" */
 #endif
-    rand_channel(012);
+    rand_channel(CHAN12);
     if (ccs_register(A_ADDRESS) == POSITIVE) {
         continue_at(ALM_END); /* "NOT ALLOWED IF IMU COARSE OR IMU ZERO ON" */
         return;
     }
 #if LUMINARY099
     set_A(BIT13_14); /* "BOTH BITS 13 AND 14 MUST BE 1 INDICATING THE MODE SELECTED IS OFF." */
-    rxor_channel(031);
+    rxor_channel(CHAN31);
     mask(BIT13_14);
-    if (A_is_zero()) {               /* EXTEND; BZF +2 */
-        continue_at(IMUATTCK + 13u); /* "NEEDLES IS OFF." */
+    if (A_is_zero()) {                /* EXTEND; BZF +2 */
+        continue_at(IMUATTCK + 015u); /* "NEEDLES IS OFF." */
         return;
     }
     continue_at(ALM_END); /* "EXIT. NEEDLES IS ON." */
@@ -973,51 +973,51 @@ void imuattck_after_chkpooh(void)
 }
 
 #if LUMINARY099
-/* IMUATTCK +13 -- LM p. 281. */
-void imuattck_plus13(void)
+/* IMUATTCK +015 -- LM p. 281. */
+void imuattck_plus015(void)
 {
-    tc(IMUATTCK + 13u, TESTXACT);
+    tc(IMUATTCK + 015u, TESTXACT);
 }
 
-/* IMUATTCK +14 -- LM p. 281. */
+/* IMUATTCK +016 -- LM p. 281. */
 void imuattck_after_testxact(void)
 {
     set_A(VNLODCDU);
-    tc(IMUATTCK + 15u, BANKCALL); /* CADR GOXDSPF */
+    tc(IMUATTCK + 017u, BANKCALL); /* CADR GOXDSPF */
 }
 
-/* IMUATTCK +17 -- LM p. 281: V34, terminate. */
+/* IMUATTCK +021 -- LM p. 281: V34, terminate. */
 void imuattck_after_terminate(void)
 {
-    tc(IMUATTCK + 17u, ENDEXT);
+    tc(IMUATTCK + 021u, ENDEXT);
 }
 
-/* IMUATTCK +18 -- LM p. 281: proceed (TC +1). */
+/* IMUATTCK +022 -- LM p. 281: proceed (TC +1). */
 void imuattck_after_proceed(void)
 {
-    tc(IMUATTCK + 18u, IMUATTCK + 19u);
+    tc(IMUATTCK + 022u, IMUATTCK + 023u);
 }
 
-/* IMUATTCK +19 -- LM p. 281: enter. "REDISPLAY OUR VERB." */
+/* IMUATTCK +023 -- LM p. 281: enter. "REDISPLAY OUR VERB." */
 void imuattck_after_enter(void)
 {
     set_A(V43K);
-    tc(IMUATTCK + 20u, BANKCALL); /* CADR EXDSPRET */
+    tc(IMUATTCK + 024u, BANKCALL); /* CADR EXDSPRET */
 }
 
-/* IMUATTCK +22 -- LM p. 281.
+/* IMUATTCK +026 -- LM p. 281.
  * "ENABLE ERROR COUNTERS." (channel 12's bit 6), and the task ATTCK2, two
  * centiseconds on, to "PUT OUT COMMANDS" (".32 SECONDS", the listing's
  * comment says). */
 void imuattck_after_exdspret(void)
 {
     set_A(BIT6);
-    wor_channel(012);
+    wor_channel(CHAN12);
     set_A(TWO);
-    tc(IMUATTCK + 26u, WAITLIST); /* EBANK= THETAD; 2CADR ATTCK2 */
+    tc(IMUATTCK + 032u, WAITLIST); /* EBANK= THETAD; 2CADR ATTCK2 */
 }
 
-/* IMUATTCK +29 -- LM p. 281. */
+/* IMUATTCK +035 -- LM p. 281. */
 void imuattck_after_waitlist(void)
 {
     continue_at(ENDEXT); /* TCF ENDEXT */
@@ -1029,49 +1029,49 @@ void imuattck_after_cklftbts_yes(void)
     tc(IMUATTCK + 7u, TESTXACT);
 }
 
-/* IMUATTCK +8 -- CM p. 249: TESTXACT's return, and CKLFTBTS's before
+/* IMUATTCK +010 -- CM p. 249: TESTXACT's return, and CKLFTBTS's before
  * liftoff. "REMOVE COARSE AND ECTR ENABLE." (channel 12's bits 4 and 6,
  * OCT50), then the angles asked for. */
 void imuattck_after_testxact(void)
 {
     set_A(negate(OCT50)); /* CS OCT50 */
-    wand_channel(012);
+    wand_channel(CHAN12);
     set_A(VNLODCDU);
-    tc(IMUATTCK + 12u, BANKCALL); /* CADR GOXDSPF */
+    tc(IMUATTCK + 014u, BANKCALL); /* CADR GOXDSPF */
 }
 
-/* IMUATTCK +14 -- CM p. 249: terminate. */
+/* IMUATTCK +016 -- CM p. 249: terminate. */
 void imuattck_after_terminate(void)
 {
     continue_at(TRMATTCK); /* TCF TRMATTCK */
 }
 
-/* IMUATTCK +15 -- CM p. 249: proceed (TC +1). */
+/* IMUATTCK +017 -- CM p. 249: proceed (TC +1). */
 void imuattck_after_proceed(void)
 {
-    tc(IMUATTCK + 15u, IMUATTCK + 16u);
+    tc(IMUATTCK + 017u, IMUATTCK + 020u);
 }
 
-/* IMUATTCK +16 -- CM p. 249: enter. "SET E6 FOR NEEDLES.", and NEEDLE11
+/* IMUATTCK +020 -- CM p. 249: enter. "SET E6 FOR NEEDLES.", and NEEDLE11
  * "INITIALIZE CURRENT DAC AND COMMAND VALUES". */
 void imuattck_after_enter(void)
 {
     set_A(EBANK6);
     ts(EBANK_ADDRESS);
-    tc(IMUATTCK + 18u, BANKCALL); /* CADR NEEDLE11 */
+    tc(IMUATTCK + 022u, BANKCALL); /* CADR NEEDLE11 */
 }
 
-/* IMUATTCK +20 -- CM p. 249: "ENABLE ERROR COUNTERS." */
+/* IMUATTCK +024 -- CM p. 249: "ENABLE ERROR COUNTERS." */
 void imuattck_after_needle11(void)
 {
-    tc(IMUATTCK + 20u, BANKCALL); /* CADR NEEDLER2 */
+    tc(IMUATTCK + 024u, BANKCALL); /* CADR NEEDLER2 */
 }
 
-/* IMUATTCK +22 -- CM p. 249: the task ATTCK1 in "4 MS MIN.". */
+/* IMUATTCK +026 -- CM p. 249: the task ATTCK1 in "4 MS MIN.". */
 void imuattck_after_needler2(void)
 {
     set_A(TWO);
-    tc(IMUATTCK + 23u, WAITLIST); /* EBANK= AK; 2CADR ATTCK1 */
+    tc(IMUATTCK + 027u, WAITLIST); /* EBANK= AK; 2CADR ATTCK1 */
 }
 
 /* TRMATTCK -- CM p. 249.
@@ -1126,7 +1126,7 @@ void cklftbts(void)
         return;
     }
     set_A(BIT5);
-    rand_channel(030);
+    rand_channel(CHAN30);
     if (ccs_register(A_ADDRESS) == POSITIVE) {
         continue_at(Q_PLUS_1); /* TCF Q+1 */
         return;

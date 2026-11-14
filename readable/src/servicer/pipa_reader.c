@@ -16,8 +16,8 @@
 
 /* ---- PIPASR -- pp. 869-870 (bank 37) ---- */
 
-/* PIPASR: the time of the reading (TIME2, TIME1) into PIPTIME1, the
- * "CURRENT TIME POSITIVE VALUE", ... */
+/* PIPASR -- p. 869: the time of the reading (TIME2, TIME1) into PIPTIME1,
+ * the "CURRENT TIME POSITIVE VALUE", ... */
 void pipasr(void)
 {
     dca(ADDRESS_OF(TIME2));
@@ -25,9 +25,9 @@ void pipasr(void)
     pipasr_plus_3();
 }
 
-/* ... (PIPASR +3) TEMX, TEMY and TEMZ "INITIALIZE ... AT NEG. ZERO.", DELV
- * +0 (DELVX's high word is written by the reading), and PIPAGE +0: "SHOW
- * PIPA READING IN PROGRESS"; ... */
+/* PIPASR +3 -- p. 870: ... (PIPASR +3) TEMX, TEMY and TEMZ "INITIALIZE ...
+ * AT NEG. ZERO.", DELV +0 (DELVX's high word is written by the reading), and
+ * PIPAGE +0: "SHOW PIPA READING IN PROGRESS"; ... */
 void pipasr_plus_3(void)
 {
     set_A(negate(ZERO));
@@ -45,9 +45,9 @@ void pipasr_plus_3(void)
     repip1();
 }
 
-/* ... REPIP1: "X AND Y PIPS READ": their complements into TEMX and TEMY,
- * then the counts out and -0 in ("PIPAS SET TO NEG ZERO AS READ."), into
- * DELVX and DELVY; ... */
+/* REPIP1 -- p. 870: ... REPIP1: "X AND Y PIPS READ": their complements into
+ * TEMX and TEMY, then the counts out and -0 in ("PIPAS SET TO NEG ZERO AS
+ * READ."), into DELVX and DELVY; ... */
 void repip1(void)
 {
     dcs(ADDRESS_OF(PIPAX));
@@ -58,7 +58,7 @@ void repip1(void)
     repip3();
 }
 
-/* ... REPIP3: "REPEAT PROCESS FOR Z PIP", ... */
+/* REPIP3 -- p. 870: ... REPIP3: "REPEAT PROCESS FOR Z PIP", ... */
 void repip3(void)
 {
     cs(ADDRESS_OF(PIPAZ));
@@ -67,16 +67,17 @@ void repip3(void)
     dodelvz();
 }
 
-/* ... DODELVZ: into DELVZ. (Not modelled: entered with an overflow in A,
- * the TS would skip REPIP4's EXTEND and run its DCA as a CA.) */
+/* DODELVZ -- p. 870: ... DODELVZ: into DELVZ. (Not modelled: entered with an
+ * overflow in A, the TS would skip REPIP4's EXTEND and run its DCA as a
+ * CA.) */
 void dodelvz(void)
 {
     if (ts(ADDRESS_OF(DELVZ))) not_modelled();
     repip4();
 }
 
-/* REPIP4: "COMPUTE GUIDANCE PERIOD" (PGUIDE, PIPTIME1 less the last
- * reading's PIPTIME), the CDUs into CDUTEMP, "READ CDUS INTO HIGH ORDER
+/* REPIP4 -- p. 870: "COMPUTE GUIDANCE PERIOD" (PGUIDE, PIPTIME1 less the
+ * last reading's PIPTIME), the CDUs into CDUTEMP, "READ CDUS INTO HIGH ORDER
  * CDUTEMPS", and the counts into PIPATMP. Back (TC Q). */
 void repip4(void)
 {
@@ -102,7 +103,7 @@ void repip4(void)
 
 /* ---- REREADAC -- p. 871 (bank 37) ---- */
 
-/* REREADAC: with PIPAGE positive, "PIP READING NOT STARTED.  GO TO
+/* REREADAC -- p. 871: with PIPAGE positive, "PIP READING NOT STARTED.  GO TO
  * BEGINNING" (READACCS). Else the reading goes on where it stopped, its
  * return PIPSDONE ("SET UP RETURN FROM PIPASR": DONEADR's GENADR in Q).
  * (CCS PIPAGE's other outcomes, as the AGC runs them: negative, Q gets
@@ -136,9 +137,9 @@ void rereadac(void)
      * complement (CS TEMZ; but +0 for TEMZ +0, which the CCS leaves in A),
      * into DELVZ. "TEMZ = -0, L HAS ZPIP VALUE.": that, and REPIP4. */
     switch (ccs_at(ADDRESS_OF(TEMZ))) {
-    case POSITIVE:
-    case NEGATIVE: cs(ADDRESS_OF(TEMZ)); break;
+    case POSITIVE: cs(ADDRESS_OF(TEMZ)); break;
     case IS_PLUS_ZERO: break;
+    case NEGATIVE: cs(ADDRESS_OF(TEMZ)); break;
     case IS_MINUS_ZERO:
         lxch(ADDRESS_OF(DELVZ));
         repip4();
@@ -147,16 +148,16 @@ void rereadac(void)
     dodelvz();
 }
 
-/* CHKTEMX: TEMX -0, unchanged: X and Y not read (REPIP1). Else ("YES")
- * their counts are the complements of TEMX and TEMY (+0 for TEMX +0, as
- * the CCS leaves it), into DELVX and DELVY; "ZERO X AND Y PIPS" (-0 and
+/* CHKTEMX -- p. 871: TEMX -0, unchanged: X and Y not read (REPIP1). Else
+ * ("YES") their counts are the complements of TEMX and TEMY (+0 for TEMX +0,
+ * as the CCS leaves it), into DELVX and DELVY; "ZERO X AND Y PIPS" (-0 and
  * the +0 left in L: "L STILL ZERO FROM ABOVE"), and Z (REPIP3). */
 void chktemx(void)
 {
     switch (ccs_at(ADDRESS_OF(TEMX))) { /* "HAS THIS CHANGED" */
-    case POSITIVE:
-    case NEGATIVE: cs(ADDRESS_OF(TEMX)); break;
+    case POSITIVE: cs(ADDRESS_OF(TEMX)); break;
     case IS_PLUS_ZERO: break;
+    case NEGATIVE: cs(ADDRESS_OF(TEMX)); break;
     case IS_MINUS_ZERO: repip1(); return; /* "NO" */
     }
     ts(ADDRESS_OF(DELVX));
@@ -169,8 +170,8 @@ void chktemx(void)
 
 /* ---- TMPTOSPT -- p. 872 (bank 33) ---- */
 
-/* TMPTOSPT: the CDUs of the PIPA reading (CDUTEMP) into CDUSPOT, in its
- * order Y, Z, X. Back (TC Q). */
+/* TMPTOSPT -- p. 872: the CDUs of the PIPA reading (CDUTEMP) into CDUSPOT,
+ * in its order Y, Z, X. Back (TC Q). */
 void tmptospt(void)
 {
     ca(ADDRESS_OF(CDUTEMPY));
@@ -184,7 +185,8 @@ void tmptospt(void)
 
 /* ---- LRHTASK -- p. 872 (bank 21) ---- */
 
-/* LRHTASK, "A WAITLIST TASK SET BY READACCS DURING THE DESCENT BRAKING
+/* LRHTASK -- p. 872, "A WAITLIST TASK SET BY READACCS DURING THE DESCENT
+ * BRAKING
  * PHASE": unless "LR BYPASS SET -- BYPASS ALL LR READING." (LRBYPASS),
  * with the READLR flag set and the LR read not inhibited (NOLRREAD
  * clear), the LRHJOB job (NOVAC at priority 32, 2CADR LRHJOB): "LR READ
@@ -213,7 +215,7 @@ void lrhtask(void)
     tc_to(LRHTASK + 015u, NOVAC);
 }
 
-/* GRP2OFF: restart group 2 off, and on to R10,R11 (R10,R11A). */
+/* GRP2OFF -- p. 872: restart group 2 off, and on to R10,R11 (R10,R11A). */
 void grp2off(void)
 {
     group_off(ADDRESS_OF(MINUS_PHASE2));

@@ -7,17 +7,17 @@
  * in their order (powered_flight_keys.inc and cm_powered_flight_keys.inc,
  * which tools/p20_p25_keys.py writes from them).
  *
- * Plumbing only. A basic routine runs from its key until control leaves
- * the file: at a TC or TCF to a routine outside it (USPRCADR, MPACVBUF,
- * SPSIN, SPCOS, the CM's DMPSUB, the LM's BANKCALL, VXV and SWRETURN),
- * into the interpreter (INTPRET), or back to a caller. A return to a
- * place in the file (CD*TR*GS's TC TEM2 to CDUTRIG +2, AX*SR*T's TC
- * RTNSAVER to C*MM*N2 +1) goes on there, as the faithful port does. An order pair is one pass of the readable interpreter over
- * the listing's words (interpret_listing()), in the part of the code LOC
- * is in. The words after the TC USPRCADRs (CADR CDULOGIC, COSINE and SINE
- * +1) and the LM's TCF VXV are order pairs too: reached at DANZIG with an
- * EXIT left in EDOP still to run, which goes back to the basic code after
- * them.
+ * Plumbing only. A basic routine runs from its key until control leaves the
+ * file: at a TC or TCF to a routine outside it (USPRCADR, MPACVBUF, SPSIN,
+ * SPCOS, the CM's DMPSUB, the LM's BANKCALL, VXV and SWRETURN), into the
+ * interpreter (INTPRET), or back to a caller. A return to a place in the
+ * file (CD*TR*GS's TC TEM2 to CDUTRIG +2, AX*SR*T's TC RTNSAVER to C*MM*N2
+ * +1) goes on there, as the faithful port does. An order pair is one pass of
+ * the readable interpreter over the listing's words (interpret_listing()),
+ * in the part of the code LOC is in. The words after the TC USPRCADRs (CADR
+ * CDULOGIC, COSINE and SINE +1) and the LM's TCF VXV are order pairs too:
+ * reached at DANZIG with an EXIT left in EDOP still to run, which goes back
+ * to the basic code after them.
  *
  * The states the faithful routines take: FB the key's bank, ZERO +0, the
  * bank registers agreeing, the interrupt and superbank latches in range,

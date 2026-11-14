@@ -2,7 +2,7 @@
 /* P51-P53.agc, part 4 (Luminary099 pp. 945-948, bank 14): R55, the gyro
  * torque; R54, alias CHKSDATA, the star data test; CAL53A, the coarse
  * alignment if one is needed and the fine alignment; MATMOVE; and RDCDUS,
- * the CDUs read for an RTB.
+ * the CDUs read for an RTB. The faithful C is c64-port/src/lm_p51_p53.c.
  *
  * Each call out of the file (BANKCALL, PHASCHNG, CURTAINS, GOTOPOOH)
  * leaves Z at the routine and Q at the word after the TC, where the
@@ -14,8 +14,6 @@
 #include "../interpreter/interpreter.h"
 
 #if LUMINARY099
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* ---- R55 -- p. 945 ---- */
 
@@ -29,8 +27,8 @@ static const word r55_words[] = {
 
 const struct interpretive_code R55_CODE = {014u, R55, COUNT(r55_words), r55_words};
 
-/* R55.1: the angles flashed (V06N93): terminate, proceed (torque, R55.2)
- * or enter (no torque, R55RET). */
+/* R55.1 -- p. 945: the angles flashed (V06N93): terminate, proceed (torque,
+ * R55.2) or enter (no torque, R55RET). */
 void r55_1(void)
 {
     set_A(V06N93);
@@ -54,8 +52,8 @@ void r55_enter(void)
     r55ret();
 }
 
-/* R55.2: a restart point (PHASCHNG, 00214); then IMUPULSE torques the
- * gyros (OGC, R55CDR) and IMUSTALL waits (CURTAINS when it fails); then
+/* R55.2 -- p. 945: a restart point (PHASCHNG, 00214); then IMUPULSE torques
+ * the gyros (OGC, R55CDR) and IMUSTALL waits (CURTAINS when it fails); then
  * a restart point again (04024). */
 void r55_2(void)
 {
@@ -83,7 +81,7 @@ void r55_torqued(void)
     tc_to(R55_2 + 010u, PHASCHNG); /* OCT 04024 */
 }
 
-/* R55RET: back to the caller (QMIN). */
+/* R55RET -- p. 945: back to the caller (QMIN). */
 void r55ret(void)
 {
     tc_at(R55RET);
@@ -139,8 +137,9 @@ static const word chksdata_words[] = {
 const struct interpretive_code CHKSDATA_CODE = {014u, CHKSDATA, COUNT(chksdata_words),
                                                 chksdata_words};
 
-/* The difference flashed (VB6N5): terminate, proceed (FREEFLAG stays set:
- * on to the torquing, CHKSDA) or enter (FREEFLAG cleared: mark again). */
+/* CHKSDATA +034 -- p. 946: The difference flashed (VB6N5): terminate,
+ * proceed (FREEFLAG stays set: on to the torquing, CHKSDA) or enter
+ * (FREEFLAG cleared: mark again). */
 void chksdata_after_exit(void)
 {
     set_A(VB6N5);
@@ -173,7 +172,7 @@ static const word chksdata_enter_words[] = {
 const struct interpretive_code CHKSDATA_ENTER_CODE = {
     014u, CHKSDATA + 042u, COUNT(chksdata_enter_words), chksdata_enter_words};
 
-/* CHKSDA: back to the caller (QMIN). */
+/* CHKSDA -- p. 946: back to the caller (QMIN). */
 void chksda(void)
 {
     tc_at(CHKSDA);
@@ -222,8 +221,8 @@ static const word cal53a_words[] = {
 
 const struct interpretive_code CAL53A_CODE = {014u, CAL53A, COUNT(cal53a_words), cal53a_words};
 
-/* An axis that needs it: a restart point (PHASCHNG, 04024), then the
- * coarse alignment (COARFINE). */
+/* CAL53A +026 -- p. 947: An axis that needs it: a restart point (PHASCHNG,
+ * 04024), then the coarse alignment (COARFINE). */
 void cal53a_after_exit(void)
 {
     tc_to(CAL53A + 026u, PHASCHNG); /* OCT 04024 */
@@ -277,8 +276,8 @@ static const word matmove_words[] = {
 
 const struct interpretive_code MATMOVE_CODE = {014u, MATMOVE, COUNT(matmove_words), matmove_words};
 
-/* RDCDUS, "READ CDUS", an RTB's routine: CDUX, CDUY and CDUZ to the work
- * area's words 1-3, with interrupts held off; back to DANZIG. */
+/* RDCDUS -- p. 948, "READ CDUS", an RTB's routine: CDUX, CDUY and CDUZ to
+ * the work area's words 1-3, with interrupts held off; back to DANZIG. */
 void rdcdus(void)
 {
     inhint();

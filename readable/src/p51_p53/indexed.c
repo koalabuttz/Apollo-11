@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P51-P53.agc: INDEX before CA, TS and DXCH, as R52, R59 and PLANET use
- * it (parts 6 and 7). */
+/* P51-P53.agc: INDEX before CA, TS and DXCH, as R52, R59 and PLANET use it
+ * (parts 6 and 7). The faithful C is c64-port/src/lm_p51_p53.c. */
 #include "p51_p53.h"
 #include "../agc/names.h"
 

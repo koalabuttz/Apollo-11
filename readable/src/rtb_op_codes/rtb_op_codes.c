@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: MIT */
 /* RTB_OP_CODES.agc (Luminary099, pp. 1397-1402) and RT8_OP_CODES.agc
- * (Comanche055, pp. 1508-1516), the same code in both: the basic routines
- * an interpretive RTB runs (return to basic: RTB names one of these, the
- * interpreter's SWCALL goes there, and the routine ends back at DANZIG,
- * the interpreter's next order). The CM's file adds READPIPS, VECMODE,
- * INCRCDUS, TRANSP1 and TRANSP2, and keeps QUALITY1 and QUALITY2
- * (quality.c), which the LM has in ORBITAL_INTEGRATION.
+ * (Comanche055, pp. 1508-1516), the same code in both: the basic routines an
+ * interpretive RTB runs (return to basic: RTB names one of these, the
+ * interpreter's SWCALL goes there, and the routine ends back at DANZIG, the
+ * interpreter's next order). The CM's file adds READPIPS, VECMODE, INCRCDUS,
+ * TRANSP1 and TRANSP2, and keeps QUALITY1 and QUALITY2 (quality.c), which
+ * the LM has in ORBITAL_INTEGRATION. The faithful C is
+ * c64-port/src/lm_rtb_op_codes.c and cm_rtb_op_codes.c.
  *
  * Each routine here ends where the listing leaves the file: at SLOAD2,
  * NEWMODE or VMODE (which set the mode and go on to DANZIG), at DANZIG,
@@ -18,13 +19,6 @@
 #include "../interpreter/interpreter.h"
 
 static void one_to2sub(void);
-
-/* TC at to a routine of another file: Q the word after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
 
 /* TC Q, the return to the word in Q: its address bits (an overflow in Q,
  * its 16th bit, is not part of the address). Not modelled: a Q that is
@@ -109,7 +103,7 @@ void sgnagree(void)
     tc_to(SGNAGREE, TPAGREE);
 }
 
-/* SGNAGREE +1, where TPAGREE returns. */
+/* SGNAGREE +1 -- LM p. 1397, CM p. 1509, where TPAGREE returns. */
 void sgnagree_after_tpagree(void)
 {
     continue_at(DANZIG); /* TCF DANZIG */
@@ -126,8 +120,8 @@ void one_sto2s(void)
     one_sto2s_plus1();
 }
 
-/* 1STO2S +1, where 1TO2SUB returns: MPAC +1 gets +0, and NEWMODE sets the
- * mode to double precision (A +0). */
+/* 1STO2S +1 -- LM p. 1397, CM p. 1509, where 1TO2SUB returns: MPAC +1 gets
+ * +0, and NEWMODE sets the mode to double precision (A +0). */
 void one_sto2s_plus1(void)
 {
     set_A(ZERO); /* CAF ZERO */
@@ -267,8 +261,8 @@ void incrcdus_plus7(void)
 {
     incr(ADDRESS_OF(BUF));
     ca(MPAC_AT(5u));
-    tc_at(INCRCDUS + 9u);
-    if (cduinc() == INCRCDUS + 10u) incrcdus_plus10();
+    tc_at(INCRCDUS + 011u);
+    if (cduinc() == INCRCDUS + 012u) incrcdus_plus10();
 }
 
 void incrcdus_plus10(void)
@@ -365,7 +359,8 @@ void pulseimu(void)
     tc_to(PULSEIMU + 2u, BANKCALL);                         /* CADR IMUPULSE */
 }
 
-/* PULSEIMU +4, where IMUPULSE returns: back to DANZIG. */
+/* PULSEIMU +4 -- LM p. 1400, CM p. 1512, where IMUPULSE returns: back to
+ * DANZIG. */
 void pulseimu_after_imupulse(void)
 {
     continue_at(DANZIG); /* TCF DANZIG */
@@ -481,12 +476,12 @@ static bool upper_half_zero(unsigned address)
 
 static void offtunit_minus2(void);
 
-/* NORMUNIT +5, where VECAGREE returns: if the upper halves of all three
- * components are zero, each is shifted "LEFT 13" (times BIT14, added back
- * in by DAS, which "GAINS A LITTLE ACCURACY") and the shift count is 13;
- * else (NOSHIFT) +0. "IF NORMUNIT IS USED AND THE UPPER ORDER HALVES OF
- * ALL COMPONENTS ARE ZERO, THE MAGNITUDE RETURNED IN 36D WILL BE TOO LARGE
- * BY A FACTOR OF 2(13)". */
+/* NORMUNIT +5 -- LM p. 1401, CM p. 1514, where VECAGREE returns: if the
+ * upper halves of all three components are zero, each is shifted "LEFT 13"
+ * (times BIT14, added back in by DAS, which "GAINS A LITTLE ACCURACY") and
+ * the shift count is 13; else (NOSHIFT) +0. "IF NORMUNIT IS USED AND THE
+ * UPPER ORDER HALVES OF ALL COMPONENTS ARE ZERO, THE MAGNITUDE RETURNED IN
+ * 36D WILL BE TOO LARGE BY A FACTOR OF 2(13)". */
 void normunit_after_vecagree(void)
 {
     if (!upper_half_zero(MPAC_AT(0u)) || !upper_half_zero(MPAC_AT(3u)) ||
@@ -508,9 +503,9 @@ void normunit_after_vecagree(void)
     offtunit_minus2();
 }
 
-/* OFFTUNIT -2: the count to 37D of the work area kept in MPAC +2 (INDEX
- * MPAC +2; TS 37D), and UNIT +1 by POSTJUMP, past the TC VECAGREE UNIT
- * starts with, done already. */
+/* OFFTUNIT -2 -- LM p. 1402, CM p. 1515: the count to 37D of the work area
+ * kept in MPAC +2 (INDEX MPAC +2; TS 37D), and UNIT +1 by POSTJUMP, past the
+ * TC VECAGREE UNIT starts with, done already. */
 static void offtunit_minus2(void)
 {
     if (ts_indexed(indexed_by(MPAC_AT(2u), TS_37D))) not_modelled();
@@ -525,7 +520,7 @@ void vecsgnag(void)
     tc_to(VECSGNAG, BANKCALL); /* CADR VECAGREE */
 }
 
-/* VECSGNAG +2: back to DANZIG (TC DANZIG). */
+/* VECSGNAG +2 -- LM p. 1402, CM p. 1515: back to DANZIG (TC DANZIG). */
 void vecsgnag_after_vecagree(void)
 {
     tc_to(VECSGNAG + 2u, DANZIG);

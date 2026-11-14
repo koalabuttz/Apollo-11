@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P61-P67.agc of the CM, part 2 (Comanche055 pp. 806-811, bank 26):
- * S61.2, which P61 calls for its displays, N60 and N63.
+/* P61-P67.agc of the CM, part 2 (Comanche055 pp. 806-811, bank 26): S61.2,
+ * which P61 calls for its displays, N60 and N63. The faithful C is
+ * c64-port/src/cm_p61_p67.c.
  *
  * S61.2 predicts the entry from the state vector P61 left in RONE and VONE,
  * by conics (the TFF routines, TIME_OF_FREE_FALL.agc): the time, range and
@@ -17,8 +18,6 @@
 #include "../interpreter/interpreter.h"
 
 #if COMANCHE055
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* S61.2: the MU for the conics: an EMSALT under 290K FT is an orbital
  * entry ("ESTABLISH MU FOR ORBITAL ENTRIES", 1/RTMU); above it, LUNENT, a

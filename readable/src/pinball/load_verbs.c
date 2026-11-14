@@ -64,18 +64,18 @@ void abcload_plus6(void)
 
 void abcload_plus8(void)
 {
-    tc(ABCLOAD + 8u, REQDATY);
+    tc(ABCLOAD + 010u, REQDATY);
 }
 
 void abcload_plus9(void)
 {
     set_A(VBSP3LD);
-    tc(ABCLOAD + 10u, UPDATVB - 1u);
+    tc(ABCLOAD + 012u, UPDATVB - 1u);
 }
 
 void abcload_plus11(void)
 {
-    tc(ABCLOAD + 11u, REQDATZ);
+    tc(ABCLOAD + 013u, REQDATZ);
 }
 
 static bool alldc_oc_returns(void);
@@ -100,39 +100,39 @@ void putxyz_plus7(void)
     /* INDEX NOUNADD; TS 0. An overflow (not from PUTCOM) would skip CAF ONE. */
     if (ts(indexed_erasable(0u, fetch(ADDRESS_OF(NOUNADD))))) not_modelled();
     set_A(ONE); /* "Y COMP" */
-    tc(PUTXYZ + 10u, PUTCOM);
+    tc(PUTXYZ + 012u, PUTCOM);
 }
 
 void putxyz_plus11(void)
 {
     if (ts(indexed_erasable(1u, fetch(ADDRESS_OF(NOUNADD))))) not_modelled();
     set_A(TWO); /* "Z COMP" */
-    tc(PUTXYZ + 14u, PUTCOM);
+    tc(PUTXYZ + 016u, PUTCOM);
 }
 
-/* PUTXYZ +15, where PUTCOM comes back the third time. "IF NOUN 7 HAS JUST
- * BEEN LOADED, SET FLAG BITS AS SPECIFIED." */
-void putxyz_plus15(void)
+/* PUTXYZ +017 -- LM p. 425, CM p. 343, where PUTCOM comes back the third
+ * time. "IF NOUN 7 HAS JUST BEEN LOADED, SET FLAG BITS AS SPECIFIED." */
+void putxyz_plus017(void)
 {
     if (ts(indexed_erasable(2u, fetch(ADDRESS_OF(NOUNADD))))) not_modelled();
     set_A(negate(SEVEN));
     ad_at(ADDRESS_OF(NOUNREG));
     if (!A_is_zero()) { /* EXTEND; BZF +2 */
-        tc(PUTXYZ + 21u, LOADLV);
+        tc(PUTXYZ + 025u, LOADLV);
         return;
     }
-    putxyz_plus22();
+    putxyz_plus026();
 }
 
-/* PUTXYZ +22, BITSOFF and BITSOFF1: noun 07. XREG is the "ECADR OF FLAG
- * WORD" (SETNCADR +1 sets EBANK and NOUNADD), YREG the "BITS TO BE
- * PROCESSED", ZREG "ZERO TO RESET BITS, NON-ZERO TO SET BITS". With
- * interrupts held off, the bits are set (ADS of the ones not yet set) or
- * reset (MASK with their complement). */
-void putxyz_plus22(void)
+/* PUTXYZ +026 -- LM p. 426, CM p. 344, BITSOFF and BITSOFF1: noun 07. XREG
+ * is the "ECADR OF FLAG WORD" (SETNCADR +1 sets EBANK and NOUNADD), YREG the
+ * "BITS TO BE PROCESSED", ZREG "ZERO TO RESET BITS, NON-ZERO TO SET BITS".
+ * With interrupts held off, the bits are set (ADS of the ones not yet set)
+ * or reset (MASK with their complement). */
+void putxyz_plus026(void)
 {
     ca(ADDRESS_OF(XREG));
-    tc_at(PUTXYZ + 23u);
+    tc_at(PUTXYZ + 027u);
     setncadr_plus1();
     ca(ADDRESS_OF(ZREG));
     inhint();
@@ -143,7 +143,7 @@ void putxyz_plus22(void)
     cs(indexed_by(0u, fetch(ADDRESS_OF(NOUNADD))));
     mask_at(ADDRESS_OF(YREG));
     ads(indexed_erasable(0u, fetch(ADDRESS_OF(NOUNADD)))); /* "SET BITS." */
-    tc_at(PUTXYZ + 33u);
+    tc_at(PUTXYZ + 041u);
     bitsoff1();
 }
 
@@ -193,7 +193,7 @@ void abload_plus6(void)
 
 void abload_plus8(void)
 {
-    tc(ABLOAD + 8u, REQDATY);
+    tc(ABLOAD + 010u, REQDATY);
 }
 
 void putxy(void)
@@ -210,13 +210,13 @@ void putxy_plus7(void)
 {
     if (ts(indexed_erasable(0u, fetch(ADDRESS_OF(NOUNADD))))) not_modelled();
     set_A(ONE); /* "Y COMP" */
-    tc(PUTXY + 10u, PUTCOM);
+    tc(PUTXY + 012u, PUTCOM);
 }
 
 void putxy_plus11(void)
 {
     if (ts(indexed_erasable(1u, fetch(ADDRESS_OF(NOUNADD))))) not_modelled();
-    tc(PUTXY + 13u, LOADLV);
+    tc(PUTXY + 015u, LOADLV);
 }
 
 /* ALOAD -- LM p. 426, CM p. 344. Verb 21: the first word only. */
@@ -235,7 +235,7 @@ void aload_plus1(void)
 void aload_plus6(void)
 {
     if (ts(indexed_erasable(0u, fetch(ADDRESS_OF(NOUNADD))))) not_modelled();
-    tc(ALOAD + 8u, LOADLV);
+    tc(ALOAD + 010u, LOADLV);
 }
 
 /* BLOAD and CLOAD -- LM pp. 426-427, CM pp. 344-345. Verbs 22 and 23: the
@@ -257,13 +257,13 @@ void bload_plus5(void)
 {
     read_noun_tables(BLOAD + 7u);
     set_A(ONE);
-    tc(BLOAD + 9u, PUTCOM);
+    tc(BLOAD + 011u, PUTCOM);
 }
 
 void bload_plus10(void)
 {
     if (ts(indexed_erasable(1u, fetch(ADDRESS_OF(NOUNADD))))) not_modelled();
-    tc(BLOAD + 12u, LOADLV);
+    tc(BLOAD + 014u, LOADLV);
 }
 
 void cload(void)
@@ -283,13 +283,13 @@ void cload_plus5(void)
 {
     read_noun_tables(CLOAD + 7u);
     set_A(TWO);
-    tc(CLOAD + 9u, PUTCOM);
+    tc(CLOAD + 011u, PUTCOM);
 }
 
 void cload_plus10(void)
 {
     if (ts(indexed_erasable(2u, fetch(ADDRESS_OF(NOUNADD))))) not_modelled();
-    tc(CLOAD + 12u, LOADLV);
+    tc(CLOAD + 014u, LOADLV);
 }
 
 /* LOADLV -- LM p. 427, CM p. 345. The load is done: DECBRNCH cleared,
@@ -329,13 +329,13 @@ static bool alldc_oc_returns(void)
     cs(ADDRESS_OF(SR));
     cs(ADDRESS_OF(SR)); /* "SHIFTED RIGHT 2" */
     switch (ccs_at(A_ADDRESS)) {
-    case POSITIVE:
-    case NEGATIVE: ad_at(ADDRESS_OF(DECOUNT)); break;     /* "SOME ONES IN LOW 3" */
+    case POSITIVE: ad_at(ADDRESS_OF(DECOUNT)); break;     /* TCF +2: "SOME ONES IN LOW 3" */
     case IS_PLUS_ZERO: tc_return(Q_ADDRESS); return true; /* "ALL ZEROS. ALL OCTAL. OK" */
+    case NEGATIVE: ad_at(ADDRESS_OF(DECOUNT)); break;
     case IS_MINUS_ZERO: break;
     }
     if (!A_is_zero()) { /* EXTEND; BZF +2 */
-        tc(ALLDC_OC + 11u, ALMCYCLE);
+        tc(ALLDC_OC + 013u, ALMCYCLE);
         return false;
     }
     goq(); /* "ALL REQUIRED ARE DEC. OK" */
@@ -400,19 +400,19 @@ void putcom(void)
     ts(ADDRESS_OF(MPAC) + 1u);
     xch(indexed_erasable(ADDRESS_OF(XREG), decount));
     ts(ADDRESS_OF(MPAC));
-    if (!mixed_noun(PUTCOM + 12u)) {
-        tc_at(PUTCOM + 13u); /* "NORMAL NOUN" */
+    if (!mixed_noun(PUTCOM + 014u)) {
+        tc_at(PUTCOM + 015u); /* "NORMAL NOUN" */
         putnorm();
         return;
     }
     ca(indexed_by(ADDRESS_OF(IDAD1TEM),
                   decount)); /* "GET IDADDTAB ENTRY FOR COMPONENT K OF NOUN." */
     mask(LOW11);             /* "(ECADR)SUBK FOR CURRENT COMP OF NOUN" */
-    tc_at(PUTCOM + 17u);
+    tc_at(PUTCOM + 021u);
     setncadr(); /* "ECADR INTO NOUNCADR. SETS EB, NOUNADD." */
     su_at(ADDRESS_OF(DECOUNT));
     ts(ADDRESS_OF(NOUNADD)); /* "PLACE (ESUBK)-K INTO NOUNADD" */
-    put_by_decbrnch(PUTCOM + 21u, true);
+    put_by_decbrnch(PUTCOM + 025u, true);
 }
 
 /* PUTNORM -- LM pp. 429-430, CM pp. 347-348. A normal noun: "ECADR FROM
@@ -452,7 +452,7 @@ static void put_by_decbrnch(word at, bool mixed)
         if (!mixed) {
             set_A(ZERO); /* "DP" */
             ts(ADDRESS_OF(DECOUNT));
-            tc_at(PUTNORM + 9u);
+            tc_at(PUTNORM + 011u);
         }
         putdpcom();
         return;
@@ -513,7 +513,7 @@ void chanload(void)
     mask(LOW9);
     xch(ADDRESS_OF(MPAC));
     write_channel(fetch(ADDRESS_OF(MPAC))); /* EXTEND; INDEX MPAC; WRITE 0 */
-    tc(CHANLOAD + 10u, LOADLV);
+    tc(CHANLOAD + 012u, LOADLV);
 }
 
 /* PUTDECSF -- LM p. 430, CM p. 348. "PUTDECSF FINDS MIXBR AND DECOUNT
@@ -530,9 +530,9 @@ void putdecsf(void)
     dtcb(PUTDECSF + 4u); /* "LOADS SFTEMP1, SFTEMP2." */
     gtsfin();
     if (mixed_noun(PUTDECSF + 6u)) {
-        tc_at(PUTDECSF + 8u);
+        tc_at(PUTDECSF + 010u);
         sfrutmix();
-        tc_at(PUTDECSF + 9u);
+        tc_at(PUTDECSF + 011u);
         putdcsf2();
         return;
     }

@@ -9,8 +9,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- TARGETNG -- pp. 848-850 ---- */
 
 /* TARGETNG ("TARGETNG IS CALLED BY P61, FROM GROUP 4.", "BY ENTRY, FROM

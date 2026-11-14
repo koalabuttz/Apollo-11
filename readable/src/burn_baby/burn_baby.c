@@ -16,16 +16,7 @@
 #if LUMINARY099
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array)   (sizeof(array) / sizeof((array)[0]))
 #define BURN_BABY_BANK 036u
-
-/* TC at, to a routine out of the file or to INTPRET: Q gets the return
- * and the routine runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
 
 /* EXTEND; DCA NEG0; DXCH -PHASEn: restart group n ends (-PHASEn -0, PHASEn
  * +0, from NEG0 and the word after it). */
@@ -77,14 +68,14 @@ void p41table(void)
 
 /* ---- BURNBABY -- p. 733 ---- */
 
-/* BURNBABY: group 4 restarts here (TC PHASCHNG, OCT 04024), */
+/* BURNBABY -- p. 733: group 4 restarts here (TC PHASCHNG, OCT 04024), */
 void burnbaby(void)
 {
     tc_to(BURNBABY, PHASCHNG);
 }
 
-/* DVTOTAL cleared ("EXTIRPATE JUNK LEFT IN DVTOTAL"), and P40AUTO, which
- * "MUST BE BANKCALLED EVEN FROM ITS" own bank. */
+/* BURNBABY +2 -- p. 733: DVTOTAL cleared ("EXTIRPATE JUNK LEFT IN DVTOTAL"),
+ * and P40AUTO, which "MUST BE BANKCALLED EVEN FROM ITS" own bank. */
 void burnbaby_after_phaschng(void)
 {
     set_A(ZERO);
@@ -93,7 +84,8 @@ void burnbaby_after_phaschng(void)
     tc_to(BURNBABY + 5u, BANKCALL); /* CADR P40AUTO */
 }
 
-/* B*RNB*B*: TIG kept in GOBLTIME, the engine commanded off (ENGINOF3), */
+/* B*RNB*B* -- p. 733: TIG kept in GOBLTIME, the engine commanded off
+ * (ENGINOF3), */
 void b_star_rnb_star_b_star(void)
 {
     dca(ADDRESS_OF(TIG)); /* EXTEND; DCA TIG: "STORE NOMINAL TIG FOR OBLATENESS COMP." */
@@ -102,7 +94,7 @@ void b_star_rnb_star_b_star(void)
     tc_to(B_STAR_RNB_STAR_B_STAR + 4u, IBNKCALL); /* CADR ENGINOF3 */
 }
 
-/* and on to the program's SPOT, table word 5. */
+/* B*RNB*B* +6 -- p. 733: and on to the program's SPOT, table word 5. */
 void b_star_rnb_star_b_star_after_enginof3(void)
 {
     relint();
@@ -119,8 +111,8 @@ void p40spot(void)
 
 /* ---- P41SPOT (P63SPOT) -- p. 734 ---- */
 
-/* P41SPOT: to the interpreter, for P41SPOT_CODE: the CSM's state vector
- * integrated to TIG -29.9 seconds, then the LM's (MIDTOAV1). */
+/* P41SPOT -- p. 734: to the interpreter, for P41SPOT_CODE: the CSM's state
+ * vector integrated to TIG -29.9 seconds, then the LM's (MIDTOAV1). */
 void p41spot(void)
 {
     tc_to(P41SPOT, INTPRET);
@@ -156,14 +148,15 @@ static const word p41spot_words[] = {
     ADDRESS(MIDTOAV1),
 };
 
-/* MIDTOAV1's return: "MADE IT IN TIME." */
+/* GOMIDAV +2 -- p. 734: MIDTOAV1's return: "MADE IT IN TIME." */
 void gomidav_after_midtoav1(void)
 {
     callt_35();
 }
 
-/* Its other return: "TIG WAS SLIPPED", so TIG becomes 29.9 seconds after
- * the time the integration reached (PIPTIME1, the low word of PIPTIME). */
+/* GOMIDAV +3 -- p. 734: Its other return: "TIG WAS SLIPPED", so TIG becomes
+ * 29.9 seconds after the time the integration reached (PIPTIME1, the low
+ * word of PIPTIME). */
 void gomidav_after_midtoav1_slipped(void)
 {
     dca(ADDRESS_OF(PIPTIME1));
@@ -173,8 +166,8 @@ void gomidav_after_midtoav1_slipped(void)
     callt_35();
 }
 
-/* CALLT-35: the time until TIG -30 (MPAC, kept in SAVET-30), less five
- * seconds, until TIG -35, when TIG-35 runs (LONGCALL); */
+/* CALLT-35 -- p. 734: the time until TIG -30 (MPAC, kept in SAVET-30), less
+ * five seconds, until TIG -35, when TIG-35 runs (LONGCALL); */
 void callt_35(void)
 {
     dxch(ADDRESS_OF(MPAC));
@@ -185,13 +178,14 @@ void callt_35(void)
     tc_to(CALLT_35 + 7u, LONGCALL); /* 2CADR TIG-35 */
 }
 
-/* group 4's restart at TIG-35 (OCT 20254), */
+/* CALLT-35 +012 -- p. 734: group 4's restart at TIG-35 (OCT 20254), */
 void callt_35_after_longcall(void)
 {
     tc_to(CALLT_35 + 012u, PHASCHNG);
 }
 
-/* and P63 (CHECKMM, DEC 63) shows its countdown now. */
+/* CALLT-35 +014 -- p. 735: and P63 (CHECKMM, DEC 63) shows its countdown
+ * now. */
 void callt_35_after_phaschng(void)
 {
     tc_to(CALLT_35 + 014u, CHECKMM);
@@ -202,8 +196,8 @@ void callt_35_not_p63(void)
     continue_at(ENDOFJOB);
 }
 
-/* "P63 CAN START DISPLAYING NOW.": DISPDEX -CNTDNDEX, and to the
- * interpreter for ABVEL_CODE. */
+/* CALLT-35 +017 -- p. 735: "P63 CAN START DISPLAYING NOW.": DISPDEX
+ * -CNTDNDEX, and to the interpreter for ABVEL_CODE. */
 void callt_35_p63(void)
 {
     set_A(negate(CNTDNDEX));
@@ -219,7 +213,7 @@ static const word abvel_words[] = {
     ORDER(EXIT),
 };
 
-/* After the EXIT, the job ends. */
+/* CALLT-35 +026 -- p. 735: After the EXIT, the job ends. */
 void callt_35_after_exit(void)
 {
     continue_at(ENDOFJOB);
@@ -227,22 +221,23 @@ void callt_35_after_exit(void)
 
 /* ---- The countdown tasks -- pp. 735-741 ---- */
 
-/* TIG-35: TIG-30 in five seconds (TWIDDLE), */
+/* TIG-35 -- p. 735: TIG-30 in five seconds (TWIDDLE), */
 void tig_35(void)
 {
     set_A(FIVE_SEC);
     tc_to(TIG_35 + 1u, TWIDDLE); /* ADRES TIG-30 */
 }
 
-/* group 4's restart at TIG-30 (OCT 40154), */
+/* TIG-35 +3 -- p. 735: group 4's restart at TIG-30 (OCT 40154), */
 void tig_35_after_twiddle(void)
 {
     tc_to(TIG_35 + 3u, PHASCHNG);
 }
 
-/* the DSKY blank for five seconds (DISPDEX -BLANKDEX). The table's ullage
- * time (word 6) is negative only for P41, which has no countdown clock: it
- * also gets TIG-30.1 in 4.9 seconds, to put the display back. */
+/* TIG-35 +5 -- p. 735: the DSKY blank for five seconds (DISPDEX -BLANKDEX).
+ * The table's ullage time (word 6) is negative only for P41, which has no
+ * countdown clock: it also gets TIG-30.1 in 4.9 seconds, to put the display
+ * back. */
 void tig_35_after_phaschng(void)
 {
     set_A(negate(BLANKDEX));
@@ -256,7 +251,8 @@ void tig_35_after_phaschng(void)
     tc_to(TIG_35 + 014u, TWIDDLE); /* ADRES TIG-30.1 */
 }
 
-/* and P41BLANK as a job (NOVAC), to blank the DSKY. */
+/* TIG-35 +016 -- p. 735: and P41BLANK as a job (NOVAC), to blank the
+ * DSKY. */
 void tig_35_after_second_twiddle(void)
 {
     set_A(PRIO17);
@@ -268,7 +264,7 @@ void tig_35_after_novac(void)
     continue_at(TASKOVER);
 }
 
-/* P41BLANK: "BLANK DSKY." (CLEANDSP), */
+/* P41BLANK -- p. 735: "BLANK DSKY." (CLEANDSP), */
 void p41blank(void)
 {
     tc_to(P41BLANK, BANKCALL); /* CADR CLEANDSP */
@@ -279,7 +275,8 @@ void p41blank_after_cleandsp(void)
     continue_at(ENDOFJOB);
 }
 
-/* TIG-30.1: TIG-30A as a job, to put the display back at TIG -30, */
+/* TIG-30.1 -- p. 735: TIG-30A as a job, to put the display back at TIG
+ * -30, */
 void tig_30_1(void)
 {
     set_A(PRIO17);
@@ -291,23 +288,23 @@ void tig_30_1_after_novac(void)
     continue_at(TASKOVER);
 }
 
-/* TIG-30A: verb 16 noun 85 again (REGODSP, which ends the job). */
+/* TIG-30A -- p. 736: verb 16 noun 85 again (REGODSP, which ends the job). */
 void tig_30a(void)
 {
     set_A(V16N85B);
     tc_to(TIG_30A + 1u, BANKCALL); /* CADR REGODSP */
 }
 
-/* TIG-30: TIG-5 in 24.9 seconds (TWIDDLE), */
+/* TIG-30 -- p. 736: TIG-5 in 24.9 seconds (TWIDDLE), */
 void tig_30(void)
 {
     set_A(S24_9SEC);
     tc_to(TIG_30 + 1u, TWIDDLE); /* ADRES TIG-5 */
 }
 
-/* the countdown clock again (DISPDEX -CNTDNDEX). With a positive ullage
- * time (table word 6, kept in SAVET-30 for a restart) ULLGTASK runs then;
- * with none, on to ULLGNOT. */
+/* TIG-30 +3 -- p. 736: the countdown clock again (DISPDEX -CNTDNDEX). With a
+ * positive ullage time (table word 6, kept in SAVET-30 for a restart)
+ * ULLGTASK runs then; with none, on to ULLGNOT. */
 void tig_30_after_twiddle(void)
 {
     set_A(negate(CNTDNDEX));
@@ -321,8 +318,8 @@ void tig_30_after_twiddle(void)
     tc_to(TIG_30 + 012u, TWIDDLE); /* ADRES ULLGTASK */
 }
 
-/* ULLGTASK's restart (group 1 at its third option, TBASE1 now), then the
- * table's word 1. */
+/* TIG-30 +014 -- p. 736: ULLGTASK's restart (group 1 at its third option,
+ * TBASE1 now), then the table's word 1. */
 void tig_30_after_second_twiddle(void)
 {
     set_A(THREE);
@@ -334,7 +331,7 @@ void tig_30_after_second_twiddle(void)
     tcf_into_table(which_table(), 1u);
 }
 
-/* WANTAPS: P42's word 1. "FOR P42 ENSURE APSFLAG IS SET." */
+/* WANTAPS -- p. 736: P42's word 1. "FOR P42 ENSURE APSFLAG IS SET." */
 void wantaps(void)
 {
     cs(ADDRESS_OF(FLGWRD10));
@@ -343,8 +340,8 @@ void wantaps(void)
     ullgnot();
 }
 
-/* ULLGNOT: the other programs' word 1: AVEGEXIT gets the table's 2CADR
- * (words 7 and 8), and group 4 restarts at REDO4.2 and at TIG-5 (its
+/* ULLGNOT -- p. 736: the other programs' word 1: AVEGEXIT gets the table's
+ * 2CADR (words 7 and 8), and group 4 restarts at REDO4.2 and at TIG-5 (its
  * second option, TBASE4 now); */
 void ullgnot(void)
 {
@@ -359,34 +356,40 @@ void ullgnot(void)
     redo2_17();
 }
 
-/* REDO2.17: group 2 ends ("CLEAR OUT GROUP 2 SO LAMBERT CAN START"); */
+/* REDO2.17 -- p. 736: group 2 ends ("CLEAR OUT GROUP 2 SO LAMBERT CAN
+ * START"); */
 void redo2_17(void)
 {
     end_group(ADDRESS_OF(MINUS_PHASE2));
     redo4_2();
 }
 
-/* REDO4.2: "IS SERVICER GOING?" (PHASE5). If not, PREREAD starts it and
- * ends the task. Not modelled: a negative PHASE5, whose CCS would run the
- * CADR word; a -0 one runs on into ULLGTASK. */
+/* REDO4.2 -- p. 737: "IS SERVICER GOING?" (PHASE5). If not, PREREAD starts
+ * it and ends the task. Not modelled: a negative PHASE5, whose CCS would run
+ * the CADR word; a -0 one runs on into ULLGTASK. */
 void redo4_2(void)
 {
     switch (ccs_at(ADDRESS_OF(PHASE5))) {
     case POSITIVE: continue_at(TASKOVER); break;
     case IS_PLUS_ZERO: tc_to(REDO4_2 + 2u, POSTJUMP); break; /* CADR PREREAD */
-    case NEGATIVE: not_modelled(); break;
+    case NEGATIVE:
+        /* never: a phase is +0 or positive, and -PHASE5 its complement, at every store of
+         * one. The next word is an address word, CADR PREREAD. */
+        not_modelled();
+        break;
     case IS_MINUS_ZERO: ullgtask(); break;
     }
 }
 
-/* ULLGTASK: "THIS COMES AT TIG-7.5 OR TIG-3.5": ullage on (ONULLAGE), */
+/* ULLGTASK -- p. 737: "THIS COMES AT TIG-7.5 OR TIG-3.5": ullage on
+ * (ONULLAGE), */
 void ullgtask(void)
 {
     tc_at(ULLGTASK);
     onullage();
 }
 
-/* and group 1 ends (OCT 1). */
+/* ULLGTASK +1 -- p. 737: and group 1 ends (OCT 1). */
 void ullgtask_after_onullage(void)
 {
     tc_to(ULLGTASK + 1u, PHASCHNG);
@@ -397,8 +400,8 @@ void ullgtask_after_phaschng(void)
     continue_at(TASKOVER);
 }
 
-/* TIG-5: group 3 ends ("INSURE THAT GROUP 3 IS INACTIVE."), TIG-0 in five
- * seconds, */
+/* TIG-5 -- p. 737: group 3 ends ("INSURE THAT GROUP 3 IS INACTIVE."), TIG-0
+ * in five seconds, */
 void tig_5(void)
 {
     end_group(ADDRESS_OF(MINUS_PHASE3));
@@ -406,7 +409,8 @@ void tig_5(void)
     tc_to(TIG_5 + 4u, TWIDDLE); /* ADRES TIG-0 */
 }
 
-/* IGNFLAG and ASTNFLAG reset "FOR LIGHT-UP LOGIC" (DOWNFLAG), */
+/* TIG-5 +6 -- p. 737: IGNFLAG and ASTNFLAG reset "FOR LIGHT-UP LOGIC"
+ * (DOWNFLAG), */
 void tig_5_after_twiddle(void)
 {
     tc_to(TIG_5 + 6u, DOWNFLAG); /* ADRES IGNFLAG */
@@ -417,15 +421,16 @@ void tig_5_after_downflag(void)
     tc_to(TIG_5 + 010u, DOWNFLAG); /* ADRES ASTNFLAG */
 }
 
-/* and the table's word 11. */
+/* TIG-5 +012 -- p. 737: and the table's word 11. */
 void tig_5_after_second_downflag(void)
 {
     tcf_into_table(which_table(), 011u);
 }
 
-/* P40SJUNK: P40's and P42's word 11. "S40.13 IN PROGRESS?" (PHASE3): if
- * not, S40.13 as a job (FINDVAC). Not modelled: a negative or -0 PHASE3,
- * whose CCS would run the FINDVAC with A not a priority, or a 2CADR word. */
+/* P40SJUNK -- p. 737: P40's and P42's word 11. "S40.13 IN PROGRESS?"
+ * (PHASE3): if not, S40.13 as a job (FINDVAC). (A negative PHASE3 would run
+ * the TC FINDVAC with A not a priority, and a -0 one the 2CADR's first word:
+ * neither comes.) */
 void p40sjunk(void)
 {
     switch (ccs_at(ADDRESS_OF(PHASE3))) {
@@ -434,17 +439,25 @@ void p40sjunk(void)
         set_A(PRIO20);
         tc_to(P40SJUNK + 3u, FINDVAC); /* 2CADR S40.13 */
         break;
-    default: not_modelled();
+    case NEGATIVE:
+        /* The TC FINDVAC, with A what the CCS left and no PRIO20. A phase is +0 or positive at
+         * every store of one, so this outcome never comes. */
+        continue_at(P40SJUNK + 3u);
+        break;
+    case IS_MINUS_ZERO:
+        /* never: a phase is +0 or positive, and -PHASE3 its complement, at every store of
+         * one. The next word is an address word, 2CADR S40.13. */
+        not_modelled();
     }
 }
 
-/* and group 3's restart for S40.13 (OCT 00053). */
+/* P40SJUNK +6 -- p. 737: and group 3's restart for S40.13 (OCT 00053). */
 void p40sjunk_after_findvac(void)
 {
     tc_to(P40SJUNK + 6u, PHASCHNG);
 }
 
-/* DISPCHNG: the other programs' word 11: the verb 99 display next
+/* DISPCHNG -- p. 737: the other programs' word 11: the verb 99 display next
  * (DISPDEX -VB99DEX), */
 void dispchng(void)
 {
@@ -453,7 +466,8 @@ void dispchng(void)
     common();
 }
 
-/* COMMON (P41's word 11): "RESTART TIG-0 (4.7SPOT)" (OCT 40074). */
+/* COMMON -- p. 738 (P41's word 11): "RESTART TIG-0 (4.7SPOT)" (OCT
+ * 40074). */
 void common(void)
 {
     tc_to(COMMON, PHASCHNG);
@@ -464,8 +478,8 @@ void common_after_phaschng(void)
     continue_at(TASKOVER);
 }
 
-/* TIG-0: "SET IGNFLAG SINCE TIG HAS ARRIVED"; for P63 (CHECKMM) the
- * throttle-up (P63ZOOM) is ZOOMTIME after nominal ignition. */
+/* TIG-0 -- p. 738: "SET IGNFLAG SINCE TIG HAS ARRIVED"; for P63 (CHECKMM)
+ * the throttle-up (P63ZOOM) is ZOOMTIME after nominal ignition. */
 void tig_0(void)
 {
     cs(ADDRESS_OF(FLAGWRD7));
@@ -485,14 +499,15 @@ void tig_0_p63(void)
     tc_to(TIG_0 + 7u, WAITLIST); /* 2CADR P63ZOOM */
 }
 
-/* Its restart: groups 3 and 4 (OCT 40033, 05014, 77777). */
+/* TIG-0 +012 -- p. 738: Its restart: groups 3 and 4 (OCT 40033, 05014,
+ * 77777). */
 void tig_0_after_waitlist(void)
 {
     tc_to(TIG_0 + 012u, TWO_PHSCHNG);
 }
 
-/* IGNYET?: "CHECK ASTNFLAG: HAS ASTRONAUT RESPONDED" to the engine enable
- * request? If not, the table's word 12. */
+/* IGNYET? -- p. 738: "CHECK ASTNFLAG: HAS ASTRONAUT RESPONDED" to the engine
+ * enable request? If not, the table's word 12. */
 void ignyet_q(void)
 {
     word table;
@@ -562,7 +577,7 @@ void p63ign(void)
     p42ign();
 }
 
-/* P40IGN: P40's word 13. With NOTHRFLG set, P40ZOOM at ZOOMTIME
+/* P40IGN -- p. 739: P40's word 13. With NOTHRFLG set, P40ZOOM at ZOOMTIME
  * (WAITLIST), */
 void p40ign(void)
 {
@@ -576,14 +591,14 @@ void p40ign(void)
     tc_to(P40IGN + 5u, WAITLIST); /* 2CADR P40ZOOM */
 }
 
-/* P63IGN1: and the zoom's restart, groups 3 and 4 ("3.3SPOT FOR ZOOM
- * RESTART."; OCT 40033, 05014, 77777); */
+/* P63IGN1 -- p. 739: and the zoom's restart, groups 3 and 4 ("3.3SPOT FOR
+ * ZOOM RESTART."; OCT 40033, 05014, 77777); */
 void p63ign1(void)
 {
     tc_to(P63IGN1, TWO_PHSCHNG);
 }
 
-/* then P42IGN. */
+/* P63IGN1 +4 -- p. 740: then P42IGN. */
 void p63ign1_after_2phschng(void)
 {
     p42ign();
@@ -605,8 +620,8 @@ void p12ign(void)
     abrtign();
 }
 
-/* ABRTIGN: the aborts' word 13: the countdown clock killed (CA Z), the
- * ascent guidance connected to SERVICER (AVGEXIT ATMAG), SWANDISP set;
+/* ABRTIGN -- p. 740: the aborts' word 13: the countdown clock killed (CA Z),
+ * the ascent guidance connected to SERVICER (AVGEXIT ATMAG), SWANDISP set;
  * then P42IGN. */
 void abrtign(void)
 {
@@ -620,9 +635,10 @@ void abrtign(void)
     p42ign();
 }
 
-/* P42IGN: P42's word 13: DRIFTDFL clear ("ENSURE THAT POWERED-FLIGHT
- * SWITCHING CURVES ARE USED."), then the impulse switch (IMPULSW): set,
- * IMPLBURN (P40-P47); clear, DVMONCON. (A MASK leaves no negative word.) */
+/* P42IGN -- p. 740: P42's word 13: DRIFTDFL clear ("ENSURE THAT
+ * POWERED-FLIGHT SWITCHING CURVES ARE USED."), then the impulse switch
+ * (IMPULSW): set, IMPLBURN (P40-P47); clear, DVMONCON. (A MASK leaves no
+ * negative word.) */
 void p42ign(void)
 {
     set_A(negate(DRIFTBIT));
@@ -633,11 +649,17 @@ void p42ign(void)
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: continue_at(IMPLBURN); break;
     case IS_PLUS_ZERO: dvmoncon(); break;
-    default: not_modelled();
+    case NEGATIVE:
+        /* never: A is IMPULBIT or +0 after the MASK. The next word is an address word, ADRES
+         * IGNFLAG. */
+        not_modelled();
+        break;
+    case IS_MINUS_ZERO: tc_to(DVMONCON + 2u, DOWNFLAG); break; /* never: its second TC DOWNFLAG */
     }
 }
 
-/* DVMONCON: IGNFLAG, ASTNFLAG and IDLEFLAG reset ("CONNECT DVMON"), */
+/* DVMONCON -- p. 740: IGNFLAG, ASTNFLAG and IDLEFLAG reset ("CONNECT
+ * DVMON"), */
 void dvmoncon(void)
 {
     tc_to(DVMONCON, DOWNFLAG); /* ADRES IGNFLAG */
@@ -653,26 +675,27 @@ void dvmoncon_after_second_downflag(void)
     tc_to(DVMONCON + 4u, DOWNFLAG); /* ADRES IDLEFLAG */
 }
 
-/* group 4's restart (OCT 40054), */
+/* DVMONCON +6 -- p. 740: group 4's restart (OCT 40054), */
 void dvmoncon_after_third_downflag(void)
 {
     tc_to(DVMONCON + 6u, PHASCHNG);
 }
 
-/* and half a second later (FIXDELAY, DEC 50) ULLAGOFF. */
+/* DVMONCON +010 -- p. 740: and half a second later (FIXDELAY, DEC 50)
+ * ULLAGOFF. */
 void dvmoncon_after_phaschng(void)
 {
     tc_to(DVMONCON + 010u, FIXDELAY);
 }
 
-/* ULLAGOFF: ullage off (NOULLAGE), back to WAITABIT. */
+/* ULLAGOFF -- p. 740: ullage off (NOULLAGE), back to WAITABIT. */
 void ullagoff(void)
 {
     tc_at(ULLAGOFF);
     noullage();
 }
 
-/* WAITABIT: the tables' word 12: "KILL GROUP 4". */
+/* WAITABIT -- p. 740: the tables' word 12: "KILL GROUP 4". */
 void waitabit(void)
 {
     end_group(ADDRESS_OF(MINUS_PHASE4));
@@ -685,14 +708,14 @@ void tigtask(void)
     tc_to(TIGTASK, POSTJUMP); /* CADR TIGTASK1 */
 }
 
-/* TIGTASK1: TIGNOW as a job (NOVAC), */
+/* TIGTASK1 -- p. 741: TIGNOW as a job (NOVAC), */
 void tigtask1(void)
 {
     set_A(PRIO16);
     tc_to(TIGTASK1 + 1u, NOVAC); /* 2CADR TIGNOW */
 }
 
-/* and "KILL GROUP 6." (OCT 6). */
+/* TIGTASK1 +4 -- p. 741: and "KILL GROUP 6." (OCT 6). */
 void tigtask1_after_novac(void)
 {
     tc_to(TIGTASK1 + 4u, PHASCHNG);
@@ -703,7 +726,8 @@ void tigtask1_after_phaschng(void)
     continue_at(TASKOVER);
 }
 
-/* P63ZOOM: AVEGEXIT LUNLAND (LUNLANAD), the throttle to full (FLATOUT), */
+/* P63ZOOM -- p. 741: AVEGEXIT LUNLAND (LUNLANAD), the throttle to full
+ * (FLATOUT), */
 void p63zoom(void)
 {
     dca(LUNLANAD);
@@ -716,7 +740,8 @@ void p63zoom_after_flatout(void)
     p40zooma();
 }
 
-/* P40ZOOM: THRUST BIT13 and channel 14 bit 4 (the thrust drive), */
+/* P40ZOOM -- p. 741: THRUST BIT13 and channel 14 bit 4 (the thrust
+ * drive), */
 void p40zoom(void)
 {
     set_A(BIT13);
@@ -726,7 +751,7 @@ void p40zoom(void)
     p40zooma();
 }
 
-/* P40ZOOMA (ZOOM): group 3 ends (OCT 3). */
+/* P40ZOOMA -- p. 741 (ZOOM): group 3 ends (OCT 3). */
 void p40zooma(void)
 {
     tc_to(P40ZOOMA, PHASCHNG);
@@ -739,7 +764,8 @@ void p40zooma_after_phaschng(void)
 
 /* ---- COMFAIL -- p. 742 ---- */
 
-/* COMFAIL: IDLEFLAG set, FLUNDISP set ("TO SUPPRESS CONFLICTING DISPLAY"), */
+/* COMFAIL -- p. 742: IDLEFLAG set, FLUNDISP set ("TO SUPPRESS CONFLICTING
+ * DISPLAY"), */
 void comfail(void)
 {
     tc_to(COMFAIL, UPFLAG); /* ADRES IDLEFLAG */
@@ -750,23 +776,28 @@ void comfail_after_upflag(void)
     tc_to(COMFAIL + 2u, UPFLAG); /* ADRES FLUNDISP */
 }
 
-/* DVCNTR 4 ("RESET DVMON"), and the countdown clock started (STCLOK1)
- * unless it is running (PHASE6). Not modelled: a negative PHASE6, whose
- * CCS would run the CADR word; a -0 one goes on as a positive one does. */
+/* COMFAIL +4 -- p. 742: DVCNTR 4 ("RESET DVMON"), and the countdown clock
+ * started (STCLOK1) unless it is running (PHASE6). Not modelled: a negative
+ * PHASE6, whose CCS would run the CADR word; a -0 one goes on as a positive
+ * one does. */
 void comfail_after_second_upflag(void)
 {
     set_A(FOUR);
     ts(ADDRESS_OF(DVCNTR));
-    switch (ccs_at(ADDRESS_OF(PHASE6))) { /* "CLOCKTASK ACTIVE?" */
-    case POSITIVE:
-    case IS_MINUS_ZERO: comfail_after_stclok1(); break;        /* TCF +3 */
+    switch (ccs_at(ADDRESS_OF(PHASE6))) {                      /* "CLOCKTASK ACTIVE?" */
+    case POSITIVE: comfail_after_stclok1(); break;             /* TCF +3 */
     case IS_PLUS_ZERO: tc_to(COMFAIL + 010u, BANKCALL); break; /* CADR STCLOK1 */
-    case NEGATIVE: not_modelled(); break;
+    case NEGATIVE:
+        /* never: a phase is +0 or positive, and -PHASE6 its complement, at every store of
+         * one. The next word is an address word, CADR STCLOK1. */
+        not_modelled();
+        break;
+    case IS_MINUS_ZERO: comfail_after_stclok1(); break; /* (the CS VB97DEX is the next word) */
     }
 }
 
-/* The verb 97 display next (DISPDEX -VB97DEX), and "TURN OFF GROUP 4."
- * (OCT 00004). */
+/* COMFAIL +012 -- p. 742: The verb 97 display next (DISPDEX -VB97DEX), and
+ * "TURN OFF GROUP 4." (OCT 00004). */
 void comfail_after_stclok1(void)
 {
     set_A(negate(VB97DEX));
@@ -779,7 +810,7 @@ void comfail_after_phaschng(void)
     continue_at(ENDOFJOB);
 }
 
-/* COMFAIL1: the table's word 2 (COMFAIL3 or COMFAIL4). */
+/* COMFAIL1 -- p. 742: the table's word 2 (COMFAIL3 or COMFAIL4). */
 void comfail1(void)
 {
     tcf_into_table(which_table(), 2u);
@@ -792,21 +823,22 @@ static void comfail_display(void)
     tc_to(COMFAIL4 + 2u, DOWNFLAG); /* ADRES IDLEFLAG */
 }
 
-/* COMFAIL3: "KILL CLOKTASK USING Z" (CA Z: DISPDEX positive), */
+/* COMFAIL3 -- p. 742: "KILL CLOKTASK USING Z" (CA Z: DISPDEX positive), */
 void comfail3(void)
 {
     set_A(COMFAIL3 + 1u);
     comfail_display(); /* TCF +2 */
 }
 
-/* COMFAIL4: or the countdown clock again (-CNTDNDEX); */
+/* COMFAIL4 -- p. 742: or the countdown clock again (-CNTDNDEX); */
 void comfail4(void)
 {
     set_A(negate(CNTDNDEX));
     comfail_display();
 }
 
-/* FLUNDISP reset ("PERMIT GUIDANCE LOOP DISPLAYS"). */
+/* COMFAIL4 +4 -- p. 742: FLUNDISP reset ("PERMIT GUIDANCE LOOP
+ * DISPLAYS"). */
 void comfail4_after_downflag(void)
 {
     tc_to(COMFAIL4 + 4u, DOWNFLAG); /* ADRES FLUNDISP */
@@ -817,13 +849,14 @@ void comfail4_after_second_downflag(void)
     continue_at(ENDOFJOB);
 }
 
-/* COMFAIL2: "KILL ZOOM RESTART PROTECTION" (OCT 00003), */
+/* COMFAIL2 -- p. 742: "KILL ZOOM RESTART PROTECTION" (OCT 00003), */
 void comfail2(void)
 {
     tc_to(COMFAIL2, PHASCHNG);
 }
 
-/* "KILL ZOOM, IN CASE IT'S STILL TO COME" (KILLTASK), */
+/* COMFAIL2 +2 -- p. 742: "KILL ZOOM, IN CASE IT'S STILL TO COME"
+ * (KILLTASK), */
 void comfail2_after_phaschng(void)
 {
     inhint();
@@ -831,14 +864,14 @@ void comfail2_after_phaschng(void)
     killtask(); /* CADR ZOOM */
 }
 
-/* "COMMAND ENGINE OFF" (ENGINOF4), */
+/* COMFAIL2 +5 -- p. 742: "COMMAND ENGINE OFF" (ENGINOF4), */
 void comfail2_after_killtask(void)
 {
     tc_to(COMFAIL2 + 5u, IBNKCALL); /* CADR ENGINOF4 */
 }
 
-/* DRIFTDFL set, "USE OTHER RCS SYSTEM" (AORBTFLG inverted), ullage on
- * (ULLAGFLG), */
+/* COMFAIL2 +7 -- p. 742: DRIFTDFL set, "USE OTHER RCS SYSTEM" (AORBTFLG
+ * inverted), ullage on (ULLAGFLG), */
 void comfail2_after_enginof4(void)
 {
     tc_to(COMFAIL2 + 7u, UPFLAG); /* ADRES DRIFTDFL */
@@ -855,7 +888,7 @@ void comfail2_after_invflag(void)
     tc_to(COMFAIL2 + 013u, UPFLAG); /* ADRES ULLAGFLG */
 }
 
-/* and TIG-5 at once (TWIDDLE, BIT1). */
+/* COMFAIL2 +015 -- p. 743: and TIG-5 at once (TWIDDLE, BIT1). */
 void comfail2_after_second_upflag(void)
 {
     set_A(BIT1);
@@ -870,16 +903,16 @@ void comfail2_after_twiddle(void)
 
 /* ---- INVFLAG, NOULLAGE and ONULLAGE -- p. 743 ---- */
 
-/* INVFLAG: TC INVFLAG; ADRES flag inverts the flag. DEBIT (with Q in A)
- * gives the flag's bit in A and its flag word's address in L; */
+/* INVFLAG -- p. 743: TC INVFLAG; ADRES flag inverts the flag. DEBIT (with Q
+ * in A) gives the flag's bit in A and its flag word's address in L; */
 void invflag(void)
 {
     ca(Q_ADDRESS);
     tc_to(INVFLAG + 1u, DEBIT);
 }
 
-/* the flag word with the bit inverted (COM; RXOR LCHAN) goes back
- * (COMFLAG). */
+/* INVFLAG +2 -- p. 743: the flag word with the bit inverted (COM; RXOR
+ * LCHAN) goes back (COMFLAG). */
 void invflag_after_debit(void)
 {
     com();
@@ -898,8 +931,8 @@ static void return_to_q(void)
     continue_at(at);
 }
 
-/* NOULLAGE: ullage off (DAPBOOLS's ULLAGER clear). It "MUST BE CALLED IN
- * A TASK OR UNDER INHINT". */
+/* NOULLAGE -- p. 743: ullage off (DAPBOOLS's ULLAGER clear). It "MUST BE
+ * CALLED IN A TASK OR UNDER INHINT". */
 void noullage(void)
 {
     set_A(negate(ULLAGER));
@@ -908,7 +941,7 @@ void noullage(void)
     return_to_q();
 }
 
-/* ONULLAGE: "TURN ON ULLAGE." (ULLAGER set). */
+/* ONULLAGE -- p. 743: "TURN ON ULLAGE." (ULLAGER set). */
 void onullage(void)
 {
     cs(ADDRESS_OF(DAPBOOLS));

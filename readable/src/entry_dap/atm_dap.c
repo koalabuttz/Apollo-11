@@ -2,7 +2,7 @@
 /* CM_ENTRY_DIGITAL_AUTOPILOT.agc, part C (Comanche055 pp. 1074-1075, bank
  * 15): the 0.1 s yaw and pitch DAPs inside the atmosphere, from ATTRATES
  * once .05GSW is set, and EXDAPIN, where the extra atmospheric DAP joins
- * them.
+ * them. The faithful C is c64-port/src/cm_entry_dap.c.
  *
  * "START YAW AUTOPILOT HERE.  RATE DAMPING WITH ENFORCED COORDINATED ROLL
  * MANEUVER." The yaw rate taken against the roll rate, "YAW ERROR = RREL
@@ -28,10 +28,11 @@ static void yaw_error(void)
     two_d_sdz();
 }
 
-/* ATTRATES +066: "SAVE -1 FOR USE IN CM/RCS" (CMDAPMOD), and -1 to AK1
+/* ATTRATES +066 -- p. 1074: "SAVE -1 FOR USE IN CM/RCS" (CMDAPMOD), and -1
+ * to AK1
  * and AK2, "TO ZERO PITCH AND YAW FDAI NEEDLES" "IN ATM.  (MODE =-1)".
  * (An overflow at TS CMDAPMOD, from a caller's A, skips the TS AK1.) */
-void atm_cmdapmod(void)
+void attrates_plus066(void)
 {
     if (ts(ADDRESS_OF(CMDAPMOD))) {
         ts(ADDRESS_OF(AK2));
@@ -41,16 +42,16 @@ void atm_cmdapmod(void)
     atm_ak1();
 }
 
-/* ATTRATES +067: AK1 and AK2 (an overflow skips the TS AK2); then the yaw
- * error. */
+/* ATTRATES +067 -- p. 1074: AK1 and AK2 (an overflow skips the TS AK2); then
+ * the yaw error. */
 void atm_ak1(void)
 {
     if (!ts(ADDRESS_OF(AK1))) ts(ADDRESS_OF(AK2));
     yaw_error();
 }
 
-/* ATTRATES +076: the tag's yaw jet code, "RCS JET BITS", into JETEM; then
- * the pitch rate's tag (2D/SDZ, back at EXDAPIN). */
+/* ATTRATES +076 -- p. 1074: the tag's yaw jet code, "RCS JET BITS", into
+ * JETEM; then the pitch rate's tag (2D/SDZ, back at EXDAPIN). */
 void atm_yjetcode(void)
 {
     jet_code(YJETCODE); /* INDEX A; CAF YJETCODE */
@@ -60,16 +61,16 @@ void atm_yjetcode(void)
     two_d_sdz();
 }
 
-/* EXDAPIN: "COME HERE FROM EX ATM DAP": the tag's pitch jet code added,
- * "COMBINE ALL NEW BITS.", and out on channel 5: "DOES NOT REQUIRE SAVING
- * OLD CODES.", "SET PYCHAN TO DESIRED BIT CONFIG." Then CCS JETAG:
+/* EXDAPIN -- p. 1074: "COME HERE FROM EX ATM DAP": the tag's pitch jet code
+ * added, "COMBINE ALL NEW BITS.", and out on channel 5: "DOES NOT REQUIRE
+ * SAVING OLD CODES.", "SET PYCHAN TO DESIRED BIT CONFIG." Then CCS JETAG:
  * positive, CM/RCS; +0, CM/FDAI; negative, CM/FDAIR -1; -0, on into 3DDZ
  * with +0. */
 void exdapin(void)
 {
     jet_code(P_RJCODE); /* INDEX A; CAF P/RJCODE */
     ads(ADDRESS_OF(JETEM));
-    write_channel(5); /* EXTEND; WRITE PYJETS */
+    write_channel(CHAN5); /* EXTEND; WRITE PYJETS */
     switch (ccs_at(ADDRESS_OF(JETAG))) {
     case POSITIVE: tc_to(EXDAPIN + 6u, CM_RCS); break;
     case IS_PLUS_ZERO: exdapin_fdai(); break;
@@ -78,13 +79,13 @@ void exdapin(void)
     }
 }
 
-/* EXDAPIN +7: the needles (CM/FDAI). */
+/* EXDAPIN +7 -- p. 1075: the needles (CM/FDAI). */
 void exdapin_fdai(void)
 {
     tc_to(EXDAPIN + 7u, CM_FDAI);
 }
 
-/* EXDAPIN +010: the needles, from the word before CM/FDAIR. */
+/* EXDAPIN +010 -- p. 1075: the needles, from the word before CM/FDAIR. */
 void exdapin_fdair(void)
 {
     tc_to(EXDAPIN + 010u, CM_FDAIR - 1u);

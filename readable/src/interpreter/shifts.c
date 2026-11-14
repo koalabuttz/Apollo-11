@@ -87,23 +87,25 @@ void shortt(void)
     }
 }
 
-/* TSSR: the shifting bit, then "SEE IF A ROUND IS DESIRED." */
+/* TSSR -- LM p. 1047, CM p. 1152: the shifting bit, then "SEE IF A ROUND IS
+ * DESIRED." */
 static void tssr(void)
 {
     set_A(shifting_bit(SR_ADDRESS)); /* "GET SHIFTING BIT." */
     tssr_plus2();
 }
 
-/* TSSR +1: CCS's -0 slot skips the INDEX. */
+/* TSSR +1 -- LM p. 1047, CM p. 1152: CCS's -0 slot skips the INDEX. */
 static void tssr_plus1(void)
 {
     set_A(BIT14);
     tssr_plus2();
 }
 
-/* TSSR +2: the shifting bit to MPTEMP and the round test. (Neither zero
- * comes. A CYR of +0 would leave A +0 for NEWMODE: "SET MODE TO DP (C(A) = 0)";
- * a CYR of -0 would enter MPACSHR one word in, with A +0 for the MP.) */
+/* TSSR +2 -- LM p. 1047, CM p. 1152: the shifting bit to MPTEMP and the
+ * round test. (Neither zero comes. A CYR of +0 would leave A +0 for NEWMODE:
+ * "SET MODE TO DP (C(A) = 0)"; a CYR of -0 would enter MPACSHR one word in,
+ * with A +0 for the MP.) */
 static void tssr_plus2(void)
 {
     ts(ADDRESS_OF(MPTEMP));
@@ -138,7 +140,7 @@ static void mpacshr(void)
     mpacshr_plus3();
 }
 
-/* MPACSHR +3: "(EXIT FROM SQRT AND ABVAL)." */
+/* MPACSHR +3 -- LM p. 1047, CM p. 1152: "(EXIT FROM SQRT AND ABVAL)." */
 void mpacshr_plus3(void)
 {
     ts(MPAC_AT(2u));
@@ -165,8 +167,9 @@ static void mpacsrnd(void)
     vshr2();
 }
 
-/* VSHR2: "(FINISH VECTOR COMPONENT SHIFT RIGHT AND ROUND.)" The bits shifted
- * out, doubled, overflow when they are half a unit or more: the round. */
+/* VSHR2 -- LM p. 1048, CM p. 1153: "(FINISH VECTOR COMPONENT SHIFT RIGHT AND
+ * ROUND.)" The bits shifted out, doubled, overflow when they are half a unit
+ * or more: the round. */
 static void vshr2(void)
 {
     double_A();
@@ -205,10 +208,11 @@ void tssl_plus1(void)
     tssl_plus2();
 }
 
-/* TSSL +2: "ENTRY HERE FROM SL FOR SCALARS." "SHIFTING LEFT ONE PLACE AT A
- * TIME IS FASTER THAN DOING THE WHOLE SHIFT WITH MULTIPLIES ASSUMING THAT
- * FREQUENCY OF SHIFT COUNTS GOES DOWN RAPIDLY AS A FUNCTION OF THEIR
- * MAGNITUDE." Then CYR's sign says whether to round. */
+/* TSSL +2 -- LM p. 1049, CM p. 1154: "ENTRY HERE FROM SL FOR SCALARS."
+ * "SHIFTING LEFT ONE PLACE AT A TIME IS FASTER THAN DOING THE WHOLE SHIFT
+ * WITH MULTIPLIES ASSUMING THAT FREQUENCY OF SHIFT COUNTS GOES DOWN RAPIDLY
+ * AS A FUNCTION OF THEIR MAGNITUDE." Then CYR's sign says whether to
+ * round. */
 void tssl_plus2(void)
 {
     for (;;) {
@@ -287,7 +291,8 @@ static void vssr(void)
     vssr_plus2();
 }
 
-/* VSSR +1: CCS's -0 slot skips the INDEX (a shift of one). */
+/* VSSR +1 -- LM p. 1050, CM p. 1155: CCS's -0 slot skips the INDEX (a shift
+ * of one). */
 static void vssr_plus1(void)
 {
     set_A(BIT14);
@@ -309,7 +314,7 @@ static void vssr_plus2(void)
     dxch(MPAC_AT(0u)); /* "SWAP Y AND Z COMPONENTS." */
     dxch(MPAC_AT(5u));
     dxch(MPAC_AT(0u));
-    tc_at(VSSR + 11u);
+    tc_at(VSSR + 013u);
     vshrrnd(); /* "SHIFT Z COMPONENT." */
 
     vrotatex(); /* "RESTORE COMPONENTS TO PROPER PLACES." */
@@ -331,14 +336,14 @@ void vssl(void)
         dca(MPAC_AT(3u));
         das(MPAC_AT(3u));
         if (!A_is_zero()) {
-            tc_at(VSSL + 11u);
+            tc_at(VSSL + 013u);
             overflwy();
         }
 
         dca(MPAC_AT(5u));
         das(MPAC_AT(5u));
         if (!A_is_zero()) {
-            tc_at(VSSL + 17u);
+            tc_at(VSSL + 021u);
             overflwz();
         }
 
@@ -353,7 +358,7 @@ void vssl(void)
     }
 }
 
-/* VSSL -1: "SHIFTING LOOP." */
+/* VSSL -1 -- LM p. 1051, CM p. 1156: "SHIFTING LOOP." */
 static void vssl_minus1(void)
 {
     ts(ADDRESS_OF(MPTEMP));
@@ -397,7 +402,8 @@ static void tslc2_plus1(void)
     endtslc();
 }
 
-/* ENDTSLC: "STORE SHIFT COUNT AND RETURN TO DANZIG." */
+/* ENDTSLC -- LM p. 1052, CM p. 1157: "STORE SHIFT COUNT AND RETURN TO
+ * DANZIG." */
 static void endtslc(void)
 {
     cs(ADDRESS_OF(MPTEMP));
@@ -441,9 +447,9 @@ static void round_if_asked(word tc_site)
     continue_at(DANZIG);
 }
 
-/* GENSHFT2: "DECREMENTED SHIFT COUNT TO MPTEMP." Then "TEST MEANING OF LOW
- * SEVEN BIT COUNT": bits 8 and 9 of the address (the product's upper
- * word) pick one of four ways (INDEX A; TCF +1). */
+/* GENSHFT2 -- LM p. 1053, CM p. 1158: "DECREMENTED SHIFT COUNT TO MPTEMP."
+ * Then "TEST MEANING OF LOW SEVEN BIT COUNT": bits 8 and 9 of the address
+ * (the product's upper word) pick one of four ways (INDEX A; TCF +1). */
 static void genshft2(void)
 {
     ts(ADDRESS_OF(MPTEMP));
@@ -471,10 +477,10 @@ static void right(void)
     vright2();
 }
 
-/* VRIGHT2: a vector shift right of 14 or more is done 14 places at a time,
- * a word: each component's major word goes into its minor word ("THE
- * ROUND AT THIS STAGE MAY INTRODUCE A ONE BIT ERROR IN A SHIFT RIGHT
- * 15D"), and the rest by VSSR. */
+/* VRIGHT2 -- LM p. 1054, CM p. 1159: a vector shift right of 14 or more is
+ * done 14 places at a time, a word: each component's major word goes into
+ * its minor word ("THE ROUND AT THIS STAGE MAY INTRODUCE A ONE BIT ERROR IN
+ * A SHIFT RIGHT 15D"), and the rest by VSSR. */
 static void vright2(void)
 {
     for (;;) {
@@ -490,19 +496,19 @@ static void vright2(void)
         ts(L_ADDRESS);
         xch(MPAC_AT(0u));
         xch(MPAC_AT(1u));
-        tc_at(VRIGHT2 + 9u);
+        tc_at(VRIGHT2 + 011u);
         setround();       /* "X COMPONENT NOW SHIFTED, SO MAKE UP THE */
         das(MPAC_AT(0u)); /* ROUNDING QUANTITY (0 IN A AND 0 OR +-1 IN L)." */
 
         xch(MPAC_AT(3u)); /* "REPEAT THE ABOVE PROCESS FOR Y AND Z." */
         xch(MPAC_AT(4u));
-        tc_at(VRIGHT2 + 13u);
+        tc_at(VRIGHT2 + 015u);
         setround();
         das(MPAC_AT(3u)); /* "NO OVERFLOW ON THESE ADDS." */
 
         xch(MPAC_AT(5u));
         xch(MPAC_AT(6u));
-        tc_at(VRIGHT2 + 17u);
+        tc_at(VRIGHT2 + 021u);
         setround();
         das(MPAC_AT(5u));
 
@@ -552,9 +558,10 @@ static void genscr_plus1(void)
     genscr_plus4();
 }
 
-/* GENSCR +4: "DECREMENT SHIFT COUNT BY 14D AND SHIFT MPAC RIGHT 14 PLACES."
- * (SQRT enters here with ADDRWD zero, "TO PREVENT ROUND".) The TC back to
- * GENSCR +1 runs at most nine times (the count is under 128). */
+/* GENSCR +4 -- LM p. 1055, CM p. 1160: "DECREMENT SHIFT COUNT BY 14D AND
+ * SHIFT MPAC RIGHT 14 PLACES." (SQRT enters here with ADDRWD zero, "TO
+ * PREVENT ROUND".) The TC back to GENSCR +1 runs at most nine times (the
+ * count is under 128). */
 void genscr_plus4(void)
 {
     ad(NEGONE);
@@ -570,7 +577,7 @@ void genscr_plus4(void)
     switch (ccs_at(ADDRESS_OF(MPTEMP))) {
     case POSITIVE: ts(ADDRESS_OF(MPTEMP)); /* fall through */
     case IS_PLUS_ZERO:
-        tc_at(GENSCR + 12u);
+        tc_at(GENSCR + 014u);
         genscr_plus1();
         return;
     case NEGATIVE:
@@ -582,7 +589,8 @@ void genscr_plus4(void)
     }
 }
 
-/* DOSSHFT: "PICK UP SHIFTING BIT", "SEE IF TERMINAL ROUND DESIRED." */
+/* DOSSHFT -- LM p. 1055, CM p. 1160: "PICK UP SHIFTING BIT", "SEE IF
+ * TERMINAL ROUND DESIRED." */
 static void dosshft(void)
 {
     set_A(shifting_bit(ADDRESS_OF(MPTEMP)));
@@ -615,9 +623,9 @@ static void left_minus(void)
     left();
 }
 
-/* LEFT: "SINCE LEFT SHIFTING IS DONE ONE PLACE AT A TIME, NO COMPARISON
- * WITH 14 NEED BE DONE. FOR SCALARS, SEE IF TERMINAL ROUND DESIRED. FOR
- * VECTORS, SHIFT IMMEDIATELY." */
+/* LEFT -- LM p. 1056, CM p. 1161: "SINCE LEFT SHIFTING IS DONE ONE PLACE AT
+ * A TIME, NO COMPARISON WITH 14 NEED BE DONE. FOR SCALARS, SEE IF TERMINAL
+ * ROUND DESIRED. FOR VECTORS, SHIFT IMMEDIATELY." */
 static void left(void)
 {
     if (ccs_at(ADDRESS_OF(MODE)) == NEGATIVE)
@@ -626,9 +634,10 @@ static void left(void)
         genscl();
 }
 
-/* GENSCL: "PUT ROUNDING BIT (BIT 10 OF ADDRWD) INTO BIT 15 OF CYR WHERE THE
- * ROUNDING BIT OF A SHORT SHIFT LEFT WOULD BE" (stored there, CYR cycles
- * it to bit 14, and the CCS CYR after the shift to the sign). */
+/* GENSCL -- LM p. 1056, CM p. 1161: "PUT ROUNDING BIT (BIT 10 OF ADDRWD)
+ * INTO BIT 15 OF CYR WHERE THE ROUNDING BIT OF A SHORT SHIFT LEFT WOULD BE"
+ * (stored there, CYR cycles it to bit 14, and the CCS CYR after the shift to
+ * the sign). */
 static void genscl(void)
 {
     cs(ADDRESS_OF(ADDRWD));

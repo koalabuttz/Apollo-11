@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* Pointing the machine (src/agc/agc.h) at the flight program's state, for
- * every binding (binding.h). */
+ * every binding (binding.h). (The faithful port has no such step: its
+ * routines take the state itself, c64-port/include/resident_kernel.h.) */
 #include <stddef.h>
 #include "binding.h"
 

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, parts 10 to 12 (Luminary099 pp. 574-582): LSR22.3, R22's
- * measurement incorporation.
+ * measurement incorporation. The faithful C is c64-port/src/lm_p20_p25.c.
  *
  * LSR22.3 (bank 26) "COMPUTES THE B-VECTORS ADN" [sic] "DELTA Q FOR EACH
  * OF THE QUANTITIES MEASURED BY THE RENDEZVOUS RADAR. (RANGE, RANGE RATE,
@@ -45,8 +45,6 @@
 #include "../interpreter/interpreter.h"
 
 #if LUMINARY099
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* ---- The state vectors to the mark time ---- */
 
@@ -128,8 +126,8 @@ static const word lsr22_3_words[] = {
     ADDRESS(RANGEBQ1),
 };
 
-/* RANGEBQ +3: R65 off the surface, its count (R65CNTR) from zero. (A +0
- * never overflows: the TS does not skip.) */
+/* RANGEBQ +3 -- p. 576: R65 off the surface, its count (R65CNTR) from zero.
+ * (A +0 never overflows: the TS does not skip.) */
 void rangebq_r65(void)
 {
     set_A(ZERO);

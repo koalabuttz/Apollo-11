@@ -15,9 +15,9 @@
 
 /* ---- STRKTSTI -- p. 981 ---- */
 
-/* TSTINIT: CADDY and N the bursts of the first set's half amplitude, less
- * ("NOTE SGN CHNG FCADDY(+) TO CADDY(-)"); REVS its reversals less one,
- * FREVS; CARD the number of sets, less. */
+/* TSTINIT -- p. 981: CADDY and N the bursts of the first set's half
+ * amplitude, less ("NOTE SGN CHNG FCADDY(+) TO CADDY(-)"); REVS its
+ * reversals less one, FREVS; CARD the number of sets, less. */
 static void tstinit(void)
 {
     cs(ADDRESS_OF(FCADDY));
@@ -29,10 +29,10 @@ static void tstinit(void)
     ts(ADDRESS_OF(CARD));
 }
 
-/* STRKTSTI, the "STROKE TEST INITIALIZATION PKG": TSTINIT (TCR; its TC Q
- * leaves Q 3). Then STRKCHK, "CHECK FOR CSM/LM CONFIGURATION" (bit 14 of
- * DAPDATR1): CSM/LM, STROKER the burst size ESTROKER, to "BEGIN ON NEXT
- * DAP PASS"; ENDOFJOB. */
+/* STRKTSTI -- p. 981, the "STROKE TEST INITIALIZATION PKG": TSTINIT (TCR;
+ * its TC Q leaves Q 3). Then STRKCHK, "CHECK FOR CSM/LM CONFIGURATION" (bit
+ * 14 of DAPDATR1): CSM/LM, STROKER the burst size ESTROKER, to "BEGIN ON
+ * NEXT DAP PASS"; ENDOFJOB. */
 void strktsti(void)
 {
     tstinit();
@@ -138,8 +138,8 @@ static void burst(void)
     tc_bunker(HACK + 056u);
 }
 
-/* HACK, "ENTRY (IN T5 RUPT) FROM TVCDAPS": "SAVE Q FOR DAP RETURN" in
- * BUNKER (QXCH); HACKWLST by WAITLIST in 20 ms; on at HACK +6. */
+/* HACK -- p. 982, "ENTRY (IN T5 RUPT) FROM TVCDAPS": "SAVE Q FOR DAP RETURN"
+ * in BUNKER (QXCH); HACKWLST by WAITLIST in 20 ms; on at HACK +6. */
 void hack(void)
 {
     qxch(ADDRESS_OF(BUNKER));
@@ -147,14 +147,14 @@ void hack(void)
     tc_to(HACK + 3u, WAITLIST); /* 2CADR HACKWLST */
 }
 
-/* HACK +6, after the WAITLIST: TCF +3, the burst. */
+/* HACK +6 -- p. 982, after the WAITLIST: TCF +3, the burst. */
 void hack_after_waitlist(void)
 {
     burst();
 }
 
-/* HACKWLST, the WAITLIST task: "BUNKER IS TC TASKOVER" (TCTSKOVR); the
- * burst. */
+/* HACKWLST -- p. 982, the WAITLIST task: "BUNKER IS TC TASKOVER" (TCTSKOVR);
+ * the burst. */
 void hackwlst(void)
 {
     set_A(TCTSKOVR);

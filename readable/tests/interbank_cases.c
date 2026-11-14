@@ -150,7 +150,12 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t z, uint32_t 
             s->words[6] = (uint16_t)(s->words[4] | (s->words[3] >> 8));
         }
         break;
-    case 9: s->words[2] = 0177776u; break;
+    case 9: { /* a negative overflow in A: BANKJUMP's TCF runs as CCS 1777, on each kind of word */
+        static const uint16_t kinds[4] = {000123u, 000000u, 077654u, 077777u};
+        s->words[2] = 0177776u;
+        s->words[(s->words[3] >> 8) * 0400u + 0377u] = kinds[rnd() % 4u];
+        break;
+    }
     default: break;
     }
 }

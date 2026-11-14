@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* IMU_MODE_SWITCHING_ROUTINES.agc, part 1: zeroing the CDUs, coarse and
- * fine align, and the program's use of the PIPAs (LM pages 1309-1318, CM
- * pages 1420-1429).
+/* IMU_MODE_SWITCHING_ROUTINES.agc, part 1: zeroing the CDUs, coarse and fine
+ * align, and the program's use of the PIPAs (LM pages 1309-1318, CM pages
+ * 1420-1429). The faithful C is c64-port/src/imu_mode_switching.c.
  *
  * A mode switch starts in a job, through BANKCALL: it sets the IMU's
  * channel bits, puts the rest on WAITLIST as tasks, and leaves by
@@ -77,14 +77,16 @@ void imuzero(void)
     continue_at(WAITLIST);
 }
 
-/* IMUZERO +7, where ALARM returns: TCF CAGETSTJ +4. */
+/* IMUZERO +7 -- LM p. 1310, CM p. 1421, where ALARM returns: TCF CAGETSTJ
+ * +4. */
 void imuzero_after_alarm(void)
 {
     cagetstj_failed();
 }
 
-/* IMUZEROA +023, where WAITLIST returns: "SEE IF IMU OPERATING AND ALARM
- * IF NOT." (IMODES30 bit 9), alarm 210; on to MODEEXIT either way. */
+/* IMUZEROA +023 -- LM p. 1310, CM p. 1421, where WAITLIST returns: "SEE IF
+ * IMU OPERATING AND ALARM IF NOT." (IMODES30 bit 9), alarm 210; on to
+ * MODEEXIT either way. */
 void imuzeroa_after_waitlist(void)
 {
     cs(ADDRESS_OF(IMODES30));
@@ -130,7 +132,8 @@ void imuzero3(void)
     continue_at(IBNKCALL);
 }
 
-/* IMUZERO3 +011, where SETISSW returns: TCF ENDIMU. */
+/* IMUZERO3 +011 -- LM p. 1311, CM p. 1422, where SETISSW returns: TCF
+ * ENDIMU. */
 void imuzero3_after_setissw(void)
 {
     endimu();
@@ -154,7 +157,8 @@ void imucoars(void)
     continue_at(WAITLIST);
 }
 
-/* IMUCOARS +7, where WAITLIST returns: TCF MODEEXIT. */
+/* IMUCOARS +7 -- LM p. 1312, CM p. 1423, where WAITLIST returns: TCF
+ * MODEEXIT. */
 void imucoars_after_waitlist(void)
 {
     modeexit();
@@ -280,29 +284,33 @@ void coars2(void)
  * ERROR."). All within: ENDIMU. */
 void nextcdu_after_fixdelay(void)
 {
+    bool off = false; /* the gimbal is not at its angle: COARSERR */
+
     set_A(TWO);
     for (;;) {
         ts(ADDRESS_OF(ITEMP1)); /* CHKCORS */
         ca(indexed(ADDRESS_OF(CDUX), a_word()));
         msu_at(indexed(ADDRESS_OF(THETAD), ITEMP1)); /* EXTEND; INDEX ITEMP1; MSU THETAD */
         switch (ccs_register(A_ADDRESS)) {
-        case POSITIVE:
-        case NEGATIVE:
+        case POSITIVE: off = true; break;      /* TCF COARSERR */
+        case IS_PLUS_ZERO: off = false; break; /* TCF CORSCHK2 */
+        case NEGATIVE: off = true; break;      /* TCF COARSERR */
+        case IS_MINUS_ZERO: off = false; break;
+        }
+        if (off) {
             ad(COARSTOL); /* COARSERR: "2 DEGREES." */
             if (!A_is_zero_or_minus()) {
                 tc_at((word)(COARSERR + 3u)); /* TC ALARM; OCT 211 */
                 continue_at(ALARM);
                 return;
             }
-            break;
-        default: break;
         }
         if (ccs_at(ADDRESS_OF(ITEMP1)) != POSITIVE) break; /* CORSCHK2 */
     }
     endimu(); /* "END OF COARSE ALIGNMENT" */
 }
 
-/* COARSERR +5, where ALARM returns: TCF IMUBAD. */
+/* COARSERR +5 -- LM p. 1314, CM p. 1425, where ALARM returns: TCF IMUBAD. */
 void coarserr_after_alarm(void)
 {
     imubad();
@@ -406,7 +414,8 @@ void imufine(void)
     continue_at(WAITLIST);
 }
 
-/* IMUFINE +015, where WAITLIST returns: IMUFINED in 2 seconds. */
+/* IMUFINE +015 -- LM p. 1316, CM p. 1427, where WAITLIST returns: IMUFINED
+ * in 2 seconds. */
 void imufine_after_waitlist(void)
 {
     set_A(TWO_SECS);
@@ -414,7 +423,8 @@ void imufine_after_waitlist(void)
     continue_at(WAITLIST);
 }
 
-/* IMUFINE +021, where WAITLIST returns: TCF MODEEXIT. */
+/* IMUFINE +021 -- LM p. 1316, CM p. 1427, where WAITLIST returns: TCF
+ * MODEEXIT. */
 void imufine_after_waitlist2(void)
 {
     modeexit();
@@ -464,7 +474,8 @@ void ifailok(void)
     pfailok2();
 }
 
-/* PFAILOK2 +4, where SETISSW returns: TCF TASKOVER. */
+/* PFAILOK2 +4 -- LM p. 1317, CM p. 1428, where SETISSW returns: TCF
+ * TASKOVER. */
 void pfailok2_after_setissw(void)
 {
     continue_at(TASKOVER);
@@ -543,7 +554,8 @@ void pipuse1(void)
     pipfree2();
 }
 
-/* PIPFREE2 +2, where SETISSW returns: TCF MODEEXIT. */
+/* PIPFREE2 +2 -- LM p. 1318, CM p. 1429, where SETISSW returns: TCF
+ * MODEEXIT. */
 void pipfree2_after_setissw(void)
 {
     modeexit();
@@ -567,7 +579,8 @@ void pipfree(void)
     continue_at(ALARM);
 }
 
-/* PIPFREE +011, where ALARM returns: INHINT, and TCF PIPFREE2. */
+/* PIPFREE +011 -- LM p. 1318, CM p. 1429, where ALARM returns: INHINT, and
+ * TCF PIPFREE2. */
 void pipfree_after_alarm(void)
 {
     inhint();

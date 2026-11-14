@@ -515,10 +515,10 @@ void v83perf_plus5(void)
     tc(V83PERF + 6u, NOVAC); /* 2CADR R31CALL */
 }
 
-/* V83PERF +9 -- CM p. 255. */
+/* V83PERF +011 -- CM p. 255. */
 void v83perf_after_novac(void)
 {
-    tc(V83PERF + 9u, ENDOFJOB);
+    tc(V83PERF + 011u, ENDOFJOB);
 }
 
 /* V85PERF -- CM p. 256.
@@ -712,10 +712,10 @@ void ckoptvb_after_checkmm02_yes(void)
     tc(CKOPTVB + 5u, FINDVAC); /* 2CADR COMPVER */
 }
 
-/* CKOPTVB +8 -- CM p. 247. */
+/* CKOPTVB +010 -- CM p. 247. */
 void ckoptvb_after_findvac(void)
 {
-    tc(CKOPTVB + 8u, GOPIN);
+    tc(CKOPTVB + 010u, GOPIN);
 }
 
 /* CHAZFOGC -- CM p. 248.
@@ -746,10 +746,10 @@ void chazfogc_after_findvac(void)
     tc(CHAZFOGC + 7u, PHASCHNG); /* OCT 00174 */
 }
 
-/* CHAZFOGC +9 -- CM p. 248. */
+/* CHAZFOGC +011 -- CM p. 248. */
 void chazfogc_after_phaschng(void)
 {
-    tc(CHAZFOGC + 9u, GOPIN);
+    tc(CHAZFOGC + 011u, GOPIN);
 }
 
 /* STROKON -- CM p. 251.
@@ -769,10 +769,10 @@ void strokon(void)
     tc(STROKON + 5u, NOVAC); /* 2CADR STRKTSTI */
 }
 
-/* STROKON +8 -- CM p. 251. */
+/* STROKON +010 -- CM p. 251. */
 void strokon_after_novac(void)
 {
-    tc(STROKON + 8u, GOPIN);
+    tc(STROKON + 010u, GOPIN);
 }
 #endif
 
@@ -897,13 +897,13 @@ void trmtrack_after_downflag(void)
     tc(TRMTRACK + 6u, DOWNFLAG); /* ADRES P25FLAG */
 }
 
-/* TRMTRACK +8 -- LM p. 287. */
+/* TRMTRACK +010 -- LM p. 287. */
 void trmtrack_after_second_downflag(void)
 {
-    tc(TRMTRACK + 8u, DOWNFLAG); /* ADRES SRCHOPTN */
+    tc(TRMTRACK + 010u, DOWNFLAG); /* ADRES SRCHOPTN */
 }
 
-/* TRMTRACK +10 -- LM p. 287: "IS TRACK FLAG ON?" */
+/* TRMTRACK +012 -- LM p. 287: "IS TRACK FLAG ON?" */
 void trmtrack_after_third_downflag(void)
 {
     set_A(TRACKBIT);
@@ -912,7 +912,7 @@ void trmtrack_after_third_downflag(void)
         continue_at(GOPIN);
         return;
     }
-    tc(TRMTRACK + 14u, POSTJUMP); /* CADR TRMTRAK1 */
+    tc(TRMTRACK + 016u, POSTJUMP); /* CADR TRMTRAK1 */
 }
 
 /* DAPDISP -- LM p. 292.
@@ -962,29 +962,29 @@ void stablish(void)
     cs(ADDRESS_OF(FLAGWRD6)); /* "TEST FOR TVC" */
     mask(OCT60000);
     if (A_is_zero_or_minus()) { /* EXTEND; BZMF +8 */
-        continue_at(STABLISH + 13u);
+        continue_at(STABLISH + 015u);
         return;
     }
     ca(ADDRESS_OF(DAPDATR1)); /* CAE DAPDATR1: "TEST FOR CSM/LM" */
     mask(BIT14);
     if (A_is_zero_or_minus()) { /* EXTEND; BZMF +3 */
-        continue_at(STABLISH + 12u);
+        continue_at(STABLISH + 014u);
         return;
     }
-    tc(STABLISH + 10u, POSTJUMP); /* CADR PRESWTCH */
+    tc(STABLISH + 012u, POSTJUMP); /* CADR PRESWTCH */
 }
 
-/* STABLISH +12, the listing's +3 -- CM p. 251: "CSM, SO ALARM AND EXIT". */
-void stablish_plus12(void)
+/* STABLISH +014, the listing's +3 -- CM p. 251: "CSM, SO ALARM AND EXIT". */
+void stablish_plus014(void)
 {
-    tc(STABLISH + 12u, ALM_END);
+    tc(STABLISH + 014u, ALM_END);
 }
 
-/* STABLISH +13, the listing's +8 -- CM p. 251.
+/* STABLISH +015, the listing's +8 -- CM p. 251.
  * "SET UP RCS, ENTRY, OR SATURN-STICK DAP". */
-void stablish_plus13(void)
+void stablish_plus015(void)
 {
-    tc(STABLISH + 13u, POSTJUMP); /* CADR DAPFIG */
+    tc(STABLISH + 015u, POSTJUMP); /* CADR DAPFIG */
 }
 
 /* GOTOR21 -- CM p. 257.
@@ -1039,13 +1039,13 @@ void gotor23_after_testxact(void)
         return;
     }
     set_A(PRIO16);
-    tc(GOTOR23 + 16u, NOVAC); /* 2CADR R23CSM */
+    tc(GOTOR23 + 020u, NOVAC); /* 2CADR R23CSM */
 }
 
-/* GOTOR23 +19 -- CM p. 257. */
+/* GOTOR23 +023 -- CM p. 257. */
 void gotor23_after_novac(void)
 {
-    tc(GOTOR23 + 19u, ENDOFJOB);
+    tc(GOTOR23 + 023u, ENDOFJOB);
 }
 
 /* REGR21 -- CM p. 257. */
@@ -1097,22 +1097,22 @@ void verb94_after_downflag(void)
     tc(VERB94 + 6u, CHECKMM); /* MM 23 */
 }
 
-/* VERB94 +8 -- CM p. 266. */
+/* VERB94 +010 -- CM p. 266. */
 void verb94_after_checkmm23_no(void)
 {
-    tc(VERB94 + 8u, ALM_END);
+    tc(VERB94 + 010u, ALM_END);
 }
 
-/* VERB94 +9 -- CM p. 266. */
+/* VERB94 +011 -- CM p. 266. */
 void verb94_after_checkmm23_yes(void)
 {
-    tc(VERB94 + 9u, PHASCHNG); /* OCT 112 */
+    tc(VERB94 + 011u, PHASCHNG); /* OCT 112 */
 }
 
-/* VERB94 +11 -- CM p. 266. */
+/* VERB94 +013 -- CM p. 266. */
 void verb94_after_phaschng(void)
 {
-    tc(VERB94 + 11u, CLEANOUT);
+    tc(VERB94 + 013u, CLEANOUT);
 }
 #endif
 
@@ -1249,7 +1249,7 @@ void v52_after_checkmm22_yes(void)
     cs(A_ADDRESS);
     ad(PRIO5);
     ads(ADDRESS_OF(LANDMARK));
-    tc(V52 + 16u, GOPIN);
+    tc(V52 + 020u, GOPIN);
 }
 #endif
 
@@ -1330,7 +1330,7 @@ void nokill(void)
  * GOXDSPF returns here on TERMINATE: done (TC +3). */
 void nokill_after_terminate(void)
 {
-    tc(NOKILL + 5u, NOKILL + 8u);
+    tc(NOKILL + 5u, NOKILL + 010u);
 }
 
 /* NOKILL +6 -- LM p. 290, CM p. 263.
@@ -1347,14 +1347,14 @@ void nokill_after_enter(void)
     tc(NOKILL + 7u, NOKILL);
 }
 
-/* NOKILL +8 -- LM p. 291, CM p. 263.
+/* NOKILL +010 -- LM p. 291, CM p. 263.
  * SKEEP1 gets SELFADRS, the self-check's address, and the display system
  * is released (ENDEXT). */
-void nokill_plus8(void)
+void nokill_plus010(void)
 {
     set_A(SELFADRS);
     ts(ADDRESS_OF(SKEEP1));
-    tc(NOKILL + 10u, ENDEXT);
+    tc(NOKILL + 012u, ENDEXT);
 }
 
 /* ENDSUMS -- LM p. 291, CM p. 263.

@@ -1,19 +1,18 @@
 /* SPDX-License-Identifier: MIT */
-/* P37_P70.agc of the CM, part 3 (Comanche055 pp. 905-913, banks 32 and
- * 16): the "INITIAL VECTOR SUBROUTINE" (INVC100), which brings the CSM's
- * state to the time of ignition, and the "PRECISION TRAJECTORY
- * COMPUTATION SUBROUTINE" (PREC100), which turns the conic trajectory home
- * into an integrated one: "A NUMERICALLY INTEGRATED TRAJECTORY IS
- * GENERATED WHICH FOR THE RETURN TO EARTH PROBLEM SATISFIES THE REENTRY"
- * "CONSTRAINTS (RCON AND X(T2)) ACHIEVED BY THE INITIAL CONIC TRAJECTORY".
- * Each returns through SPRTEX with MPAC +0, or an alarm's code in it. */
+/* P37_P70.agc of the CM, part 3 (Comanche055 pp. 905-913, banks 32 and 16):
+ * the "INITIAL VECTOR SUBROUTINE" (INVC100), which brings the CSM's state to
+ * the time of ignition, and the "PRECISION TRAJECTORY COMPUTATION
+ * SUBROUTINE" (PREC100), which turns the conic trajectory home into an
+ * integrated one: "A NUMERICALLY INTEGRATED TRAJECTORY IS GENERATED WHICH
+ * FOR THE RETURN TO EARTH PROBLEM SATISFIES THE REENTRY" "CONSTRAINTS (RCON
+ * AND X(T2)) ACHIEVED BY THE INITIAL CONIC TRAJECTORY". Each returns through
+ * SPRTEX with MPAC +0, or an alarm's code in it. The faithful C is
+ * c64-port/src/cm_p37_p70.c. */
 #include "p37_p70.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
 #if COMANCHE055
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* ---- INVC100 -- pp. 905-906 ---- */
 

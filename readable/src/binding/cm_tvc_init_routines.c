@@ -117,17 +117,17 @@ static const struct basic_entry {
     {TVCINIT1 + 5u, tvcinit1_after_massprop},
     {TVCINIT1 + 025u, tvcinit1_after_loadcoef},
     {TVCINIT2, tvcinit2},
-    {TVCINIT2 + 021u, tvcinit2_repfrac},
+    {TVCINIT2 + 021u, tvcinit2_plus021},
     {TVCINIT4, tvcinit4},
     {TVCINIT4 + 017u, tvcinit4_after_waitlist},
-    {TVCINIT4 + 021u, tvcinit4_t5},
+    {TVCINIT4 + 021u, tvcinit4_plus021},
     {PRESWTCH, preswtch},
     {PRESWTCH + 1u, preswtch_after_swichovr},
     {SWICHOVR + 5u, swichovr_restart},
     {SWICHOVR + 026u, swichovr_after_s40_15},
     {SWICHOVR + 043u, swichovr_after_loadcoef},
     {LOADCOEF, loadcoef},
-    {LOADCOEF + 014u, loadcoef_dca6},
+    {LOADCOEF + 014u, loadcoef_plus014},
     {LOADCOEF + 017u, loadcoef_n10_6},
     {LOADCOEF + 023u, loadcoef_n10_8},
     {S40_15, s40_15},
@@ -146,7 +146,7 @@ static const struct basic_entry *basic_entry(word at)
 /* The routines that end in a TC Q, after which the faithful port runs on. */
 static bool ends_in_tc_q(void (*routine)(void))
 {
-    return routine == loadcoef_dca6 || routine == loadcoef_n10_6 || routine == loadcoef_n10_8 ||
+    return routine == loadcoef_plus014 || routine == loadcoef_n10_6 || routine == loadcoef_n10_8 ||
            routine == s40_15 || routine == s40_15_switchover;
 }
 

@@ -30,16 +30,16 @@ static unsigned table(unsigned field, word index)
 
 /* ---- The end of the roll on-time -- p. 1054 ---- */
 
-/* RBLAST +015: "LIMIT THE LENGTH OF ROLL ROTATION COMMANDS TO 0.1 SEC"
- * (BLAST), so that only the Y and Z translations go on. */
-void rblast_limit(void)
+/* RBLAST +015 -- p. 1053: "LIMIT THE LENGTH OF ROLL ROTATION COMMANDS TO 0.1
+ * SEC" (BLAST), so that only the Y and Z translations go on. */
+void rblast_plus015(void)
 {
     set_A(EQ_P_1SEC);
     ts(ADDRESS_OF(BLAST));
     asmblwr();
 }
 
-/* AD14MSR: BLAST at least 14 ms ("MINIMUM IMPULSE TIME"). */
+/* AD14MSR -- p. 1053: BLAST at least 14 ms ("MINIMUM IMPULSE TIME"). */
 void ad14msr(void)
 {
     cs(ADDRESS_OF(BLAST));
@@ -51,8 +51,8 @@ void ad14msr(void)
     rblastok();
 }
 
-/* RBLASTOK: DFT the on-time by the net number of roll jets, and TAU
- * zeroed (the product's top word, +0). */
+/* RBLASTOK -- p. 1053: DFT the on-time by the net number of roll jets, and
+ * TAU zeroed (the product's top word, +0). */
 void rblastok(void)
 {
     ca(ADDRESS_OF(BLAST));
@@ -64,9 +64,9 @@ void rblastok(void)
 
 /* ---- The second pitch word -- p. 1055 ---- */
 
-/* ASMBLWP: "GENERATION OF THE SECOND PITCH(X-TRANS) WORD...PWORD2": the
- * PYTABLE word for the X translation alone (its XLNNDX bias, no
- * rotation). "IF FAILURE ON AC IGNORE X-TRANSLATION": FPX2. */
+/* ASMBLWP -- p. 1055: "GENERATION OF THE SECOND PITCH(X-TRANS)
+ * WORD...PWORD2": the PYTABLE word for the X translation alone (its XLNNDX
+ * bias, no rotation). "IF FAILURE ON AC IGNORE X-TRANSLATION": FPX2. */
 void asmblwp(void)
 {
     switch (ccs_at(ADDRESS_OF(RACFAIL))) {
@@ -79,14 +79,14 @@ void asmblwp(void)
     fpx2_pjets();
 }
 
-/* FPX2: PYTABLE's first word (no jets), unindexed. */
+/* FPX2 -- p. 1055: PYTABLE's first word (no jets), unindexed. */
 void fpx2(void)
 {
     ca(ADDRESS_OF(PYTABLE));
     fpx2_pjets();
 }
 
-/* FPX2 +1: the pitch jets, PWORD2, and on to YAWTIME. */
+/* FPX2 +1 -- p. 1055: the pitch jets, PWORD2, and on to YAWTIME. */
 void fpx2_plus1(void)
 {
     fpx2_pjets();
@@ -99,8 +99,8 @@ static void fpx2_pjets(void)
     continue_at(YAWTIME);
 }
 
-/* PBYPASS: no pitch command: "THE T6 PROGRAM WILL LOAD PWORD2 UPON
- * ENTRY", PWORD1 itself, and BLAST1 +0, "THERE IS NO PWORD2". */
+/* PBYPASS -- p. 1055: no pitch command: "THE T6 PROGRAM WILL LOAD PWORD2
+ * UPON ENTRY", PWORD1 itself, and BLAST1 +0, "THERE IS NO PWORD2". */
 void pbypass(void)
 {
     ca(ADDRESS_OF(PWORD1));
@@ -112,10 +112,10 @@ void pbypass(void)
 
 /* ---- The second roll word -- pp. 1056-1057 ---- */
 
-/* ASMBLWR: "GENERATION OF THE SECOND ROLL (Y,Z) WORD (RWORD2)": "CHECK
- * FOR Y-TRANS" (ACBD2Y), then for Z. With none, RWORD2 +0 (NO2Y). (A
- * negative YNDX leaves its CCS value for RWORD2, -0 leaves RWORD2 as it
- * was; the translation indexes are never negative in flight.) */
+/* ASMBLWR -- p. 1056: "GENERATION OF THE SECOND ROLL (Y,Z) WORD (RWORD2)":
+ * "CHECK FOR Y-TRANS" (ACBD2Y), then for Z. With none, RWORD2 +0 (NO2Y). (A
+ * negative YNDX leaves its CCS value for RWORD2, -0 leaves RWORD2 as it was;
+ * the translation indexes are never negative in flight.) */
 void asmblwr(void)
 {
     switch (ccs_at(ADDRESS_OF(YNDX))) {
@@ -126,15 +126,15 @@ void asmblwr(void)
     }
 }
 
-/* NO2Y: no Y translation, RWORD2 +0. */
+/* NO2Y -- p. 1056: no Y translation, RWORD2 +0. */
 static void no2y(void)
 {
     set_A(ZERO);
     no2y_plus1();
 }
 
-/* NO2Y +1: A into RWORD2. (An overflow in A at the key skips to the TCF
- * ACBD2Z.) */
+/* NO2Y +1 -- p. 1056: A into RWORD2. (An overflow in A at the key skips to
+ * the TCF ACBD2Z.) */
 void no2y_plus1(void)
 {
     if (ts(ADDRESS_OF(RWORD2))) {
@@ -144,7 +144,7 @@ void no2y_plus1(void)
     no2y_plus2();
 }
 
-/* NO2Y +2: "CHECK FOR Z-TRANS": ACBD2Z; with none, NO2Z. ("RWORD2
+/* NO2Y +2 -- p. 1056: "CHECK FOR Z-TRANS": ACBD2Z; with none, NO2Z. ("RWORD2
  * ASSEMBLED", on to PITCHTIM. A negative ZNDX adds its CCS value to
  * RWORD2; -0 adds nothing.) */
 void no2y_plus2(void)
@@ -157,23 +157,23 @@ void no2y_plus2(void)
     }
 }
 
-/* NO2Z: no Z translation, +0 to RWORD2. */
+/* NO2Z -- p. 1056: no Z translation, +0 to RWORD2. */
 void no2z(void)
 {
     set_A(ZERO);
     no2z_plus1();
 }
 
-/* NO2Z +1: A added to RWORD2, "RWORD2 ASSEMBLED". */
+/* NO2Z +1 -- p. 1056: A added to RWORD2, "RWORD2 ASSEMBLED". */
 void no2z_plus1(void)
 {
     ads(ADDRESS_OF(RWORD2));
     continue_at(PITCHTIM);
 }
 
-/* ACBD2Y: a Y translation. Rolling on the BD quads (ACORBD + or +0), it
- * "CAN DO Y-TRANS" on AC, at AC2Y. Rolling on AC ("USING AC FOR ROLL"),
- * none if "AC HAS FAILED" (NO2Y); else the RTABLE word for the Y
+/* ACBD2Y -- p. 1056: a Y translation. Rolling on the BD quads (ACORBD + or
+ * +0), it "CAN DO Y-TRANS" on AC, at AC2Y. Rolling on AC ("USING AC FOR
+ * ROLL"), none if "AC HAS FAILED" (NO2Y); else the RTABLE word for the Y
  * translation on the AC roll jets, at ACBD2Y +012. */
 static void acbd2y(void)
 {
@@ -191,14 +191,14 @@ static void acbd2y(void)
     continue_at(ACBD2Y + 012u);
 }
 
-/* ACBD2Y +012: the RTABLE word. */
-void acbd2y_rtable(void)
+/* ACBD2Y +012 -- p. 1056: the RTABLE word. */
+void acbd2y_plus012(void)
 {
     ca(table(ADDRESS_OF(RTABLE), a_word()));
     acbd2y_acrjets();
 }
 
-/* ACBD2Y +014: its AC roll jets, into RWORD2 at NO2Y +1. */
+/* ACBD2Y +014 -- p. 1056: its AC roll jets, into RWORD2 at NO2Y +1. */
 void acbd2y_acrjets(void)
 {
     mask(ACRJETS);
@@ -206,15 +206,15 @@ void acbd2y_acrjets(void)
     continue_at(NO2Y + 1u);
 }
 
-/* AC2Y: the Y translation on the AC quads while BD rolls: the YZTABLE
- * word, by the AC quads' failure bias, at AC2Y +4. */
+/* AC2Y -- p. 1056: the Y translation on the AC quads while BD rolls: the
+ * YZTABLE word, by the AC quads' failure bias, at AC2Y +4. */
 void ac2y(void)
 {
     translation_bias(ADDRESS_OF(RACFAIL));
     ac2y_index();
 }
 
-/* AC2Y +4: the Y translation's XLN1NDX, the YZTABLE word. */
+/* AC2Y +4 -- p. 1056: the Y translation's XLN1NDX, the YZTABLE word. */
 void ac2y_index(void)
 {
     ad_at(table(ADDRESS_OF(XLN1NDX), fetch(ADDRESS_OF(YNDX))));
@@ -222,10 +222,10 @@ void ac2y_index(void)
     ac2y_acyjets();
 }
 
-/* AC2Y +010: its jets, RWORD2, and NRJETS, the net roll jets they fire
- * (bits 12-14 less 2). They fire for the rest of the cycle (.1 s less
- * BLAST), which goes into DFT by NRJETS; on at NO2Y +2. (A, a small
- * product less 2, holds no overflow at the TS NRJETS.) */
+/* AC2Y +010 -- p. 1056: its jets, RWORD2, and NRJETS, the net roll jets they
+ * fire (bits 12-14 less 2). They fire for the rest of the cycle (.1 s less
+ * BLAST), which goes into DFT by NRJETS; on at NO2Y +2. (A, a small product
+ * less 2, holds no overflow at the TS NRJETS.) */
 void ac2y_acyjets(void)
 {
     mask(ACYJETS);
@@ -241,8 +241,8 @@ void ac2y_acyjets(void)
     continue_at(NO2Y + 2u);
 }
 
-/* ACBD2Z: a Z translation. Rolling on BD ("USING BD-ROLL"), BDF2Z "MUST
- * CHECK FOR BD FAILURES"; "USING AC FOR ROLL, CAN DO Z-TRANS": the BD
+/* ACBD2Z -- p. 1057: a Z translation. Rolling on BD ("USING BD-ROLL"), BDF2Z
+ * "MUST CHECK FOR BD FAILURES"; "USING AC FOR ROLL, CAN DO Z-TRANS": the BD
  * quads' failure bias, at ACBD2Z +010. */
 void acbd2z(void)
 {
@@ -255,9 +255,9 @@ void acbd2z(void)
     acbd2z_index();
 }
 
-/* ACBD2Z +010: the Z translation's YZTABLE word, its BD jets added to
- * RWORD2, and NRJETS (bits 9-11 less 2), the rest of the cycle by NRJETS,
- * on at ACBD2Z +026 into DFT. (A, a small product less 2, holds no
+/* ACBD2Z +010 -- p. 1057: the Z translation's YZTABLE word, its BD jets
+ * added to RWORD2, and NRJETS (bits 9-11 less 2), the rest of the cycle by
+ * NRJETS, on at ACBD2Z +026 into DFT. (A, a small product less 2, holds no
  * overflow at the TS NRJETS.) */
 void acbd2z_index(void)
 {
@@ -274,16 +274,17 @@ void acbd2z_index(void)
     continue_at(ACBD2Z + 026u);
 }
 
-/* ACBD2Z +026: the product's low word into DFT, and on to PITCHTIM. */
-void acbd2z_dft(void)
+/* ACBD2Z +026 -- p. 1057: the product's low word into DFT, and on to
+ * PITCHTIM. */
+void acbd2z_plus026(void)
 {
     ca(L_ADDRESS);
     ads(ADDRESS_OF(DFT));
     continue_at(PITCHTIM);
 }
 
-/* BDF2Z: the Z translation on the BD roll jets: none "USING BD-ROLL AND
- * BD HAS FAILED" (NO2Z); else at BDF2Z +4. */
+/* BDF2Z -- p. 1057: the Z translation on the BD roll jets: none "USING
+ * BD-ROLL AND BD HAS FAILED" (NO2Z); else at BDF2Z +4. */
 void bdf2z(void)
 {
     switch (ccs_at(ADDRESS_OF(RBDFAIL))) {
@@ -294,8 +295,8 @@ void bdf2z(void)
     bdf2z_index();
 }
 
-/* BDF2Z +4: the RTABLE word for the Z translation, its BD roll jets, on
- * at NO2Z +1. */
+/* BDF2Z +4 -- p. 1057: the RTABLE word for the Z translation, its BD roll
+ * jets, on at NO2Z +1. */
 void bdf2z_index(void)
 {
     ca(table(ADDRESS_OF(XLNNDX), fetch(ADDRESS_OF(ZNDX))));
@@ -304,8 +305,8 @@ void bdf2z_index(void)
     continue_at(NO2Z + 1u);
 }
 
-/* RBYPASS: no roll command: RWORD2 the first word, and BLAST +0 at
- * RBYPASS +2. */
+/* RBYPASS -- p. 1057: no roll command: RWORD2 the first word, and BLAST +0
+ * at RBYPASS +2. */
 void rbypass(void)
 {
     ca(ADDRESS_OF(RWORD1));
@@ -313,7 +314,7 @@ void rbypass(void)
     rbypass_blast();
 }
 
-/* RBYPASS +2: BLAST +0, and on to PITCHTIM. */
+/* RBYPASS +2 -- p. 1057: BLAST +0, and on to PITCHTIM. */
 void rbypass_blast(void)
 {
     set_A(ZERO);
@@ -323,8 +324,9 @@ void rbypass_blast(void)
 
 /* ---- The second yaw word -- p. 1058 ---- */
 
-/* ASMBLWY: "GENERATION OF THE SECOND YAW (X-TRANS) WORD...YWORD2", as
- * ASMBLWP's with the BD quads: "IF FAILURE ON BD IGNORE X-TRANSLATION". */
+/* ASMBLWY -- p. 1058: "GENERATION OF THE SECOND YAW (X-TRANS)
+ * WORD...YWORD2", as ASMBLWP's with the BD quads: "IF FAILURE ON BD IGNORE
+ * X-TRANSLATION". */
 void asmblwy(void)
 {
     switch (ccs_at(ADDRESS_OF(RBDFAIL))) {
@@ -335,7 +337,7 @@ void asmblwy(void)
     asmblwy_index();
 }
 
-/* ASMBLWY +4: the PYTABLE word for the X translation. */
+/* ASMBLWY +4 -- p. 1058: the PYTABLE word for the X translation. */
 void asmblwy_index(void)
 {
     ca(table(ADDRESS_OF(XLNNDX), fetch(ADDRESS_OF(XNDX2))));
@@ -343,14 +345,14 @@ void asmblwy_index(void)
     fyx2_yjets();
 }
 
-/* FYX2: PYTABLE's first word, unindexed. */
+/* FYX2 -- p. 1058: PYTABLE's first word, unindexed. */
 void fyx2(void)
 {
     ca(ADDRESS_OF(PYTABLE));
     fyx2_yjets();
 }
 
-/* FYX2 +1: the yaw jets, YWORD2, and on to T6SETUP. */
+/* FYX2 +1 -- p. 1058: the yaw jets, YWORD2, and on to T6SETUP. */
 static void fyx2_yjets(void)
 {
     mask(YJETS);
@@ -358,7 +360,7 @@ static void fyx2_yjets(void)
     t6setup();
 }
 
-/* YBYPASS: no yaw command: YWORD2 the first word, BLAST2 +0. */
+/* YBYPASS -- p. 1058: no yaw command: YWORD2 the first word, BLAST2 +0. */
 void ybypass(void)
 {
     ca(ADDRESS_OF(YWORD1));

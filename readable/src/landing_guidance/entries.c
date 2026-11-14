@@ -12,8 +12,6 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* The tables' words, one TCF each: "ROUTINES FOR STARTING NEW GUIDANCE
  * PHASES" (NEWPHASE: TTFINCR, STARTP64 or P65START), "PRE-GUIDANCE
  * COMPUTATIONS" (PREGUIDE: CALCRGVG, RGVGCALC or REDESIG), "GUIDANCE
@@ -80,7 +78,7 @@ static const word q_guidsub_words[] = {
 const struct interpretive_code Q_GUIDSUB_CODE = {031u, Q_GUIDSUB, COUNT(q_guidsub_words),
                                                  q_guidsub_words};
 
-/* ?GUIDSUB +1: NGUIDSUB gets two ("N = 3"), and the pass starts at
+/* ?GUIDSUB +1 -- p. 799: NGUIDSUB gets two ("N = 3"), and the pass starts at
  * GUILDRET +2, past the R13 monitor. (A, a constant, never overflows: TS NGUIDSUB
  * does not skip.) */
 void q_guidsub_plus1(void)
@@ -90,25 +88,26 @@ void q_guidsub_plus1(void)
     guildret_plus2();
 }
 
-/* GUIDSUB: "ON SUCCEEDING PASSES SKIP TTFINCR": NGUIDSUB gets A, the
- * passes the ignition algorithm still wants, and the guidance runs from
- * CALCRGVG. (EXGSUB's CCS NGUIDSUB leaves A one less than a positive
- * count, which never overflows: TS NGUIDSUB does not skip into LUNLAND.) */
+/* GUIDSUB -- p. 799: "ON SUCCEEDING PASSES SKIP TTFINCR": NGUIDSUB gets A,
+ * the passes the ignition algorithm still wants, and the guidance runs from
+ * CALCRGVG. (EXGSUB's CCS NGUIDSUB leaves A one less than a positive count,
+ * which never overflows: TS NGUIDSUB does not skip into LUNLAND.) */
 void guidsub(void)
 {
     ts(ADDRESS_OF(NGUIDSUB));
     calcrgvg();
 }
 
-/* LUNLAND: "NORMAL ENTRY: CONTROL COMES HERE FROM SERVOUT". Its first
- * PHASCHNG: "GROUP 5: RETAIN ONLY PIPA TASK". */
+/* LUNLAND -- p. 799: "NORMAL ENTRY: CONTROL COMES HERE FROM SERVOUT". Its
+ * first PHASCHNG: "GROUP 5: RETAIN ONLY PIPA TASK". */
 void lunland(void)
 {
     tc_to(LUNLAND, PHASCHNG);
 }
 
-/* Its second: "GROUP 3: PROTECT GUIDANCE WITH PRIO 21", "JUST HIGHER
- * THAN SERVICER'S PRIORITY"; then GUILDEN (guildenstern.c). */
+/* LUNLAND +2 -- p. 799: Its second: "GROUP 3: PROTECT GUIDANCE WITH PRIO
+ * 21", "JUST HIGHER THAN SERVICER'S PRIORITY"; then GUILDEN
+ * (guildenstern.c). */
 void lunland_plus2(void)
 {
     tc_to(LUNLAND + 2u, PHASCHNG);

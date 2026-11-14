@@ -12,8 +12,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- CALCGRAV -- p. 835 ---- */
 
 /* CALCGRAV: the gravity of RN ("ENTER WITH RN IN MPAC"), half of it times

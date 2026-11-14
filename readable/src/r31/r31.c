@@ -34,23 +34,10 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-/* A label's address in its bank (02000-03777). */
-#define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
-
-/* TC at, to a routine out of the file or to INTPRET: Q gets the return
- * (for INTPRET, the first interpretive word), and the routine runs
- * next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* ---- R31CALL and the display -- LM p. 705, CM p. 507 ---- */
 
-/* R31CALL: a job at V83CALL, priority 3 (FINDVAC, 2CADR V83CALL). */
+/* R31CALL -- LM p. 703, CM p. 505: a job at V83CALL, priority 3 (FINDVAC,
+ * 2CADR V83CALL). */
 void r31call(void)
 {
     set_A(PRIO3);
@@ -58,13 +45,13 @@ void r31call(void)
 }
 
 #if LUMINARY099
-/* DSPDELAY: the task waits a second (TC FIXDELAY, DEC 100). */
+/* DSPDELAY -- LM p. 703: the task waits a second (TC FIXDELAY, DEC 100). */
 void dspdelay(void)
 {
     tc_to(DSPDELAY, FIXDELAY);
 }
 
-/* DSPDELAY +2: until bit 12 of EXTVBACT is set, wait; then the
+/* DSPDELAY +2 -- LM p. 703: until bit 12 of EXTVBACT is set, wait; then the
  * display, a job at DISPN5X, priority 5 (NOVAC, 2CADR DISPN5X). */
 void dspdelay_wake(void)
 {
@@ -78,37 +65,38 @@ void dspdelay_wake(void)
     tc_to(DSPDELAY + 7u, NOVAC);
 }
 
-/* DSPDELAY +12: the task ends (TCF TASKOVER). */
+/* DSPDELAY +12 -- LM p. 703: the task ends (TCF TASKOVER). */
 void r31_taskover(void)
 {
     continue_at(TASKOVER);
 }
 
-/* DISPN5X: verb 16 noun 54 (BANKCALL, CADR GOMARKF). */
+/* DISPN5X -- LM p. 703: verb 16 noun 54 (BANKCALL, CADR GOMARKF). */
 void dispn5x(void)
 {
     set_A(V16N54);
     tc_to(DISPN5X + 1u, BANKCALL);
 }
 #else
-/* DSPDELAY: the job sleeps a second (BANKCALL, CADR DELAYJOB). */
+/* DSPDELAY -- CM p. 505: the job sleeps a second (BANKCALL, CADR
+ * DELAYJOB). */
 void dspdelay(void)
 {
     set_A(ONE_SEC);
     tc_to(DSPDELAY + 1u, BANKCALL);
 }
 
-/* DISPN5X +6: "R34 USE NOUN 53", verb 16 noun 53 (BANKCALL, CADR
- * GOMARKF). */
-void dispn5x_r34(void)
+/* DISPN5X +6 -- CM p. 505: "R34 USE NOUN 53", verb 16 noun 53 (BANKCALL,
+ * CADR GOMARKF). */
+void dispn5x_plus6(void)
 {
     set_A(V16N53);
     tc_to(DISPN5X + 7u, BANKCALL);
 }
 
-/* DISPN5X: R31FLAG, bit 4 of FLAGWRD9, set for R31 ("IN SUNDANCE R31FLAG
- * WILL ALWAYS BE SET AS R34 DOES NOT EXIST"): "R31 USE NOUN 54", verb 16
- * noun 54 (TC +2), else R34's. */
+/* DISPN5X -- CM p. 505: R31FLAG, bit 4 of FLAGWRD9, set for R31 ("IN
+ * SUNDANCE R31FLAG WILL ALWAYS BE SET AS R34 DOES NOT EXIST"): "R31 USE NOUN
+ * 54", verb 16 noun 54 (TC +2), else R34's. */
 void dispn5x(void)
 {
     ca(ADDRESS_OF(FLAGWRD9));
@@ -122,7 +110,7 @@ void dispn5x(void)
     tc_to(DISPN5X + 7u, BANKCALL); /* CADR GOMARKF */
 }
 
-/* DSPDELAY +3: until bit 12 of EXTVBACT is set, sleep; then on
+/* DSPDELAY +3 -- CM p. 505: until bit 12 of EXTVBACT is set, sleep; then on
  * into the display. */
 void dspdelay_wake(void)
 {
@@ -165,10 +153,10 @@ void dispn5x_recycle(void)
 /* ---- The state vectors -- LM pp. 705-706, CM pp. 507-509 ---- */
 
 #if LUMINARY099
-/* V83CALL: with average G on ("TEST AVERAGE G FLAG", AVEGFLAG in
- * FLAGWRD7) "ON - TEST MUNFLAG" (MUNG?); with the LM "ON SURFACE -
- * BYPASS LEMPREC" (SURFFLAG, ONEBASE); else "EXTRAPOLATE BOTH STATE
- * VECTORS", to the interpreter, for V83CALL_CODE. */
+/* V83CALL -- LM p. 703: with average G on ("TEST AVERAGE G FLAG", AVEGFLAG
+ * in FLAGWRD7) "ON - TEST MUNFLAG" (MUNG?); with the LM "ON SURFACE - BYPASS
+ * LEMPREC" (SURFFLAG, ONEBASE); else "EXTRAPOLATE BOTH STATE VECTORS", to
+ * the interpreter, for V83CALL_CODE. */
 void v83call(void)
 {
     cs(ADDRESS_OF(FLAGWRD7));
@@ -215,9 +203,9 @@ static const word v83call_words[] = {
     ORDER(EXIT),
 };
 
-/* REV83: "IF AVEGFLAG SET, USE RN,VN" (GETRVN); "IF ON SURFACE, USE
- * LEMAREC" (R31SURF); else "DO CONIC EXTRAPOLATION FOR BOTH VEHICLES", to
- * the interpreter, for REV83_CODE. */
+/* REV83 -- LM p. 704: "IF AVEGFLAG SET, USE RN,VN" (GETRVN); "IF ON SURFACE,
+ * USE LEMAREC" (R31SURF); else "DO CONIC EXTRAPOLATION FOR BOTH VEHICLES",
+ * to the interpreter, for REV83_CODE. */
 void rev83(void)
 {
     cs(ADDRESS_OF(FLAGWRD7));
@@ -343,8 +331,8 @@ static const word rev83_words[] = {
     ORDER(EXIT),
 };
 #else
-/* V83: the later passes, to the interpreter: GOTO HAVEBASE, "INTEG STATE
- * VECTORS". */
+/* V83 -- CM p. 505: the later passes, to the interpreter: GOTO HAVEBASE,
+ * "INTEG STATE VECTORS". */
 void v83(void)
 {
     tc_to(V83, INTPRET);
@@ -355,7 +343,8 @@ static const word v83_words[] = {
     ADDRESS(HAVEBASE), /* "INTEG STATE VECTORS" */
 };
 
-/* V83CALL: the first, GOTO STATEXTP, "EXTRAPOLATE STATE VECTORS". */
+/* V83CALL -- CM p. 505: the first, GOTO STATEXTP, "EXTRAPOLATE STATE
+ * VECTORS". */
 void v83call(void)
 {
     tc_to(V83CALL, INTPRET);
@@ -599,7 +588,7 @@ void r31_after_exit(void)
 #if LUMINARY099
 /* ---- Average G on, and the LM on the surface -- LM pp. 707-708 ---- */
 
-/* GETRVN: "INHIBIT SERVICER" (PRIOCHNG to priority 22), */
+/* GETRVN -- LM p. 706: "INHIBIT SERVICER" (PRIOCHNG to priority 22), */
 void getrvn(void)
 {
     set_A(PRIO22);
@@ -624,7 +613,7 @@ static const word getrvn_words[] = {
     ADDRESS_PLUS_ONE(PIPTIME), ORDER(EXIT),
 };
 
-/* GETRVN +16, after the EXIT: priority 3 again (PRIOCHNG), */
+/* GETRVN +16 -- LM p. 706, after the EXIT: priority 3 again (PRIOCHNG), */
 void getrvn_after_exit(void)
 {
     set_A(PRIO3);
@@ -663,7 +652,7 @@ static const word getrvn_exit_words[] = {
     ADDRESS(OTHINT),
 };
 
-/* R31SURF: to the interpreter, for R31SURF_CODE. */
+/* R31SURF -- LM p. 707: to the interpreter, for R31SURF_CODE. */
 void r31surf(void)
 {
     tc_to(R31SURF, INTPRET);
@@ -678,8 +667,8 @@ static const word r31surf_words[] = {
     ADDRESS(OTHCONIC),
 };
 
-/* MUNG?: average G on; "IF MUNFLAG SET, CSM BASE NOT NEEDED" (GETRVN),
- * else on to ONEBASE. */
+/* MUNG? -- LM p. 707: average G on; "IF MUNFLAG SET, CSM BASE NOT NEEDED"
+ * (GETRVN), else on to ONEBASE. */
 void mung(void)
 {
     cs(ADDRESS_OF(FLAGWRD6));
@@ -691,7 +680,8 @@ void mung(void)
     onebase(); /* on into ONEBASE */
 }
 
-/* ONEBASE: "GET CSM BASE VECTOR", to the interpreter, for ONEBASE_CODE: */
+/* ONEBASE -- LM p. 707: "GET CSM BASE VECTOR", to the interpreter, for
+ * ONEBASE_CODE: */
 void onebase(void)
 {
     tc_to(ONEBASE, INTPRET);
@@ -706,10 +696,10 @@ static const word onebase_words[] = {
 #else
 /* ---- R34LOS -- CM p. 510 ---- */
 
-/* R34LOS +1, after its EXIT: the optics' CDUs, the shaft (CDUS) to 9D
- * and the trunnion (CDUT) to 11D of the work area, and X1 the work area's
- * -(FIXLOC +6), for SXTNB; to the interpreter, for R34LOS_CODE. Each TS
- * would skip the next word on an overflow, which a CA never leaves. */
+/* R34LOS +1 -- CM p. 510, after its EXIT: the optics' CDUs, the shaft (CDUS)
+ * to 9D and the trunnion (CDUT) to 11D of the work area, and X1 the work
+ * area's -(FIXLOC +6), for SXTNB; to the interpreter, for R34LOS_CODE. Each
+ * TS would skip the next word on an overflow, which a CA never leaves. */
 void r34los_after_exit(void)
 {
     ca(ADDRESS_OF(CDUS));

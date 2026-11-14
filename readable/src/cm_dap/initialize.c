@@ -10,8 +10,8 @@
 
 #if COMANCHE055
 
-/* REINIT: "REINITIALIZE DAP IN 200MS": TIME5 to DELAY200 and T5PHASE +
- * (the next T5 interrupt runs FRESHDAP), and RESUME. */
+/* REINIT -- p. 1012: "REINITIALIZE DAP IN 200MS": TIME5 to DELAY200 and
+ * T5PHASE + (the next T5 interrupt runs FRESHDAP), and RESUME. */
 void reinit(void)
 {
     set_A(DELAY200);
@@ -20,8 +20,8 @@ void reinit(void)
     continue_at(RESUME);
 }
 
-/* FRESHDAP: "RESET HOLDFLAG TO STOP AUTOMATIC STEERING AND PREPARE TO PICK
- * UP AN ATTITUDE HOLD REFERENCE", then REDAP. */
+/* FRESHDAP -- p. 1014: "RESET HOLDFLAG TO STOP AUTOMATIC STEERING AND
+ * PREPARE TO PICK UP AN ATTITUDE HOLD REFERENCE", then REDAP. */
 void freshdap(void)
 {
     set_A(ONE);
@@ -29,24 +29,24 @@ void freshdap(void)
     continue_at(REDAP);
 }
 
-/* REDAP: S41.2 by IBNKCALL, to "DECODE DAPDATR1, DAPDATR2 FOR DEADBANDS"
- * and "RATES, QUADFAILS, QUAD MANAGEMENT". */
+/* REDAP -- p. 1014: S41.2 by IBNKCALL, to "DECODE DAPDATR1, DAPDATR2 FOR
+ * DEADBANDS" and "RATES, QUADFAILS, QUAD MANAGEMENT". */
 void redap(void)
 {
     tc_to(REDAP, IBNKCALL); /* CADR S41.2 */
 }
 
-/* REDAP +2: S40.14 by IBNKCALL, to "DECODE IXX, IAVG, AND CONVERT TO
- * AUTOPILOT GAINS". */
+/* REDAP +2 -- p. 1014: S40.14 by IBNKCALL, to "DECODE IXX, IAVG, AND CONVERT
+ * TO AUTOPILOT GAINS". */
 void redap_s40_14(void)
 {
     tc_to(REDAP + 2u, IBNKCALL); /* CADR S40.14 */
 }
 
-/* REDAP +4: "ZERO ALL NECESSARY ERASABLE REGISTERS", the NO.T5VAR + 1
- * words from WBODY on (the rates, the filter's words, the attitude errors),
- * then the jets (TCR ZEROJET). The loop counts SPNDX down from 36, so CCS
- * SPNDX ends it at +0. */
+/* REDAP +4 -- p. 1014: "ZERO ALL NECESSARY ERASABLE REGISTERS", the NO.T5VAR
+ * + 1 words from WBODY on (the rates, the filter's words, the attitude
+ * errors), then the jets (TCR ZEROJET). The loop counts SPNDX down from 36,
+ * so CCS SPNDX ends it at +0. */
 void redap_zerot5(void)
 {
     set_A(NO_T5VAR);
@@ -59,15 +59,15 @@ void redap_zerot5(void)
     zerojet();
 }
 
-/* REDAP +014, after ZEROJET: CS ZERO for CHANTEMP. */
+/* REDAP +014 -- p. 1014, after ZEROJET: CS ZERO for CHANTEMP. */
 void redap_after_zerojet(void)
 {
     set_A(negate(ZERO));
     redap_chantemp();
 }
 
-/* REDAP +015: "INITIALIZE MINIMUM IMPULSE CONTROL" (CHANTEMP) and the "RHC
- * POSITION MEMORY FOR MANUAL RATE MODES" (CH31TEMP), each -0; the
+/* REDAP +015 -- p. 1014: "INITIALIZE MINIMUM IMPULSE CONTROL" (CHANTEMP) and
+ * the "RHC POSITION MEMORY FOR MANUAL RATE MODES" (CH31TEMP), each -0; the
  * "SWITCHING LOGIC SLOPE"; T5TIME 4 ("PHASE 1 (RATEFILTER) BEGINS CYCLING
  * 100 MS FROM NOW AND EVERY 100MS THEREAFTER"); ATTKALMN 11, "TO PICK UP
  * KALMAN FILTER GAINS TO INITIALIZE THE S/C ANGULAR RATES"; the CDU angles
@@ -94,10 +94,10 @@ void redap_chantemp(void)
     redap_imu();
 }
 
-/* RCSSWIT: RCSFLAGS set (RCSINIT or RCSINITB: "CLEAR BIT1 -INITIALIZE T6
- * PROGRAM", "SET BIT3 -INITIALIZE NEEDLES", "CLEAR BIT4 -RESET FOR
- * FDAIDSP1", and bit 14 as the IMU allows), and the "NEXT T5RUPT 60 MS
- * FROM NOW TO ALLOW IMU ERROR COUNTER TO ZERO". */
+/* RCSSWIT -- p. 1015: RCSFLAGS set (RCSINIT or RCSINITB: "CLEAR BIT1
+ * -INITIALIZE T6 PROGRAM", "SET BIT3 -INITIALIZE NEEDLES", "CLEAR BIT4
+ * -RESET FOR FDAIDSP1", and bit 14 as the IMU allows), and the "NEXT T5RUPT
+ * 60 MS FROM NOW TO ALLOW IMU ERROR COUNTER TO ZERO". */
 static void rcsswit(void)
 {
     ts(ADDRESS_OF(RCSFLAGS));
@@ -106,11 +106,11 @@ static void rcsswit(void)
     tc_to(RCSSWIT + 3u, RESUME);
 }
 
-/* REDAP +031: "CHECK IMU STATUS" ("IF BIT6 = 0 IMU IN FINE ALIGN"). With
- * the IMU ready, IMUAOK: "START MATRIX INITIALIZATION" (AMBGUPDT, by
- * NOVAC). If not ("CANNOT USE IMU"), ATTKALMN +0 and RCSINITB: "PROVIDE
- * FREE CONTROL ONLY", "DONT START UP RATE FILTER". (MASK BIT6 leaves A +
- * or +0.) */
+/* REDAP +035 -- p. 1015: "CHECK IMU STATUS" ("IF BIT6 = 0 IMU IN FINE
+ * ALIGN"). With the IMU ready, IMUAOK: "START MATRIX INITIALIZATION"
+ * (AMBGUPDT, by NOVAC). If not ("CANNOT USE IMU"), ATTKALMN +0 and RCSINITB:
+ * "PROVIDE FREE CONTROL ONLY", "DONT START UP RATE FILTER". (MASK BIT6
+ * leaves A + or +0.) */
 void redap_imu(void)
 {
     cs(ADDRESS_OF(IMODES33));
@@ -125,17 +125,18 @@ void redap_imu(void)
     rcsswit();
 }
 
-/* IMUAOK +4, after NOVAC: "CLEAR BIT14 -ASSUME WE HAVE A GOOD IMU". */
+/* IMUAOK +4 -- p. 1015, after NOVAC: "CLEAR BIT14 -ASSUME WE HAVE A GOOD
+ * IMU". */
 void imuaok_after_novac(void)
 {
     set_A(RCSINIT);
     rcsswit();
 }
 
-/* ZEROJET: "ZERO BLAST2, BLAST1, BLAST, YWORD2, YWORD1, PWORD2, PWORD1,
- * RWORD2, AND RWORD1" (the 12 words from RWORD1 on, counted down by
- * SPNDX), then the jet timing words BLAST1 +1 and BLAST2 +1, "RESET BIT1
- * OF RCSFLAGS TO 0", and T6, the 2CADR T6ADDR of T6START in T6LOC: "ENABLE
+/* ZEROJET -- p. 1015: "ZERO BLAST2, BLAST1, BLAST, YWORD2, YWORD1, PWORD2,
+ * PWORD1, RWORD2, AND RWORD1" (the 12 words from RWORD1 on, counted down by
+ * SPNDX), then the jet timing words BLAST1 +1 and BLAST2 +1, "RESET BIT1 OF
+ * RCSFLAGS TO 0", and T6, the 2CADR T6ADDR of T6START in T6LOC: "ENABLE
  * T6RUPT TO SHUT OFF JETS IN 14 MS" (bit 15 of channel 13). */
 void zerojet(void)
 {
@@ -157,12 +158,12 @@ void zerojet(void)
     set_A(PLUS_14MS);
     ts(ADDRESS_OF(TIME6));
     set_A(BIT15);
-    wor_channel(013);
+    wor_channel(CHAN13);
     continue_at(ZEROJET + 026u);
 }
 
-/* ZEROJET +026: TC Q. */
-void zerojet_return(void)
+/* ZEROJET +026 -- p. 1016: TC Q. */
+void zerojet_plus026(void)
 {
     tc_q();
 }

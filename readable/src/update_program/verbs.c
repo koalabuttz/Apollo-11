@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* UPDATE_PROGRAM.agc, part 1: the verbs V70-V73, in the extended verb
- * bank (43), and the check that P27 may run (LM page 1388, CM pages
- * 1499-1500). */
+/* UPDATE_PROGRAM.agc, part 1: the verbs V70-V73, in the extended verb bank
+ * (43), and the check that P27 may run (LM page 1388, CM pages 1499-1500).
+ * The faithful C is c64-port/src/lm_update.c and cm_update.c. */
 #include "update_program.h"
 
 /* V70UPDAT, V71UPDAT, V72UPDAT and V73UPDAT -- LM p. 1388, CM p. 1499.
@@ -71,12 +71,12 @@ static void uperror(void)
     tc_to(UPERROR, POSTJUMP); /* CADR UPERROUT +2 */
 }
 
-/* V73UPDAT +3, where TESTXACT returns with the display grabbed: "CHECK IF
- * UPDATE ALLOWED", "FIRST CHECK FOR MODREG = +0, -0" ("+0 = P00, -0 =
- * FRESH START"). Then "SAVE CURRENT MAJOR MODE" in UPOLDMOD, UPVERB "TO
- * INDICDATE TO P27 WHICH EXTENDED VERB CALLED IT", UPCOUNT "TO 1", and
- * POSTJUMP to UPPART2: "LEAVE EXTENDED VERB BANK AND GO TO UPDATE
- * PROGRAM(P27) BANK." */
+/* V73UPDAT +3 -- LM p. 1388, CM p. 1499, where TESTXACT returns with the
+ * display grabbed: "CHECK IF UPDATE ALLOWED", "FIRST CHECK FOR MODREG = +0,
+ * -0" ("+0 = P00, -0 = FRESH START"). Then "SAVE CURRENT MAJOR MODE" in
+ * UPOLDMOD, UPVERB "TO INDICDATE TO P27 WHICH EXTENDED VERB CALLED IT",
+ * UPCOUNT "TO 1", and POSTJUMP to UPPART2: "LEAVE EXTENDED VERB BANK AND GO
+ * TO UPDATE PROGRAM(P27) BANK." */
 void v73updat_after_testxact(void)
 {
     ca(ADDRESS_OF(MODREG));

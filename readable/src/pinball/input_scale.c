@@ -89,11 +89,12 @@ void testofuf(void)
 
 /* ---- Degrees (LM pp. 431-432, CM pp. 349-350) ---- */
 
-/* DEGINSF -- "DEGINSF APPLIES 1000/180 = 5.55555(10) = 5.43434(8)": "SF
- * ROUTINE FOR DEC DEGREES", "MULT BY 5.5 5(10)X2EXP-3" (DMP by DEGCON1),
- * then "THIS ROUNDS OFF MPAC+1 BEFORE SHIFT LEFT 3, AND CAUSES 360.00 TO
- * OF/UF WHEN SHIFTED LEFT AND ALARM." (half of the low bits shifted out,
- * by sign, through 2ROUND +2), and left 3 by TPSL1 (DEGINSF2). */
+/* DEGINSF -- LM p. 431, CM p. 349: "DEGINSF APPLIES 1000/180 = 5.55555(10) =
+ * 5.43434(8)": "SF ROUTINE FOR DEC DEGREES", "MULT BY 5.5 5(10)X2EXP-3" (DMP
+ * by DEGCON1), then "THIS ROUNDS OFF MPAC+1 BEFORE SHIFT LEFT 3, AND CAUSES
+ * 360.00 TO OF/UF WHEN SHIFTED LEFT AND ALARM." (half of the low bits
+ * shifted out, by sign, through 2ROUND +2), and left 3 by TPSL1
+ * (DEGINSF2). */
 void deginsf(void)
 {
     tc_at(DEGINSF);
@@ -110,7 +111,7 @@ void deginsf(void)
     ad_at(ADDRESS_OF(MPAC) + 1u);
     tc_at(DEGINSF + 7u);
     two_round_plus2();
-    tc_at(DEGINSF + 8u);
+    tc_at(DEGINSF + 010u);
     tpsl1(); /* "LEFT 1" */
     deginsf2();
 }
@@ -171,7 +172,7 @@ void signfix(void)
     endscale_minus1();
 }
 
-/* ENDSCALE -1: the angle into MPAC. */
+/* ENDSCALE -1 -- LM p. 432, CM p. 350: the angle into MPAC. */
 static void endscale_minus1(void)
 {
     ts(ADDRESS_OF(MPAC));
@@ -215,7 +216,8 @@ void endscale(void)
     tc(SFNORCAL, BANKCALL); /* CADR SFRUTNOR */
 }
 
-/* SFMIXCAL +2 and SFNORCAL +2, where SFRUTMIX and SFRUTNOR come back. */
+/* SFMIXCAL +2 -- LM p. 432 and SFNORCAL +2, where SFRUTMIX and SFRUTNOR come
+ * back. */
 void sfmixcal_plus2(void)
 {
     tc_at(SFMIXCAL + 2u);
@@ -229,8 +231,8 @@ void sfnorcal_plus2(void)
     norback();
 }
 
-/* NORBACK: routine 2 is CDU degrees; any other (13, "TESTS AT END FOR
- * 360-CDU") has 360-CDU (output_scale.c) replace the angle. */
+/* NORBACK -- LM p. 432: routine 2 is CDU degrees; any other (13, "TESTS AT
+ * END FOR 360-CDU") has 360-CDU (output_scale.c) replace the angle. */
 static void norback(void)
 {
     cs(A_ADDRESS);
@@ -251,10 +253,10 @@ void endscale(void)
 
 /* ---- Fractions and whole numbers (LM pp. 432-433, CM p. 350) ---- */
 
-/* ARTHINSF -- "SCALES MPAC, +1 BY SFTEMP1, SFTEMP2. ASSUMES POINT BETWEEN
- * HI AND LO PARTS OF SFCON. SHIFTS RESULTS LEFT BY 14. (BY TAKING RESULTS
- * FROM MPAC+1, MPAC+2)". A high word left over is "TOO LARGE A LOAD.
- * ALARM AND RECYCLE." */
+/* ARTHINSF -- LM p. 432, CM p. 350: "SCALES MPAC, +1 BY SFTEMP1, SFTEMP2.
+ * ASSUMES POINT BETWEEN HI AND LO PARTS OF SFCON. SHIFTS RESULTS LEFT BY 14.
+ * (BY TAKING RESULTS FROM MPAC+1, MPAC+2)". A high word left over is "TOO
+ * LARGE A LOAD. ALARM AND RECYCLE." */
 void arthinsf(void)
 {
     tc_at(ARTHINSF);
@@ -269,8 +271,8 @@ void arthinsf(void)
     binround();
 }
 
-/* BINROUND -- MPAC +2 rounded into MPAC +1 (2ROUND), "RETURNS IF NO
- * OF/UF". */
+/* BINROUND -- LM p. 432, CM p. 350: MPAC +2 rounded into MPAC +1 (2ROUND),
+ * "RETURNS IF NO OF/UF". */
 void binround(void)
 {
     tc_at(BINROUND);
@@ -323,12 +325,12 @@ void opdegin2(void)
 
 /* ---- Double words (LM p. 433, CM p. 351) ---- */
 
-/* DPINSF -- "SCALES MPAC, MPAC +1 BY SFTEMP1, SFTEMP. STORES LOW PART OF
- * RESULT IN (E SUBK) +1 OR E+1": the low word doubled (an overflow of the
- * TS skips CAF ZERO and carries into MPAC +1), rounded, and "RETURNS IF NO
- * OF/UF"; then the low part goes where the high part's address says, one
- * on, and the high part back through PUTCOM2. DPINSF2 and DPINSF4 enter at
- * DPINSF +2. */
+/* DPINSF -- LM p. 433, CM p. 351: "SCALES MPAC, MPAC +1 BY SFTEMP1, SFTEMP.
+ * STORES LOW PART OF RESULT IN (E SUBK) +1 OR E+1": the low word doubled (an
+ * overflow of the TS skips CAF ZERO and carries into MPAC +1), rounded, and
+ * "RETURNS IF NO OF/UF"; then the low part goes where the high part's
+ * address says, one on, and the high part back through PUTCOM2. DPINSF2 and
+ * DPINSF4 enter at DPINSF +2. */
 void dpinsf(void)
 {
     tc_at(DPINSF);
@@ -344,23 +346,23 @@ void dpinsf_plus2(void)
     ad_at(ADDRESS_OF(MPAC) + 1u);
     tc_at(DPINSF + 7u);
     two_round_plus2();
-    tc_at(DPINSF + 8u);
+    tc_at(DPINSF + 010u);
     if (!testofuf_returns()) return;
-    dpinsf_plus9();
+    dpinsf_plus011();
 }
 
 static void dpincom(void);
 
-/* DPINSF +9 (Comanche055's DPFRACIN): "MIXED" NOUNADD +DECOUNT is E SUBK,
- * "NORMAL" NOUNADD (DPINORM) is E. */
-void dpinsf_plus9(void)
+/* DPINSF +011 -- LM p. 433, CM p. 351 (Comanche055's DPFRACIN): "MIXED"
+ * NOUNADD +DECOUNT is E SUBK, "NORMAL" NOUNADD (DPINORM) is E. */
+void dpinsf_plus011(void)
 {
-    if (mixed_noun(DPINSF + 10u)) {
+    if (mixed_noun(DPINSF + 012u)) {
         ca(ADDRESS_OF(DECOUNT)); /* "MIXED NOUN" */
         dpincom();
         return;
     }
-    tc_at(DPINSF + 11u);
+    tc_at(DPINSF + 013u);
     /* DPINORM */
     set_A(ZERO); /* "E +1 NORMAL" */
     tc_at(DPINORM + 1u);
@@ -409,14 +411,14 @@ static bool mpactst_returns(void);
 static bool sizetst_returns(void);
 static bool all3dec_returns(void);
 
-/* HMSIN -- "IF ALL 3 WORDS WERE NOT LOADED, ALARM." Hours (XREG, XREGLP,
- * already in MPAC, MPAC +1), minutes (YREG) and seconds (ZREG), each times
- * WHOLECON, "(10EXP5/2EXP14)2EXP14", rounded to a whole number (RND/TST),
- * and checked: hours "G/ 745", minutes over 59, seconds over 59.99 alarm.
- * Hours times HRCON ("1 HOUR IN CENTI-SEC"), minutes times MINCON ("1
- * MINUTE IN CENTI-SEC"), and seconds in centiseconds added up in HITEMIN
- * and MPAC, made to agree in sign (TPAGREE), into the noun's double word;
- * then LOADLV. */
+/* HMSIN -- LM p. 434, CM p. 352: "IF ALL 3 WORDS WERE NOT LOADED, ALARM."
+ * Hours (XREG, XREGLP, already in MPAC, MPAC +1), minutes (YREG) and seconds
+ * (ZREG), each times WHOLECON, "(10EXP5/2EXP14)2EXP14", rounded to a whole
+ * number (RND/TST), and checked: hours "G/ 745", minutes over 59, seconds
+ * over 59.99 alarm. Hours times HRCON ("1 HOUR IN CENTI-SEC"), minutes times
+ * MINCON ("1 MINUTE IN CENTI-SEC"), and seconds in centiseconds added up in
+ * HITEMIN and MPAC, made to agree in sign (TPAGREE), into the noun's double
+ * word; then LOADLV. */
 void hmsin(void)
 {
     tc_at(HMSIN);
@@ -431,52 +433,52 @@ void hmsin(void)
     ts(ADDRESS_OF(MPAC));
     set_A(HRCON_LO);
     xch(ADDRESS_OF(MPAC) + 1u);
-    tc_at(HMSIN + 10u);
+    tc_at(HMSIN + 012u);
     shortmp();
-    tc_at(HMSIN + 11u);
+    tc_at(HMSIN + 013u);
     if (!mpactst_returns()) return; /* "ALARM IF MPAC NON ZERO (G/ 745)" */
     dxch(ADDRESS_OF(MPAC) + 1u);    /* "STORE HOURS CONTRIBUTION" */
     dxch(ADDRESS_OF(HITEMIN));
     ca(ADDRESS_OF(YREG)); /* "PUT YREG, YREGLP INTO MPAC, +1." */
     lxch(ADDRESS_OF(YREGLP));
     dxch(ADDRESS_OF(MPAC));
-    tc_at(HMSIN + 17u);
+    tc_at(HMSIN + 021u);
     dmp(); /* ADRES WHOLECON */
-    tc_at(HMSIN + 19u);
+    tc_at(HMSIN + 023u);
     if (!rnd_tst_returns()) return; /* "ROUND OFF TO WHOLE MIN IN MPAC+1" */
     set_A(negate(MIN59));           /* "ALARM IF MPAC NON ZERO (G/16383)" */
-    tc_at(HMSIN + 21u);
+    tc_at(HMSIN + 025u);
     if (!sizetst_returns()) return; /* "ALARM IF MPAC+1 G/ 59MIN" */
     xch(ADDRESS_OF(MPAC) + 1u);
     mp(MINCON);               /* "LEAVES MINUTES CONTRIBUTION IN A,L" */
     das(ADDRESS_OF(HITEMIN)); /* "ADD IN MINUTES CONTRIBUTION" */
     if (!A_is_zero()) {       /* EXTEND; BZF +2: "IF THIS DAS OVEFLOWS, G/ 745 HR, 39MIN" */
-        tc(HMSIN + 28u, ALMCYCLE);
+        tc(HMSIN + 034u, ALMCYCLE);
         return;
     }
     ca(ADDRESS_OF(ZREG)); /* "PUT ZREG, ZREGLP INTO MPAC, +1." */
     lxch(ADDRESS_OF(ZREGLP));
     dxch(ADDRESS_OF(MPAC));
-    tc_at(HMSIN + 32u);
+    tc_at(HMSIN + 040u);
     dmp(); /* ADRES WHOLECON */
-    tc_at(HMSIN + 34u);
+    tc_at(HMSIN + 042u);
     if (!rnd_tst_returns()) return; /* "ROUND OFF TO WHOLE CENTI-SEC IN MPAC+1" */
     set_A(negate(SEC59_99));        /* "ALARM IF MPAC NON ZERO (G/163.83 SEC)" */
-    tc_at(HMSIN + 36u);
+    tc_at(HMSIN + 044u);
     if (!sizetst_returns()) return; /* "ALARM IF MPAC+1 G/59.99 SEC" */
     dxch(ADDRESS_OF(HITEMIN));      /* "ADD IN SECONDS CONTRIBUTION" */
     das(ADDRESS_OF(MPAC));
     if (!A_is_zero()) { /* "IF THIS DAS OVERFLOWS, G/ 745 HR, 39 MIN, 14.59 SEC." */
-        tc(HMSIN + 41u, ALMCYCLE);
+        tc(HMSIN + 051u, ALMCYCLE);
         return;
     }
     set_A(ZERO);
     ts(ADDRESS_OF(MPAC) + 2u);
-    tc_at(HMSIN + 44u);
+    tc_at(HMSIN + 054u);
     tpagree();
     dxch(ADDRESS_OF(MPAC));
     dxch(indexed_erasable(0u, fetch(ADDRESS_OF(NOUNADD)))); /* INDEX NOUNADD; DXCH 0 */
-    tc(HMSIN + 48u, POSTJUMP);                              /* CADR LOADLV */
+    tc(HMSIN + 060u, POSTJUMP);                             /* CADR LOADLV */
 }
 
 /* RND/TST and MPACTST -- LM p. 435, CM p. 353. "ROUNDS MPAC+2 INTO
@@ -503,8 +505,8 @@ static bool mpactst_returns(void)
 {
     switch (ccs_at(ADDRESS_OF(MPAC))) {
     case POSITIVE: tc(MPACTST + 1u, ALMCYCLE); return false; /* "ALARM AND RECYCLE." */
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: tc(MPACTST + 3u, ALMCYCLE); return false;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     tc_return(Q_ADDRESS);
@@ -532,7 +534,7 @@ static bool sizetst_returns(void)
         }
     ad_at(ADDRESS_OF(MPAC) + 2u); /* "MAG OF MPAC+1 - CON" */
     if (!A_is_zero_or_minus()) {  /* EXTEND; BZMF +2 */
-        tc(SIZETST + 8u, ALMCYCLE);
+        tc(SIZETST + 010u, ALMCYCLE);
         return false;
     }
     tc_return(Q_ADDRESS);
@@ -548,20 +550,26 @@ void sizetst(void)
  * WORDS ARE LOADED IN DEC (FOR HMSIN). ALARM IF NOT. (TEST THAT BITS 3,4,5
  * OF DECBRNCH ARE ALL = 1)." With all three, AD OCT34BAR leaves -0;
  * otherwise less. "FORCE VERB 25 TO BE EXECUTED BY RECYCLE IN CASE
- * OPERATOR EXECUTED A LOWER LOAD VERB." True when it went back. */
+ * OPERATOR EXECUTED A LOWER LOAD VERB." True when it went back. (The sum is
+ * never positive or +0. Positive would go to FORCEV25 too; on +0 the
+ * constant OCT34BAR, OCT 77743, runs as the instruction MASK 7743, and the
+ * TC FORCEV25 after it.) */
 static bool all3dec_returns(void)
 {
     set_A(negate(OCT34BAR)); /* "GET BITS 3,4,5 IN A" */
     mask_at(ADDRESS_OF(DECBRNCH));
     ad(OCT34BAR);
     switch (ccs_at(A_ADDRESS)) {
+    case POSITIVE:
+        tc_at(ALL3DEC + 4u);
+        forcev25();
+        return false;
+    case IS_PLUS_ZERO: mask_at(ADDRESS_FIELD(OCT34BAR)); /* fall through */
     case NEGATIVE:
         tc_at(ALL3DEC + 6u);
         forcev25();
         return false;
     case IS_MINUS_ZERO: break;
-    case POSITIVE:
-    case IS_PLUS_ZERO: not_modelled(); /* AD OCT34BAR leaves -0 or less */
     }
     tc_return(Q_ADDRESS);
     return true;

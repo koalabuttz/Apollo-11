@@ -63,8 +63,8 @@ static void tc_dmpsub(word at, void (*then)(void))
 #endif
 }
 
-/* AX*SR*T: +3 or -3 into DEXDEX ("WHERE IT BECOMES THE INDEX OF
- * INDEXES"), the return into RTNSAVER. */
+/* AX*SR*T -- LM p. 1263, CM p. 1369: +3 or -3 into DEXDEX ("WHERE IT BECOMES
+ * THE INDEX OF INDEXES"), the return into RTNSAVER. */
 void ax_star_sr_star_t(void)
 {
     ts(ADDRESS_OF(DEXDEX));
@@ -72,21 +72,19 @@ void ax_star_sr_star_t(void)
     r_star_tl_star_star_p();
 }
 
-/* R*TL**P: one rotation. Which INDEXI pair (DEXDEX +3, +2, +1 to 0, 1,
- * 2; -3, -2, -1 to 2, 1, 0), into DEX1 and DEX2; BUF the index 1; and the
- * first component, negated ("REALLY BE A SUBTRACT, AND VICE VERSA"). Not
- * modelled: DEXDEX zero, which the program never leaves here. */
+/* R*TL**P -- LM p. 1263, CM p. 1369: one rotation. Which INDEXI pair (DEXDEX
+ * +3, +2, +1 to 0, 1, 2; -3, -2, -1 to 2, 1, 0), into DEX1 and DEX2; BUF the
+ * index 1; and the first component, negated ("REALLY BE A SUBTRACT, AND VICE
+ * VERSA"). DEXDEX is never zero here; +0 would take the pair at INDEXI +3,
+ * and at -0 the DCA INDEXI, with no EXTEND, is CA INDEXI +1. */
 static void r_star_tl_star_star_p(void)
 {
     switch (ccs_at(ADDRESS_OF(DEXDEX))) {
-    case POSITIVE:
-        cs(ADDRESS_OF(DEXDEX));
-        ad(THREE);
-        break;
-    case NEGATIVE: /* CCS leaves A |DEXDEX| - 1 */ break;
-    default: not_modelled();
+    case POSITIVE: cs(ADDRESS_OF(DEXDEX));    /* fall through */
+    case IS_PLUS_ZERO: /* never */ ad(THREE); /* fall through */
+    case NEGATIVE: /* CCS leaves A |DEXDEX| - 1 */ dca(indexed_read(INDEXI, a_word(), 2u)); break;
+    case IS_MINUS_ZERO: ca(INDEXI + 1u); break; /* never */
     }
-    dca(indexed_read(INDEXI, a_word(), 2u));
     dxch(ADDRESS_OF(DEXI));
     set_A(ONE);
     ts(BUF_AT(0u));
@@ -94,15 +92,16 @@ static void r_star_tl_star_star_p(void)
     loop1();
 }
 
-/* LOOP2: "LOADING VECTOR COMPONENT, STORING INDEX", then LOOP1. */
+/* LOOP2 -- LM p. 1263, CM p. 1370: "LOADING VECTOR COMPONENT, STORING
+ * INDEX", then LOOP1. */
 static void loop2(void)
 {
     dxch(BUF_AT(0u));
     loop1();
 }
 
-/* LOOP1: the component times the angle's sine: ADDRWD at SINESLOC (the
- * LM's listing spells it SINSLOC) plus DEX1. */
+/* LOOP1 -- LM p. 1264, CM p. 1370: the component times the angle's sine:
+ * ADDRWD at SINESLOC (the LM's listing spells it SINSLOC) plus DEX1. */
 static void loop1(void)
 {
     dxch(ADDRESS_OF(MPAC));
@@ -124,16 +123,19 @@ static word picked_offset(void)
     return fetch(at);
 }
 
-/* After the sine: the product into TERM1TMP ("NBSM CASE"), or negated
- * ("SMNB CASE"); then ADDRWD six on, at the cosine ("SINCDU AND COSCDU
- * (EACH 6 WORDS) MUST BE CONSECUTIVE AND IN THAT ORDER"), and the other
- * component times it. Not modelled: DEXDEX zero. */
+/* LOOP1 +5 -- LM p. 1264, CM p. 1370: After the sine: the product into
+ * TERM1TMP ("NBSM CASE"), or negated ("SMNB CASE"); then ADDRWD six on, at
+ * the cosine ("SINCDU AND COSCDU (EACH 6 WORDS) MUST BE CONSECUTIVE AND IN
+ * THAT ORDER"), and the other component times it. DEXDEX is never zero
+ * here; +0 would go on at the DXCH TERM1TMP, and at -0 the DCS MPAC, with
+ * no EXTEND, is CS MPAC +1. */
 void loop1_after_sine_product(void)
 {
     switch (ccs_at(ADDRESS_OF(DEXDEX))) {
-    case POSITIVE: dxch(ADDRESS_OF(MPAC)); break;
-    case NEGATIVE: dcs(ADDRESS_OF(MPAC)); break;
-    default: not_modelled();
+    case POSITIVE: dxch(ADDRESS_OF(MPAC)); break;         /* "NBSM CASE"; TCF +3 */
+    case IS_PLUS_ZERO: break;                             /* (never) TCF +3 */
+    case NEGATIVE: dcs(ADDRESS_OF(MPAC)); break;          /* "SMNB CASE" */
+    case IS_MINUS_ZERO: cs(ADDRESS_OF(MPAC) + 1u); break; /* never */
     }
     dxch(ADDRESS_OF(TERM1TMP));
     set_A(SIX);
@@ -145,12 +147,12 @@ void loop1_after_sine_product(void)
 
 static void tstpoint(void);
 
-/* After the cosine: the sum of the two products, doubled, is the
- * component's new value; its old value goes to BUF ("LOADING INDEX,
- * STORING VECTOR COMPONENT"), and the index to A. Index 1: the other
- * component (LOOP2); 0: the rotation is done ("DECREMENT MAGNITUDE
- * PRESERVING SIGN"). Not modelled: the index negative, which BUF never
- * holds. */
+/* LOOP1 +023 -- LM p. 1264, CM p. 1370: After the cosine: the sum of the two
+ * products, doubled, is the component's new value; its old value goes to BUF
+ * ("LOADING INDEX, STORING VECTOR COMPONENT"), and the index to A. Index 1:
+ * the other component (LOOP2); 0: the rotation is done ("DECREMENT MAGNITUDE
+ * PRESERVING SIGN"). BUF never holds a negative index; one would skip the
+ * EXTEND, and the DIM DEXDEX is then ADS DEXDEX; -0 skips that too. */
 void loop1_after_cosine_product(void)
 {
     unsigned component;
@@ -168,23 +170,28 @@ void loop1_after_cosine_product(void)
         dim(ADDRESS_OF(DEXDEX));
         tstpoint();
         return;
-    default: not_modelled();
+    case NEGATIVE: /* never */
+        ads(ADDRESS_OF(DEXDEX));
+        tstpoint();
+        return;
+    case IS_MINUS_ZERO: /* never */ tstpoint(); return;
     }
 }
 
-/* TSTPOINT: the next rotation, or (DEXDEX -0: DIM of +1 or -1 leaves -0)
- * back by RTNSAVER ("ONLY THE BRANCHING FUNCTION IS USED"). Not modelled:
- * a return that is not an address in the program. */
+/* TSTPOINT -- LM p. 1264, CM p. 1371: the next rotation, or (DEXDEX -0: DIM
+ * of +1 or -1 leaves -0) back by RTNSAVER ("ONLY THE BRANCHING FUNCTION IS
+ * USED"). Not modelled: a return that is not an address in the program. */
 static void tstpoint(void)
 {
     word to;
 
     switch (ccs_at(ADDRESS_OF(DEXDEX))) {
-    case POSITIVE:
+    case POSITIVE: r_star_tl_star_star_p(); return;
+    case IS_PLUS_ZERO: break; /* TC RTNSAVER */
     case NEGATIVE: r_star_tl_star_star_p(); return;
-    default:
-        to = fetch(ADDRESS_OF(RTNSAVER));
-        if (to < 010u || to > 07777u) not_modelled();
-        tc_through(ADDRESS_OF(RTNSAVER));
+    case IS_MINUS_ZERO: break; /* TC RTNSAVER */
     }
+    to = fetch(ADDRESS_OF(RTNSAVER));
+    if (to < 010u || to > 07777u) not_modelled();
+    tc_through(ADDRESS_OF(RTNSAVER));
 }

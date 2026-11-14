@@ -2,7 +2,8 @@
 /* ORBITAL_INTEGRATION.agc, from WMATEND's TC INTPRET to DOW..1 (LM pp.
  * 1244-1246, CM pp. 1351-1353), and the LM's SETITCTR, in the listing's
  * notation (src/interpreter/notation.h), which the readable interpreter
- * runs.
+ * runs. The faithful C is c64-port/src/lm_orbital_integration.c and
+ * cm_orbital_integration.c.
  *
  * "ORBITAL ROUTINE FOR EXTRAPOLATION OF THE W MATRIX. IT COMPUTES THE
  * SECOND DERIVATIVE OF EACH COLUMN POSITION" vector of the W-matrix, from

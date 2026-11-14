@@ -6,18 +6,11 @@
  * FRESH_START_AND_RESTART). Each step is a phase of restart group 2, so a
  * restart picks the cycle up again. QUITFLAG stops it ("KILL INTEGRATION
  * UNTIL NEXT P00"). The interpretive words are in the listing's notation
- * (src/interpreter/notation.h); the basic code is C. */
+ * (src/interpreter/notation.h); the basic code is C. The faithful C is
+ * c64-port/src/lm_integration_init.c and cm_integration_init.c. */
 #include "integration_init.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
-
-/* TC at "at" to a routine outside the file (PHASCHNG, FINDVAC, LONGCALL,
- * DOWNFLAG, ENDOFJOB, TASKOVER), which reads the words after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
 
 /* STATEINT -- LM p. 1209 (CM p. 1313): the task. Group 2's phase (OCT
  * 00052), then a job with a VAC area at PRIO5 (FINDVAC) to run STATINT1,
@@ -38,7 +31,7 @@ void stateint_after_findvac(void)
     tc_to((word)(STATEINT + 6u), TASKOVER);
 }
 
-/* STATINT1: the job, into the interpreter. */
+/* STATINT1 -- LM p. 1209, CM p. 1313: the job, into the interpreter. */
 void statint1(void)
 {
     tc_at(STATINT1); /* TC INTPRET */
@@ -83,9 +76,9 @@ static const word statint1_words[] = {
 const struct interpretive_code STATINT1_CODE = {
     CODE_BANK(I_STATINT1), (word)(CODE_Z(I_STATINT1) + 1u), COUNT(statint1_words), statint1_words};
 
-/* ENDINT +2, after its EXIT: group 2's phase (OCT 20032), and STATEINT
- * again in ten minutes (LONGCALL with 600SECS); the job ends
- * (ENDOFJOB). */
+/* ENDINT +2 -- LM p. 1210, CM p. 1314, after its EXIT: group 2's phase (OCT
+ * 20032), and STATEINT again in ten minutes (LONGCALL with 600SECS); the job
+ * ends (ENDOFJOB). */
 void endint_after_exit(void)
 {
     tc_to((word)(ENDINT + 2u), PHASCHNG); /* OCT 20032 */
@@ -121,8 +114,8 @@ static const word setiflgs_words[] = {
 const struct interpretive_code SETIFLGS_CODE = {CODE_BANK(I_SETIFLGS), CODE_Z(I_SETIFLGS),
                                                 COUNT(setiflgs_words), setiflgs_words};
 
-/* NOINT +1, after its EXIT: group 2's phase (OCT 00002), QUITFLAG cleared
- * (DOWNFLAG) and the job ends. */
+/* NOINT +1 -- LM p. 1210, CM p. 1314, after its EXIT: group 2's phase (OCT
+ * 00002), QUITFLAG cleared (DOWNFLAG) and the job ends. */
 void noint_after_exit(void)
 {
     tc_to((word)(NOINT + 1u), PHASCHNG); /* OCT 00002 */

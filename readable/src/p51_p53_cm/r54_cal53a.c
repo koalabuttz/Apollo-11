@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 /* P51-P53.agc of the CM, part 5 (Comanche055 pp. 759-763): R54, alias
  * CHKSDATA, the star data test; CAL53A, the coarse alignment if one is
- * needed, and MATMOVE (bank 14); RDCDUS, the CDUs read for an RTB (bank
- * 15); and CALCSMSC, the navigation base in stable member axes (bank 16).
+ * needed, and MATMOVE (bank 14); RDCDUS, the CDUs read for an RTB (bank 15);
+ * and CALCSMSC, the navigation base in stable member axes (bank 16). The
+ * faithful C is c64-port/src/cm_p51_p53.c.
  *
  * Each call out of the file (BANKCALL, PHASCHNG, CURTAINS) leaves Z at
  * the routine and Q at the word after the TC, where the routine comes
@@ -14,8 +15,6 @@
 #include "../interpreter/interpreter.h"
 
 #if COMANCHE055
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 static void chksda(void);
 
@@ -60,9 +59,9 @@ static const word chksdata_words[] = {
 const struct interpretive_code CHKSDATA_CODE = {014u, CHKSDATA, COUNT(chksdata_words),
                                                 chksdata_words};
 
-/* The display cleared (CLEANDSP), then the difference flashed (VB6N5):
- * terminate, proceed (FREEFLAG stays set: CHKSDA, back to the caller) or
- * enter (FREEFLAG cleared: sight again). */
+/* CHKSDATA +034 -- p. 760: The display cleared (CLEANDSP), then the
+ * difference flashed (VB6N5): terminate, proceed (FREEFLAG stays set:
+ * CHKSDA, back to the caller) or enter (FREEFLAG cleared: sight again). */
 void chksdata_after_exit(void)
 {
     set_A(ZERO);
@@ -101,7 +100,7 @@ static const word chksdata_enter_words[] = {
 const struct interpretive_code CHKSDATA_ENTER_CODE = {
     014u, CHKSDATA + 045u, COUNT(chksdata_enter_words), chksdata_enter_words};
 
-/* CHKSDA: back to the caller (QMIN). */
+/* CHKSDA -- p. 761: back to the caller (QMIN). */
 static void chksda(void)
 {
     tc_at(CHKSDA);
@@ -150,8 +149,8 @@ static const word cal53a_words[] = {
 
 const struct interpretive_code CAL53A_CODE = {014u, CAL53A, COUNT(cal53a_words), cal53a_words};
 
-/* COARFINE: a restart point (PHASCHNG, 04024); then IMUCOARS, "PERFORM
- * COARSE ALIGNMENT", and IMUFIN20, the IMU back to fine align, each
+/* COARFINE +1 -- p. 761: a restart point (PHASCHNG, 04024); then IMUCOARS,
+ * "PERFORM COARSE ALIGNMENT", and IMUFIN20, the IMU back to fine align, each
  * waited for by IMUSTALL (CURTAINS when it fails). */
 void coarfine_after_exit(void)
 {
@@ -232,8 +231,8 @@ const struct interpretive_code COARFINE_CODE = {014u, COARFINE + 016u, COUNT(coa
 
 /* ---- RDCDUS -- p. 762 (bank 15) ---- */
 
-/* RDCDUS, "READ CDUS", an RTB's routine: CDUX, CDUY and CDUZ to the work
- * area's words 1-3, with interrupts held off; back to DANZIG. */
+/* RDCDUS -- p. 762, "READ CDUS", an RTB's routine: CDUX, CDUY and CDUZ to
+ * the work area's words 1-3, with interrupts held off; back to DANZIG. */
 void rdcdus(void)
 {
     inhint();

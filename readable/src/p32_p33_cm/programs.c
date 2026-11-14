@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: MIT */
-/* P32-P33_P72-P73.agc (Comanche055 pp. 649-662): the programs' own code.
- * P32 and P72, "COELLIPTIC SEQUENCE INITIATION (CSI) PROGRAMS", and P33
- * and P73, "CONSTANT DELTA HEIGHT (CDH) PROGRAMS" (bank 4, with a stretch
- * of each in banks 14 and 12); DISDVLVC, which shows a delta V in local
- * vertical coordinates (bank 37).
+/* P32-P33_P72-P73.agc (Comanche055 pp. 649-662): the programs' own code. P32
+ * and P72, "COELLIPTIC SEQUENCE INITIATION (CSI) PROGRAMS", and P33 and P73,
+ * "CONSTANT DELTA HEIGHT (CDH) PROGRAMS" (bank 4, with a stretch of each in
+ * banks 14 and 12); DISDVLVC, which shows a delta V in local vertical
+ * coordinates (bank 37). The faithful C is c64-port/src/cm_p32_p33.c.
  *
  * Each "IS SELECTED BY THE ASTRONAUT BY DSKY ENTRY": P32 or P33 "IF THIS
  * VEHICLE IS ACTIVE VEHICLE", P72 or P73 "IF THIS VEHICLE IS PASSIVE
@@ -25,11 +25,9 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- P32 and P72 -- pp. 652-655 ---- */
 
-/* P32: AVFLAGA, the CM the active vehicle, then on at P32STRT. */
+/* P32 -- p. 652: AVFLAGA, the CM the active vehicle, then on at P32STRT. */
 void p32(void)
 {
     tc_to(P32, AVFLAGA);
@@ -41,13 +39,13 @@ void p32_after_avflaga(void)
     p32strt();
 }
 
-/* P72: AVFLAGP, the LM the active vehicle, and on at P32STRT. */
+/* P72 -- p. 652: AVFLAGP, the LM the active vehicle, and on at P32STRT. */
 void p72(void)
 {
     tc_to(P72, AVFLAGP);
 }
 
-/* P32STRT: to the interpreter, for P32STRT_CODE: CENTANG zero. */
+/* P32STRT -- p. 652: to the interpreter, for P32STRT_CODE: CENTANG zero. */
 void p32strt(void)
 {
     tc_at(P32STRT);
@@ -61,7 +59,7 @@ static const word p32strt_words[] = {
     ORDER(EXIT),
 };
 
-/* After its EXIT, on at P32/P72A. */
+/* P32STRT +5 -- p. 652: After its EXIT, on at P32/P72A. */
 void p32strt_after_exit(void)
 {
     tc_at(P32STRT + 5u);
@@ -80,8 +78,8 @@ static const word almxita_words[] = {
     ADDRESS_PLUS_ONE_AT_X1(ALARM_TB, -1),
 };
 
-/* ALMXIT, after its EXIT: the alarm, its code from ALARM/TB (VARALARM
- * with it in A), and verb 05 noun 09 flashed (GOFLASH). */
+/* ALMXIT +4 -- p. 652, after its EXIT: the alarm, its code from ALARM/TB
+ * (VARALARM with it in A), and verb 05 noun 09 flashed (GOFLASH). */
 void almxit_after_exit(void)
 {
     ca(ADDRESS_OF(MPAC));
@@ -94,27 +92,28 @@ void almxit_after_varalarm(void)
     tc_to(ALMXIT + 7u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* ALMXIT +011: terminate. */
+/* ALMXIT +011 -- p. 652: terminate. */
 void almxit_terminate(void)
 {
     tc_to(ALMXIT + 011u, GOTOPOOH);
 }
 
-/* ALMXIT +012: proceed, the display again (TC -4). Enter goes on at
- * P32/P72A. */
+/* ALMXIT +012 -- p. 652: proceed, the display again (TC -4). Enter goes on
+ * at P32/P72A. */
 void almxit_proceed(void)
 {
     tc_at(ALMXIT + 012u);
     almxit_after_varalarm();
 }
 
-/* P32/P72A: P20FLGON, the update and track flags set, */
+/* P32/P72A -- p. 652: P20FLGON, the update and track flags set, */
 void p32_p72a(void)
 {
     tc_to(P32_P72A, P20FLGON);
 }
 
-/* then to the interpreter, for P32_P72A_CODE: NN zero. */
+/* P32/P72A +1 -- p. 652: then to the interpreter, for P32_P72A_CODE: NN
+ * zero. */
 void p32_p72a_after_p20flgon(void)
 {
     tc_at(P32_P72A + 1u);
@@ -128,42 +127,43 @@ static const word p32_p72a_words[] = {
     ORDER(EXIT),
 };
 
-/* After its EXIT: TCSI, "TIME OF THE CSI MANEUVER", asked for: verb 06
- * noun 11 (VNPOOH). */
+/* P32/P72A +6 -- p. 652: After its EXIT: TCSI, "TIME OF THE CSI MANEUVER",
+ * asked for: verb 06 noun 11 (VNPOOH). */
 void vn0611(void)
 {
     set_A(V06N11);
     tc_to(P32_P72A + 7u, VNPOOH);
 }
 
-/* On proceed: verb 06 noun 55 flashed, NN and ELEV (GOFLASH). */
+/* P32/P72A +010 -- p. 652: On proceed: verb 06 noun 55 flashed, NN and ELEV
+ * (GOFLASH). */
 void vn0655(void)
 {
     set_A(V06N55);
     tc_to(P32_P72A + 011u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* P32/P72A +013: terminate. */
+/* P32/P72A +013 -- p. 653: terminate. */
 void vn0655_terminate(void)
 {
     tc_to(P32_P72A + 013u, GOTOPOOH);
 }
 
-/* P32/P72A +014: proceed, on to TTPI (TC +2). */
+/* P32/P72A +014 -- p. 653: proceed, on to TTPI (TC +2). */
 void vn0655_proceed(void)
 {
     tc_at(P32_P72A + 014u);
     vn0637();
 }
 
-/* P32/P72A +015: recycle, the display again (TC -5). */
+/* P32/P72A +015 -- p. 653: recycle, the display again (TC -5). */
 void vn0655_recycle(void)
 {
     tc_at(P32_P72A + 015u);
     vn0655();
 }
 
-/* P32/P72A +016: TTPI, "TIME OF THE TPI MANEUVER", verb 06 noun 37
+/* P32/P72A +016 -- p. 653: TTPI, "TIME OF THE TPI MANEUVER", verb 06 noun 37
  * (VNPOOH). */
 void vn0637(void)
 {
@@ -171,7 +171,7 @@ void vn0637(void)
     tc_to(P32_P72A + 017u, VNPOOH);
 }
 
-/* P32/P72A +020: to the interpreter, for VN0637_CODE. */
+/* P32/P72A +020 -- p. 653: to the interpreter, for VN0637_CODE. */
 void vn0637_after_vnpooh(void)
 {
     tc_at(P32_P72A + 020u);
@@ -240,15 +240,15 @@ static const word p32_p72e_words[] = {
     ADDRESS(P32_P72F),
 };
 
-/* P32/P72F +5: verb 06 noun 75 (VNPOOH), the delta altitude and the two
- * times, T1TOT2 and T2TOT3. */
+/* P32/P72F +5 -- p. 654: verb 06 noun 75 (VNPOOH), the delta altitude and
+ * the two times, T1TOT2 and T2TOT3. */
 void p32_p72_n75(void)
 {
     set_A(V06N75);
     tc_to(P32_P72F + 6u, VNPOOH);
 }
 
-/* P32/P72F +7: to the interpreter, for P32_P72_N75_CODE. */
+/* P32/P72F +7 -- p. 654: to the interpreter, for P32_P72_N75_CODE. */
 void p32_p72_n75_after_vnpooh(void)
 {
     tc_at(P32_P72F + 7u);
@@ -280,7 +280,7 @@ static const word p32_p72_n75_words[] = {
 
 /* ---- P33 and P73 -- pp. 658-659 ---- */
 
-/* P33: AVFLAGA, the CM the active vehicle, then on at P33/P73A. */
+/* P33 -- p. 658: AVFLAGA, the CM the active vehicle, then on at P33/P73A. */
 void p33(void)
 {
     tc_to(P33, AVFLAGA);
@@ -292,27 +292,27 @@ void p33_after_avflaga(void)
     p33_p73a();
 }
 
-/* P73: AVFLAGP, the LM the active vehicle. */
+/* P73 -- p. 658: AVFLAGP, the LM the active vehicle. */
 void p73(void)
 {
     tc_to(P73, AVFLAGP);
 }
 
-/* P33/P73A: P20FLGON, */
+/* P33/P73A -- p. 658: P20FLGON, */
 void p33_p73a(void)
 {
     tc_to(P33_P73A, P20FLGON);
 }
 
-/* then TCDH, "TIME OF THE CDH MANEUVER", asked for: verb 06 noun 13
- * (VNPOOH). */
+/* P33/P73A +1 -- p. 658: then TCDH, "TIME OF THE CDH MANEUVER", asked for:
+ * verb 06 noun 13 (VNPOOH). */
 void p33_p73a_after_p20flgon(void)
 {
     set_A(V06N13);
     tc_to(P33_P73A + 2u, VNPOOH);
 }
 
-/* P33/P73A +3: to the interpreter, for P33_P73A_CODE. */
+/* P33/P73A +3 -- p. 658: to the interpreter, for P33_P73A_CODE. */
 void p33_p73a_after_vnpooh(void)
 {
     tc_at(P33_P73A + 3u);
@@ -363,40 +363,40 @@ static const word p33_p73a_words[] = {
     ADDRESS(P33_P73C),
 };
 
-/* After that EXIT: alarm 611 (ALARM, OCT 611), */
+/* P33/P73B +033 -- p. 658: After that EXIT: alarm 611 (ALARM, OCT 611), */
 void p33_p73_alarm(void)
 {
     tc_to(P33_P73B + 033u, ALARM); /* OCT 611 */
 }
 
-/* and verb 05 noun 09 flashed (GOFLASH). */
+/* P33/P73B +035 -- p. 658: and verb 05 noun 09 flashed (GOFLASH). */
 void p33_p73_after_alarm(void)
 {
     set_A(V05N09);
     tc_to(P33_P73B + 036u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* P33/P73B +040: terminate. */
+/* P33/P73B +040 -- p. 658: terminate. */
 void p33_p73_terminate(void)
 {
     tc_to(P33_P73B + 040u, GOTOPOOH);
 }
 
-/* P33/P73B +041: proceed (TC +2), on with NOMTPI zero. */
+/* P33/P73B +041 -- p. 659: proceed (TC +2), on with NOMTPI zero. */
 void p33_p73_proceed(void)
 {
     tc_at(P33_P73B + 041u);
     p33_p73_after_proceed();
 }
 
-/* P33/P73B +042: recycle, TCDH asked for again (TC P33/P73A). */
+/* P33/P73B +042 -- p. 659: recycle, TCDH asked for again (TC P33/P73A). */
 void p33_p73_recycle(void)
 {
     tc_at(P33_P73B + 042u);
     p33_p73a();
 }
 
-/* P33/P73B +043: to the interpreter, for P33_P73_ALARM_CODE. */
+/* P33/P73B +043 -- p. 659: to the interpreter, for P33_P73_ALARM_CODE. */
 void p33_p73_after_proceed(void)
 {
     tc_at(P33_P73B + 043u);
@@ -453,15 +453,15 @@ static const word p33_p73e_words[] = {
     ORDER(EXIT),
 };
 
-/* P33/P73F +010: verb 06 noun 75 (VNPOOH), the delta altitude and the
- * two times. */
+/* P33/P73F +010 -- p. 659: verb 06 noun 75 (VNPOOH), the delta altitude and
+ * the two times. */
 void p33_p73_n75(void)
 {
     set_A(V06N75);
     tc_to(P33_P73F + 011u, VNPOOH);
 }
 
-/* P33/P73F +012: to the interpreter, for P33_P73_N75_CODE. */
+/* P33/P73F +012 -- p. 659: to the interpreter, for P33_P73_N75_CODE. */
 void p33_p73_n75_after_vnpooh(void)
 {
     tc_at(P33_P73F + 012u);
@@ -505,14 +505,14 @@ static const word disdvlvc_words[] = {
     ORDER(EXIT),
 };
 
-/* DISDVLVC +013: shown, verb and noun from VERBNOUN (VNPOOH), */
+/* DISDVLVC +013 -- p. 662: shown, verb and noun from VERBNOUN (VNPOOH), */
 void disdvlvc_after_exit(void)
 {
     ca(ADDRESS_OF(VERBNOUN));
     tc_to(DISDVLVC + 014u, VNPOOH);
 }
 
-/* DISDVLVC +015: and back through NORMEX (DISDVLVC_EXIT_CODE). */
+/* DISDVLVC +015 -- p. 662: and back through NORMEX (DISDVLVC_EXIT_CODE). */
 void disdvlvc_after_vnpooh(void)
 {
     tc_at(DISDVLVC + 015u);

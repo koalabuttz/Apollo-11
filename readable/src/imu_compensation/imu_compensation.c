@@ -382,14 +382,16 @@ void one_gyro(void)
     continue_at(BANKCALL);
 }
 
-/* LGCOMP +4, IMUPULSE's return. "WAIT FOR PULSES TO GET OUT". */
+/* LGCOMP +4 -- LM p. 333, CM p. 303, IMUPULSE's return. "WAIT FOR PULSES TO
+ * GET OUT". */
 void one_gyro_after_imupulse(void)
 {
     tc_at(LGCOMP + 4u); /* TC BANKCALL; CADR IMUSTALL */
     continue_at(BANKCALL);
 }
 
-/* LGCOMP +6, IMUSTALL's return: TCF ENDOFJOB ("TEMPORARY"). */
+/* LGCOMP +6 -- LM p. 333, CM p. 303, IMUSTALL's return: TCF ENDOFJOB
+ * ("TEMPORARY"). */
 void one_gyro_after_imustall(void)
 {
     continue_at(ENDOFJOB);
@@ -588,7 +590,7 @@ void nbdonly(void)
 }
 
 #if LUMINARY099
-/* NBDONLY +020, PIPASR +3's return on the surface. */
+/* NBDONLY +020 -- LM p. 334, PIPASR +3's return on the surface. */
 void nbdonly_after_pipasr(void)
 {
     nbdonly_deltat();
@@ -605,10 +607,11 @@ void lastbias(void)
     continue_at(BANKCALL);
 }
 
-/* LASTBIAS +2. "BYPASS IF GCOMPSW NEGATIVE"; else DELTAT from the last
- * compensation (1/PIPADT) to the PIPA reading (PIPTIME +1, the CM's
- * PIPTIME1 +1), and NBD2. 1/PIPADT becomes PRIO31, "2 SECONDS SCALED (CS)
- * X 2(+8)": DELTAT for each of SERVICER's readings, from now on. */
+/* LASTBIAS +2 -- LM p. 336, CM p. 306. "BYPASS IF GCOMPSW NEGATIVE"; else
+ * DELTAT from the last compensation (1/PIPADT) to the PIPA reading (PIPTIME
+ * +1, the CM's PIPTIME1 +1), and NBD2. 1/PIPADT becomes PRIO31, "2 SECONDS
+ * SCALED (CS) X 2(+8)": DELTAT for each of SERVICER's readings, from now
+ * on. */
 void lastbias_after_pipuse(void)
 {
     switch (ccs_at(ADDRESS_OF(GCOMPSW))) {

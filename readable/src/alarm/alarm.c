@@ -150,8 +150,9 @@ static void chkfail2(void)
     }
 }
 
-/* FAIL3: FAILREG +2 is free if its magnitude is +0 (its sign bit only
- * says whether MULTFAIL has been). A masked word is never negative. */
+/* FAIL3 -- LM p. 1381, CM p. 1493: FAILREG +2 is free if its magnitude is +0
+ * (its sign bit only says whether MULTFAIL has been). A masked word is never
+ * negative. */
 static void fail3(void)
 {
     ca(ADDRESS_OF(FAILREG) + 2u);
@@ -438,7 +439,7 @@ void gopoodoo_after_flags(void)
  * "TERMINATE GRPS 2, 4, 1, 3, 5, AND 6 (I.E., GRP 4 LAST)". */
 void gopoodoo_after_v37klean(void)
 {
-    tc_at((word)(GOPOODOO + 9u)); /* TC BANKCALL; CADR MR.KLEAN */
+    tc_at((word)(GOPOODOO + 011u)); /* TC BANKCALL; CADR MR.KLEAN */
     continue_at(BANKCALL);
 }
 
@@ -577,39 +578,39 @@ void poodoo_after_alarm(void)
     mask(FLAGWRD7);
     /* CCS A: positive or +0 (a masked word is never negative). */
     if (ccs_register(A_ADDRESS) == POSITIVE) {
-        tc_at((word)(POODOO + 12u)); /* TC WHIMPER -1 */
+        tc_at((word)(POODOO + 014u)); /* TC WHIMPER -1 */
         whimper_minus1();
         return;
     }
-    tc_at((word)(POODOO + 13u)); /* TC DOWNFLAG; ADRES STATEFLG */
+    tc_at((word)(POODOO + 015u)); /* TC DOWNFLAG; ADRES STATEFLG */
     continue_at(DOWNFLAG);
 }
 
 /* POODOO, after DOWNFLAG of STATEFLG -- CM p. 1495. */
 void poodoo_after_stateflg(void)
 {
-    tc_at((word)(POODOO + 15u)); /* TC DOWNFLAG; ADRES REINTFLG */
+    tc_at((word)(POODOO + 017u)); /* TC DOWNFLAG; ADRES REINTFLG */
     continue_at(DOWNFLAG);
 }
 
 /* POODOO, after DOWNFLAG of REINTFLG -- CM p. 1495. */
 void poodoo_after_reintflg(void)
 {
-    tc_at((word)(POODOO + 17u)); /* TC DOWNFLAG; ADRES NODOFLAG */
+    tc_at((word)(POODOO + 021u)); /* TC DOWNFLAG; ADRES NODOFLAG */
     continue_at(DOWNFLAG);
 }
 
 /* POODOO, after DOWNFLAG of NODOFLAG -- CM p. 1495. */
 void poodoo_after_nodoflag(void)
 {
-    tc_at((word)(POODOO + 19u)); /* TC BANKCALL; CADR MR.KLEAN */
+    tc_at((word)(POODOO + 023u)); /* TC BANKCALL; CADR MR.KLEAN */
     continue_at(BANKCALL);
 }
 
 /* POODOO, after MR.KLEAN -- CM p. 1495. TC WHIMPER. */
 void poodoo_after_mr_klean(void)
 {
-    tc_at((word)(POODOO + 21u));
+    tc_at((word)(POODOO + 025u));
     whimper();
 }
 

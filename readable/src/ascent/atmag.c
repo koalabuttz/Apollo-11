@@ -7,17 +7,15 @@
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 #if LUMINARY099
 
-/* ATMAG: restart group 5 at 5.3 (PHASCHNG, OCT 00035), ... */
+/* ATMAG -- p. 843: restart group 5 at 5.3 (PHASCHNG, OCT 00035), ... */
 void atmag(void)
 {
     tc_to(ATMAG, PHASCHNG);
 }
 
-/* ... and the interpretive code (ATMAG_CODE). */
+/* ATMAG +2 -- p. 843: ... and the interpretive code (ATMAG_CODE). */
 void atmag_after_phaschng(void)
 {
     tc_at(ATMAG + 2u);
@@ -48,10 +46,10 @@ static const word atmag_words[] = {
 
 const struct interpretive_code ATMAG_CODE = {034u, ATMAG + 3u, COUNT(atmag_words), atmag_words};
 
-/* After the EXIT, the four latest 1/DV move along: the new one (in MPAC)
- * to 1/DV3, 1/DV3 to 1/DV2, 1/DV2 to 1/DV1 and 1/DV1 to 1/DV0 (MASS1's
- * words), the oldest dropped. Then the interpretive code again
- * (ATMAG_AFTER_EXIT_CODE). */
+/* ATMAG +021 -- p. 843: After the EXIT, the four latest 1/DV move along: the
+ * new one (in MPAC) to 1/DV3, 1/DV3 to 1/DV2, 1/DV2 to 1/DV1 and 1/DV1 to
+ * 1/DV0 (MASS1's words), the oldest dropped. Then the interpretive code
+ * again (ATMAG_AFTER_EXIT_CODE). */
 void atmag_after_exit(void)
 {
     dxch(MPAC_AT(0u));

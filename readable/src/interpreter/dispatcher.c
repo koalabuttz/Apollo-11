@@ -46,18 +46,19 @@ void intpret(void)
     intpret_plus3();
 }
 
-/* INTPRET +2: the QXCH's word, reached by TCF INTPRET +2 (E/CALL's return,
- * in SYSTEM_TEST_STANDARD_LEAD_INS) with no EXTEND before it. Unextended,
- * the same instruction word is LXCH LOC: the new LOC comes from L. */
+/* INTPRET +2 -- LM p. 1002, CM p. 1107: the QXCH's word, reached by TCF
+ * INTPRET +2 (E/CALL's return, in SYSTEM_TEST_STANDARD_LEAD_INS) with no
+ * EXTEND before it. Unextended, the same instruction word is LXCH LOC: the
+ * new LOC comes from L. */
 void intpret_plus2(void)
 {
     lxch(ADDRESS_OF(LOC));
     intpret_plus3();
 }
 
-/* INTPRET +3 -- "INTERPRETIVE BRANCHES FINISH HERE." The program's bank
- * becomes the job's (BANKSET), and its superbank bit is kept in INTBIT15
- * for the addresses its orders give. */
+/* INTPRET +3 -- LM p. 1002, CM p. 1107: "INTERPRETIVE BRANCHES FINISH HERE."
+ * The program's bank becomes the job's (BANKSET), and its superbank bit is
+ * kept in INTBIT15 for the addresses its orders give. */
 void intpret_plus3(void)
 {
     ca(BBANK_ADDRESS);
@@ -110,9 +111,9 @@ void sload2_plus2(void)
  * is done; DANZIG takes the next one. */
 void newmode(void)
 {
-    /* (An overflow in A, which no order leaves, skips DANZIG's CA.) */
+    /* (An overflow in A would skip DANZIG's CA.) */
     if (ts(ADDRESS_OF(MODE)))
-        continue_at(DANZIG + 1u);
+        continue_at(DANZIG + 1u); /* (never: no order leaves an overflow in A) */
     else
         continue_at(DANZIG);
 }
@@ -194,11 +195,13 @@ static void opjump(void)
     switch (ccs_at(CYR_ADDRESS)) {
     case POSITIVE: opjump2(); return;
     case IS_PLUS_ZERO: exit_(); return;
-    default: break; /* (CYR cannot be -0: the code has seven bits) */
+    case NEGATIVE:
+        /* ADDRESS -- LM p. 1004, CM p. 1109. "SEE IF ADDRESS IS INDEXED.
+         * CYR CONTAINED 400XX, SO BIT 1 IS NOW AS IT WAS IN CYR." */
+        mask(BIT1);
+        break;
+    case IS_MINUS_ZERO: break; /* (never: the code has seven bits. To ADDRESS +1, past the MASK.) */
     }
-    /* ADDRESS -- LM p. 1004, CM p. 1109. "SEE IF ADDRESS IS INDEXED. CYR
-     * CONTAINED 400XX, SO BIT 1 IS NOW AS IT WAS IN CYR." */
-    mask(BIT1);
     if (ccs_at(A_ADDRESS) == POSITIVE)
         index_(); /* A is 1 or +0 */
     else

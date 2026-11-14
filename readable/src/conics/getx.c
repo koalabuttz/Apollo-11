@@ -1,8 +1,10 @@
 /* SPDX-License-Identifier: MIT */
 /* CONIC_SUBROUTINES.agc, GETX (LM pp. 1189-1192, CM pp. 1292-1295): the
  * universal variable X for TIME-THETA's angle, in the listing's notation
- * (src/interpreter/notation.h), which the readable interpreter runs, and
- * the basic code around its TC POLY.
+ * (src/interpreter/notation.h), which the readable interpreter runs, and the
+ * basic code around its TC POLY. The faithful C is
+ * c64-port/src/lm_conic_compiled.c (with lm_conic_checkctr.c) and
+ * cm_conics.c.
  *
  * In: P in MPAC ("ASSUMES P (+4) IN MPAC"), with PARAM's COGA and R1A and
  * GEOM's SNTH, CSTH and R1. W comes from them and goes through three steps
@@ -73,15 +75,16 @@ static const word getx_words[] = {
 
 const struct interpretive_code GETX_CODE = {I_GETX >> 10, K_GETX, COUNT(getx_words), getx_words};
 
-/* After the EXIT, TC POLY: the series, DEC 5 and seven 2DECs, from .5 on;
- * POLY returns past them, to POLYCOEF +030. */
+/* POLYCOEF +010 -- LM p. 1189, CM p. 1293: After the EXIT, TC POLY: the
+ * series, DEC 5 and seven 2DECs, from .5 on; POLY returns past them, to
+ * POLYCOEF +030. */
 void getx_after_exit(void)
 {
     tc_to(POLYCOEF + 010u, POLY);
 }
 
-/* POLYCOEF +030: the series' value in MPAC, and the interpreter again
- * (GETX_SERIES_CODE). */
+/* POLYCOEF +030 -- LM p. 1190, CM p. 1293: the series' value in MPAC, and
+ * the interpreter again (GETX_SERIES_CODE). */
 void getx_after_poly(void)
 {
     tc_at(POLYCOEF + 030u);

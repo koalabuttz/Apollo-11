@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: MIT */
-/* P32-P35_P72-P75.agc (Luminary099 pp. 642-649): the subroutines of the
- * CSI and CDH computations (bank 34), from ADVANCE to CDHMVR. ADVANCE
- * brings both vehicles to TIG and into the passive vehicle's orbital
- * plane; INTINT2C and INTINT3P integrate a state vector from TCSI to TCDH
- * and from TCDH to TTPI; S32/33.1 shows the delta V in local vertical
- * coordinates and turns it into reference coordinates; CDHMVR finds the
- * CDH burn, the one that puts the active vehicle on an orbit concentric
- * with the passive vehicle's.
+/* P32-P35_P72-P75.agc (Luminary099 pp. 642-649): the subroutines of the CSI
+ * and CDH computations (bank 34), from ADVANCE to CDHMVR. ADVANCE brings
+ * both vehicles to TIG and into the passive vehicle's orbital plane;
+ * INTINT2C and INTINT3P integrate a state vector from TCSI to TCDH and from
+ * TCDH to TTPI; S32/33.1 shows the delta V in local vertical coordinates and
+ * turns it into reference coordinates; CDHMVR finds the CDH burn, the one
+ * that puts the active vehicle on an orbit concentric with the passive
+ * vehicle's. The faithful C is c64-port/src/lm_p32_p35.c.
  *
  * All interpretive: ADVANCE_CODE holds the words, which the readable
  * interpreter runs. A comment names each stretch the way the listing's
@@ -15,8 +15,6 @@
 #include "../agc/names.h"
 
 #if LUMINARY099
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 static const word advance_words[] = {
     /* ADVANCE: the return in SUBEXIT; both vehicles to TIG (PRECSET, with

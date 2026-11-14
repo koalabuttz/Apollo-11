@@ -27,7 +27,6 @@ struct pool_word {
 #define DOUBLE(label, major, minor) {label, (word)(major)}, {"", (word)(minor)}
 #define MINUS(n)                    (077777u - (n))
 #define VN(verb, noun)              ((verb) * 0200u + (noun))
-#define COUNT(array)                (sizeof(array) / sizeof((array)[0]))
 /* clang-format on */
 
 /* The pool's word at a fixed-fixed address, false where the pool has none

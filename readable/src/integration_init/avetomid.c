@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* INTEGRATION_INITIALIZATION.agc, AVETOMID (LM pp. 1221-1222, CM pp.
- * 1327-1328), in the listing's notation (src/interpreter/notation.h),
- * which the readable interpreter runs.
+ * 1327-1328), in the listing's notation (src/interpreter/notation.h), which
+ * the readable interpreter runs. The faithful C is
+ * c64-port/src/lm_integration_init.c and cm_integration_init.c.
  *
  * "THIS ROUTINE PERFORMS THE TRANSITION FROM A THRUSTING PHASE TO THE
  * COAST PHASE": at the end of a burn, the state vector AVERAGEG has kept

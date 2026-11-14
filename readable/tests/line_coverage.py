@@ -17,11 +17,12 @@ no run line between them), and each stretch must stand in
 tests/line_coverage.txt with the reason it does not run. The check fails on
 a stretch that is not there, on one that is there and now runs, and on one
 whose reason does not stand: none, one of no class, or one of a class that
-does not fit the stretch (fits(), below: a [refusal] outside the bindings,
-a [not-modelled] with no not_modelled() at its lines, a [never] with no
-comment there that says never, a [never] or an [impossible] that does not
-say why). A stretch is known by its file, its function and its text (and,
-where a function has two with one text, which of them it is), not by its
+does not fit the stretch (fits(), below: a [refusal] outside the bindings
+that is no not_modelled() or does not say why, a [not-modelled] with no
+not_modelled() at its lines, a [never] with no comment there that says
+never, a [never] or an [impossible] that does not say why). A stretch is
+known by its file, its function and its text (and, where a function has
+two with one text, which of them it is), not by its
 line numbers, so an edit elsewhere in the file does not move it. The line
 numbers and the counts in the ledger are those of the measure it was last
 written from, for the reader; they are not compared.
@@ -599,7 +600,11 @@ def fits(name, why, file, text):
     of file with that text; nothing if it fits. Each class of the ledger's
     head has its rule here."""
     if name == 'refusal':
-        return '' if file.startswith('binding/') else 'is [refusal] and not in a binding (src/binding)'
+        if file.startswith('binding/'):
+            return ''
+        if 'not_modelled' not in text:
+            return 'is [refusal], not in a binding (src/binding), with no not_modelled() at its lines'
+        return '' if why else 'is [refusal], not in a binding (src/binding), and does not say why'
     if name == 'not-modelled':
         return '' if 'not_modelled' in text else 'is [not-modelled] with no not_modelled() at its lines'
     if name == 'never' and not re.search(r'\bnever\b', text, re.I):
@@ -895,6 +900,12 @@ def self_check():
     expect('a [never] whose lines do not say never', found, swap(impossible, 'why: [never] A reason long'),
            (0, 0, 1, 0))
     expect('a [refusal] outside the bindings', found, swap(never, 'why: [refusal]'), (0, 0, 1, 0))
+    expect('one at a not_modelled() there, with its why', found,
+           swap('why: [not-modelled]', 'why: [refusal] Only a word keyed in by hand brings it.'), (0, 0, 0, 0))
+    expect('one at a not_modelled() there, with no why', found, swap('why: [not-modelled]', 'why: [refusal]'),
+           (0, 0, 1, 0))
+    expect('one there that says why and is no not_modelled()', found,
+           swap(never, 'why: [refusal] Only a word keyed in by hand brings it.'), (0, 0, 1, 0))
     expect('a [not-modelled] with no not_modelled()', found, swap(never, 'why: [not-modelled]'), (0, 0, 1, 0))
     expect('an [open] stretch', found, swap(never, 'why: [open]'), (0, 0, 0, 0))
     # The sources with no line counted.

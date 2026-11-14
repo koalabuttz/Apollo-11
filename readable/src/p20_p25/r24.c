@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 15 (Luminary099 pp. 588-593): LRS24.1, the RR search
- * routine (R24).
+ * routine (R24). The faithful C is c64-port/src/lm_p20_p25.c.
  *
  * LRS24.1 "DRIVES THE RENDEZVOUS RADAR IN A HEXAGONAL SEARCH PATTERN ABOUT
  * THE LOS TO THE CSM (COMPUTED FROM THE CSM AND LM STATE VECTORS) CHECKING
@@ -23,8 +23,6 @@
 #include "../interpreter/interpreter.h"
 
 #if LUMINARY099
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* ---- LRS24.1 and CHKSRCH ---- */
 
@@ -56,8 +54,8 @@ void lrs24_1(void)
     chksrch();
 }
 
-/* LRS24.1 +016: "IS REMODE IN PROGRESS" (RADMODES bit 14): "YES -- WAIT
- * SIX SECONDS", the job ends. No: the interpreter. */
+/* LRS24.1 +016 -- p. 589: "IS REMODE IN PROGRESS" (RADMODES bit 14): "YES --
+ * WAIT SIX SECONDS", the job ends. No: the interpreter. */
 void lrs24_1_after_waitlist(void)
 {
     relint();
@@ -163,8 +161,8 @@ static const word lrs24_1_words[] = {
 
 /* ---- The designate ---- */
 
-/* LRS24.1 +0131: "KILL ANY PRESENTLY WAITLISTED TASK WHICH WOULD DESIGNATE
- * TO THE LAST POINT IN THE PATTERN" (DESLOOP +2). */
+/* LRS24.1 +0131 -- p. 590: "KILL ANY PRESENTLY WAITLISTED TASK WHICH WOULD
+ * DESIGNATE TO THE LAST POINT IN THE PATTERN" (DESLOOP +2). */
 void lrs24_1_after_exit(void)
 {
     inhint();
@@ -212,8 +210,8 @@ void contdes2_maneuver_required(void)
     limalarm();
 }
 
-/* LIMALARM +2: "KILL WAITLIST CALL FOR NEXT POINT IN SEARCH PATTERN"
- * (CALLDGCH), and the job ends. */
+/* LIMALARM +2 -- p. 593: "KILL WAITLIST CALL FOR NEXT POINT IN SEARCH
+ * PATTERN" (CALLDGCH), and the job ends. */
 void limalarm_after_alarm(void)
 {
     inhint();
@@ -248,7 +246,7 @@ static const word omegcalc_words[] = {
     ORDER(EXIT),
 };
 
-/* OMEGCALC +012: the job ends. */
+/* OMEGCALC +012 -- p. 591: the job ends. */
 void omegcalc_after_exit(void)
 {
     tc_to(OMEGCALC + 012u, ENDOFJOB);

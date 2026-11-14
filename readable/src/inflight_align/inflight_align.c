@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 /* INFLIGHT_ALIGNMENT_ROUTINES.agc, both missions' (Luminary099 pp.
- * 1249-1257, Comanche055 pp. 1355-1363), in bank 23. The interpretive
- * words are in the listing's notation (src/interpreter/notation.h); the
- * basic code after GIMLOCK1's EXIT is C.
+ * 1249-1257, Comanche055 pp. 1355-1363), in bank 23. The interpretive words
+ * are in the listing's notation (src/interpreter/notation.h); the basic code
+ * after GIMLOCK1's EXIT is C. The faithful C is
+ * c64-port/src/lm_inflight_align.c and cm_inflight_align.c.
  *
  * The routines that turn the IMU's stable member to a new orientation
  * (the alignment programs, P51 and P52, and the IMU's coarse and fine
@@ -186,16 +187,9 @@ static const word calcgta_words[] = {
 const struct interpretive_code CALCGTA_CODE = {CODE_BANK(I_CALCGTA), CODE_Z(I_CALCGTA),
                                                COUNT(calcgta_words), calcgta_words};
 
-/* TC at "at" to a routine outside the file (ALARM, UPFLAG), which reads
- * the word after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
-/* After GIMLOCK1's EXIT: alarm 401, GLOKFAIL set ("GIMBAL LOCK HAS
- * OCCURRED"), and back into the interpreter. */
+/* GIMLOCK1 +1 -- LM p. 1254, CM p. 1360: After GIMLOCK1's EXIT: alarm 401,
+ * GLOKFAIL set ("GIMBAL LOCK HAS OCCURRED"), and back into the
+ * interpreter. */
 void gimlock1_after_exit(void)
 {
     tc_to((word)(GIMLOCK1 + 1u), ALARM); /* OCT 00401 */

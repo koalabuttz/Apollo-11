@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 /* INTEGRATION_INITIALIZATION.agc, RVCON and TESTLOOP to DT/2MAX (LM pp.
  * 1217-1219, CM pp. 1321-1324), in the listing's notation
- * (src/interpreter/notation.h), which the readable interpreter runs.
+ * (src/interpreter/notation.h), which the readable interpreter runs. The
+ * faithful C is c64-port/src/lm_integration_init.c and
+ * cm_integration_init.c.
  *
  * RVCON is the conic: the state at TDEC in one step, by Kepler's equation
  * (KEPPREP). TESTLOOP is the precision integration's loop: each pass

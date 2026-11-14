@@ -34,8 +34,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- IMUTEST and the positioning -- pp. 423-424 ---- */
 
 /* IMUTEST -- p. 423. The IMU performance test's start: DRIFTT and GEOCOMP1
@@ -148,8 +146,8 @@ void nbpospl_after_exit(void)
     continue_at(CHECKMM); /* MM 03 */
 }
 
-/* NBPOSPL +023: not in P03. TCF +2: CALCGA, in the interpreter, finds the
- * gimbal angles for the axes. */
+/* NBPOSPL +023 -- p. 424: not in P03. TCF +2: CALCGA, in the interpreter,
+ * finds the gimbal angles for the axes. */
 void nbpospl_not_verifying(void)
 {
     tc_at(NBPOSPL + 025u);
@@ -166,7 +164,8 @@ static const word calcga_words[] = {
 const struct interpretive_code CALCGA_CODE = {033u, NBPOSPL + 026u, COUNT(calcga_words),
                                               calcga_words};
 
-/* NBPOSPL +024: in P03, on to the optical verification (SETNBPOS +1). */
+/* NBPOSPL +024 -- p. 424: in P03, on to the optical verification (SETNBPOS
+ * +1). */
 void nbpospl_verifying(void)
 {
     continue_at(SETNBPOS + 1u);
@@ -254,7 +253,7 @@ void goestims(void)
     continue_at(JOBWAKE);
 }
 
-/* GOESTIMS +2: the task ends. */
+/* GOESTIMS +2 -- p. 424: the task ends. */
 void goestims_after_jobwake(void)
 {
     tc_at(GOESTIMS + 2u);
@@ -360,7 +359,7 @@ void startpip(void)
     continue_at(FINDVAC); /* 2CADR PIPJOBB */
 }
 
-/* STARTPIP +4: the task ends. */
+/* STARTPIP +4 -- p. 425: the task ends. */
 void startpip_after_findvac(void)
 {
     tc_at(STARTPIP + 4u);
@@ -531,7 +530,7 @@ void endtest1(void)
     continue_at(DOWNFLAG); /* ADRES IMUSE */
 }
 
-/* ENDTEST1 +2. */
+/* ENDTEST1 +2 -- p. 427. */
 void endtest1_after_downflag(void)
 {
     set_A(negate(ZERO));
@@ -539,14 +538,14 @@ void endtest1_after_downflag(void)
     continue_at(NEWMODEX + 3u);
 }
 
-/* ENDTEST1 +4. */
+/* ENDTEST1 +4 -- p. 427. */
 void endtest1_after_newmodex(void)
 {
     tc_at(ENDTEST1 + 4u);
     continue_at(BANKCALL); /* CADR MKRELEAS */
 }
 
-/* ENDTEST1 +6. */
+/* ENDTEST1 +6 -- p. 427. */
 void endtest1_after_mkreleas(void)
 {
     tc_at(ENDTEST1 + 6u);
@@ -587,14 +586,14 @@ void coaalign_after_imucoars(void)
     continue_at(BANKCALL); /* CADR IMUSTALL */
 }
 
-/* COAALIGN +012: IMUSTALL's bad return: SOMERR2. */
+/* COAALIGN +012 -- p. 428: IMUSTALL's bad return: SOMERR2. */
 void coaalign_bad_stall(void)
 {
     tc_at(COAALIGN + 012u);
     somerr2();
 }
 
-/* COAALIGN +013: back to the caller, through QPLACE. */
+/* COAALIGN +013 -- p. 428: back to the caller, through QPLACE. */
 void coaalign_after_imustall(void)
 {
     tc_return(E(QPLACE));

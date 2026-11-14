@@ -10,10 +10,11 @@
 
 #if LUMINARY099
 
-/* CONTABRT: the instruction an interrupt's RESUME runs first (BRUPT) made
- * TCF ABRTJASK (ABRTJADR's word), and RESUME: the interrupt ends, and
- * ABRTJASK runs. (Out of an interrupt too, RESUME runs the word in BRUPT.)
- * The faithful port takes a TCF to fixed memory in BRUPT, as here. */
+/* CONTABRT -- p. 830: the instruction an interrupt's RESUME runs first
+ * (BRUPT) made TCF ABRTJASK (ABRTJADR's word), and RESUME: the interrupt
+ * ends, and ABRTJASK runs. (Out of an interrupt too, RESUME runs the word in
+ * BRUPT.) The faithful port takes a TCF to fixed memory in BRUPT, as
+ * here. */
 void contabrt(void)
 {
     set_A(ABRTJADR);
@@ -31,7 +32,7 @@ static void end_group(unsigned minus_phase)
     dxch(minus_phase);
 }
 
-/* ABRTJASK: with Q -0 for P70 or two for P71 (from P70A or P71A),
+/* ABRTJASK -- p. 831: with Q -0 for P70 or two for P71 (from P70A or P71A),
  *
  *     PHASE4 = 27 + Q          (the abort's restart point, 4.27 or 4.31)
  *     MODREG = DISPDEX = MODE70 or MODE71 (INDEX Q; "INSURE DISPDEX IS
@@ -89,11 +90,11 @@ void abrtjask(void)
     tc_to(ABRTJASK + 036u, CLRADMOD);
 }
 
-/* CLRADMOD's return: "LOAD TEVENT FOR THE DOWNLINK" (TIME2), the average-G
- * exit SERVEXIT (AVGEXIT), restart groups 1, 3 and 6 ended (-0 and +0),
- * group 4 at 4.3 ("SET UP 4.3SPOT FOR GOABORT"), "SET T5RUPT TO CALL
- * DAPIDLER IN 40 MILLISECONDS" (TIME5), and ENEMA (POSTJUMP). (Every TS
- * stores a constant: none skips.) */
+/* ABRTJASK +037 -- p. 831: CLRADMOD's return: "LOAD TEVENT FOR THE DOWNLINK"
+ * (TIME2), the average-G exit SERVEXIT (AVGEXIT), restart groups 1, 3 and 6
+ * ended (-0 and +0), group 4 at 4.3 ("SET UP 4.3SPOT FOR GOABORT"), "SET
+ * T5RUPT TO CALL DAPIDLER IN 40 MILLISECONDS" (TIME5), and ENEMA (POSTJUMP).
+ * (Every TS stores a constant: none skips.) */
 void abrtjask_after_clradmod(void)
 {
     dca(ADDRESS_OF(TIME2));

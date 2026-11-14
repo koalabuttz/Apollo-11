@@ -16,7 +16,7 @@
 
 /* ---- DACNDLS, the end of phase 1 -- p. 1009 ---- */
 
-/* DACNDLS: "ALTERNATE BETWEEN FDAIDSP1 AND FDAIDSP2" by bit 4 of
+/* DACNDLS -- p. 1009: "ALTERNATE BETWEEN FDAIDSP1 AND FDAIDSP2" by bit 4 of
  * RCSFLAGS. FDAIDSP1 sets the bit and calls NEEDLER, and NEEDLER's TC Q
  * comes back to KRESUME1. (DELOOP's CCS SPNDX comes in at CS RCSFLAGS on
  * +0, at MASK BIT4 on a negative SPNDX and at EXTEND; BZF FDAIDSP2, with A
@@ -39,7 +39,7 @@ void dacndls(void)
     dacndls_ccs(IS_PLUS_ZERO);
 }
 
-/* KRESUME1: "END PHASE 1". */
+/* KRESUME1 -- p. 1009: "END PHASE 1". */
 void kresume1(void)
 {
     continue_at(RESUME);
@@ -47,18 +47,18 @@ void kresume1(void)
 
 /* ---- NEEDLER -- pp. 1010-1012 ---- */
 
-/* NEEDLER: "CHECK FOR COARSE ALIGN ENABLE" (bit 4 of channel 12): "IF IN
- * COARSE ALIGN DO NOT USE IMU ERROR COUNTERS. DONT USE NEEDLES". Bits 3
- * and 2 of RCSFLAGS step the passes: on to NEEDLES3 with both clear, to
+/* NEEDLER -- p. 1011: "CHECK FOR COARSE ALIGN ENABLE" (bit 4 of channel 12):
+ * "IF IN COARSE ALIGN DO NOT USE IMU ERROR COUNTERS. DONT USE NEEDLES". Bits
+ * 3 and 2 of RCSFLAGS step the passes: on to NEEDLES3 with both clear, to
  * NEEDLER2 with bit 2 alone, and the first pass, bit 3, disables the IMU
  * error counters "TO ZERO DACS" ("MUST WAIT AT LEAST 60 MS BEFORE ENABLING
  * COUNTERS"). */
 void needler(void)
 {
     set_A(BIT4);
-    rand_channel(012);
+    rand_channel(CHAN12);
     if (!A_is_zero()) { /* EXTEND; BZF NEEDLER1 */
-        needler_first_pass();
+        needler_plus5();
         return;
     }
     ca(ADDRESS_OF(RCSFLAGS)); /* NEEDLER1 */
@@ -72,13 +72,14 @@ void needler(void)
         needler2();
         return;
     }
-    set_A(negate(BIT6)); /* CS: "FIRST PASS BIT3 = 1" */
-    wand_channel(012);   /* "DISABLE IMU ERROR COUNTER TO ZERO DACS" */
+    set_A(negate(BIT6));  /* CS: "FIRST PASS BIT3 = 1" */
+    wand_channel(CHAN12); /* "DISABLE IMU ERROR COUNTER TO ZERO DACS" */
     needle11();
 }
 
-/* NEEDLER +5, in coarse align: "SET BIT3 FOR INITIALIZATION PASS". */
-void needler_first_pass(void)
+/* NEEDLER +5 -- p. 1011, in coarse align: "SET BIT3 FOR INITIALIZATION
+ * PASS". */
+void needler_plus5(void)
 {
     cs(ADDRESS_OF(RCSFLAGS));
     mask(BIT3);
@@ -86,7 +87,7 @@ void needler_first_pass(void)
     tc_q();
 }
 
-/* NEEDLE11: "ZERO THE INPUTS ON FIRST PASS", "ZERO THE DISPLAY
+/* NEEDLE11 -- p. 1011: "ZERO THE INPUTS ON FIRST PASS", "ZERO THE DISPLAY
  * REGISTERS", "ZERO THE OUT COUNTERS" (each -0), and "RESET RCSFLAGS FOR
  * PASS2": bit 2 alone. "END PASS1". (The sum cannot overflow: bits 2 and 3
  * are clear.) */
@@ -109,23 +110,23 @@ void needle11(void)
     tc_q();
 }
 
-/* NEEDLER2: "ENABLE IMU ERROR COUNTERS". */
+/* NEEDLER2 -- p. 1011: "ENABLE IMU ERROR COUNTERS". */
 void needler2(void)
 {
     set_A(BIT6);
-    wor_channel(012);
+    wor_channel(CHAN12);
     continue_at(NEEDLER2 + 3u);
 }
 
-/* NEEDLER2 +3: "RESET RCSFLAGS TO DISPLAY ATTITUDE" errors (bits 3 and 2
- * clear), "WAIT AT LEAST 4 MS FOR RELAY CLOSURE". */
-void needler2_reset(void)
+/* NEEDLER2 +3 -- p. 1011: "RESET RCSFLAGS TO DISPLAY ATTITUDE" errors (bits
+ * 3 and 2 clear), "WAIT AT LEAST 4 MS FOR RELAY CLOSURE". */
+void needler2_plus3(void)
 {
     set_A(negate(SIX)); /* CS */
     needler2_mask();
 }
 
-/* NEEDLER2 +4: MASK RCSFLAGS. */
+/* NEEDLER2 +4 -- p. 1012: MASK RCSFLAGS. */
 void needler2_mask(void)
 {
     mask_at(ADDRESS_OF(RCSFLAGS));
@@ -133,15 +134,15 @@ void needler2_mask(void)
     tc_q();
 }
 
-/* NEEDLES3: "CHECK TO SEE IF IMU ERROR COUNTER IS ENABLED". */
+/* NEEDLES3 -- p. 1012: "CHECK TO SEE IF IMU ERROR COUNTER IS ENABLED". */
 void needles3(void)
 {
     set_A(BIT6);
-    rand_channel(012);
+    rand_channel(CHAN12);
     needles3_test();
 }
 
-/* NEEDLES3 +3: "IF NOT RECYCLE NEEDLES" (NEEDLER +5). */
+/* NEEDLES3 +3 -- p. 1012: "IF NOT RECYCLE NEEDLES" (NEEDLER +5). */
 void needles3_test(void)
 {
     if (A_is_zero()) /* EXTEND; BZF NEEDLER +5 */
@@ -152,16 +153,16 @@ void needles3_test(void)
 
 /* ---- NEEDLES, the DACs -- p. 1012 ---- */
 
-/* NEEDLES: the three axes, SPNDX 2, 1 and 0. */
+/* NEEDLES -- p. 1012: the three axes, SPNDX 2, 1 and 0. */
 void needles(void)
 {
     set_A(TWO);
     dacloop();
 }
 
-/* DACLOOP: the error scaled for the DAC, -QUARTER times AK, into L. (TS
- * SPNDX overflows only for an A that holds an overflow, and skips the CS
- * QUARTER: A is then +1 or -1.) */
+/* DACLOOP -- p. 1012: the error scaled for the DAC, -QUARTER times AK, into
+ * L. (TS SPNDX overflows only for an A that holds an overflow, and skips the
+ * CS QUARTER: A is then +1 or -1.) */
 static void dac_input(void)
 {
     if (!ts(ADDRESS_OF(SPNDX))) set_A(negate(QUARTER)); /* CS */
@@ -180,7 +181,7 @@ static void dac_activity(enum sign entry)
         return;
     }
     if (entry == IS_PLUS_ZERO) set_A(BITS13_14_15);
-    wor_channel(014);
+    wor_channel(CHAN14);
     dacloop_return();
 }
 
@@ -190,11 +191,11 @@ void dacloop(void)
     dacloop_limit();
 }
 
-/* DACLOOP +6, each axis' drive: the new input held to DACLIMIT ("ON
- * OVERFLOW LIMIT OUTPUT TO +-384") or, with no overflow, as it is; the
+/* DACLOOP +6 -- p. 1012, each axis' drive: the new input held to DACLIMIT
+ * ("ON OVERFLOW LIMIT OUTPUT TO +-384") or, with no overflow, as it is; the
  * pulses to send, the change from the "CURRENT VALUE OF DAC" in EDRIVEX,
- * added into CDUXCMD; and the new value kept in EDRIVEX. CCS SPNDX: the
- * next axis, or the DAC activity bits. */
+ * added into CDUXCMD; and the new value kept in EDRIVEX. CCS SPNDX: the next
+ * axis, or the DAC activity bits. */
 void dacloop_limit(void)
 {
     enum sign axis;
@@ -202,8 +203,8 @@ void dacloop_limit(void)
     for (;;) {
         switch (ccs_register(A_ADDRESS)) {
         case POSITIVE: ca(ADDRESS_OF(DACLIMIT)); break;
+        case IS_PLUS_ZERO: break; /* A +0 */
         case NEGATIVE: cs(ADDRESS_OF(DACLIMIT)); break;
-        case IS_PLUS_ZERO:
         case IS_MINUS_ZERO: break; /* A +0 */
         }
         ad_at(L_ADDRESS);
@@ -222,7 +223,7 @@ void dacloop_limit(void)
     dac_activity(axis);
 }
 
-/* DACLOOP +034: TC Q. */
+/* DACLOOP +034 -- p. 1012: TC Q. */
 void dacloop_return(void)
 {
     tc_q();
@@ -230,8 +231,8 @@ void dacloop_return(void)
 
 /* ---- FDAIDSP2, the errors for the needles -- pp. 1022-1023 ---- */
 
-/* FDAIDSP2, the other pass of DACNDLS: "RESET FOR FDAIDSP1" (bit 4 of
- * RCSFLAGS). With bit 9 of FLAGWRD0 set, "ON - DISPLAY ONE OF THE TOTAL
+/* FDAIDSP2 -- p. 1022, the other pass of DACNDLS: "RESET FOR FDAIDSP1" (bit
+ * 4 of RCSFLAGS). With bit 9 of FLAGWRD0 set, "ON - DISPLAY ONE OF THE TOTAL
  * ATTITUDE ERRORS" (FDAITOTL); with it clear, "OFF -DISPLAY AUTOPILOT
  * FOLLOWING ERROR": AK, AK1 and AK2 the attitude errors ERRORX, ERRORY and
  * ERRORZ, negated. */
@@ -250,7 +251,7 @@ void fdaidsp2(void)
     fdaidsp2_ak();
 }
 
-/* FDAIDSP2 +011: DXCH AK, then AK2, and "END PHASE 1". */
+/* FDAIDSP2 +011 -- p. 1022: DXCH AK, then AK2, and "END PHASE 1". */
 void fdaidsp2_ak(void)
 {
     dxch(ADDRESS_OF(AK));
@@ -259,8 +260,8 @@ void fdaidsp2_ak(void)
     continue_at(RESUME);
 }
 
-/* FDAITOTL: "IS N22ORN17 (BIT6 OF FLAGWRD9) = 0", "IF SO, GO TO WRTN17";
- * "OTHERWISE, CONTINUE ON TO WRTN22". */
+/* FDAITOTL -- p. 1022: "IS N22ORN17 (BIT6 OF FLAGWRD9) = 0", "IF SO, GO TO
+ * WRTN17"; "OTHERWISE, CONTINUE ON TO WRTN22". */
 void fdaitotl(void)
 {
     ca(ADDRESS_OF(FLAGWRD9));
@@ -271,15 +272,15 @@ void fdaitotl(void)
         wrtn22();
 }
 
-/* WRTN22: "GET SET TO COMPUTE TOTAL ATTITUDE ERROR WRT N22 BY PICKING UP
- * THE THREE COMPONENTS OF N22": CTHETA and CPHI. */
+/* WRTN22 -- p. 1022: "GET SET TO COMPUTE TOTAL ATTITUDE ERROR WRT N22 BY
+ * PICKING UP THE THREE COMPONENTS OF N22": CTHETA and CPHI. */
 void wrtn22(void)
 {
     dca(ADDRESS_OF(CTHETA));
     wrtn22_wtemp();
 }
 
-/* WRTN22 +2: DXCH WTEMP; CA CPHI, and GETAKS. */
+/* WRTN22 +2 -- p. 1022: DXCH WTEMP; CA CPHI, and GETAKS. */
 void wrtn22_wtemp(void)
 {
     dxch(ADDRESS_OF(WTEMP));
@@ -287,7 +288,7 @@ void wrtn22_wtemp(void)
     getaks();
 }
 
-/* GETAKS: "COMPUTE TOTAL ATTITUDE ERROR FOR DISPLAY ON FDAI ERROR
+/* GETAKS -- p. 1022: "COMPUTE TOTAL ATTITUDE ERROR FOR DISPLAY ON FDAI ERROR
  * NEEDLES": the three desired gimbal angles (A, WTEMP and WTEMP +1) less
  * the CDU angles, each difference taken from gimbal to body axes by the
  * AMGB matrix's terms into AK, AK1 and AK2. */
@@ -312,7 +313,8 @@ void getaks(void)
     getaks_amgb5();
 }
 
-/* GETAKS +026: the Z difference's terms, and "END PHASE1 OF RCS DAP". */
+/* GETAKS +026 -- p. 1023: the Z difference's terms, and "END PHASE1 OF RCS
+ * DAP". */
 void getaks_amgb5(void)
 {
     mp_at(ADDRESS_OF(AMGB5));
@@ -323,9 +325,9 @@ void getaks_amgb5(void)
     continue_at(RESUME);
 }
 
-/* WRTN17: "GET SET TO COMPUTE TOTAL ASTRONAUT ATTITUDE ERROR WRT N17 BY
- * PICKING UP THE THREE COMPONENTS OF N17": CPHIX and the two words after
- * it. */
+/* WRTN17 -- p. 1023: "GET SET TO COMPUTE TOTAL ASTRONAUT ATTITUDE ERROR WRT
+ * N17 BY PICKING UP THE THREE COMPONENTS OF N17": CPHIX and the two words
+ * after it. */
 void wrtn17(void)
 {
     dca(ADDRESS_OF(CPHIX) + 1u);

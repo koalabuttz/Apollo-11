@@ -44,14 +44,6 @@
 
 #if LUMINARY099
 
-/* TC at, to a routine out of the file (or to a keyed label): Q gets the
- * return, and the routine runs next. */
-static inline void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* Part 1, P52 -- p52.c */
 void prog52(void);                /* PROG52 */
 void prog52_after_r02both(void);  /* PROG52 +2 (BANKCALL's return) */

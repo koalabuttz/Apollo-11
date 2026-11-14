@@ -13,8 +13,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static const word incorp1[] = {
     /* INCORP1 -- p. 1149 (CM p. 1252).
      * In: "DMENFLG = 0 (6-DIMENSIONAL BVECTOR), =1 (9-DIMENSIONAL)", "W =
@@ -472,18 +470,14 @@ static const word newzcmp1[] = {
     ADDRESS_AT(INCOR2, -3),
 };
 
-/* The bank of a fixed word's name (bank * 02000 plus its address in the
- * bank, as names.h has it). */
-#define BANK_OF(fixed) ((unsigned)((fixed) >> 10))
-
 const struct interpretive_code MEASUREMENT_INC_CODE[MEASUREMENT_INC_PARTS] = {
-    {BANK_OF(I_INCORP1), K_INCORP1, COUNT(incorp1), incorp1},
-    {BANK_OF(I_INCORP2), K_INCORP2, COUNT(incorp2), incorp2},
-    {BANK_OF(I_FAZA1), (word)(K_FAZA1 + 5u), COUNT(faza1_interpretive), faza1_interpretive},
-    {BANK_OF(I_FAZB1), (word)(K_FAZB1 + 7u), COUNT(fazb1_interpretive), fazb1_interpretive},
-    {BANK_OF(I_DOCSM), K_DOCSM, COUNT(docsm), docsm},
-    {BANK_OF(I_NEWZCOMP), K_NEWZCOMP, COUNT(newzcomp), newzcomp},
+    {BANK_OF(INCORP1), K_INCORP1, COUNT(incorp1), incorp1},
+    {BANK_OF(INCORP2), K_INCORP2, COUNT(incorp2), incorp2},
+    {BANK_OF(FAZA1), (word)(K_FAZA1 + 5u), COUNT(faza1_interpretive), faza1_interpretive},
+    {BANK_OF(FAZB1), (word)(K_FAZB1 + 7u), COUNT(fazb1_interpretive), fazb1_interpretive},
+    {BANK_OF(DOCSM), K_DOCSM, COUNT(docsm), docsm},
+    {BANK_OF(NEWZCOMP), K_NEWZCOMP, COUNT(newzcomp), newzcomp},
 #if COMANCHE055
-    {BANK_OF(I_NEWZCMP1), K_NEWZCMP1, COUNT(newzcmp1), newzcmp1},
+    {BANK_OF(NEWZCMP1), K_NEWZCMP1, COUNT(newzcmp1), newzcmp1},
 #endif
 };

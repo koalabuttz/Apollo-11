@@ -273,7 +273,7 @@ static const struct point {
     {KEY(BANK33, GCOMPVER), gcompver},
     {KEY(BANK33, GCOMPVER + 2u), gcompver_after_phaschng},
     {KEY(BANK33, SETNBPOS), setnbpos},
-    {KEY(BANK33, SETNBPOS + 1u), setnbpos_after_nbpospl},
+    {KEY(BANK33, SETNBPOS + 1u), setnbpos_plus1},
     {KEY(BANK33, OPTDATA), optdata},
     {KEY(BANK33, OPTDATA + 013u), optdata_after_godspret},
     {KEY(BANK33, OPTDATA + 016u), optdata_terminate},

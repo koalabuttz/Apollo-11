@@ -18,9 +18,9 @@
 
 static void endjets(void);
 
-/* T6SETUP: the branch indexes, 0 for roll, 4 for pitch, 11 for yaw; then
- * the first two on-times in order (DXCHT12 if BLAST1 is no longer than
- * BLAST: "T1 GR T2"). */
+/* T6SETUP -- p. 1059: the branch indexes, 0 for roll, 4 for pitch, 11 for
+ * yaw; then the first two on-times in order (DXCHT12 if BLAST1 is no longer
+ * than BLAST: "T1 GR T2"). */
 void t6setup(void)
 {
     set_A(ZERO);
@@ -38,8 +38,8 @@ void t6setup(void)
     checkt23();
 }
 
-/* CHECKT23: the second and third (DXCHT23 if BLAST2 is no longer than
- * BLAST1). */
+/* CHECKT23 -- p. 1059: the second and third (DXCHT23 if BLAST2 is no longer
+ * than BLAST1). */
 void checkt23(void)
 {
     cs(ADDRESS_OF(BLAST1));
@@ -51,7 +51,7 @@ void checkt23(void)
     calcdt6();
 }
 
-/* CALCDT6: in order, the on-times become the times between the T6
+/* CALCDT6 -- p. 1059: in order, the on-times become the times between the T6
  * interrupts: BLAST2 less BLAST1, at CALCDT6 +1. */
 void calcdt6(void)
 {
@@ -59,7 +59,8 @@ void calcdt6(void)
     continue_at(CALCDT6 + 1u);
 }
 
-/* CALCDT6 +1: BLAST2 less BLAST1, then BLAST1 less BLAST at CALCDT6 +3. */
+/* CALCDT6 +1 -- p. 1059: BLAST2 less BLAST1, then BLAST1 less BLAST at
+ * CALCDT6 +3. */
 void calcdt6_plus1(void)
 {
     ads(ADDRESS_OF(BLAST2));
@@ -67,8 +68,9 @@ void calcdt6_plus1(void)
     calcdt6_plus3();
 }
 
-/* CALCDT6 +3: BLAST1 less BLAST, "END OF SORTING PROCEDURE". "RESET T5LOC
- * TO BEGIN PHASE1" (RCS2CADR, the 2CADR of RCSATT), and ENDJETS. */
+/* CALCDT6 +3 -- p. 1059: BLAST1 less BLAST, "END OF SORTING PROCEDURE".
+ * "RESET T5LOC TO BEGIN PHASE1" (RCS2CADR, the 2CADR of RCSATT), and
+ * ENDJETS. */
 void calcdt6_plus3(void)
 {
     ads(ADDRESS_OF(BLAST1));
@@ -77,8 +79,9 @@ void calcdt6_plus3(void)
     endjets();
 }
 
-/* ENDJETS: "RESET BIT1 FOR INITIALIZATION OF T6 PROGRAM" (RCSFLAGS),
- * "RESET T5PHASE FOR PHASE1" (-0), and "RESUME INTERRUPTED PROGRAM". */
+/* ENDJETS -- p. 1059: "RESET BIT1 FOR INITIALIZATION OF T6 PROGRAM"
+ * (RCSFLAGS), "RESET T5PHASE FOR PHASE1" (-0), and "RESUME INTERRUPTED
+ * PROGRAM". */
 static void endjets(void)
 {
     set_A(negate(BIT1));
@@ -91,15 +94,15 @@ static void endjets(void)
 
 /* ---- The exchanges -- p. 1060 ---- */
 
-/* DXCHT12: BLAST and BLAST1 swapped (A,L as they were), on to CHECKT23.
- * The swap's second word is a key of its own. */
+/* DXCHT12 -- p. 1060: BLAST and BLAST1 swapped (A,L as they were), on to
+ * CHECKT23. The swap's second word is a key of its own. */
 void dxcht12(void)
 {
     dxch(ADDRESS_OF(BLAST));
     dxcht12_plus1();
 }
 
-/* DXCHT12 +1. */
+/* DXCHT12 +1 -- p. 1060. */
 void dxcht12_plus1(void)
 {
     dxch(ADDRESS_OF(BLAST1));
@@ -107,8 +110,8 @@ void dxcht12_plus1(void)
     continue_at(CHECKT23);
 }
 
-/* DXCHT23: BLAST1 and BLAST2 swapped; then BLAST and the new BLAST1 swapped
- * too if BLAST1 is no longer than BLAST; on to CALCDT6. */
+/* DXCHT23 -- p. 1060: BLAST1 and BLAST2 swapped; then BLAST and the new
+ * BLAST1 swapped too if BLAST1 is no longer than BLAST; on to CALCDT6. */
 void dxcht23(void)
 {
     dxch(ADDRESS_OF(BLAST1));

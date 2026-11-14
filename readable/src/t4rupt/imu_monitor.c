@@ -32,6 +32,8 @@
 static void nxtifbit(void);
 static void nxtifail(void);
 static void tnontest(void);
+static void tnontest_plus1(void);
+static void tnontest_plus2(void);
 static void proctnon(void);
 static void retnon(void);
 static void endtnon2(void);
@@ -146,8 +148,10 @@ static void nxtifail(void)
         nxtifbit();
         return;
     case IS_PLUS_ZERO: tnontest(); return;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); return; /* the changes left are never negative */
+    /* (never: the changes left are never negative) The CCS's last two words
+     * are TNONTEST's second and third. */
+    case NEGATIVE: tnontest_plus1(); return;
+    case IS_MINUS_ZERO: tnontest_plus2(); return;
     }
 }
 
@@ -159,7 +163,19 @@ static void nxtifail(void)
 static void tnontest(void)
 {
     cs(ADDRESS_OF(IMODES30));
+    tnontest_plus1();
+}
+
+/* TNONTEST +1 -- LM p. 164, CM p. 142: MASK BIT7. */
+static void tnontest_plus1(void)
+{
     mask(BIT7);
+    tnontest_plus2();
+}
+
+/* TNONTEST +2 -- LM p. 164, CM p. 142: the CCS, and on. */
+static void tnontest_plus2(void)
+{
     if (ccs_A_positive()) { /* "NO -- EXAMINE CHANNEL 33" */
         c33test();
         return;
@@ -200,8 +216,8 @@ static void proctnon(void)
     continue_at(ALARM);
 }
 
-/* PROCTNON +014 ("+3"), where ALARM returns: CAGESUB, and ENDTNON as a
- * task in 90 seconds. */
+/* PROCTNON +014 -- LM p. 164, CM p. 142 ("+3"), where ALARM returns:
+ * CAGESUB, and ENDTNON as a task in 90 seconds. */
 void proctnon_after_alarm(void)
 {
     tc_at((word)(PROCTNON + 014u)); /* TC CAGESUB */
@@ -211,7 +227,8 @@ void proctnon_after_alarm(void)
     continue_at(WAITLIST);
 }
 
-/* PROCTNON +021, where WAITLIST returns: TCF C33TEST. */
+/* PROCTNON +021 -- LM p. 164, CM p. 142, where WAITLIST returns: TCF
+ * C33TEST. */
 void proctnon_after_waitlist(void)
 {
     c33test();
@@ -285,8 +302,8 @@ void unz2(void)
     continue_at(ZEROICDU);
 }
 
-/* UNZ2 +1: "REMOVE ZERO AND COARSE", and "WAIT 10 SECS FOR CTRS TO FIND
- * GIMBALS" (VARDELAY, then ISSUP). */
+/* UNZ2 +1 -- LM p. 165, CM p. 143: "REMOVE ZERO AND COARSE", and "WAIT 10
+ * SECS FOR CTRS TO FIND GIMBALS" (VARDELAY, then ISSUP). */
 void unz2_after_zeroicdu(void)
 {
     set_A(negate(BITS4_5)); /* CS BITS4&5 */
@@ -376,8 +393,8 @@ static void isszero(void)
     continue_at(IBNKCALL);
 }
 
-/* ISSZERO +2: "ISS CDU ZERO" (channel 12 bit 5), and zero the counters
- * (ZEROICDU). */
+/* ISSZERO +2 -- LM p. 166, CM p. 144: "ISS CDU ZERO" (channel 12 bit 5), and
+ * zero the counters (ZEROICDU). */
 void isszero_after_noattoff(void)
 {
     set_A(BIT5);
@@ -386,8 +403,8 @@ void isszero_after_noattoff(void)
     continue_at(ZEROICDU);
 }
 
-/* ISSZERO +6: "WAIT 300 MS. FOR AGS TO RECEIVE SIGNAL", then UNZ2 as a
- * task. */
+/* ISSZERO +6 -- LM p. 166, CM p. 144: "WAIT 300 MS. FOR AGS TO RECEIVE
+ * SIGNAL", then UNZ2 as a task. */
 void isszero_after_zeroicdu(void)
 {
     set_A(BIT6);
@@ -395,7 +412,8 @@ void isszero_after_zeroicdu(void)
     continue_at(WAITLIST);
 }
 
-/* ISSZERO +012, where WAITLIST returns: TCF C33TEST. */
+/* ISSZERO +012 -- LM p. 166, CM p. 144, where WAITLIST returns: TCF
+ * C33TEST. */
 void isszero_after_waitlist(void)
 {
     c33test();
@@ -472,8 +490,10 @@ static void nxtfl33(void)
         nxtibt();
         return;
     case IS_PLUS_ZERO: glockmon(); return;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); return; /* the changes left are never negative */
+    /* (never: the changes left are never negative) The CCS's last two words
+     * are GLOCKMON's first two TCFs. */
+    case NEGATIVE: glockchk(); return;      /* TCF GLOCKCHK */
+    case IS_MINUS_ZERO: setglock(); return; /* TCF SETGLOCK */
     }
 }
 
@@ -488,10 +508,10 @@ static void nxtfl33(void)
 static void glockmon(void)
 {
     switch (ccs_at(ADDRESS_OF(CDUZ))) {
-    case POSITIVE:
-    case NEGATIVE: glockchk(); return;
-    case IS_PLUS_ZERO:
-    case IS_MINUS_ZERO: setglock(); return;
+    case POSITIVE: glockchk(); return;      /* TCF GLOCKCHK */
+    case IS_PLUS_ZERO: setglock(); return;  /* TCF SETGLOCK */
+    case NEGATIVE: glockchk(); return;      /* TCF GLOCKCHK */
+    case IS_MINUS_ZERO: setglock(); return; /* TCF SETGLOCK */
     }
 }
 
@@ -523,8 +543,8 @@ static void glockchk(void)
     continue_at(IBNKCALL);
 }
 
-/* GLOCKCHK +015, where SETCOARS returns: "ENABLE ISS ERROR COUNTERS IN 60
- * MS" (WAITLIST, CA+ECE). */
+/* GLOCKCHK +015 -- LM p. 169, CM p. 147, where SETCOARS returns: "ENABLE ISS
+ * ERROR COUNTERS IN 60 MS" (WAITLIST, CA+ECE). */
 void glockchk_after_setcoars(void)
 {
     set_A(SIX);
@@ -660,7 +680,8 @@ static void iturnon(void)
     continue_at(ALARM);
 }
 
-/* ITURNON +022, where ALARM returns: TCF NXTIFAIL. */
+/* ITURNON +022 -- LM p. 172, CM p. 150, where ALARM returns: TCF
+ * NXTIFAIL. */
 void iturnon_after_alarm(void)
 {
     nxtifail();
@@ -746,8 +767,9 @@ static void imuop(void)
     continue_at(IBNKCALL);
 }
 
-/* IMUOP +7, where RNDREFDR returns: "KNOCK DOWN RENDEZVOUS, IMUUSE FLAGS",
- * and "IF GOING OFF, ALARM IF PROG USING IMU" (214). */
+/* IMUOP +7 -- LM p. 176, CM p. 154, where RNDREFDR returns: "KNOCK DOWN
+ * RENDEZVOUS, IMUUSE FLAGS", and "IF GOING OFF, ALARM IF PROG USING IMU"
+ * (214). */
 void imuop_after_rndrefdr(void)
 {
     set_A(negate(BITS7_8)); /* CS BITS7&8 */
@@ -768,7 +790,7 @@ void imuop_after_rndrefdr(void)
     continue_at(ALARM);
 }
 
-/* IMUOP +020, where ALARM returns: TCF NXTIFAIL. */
+/* IMUOP +020 -- LM p. 176, CM p. 154, where ALARM returns: TCF NXTIFAIL. */
 void imuop_after_alarm(void)
 {
     nxtifail();
@@ -824,7 +846,7 @@ static void pipfail_after_setissw(void)
     continue_at(ALARM);
 }
 
-/* PIPFAIL +020, where ALARM returns: TCF NXTFL33. */
+/* PIPFAIL +020 -- LM p. 177, CM p. 155, where ALARM returns: TCF NXTFL33. */
 void pipfail_after_alarm(void)
 {
     nxtfl33();
@@ -842,7 +864,7 @@ static void dntmfast(void)
     continue_at(ALARM);
 }
 
-/* DNTMFAST +4, where ALARM returns: TCF NXTFL33. */
+/* DNTMFAST +4 -- LM p. 178, CM p. 156, where ALARM returns: TCF NXTFL33. */
 void dntmfast_after_alarm(void)
 {
     nxtfl33();
@@ -860,7 +882,7 @@ static void uptmfast(void)
     continue_at(ALARM);
 }
 
-/* UPTMFAST +4, where ALARM returns: TCF NXTFL33. */
+/* UPTMFAST +4 -- LM p. 178, CM p. 156, where ALARM returns: TCF NXTFL33. */
 void uptmfast_after_alarm(void)
 {
     nxtfl33();
@@ -911,8 +933,9 @@ static void isswon(void)
     continue_at(VARALARM);
 }
 
-/* ISSWON +3, where VARALARM returns: the lamp on, and back to SETISSW's
- * caller (TC ITEMP6), going on there if it is in this file. */
+/* ISSWON +3 -- LM p. 180, CM p. 158, where VARALARM returns: the lamp on,
+ * and back to SETISSW's caller (TC ITEMP6), going on there if it is in this
+ * file. */
 void isswon_after_varalarm(void)
 {
     set_A(BIT1);

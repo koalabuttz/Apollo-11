@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: MIT */
-/* CONIC_SUBROUTINES.agc, KEPLER: KEPLERN to KEPCONVG (LM pp. 1174-1179,
- * CM pp. 1277-1282), interpretive code in the listing's notation
- * (src/interpreter/notation.h), which the readable interpreter runs.
+/* CONIC_SUBROUTINES.agc, KEPLER: KEPLERN to KEPCONVG (LM pp. 1174-1179, CM
+ * pp. 1277-1282), interpretive code in the listing's notation
+ * (src/interpreter/notation.h), which the readable interpreter runs. The
+ * faithful C is c64-port/src/lm_conic_compiled.c (with lm_conic_checkctr.c)
+ * and cm_conics.c.
  *
  * "GIVEN AN INITIAL STATE VECTOR AND THE DESIRED TRANSFER TIME THROUGH
  * WHICH THE STATE IS TO BE UPDATED ALONG A CONIC TRAJECTORY, COMPUTES THE

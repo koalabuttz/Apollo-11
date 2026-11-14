@@ -1,16 +1,10 @@
 /* SPDX-License-Identifier: MIT */
 /* Q_R-AXIS_RCS_AUTOPILOT.agc, the LM's: Luminary099 pages 1442-1459, bank
- * 17, in EBANK 6 (the listing's EBANK= CDUXD); MAKERUPT in fixed-fixed. */
+ * 17, in EBANK 6 (the listing's EBANK= CDUXD); MAKERUPT in fixed-fixed. The
+ * faithful C is c64-port/src/lm_q_r_axis.c. */
 #include "q_r_axis.h"
 
 #if LUMINARY099
-
-/* TC at at, to a routine out of this run: Q the word after. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
 
 /* RETURN: TC Q. */
 static void tc_q(void)
@@ -21,14 +15,19 @@ static void tc_q(void)
 /* CCS of a word that is never negative here (a MASK of a positive
  * constant or of a channel bit, POLYTEMP, NUMBERT counting down): whether
  * it was positive (A then one less). Its negative and -0 exits are never
- * taken. */
+ * taken. This one helper stands for that CCS at each place it is used, so
+ * it cannot follow the two: what the listing would run differs with the
+ * place. (make style-check holds each place's mask to a clear sign bit, and
+ * lists the three places with no constant mask: tools/ccs_helpers.py.) */
 static bool ccs_positive(unsigned address)
 {
     switch (ccs_at(address)) {
     case POSITIVE: return true;
     case IS_PLUS_ZERO: return false;
-    default: not_modelled(); return false;
+    case NEGATIVE:
+    case IS_MINUS_ZERO: not_modelled(); /* never; what would run differs with the place */
     }
+    return false;
 }
 
 /* AXISCTR: "0,1 FOR U,V", what INDEX AXISCTR adds. */
@@ -68,9 +67,10 @@ static void feedback(void);
 
 /* ---- CALLQERR -- LM p. 1442 ---- */
 
-/* CALLQERR: "CALCULATE Q,R ERRORS UNLESS THESE AXES" "ARE IN MANUAL RATE
- * COMMAND." (bit 13 of channel 31 is 1 in auto; in manual, OURRCBIT of
- * DAPBOOLS 0 is rate command: "IF SO BYPASS CALCULATION OF ERRORS."). */
+/* CALLQERR -- LM p. 1442: "CALCULATE Q,R ERRORS UNLESS THESE AXES" "ARE IN
+ * MANUAL RATE COMMAND." (bit 13 of channel 31 is 1 in auto; in manual,
+ * OURRCBIT of DAPBOOLS 0 is rate command: "IF SO BYPASS CALCULATION OF
+ * ERRORS."). */
 void callqerr(void)
 {
     bool errors = true;
@@ -89,10 +89,10 @@ void callqerr(void)
     q_rorgts();
 }
 
-/* Q,RORGTS: "CHOOSE CONTROL SYSTEM FOR THIS DAP PASS:" by COTROLER:
- * positive the trim gimbal ("GTS (ALTERNATES WITH RCS WHEN DOCKED)"), +0
- * TRYGTS ("GTS IF ALLOWED, OTHERWISE RCS"), negative RCS (-0: RCS +1, A
- * +0). */
+/* Q,RORGTS -- LM p. 1442: "CHOOSE CONTROL SYSTEM FOR THIS DAP PASS:" by
+ * COTROLER: positive the trim gimbal ("GTS (ALTERNATES WITH RCS WHEN
+ * DOCKED)"), +0 TRYGTS ("GTS IF ALLOWED, OTHERWISE RCS"), negative RCS (-0:
+ * RCS +1, A +0). */
 static void q_rorgts(void)
 {
     switch (ccs_at(ADDRESS_OF(COTROLER))) {
@@ -107,19 +107,19 @@ static void q_rorgts(void)
     }
 }
 
-/* RCS: COTROLER +0, then the rate differences EDOTQ, EDOTR turned to the
- * U,V axes, OMEGAU, OMEGAV. */
+/* RCS -- LM p. 1442: COTROLER +0, then the rate differences EDOTQ, EDOTR
+ * turned to the U,V axes, OMEGAU, OMEGAV. */
 void rcs(void)
 {
     set_A(ZERO);
     rcs_plus1();
 }
 
-/* RCS +1, then SENSEGET: "X - TRANSLATION". The hand controller's bits 7
- * and 8 of channel 31 (0: +X or -X asked) "OVERRIDE THE INTERNAL BITS"
- * (ULLAGER of DAPBOOLS, ullage asked by the program). With none, "STORE
- * NULL TRANSLATION POLICIES" and SENSETYP, the jets to favor: +0, or two
- * ("FAVOR +X JETS DURING AN APS BURN."). */
+/* RCS +1 -- LM p. 1442, then SENSEGET: "X - TRANSLATION". The hand
+ * controller's bits 7 and 8 of channel 31 (0: +X or -X asked) "OVERRIDE THE
+ * INTERNAL BITS" (ULLAGER of DAPBOOLS, ullage asked by the program). With
+ * none, "STORE NULL TRANSLATION POLICIES" and SENSETYP, the jets to favor:
+ * +0, or two ("FAVOR +X JETS DURING AN APS BURN."). */
 void rcs_plus1(void)
 {
     ts(ADDRESS_OF(COTROLER));
@@ -215,10 +215,10 @@ void senseget_after_alarm(void)
 
 /* ---- The control mode -- LM pp. 1444-1446 ---- */
 
-/* QRCONTRL: "Q,R-AXES RCS CONTROL MODE SELECTION": bit 13 of channel 31
- * ("BITS INVERTED") 1 is auto, to ATTSTEER; else PULSES of DAPBOOLS
- * "MINIMUM IMPULSE MODE", or CHEKSTIK: "RATE COMMAND/ATTITUDE HOLD MODE".
- * The minimum impulse mode zeroes the attitude errors first (IBNKCALL
+/* QRCONTRL -- LM p. 1444: "Q,R-AXES RCS CONTROL MODE SELECTION": bit 13 of
+ * channel 31 ("BITS INVERTED") 1 is auto, to ATTSTEER; else PULSES of
+ * DAPBOOLS "MINIMUM IMPULSE MODE", or CHEKSTIK: "RATE COMMAND/ATTITUDE HOLD
+ * MODE". The minimum impulse mode zeroes the attitude errors first (IBNKCALL
  * ZATTEROR, in P-AXIS). */
 void qrcontrl(void)
 {
@@ -307,8 +307,8 @@ void qrcontrl_after_zatteror(void)
     continue_at(XTRANS);
 }
 
-/* MINRTN, with the axis in A: "IF DOCKED, USE 60MS MINIMUM IMPULSE". Then
- * MIMRET: NUMBERT the A or B pair, and AFTERTJ. */
+/* MINRTN -- LM p. 1445, with the axis in A: "IF DOCKED, USE 60MS MINIMUM
+ * IMPULSE". Then MIMRET: NUMBERT the A or B pair, and AFTERTJ. */
 void minrtn(void)
 {
     ts(ADDRESS_OF(AXISCTR));
@@ -318,8 +318,8 @@ void minrtn(void)
         unsigned tju = indexed(ADDRESS_OF(TJU), axis());
         switch (ccs_at(tju)) {
         case POSITIVE: set_A(K60MS); break;
+        case IS_PLUS_ZERO: break; /* TS TJU of +0 */
         case NEGATIVE: set_A(negate(K60MS)); break;
-        case IS_PLUS_ZERO:
         case IS_MINUS_ZERO: break; /* TS TJU of +0 */
         }
         ts(tju);
@@ -367,15 +367,15 @@ static bool breaks_out(unsigned change, word at)
     return !A_is_zero_or_minus();
 }
 
-/* CHEKSTIK: "RATE COMMAND MODE:" "NOT IN GTS WHEN IN ATT HOLD", and
- * COTROLER -1: "COME BACK TO RCS NEXT TIME". In detent (bit 15 of
+/* CHEKSTIK -- LM p. 1446: "RATE COMMAND MODE:" "NOT IN GTS WHEN IN ATT
+ * HOLD", and COTROLER -1: "COME BACK TO RCS NEXT TIME". In detent (bit 15 of
  * CH31TEMP 1): if the last pass was not manual rate command, STILLRCS,
  * attitude hold; else "BIT 9 IS 0." and DAMPING, no deflection. Out of
  * detent (RHCACTIV) or damping: the commanded Q and R rates, the rate
- * differences (OMEGAQ, OMEGAR less the commands) turned to U,V. A change
- * of command past the breakout level is direct rate control (ENTERUV -2,
- * TCQR 40CYCL: 4 seconds); else direct rate continues if it ran last time
- * (QRBIT of RCSFLAGS), or "PSEUDO-AUTO CONTROL." by STILLRCS. */
+ * differences (OMEGAQ, OMEGAR less the commands) turned to U,V. A change of
+ * command past the breakout level is direct rate control (ENTERUV -2, TCQR
+ * 40CYCL: 4 seconds); else direct rate continues if it ran last time (QRBIT
+ * of RCSFLAGS), or "PSEUDO-AUTO CONTROL." by STILLRCS. */
 void chekstik(void)
 {
     bool at_ccs;
@@ -426,8 +426,8 @@ void chekstik(void)
     enteruv(); /* "CONTINUE DIRECT RATE CONTROL." */
 }
 
-/* ENTERUV: "DIRECT RATE CONTROL": the attitude errors zeroed (IBNKCALL
- * ZATTEROR). */
+/* ENTERUV -- LM p. 1448: "DIRECT RATE CONTROL": the attitude errors zeroed
+ * (IBNKCALL ZATTEROR). */
 static void enteruv(void)
 {
     inhint();
@@ -502,13 +502,13 @@ void enteruv_after_zatteror(void)
     continue_at(BACKHAND);
 }
 
-/* BACKHAND, with the axis in A: NUMBERT four (two jets), the axis
- * skipped or not; then the jet time for the rate difference: URATEDIF
- * times 1/ANET2 of the axis and its sign (the inverse acceleration two
- * jets give, with the offset acceleration: AXISDIFF of TJET_LAW finds the
- * V axis' words), doubled with Q, pinned on an overflow ("RIGHT SIGN AND
- * BIGGER THAN 150MS"). SETTIME: "SCALED AT 10.67 WHICH IS CLOSE TO
- * 10.24", in TJU or TJV. Then AFTERTJ. */
+/* BACKHAND -- LM p. 1449, with the axis in A: NUMBERT four (two jets), the
+ * axis skipped or not; then the jet time for the rate difference: URATEDIF
+ * times 1/ANET2 of the axis and its sign (the inverse acceleration two jets
+ * give, with the offset acceleration: AXISDIFF of TJET_LAW finds the V axis'
+ * words), doubled with Q, pinned on an overflow ("RIGHT SIGN AND BIGGER THAN
+ * 150MS"). SETTIME: "SCALED AT 10.67 WHICH IS CLOSE TO 10.24", in TJU or
+ * TJV. Then AFTERTJ. */
 void backhand(void)
 {
     word u;
@@ -520,8 +520,8 @@ void backhand(void)
     u = axis();
     switch (ccs_at(indexed(ADDRESS_OF(URATEDIF), u))) {
     case POSITIVE: set_A(ZERO); break;
+    case IS_PLUS_ZERO: break; /* A +0 */
     case NEGATIVE: set_A(ONE); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break; /* A +0 */
     }
     ad_at(indexed(AXISDIFF, u));
@@ -537,7 +537,8 @@ void backhand(void)
 
 /* ---- The trim gimbal or the jets -- LM pp. 1449-1450 ---- */
 
-/* TRYGTS: "GTS WILL BE TRIED IF" "USEQRJTS = 0," "ALLOWGTS POS," "JETS
+/* TRYGTS -- LM p. 1449: "GTS WILL BE TRIED IF" "USEQRJTS = 0," "ALLOWGTS
+ * POS," "JETS
  * ARE OFF (Q,R-AXES)" (channel 5 +0); else RCS. GOTOGTS: by DTCB to GTS,
  * in bank 21. While INGTS: "YES.  SET UP A DAMPED NULLING DRIVE.",
  * TIMEGMBL; "NO.  NULLING WAS SET UP BEFORE.  DO RCS." */
@@ -550,9 +551,14 @@ void trygts(void)
         return;
     }
     switch (ccs_at(ADDRESS_OF(ALLOWGTS))) { /* "DOES AOSTASK OK CONTROL FOR GTS?" */
+    case POSITIVE: break;                   /* TCF +2 */
     case IS_PLUS_ZERO: continue_at(RCS); return;
-    case IS_MINUS_ZERO: not_modelled(); return; /* READ CHAN5 without its EXTEND */
-    default: break;
+    case NEGATIVE: break;
+    case IS_MINUS_ZERO: /* the READ CHAN5, not extended, is TC 5: the word in Z would run next */
+        /* (never: the program stores +0 or ONE in ALLOWGTS) */
+        tc_at(TRYGTS + 010u);
+        not_modelled();
+        return;
     }
     read_channel(CHAN5);
     switch (ccs_register(A_ADDRESS)) { /* eight jet bits: never negative */
@@ -562,12 +568,19 @@ void trygts(void)
         set_A(GTSCADR[0]);
         dtcb(GOTOGTS + 2u);
         return;
-    default: not_modelled(); return;
+    /* (never. Negative would skip GOTOGTS's EXTEND: its DCA GTSCADR is then CA of the
+     * 2CADR's second word. And -0 the DCA too.) */
+    case NEGATIVE:
+        set_A(GTSCADR[1]);
+        dtcb(GOTOGTS + 2u);
+        return;
+    case IS_MINUS_ZERO: /* never */ dtcb(GOTOGTS + 2u); return;
     }
     switch (ccs_at(ADDRESS_OF(INGTS))) { /* CHKINGTS */
+    case POSITIVE: inhint(); break;      /* TCF +2 */
     case IS_PLUS_ZERO: continue_at(RCS); return;
+    case NEGATIVE: inhint(); break;
     case IS_MINUS_ZERO: break; /* to TC IBNKCALL, with no INHINT */
-    default: inhint(); break;
     }
     tc_to(CHKINGTS + 4u, IBNKCALL); /* CADR TIMEGMBL */
 }
@@ -583,10 +596,10 @@ void chkingts_after_timegmbl(void)
 
 /* ---- QERRCALC -- LM p. 1451 ---- */
 
-/* QERRCALC: "SUBROUTINE TO COMPUTE Q,R-AXES ATTITUDE ERRORS FOR USE IN
- * THE RCS AND GTS CONTROL LAWS AND THE DISPLAYS." The Y and Z CDU errors
- * ("CDU ANGLE -- ANGLE DESIRED (Y-AXIS)") through M21, M22 and M31, M32,
- * plus DELQEROR and DELREROR, "KALCMANU INERFACE ERROR", to QERROR and
+/* QERRCALC -- LM p. 1451: "SUBROUTINE TO COMPUTE Q,R-AXES ATTITUDE ERRORS
+ * FOR USE IN THE RCS AND GTS CONTROL LAWS AND THE DISPLAYS." The Y and Z CDU
+ * errors ("CDU ANGLE -- ANGLE DESIRED (Y-AXIS)") through M21, M22 and M31,
+ * M32, plus DELQEROR and DELREROR, "KALCMANU INERFACE ERROR", to QERROR and
  * RERROR: "SAVE Q-ERROR FOR EIGHT-BALL DISPLAY." */
 void qerrcalc(void)
 {
@@ -616,7 +629,8 @@ void qerrcalc(void)
 
 /* ---- ATTSTEER and TJLAW -- LM p. 1452 ---- */
 
-/* STILLRCS, which ATTSTEER equals: ATTSTEER "IS THE ENTRY POINT FOR
+/* STILLRCS -- LM p. 1452, which ATTSTEER equals: ATTSTEER "IS THE ENTRY
+ * POINT FOR
  * Q,R-AXES (U,V-AXES) ATTITUDE CONTROL USING THE REACTION CONTROL SYSTEM".
  * The Q,R errors turned to
  * UERROR and VERROR; then TJLAW for the V axis, RETJADR back to TJLAW +3
@@ -635,7 +649,7 @@ void stillrcs(void)
     tjlaw_plus3();
 }
 
-/* TJLAW +3, with the axis in A: "PREPARES CALL TO TJETLAW (OR
+/* TJLAW +3 -- LM p. 1452, with the axis in A: "PREPARES CALL TO TJETLAW (OR
  * SPSRCS(DOCKED))", the axis' error in E and rate in EDOT. Docked, "IF
  * GIMBAL USABLE DO GTS CONTROL" "ON THE NEXT PASS." ("GIMBAL USABLE.
  * STORE POSITIVE VALUE.") and SPSRCS: "DETERMINE RCS CONTROL". */
@@ -681,8 +695,8 @@ void tjlaw_after_spsrcs(void)
 
 /* ---- Q,R-JET-SELECTION-LOGIC -- LM pp. 1452-1455 ---- */
 
-/* AFTERTJ: "IF SNUFFBIT SET DURING A DPS BURN GO TO" "XTRANS; THAT IS,
- * INHIBIT CONTROL.", and so in drifting flight (DRIFTBIT 0); else
+/* AFTERTJ -- LM p. 1453: "IF SNUFFBIT SET DURING A DPS BURN GO TO" "XTRANS;
+ * THAT IS, INHIBIT CONTROL.", and so in drifting flight (DRIFTBIT 0); else
  * DOROTAT. */
 static void aftertj(void)
 {
@@ -709,8 +723,8 @@ static void aftertj(void)
     ts(L_ADDRESS);
     switch (ccs_at(indexed(ADDRESS_OF(TJU), axis()))) {
     case POSITIVE: break; /* TCF +5 */
+    case IS_PLUS_ZERO: norotat(); return;
     case NEGATIVE: zl(); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: norotat(); return;
     }
     ad(ONE);
@@ -739,7 +753,8 @@ void dorotat_after_writep(void)
     feedback();
 }
 
-/* NOROTAT: the axis' jets off (WRITEP -1, indexed by INDEXES). */
+/* NOROTAT -- LM p. 1454: the axis' jets off (WRITEP -1, indexed by
+ * INDEXES). */
 static void norotat(void)
 {
     ca(indexed(INDEXES, axis()));
@@ -754,10 +769,10 @@ void norotat_after_writep(void)
     continue_at(LOOPER);
 }
 
-/* LOOPER: AXISCTR 1 (the V axis done) back by TC RETJADR to the U axis,
- * AXISCTR +0; +0, the pass is done: CLOSEOUT. (Its negative and -0 exits
- * enter DOSKIP and DOSKIP +1.) RETJADR holds GENADR MINRTN, BACKHAND or
- * TJLAW +3, which runs as TC to it. */
+/* LOOPER -- LM p. 1454: AXISCTR 1 (the V axis done) back by TC RETJADR to
+ * the U axis, AXISCTR +0; +0, the pass is done: CLOSEOUT. (Its negative and
+ * -0 exits enter DOSKIP and DOSKIP +1.) RETJADR holds GENADR MINRTN,
+ * BACKHAND or TJLAW +3, which runs as TC to it. */
 void looper(void)
 {
     word to;
@@ -774,19 +789,20 @@ void looper(void)
     tc_through(ADDRESS_OF(RETJADR));
 }
 
-/* DOSKIP: a time under 150 ms. At 14 ms (+TJMINT6) or more, NOTMIN;
- * under it, ABSTJ and the axis' time made 14 ms ("TIMES LESS THAN 14 MSEC
- * ARE TAKEN TO CALL FOR A SINGLE-JET" "MINIMUM IMPULSE, WITH THE JET
- * CHOSEN SEMI-RANDOMLY.": the low bit of LOSCALAR picks NUMBERT 0 or 1,
- * -X or +X), but with a translation's SENSETYP the jet that helps it:
- * "ENSURE MIN-IMPULSE NOT AGAINST TRANS". */
+/* DOSKIP -- LM p. 1454: a time under 150 ms. At 14 ms (+TJMINT6) or more,
+ * NOTMIN; under it, ABSTJ and the axis' time made 14 ms ("TIMES LESS THAN 14
+ * MSEC ARE TAKEN TO CALL FOR A SINGLE-JET" "MINIMUM IMPULSE, WITH THE JET
+ * CHOSEN SEMI-RANDOMLY.": the low bit of LOSCALAR picks NUMBERT 0 or 1, -X
+ * or +X), but with a translation's SENSETYP the jet that helps it: "ENSURE
+ * MIN-IMPULSE NOT AGAINST TRANS". */
 void doskip(void)
 {
     cs(ADDRESS_OF(ABSTJ));
     doskip_plus1();
 }
 
-/* NOTMIN: SELCTSUB's jets to WRITEP, then JTLST: off again after ABSTJ. */
+/* NOTMIN -- LM p. 1454: SELCTSUB's jets to WRITEP, then JTLST: off again
+ * after ABSTJ. */
 static void notmin(void)
 {
     if (!selctsub(NOTMIN)) return;
@@ -810,8 +826,8 @@ void doskip_plus1(void)
     tju = indexed(ADDRESS_OF(TJU), axis());
     switch (ccs_at(tju)) {
     case POSITIVE: set_A(TJMINT6); break;
+    case IS_PLUS_ZERO: break; /* TS TJU of +0 */
     case NEGATIVE: set_A(negate(TJMINT6)); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break; /* TS TJU of +0 */
     }
     ts(tju);
@@ -845,8 +861,8 @@ void notmin_after_writep(void)
     feedback();
 }
 
-/* FEEDBACK: NO.UJETS or NO.VJETS for the "RATE DERIVATION FEEDBACK": ONE
- * for NUMBERT three or less, else TWO. Then LOOPER. */
+/* FEEDBACK -- LM p. 1455: NO.UJETS or NO.VJETS for the "RATE DERIVATION
+ * FEEDBACK": ONE for NUMBERT three or less, else TWO. Then LOOPER. */
 static void feedback(void)
 {
     set_A(negate(THREE));
@@ -856,9 +872,9 @@ static void feedback(void)
     continue_at(LOOPER);
 }
 
-/* XTRANS: no rotation: TJU and TJV +0; SKIPU and SKIPV made 4, and for
- * each that was not +0 the axis' jets written by WRITEU -1 or WRITEV -1.
- * Then CLOSEOUT. */
+/* XTRANS -- LM p. 1455: no rotation: TJU and TJV +0; SKIPU and SKIPV made 4,
+ * and for each that was not +0 the axis' jets written by WRITEU -1 or WRITEV
+ * -1. Then CLOSEOUT. */
 void xtrans(void)
 {
     set_A(ZERO);
@@ -897,13 +913,13 @@ void xtrans_after_writev(void)
 
 /* ---- JTLST and ROT-TOUV -- LM pp. 1456-1457 ---- */
 
-/* JTLST: "THE JET LIST:" "THIS IS A WAITLIST FOR T6RUPTS." "THE LIST IS
- * EXACTLY 3 LONG." The new time, T6FURTHA, and the axis to write then,
- * T6FURTHA +1: before the next T6RUPT (TIME6), it goes first and the
- * rest move down, T6 on (TURNON: bit 15 of channel 13); else before the
- * second (MIDORLST), second; else last (LASTCHG), its time less the
- * others'. (An overflow there skips the TC Q into ROT-TOUV, which returns
- * through the same Q.) */
+/* JTLST -- LM p. 1456: "THE JET LIST:" "THIS IS A WAITLIST FOR T6RUPTS."
+ * "THE LIST IS EXACTLY 3 LONG." The new time, T6FURTHA, and the axis to
+ * write then, T6FURTHA +1: before the next T6RUPT (TIME6), it goes first and
+ * the rest move down, T6 on (TURNON: bit 15 of channel 13); else before the
+ * second (MIDORLST), second; else last (LASTCHG), its time less the others'.
+ * (An overflow there skips the TC Q into ROT-TOUV, which returns through the
+ * same Q.) */
 void jtlst(void)
 {
     cs(ADDRESS_OF(T6FURTHA));
@@ -937,10 +953,10 @@ void jtlst(void)
     tc_q();
 }
 
-/* ROT-TOUV: "ROT-TOUV IS ENTERED WITH THE Q-COMPONENT OF THE QUANTITY TO
- * BE TRANSFORMED IN A AND THE R-COMPONENT IN L." "IN THE U-V SYSTEM NO
- * CROSS-COUPLING IS" "PRODUCED FROM RCS JET FIRINGS." The U component,
- * COEFFQ.(Q) + COEFFR.(R), to A; the V component, -COEFFQ.(Q) +
+/* ROT-TOUV -- LM p. 1457: "ROT-TOUV IS ENTERED WITH THE Q-COMPONENT OF THE
+ * QUANTITY TO BE TRANSFORMED IN A AND THE R-COMPONENT IN L." "IN THE U-V
+ * SYSTEM NO CROSS-COUPLING IS" "PRODUCED FROM RCS JET FIRINGS." The U
+ * component, COEFFQ.(Q) + COEFFR.(R), to A; the V component, -COEFFQ.(Q) +
  * COEFFR.(R), to L; each, overflowed, "LIMITED TO POSMAX OR NEGMAX" (an
  * overflowed sum's A, +1 or -1, INDEXes LIMITS -1 or +1, complemented). */
 void rot_touv(void)
@@ -975,11 +991,11 @@ static void policy(void)
     mask_at(ADDRESS_OF(CH5MASK));
 }
 
-/* SELCTSUB, by TC at at: the policy NUMBERT asks, if none of its jets for
- * the rotation has failed; else (FAILOOP) the first such from three down:
- * "JETS OF THE DESIRED POLICY ARE SELECTED." "THE ALARM IS SENT" "IF NONE
- * CAN BE FOUND." (the axis' time +0; TC ALARM, OCT 02004). Returns false
- * at the alarm. */
+/* SELCTSUB -- LM p. 1457, by TC at at: the policy NUMBERT asks, if none of
+ * its jets for the rotation has failed; else (FAILOOP) the first such from
+ * three down: "JETS OF THE DESIRED POLICY ARE SELECTED." "THE ALARM IS SENT"
+ * "IF NONE CAN BE FOUND." (the axis' time +0; TC ALARM, OCT 02004). Returns
+ * false at the alarm. */
 static bool selctsub(word at)
 {
     tc_at(at);
@@ -1009,14 +1025,14 @@ void selctsub_after_alarm(void)
 
 /* ---- CLOSEOUT -- LM p. 1458 ---- */
 
-/* CLOSEOUT: "THE FOLLOWING SETS THE INTERRUPT FLIP-FLOP AS SOON AS
- * POSSIBLE, WHICH PERMITS A RETURN TO THE INTERRUPTED JOB." MAKERUPT:
- * EXTEND; EDRUPT MAKERUPT, an interrupt by program: ZRUPT the word after
- * it, BRUPT the instruction itself, interrupt in progress, and on at
- * address 0: A, ADRRUPT, runs as TC ENDJASK. ENDJASK: the job's A, L, B,
- * Q (from DAPARUPT, DAPBQRPT) back in the interrupt registers, and
- * DAPZRUPT NEGMAX: "NEGATIVE DAPZRUPT SIGNALS JASK IS OVER."; ZRUPT the
- * job's Z. Then NOQRSM resumes it. */
+/* CLOSEOUT -- LM p. 1458: "THE FOLLOWING SETS THE INTERRUPT FLIP-FLOP AS
+ * SOON AS POSSIBLE, WHICH PERMITS A RETURN TO THE INTERRUPTED JOB."
+ * MAKERUPT: EXTEND; EDRUPT MAKERUPT, an interrupt by program: ZRUPT the word
+ * after it, BRUPT the instruction itself, interrupt in progress, and on at
+ * address 0: A, ADRRUPT, runs as TC ENDJASK. ENDJASK: the job's A, L, B, Q
+ * (from DAPARUPT, DAPBQRPT) back in the interrupt registers, and DAPZRUPT
+ * NEGMAX: "NEGATIVE DAPZRUPT SIGNALS JASK IS OVER."; ZRUPT the job's Z. Then
+ * NOQRSM resumes it. */
 void closeout(void)
 {
     set_A(ADRRUPT);

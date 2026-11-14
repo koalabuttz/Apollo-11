@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* IMU_MODE_SWITCHING_ROUTINES.agc, part 2: torquing the gyros (LM pages
- * 1319-1326, CM pages 1430-1437).
+ * 1319-1326, CM pages 1430-1437). The faithful C is
+ * c64-port/src/imu_mode_switching.c.
  *
  * "THE FOLLOWING ROUTINE TORQUES THE IRIGS ACCORDING TO DOUBLE PRECISION
  * INPUTS IN THE SIX REGISTERS BEGINNING AT THE ECADR ARRIVING IN A." The
@@ -73,7 +74,7 @@ static void gyroagre(void)
     continue_at(TPAGREE);
 }
 
-/* GWAKE2 +3, where WAITLIST returns.
+/* GWAKE2 +3 -- LM p. 1319, CM p. 1430, where WAITLIST returns.
  * "SET UP EBANK, SAVING CALLER'S EBANK FOR RESTORATION ON RETURN." The
  * ECADR to LGYRO ("RESERVES GYROS."), its low eight bits to ITEMP1. */
 void gwake2_after_waitlist(void)
@@ -88,8 +89,9 @@ void gwake2_after_waitlist(void)
     gyroagre();
 }
 
-/* GYROAGRE +011, where TPAGREE returns: the command back, the next gyro,
- * and at the end "RESTORE CALLER'S EBANK." and MODEEXIT. */
+/* GYROAGRE +011 -- LM p. 1319, CM p. 1430, where TPAGREE returns: the
+ * command back, the next gyro, and at the end "RESTORE CALLER'S EBANK." and
+ * MODEEXIT. */
 void gyroagre_after_tpagree(void)
 {
     dxch(ADDRESS_OF(MPAC));
@@ -325,7 +327,8 @@ void gyroexit(void)
     continue_at(TASKOVER);
 }
 
-/* AUG3 +6, where WAITLIST returns: TCF GYROEXIT. */
+/* AUG3 +6 -- LM p. 1324, CM p. 1435, where WAITLIST returns: TCF
+ * GYROEXIT. */
 void aug3_after_waitlist(void)
 {
     gyroexit();

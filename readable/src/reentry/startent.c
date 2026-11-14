@@ -9,8 +9,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- STARTENT -- pp. 844-846 ---- */
 
 /* STARTENT ("MM = 63", "COME HERE FROM CM/POSE.  RESTARTED IN CM/POSE."):
@@ -22,9 +20,9 @@ static const word startent_words[] = {
 const struct interpretive_code STARTENT_CODE = {025u, STARTENT, COUNT(startent_words),
                                                 startent_words};
 
-/* ... to "INITIALIZE ALL SWITCHES TO ZERO EXCEPT LATSW, ENTRYDSP, AND
- * GONEPAST." (CM/FLAGS without ENTMASK's bits) and "SET ENTRYDSP, LATSW,
- * GONEPAST." (ENTRYSW's), with interrupts inhibited; ... */
+/* STARTENT +1 -- p. 844: ... to "INITIALIZE ALL SWITCHES TO ZERO EXCEPT
+ * LATSW, ENTRYDSP, AND GONEPAST." (CM/FLAGS without ENTMASK's bits) and "SET
+ * ENTRYDSP, LATSW, GONEPAST." (ENTRYSW's), with interrupts inhibited; ... */
 void startent_after_exit(void)
 {
     set_A(negate(ENTMASK));
@@ -136,8 +134,8 @@ static const word scalepop_words[] = {
 const struct interpretive_code SCALEPOP_CODE = {025u, SCALEPOP, COUNT(scalepop_words),
                                                 scalepop_words};
 
-/* ... REFAZE10: "SERVICER 5.3 RESTART AT REFAZE10" (PHASCHNG, OCT
- * 10035), ... */
+/* REFAZE10 -- p. 847: ... REFAZE10: "SERVICER 5.3 RESTART AT REFAZE10"
+ * (PHASCHNG, OCT 10035), ... */
 void refaze10(void)
 {
     tc_to(REFAZE10, PHASCHNG);

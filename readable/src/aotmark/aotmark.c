@@ -141,14 +141,14 @@ static void aotmark_after_ccs(enum sign markstat)
     }
 }
 
-/* AOTMARK +3: TC EXTVBCHK. */
+/* AOTMARK +3 -- LM p. 244: TC EXTVBCHK. */
 void aotmark_plus3(void)
 {
     tc_at(AOTMARK + 3u);
     extvbchk();
 }
 
-/* AOTMARK +4: TC POODOO; OCT 00105. */
+/* AOTMARK +4 -- LM p. 244: TC POODOO; OCT 00105. */
 void aotmark_plus4(void)
 {
     tc_at(AOTMARK + 4u);
@@ -181,7 +181,8 @@ void extvbchk(void)
  *
  * Never, as a VACnUSE is never negative: a negative word goes to MKVACFND
  * too (VAC5USE's to the TC BAILOUT1, past the DXCH), and -0 skips the next
- * area's CCS (VAC5USE's would run the OCT 1207: not modelled). */
+ * area's CCS (VAC5USE's would run the OCT 01207 as TC 1207, and the
+ * listing's lines do not say what erasable word 1207 holds then). */
 static void mkvac(unsigned area)
 {
     while (area <= VAC_AREAS) {
@@ -197,7 +198,12 @@ static void mkvac(unsigned area)
             mkvacfnd();
             return;
         case IS_MINUS_ZERO:
-            if (area == VAC_AREAS) not_modelled();
+            if (area == VAC_AREAS) {
+                /* (never: a VACnUSE holds its own address, or +0) */
+                tc_at(MKVAC + 014u); /* OCT 01207, run as TC 1207 */
+                not_modelled();
+                return;
+            }
             area += 2u;
             break;
         }
@@ -222,8 +228,8 @@ void mkvacfnd(void)
     continue_at(FINDVAC);
 }
 
-/* MKVACFND +011, where FINDVAC returns: back to the caller of AOTMARK,
- * through BANKCALL's SWRETURN. */
+/* MKVACFND +011 -- LM p. 244, where FINDVAC returns: back to the caller of
+ * AOTMARK, through BANKCALL's SWRETURN. */
 void mkvacfnd_after_findvac(void)
 {
     relint();
@@ -281,13 +287,13 @@ void getdat(void)
     continue_at(BANKCALL);
 }
 
-/* GETDAT +6: "V34 -- DOES GOTOPOOH". */
+/* GETDAT +6 -- LM p. 246: "V34 -- DOES GOTOPOOH". */
 void getdat_after_terminate(void)
 {
     killaot();
 }
 
-/* GETDAT +7: "V33 -- PROCEED -- USE THIS STAR FOR MARKS". */
+/* GETDAT +7 -- LM p. 246: "V33 -- PROCEED -- USE THIS STAR FOR MARKS". */
 void getdat_after_proceed(void)
 {
     dodat();
@@ -332,15 +338,15 @@ static void code7(void)
     continue_at(BANKCALL);
 }
 
-/* CODE7 +3: "V34 -- DOES GOTOPOOH". */
+/* CODE7 +3 -- LM p. 246: "V34 -- DOES GOTOPOOH". */
 void code7_after_terminate(void)
 {
     killaot();
 }
 
-/* CODE7 +4: "PROCEED" (TCF +2). "PICK UP AZ AND EL IN SP 25 COMP" and
- * "STORE IN 8D AND 9D OF LOCAL VAC". The COAS is the "BACKUP SYSTEM TO
- * BE USED": "ZERO APPARENT ROTATION". */
+/* CODE7 +4 -- LM p. 246: "PROCEED" (TCF +2). "PICK UP AZ AND EL IN SP 25
+ * COMP" and "STORE IN 8D AND 9D OF LOCAL VAC". The COAS is the "BACKUP
+ * SYSTEM TO BE USED": "ZERO APPARENT ROTATION". */
 void code7_after_proceed(void)
 {
     dca(ADDRESS_OF(AZ));
@@ -349,7 +355,7 @@ void code7_after_proceed(void)
     coascode();
 }
 
-/* CODE7 +5: "ON ENTER, RECYCLE". */
+/* CODE7 +5 -- LM p. 246: "ON ENTER, RECYCLE". */
 void code7_after_enter(void)
 {
     code7();
@@ -417,7 +423,7 @@ static const word optaxis_words[] = {
 const struct interpretive_code OPTAXIS_CODE = {07u, OPTAXIS, COUNT_OF(optaxis_words),
                                                optaxis_words};
 
-/* OPTAXIS +026, after the EXIT: TCF GETMKS. */
+/* OPTAXIS +026 -- LM p. 248, after the EXIT: TCF GETMKS. */
 void optaxis_after_exit(void)
 {
     getmks();
@@ -550,7 +556,7 @@ static void getmks(void)
     getmks_plus3();
 }
 
-/* GETMKS +3, where a surface recycle comes back (SURFAGAN). */
+/* GETMKS +3 -- LM p. 252, where a surface recycle comes back (SURFAGAN). */
 static void getmks_plus3(void)
 {
     set_A(LOW9);
@@ -568,19 +574,19 @@ static void pastit(void)
     continue_at(BANKCALL);
 }
 
-/* PASTIT +2: "V34 -- DOES GOTOPOOH". */
+/* PASTIT +2 -- LM p. 252: "V34 -- DOES GOTOPOOH". */
 void pastit_after_terminate(void)
 {
     killaot();
 }
 
-/* PASTIT +3: "VB33 -- PROCEED, GOT MARKS, COMPUTE LOS". */
+/* PASTIT +3 -- LM p. 252: "VB33 -- PROCEED, GOT MARKS, COMPUTE LOS". */
 void pastit_after_proceed(void)
 {
     markchex();
 }
 
-/* PASTIT +4: "ENTER -- RECYCLE TO V01N71". */
+/* PASTIT +4 -- LM p. 252: "ENTER -- RECYCLE TO V01N71". */
 void pastit_after_enter(void)
 {
     getdat();
@@ -612,10 +618,10 @@ static void markchex(void)
         avestar();
         return;
     }
-    switch (ccs_at(ADDRESS_OF(MARKCNTR))) { /* CNTCHK */
-    case POSITIVE:                          /* TCF +2 */
-    case NEGATIVE: ts(ADDRESS_OF(MARKCNTR)); break;
+    switch (ccs_at(ADDRESS_OF(MARKCNTR))) {         /* CNTCHK */
+    case POSITIVE: ts(ADDRESS_OF(MARKCNTR)); break; /* TCF +2 */
     case IS_PLUS_ZERO: mkalarm(); return;
+    case NEGATIVE: ts(ADDRESS_OF(MARKCNTR)); break;
     case IS_MINUS_ZERO: break;
     }
     avestar();
@@ -685,11 +691,11 @@ static const word avestar_words[] = {
 const struct interpretive_code AVESTAR_CODE = {07u, AVESTAR + 014u, COUNT_OF(avestar_words),
                                                avestar_words};
 
-/* AVEIT +017, after the EXIT: "SEE IF ANOTHER MARK PAIR IN MKVAC". "THERE
- * IS -- GO GET IT -- DECREMENT COUNTER" (TCF AVESTAR -1: TS MARKCNTR).
- * ENDMARKS: "NO MORE MARKS -- TERMINATE AOTMARK": MKRELEAS as a task in
- * 50 ms (FIVE), and ENDMARK. (MARKCNTR is never negative: negative would
- * skip the CAF FIVE, -0 the INHINT too.) */
+/* AVEIT +017 -- LM p. 253, after the EXIT: "SEE IF ANOTHER MARK PAIR IN
+ * MKVAC". "THERE IS -- GO GET IT -- DECREMENT COUNTER" (TCF AVESTAR -1: TS
+ * MARKCNTR). ENDMARKS: "NO MORE MARKS -- TERMINATE AOTMARK": MKRELEAS as a
+ * task in 50 ms (FIVE), and ENDMARK. (MARKCNTR is never negative: negative
+ * would skip the CAF FIVE, -0 the INHINT too.) */
 void aveit_after_exit(void)
 {
     switch (ccs_at(ADDRESS_OF(MARKCNTR))) {
@@ -705,7 +711,7 @@ void aveit_after_exit(void)
     continue_at(WAITLIST);
 }
 
-/* ENDMARKS +5, where WAITLIST returns: TC ENDMARK. */
+/* ENDMARKS +5 -- LM p. 253, where WAITLIST returns: TC ENDMARK. */
 void endmarks_after_waitlist(void)
 {
     tc_at(ENDMARKS + 5u);
@@ -719,7 +725,7 @@ void mkalarm(void)
     continue_at(ALARM);
 }
 
-/* MKALARM +2, where ALARM returns: TCF GETMKS. */
+/* MKALARM +2 -- LM p. 253, where ALARM returns: TCF GETMKS. */
 void mkalarm_after_alarm(void)
 {
     getmks();
@@ -750,10 +756,10 @@ void markrupt(void)
     if (!ts(ADDRESS_OF(QRUPT))) set_A(OCT34);
     rand_channel(NAVKEYIN); /* EXTEND; RAND NAVKEYIN */
     switch (ccs_at(A_ADDRESS)) {
-    case POSITIVE: /* TCF +2: "ITS A LIVE ONE -- SEE IF ITS WANTED" */
-    case NEGATIVE: set_A(BIT12); break;
+    case POSITIVE: set_A(BIT12); break;   /* TCF +2: "ITS A LIVE ONE -- SEE IF ITS WANTED" */
     case IS_PLUS_ZERO: somekey(); return; /* "ITS SOME OTHER KEY" */
-    case IS_MINUS_ZERO: break;            /* (on with A +0) */
+    case NEGATIVE: set_A(BIT12); break;
+    case IS_MINUS_ZERO: break; /* (on with A +0) */
     }
     mask_at(ADDRESS_OF(MARKSTAT));
     if (ccs_at(A_ADDRESS) == POSITIVE) { /* (a masked word: never negative) */
@@ -764,10 +770,11 @@ void markrupt(void)
     markrupt_after_resume();
 }
 
-/* MARKRUPT +026: "ARE MARKS BEING ACCEPTED" (MARKSTAT's VAC area): "THEY
- * ARE -- WHICH ONE IS IT". "MARKS NOT BEING ACCEPTED -- DO ALARM" (112).
- * (MARKSTAT is never negative: -0 would go on to the TC RESUME, negative
- * run the OCT 112 as TC 112, not modelled.) */
+/* MARKRUPT +026 -- LM p. 254: "ARE MARKS BEING ACCEPTED" (MARKSTAT's VAC
+ * area): "THEY ARE -- WHICH ONE IS IT". "MARKS NOT BEING ACCEPTED -- DO
+ * ALARM" (112). (MARKSTAT is never negative: -0 would go on to the TC
+ * RESUME; negative would run the OCT 112 as TC 112, and the listing's lines
+ * do not say what erasable word 112 holds then.) */
 void markrupt_after_resume(void)
 {
     switch (ccs_at(ADDRESS_OF(MARKSTAT))) {
@@ -776,12 +783,16 @@ void markrupt_after_resume(void)
         tc_at(MARKRUPT + 030u);
         continue_at(ALARM);
         return;
-    case NEGATIVE: not_modelled(); return;
+    case NEGATIVE:
+        /* (never: no store sets bit 15 of MARKSTAT) */
+        tc_at(MARKRUPT + 031u); /* OCT 112, run as TC 112 */
+        not_modelled();
+        return;
     case IS_MINUS_ZERO: markrupt_after_alarm(); return;
     }
 }
 
-/* MARKRUPT +032, where ALARM returns: TC RESUME. */
+/* MARKRUPT +032 -- LM p. 254, where ALARM returns: TC RESUME. */
 void markrupt_after_alarm(void)
 {
     tc_at(MARKRUPT + 032u);
@@ -821,11 +832,11 @@ void findkey(void)
         mkrej(); /* "IT'S A MARK REJECT" */
         return;
     }
-    if (!into_mkvac) findkey_plus10();
+    if (!into_mkvac) findkey_plus010();
 }
 
-/* FINDKEY +010: the Y mark's bit. */
-void findkey_plus10(void)
+/* FINDKEY +010 -- LM p. 254: the Y mark's bit. */
+void findkey_plus010(void)
 {
     bool into_mkvac;
 
@@ -833,11 +844,11 @@ void findkey_plus10(void)
         ymkrupt(); /* "IT'S A Y MARK" */
         return;
     }
-    if (!into_mkvac) findkey_plus15();
+    if (!into_mkvac) findkey_plus015();
 }
 
-/* FINDKEY +015: the X mark's bit. */
-void findkey_plus15(void)
+/* FINDKEY +015 -- LM p. 255: the X mark's bit. */
+void findkey_plus015(void)
 {
     bool into_mkvac;
 
@@ -857,8 +868,8 @@ static void somekey(void)
     somekey_plus3();
 }
 
-/* SOMEKEY +3: "IF DESCENT BITS", DESCBITS (through POSTJUMP); "IF NO
- * BITS", alarm 113: "NO INBITS IN CHANNEL 16." */
+/* SOMEKEY +3 -- LM p. 255: "IF DESCENT BITS", DESCBITS (through POSTJUMP);
+ * "IF NO BITS", alarm 113: "NO INBITS IN CHANNEL 16." */
 void somekey_plus3(void)
 {
     if (A_is_zero()) { /* EXTEND; BZF +3 */
@@ -869,14 +880,14 @@ void somekey_plus3(void)
     continue_at(POSTJUMP);
 }
 
-/* SOMEKEY +7: TC ALARM; OCT 113. */
+/* SOMEKEY +7 -- LM p. 255: TC ALARM; OCT 113. */
 void somekey_after_postjump(void)
 {
     tc_at(SOMEKEY + 7u);
     continue_at(ALARM);
 }
 
-/* SOMEKEY +011, where ALARM returns: TC RESUME. */
+/* SOMEKEY +011 -- LM p. 255, where ALARM returns: TC RESUME. */
 void somekey_after_alarm(void)
 {
     tc_at(SOMEKEY + 011u);
@@ -902,7 +913,8 @@ static void ymkrupt(void)
     ymkrupt_plus3();
 }
 
-/* YMKRUPT +3: "SET MARK IDENTIFICATION", and "SEE IF SURFACE MARK". */
+/* YMKRUPT +3 -- LM p. 255: "SET MARK IDENTIFICATION", and "SEE IF SURFACE
+ * MARK". */
 static void ymkrupt_plus3(void)
 {
     ts(ADDRESS_OF(XYMARK));
@@ -910,16 +922,16 @@ static void ymkrupt_plus3(void)
     marktype_run();
 }
 
-/* YMKRUPT +5: "SURFACE MARK -- JUST STORE CDUS". */
+/* YMKRUPT +5 -- LM p. 255: "SURFACE MARK -- JUST STORE CDUS". */
 void ymkrupt_after_marktype(void)
 {
     surfstor();
 }
 
-/* YMKRUPT +6: in flight. "GOT A MARK -- SEE IF MARK PAIR MADE" (bit 14):
- * "NOT A PAIR, NORMAL PROCEDURE". "GOT A PAIR, SEE IF ANOTHER CAN BE MADE":
- * "HAVE FIVE MARK PAIRS -- DON'T ALLOW MARK"; else "OK FOR ANOTHER PAIR,
- * INCR POINTER" and "CLEAR BITS 10,11,14 FOR NEXT PAIR". */
+/* YMKRUPT +6 -- LM p. 255: in flight. "GOT A MARK -- SEE IF MARK PAIR MADE"
+ * (bit 14): "NOT A PAIR, NORMAL PROCEDURE". "GOT A PAIR, SEE IF ANOTHER CAN
+ * BE MADE": "HAVE FIVE MARK PAIRS -- DON'T ALLOW MARK"; else "OK FOR ANOTHER
+ * PAIR, INCR POINTER" and "CLEAR BITS 10,11,14 FOR NEXT PAIR". */
 static void ymkrupt_in_flight(void)
 {
     set_A(BIT14);
@@ -943,23 +955,29 @@ static void ymkrupt_in_flight(void)
 
 /* VERIFYMK -- LM p. 255. Is this mark wanted (its bit, 10 or 11, still
  * clear in MARKSTAT)? "MARK DESIRED -- STORE CDUS"; "THIS MARK NOT
- * DESIRED": alarm 114. (-0 would run the OCT 114 as TC 114: not modelled.) */
+ * DESIRED": alarm 114. (A masked word is never negative or -0: negative
+ * would go to the alarm too; -0 would run the OCT 114 as TC 114, and the
+ * listing's lines do not say what erasable word 114 holds then.) */
 static void verifymk(void)
 {
     ca(ADDRESS_OF(XYMARK));
     mask_at(ADDRESS_OF(MARKSTAT));
     switch (ccs_at(A_ADDRESS)) {
-    case POSITIVE: /* TCF +2 */
-    case NEGATIVE:
-        tc_at(VERIFYMK + 5u);
-        continue_at(ALARM);
-        return;
+    case POSITIVE: break; /* TCF +2 */
     case IS_PLUS_ZERO: vacstor(); return;
-    case IS_MINUS_ZERO: not_modelled(); return;
+    case NEGATIVE: break;
+    case IS_MINUS_ZERO:
+        /* (never: a MASK of two words that are not negative leaves +0, not -0) */
+        tc_at(VERIFYMK + 6u); /* OCT 114, run as TC 114 */
+        not_modelled();
+        return;
     }
+    tc_at(VERIFYMK + 5u);
+    continue_at(ALARM);
 }
 
-/* VERIFYMK +7: "RESUME -- DISPLAY UNCHANGED -- WAIT FOR ACTION". */
+/* VERIFYMK +7 -- LM p. 255: "RESUME -- DISPLAY UNCHANGED -- WAIT FOR
+ * ACTION". */
 void verifymk_after_alarm(void)
 {
     tc_at(VERIFYMK + 7u);
@@ -974,20 +992,22 @@ void five_mkalarm(void)
     continue_at(ALARM);
 }
 
-/* 5MKALARM +2: "SEE IF SURFACE MARK". */
+/* 5MKALARM +2 -- LM p. 256: "SEE IF SURFACE MARK". */
 void five_mkalarm_after_alarm(void)
 {
     tc_at(FIVE_MKALARM + 2u);
     marktype_run();
 }
 
-/* 5MKALARM +3: on the surface ("IT IS"), the V06N79 display again. */
+/* 5MKALARM +3 -- LM p. 256: on the surface ("IT IS"), the V06N79 display
+ * again. */
 void five_mkalarm_after_marktype(void)
 {
     dspv6n79();
 }
 
-/* 5MKALARM +4: in flight, "DON'T CHANGE DISPLAY -- DO NOTHING". */
+/* 5MKALARM +4 -- LM p. 256: in flight, "DON'T CHANGE DISPLAY -- DO
+ * NOTHING". */
 static void five_mkalarm_in_flight(void)
 {
     tc_at(FIVE_MKALARM + 4u);
@@ -1001,14 +1021,14 @@ void mkrej(void)
     marktype_run();
 }
 
-/* MKREJ +1: "SURFACE -- JUST CHECK MARK COUNTER". */
+/* MKREJ +1 -- LM p. 257: "SURFACE -- JUST CHECK MARK COUNTER". */
 void mkrej_after_marktype(void)
 {
     surfrej();
 }
 
-/* MKREJ +2: "INFLIGHT -- SEE IF MARKS MADE" (bits 10-11): "MARKS MADE --
- * REJECT ONE". (A masked word is never negative.) */
+/* MKREJ +2 -- LM p. 257: "INFLIGHT -- SEE IF MARKS MADE" (bits 10-11):
+ * "MARKS MADE -- REJECT ONE". (A masked word is never negative.) */
 static void mkrej_in_flight(void)
 {
     set_A(PRIO3);
@@ -1027,7 +1047,7 @@ static void rejalm(void)
     continue_at(ALARM);
 }
 
-/* REJALM +2: "DESIRED ACTION DISPLAYED". */
+/* REJALM +2 -- LM p. 257: "DESIRED ACTION DISPLAYED". */
 void rejalm_after_alarm(void)
 {
     tc_at(REJALM + 2u);
@@ -1063,9 +1083,9 @@ void reject(void)
 static void surfrej(void)
 {
     switch (ccs_at(ADDRESS_OF(MARKCNTR))) {
-    case POSITIVE: /* TCF +2 */
-    case NEGATIVE: ts(ADDRESS_OF(MARKCNTR)); break;
+    case POSITIVE: ts(ADDRESS_OF(MARKCNTR)); break; /* TCF +2 */
     case IS_PLUS_ZERO: rejalm(); return;
+    case NEGATIVE: ts(ADDRESS_OF(MARKCNTR)); break;
     case IS_MINUS_ZERO: break;
     }
     tc_at(SURFREJ + 4u);
@@ -1107,10 +1127,11 @@ static void marktype_run(void)
     after_marktype(tc_q());
 }
 
-/* MARKTYPE entered on its own (the word after SURFREJ's TC RESUME), with
- * Q as it finds it: it goes on only to VACSTOR's returns (VACSTOR +027 to
- * +032, where VACSTOR's own TC MARKTYPE returns), and elsewhere stops with
- * Z at Q's address, as the faithful port's routine does. */
+/* MARKTYPE -- LM p. 258 entered on its own (the word after SURFREJ's TC
+ * RESUME), with Q as it finds it: it goes on only to VACSTOR's returns
+ * (VACSTOR +027 to +032, where VACSTOR's own TC MARKTYPE returns), and
+ * elsewhere stops with Z at Q's address, as the faithful port's routine
+ * does. */
 void marktype(void)
 {
     cs(ADDRESS_OF(FLAGWRD8));
@@ -1165,15 +1186,15 @@ static void vacstor(void)
     marktype_run();
 }
 
-/* VACSTOR +027: the surface mark's TCF SURFJOB. */
+/* VACSTOR +027 -- LM p. 258: the surface mark's TCF SURFJOB. */
 void vacstor_after_marktype(void)
 {
     surfjob();
 }
 
-/* VACSTOR +030 on, in flight (entered at +031 or +032 only through
- * MARKTYPE's own entry). "CLEAR BIT13 TO SHOW MARK MADE", "SET MARK ID IN
- * MARKSTAT" (COM, MASK: clear bit 13 and the mark's bit; AD: set the
+/* VACSTOR +030 -- LM p. 258 on, in flight (entered at +031 or +032 only
+ * through MARKTYPE's own entry). "CLEAR BIT13 TO SHOW MARK MADE", "SET MARK
+ * ID IN MARKSTAT" (COM, MASK: clear bit 13 and the mark's bit; AD: set the
  * mark's bit), then "SEE IF X, Y MARK MADE": "NOT PAIR YET, DISPLAY MARK
  * ACTION"; "MARK PAIR COMPLETE -- SET BIT14" and "GO DISPLAY V54". (An
  * overflow in AD XYMARK would skip the MASK PRIO3, which makes the CCS's
@@ -1218,7 +1239,7 @@ static void surfjob(void)
     continue_at(NOVAC);
 }
 
-/* SURFJOB +4, where NOVAC returns: TC RESUME. */
+/* SURFJOB +4 -- LM p. 260, where NOVAC returns: TC RESUME. */
 void surfjob_after_novac(void)
 {
     tc_at(SURFJOB + 4u);
@@ -1232,15 +1253,15 @@ void changevb(void)
     marktype_run();
 }
 
-/* CHANGEVB +1: "SURFACE -- DISPLAY V 06 N 79". */
+/* CHANGEVB +1 -- LM p. 260: "SURFACE -- DISPLAY V 06 N 79". */
 void changevb_after_marktype(void)
 {
     dspv6n79();
 }
 
-/* CHANGEVB +2: "INFLIGHT -- PICK UP MARK VB INDEX" and "PASTE UP NEXT MK
- * VERB DISPLAY": MKVB54, MKVB53, MKVB52 or MKVB54* by the marks made
- * ("THE FOUR MKVBS ARE INDEXED -- THEIR ORDER CANNOT BE CHANGED"). Not
+/* CHANGEVB +2 -- LM p. 260: "INFLIGHT -- PICK UP MARK VB INDEX" and "PASTE
+ * UP NEXT MK VERB DISPLAY": MKVB54, MKVB53, MKVB52 or MKVB54* by the marks
+ * made ("THE FOUR MKVBS ARE INDEXED -- THEIR ORDER CANNOT BE CHANGED"). Not
  * modelled: an MKDEX past the four (REMARK makes it 0 to 3). */
 static void changevb_in_flight(void)
 {
@@ -1263,20 +1284,21 @@ static void dspv6n79(void)
     continue_at(BANKCALL);
 }
 
-/* DSPV6N79 +3: "V34 -- DOES GOTOPOOH". */
+/* DSPV6N79 +3 -- LM p. 261: "V34 -- DOES GOTOPOOH". */
 void dspv6n79_after_terminate(void)
 {
     killaot();
 }
 
-/* DSPV6N79 +4: "V33 -- PROCEED, END MARKING". */
+/* DSPV6N79 +4 -- LM p. 261: "V33 -- PROCEED, END MARKING". */
 void dspv6n79_after_proceed(void)
 {
     surfend();
 }
 
-/* DSPV6N79 +5: "IF V32(OCT40) IN MPAC DO RECYCLE OTHERWISE IT IS LOAD VB
- * ENTER SO RE-DISPLAY V06N79". (A masked word is never negative.) */
+/* DSPV6N79 +5 -- LM p. 261: "IF V32(OCT40) IN MPAC DO RECYCLE OTHERWISE IT
+ * IS LOAD VB ENTER SO RE-DISPLAY V06N79". (A masked word is never
+ * negative.) */
 void dspv6n79_after_enter(void)
 {
     set_A(BIT6);

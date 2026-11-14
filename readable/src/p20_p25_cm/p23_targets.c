@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 19 (Comanche055 p. 631): LOWMEMRY and LDPLANET, the
- * star or planet P23 marks on (banks 14 and 16).
+/* P20-P25.agc, part 19 (Comanche055 p. 631): LOWMEMRY and LDPLANET, the star
+ * or planet P23 marks on (banks 14 and 16). The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * LOWMEMRY loads a star's unit vector from the star catalog: CATLOG less
  * X1, which is the star's number times 6, and returns (RVQ).
@@ -23,8 +24,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* LOWMEMRY: the star's vector, CATLOG less X1. */
 static const word lowmemry_words[] = {
     ORDERS(VLOAD_STAR, RVQ),
@@ -36,34 +35,35 @@ static const word ldplanet_words[] = {
     ORDER(EXIT),
 };
 
-/* LDPLANET +1 -- after the EXIT: verb 06 noun 88 flashed by GOFLASH. */
+/* LDPLANET +1 -- p. 631: after the EXIT: verb 06 noun 88 flashed by
+ * GOFLASH. */
 void ldplanet_after_exit(void)
 {
     set_A(VNPLAN23);
     tc_to(LDPLANET + 2u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* LDPLANET +4: terminate. */
+/* LDPLANET +4 -- p. 631: terminate. */
 void ldplanet_terminate(void)
 {
     tc_to(LDPLANET + 4u, GOTOPOOH);
 }
 
-/* LDPLANET +7: TC INTPRET. */
+/* LDPLANET +7 -- p. 631: TC INTPRET. */
 void ldplanet_intpret(void)
 {
     tc_at(LDPLANET + 7u);
     intpret();
 }
 
-/* LDPLANET +5: proceed: TC +2, to the TC INTPRET. */
+/* LDPLANET +5 -- p. 631: proceed: TC +2, to the TC INTPRET. */
 void ldplanet_proceed(void)
 {
     tc_at(LDPLANET + 5u);
     ldplanet_intpret();
 }
 
-/* LDPLANET +6: enter: TC -5, the display again. */
+/* LDPLANET +6 -- p. 631: enter: TC -5, the display again. */
 void ldplanet_enter(void)
 {
     tc_at(LDPLANET + 6u);

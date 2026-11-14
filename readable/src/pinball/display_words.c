@@ -47,7 +47,7 @@ void dspsign(void)
     xch(Q_ADDRESS);
     if (ts(ADDRESS_OF(DSPWDRET))) { /* an overflow in Q skips the CCS: TC +8D */
         tc_at(DSPSIGN + 3u);
-        tc(DSPSIGN + 11u, PLUS_ON);
+        tc(DSPSIGN + 013u, PLUS_ON);
         return;
     }
     switch (ccs_at(ADDRESS_OF(MPAC))) {
@@ -59,21 +59,22 @@ void dspsign(void)
         tc(DSPSIGN + 7u, MINUS_ON);
         return;
     }
-    tc(DSPSIGN + 11u, PLUS_ON);
+    tc(DSPSIGN + 013u, PLUS_ON);
 }
 
-/* DSPSIGN +8, where -ON returns: the low word's magnitude too. */
+/* DSPSIGN +010 -- LM p. 441, CM p. 359, where -ON returns: the low word's
+ * magnitude too. */
 void dspsign_after_minus_on(void)
 {
     cs(ADDRESS_OF(MPAC) + 1u);
     ts(ADDRESS_OF(MPAC) + 1u);
-    tc(DSPSIGN + 10u, ADDRESS_OF(DSPWDRET));
+    tc(DSPSIGN + 012u, ADDRESS_OF(DSPWDRET));
 }
 
-/* DSPSIGN +12, where +ON returns. */
+/* DSPSIGN +014 -- LM p. 441, CM p. 359, where +ON returns. */
 void dspsign_after_plus_on(void)
 {
-    tc(DSPSIGN + 12u, ADDRESS_OF(DSPWDRET));
+    tc(DSPSIGN + 014u, ADDRESS_OF(DSPWDRET));
 }
 
 /* DSPRND -- LM p. 441, CM p. 359. "ROUND BY 5 EXP-6": DECROUND, 5 in
@@ -112,8 +113,8 @@ void dspdecwd_after_dspsign(void)
     tc(DSPDECWD + 3u, DSPRND);
 }
 
-/* DSPDCWD1 -1, where DSPRND returns: the count of the digits after this
- * one, four. */
+/* DSPDCWD1 -1 -- LM p. 441, CM p. 359, where DSPRND returns: the count of
+ * the digits after this one, four. */
 void dspdcwd1_minus1(void)
 {
     set_A(FOUR);
@@ -146,25 +147,25 @@ void dspdcwd1(void)
     ts(ADDRESS_OF(COUNT));
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: ts(ADDRESS_OF(DSPCOUNT)); /* fall through */
-    case IS_PLUS_ZERO: tc(DSPDCWD1 + 15u, DSPIN); return;
+    case IS_PLUS_ZERO: tc(DSPDCWD1 + 017u, DSPIN); return;
     case NEGATIVE: dspdcwd1_after_dspin(); return;
-    case IS_MINUS_ZERO: tc(DSPDCWD1 + 17u, DSPDCWD1); return;
+    case IS_MINUS_ZERO: tc(DSPDCWD1 + 021u, DSPDCWD1); return;
     }
 }
 
-/* DSPDCWD1 +16, where DSPIN returns: the next digit while WDCNT counts
- * down, then DSPCOUNT -VD1 and back through WDRET. */
+/* DSPDCWD1 +020 -- LM p. 442, CM p. 360, where DSPIN returns: the next digit
+ * while WDCNT counts down, then DSPCOUNT -VD1 and back through WDRET. */
 void dspdcwd1_after_dspin(void)
 {
     switch (ccs_at(ADDRESS_OF(WDCNT))) {
-    case POSITIVE: tc(DSPDCWD1 + 17u, DSPDCWD1); return;
+    case POSITIVE: tc(DSPDCWD1 + 021u, DSPDCWD1); return;
     case IS_PLUS_ZERO:
         set_A(negate(VD1)); /* CS VD1 */
         /* fall through */
     case NEGATIVE: ts(ADDRESS_OF(DSPCOUNT)); break;
     case IS_MINUS_ZERO: break;
     }
-    tc(DSPDCWD1 + 20u, ADDRESS_OF(WDRET));
+    tc(DSPDCWD1 + 024u, ADDRESS_OF(WDRET));
 }
 
 /* DSPDECNR -- LM p. 442, CM p. 360.
@@ -198,8 +199,8 @@ void dspdc2nr(void)
     tc(DSPDC2NR + 2u, DSPSIGN);
 }
 
-/* DSPDC2NR +3, where DSPSIGN returns (and where DSPDECVN goes): one digit
- * after this one. */
+/* DSPDC2NR +3 -- LM p. 442, CM p. 360, where DSPSIGN returns (and where
+ * DSPDECVN goes): one digit after this one. */
 void dspdc2nr_plus3(void)
 {
     set_A(ONE);
@@ -228,7 +229,7 @@ void dsp2dec_after_minus_r2(void)
 
 void dsp2dec_after_plus_r2(void)
 {
-    tc(DSP2DEC + 8u, DSPSIGN);
+    tc(DSP2DEC + 010u, DSPSIGN);
 }
 
 void dsp2dec_after_dspsign(void)
@@ -308,7 +309,8 @@ void wdagain(void)
     wdagain_plus5();
 }
 
-/* WDAGAIN +5, where DSP2BIT comes in with its digits in CYL. */
+/* WDAGAIN +5 -- LM p. 443, CM p. 361, where DSP2BIT comes in with its digits
+ * in CYL. */
 void wdagain_plus5(void)
 {
     mask(DSPMSK);
@@ -318,9 +320,9 @@ void wdagain_plus5(void)
     xch(ADDRESS_OF(DSPCOUNT));
     ts(ADDRESS_OF(COUNT));
     switch (ccs_at(A_ADDRESS)) {
-    case POSITIVE: ts(ADDRESS_OF(DSPCOUNT));                /* fall through */
-    case IS_PLUS_ZERO: tc(WDAGAIN + 14u, POSTJUMP); return; /* CADR DSPOCTIN */
-    case NEGATIVE: not_modelled(); return;
+    case POSITIVE: ts(ADDRESS_OF(DSPCOUNT));                 /* fall through */
+    case IS_PLUS_ZERO: tc(WDAGAIN + 016u, POSTJUMP); return; /* CADR DSPOCTIN */
+    case NEGATIVE: not_modelled(); return; /* never: a position here; an address word is next */
     case IS_MINUS_ZERO: octback(); return;
     }
 }
@@ -370,5 +372,5 @@ void dsp2bit(void)
     cs(ADDRESS_OF(CYR));
     xch(ADDRESS_OF(CYR));
     ts(ADDRESS_OF(CYL));
-    tc(DSP2BIT + 9u, WDAGAIN + 5u);
+    tc(DSP2BIT + 011u, WDAGAIN + 5u);
 }

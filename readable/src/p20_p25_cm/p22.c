@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 2 (Comanche055 pp. 565-569): P22, the CSM's
- * "ORBITAL NAVIGATION PROGRAM 22" (bank 30).
+/* P20-P25.agc, part 2 (Comanche055 pp. 565-569): P22, the CSM's "ORBITAL
+ * NAVIGATION PROGRAM 22" (bank 30). The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * The crew sights a landmark through the optics, and S22 (later in the
  * file) uses the marks to update the CSM's state vector. PROG22 checks the
@@ -27,8 +28,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void prog22_display(void);
 static void prog22a(void);
 static void p22subrb_display(void);
@@ -45,13 +44,13 @@ void prog22(void)
     tc_to(PROG22, DOWNFLAG); /* ADRES RNDVZFLG */
 }
 
-/* PROG22 +2: "IMU STATUS CHECK". */
+/* PROG22 +2 -- p. 565: "IMU STATUS CHECK". */
 void prog22_after_rndvzflg(void)
 {
     tc_to(PROG22 + 2u, BANKCALL); /* CADR R02BOTH */
 }
 
-/* PROG22 +4: "COMPUTE ANGLE BETWEEN Y AND VXR SM". */
+/* PROG22 +4 -- p. 565: "COMPUTE ANGLE BETWEEN Y AND VXR SM". */
 void prog22_after_r02both(void)
 {
     tc_at(PROG22 + 4u);
@@ -80,8 +79,8 @@ static const word prog22_words[] = {
     SWITCH(CLEAR, RENDWFLG),
 };
 
-/* PROG22 +023 -- after the EXIT: verb 06 noun 45 (V06N45B) flashed by
- * GOFLASHR, +MGA in R3. */
+/* PROG22 +023 -- p. 565: after the EXIT: verb 06 noun 45 (V06N45B) flashed
+ * by GOFLASHR, +MGA in R3. */
 void prog22_after_exit(void)
 {
     prog22_display();
@@ -93,27 +92,27 @@ static void prog22_display(void)
     tc_to(PROG22 + 024u, BANKCALL); /* CADR GOFLASHR */
 }
 
-/* PROG22 +026: "TERM P22". */
+/* PROG22 +026 -- p. 565: "TERM P22". */
 void prog22_terminate(void)
 {
     tc_to(PROG22 + 026u, GOTOPOOH);
 }
 
-/* PROG22 +027: "PROC". */
+/* PROG22 +027 -- p. 565: "PROC". */
 void prog22_proceed(void)
 {
     tc_at(PROG22 + 027u);
     prog22a();
 }
 
-/* PROG22 +030: "ENTER": TC -5, the display again. */
+/* PROG22 +030 -- p. 565: "ENTER": TC -5, the display again. */
 void prog22_enter(void)
 {
     tc_at(PROG22 + 030u);
     prog22_display();
 }
 
-/* PROG22 +031: the display's immediate return: "BLANK OUT R1 + R2"
+/* PROG22 +031 -- p. 565: the display's immediate return: "BLANK OUT R1 + R2"
  * (BLANKET's bits 1 and 2), */
 void prog22_immediate_return(void)
 {
@@ -121,7 +120,7 @@ void prog22_immediate_return(void)
     tc_to(PROG22 + 032u, BLANKET);
 }
 
-/* PROG22 +033: and the job ends. */
+/* PROG22 +033 -- p. 565: and the job ends. */
 void prog22_after_blanket(void)
 {
     tc_to(PROG22 + 033u, ENDOFJOB);
@@ -173,8 +172,8 @@ void callr52_after_exit(void)
     tc_to(CALLR52 + 1u, TWO_PHSCHNG);
 }
 
-/* CALLR52 +5: "SET MARK INDEX=5 FOR R52"; "SET FOR SIGHTING LMK". (CAF
- * FIVE leaves no overflow for the TS to skip on.) */
+/* CALLR52 +5 -- p. 566: "SET MARK INDEX=5 FOR R52"; "SET FOR SIGHTING LMK".
+ * (CAF FIVE leaves no overflow for the TS to skip on.) */
 void callr52_after_2phschng(void)
 {
     set_A(FIVE);
@@ -182,13 +181,13 @@ void callr52_after_2phschng(void)
     tc_to(CALLR52 + 7u, UPFLAG); /* ADRES TARG2FLG */
 }
 
-/* CALLR52 +011: "CLEAR FOR NON-LEM". */
+/* CALLR52 +011 -- p. 566: "CLEAR FOR NON-LEM". */
 void callr52_after_targ2flg(void)
 {
     tc_to(CALLR52 + 011u, DOWNFLAG); /* ADRES TARG1FLG */
 }
 
-/* CALLR52 +013: R52 and the marks, in interpretive code. */
+/* CALLR52 +013 -- p. 566: R52 and the marks, in interpretive code. */
 void callr52_after_targ1flg(void)
 {
     tc_at(CALLR52 + 013u);
@@ -215,14 +214,14 @@ static const word callr52_words[] = {
     /* P22OVER */ ORDER(EXIT),
 };
 
-/* P22OVER +1 -- after the EXIT: PHASCHNG, OCT 04022 (group 2's restart
- * at P22OVER +3, the word after the phase word), */
+/* P22OVER +1 -- p. 566: after the EXIT: PHASCHNG, OCT 04022 (group 2's
+ * restart at P22OVER +3, the word after the phase word), */
 void p22over_after_exit(void)
 {
     tc_to(P22OVER + 1u, PHASCHNG);
 }
 
-/* P22OVER +3: and PROG22A again, "POINT A ON GSOP". */
+/* P22OVER +3 -- p. 566: and PROG22A again, "POINT A ON GSOP". */
 void p22over_after_phaschng(void)
 {
     tc_at(P22OVER + 3u);
@@ -263,8 +262,8 @@ static const word s22lsite_words[] = {
     ADDRESS_AT(S22TOFF, 1),
 };
 
-/* P22SUBRB +2 -- after the EXIT: verb 06 noun 89 (V06N89B) flashed by
- * GOFLASH: the landmark's latitude, longitude and altitude. */
+/* P22SUBRB +2 -- p. 567: after the EXIT: verb 06 noun 89 (V06N89B) flashed
+ * by GOFLASH: the landmark's latitude, longitude and altitude. */
 void p22subrb_after_exit(void)
 {
     p22subrb_display();
@@ -276,27 +275,27 @@ static void p22subrb_display(void)
     tc_to(P22SUBRB + 3u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* P22SUBRB +5: "TERMINATE". */
+/* P22SUBRB +5 -- p. 567: "TERMINATE". */
 void p22subrb_terminate(void)
 {
     tc_to(P22SUBRB + 5u, GOTOPOOH);
 }
 
-/* P22SUBRB +6: "PROCEED": TC +2, the check. */
+/* P22SUBRB +6 -- p. 567: "PROCEED": TC +2, the check. */
 void p22subrb_proceed(void)
 {
     tc_at(P22SUBRB + 6u);
     p22subrb_check();
 }
 
-/* P22SUBRB +7: "ENTER OR RECYCLE": TC -5, the display again. */
+/* P22SUBRB +7 -- p. 567: "ENTER OR RECYCLE": TC -5, the display again. */
 void p22subrb_enter(void)
 {
     tc_at(P22SUBRB + 7u);
     p22subrb_display();
 }
 
-/* P22SUBRB +010: the check, in interpretive code. */
+/* P22SUBRB +010 -- p. 567: the check, in interpretive code. */
 void p22subrb_check(void)
 {
     tc_at(P22SUBRB + 010u);
@@ -336,13 +335,13 @@ static const word n89errx_3_words[] = {
     ADDRESS(S22TOFF),
 };
 
-/* N89ERRX +1 -- after the EXIT: the operator error lamp (FALTON), */
+/* N89ERRX +1 -- p. 567: after the EXIT: the operator error lamp (FALTON), */
 void n89errx_after_exit(void)
 {
     tc_to(N89ERRX + 1u, FALTON);
 }
 
-/* N89ERRX +2: and "LONG GR. THAN 90  REDISPLAY". */
+/* N89ERRX +2 -- p. 567: and "LONG GR. THAN 90  REDISPLAY". */
 void n89errx_after_falton(void)
 {
     tc_at(N89ERRX + 2u);
@@ -364,28 +363,28 @@ static void s22dsppa_display(void)
     tc_to(S22DSPPA + 1u, BANKCALL); /* CADR GOFLASHR */
 }
 
-/* S22DSPPA +3: "V34E TERMINATE". */
+/* S22DSPPA +3 -- p. 567: "V34E TERMINATE". */
 void s22dsppa_terminate(void)
 {
     tc_to(S22DSPPA + 3u, GOTOPOOH);
 }
 
-/* S22DSPPA +4: "V33E PROCEED": TC +5, the code's check. */
+/* S22DSPPA +4 -- p. 567: "V33E PROCEED": TC +5, the code's check. */
 void s22dsppa_proceed(void)
 {
     tc_at(S22DSPPA + 4u);
     s22dsppa_check();
 }
 
-/* S22DSPPA +5: "V32E RECYCLE": TC -5, the display again. */
+/* S22DSPPA +5 -- p. 567: "V32E RECYCLE": TC -5, the display again. */
 void s22dsppa_recycle(void)
 {
     tc_at(S22DSPPA + 5u);
     s22dsppa_display();
 }
 
-/* S22DSPPA +6: "IMMEDIATE RETURN BLANK OUT R1,R3" (BLANKET's bits 1 and
- * 3), */
+/* S22DSPPA +6 -- p. 567: "IMMEDIATE RETURN BLANK OUT R1,R3" (BLANKET's bits
+ * 1 and 3), */
 void s22dsppa_immediate_return(void)
 {
     set_A(FIVE);
@@ -398,7 +397,7 @@ void s22dsppa_after_blanket(void)
     tc_to(S22DSPPA + 010u, ENDOFJOB);
 }
 
-/* S22DSPPA +011: the offset (LANDMARK's bits 7-9, "08000 = OFFSET
+/* S22DSPPA +011 -- p. 568: the offset (LANDMARK's bits 7-9, "08000 = OFFSET
  * INDICATOR") to CXOFF: "OFF=0 THRU 5 OK"; "OFF=6.7 ILLEGAL REDISPLAY".
  * (A MASK leaves no overflow for the TS to skip on.) */
 static void s22dsppa_check(void)
@@ -416,13 +415,13 @@ static void s22dsppa_check(void)
     s22dspp();
 }
 
-/* S22DSPPA +021: "CLEAR KNOWNFLG". */
+/* S22DSPPA +021 -- p. 568: "CLEAR KNOWNFLG". */
 void s22dsppa_known(void)
 {
     tc_to(S22DSPPA + 021u, DOWNFLAG); /* ADRES KNOWNFLG */
 }
 
-/* S22DSPPA +023: A of ABCDE (LANDMARK's bits 13-15): "A=0,4,5,6,7
+/* S22DSPPA +023 -- p. 568: A of ABCDE (LANDMARK's bits 13-15): "A=0,4,5,6,7
  * ILLEGAL REDISPLAY". Then CCS on A less 2 (22SUBSCL less BIT14): "+ A=3
  * ILLEGAL REDISPLAY", "- A=1 KNOWN LMK  CHECK DE", "-0 A=2 UNKNOWN LMK,
  * DE MEANINGLESS". (A MASK leaves no overflow for the TS to skip on, nor
@@ -462,34 +461,35 @@ static void s22dspp(void)
     tc_to(S22DSPP, FALTON);
 }
 
-/* S22DSPP +1: "COMMON ERROR EXIT BACK TO DISPLAY". */
+/* S22DSPP +1 -- p. 568: "COMMON ERROR EXIT BACK TO DISPLAY". */
 void s22dspp_after_falton(void)
 {
     tc_at(S22DSPP + 1u);
     s22dsppa_display();
 }
 
-/* S22DSPP +2: the CCS's negative way, TC +2. */
+/* S22DSPP +2 -- p. 568: the CCS's negative way, TC +2. */
 void s22dspp_plus2(void)
 {
     tc_at(S22DSPP + 2u);
     s22dspp_known_landmark();
 }
 
-/* S22DSPP +3: the CCS's -0 way, TC S22ABDE. */
+/* S22DSPP +3 -- p. 568: the CCS's -0 way, TC S22ABDE. */
 void s22dspp_plus3(void)
 {
     tc_at(S22DSPP + 3u);
     s22abde();
 }
 
-/* S22DSPP +4: "SET KNOWNFLG". */
+/* S22DSPP +4 -- p. 568: "SET KNOWNFLG". */
 void s22dspp_known_landmark(void)
 {
     tc_to(S22DSPP + 4u, UPFLAG); /* ADRES KNOWNFLG */
 }
 
-/* S22DSPP +6: DE of ABCDE ("RESULT= 00077" masks it out of LANDMARK, to
+/* S22DSPP +6 -- p. 568: DE of ABCDE ("RESULT= 00077" masks it out of
+ * LANDMARK, to
  * 22SUBSCL): "DE=0,1 OK FOR BOTH N70,N71". Else a noun 71 request (8KK +1
  * zero) redisplays: "DE MUST= 0 OR 1"; for noun 70, "TEST DE= 50-57 OCTAL
  * FOR ADV. ORBIT" ("D=5 OR DE=50-57, OK FOR N70"), "DE NOT 50-57  ILLEGAL,
@@ -523,7 +523,7 @@ void s22dspp_after_knownflg(void)
     s22dspp();
 }
 
-/* S22ABDE: on in interpretive code. */
+/* S22ABDE -- p. 568: on in interpretive code. */
 void s22abde(void)
 {
     tc_at(S22ABDE);
@@ -555,8 +555,8 @@ static void de_gr_50(void)
     tc_to(DE_GR_50, TWO_PHSCHNG);
 }
 
-/* DE-GR-50 +4: the mark index 5 and the landmark target flags, as at
- * CALLR52. (CA FIVE leaves no overflow for the TS to skip on.) */
+/* DE-GR-50 +4 -- p. 569: the mark index 5 and the landmark target flags, as
+ * at CALLR52. (CA FIVE leaves no overflow for the TS to skip on.) */
 void de_gr_50_after_2phschng(void)
 {
     set_A(FIVE);
@@ -564,13 +564,13 @@ void de_gr_50_after_2phschng(void)
     tc_to(DE_GR_50 + 6u, UPFLAG); /* ADRES TARG2FLG */
 }
 
-/* DE-GR-50 +010. */
+/* DE-GR-50 +010 -- p. 569. */
 void de_gr_50_after_targ2flg(void)
 {
     tc_to(DE_GR_50 + 010u, DOWNFLAG); /* ADRES TARG1FLG */
 }
 
-/* DE-GR-50 +012: ADVORB, then the marks at DOV5N71. */
+/* DE-GR-50 +012 -- p. 569: ADVORB, then the marks at DOV5N71. */
 void de_gr_50_after_targ1flg(void)
 {
     tc_at(DE_GR_50 + 012u);

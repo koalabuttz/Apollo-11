@@ -1,17 +1,15 @@
 /* SPDX-License-Identifier: MIT */
-/* P37_P70.agc of the CM, part 4 (Comanche055 pp. 914-923, banks 31 and
- * 32): the "INTEGRATION CALLING SUBROUTINE" (RTENCK1, RTENCK2 and
- * RTENCK3), and the "V2(T1) COMPUTATION SUBROUTINE" (V2T100), which finds
- * the velocity just after the burn: one that "MEETS THE INPUT VELOCITY
- * CHANGE DESIRED (RTEDVD) IN A MINIMUM TIME", or if none is asked for
- * one that "MINIMIZES THE IMPULSE (DV)". */
+/* P37_P70.agc of the CM, part 4 (Comanche055 pp. 914-923, banks 31 and 32):
+ * the "INTEGRATION CALLING SUBROUTINE" (RTENCK1, RTENCK2 and RTENCK3), and
+ * the "V2(T1) COMPUTATION SUBROUTINE" (V2T100), which finds the velocity
+ * just after the burn: one that "MEETS THE INPUT VELOCITY CHANGE DESIRED
+ * (RTEDVD) IN A MINIMUM TIME", or if none is asked for one that "MINIMIZES
+ * THE IMPULSE (DV)". The faithful C is c64-port/src/cm_p37_p70.c. */
 #include "p37_p70.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
 #if COMANCHE055
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* ---- RTENCK1, RTENCK2 and RTENCK3 -- pp. 914-916 ---- */
 
@@ -96,8 +94,8 @@ static const word v2t100_words[] = {
 
 const struct interpretive_code V2T100_CODE = {032u, V2T100, COUNT(v2t100_words), v2t100_words};
 
-/* V2TERROR +1, after the EXIT: the program's abort with alarm 610 (TC
- * POODOO, OCT 00610): "NO SOLUTION IF LAMBDA LESS THAN 1". */
+/* V2TERROR +1 -- p. 918, after the EXIT: the program's abort with alarm 610
+ * (TC POODOO, OCT 00610): "NO SOLUTION IF LAMBDA LESS THAN 1". */
 void v2terror_after_exit(void)
 {
     tc_to(V2TERROR + 1u, POODOO); /* OCT 00610 */

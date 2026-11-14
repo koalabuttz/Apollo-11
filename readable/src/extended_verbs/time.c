@@ -76,7 +76,7 @@ void r33_after_enter(void)
         continue_at(UPDATIME);
         return;
     }
-    tc(R33 + 11u, ENDEXT);
+    tc(R33 + 013u, ENDEXT);
 }
 #else
 /* ---- V55 (bank 43) ---- */
@@ -113,7 +113,7 @@ void alintime_after_enter(void)
         continue_at(UPDATIME);
         return;
     }
-    tc(ALINTIME + 10u, ENDEXT);
+    tc(ALINTIME + 012u, ENDEXT);
 }
 #endif
 
@@ -132,10 +132,10 @@ void updatime(void)
     dxch(ADDRESS_OF(MPAC));
     dxch(ADDRESS_OF(DSPTEM2) + 1u); /* "INCREMENT" */
     das(ADDRESS_OF(MPAC));
-    tc(UPDATIME + 8u, TPAGREE);
+    tc(UPDATIME + 010u, TPAGREE);
 }
 
-/* UPDATIME +9 -- LM p. 275, CM p. 246: the "NEW CLOCK" added to what the
+/* UPDATIME +011 -- LM p. 275, CM p. 246: the "NEW CLOCK" added to what the
  * clock counted meanwhile. */
 void updatime_after_tpagree(void)
 {
@@ -180,7 +180,7 @@ void attck2_plus1(void)
         return;
     }
     set_A(BITS13_14_15);
-    wor_channel(014);
+    wor_channel(CHAN14);
     continue_at(TASKOVER); /* TCF TASKOVER */
 }
 #endif

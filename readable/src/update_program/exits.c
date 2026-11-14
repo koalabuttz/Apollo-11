@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* UPDATE_PROGRAM.agc, part 5: the ways out of P27, UPOUT (the normal
- * finish), UPERROUT (the error exits) and UPACTOFF; LM pages 1394-1396,
- * CM pages 1506-1507. */
+ * finish), UPERROUT (the error exits) and UPACTOFF; LM pages 1394-1396, CM
+ * pages 1506-1507. The faithful C is c64-port/src/lm_update.c and
+ * cm_update.c. */
 #include "update_program.h"
 
 /* UPOUT -- LM p. 1394, CM p. 1506: "NORMAL FINISH OF P27". "RELEASE GRAB
@@ -46,22 +47,24 @@ void uperrout(void)
     tc_to(UPERROUT, FALTON);
 }
 
-/* UPERROUT +1, where FALTON returns: "GO TO COMMON UPDATE PROGRAM EXIT". */
+/* UPERROUT +1 -- LM p. 1396, CM p. 1507, where FALTON returns: "GO TO COMMON
+ * UPDATE PROGRAM EXIT". */
 void uperrout_after_falton(void)
 {
     upout();
 }
 
-/* UPERROUT +2: "TURN ON 'OPERATOR ERROR' LIGHT". "THE PURPOSE OF UPERROUT
- * +2 EXIT IS TO PROVIDE AN ERROR EXIT WHICH DOES NOT RESET ANY RESTART
- * GROUPS": UPERROR comes here, before P27 has set one. */
+/* UPERROUT +2 -- LM p. 1396, CM p. 1507: "TURN ON 'OPERATOR ERROR' LIGHT".
+ * "THE PURPOSE OF UPERROUT +2 EXIT IS TO PROVIDE AN ERROR EXIT WHICH DOES
+ * NOT RESET ANY RESTART GROUPS": UPERROR comes here, before P27 has set
+ * one. */
 void uperrout_quiet(void)
 {
     tc_to((word)(UPERROUT + 2u), FALTON);
 }
 
-/* UPERROUT +3, where FALTON returns: "TURN OFF'UPLINK ACTIVITY'LIGHT", and
- * "EXTENDED VERB EXIT". */
+/* UPERROUT +3 -- LM p. 1396, CM p. 1507, where FALTON returns: "TURN
+ * OFF'UPLINK ACTIVITY'LIGHT", and "EXTENDED VERB EXIT". */
 void uperrout_quiet_after_falton(void)
 {
     tc_at((word)(UPERROUT + 3u)); /* TC UPACTOFF */

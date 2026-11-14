@@ -29,9 +29,9 @@ static void phi(void)
     com(); /* "CDUX - 7.25 DEG" */
 }
 
-/* AMBGUPDT: "CHECK FOR RCS AUTOPILOT": FLAGWRD6's bit 15 clear and bit 14
- * set ("BIT15 = 0, BIT14 = 1"); "IF NOT RCS, EXIT" (ENDOFJOB), "TO PROTECT
- * TVC DAP ON SWITCHOVER". Then SIN(PSI). */
+/* AMBGUPDT -- p. 1037: "CHECK FOR RCS AUTOPILOT": FLAGWRD6's bit 15 clear
+ * and bit 14 set ("BIT15 = 0, BIT14 = 1"); "IF NOT RCS, EXIT" (ENDOFJOB),
+ * "TO PROTECT TVC DAP ON SWITCHOVER". Then SIN(PSI). */
 void ambgupdt(void)
 {
     ca(ADDRESS_OF(FLAGWRD6));
@@ -48,8 +48,8 @@ void ambgupdt(void)
     tc_to(AMBGUPDT + 7u, SPSIN); /* TC SPSIN2 */
 }
 
-/* AMBGUPDT +010, after SPSIN: "CALCULATE AMGB": AMGB1, SIN(PSI). Then
- * COS(PSI). (A TS that overflows, when SPSIN's caller left one in A,
+/* AMBGUPDT +010 -- p. 1037, after SPSIN: "CALCULATE AMGB": AMGB1, SIN(PSI).
+ * Then COS(PSI). (A TS that overflows, when SPSIN's caller left one in A,
  * skips the CA CDUZ: SPCOS runs on +1 or -1.) */
 void ambgupdt_sin_psi(void)
 {
@@ -57,7 +57,8 @@ void ambgupdt_sin_psi(void)
     tc_to(AMBGUPDT + 012u, SPCOS); /* TC SPCOS2 */
 }
 
-/* AMBGUPDT +013, after SPCOS: COS(PSI) in CAPSI, "MUST CHECK FOR GIMBAL
+/* AMBGUPDT +013 -- p. 1037, after SPCOS: COS(PSI) in CAPSI, "MUST CHECK FOR
+ * GIMBAL
  * LOCK". Then COS(PHI), "= 7.25  DEGREES JET QUAD ANGULAR OFFSET". (An
  * overflow at the TS skips the CAF: PHI from +1 or -1.) */
 void ambgupdt_cos_psi(void)
@@ -67,9 +68,9 @@ void ambgupdt_cos_psi(void)
     tc_to(AMBGUPDT + 020u, SPCOS); /* TC SPCOS1 */
 }
 
-/* AMBGUPDT +021, after SPCOS: AMGB8, COS(PHI), and AMGB4, COS(PSI)COS(PHI).
- * Then SIN(PHI). (An overflow at the TS skips the EXTEND: MP CAPSI runs as
- * MASK CAPSI.) */
+/* AMBGUPDT +021 -- p. 1037, after SPCOS: AMGB8, COS(PHI), and AMGB4,
+ * COS(PSI)COS(PHI). Then SIN(PHI). (An overflow at the TS skips the EXTEND:
+ * MP CAPSI runs as MASK CAPSI.) */
 void ambgupdt_cos_phi(void)
 {
     if (ts(ADDRESS_OF(AMGB8)))
@@ -82,7 +83,7 @@ void ambgupdt_cos_phi(void)
     tc_to(AMBGUPDT + 031u, SPSIN); /* TC SPSIN1 */
 }
 
-/* AMBGUPDT +032, after SPSIN: AMGB5, SIN(PHI), and AMGB7,
+/* AMBGUPDT +032 -- p. 1037, after SPSIN: AMGB5, SIN(PHI), and AMGB7,
  * -COS(PSI)SIN(PHI); then ENDOFJOB. (An overflow at the TS skips the
  * EXTEND, as at AMGB8. A holds no overflow at the TS AMGB7: a product, or
  * the MASK of +1 or -1, complemented.) */

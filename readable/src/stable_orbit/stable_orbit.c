@@ -46,24 +46,11 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 #if LUMINARY099
 #define STABLE_ORBIT_BANK 034u
 #else
 #define STABLE_ORBIT_BANK 04u
 #endif
-
-/* A label's address in its bank (02000-03777). */
-#define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
-
-/* TC at, to a routine out of the file or to INTPRET: Q gets the return
- * (for INTPRET, the first interpretive word), and the routine runs
- * next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
 
 static void vndsply(void);
 static void p38_option(void);
@@ -73,7 +60,8 @@ static void p39_p79a(void);
 
 /* ---- P38 and P78 -- LM pp. 724-725, CM pp. 526-527 ---- */
 
-/* P38: "THIS VEHICLE ACTIVE" (AVFLAGA, the LM's by BANKCALL), */
+/* P38 -- LM p. 724, CM p. 526: "THIS VEHICLE ACTIVE" (AVFLAGA, the LM's by
+ * BANKCALL), */
 void p38(void)
 {
 #if LUMINARY099
@@ -83,7 +71,8 @@ void p38(void)
 #endif
 }
 
-/* and on past P78's AVFLAGP (the LM's TC +3, the CM's TC +2). */
+/* LM P38 +2, CM P38 +1 -- LM p. 724, CM p. 526: and on past P78's AVFLAGP
+ * (the LM's TC +3, the CM's TC +2). */
 void p38_active(void)
 {
 #if LUMINARY099
@@ -94,7 +83,7 @@ void p38_active(void)
     p78_active();
 }
 
-/* P78: "OTHER VEHICLE ACTIVE" (AVFLAGP); */
+/* P78 -- LM p. 724, CM p. 526: "OTHER VEHICLE ACTIVE" (AVFLAGP); */
 void p78(void)
 {
 #if LUMINARY099
@@ -104,7 +93,8 @@ void p78(void)
 #endif
 }
 
-/* then either "SET UPDATFLG, TRACKFLG" (P20FLGON). */
+/* LM P78 +2, CM P78 +1 -- LM p. 724, CM p. 526: then either "SET UPDATFLG,
+ * TRACKFLG" (P20FLGON). */
 void p78_active(void)
 {
 #if LUMINARY099
@@ -114,8 +104,9 @@ void p78_active(void)
 #endif
 }
 
-/* "DISPLAY TIG", verb 06 noun 33 (VNDSPLY; the LM's NN 2 first, which the
- * CM's interpretive code sets), */
+/* LM P78 +4, CM P78 +2 -- LM p. 724, CM p. 526: "DISPLAY TIG", verb 06 noun
+ * 33 (VNDSPLY; the LM's NN 2 first, which the CM's interpretive code
+ * sets), */
 void p38_tig(void)
 {
 #if LUMINARY099
@@ -311,7 +302,8 @@ static void p38_intercept(void)
     vndsply();
 }
 
-/* and to the interpreter, for JUNCTN1_CODE. */
+/* JUNCTN1 -1 -- LM p. 725, CM p. 527: and to the interpreter, for
+ * JUNCTN1_CODE. */
 void p38_intercept_done(void)
 {
 #if LUMINARY099
@@ -390,7 +382,8 @@ static const word junctn1_words[] = {
     /* P39P79 */ ORDER(EXIT),
 };
 
-/* P39P79's EXIT: "FOR P39 AND P79" (TC DSPLY81). */
+/* P39P79 +1 -- LM p. 727, CM p. 529: P39P79's EXIT: "FOR P39 AND P79" (TC
+ * DSPLY81). */
 void p39p79_exit(void)
 {
     tc_at(P39P79 + 1u);
@@ -424,8 +417,8 @@ static const word mainrtn1_words[] = {
     /* DSPLY58 */ ORDER(EXIT),
 };
 
-/* DSPLY58's EXIT: "DISPLAY HP, DELTA V, DELTA V (FINAL)", verb 06 noun 58
- * (VNDSPLY), */
+/* DSPLY58 +1 -- LM p. 727, CM p. 529: DSPLY58's EXIT: "DISPLAY HP, DELTA V,
+ * DELTA V (FINAL)", verb 06 noun 58 (VNDSPLY), */
 void dsply58_exit(void)
 {
     set_A(V06N58SR);
@@ -433,7 +426,8 @@ void dsply58_exit(void)
     vndsply();
 }
 
-/* then DSPLY81: "DISPLAY DELTA V (LV)", verb 06 noun 81, */
+/* DSPLY81 -- LM p. 727, CM p. 529: then DSPLY81: "DISPLAY DELTA V (LV)",
+ * verb 06 noun 81, */
 void dsply81(void)
 {
     set_A(V06N81SR);
@@ -441,7 +435,8 @@ void dsply81(void)
     vndsply();
 }
 
-/* and to the interpreter, for DSPLY81_CODE. */
+/* DSPLY81 +2 -- LM p. 727, CM p. 529: and to the interpreter, for
+ * DSPLY81_CODE. */
 void dsply81_done(void)
 {
     tc_to(DSPLY81 + 2u, INTPRET);
@@ -458,7 +453,7 @@ static const word dsply81_words[] = {
 
 /* ---- P39 and P79 -- LM pp. 728-729, CM p. 530 ---- */
 
-/* P39: "THIS VEHICLE ACTIVE" (AVFLAGA), */
+/* P39 -- LM p. 728, CM p. 530: "THIS VEHICLE ACTIVE" (AVFLAGA), */
 void p39(void)
 {
 #if LUMINARY099
@@ -468,7 +463,8 @@ void p39(void)
 #endif
 }
 
-/* and its time to prepare, ATIGINC (TC P39/P79A); */
+/* LM P39 +2, CM P39 +1 -- LM p. 728, CM p. 530: and its time to prepare,
+ * ATIGINC (TC P39/P79A); */
 void p39_active(void)
 {
     dca(ADDRESS_OF(ATIGINC)); /* EXTEND; DCA ATIGINC */
@@ -480,7 +476,7 @@ void p39_active(void)
     p39_p79a();
 }
 
-/* P79: "OTHER VEHICLE ACTIVE" (AVFLAGP), */
+/* P79 -- LM p. 728, CM p. 530: "OTHER VEHICLE ACTIVE" (AVFLAGP), */
 void p79(void)
 {
 #if LUMINARY099
@@ -490,15 +486,15 @@ void p79(void)
 #endif
 }
 
-/* and PTIGINC. */
+/* LM P79 +2, CM P79 +1 -- LM p. 728, CM p. 530: and PTIGINC. */
 void p79_active(void)
 {
     dca(ADDRESS_OF(PTIGINC)); /* EXTEND; DCA PTIGINC */
     p39_p79a();
 }
 
-/* P39/P79A: KT, the "TIME TO PREPARE FOR BURN", then "SET UPDATFLG,
- * TRACKFLG" (P20FLGON), */
+/* P39/P79A -- LM p. 728, CM p. 530: KT, the "TIME TO PREPARE FOR BURN", then
+ * "SET UPDATFLG, TRACKFLG" (P20FLGON), */
 static void p39_p79a(void)
 {
     dxch(ADDRESS_OF(KT)); /* "TIME TO PREPARE FOR BURN" */
@@ -509,7 +505,8 @@ static void p39_p79a(void)
 #endif
 }
 
-/* and to the interpreter, for P39_CODE. */
+/* LM P39/P79A +3, CM P39/P79A +2 -- LM p. 728, CM p. 530: and to the
+ * interpreter, for P39_CODE. */
 void p39_p79a_done(void)
 {
 #if LUMINARY099
@@ -618,13 +615,15 @@ static void tc_rtrn_word(void)
     continue_at(instruction);
 }
 
-/* GOFLASH's returns: "TERMINATE" (GOTOPOOH), */
+/* VNDSPLY +6 -- LM p. 730, CM p. 532: GOFLASH's returns: "TERMINATE"
+ * (GOTOPOOH), */
 void vndsply_terminate(void)
 {
     continue_at(GOTOPOOH);
 }
 
-/* "PROCEED" (TC RTRN): the caller's return, */
+/* VNDSPLY +7 -- LM p. 730, CM p. 532: "PROCEED" (TC RTRN): the caller's
+ * return, */
 void vndsply_proceed(void)
 {
     tc_at(VNDSPLY + 7u);
@@ -643,7 +642,8 @@ void rtrn(void)
 }
 #endif
 
-/* and "RECYCLE" (TCF -5): flashed again. */
+/* VNDSPLY +010 -- LM p. 730, CM p. 532: and "RECYCLE" (TCF -5): flashed
+ * again. */
 void vndsply_recycle(void)
 {
     vndsply_flash();

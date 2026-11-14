@@ -1,11 +1,13 @@
 /* SPDX-License-Identifier: MIT */
-/* CONIC_SUBROUTINES.agc, the conics' constants in bank 4 (LM p. 1185, CM
- * p. 1288): "DO NOT DISTURB THE ORDER OF THESE CDS, OVERLAYS HAVE BEEN
- * MADE." The interpretive code reads them in the rope; these are their
- * words, as yaYUL assembles them, which the side-by-side test holds to the
- * rope. BEE17's single zero and the high word of D1/8 after it read as a
- * double word 1.0 B-17; BEE19 and BEE22 (1.0 B-19 and B-22) are the words
- * before D1/32 and D1/256, by EQUALS, as KEPZERO is LO6ZEROS. */
+/* CONIC_SUBROUTINES.agc, the conics' constants in bank 4 (LM p. 1185, CM p.
+ * 1288): "DO NOT DISTURB THE ORDER OF THESE CDS, OVERLAYS HAVE BEEN MADE."
+ * The interpretive code reads them in the rope; these are their words, as
+ * yaYUL assembles them, which the side-by-side test holds to the rope.
+ * BEE17's single zero and the high word of D1/8 after it read as a double
+ * word 1.0 B-17; BEE19 and BEE22 (1.0 B-19 and B-22) are the words before
+ * D1/32 and D1/256, by EQUALS, as KEPZERO is LO6ZEROS. The faithful C is
+ * c64-port/src/lm_conic_compiled.c (with lm_conic_checkctr.c) and
+ * cm_conics.c. */
 #include "conics.h"
 #include "../agc/names.h"
 

@@ -82,7 +82,8 @@ static void waitlist_after_inhint(const word task[2])
     dly2();
 }
 
-/* DLY2 -1: DELAYJOB's entry (TS WAITADR, then DLY2). */
+/* DLY2 -1 -- LM p. 1119, CM p. 1223: DELAYJOB's entry (TS WAITADR, then
+ * DLY2). */
 void dly2_minus1(void)
 {
     ts(ADDRESS_OF(WAITADR));
@@ -435,13 +436,13 @@ void svct3(void)
     continue_at(NOVAC);
 }
 
-/* SVCT3 +15: TCF TASKOVER after the NOVAC. */
+/* SVCT3 +15 -- LM p. 1121, CM p. 1225: TCF TASKOVER after the NOVAC. */
 void svct3_after_novac(void)
 {
     continue_at(TASKOVER);
 }
 
-/* SVCT3X +2: TC SVCT3 after the FIXDELAY. */
+/* SVCT3X +2 -- LM p. 1121, CM p. 1225: TC SVCT3 after the FIXDELAY. */
 void svct3x_after_fixdelay(void)
 {
     tc_at((word)(SVCT3X + 2u));
@@ -473,6 +474,10 @@ void longcall(const word task[2])
  * delay first: one that is not positive is alarm 1204 (LONGPOOH). */
 void lngcall2(void)
 {
+#if LUMINARY099
+    bool negative = false;
+#endif
+
     lxch(ADDRESS_OF(LONGEXIT) + 1u);
     set_A(TWO);
     A = add16(A, Q); /* ADS Q */
@@ -482,18 +487,19 @@ void lngcall2(void)
 #if LUMINARY099
     set_A(LONGTIME(0));
     switch (ccs_register(A_ADDRESS)) {
-    case POSITIVE: continue_at(LONGCYCL); return;
-    case NEGATIVE: break;
-    case IS_PLUS_ZERO:
-    case IS_MINUS_ZERO:
-        set_A(LONGTIME(1));
+    case POSITIVE: continue_at(LONGCYCL); return; /* "HI-ORDER OK" */
+    case IS_PLUS_ZERO: break;                     /* "CHECK LO-ORDER" */
+    case NEGATIVE: negative = true; break;        /* "NEG. DT": to LONGPOOH */
+    case IS_MINUS_ZERO: break; /* (the CCS's fourth word is the check of the low order) */
+    }
+    if (!negative) {
+        set_A(LONGTIME(1)); /* "CHECK LO-ORDER FOR ZERO OR NEGATIVE." */
         if (A != 0u && !(A & 0100000u)) {
             continue_at(LONGCYCL);
             return;
         }
-        break;
     }
-    /* LONGPOOH */
+    /* LONGPOOH: "BAD DELTA-TIME. ABORT" */
     dxch(ADDRESS_OF(LONGEXIT));
     tc_at((word)(LONGPOOH + 3u));
     continue_at(POODOO1);

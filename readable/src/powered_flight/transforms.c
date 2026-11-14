@@ -83,50 +83,54 @@ const struct interpretive_code STAR_NBSM_STAR_CODE = {
 
 static void c_star_mm_star_n2(void);
 
-/* After CDU*SMNB's EXIT: the sines and cosines of the CDU counters'
- * angles (CDUTRIGS), */
+/* CDU*SMNB +1 -- LM p. 1262, CM p. 1368: After CDU*SMNB's EXIT: the sines
+ * and cosines of the CDU counters' angles (CDUTRIGS), */
 void cdu_star_smnb_plus1(void)
 {
     tc_at(CDU_STAR_SMNB + 1u);
     cdutrigs();
 }
 
-/* and on at C*MM*N1. */
+/* CDU*SMNB +2 -- LM p. 1262, CM p. 1368: and on at C*MM*N1. */
 void cdu_star_smnb_plus2(void)
 {
     c_star_mm_star_n1();
 }
 
-/* After TRG*SMNB's EXIT: those of CDUSPOT's angles (CD*TR*GS), on at
- * C*MM*N1. */
+/* TRG*SMNB +1 -- LM p. 1262, CM p. 1368: After TRG*SMNB's EXIT: those of
+ * CDUSPOT's angles (CD*TR*GS), on at C*MM*N1. */
 void trg_star_smnb_plus1(void)
 {
     tc_at(TRG_STAR_SMNB + 1u);
     cd_star_tr_star_gs();
 }
 
-/* C*MM*N1: "AX*SR*T EXPECTS VECTOR IN VBUF" (MPACVBUF), */
+/* C*MM*N1 -- LM p. 1262, CM p. 1368: "AX*SR*T EXPECTS VECTOR IN VBUF"
+ * (MPACVBUF), */
 void c_star_mm_star_n1(void)
 {
     tc_at(C_STAR_MM_STAR_N1);
     continue_at(MPACVBUF);
 }
 
-/* then -3: "SIGNAL FOR SM TO NB TRANSFORMATION." */
+/* C*MM*N1 +1 -- LM p. 1262, CM p. 1368: then -3: "SIGNAL FOR SM TO NB
+ * TRANSFORMATION." */
 void c_star_mm_star_n1_plus1(void)
 {
     set_A(negate(THREE));
     c_star_mm_star_n2();
 }
 
-/* C*MM*N2: AX*SR*T, which goes back to the word after the TC, */
+/* C*MM*N2 -- LM p. 1262, CM p. 1368: AX*SR*T, which goes back to the word
+ * after the TC, */
 static void c_star_mm_star_n2(void)
 {
     tc_at(C_STAR_MM_STAR_N2);
     ax_star_sr_star_t();
 }
 
-/* and back into the interpreter: VLOAD VBUF, RVQ. */
+/* C*MM*N2 +1 -- LM p. 1262, CM p. 1368: and back into the interpreter: VLOAD
+ * VBUF, RVQ. */
 void c_star_mm_star_n2_plus1(void)
 {
     tc_at(C_STAR_MM_STAR_N2 + 1u);
@@ -135,34 +139,36 @@ void c_star_mm_star_n2_plus1(void)
 
 /* ---- From NB to SM -- LM pp. 1262-1263 (CM pp. 1368-1369) ---- */
 
-/* After CDU*NBSM's EXIT: CDUTRIGS, */
+/* CDU*NBSM +1 -- LM p. 1262, CM p. 1368: After CDU*NBSM's EXIT: CDUTRIGS, */
 void cdu_star_nbsm_plus1(void)
 {
     tc_at(CDU_STAR_NBSM + 1u);
     cdutrigs();
 }
 
-/* and on at C*MM*N3. */
+/* CDU*NBSM +2 -- LM p. 1262, CM p. 1369: and on at C*MM*N3. */
 void cdu_star_nbsm_plus2(void)
 {
     c_star_mm_star_n3();
 }
 
-/* After TRG*NBSM's EXIT: CD*TR*GS, on at C*MM*N3. */
+/* TRG*NBSM +1 -- LM p. 1262, CM p. 1369: After TRG*NBSM's EXIT: CD*TR*GS, on
+ * at C*MM*N3. */
 void trg_star_nbsm_plus1(void)
 {
     tc_at(TRG_STAR_NBSM + 1u);
     cd_star_tr_star_gs();
 }
 
-/* C*MM*N3: the vector to VBUF "FOR AX*SR*T", */
+/* C*MM*N3 -- LM p. 1262, CM p. 1369: the vector to VBUF "FOR AX*SR*T", */
 void c_star_mm_star_n3(void)
 {
     tc_at(C_STAR_MM_STAR_N3);
     continue_at(MPACVBUF);
 }
 
-/* then +3, "SIGNAL FOR NB TO SM TRANSFORMATION", and C*MM*N2. */
+/* C*MM*N3 +1 -- LM p. 1262, CM p. 1369: then +3, "SIGNAL FOR NB TO SM
+ * TRANSFORMATION", and C*MM*N2. */
 void c_star_mm_star_n3_plus1(void)
 {
     set_A(THREE);
@@ -172,13 +178,13 @@ void c_star_mm_star_n3_plus1(void)
 /* ---- With the sines and cosines as they are -- LM p. 1263 (CM p.
  * 1369) ---- */
 
-/* After *SMNB*'s EXIT: C*MM*N1. */
+/* *SMNB* +1 -- LM p. 1263, CM p. 1369: After *SMNB*'s EXIT: C*MM*N1. */
 void star_smnb_star_plus1(void)
 {
     c_star_mm_star_n1();
 }
 
-/* After *NBSM*'s EXIT: C*MM*N3. */
+/* *NBSM* +1 -- LM p. 1263, CM p. 1369: After *NBSM*'s EXIT: C*MM*N3. */
 void star_nbsm_star_plus1(void)
 {
     c_star_mm_star_n3();

@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* ORBITAL_INTEGRATION.agc, QUALITY1 and QUALITY2 (LM pp. 1247-1248), in
- * the listing's notation (src/interpreter/notation.h). The LM's only: the
- * CM keeps them in RT8_OP_CODES.
+/* ORBITAL_INTEGRATION.agc, QUALITY1 and QUALITY2 (LM pp. 1247-1248), in the
+ * listing's notation (src/interpreter/notation.h). The LM's only: the CM
+ * keeps them in RT8_OP_CODES. The faithful C is
+ * c64-port/src/lm_orbital_integration.c and cm_orbital_integration.c.
  *
  * COMTERM calls QUALITY1 when it has added the oblateness to FV. For the
  * earth there is nothing more: on to NBRANCH. For the moon, QUALITY2

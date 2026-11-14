@@ -9,10 +9,6 @@
 #include "../agc/agc.h"
 #include "../interpreter/notation.h"
 
-#ifndef COUNT
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-#endif
-
 /* A fixed label's bank, and its address in the bank, from its I_ value
  * (bank * 02000 + its place in the bank). */
 #ifndef CODE_BANK

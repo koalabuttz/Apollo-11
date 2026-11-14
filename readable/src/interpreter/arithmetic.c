@@ -46,13 +46,13 @@ void vad_plus1(void)
     read_indexed(READ_HISCALAR);
     das(MPAC_AT(3u));
     if (!A_is_zero()) {
-        tc_at(VAD + 8u);
+        tc_at(VAD + 010u);
         overflwy();
     }
     read_indexed(READ_CHAN5);
     das(MPAC_AT(5u));
     if (!A_is_zero()) {
-        tc_at(VAD + 15u);
+        tc_at(VAD + 017u);
         overflwz();
     }
     read_indexed(READ_LCHAN);
@@ -162,7 +162,7 @@ void bvsu(void)
     dcom();
     das(MPAC_AT(3u));
     if (!A_is_zero()) {
-        tc_at(BVSU + 9u);
+        tc_at(BVSU + 011u);
         overflwy();
     }
     dca(indexed(4u, ADDRWD));
@@ -170,7 +170,7 @@ void bvsu(void)
     dcom();
     das(MPAC_AT(5u));
     if (!A_is_zero()) {
-        tc_at(BVSU + 19u);
+        tc_at(BVSU + 023u);
         overflwz();
     }
     bdsu();
@@ -214,7 +214,7 @@ void dmp(void)
     dmpsub_minus1();
 }
 
-/* DMPSUB -1: "(PROLOGUE FOR SETTING ADDRWD.)" */
+/* DMPSUB -1 -- LM p. 1031, CM p. 1136: "(PROLOGUE FOR SETTING ADDRWD.)" */
 void dmpsub_minus1(void)
 {
     ts(ADDRESS_OF(ADDRWD));
@@ -242,8 +242,8 @@ void dmpsub(void)
     dmpsub2();
 }
 
-/* DMPSUB2: major of the operand (in MPTEMP) times what A holds, then times
- * the major of MPAC. */
+/* DMPSUB2 -- LM p. 1031, CM p. 1136: major of the operand (in MPTEMP) times
+ * what A holds, then times the major of MPAC. */
 void dmpsub2(void)
 {
     mp_at(ADDRESS_OF(MPTEMP));
@@ -269,9 +269,9 @@ void roundsub_plus1(void)
     vround();
 }
 
-/* VROUND: "BUT WE NEEDN'T TAKE THE TIME FOR VECTORS." MPAC +2 doubled
- * overflows when it is .5 or more in magnitude, and the overflow is the
- * rounding bit, added on up the words. */
+/* VROUND -- LM p. 1032, CM p. 1137: "BUT WE NEEDN'T TAKE THE TIME FOR
+ * VECTORS." MPAC +2 doubled overflows when it is .5 or more in magnitude,
+ * and the overflow is the rounding bit, added on up the words. */
 void vround(void)
 {
     xch(MPAC_AT(2u));
@@ -293,7 +293,7 @@ void vround(void)
     setovf2();
 }
 
-/* SETOVF2: "(RARE)." */
+/* SETOVF2 -- LM p. 1032, CM p. 1137: "(RARE)." */
 void setovf2(void)
 {
     ts(ADDRESS_OF(OVFIND));
@@ -330,7 +330,7 @@ void dotsub(void)
 
     ca(ADDRESS_OF(DOTINC)); /* "ADVANCE ADDRWD TO Y COMPONENT" */
     ads(ADDRESS_OF(ADDRWD));
-    tc_at(DOTSUB + 10u);
+    tc_at(DOTSUB + 012u);
     dmpsub();
     dxch(MPAC_AT(1u)); /* "ACCUMULATE PARTIAL PRODUCTS." */
     das(ADDRESS_OF(BUF) + 1u);
@@ -342,12 +342,12 @@ void dotsub(void)
     dxch(MPAC_AT(0u));
     ca(ADDRESS_OF(DOTINC));
     ads(ADDRESS_OF(ADDRWD));
-    tc_at(DOTSUB + 22u);
+    tc_at(DOTSUB + 026u);
     dmpsub();
     enddot();
 }
 
-/* ENDDOT: "LEAVE FINAL ACCUMULATION IN MPAC." */
+/* ENDDOT -- LM p. 1033, CM p. 1138: "LEAVE FINAL ACCUMULATION IN MPAC." */
 void enddot(void)
 {
     dxch(ADDRESS_OF(BUF) + 1u);
@@ -390,8 +390,8 @@ void poly(void)
     polycom();
 }
 
-/* POLYCOM: "INCOMING X WILL BE MOVED TO VBUF, SO SET ADDRWD SO DMPSUB WILL
- * MPY BY VBUF." */
+/* POLYCOM -- LM p. 1034, CM p. 1139: "INCOMING X WILL BE MOVED TO VBUF, SO
+ * SET ADDRWD SO DMPSUB WILL MPY BY VBUF." */
 static void polycom(void)
 {
     set_A(LVBUF);
@@ -402,8 +402,9 @@ static void polycom(void)
     poly2();
 }
 
-/* POLY2, POLYLOOP: "MULTIPLY BY X", "ADD IN NEXT COEFFICIENT" ("USER'S
- * RESPONSIBILITY TO ASSURE NO OVFLOW"), and loop on POLYCNT. */
+/* POLY2 -- LM p. 1035, CM p. 1140, POLYLOOP: "MULTIPLY BY X", "ADD IN NEXT
+ * COEFFICIENT" ("USER'S RESPONSIBILITY TO ASSURE NO OVFLOW"), and loop on
+ * POLYCNT. */
 static void poly2(void)
 {
     for (;;) {
@@ -472,7 +473,8 @@ void tpagree(void)
     argzero2();
 }
 
-/* ARGZERO2: "ALWAYS SKIPPING UNLESS ARGZERO." "RETURN VIA L." */
+/* ARGZERO2 -- LM p. 1036, CM p. 1141: "ALWAYS SKIPPING UNLESS ARGZERO."
+ * "RETURN VIA L." */
 static void argzero2(void)
 {
     if (!ts(MPAC_AT(0u))) ts(MPAC_AT(1u));

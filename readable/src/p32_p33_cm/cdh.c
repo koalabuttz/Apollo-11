@@ -1,14 +1,14 @@
 /* SPDX-License-Identifier: MIT */
-/* P32-P33_P72-P73.agc (Comanche055 pp. 675-682): the subroutines of the
- * CSI and CDH computations, from ADVANCE to CDHMVR, the LM's (src/p32_p35/
+/* P32-P33_P72-P73.agc (Comanche055 pp. 675-682): the subroutines of the CSI
+ * and CDH computations, from ADVANCE to CDHMVR, the LM's (src/p32_p35/
  * cdh.c) cut by SETLOC into five banks. ADVANCE (bank 37) brings both
  * vehicles to TIG and into the passive vehicle's orbital plane, by ROTATE
  * (bank 5); INTINT2C and INTINT3P (bank 31) integrate a state vector from
  * TCSI to TCDH and from TCDH to TTPI; S32/33.1 (bank 35) shows the delta V
- * in local vertical coordinates and turns it into reference coordinates,
- * by S32/33.X's matrix (bank 13); CDHMVR (bank 5, after ROTATE) finds the
- * CDH burn, the one that puts the active vehicle on an orbit concentric
- * with the passive vehicle's.
+ * in local vertical coordinates and turns it into reference coordinates, by
+ * S32/33.X's matrix (bank 13); CDHMVR (bank 5, after ROTATE) finds the CDH
+ * burn, the one that puts the active vehicle on an orbit concentric with the
+ * passive vehicle's. The faithful C is c64-port/src/cm_p32_p33.c.
  *
  * All interpretive: each stretch's words are a table the readable
  * interpreter runs. Two words differ from the LM's: INTINT3P's zero is
@@ -19,8 +19,6 @@
 #include "../agc/names.h"
 
 #if COMANCHE055
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* ---- ADVANCE (bank 37, p. 675) ---- */
 

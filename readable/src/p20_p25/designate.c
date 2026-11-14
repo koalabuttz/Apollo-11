@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 6 (Luminary099 pp. 538-552): the rendezvous radar's
- * designate, from RRDESSM to DODESEND.
+ * designate, from RRDESSM to DODESEND. The faithful C is
+ * c64-port/src/lm_p20_p25.c.
  *
  * RRDESSM, an interpretive routine, points the antenna along a line of
  * sight known in stable member axes (RRTARGET): RRANGLES finds its gimbal
@@ -35,8 +36,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- RRDESSM ---- */
 
 /* RRDESSM -- p. 538: the return in DESRET (STQ); RRNBSW clear (RRTARGET
@@ -58,20 +57,22 @@ static const word rrdessm_words[] = {
     ORDER(EXIT),
 };
 
-/* RRDESSM +013 -- the present mode's angles (MODEA) against its limits. */
+/* RRDESSM +013 -- p. 539: the present mode's angles (MODEA) against its
+ * limits. */
 void rrdessm_after_exit(void)
 {
     inhint();
     tc_to(RRDESSM + 014u, RRLIMCHK); /* ADRES MODEA */
 }
 
-/* RRLIMCHK's +2: "NOT IN CURRENT MODE": TC +3, on with Q at OKDESSM. */
+/* OKDESSM -1 -- p. 539: RRLIMCHK's +2: "NOT IN CURRENT MODE": TC +3, on with
+ * Q at OKDESSM. */
 void rrdessm_not_in_mode(void)
 {
     tc_to(OKDESSM - 1u, OKDESSM + 2u);
 }
 
-/* STARTDES -- p. 540: "STARTDES IS ENTERED WHEN WE ARE READY TO BEGIN
+/* STARTDES +1 -- p. 540: "STARTDES IS ENTERED WHEN WE ARE READY TO BEGIN
  * DESIGNATION." The return one on; the designate bit set (CS, MASK, ADS:
  * set if clear); during a reposition the counters are already set up
  * ("ECTR ALREADY SET UP."). Else SETRRECR, "SET UP ERROR COUNTERS.", and
@@ -94,8 +95,8 @@ static void startdes(void)
     startdes_plus1();
 }
 
-/* OKDESSM: "INCREMENT SAYS NO VEHICLE MANEUVER REQ.", and STARTDES: "SHOW
- * DESIGNATE REQUIRED". */
+/* OKDESSM -- p. 539: "INCREMENT SAYS NO VEHICLE MANEUVER REQ.", and
+ * STARTDES: "SHOW DESIGNATE REQUIRED". */
 void okdessm(void)
 {
     incr(ADDRESS_OF(DESRET));
@@ -109,8 +110,8 @@ void startdes_after_setrrecr(void)
     tc_to(STARTDES + 011u, WAITLIST); /* 2CADR BEGDES */
 }
 
-/* DESRTRN: "SET EXIT" to the caller's return, one on again, through
- * BANKJUMP. */
+/* DESRTRN -- p. 541: "SET EXIT" to the caller's return, one on again,
+ * through BANKJUMP. */
 static void desrtrn(void)
 {
     relint();
@@ -130,9 +131,9 @@ void desretrn(void)
         tc_to(DESRETRN + 3u, ENDOFJOB); /* "NO" */
 }
 
-/* NORDSTAL: "ZERO RADCADR TO WIPE OUT ANYONE WAITING IN RADSTALL SINCE WE
- * ARE NOW RETURNING TO P20 AND MAY DO NEW RADSTALL". (A +0: the TS does
- * not skip.) */
+/* NORDSTAL -- p. 541: "ZERO RADCADR TO WIPE OUT ANYONE WAITING IN RADSTALL
+ * SINCE WE ARE NOW RETURNING TO P20 AND MAY DO NEW RADSTALL". (A +0: the TS
+ * does not skip.) */
 static void nordstal(void)
 {
     set_A(ZERO);
@@ -148,9 +149,9 @@ static void trysws(void)
     rmodinv(); /* "(NOTE RUPT INHIBIT)" */
 }
 
-/* OKDESSM +2 (STARTDES's +1 return, and RRLIMCHK's +2 by TC +3): "CHECK
- * IF ON LUNAR SURFACE (SURFFLAG=P22F)": there "CANNOT DESIGNATE IN MODE
- * 2", NORDSTAL. Else TRYSWS. */
+/* OKDESSM +2 -- p. 539 (STARTDES's +1 return, and RRLIMCHK's +2 by TC +3):
+ * "CHECK IF ON LUNAR SURFACE (SURFFLAG=P22F)": there "CANNOT DESIGNATE IN
+ * MODE 2", NORDSTAL. Else TRYSWS. */
 void okdessm_after_startdes(void)
 {
     cs(ADDRESS_OF(FLAGWRD8));
@@ -163,7 +164,7 @@ void okdessm_after_startdes(void)
     trysws();
 }
 
-/* NODESSM: "RE-INVERT MODE AND RETURN TO CALLER +2". */
+/* NODESSM -- p. 542: "RE-INVERT MODE AND RETURN TO CALLER +2". */
 static void nodessm(void)
 {
     tc_at(NODESSM);
@@ -176,10 +177,10 @@ void nodessm_after_rmodinv(void)
     nordstal();
 }
 
-/* LUNDESCH: "OVERFLOW RETURN FROM RRANGLES". On the surface, NORDSTAL:
- * "RETURN TO CALLER -- ALARM 527"; with the rendezvous flag set, "NOT ON
- * MOON -- CALL FOR ATTITUDE MANEUVER" (NODESSM); else the job ends: "...
- * BUT NOT IN R29." */
+/* LUNDESCH -- p. 539: "OVERFLOW RETURN FROM RRANGLES". On the surface,
+ * NORDSTAL: "RETURN TO CALLER -- ALARM 527"; with the rendezvous flag set,
+ * "NOT ON MOON -- CALL FOR ATTITUDE MANEUVER" (NODESSM); else the job ends:
+ * "... BUT NOT IN R29." */
 void lundesch(void)
 {
     cs(ADDRESS_OF(FLAGWRD8));
@@ -198,24 +199,25 @@ void lundesch(void)
     }
 }
 
-void lundesch_not_rendezvous(void)
+void lundesch_plus010(void)
 {
     continue_at(ENDOFJOB); /* TCF ENDOFJOB */
 }
 
-/* TRYSWS +1, the mode bit inverted: "TRY DIFFERENT MODE." */
+/* TRYSWS +1 -- p. 542, the mode bit inverted: "TRY DIFFERENT MODE." */
 void trysws_after_rmodinv(void)
 {
     tc_to(TRYSWS + 1u, RRLIMCHK); /* ADRES MODEB */
 }
 
-/* RRLIMCHK's +2: "VEHICLE MANEUVER REQUIRED". */
+/* TRYSWS +3 -- p. 542: RRLIMCHK's +2: "VEHICLE MANEUVER REQUIRED". */
 void trysws_out_of_limits(void)
 {
     nodessm(); /* TCF NODESSM */
 }
 
-/* RRLIMCHK's +3: "RESET BIT12", then "SET FLAG FOR REMODE." */
+/* TRYSWS +4 -- p. 542: RRLIMCHK's +3: "RESET BIT12", then "SET FLAG FOR
+ * REMODE." */
 void trysws_within_limits(void)
 {
     tc_at(TRYSWS + 4u);
@@ -275,8 +277,8 @@ void rrlimnb_trunnion_out(void)
     tc_return_in(RRLIMNB + 017u, L_ADDRESS);
 }
 
-/* "IF NEGATIVE SHAFT ANGLE, ADD 20.5 DEGS" (NEGSHAFT), else 5.5; then
- * SHAFTLIM: within "64.5 DEGREES"? */
+/* RRLIMNB +020 -- p. 544: "IF NEGATIVE SHAFT ANGLE, ADD 20.5 DEGS"
+ * (NEGSHAFT), else 5.5; then SHAFTLIM: within "64.5 DEGREES"? */
 void rrlimnb_trunnion_in(void)
 {
     ca(ADDRESS_OF(ITEMP2));     /* "LOAD SHAFT ANGLE" */
@@ -299,7 +301,7 @@ void rrlimnb_shaft_in(void)
     tc_to(SHAFTLIM + 3u, RRLIMOK); /* "IN LIMITS" */
 }
 
-/* NEGSHAFT: "MAKE NEGATIVE SHAFT LIMIT -85 DEGREES". */
+/* NEGSHAFT -- p. 544: "MAKE NEGATIVE SHAFT LIMIT -85 DEGREES". */
 void negshaft(void)
 {
     ad(TWENTY_5DEGS);
@@ -307,7 +309,7 @@ void negshaft(void)
     magsub();
 }
 
-/* RRDESNB +4 -- "SET TIME LIMIT COUNTER FOR DESIGNATE", and with
+/* RRDESNB +4 -- p. 543: "SET TIME LIMIT COUNTER FOR DESIGNATE", and with
  * interrupts held, "SEE IF CURRENT MODE OK.": "DO SPECIAL V41 LIMIT
  * CHECK". (A, MAXTRYS, does not overflow: the TS does not skip.) */
 void rrdesnb_after_downflag(void)
@@ -319,14 +321,15 @@ void rrdesnb_after_downflag(void)
     rrlimnb(); /* ADRES TANG */
 }
 
-/* TRYSWN: "SEE IF OTHER MODE WILL DO." */
+/* RRDESNB +011 -- p. 543, RRLIMNB's other return (TCF TRYSWN). TRYSWN: "SEE
+ * IF OTHER MODE WILL DO." */
 void rrdesnb_not_in_mode(void)
 {
     tc_at(TRYSWN); /* TCF TRYSWN */
     rmodinv();
 }
 
-/* OKDESNB: the angles to TANGNB, and "GET LOS IN NB COORDS." */
+/* OKDESNB -- p. 543: the angles to TANGNB, and "GET LOS IN NB COORDS." */
 void okdesnb(void)
 {
     relint();
@@ -343,8 +346,8 @@ static const word okdesnb_words[] = {
     STORE(RRTARGET), ORDERS(SET, EXIT), SWITCH(SET, RRNBSW),
 };
 
-/* OKDESNB +012 -- STARTDES +1, with interrupts held (DESRET, a CADR, is
- * not incremented here: RRDESNB returns to the caller +2). */
+/* OKDESNB +012 -- p. 543: STARTDES +1, with interrupts held (DESRET, a CADR,
+ * is not incremented here: RRDESNB returns to the caller +2). */
 void okdesnb_after_exit(void)
 {
     inhint();
@@ -357,14 +360,15 @@ void tryswn_after_rmodinv(void)
     rrlimnb(); /* ADRES TANG */
 }
 
-/* RRLIMNB's +2: "NOT POSSIBLE." */
+/* TRYSWN +3 -- p. 543: RRLIMNB's +2: "NOT POSSIBLE." */
 void tryswn_out_of_limits(void)
 {
     tc_at(NODESNB); /* TCF NODESNB */
     rmodinv();      /* "REINVERT MODE BIT." */
 }
 
-/* RRLIMNB's +3: the mode bit back, and "CALL FOR REMODE." */
+/* TRYSWN +4 -- p. 543: RRLIMNB's +3: the mode bit back, and "CALL FOR
+ * REMODE." */
 void tryswn_within_limits(void)
 {
     tc_at(TRYSWN + 4u);
@@ -378,8 +382,8 @@ void tryswn_after_rmodinv2(void)
     continue_at(OKDESNB); /* TCF OKDESNB */
 }
 
-/* NODESNB +1: "BAD INPUT ANGLES.", the designate's bits cleared, and the
- * job ends: "AVOID 503 ALARM." */
+/* NODESNB +1 -- p. 543: "BAD INPUT ANGLES.", the designate's bits cleared,
+ * and the job ends: "AVOID 503 ALARM." */
 void nodesnb_after_rmodinv(void)
 {
     tc_to(NODESNB + 1u, ALARM); /* OCT 502 */
@@ -409,18 +413,18 @@ void begdes(void)
         continue_at(BEGDES + 4u);
 }
 
-void begdes_remode(void)
+void begdes_plus4(void)
 {
     tc_to(BEGDES + 4u, REMODE);
 }
 
-/* DESLOOP: "2 SAMPLES PER SECOND." */
+/* DESLOOP -- p. 546: "2 SAMPLES PER SECOND." */
 void desloop(void)
 {
     tc_to(DESLOOP, FIXDELAY); /* DEC 50 */
 }
 
-/* BADDES: "REMOVE DESIGNATE FLAG", and RDBADEND. */
+/* BADDES -- p. 546: "REMOVE DESIGNATE FLAG", and RDBADEND. */
 static void baddes(void)
 {
     set_A(negate(DESIGBIT));
@@ -429,15 +433,15 @@ static void baddes(void)
     rdbadend(); /* TCF RDBADEND */
 }
 
-/* MOREDES +1: DODES as a job, "UPDATE GYRO TORQUE COMMANDS.", and again in
- * half a second (DESLOOP). */
+/* MOREDES +1 -- p. 546: DODES as a job, "UPDATE GYRO TORQUE COMMANDS.", and
+ * again in half a second (DESLOOP). */
 static void moredes_plus1(void)
 {
     set_A(PRIO26);
     tc_to(MOREDES + 2u, FINDVAC); /* 2CADR DODES */
 }
 
-/* MOREDES: one pass fewer in DESCOUNT (A, CCS's result, does not
+/* MOREDES -- p. 546: one pass fewer in DESCOUNT (A, CCS's result, does not
  * overflow). */
 static void moredes(void)
 {
@@ -445,17 +449,21 @@ static void moredes(void)
     moredes_plus1();
 }
 
-/* STDESIG1: "SEE IF THE TIME LIMIT HAS EXPIRED". Out of time: "IF OUT OF
- * TIME, REMOVE ECR ENABLE + TRKR" (channel 12 bits 14 and 2), and BADDES.
- * With DESCOUNT negative the WAND takes CCS's result in A, as the listing
- * runs it. Not modelled: DESCOUNT -0, which runs WAND CHAN12 as a WRITE. */
+/* STDESIG1 -- p. 546: "SEE IF THE TIME LIMIT HAS EXPIRED". Out of time: "IF
+ * OUT OF TIME, REMOVE ECR ENABLE + TRKR" (channel 12 bits 14 and 2), and
+ * BADDES. With DESCOUNT negative the WAND takes CCS's result in A, as the
+ * listing runs it. DESCOUNT -0 never comes (R21LEM10 loads MAXTRIES, and
+ * MOREDES stores what this CCS leaves): it would skip the EXTEND too. */
 static void stdesig1(void)
 {
     switch (ccs_at(ADDRESS_OF(DESCOUNT))) {
     case POSITIVE: moredes(); return; /* TCF MOREDES */
     case IS_PLUS_ZERO: set_A(negate(B14_B2)); break;
     case NEGATIVE: break;
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO: /* never. The WAND CHAN12, not extended, is TC 3012, in this bank */
+        tc_at(STDESIG1 + 4u);
+        continue_at(03012u);
+        return;
     }
     wand_channel(CHAN12);
     baddes();
@@ -560,12 +568,12 @@ static const word dodes_words[] = {
     ADDRESS_PLUS_ONE_D(32),
 };
 
-/* DODES +057 -- "DOT WAS NEGATIVE OF DESREG ANGLE.": the commands scaled
- * by RDESGAIN, which "TRIES TO NULL .5 ERROR IN .5 SEC."; "SCALING ON
- * INPUT ANGLE WAS 4 RADIANS." In mode 2 (RADMODES bit 12) "A RELAY IN THE
- * RR REVERSES POLARITY OF THE SHAFT COMMANDS": "COMPENSATE FOR THIS SWITCH
- * BY CHANGING THE POLARITY OF OUR COMMAND." (A, a product, does not
- * overflow: neither TS skips.) */
+/* DODES +057 -- p. 550: "DOT WAS NEGATIVE OF DESREG ANGLE.": the commands
+ * scaled by RDESGAIN, which "TRIES TO NULL .5 ERROR IN .5 SEC."; "SCALING ON
+ * INPUT ANGLE WAS 4 RADIANS." In mode 2 (RADMODES bit 12) "A RELAY IN THE RR
+ * REVERSES POLARITY OF THE SHAFT COMMANDS": "COMPENSATE FOR THIS SWITCH BY
+ * CHANGING THE POLARITY OF OUR COMMAND." (A, a product, does not overflow:
+ * neither TS skips.) */
 void dodes_after_exit(void)
 {
     cs(ADDRESS_OF(MPAC));
@@ -637,9 +645,10 @@ static const word dorrout_words[] = {
     ORDER(EXIT),
 };
 
-/* RRDESDUN: "WHEN PROBLEM DONE, REMOVE BIT 10 SO NEXT WAITLIST TASK WE
- * WILL GO TO RGOODEND."; LOSCMFLG reset (no new line of sight after data
- * good). (A, a masked word, does not overflow: the TS does not skip.) */
+/* RRDESDUN -- p. 551: "WHEN PROBLEM DONE, REMOVE BIT 10 SO NEXT WAITLIST
+ * TASK WE WILL GO TO RGOODEND."; LOSCMFLG reset (no new line of sight after
+ * data good). (A, a masked word, does not overflow: the TS does not
+ * skip.) */
 static void rrdesdun(void)
 {
     set_A(negate(BIT10));
@@ -649,8 +658,8 @@ static void rrdesdun(void)
     tc_to(RRDESDUN + 4u, DOWNFLAG); /* ADRES LOSCMFLG */
 }
 
-/* "TURN OFF ENABLE RR ERROR COUNTER", and the job ends "WITH ECTR
- * DISABLED." */
+/* RRDESDUN +6 -- p. 551: "TURN OFF ENABLE RR ERROR COUNTER", and the job
+ * ends "WITH ECTR DISABLED." */
 void rrdesdun_after_downflag(void)
 {
     set_A(negate(BIT2));
@@ -670,15 +679,17 @@ static void dgoodchk(void)
         rrdesdun();
 }
 
-/* SIGNLCHK: "SEE IF BOTH AXES WERE WITHIN .5 DEGS." Not: DGOODCHK. Yes:
- * "IF WITHIN LIMITS AND NO LOCK-ON WANTED, PROBLEM IS FINISHED."; with
+/* SIGNLCHK -- p. 551: "SEE IF BOTH AXES WERE WITHIN .5 DEGS." Not: DGOODCHK.
+ * Yes: "IF WITHIN LIMITS AND NO LOCK-ON WANTED, PROBLEM IS FINISHED."; with
  * lock-on wanted, "ENABLE THE TRACKER" and DGOODCHK. */
 static void signlchk(void)
 {
     switch (ccs_at(ADDRESS_OF(MPAC) + 1u)) {
     case POSITIVE: dgoodchk(); return; /* TCF DGOODCHK */
     case IS_PLUS_ZERO: break;
-    default: not_modelled(); /* (MPAC +1 is 0 or 1) */
+    /* (never: MPAC +1 is 0 or 1. Negative would skip the CS STATE, and -0 the MASK too.) */
+    case NEGATIVE: continue_at(SIGNLCHK + 3u); return;
+    case IS_MINUS_ZERO: continue_at(SIGNLCHK + 4u); return; /* never */
     }
     cs(ADDRESS_OF(STATE));
     mask(LOKONBIT);
@@ -691,12 +702,12 @@ static void signlchk(void)
     dgoodchk();
 }
 
-/* DODES +0115 -- the cosine of the angle between the radar's axis and the
- * line of sight, less that of half a degree: "DIFFERENCE OF COSINES,
+/* DODES +0115 -- p. 550: the cosine of the angle between the radar's axis
+ * and the line of sight, less that of half a degree: "DIFFERENCE OF COSINES,
  * SCALED B-2." to MPAC +1 as "ZERO IF RR IS POINTED OK, ONE IF NOT." ("IF
- * COS ERROR BIGGER, ERROR IS SMALLER"). "IF CONTINUOUS DESIGNATE WANTED,
- * PUT OUT COMMANDS WITHOUT CHECKING MAGNITUDE OF ERROR SIGNALS" (DORROUT);
- * else SIGNLCHK. */
+ * COS ERROR BIGGER, ERROR IS SMALLER"). "IF CONTINUOUS DESIGNATE WANTED, PUT
+ * OUT COMMANDS WITHOUT CHECKING MAGNITUDE OF ERROR SIGNALS" (DORROUT); else
+ * SIGNLCHK. */
 void dodes_after_dot(void)
 {
     dcs(COS1_2DG); /* EXTEND; DCS COS1/2DG */
@@ -721,13 +732,13 @@ void notp20(void)
         continue_at(NOTP20 + 5u);
 }
 
-/* NOTP20 +5 -- "IF LOSCMFLG NOT SET, DON'T TEST LOS COUNTER", the job
- * ends. Else "TEST LOS COUNTER TO SEE IF TIME TO GET A NEW LOS": counting
- * down, DODESEND; out (+0), the task that schedules DODES killed and R21's
- * R21LEM2 for a new one. LOSCOUNT negative skips the INHINT, as the
- * listing runs it. Not modelled: LOSCOUNT -0, which runs the CADR after
+/* NOTP20 +5 -- p. 552: "IF LOSCMFLG NOT SET, DON'T TEST LOS COUNTER", the
+ * job ends. Else "TEST LOS COUNTER TO SEE IF TIME TO GET A NEW LOS":
+ * counting down, DODESEND; out (+0), the task that schedules DODES killed
+ * and R21's R21LEM2 for a new one. LOSCOUNT negative skips the INHINT, as
+ * the listing runs it. Not modelled: LOSCOUNT -0, which runs the CADR after
  * KILLTASK as an instruction. */
-void notp20_after_rrout(void)
+void notp20_plus5(void)
 {
     ca(ADDRESS_OF(FLAGWRD2));
     mask(LOSCMBIT);
@@ -739,38 +750,45 @@ void notp20_after_rrout(void)
     case POSITIVE: tc_to(NOTP20 + 012u, DODESEND); return;
     case IS_PLUS_ZERO: continue_at(NOTP20 + 013u); return;
     case NEGATIVE: tc_to(NOTP20 + 014u, KILLTASK); return; /* CADR DESLOOP +2 */
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO:
+        /* never: LOSCOUNT is the THREE of R21LEM2, then what this CCS left of it. The next word
+         * is an address word, CADR DESLOOP +2. */
+        not_modelled();
     }
 }
 
-/* NOTP20 +013: "YES -- KILL TASK WHICH SCHEDULES DODES". */
-void notp20_new_los(void)
+/* NOTP20 +013 -- p. 552: "YES -- KILL TASK WHICH SCHEDULES DODES". */
+void notp20_plus013(void)
 {
     inhint();
     tc_to(NOTP20 + 014u, KILLTASK); /* CADR DESLOOP +2 */
 }
 
-/* NOTP20 +016 -- a waiting job of higher priority first (CHANG1), then
- * R21LEM2. Not modelled: NEWJOB negative, which runs the CADR after BANKCALL
- * as an instruction. */
+/* NOTP20 +016 -- p. 552: a waiting job of higher priority first (CHANG1),
+ * then R21LEM2. Not modelled: NEWJOB negative, which runs the CADR after
+ * BANKCALL as an instruction. */
 void notp20_after_killtask(void)
 {
     relint();
     switch (ccs_at(ADDRESS_OF(NEWJOB))) {
     case POSITIVE: tc_to(NOTP20 + 020u, CHANG1); return;
     case IS_PLUS_ZERO: continue_at(NOTP20 + 021u); return;
-    case NEGATIVE: not_modelled(); return;
+    case NEGATIVE:
+        /* never: the Executive leaves +0, -0 (DUMMYJOB) or a core set's place, a positive word,
+         * in NEWJOB. The next word is an address word, CADR R21LEM2. */
+        not_modelled();
+        return;
     case IS_MINUS_ZERO: continue_at(DODESEND); return;
     }
 }
 
-void notp20_after_chang1(void)
+void notp20_plus021(void)
 {
     tc_to(NOTP20 + 021u, BANKCALL); /* CADR R21LEM2 */
 }
 
-/* DODESEND: LOSCOUNT one less (CCS's result), and the job ends. Not
- * modelled: an A that overflows, where the TS would skip. */
+/* DODESEND -- p. 552: LOSCOUNT one less (CCS's result), and the job ends.
+ * Not modelled: an A that overflows, where the TS would skip. */
 void dodesend(void)
 {
     if (ts(ADDRESS_OF(LOSCOUNT))) not_modelled();

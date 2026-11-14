@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 2 (Luminary099 pp. 504-512): R22 and R21.
+/* P20-P25.agc, part 2 (Luminary099 pp. 504-512): R22 and R21. The faithful C
+ * is c64-port/src/lm_p20_p25.c.
  *
  * R22, "DATA READ ROUTINE 22 (LEM)": "TO PROCESS AUTOMATIC RR MARK DATA TO
  * UPDATE THE STATE VECTOR OF EITHER LM OR CSM AS DEFINED IN THE RENDEZVOUS
@@ -34,8 +35,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* INDEX MPAC; TC +1 at the address at: MPAC 0, 1 (or 2) picks the TC
  * after it or the next. Not modelled: an MPAC that runs a word past the
  * table's last as an instruction. */
@@ -60,10 +59,10 @@ void r22lem(void)
     tc_to(R22LEM, PHASCHNG); /* OCT 04022 */
 }
 
-/* R22LEM +2 -- "IS RENDEZVOUS FLAG SET?": "NO -- EXIT R22 AND P20". "IS
- * TRACKFLAG SET?": "NO WAIT". R22LEM12: "IS RR AUTO TRACK ENABLE DISCRETE
- * STILL ON (A MONITOR REPOSITION BY R25 CLEARS IT)" (channel 12 bit 14):
- * "NO -- RETURN TO P20". "IS RR AUTO MODE DISCRETE PRESENT" (channel 33
+/* R22LEM +2 -- p. 504: "IS RENDEZVOUS FLAG SET?": "NO -- EXIT R22 AND P20".
+ * "IS TRACKFLAG SET?": "NO WAIT". R22LEM12: "IS RR AUTO TRACK ENABLE
+ * DISCRETE STILL ON (A MONITOR REPOSITION BY R25 CLEARS IT)" (channel 12 bit
+ * 14): "NO -- RETURN TO P20". "IS RR AUTO MODE DISCRETE PRESENT" (channel 33
  * bit 2, set when it is not): "NO -- SET IT", P20LEMB5. */
 void r22lem_after_phaschng(void)
 {
@@ -95,10 +94,10 @@ void r22lem_after_phaschng(void)
     p20lemb5();
 }
 
-/* R22LEM +025 -- "ARE RR CDUS BEING ZEROED": "CDUS BEING ZEROED", R22LEM42.
- * Else restart group 2 at R22RSTRT ("IF A RESTART OCCURS, AND EXTRA RADAR
- * READING IS TAKEN, SO BAD DATA ISN'T USED"). */
-void r22lem_after_p20lemb5(void)
+/* R22LEM +025 -- p. 505: "ARE RR CDUS BEING ZEROED": "CDUS BEING ZEROED",
+ * R22LEM42. Else restart group 2 at R22RSTRT ("IF A RESTART OCCURS, AND
+ * EXTRA RADAR READING IS TAKEN, SO BAD DATA ISN'T USED"). */
+void r22lem_plus025(void)
 {
     cs(ADDRESS_OF(RADMODES));
     mask(RCDU0BIT);
@@ -109,16 +108,16 @@ void r22lem_after_p20lemb5(void)
     tc_to(R22LEM + 031u, PHASCHNG); /* OCT 00152 */
 }
 
-/* R22LEM +033 -- "READ DATA + CALCULATE LOS": LRS22.1, the "DATA READ
- * SUBROUTINE". */
+/* R22LEM +033 -- p. 505: "READ DATA + CALCULATE LOS": LRS22.1, the "DATA
+ * READ SUBROUTINE". */
 void r22lem_read(void)
 {
     tc_to(R22LEM + 033u, BANKCALL); /* CADR LRS22.1 */
 }
 
-/* R22LEM +035 -- LRS22.1's answer in MPAC: 0 "NORMAL RETURN (GOOD DATA)",
- * 1 "COULD NOT READ RADAR -- TRY TO REDESIGNATE", 2 "RR LOS NOT WITHIN 3
- * DEGREES (ALARM)". */
+/* R22LEM +035 -- p. 505: LRS22.1's answer in MPAC: 0 "NORMAL RETURN (GOOD
+ * DATA)", 1 "COULD NOT READ RADAR -- TRY TO REDESIGNATE", 2 "RR LOS NOT
+ * WITHIN 3 DEGREES (ALARM)". */
 void r22lem_after_read(void)
 {
     index_mpac_tc_plus1(R22LEM + 036u, R22LEM + 041u);
@@ -134,33 +133,34 @@ void r22lem_no_data(void)
     tc_to(R22LEM + 040u, P20LEMC);
 }
 
-/* R22LEM +041 -- alarm 525. */
+/* R22LEM +041 -- p. 505: alarm 525. */
 void r22lem_los_alarm(void)
 {
     set_A(ALRM525);
     tc_to(R22LEM + 042u, BANKCALL); /* CADR PRIOLARM */
 }
 
-/* R22LEM +044 -- "TERMINATE EXITS P20 VIA V56 CODING". */
+/* R22LEM +044 -- p. 505: "TERMINATE EXITS P20 VIA V56 CODING". */
 void r22lem_los_alarm_terminate(void)
 {
     tc_to(R22LEM + 044u, GOTOV56);
 }
 
-/* R22LEM +045 -- "PROC (DISPLAY DELTA THETA)". */
+/* R22LEM +045 -- p. 505: "PROC (DISPLAY DELTA THETA)". */
 void r22lem_los_alarm_proceed(void)
 {
     tc_at(R22LEM + 045u);
     r22lem1();
 }
 
-/* R22LEM +046 -- "ENTER (ILLEGAL OPTION)": TC -5, the alarm again. */
+/* R22LEM +046 -- p. 505: "ENTER (ILLEGAL OPTION)": TC -5, the alarm
+ * again. */
 void r22lem_los_alarm_enter(void)
 {
     tc_to(R22LEM + 046u, R22LEM + 041u);
 }
 
-/* R22LEM +047 -- PRIOLARM's immediate return. */
+/* R22LEM +047 -- p. 505: PRIOLARM's immediate return. */
 void r22lem_los_alarm_immediate_return(void)
 {
     tc_to(R22LEM + 047u, ENDOFJOB);
@@ -172,7 +172,8 @@ static void r22lem1(void)
     tc_to(R22LEM1, PHASCHNG); /* OCT 04022 */
 }
 
-/* R22LEM1 +2 -- "DISPLAY DELTA THETA": verb 06 noun 05, by PRIODSP. */
+/* R22LEM1 +2 -- p. 505: "DISPLAY DELTA THETA": verb 06 noun 05, by
+ * PRIODSP. */
 void r22lem1_after_phaschng(void)
 {
     set_A(V06N05);
@@ -184,13 +185,13 @@ void r22lem1_terminate(void)
     tc_to(R22LEM1 + 5u, GOTOV56);
 }
 
-/* R22LEM1 +6 -- "PROC (OK CONTINUE)". */
+/* R22LEM1 +6 -- p. 505: "PROC (OK CONTINUE)". */
 void r22lem1_proceed(void)
 {
     tc_to(R22LEM1 + 6u, R22LEM2);
 }
 
-/* R22LEM1 +7 -- "ENTER (RECYCLE)". */
+/* R22LEM1 +7 -- p. 505: "ENTER (RECYCLE)". */
 void r22lem1_enter(void)
 {
     tc_to(R22LEM1 + 7u, P20LEMC);
@@ -202,21 +203,21 @@ void r22lem2(void)
     tc_to(R22LEM2, PHASCHNG); /* OCT 04022 */
 }
 
-/* R22LEM2 +2 -- "CHECK IF ON LUNAR SURFACE (P22FLAG SET)". */
+/* R22LEM2 +2 -- p. 505: "CHECK IF ON LUNAR SURFACE (P22FLAG SET)". */
 void r22lem2_after_phaschng(void)
 {
     tc_at(R22LEM2 + 2u);
     lunsfchk();
 }
 
-/* R22LEM2 +3 -- "YES -- BYPASS FLAG CHECKS AND LRS22.2". */
+/* R22LEM2 +3 -- p. 505: "YES -- BYPASS FLAG CHECKS AND LRS22.2". */
 void r22lem2_on_surface(void)
 {
     tc_to(R22LEM2 + 3u, R22LEM3);
 }
 
-/* R22LEM2 +4 -- "IS TRACK FLAG SET": "NO -- WAIT". LRS22.2 "CHECKS RR
- * BORESIGHT WITHIN 30 DEG OF +Z". */
+/* R22LEM2 +4 -- p. 505: "IS TRACK FLAG SET": "NO -- WAIT". LRS22.2 "CHECKS
+ * RR BORESIGHT WITHIN 30 DEG OF +Z". */
 void r22lem2_in_orbit(void)
 {
     ca(ADDRESS_OF(FLAGWRD1));
@@ -228,9 +229,9 @@ void r22lem2_in_orbit(void)
     tc_to(R22LEM2 + 010u, BANKCALL); /* CADR LRS22.2 */
 }
 
-/* R22LEM2 +012 -- LRS22.2's answer in MPAC: 0 "NORMAL RETURN (LOS WITHIN
- * 30 OF Z-AXIS)", 1 not: then R61LEM, the preferred tracking attitude,
- * and wait. */
+/* R22LEM2 +012 -- p. 505: LRS22.2's answer in MPAC: 0 "NORMAL RETURN (LOS
+ * WITHIN 30 OF Z-AXIS)", 1 not: then R61LEM, the preferred tracking
+ * attitude, and wait. */
 void r22lem2_after_boresight(void)
 {
     index_mpac_tc_plus1(R22LEM2 + 013u, R22LEM2 + 015u);
@@ -246,7 +247,7 @@ void r22lem2_boresight_out(void)
     tc_to(R22LEM2 + 015u, BANKCALL); /* CADR R61LEM */
 }
 
-/* R22LEM2 +017 -- "NOT WITHIN 30 DEG OF Z-AXIS". */
+/* R22LEM2 +017 -- p. 505: "NOT WITHIN 30 DEG OF Z-AXIS". */
 void r22lem2_after_r61lem(void)
 {
     tc_to(R22LEM2 + 017u, R22WAIT);
@@ -284,8 +285,8 @@ static const word r22lem3_words[] = {
     /* R22LEM93 */ ORDER(EXIT),
 };
 
-/* R22LEM93 +1 -- "PHASE CHANGE TO PROTECT AGAINST CONFLICT WITH GRP2PC
- * ERASEABLE". */
+/* R22LEM93 +1 -- p. 506: "PHASE CHANGE TO PROTECT AGAINST CONFLICT WITH
+ * GRP2PC ERASEABLE". */
 void r22lem93_after_exit(void)
 {
     tc_to(R22LEM93 + 1u, PHASCHNG); /* OCT 04022 */
@@ -301,8 +302,8 @@ static const word r22lem96_words[] = {
     ORDER(EXIT),
 };
 
-/* R22LEM96 +1 -- "SET N49FLAG = ZERO TO INDICATE V06 N49 DISPLAY HASN'T
- * BEEN ANSWERED", then the restart group ("TO PROTECT DISPLAY"). */
+/* R22LEM96 +1 -- p. 506: "SET N49FLAG = ZERO TO INDICATE V06 N49 DISPLAY
+ * HASN'T BEEN ANSWERED", then the restart group ("TO PROTECT DISPLAY"). */
 void r22lem96_after_exit(void)
 {
     set_A(ZERO);
@@ -310,14 +311,15 @@ void r22lem96_after_exit(void)
     tc_to(R22LEM96 + 3u, PHASCHNG);              /* OCT 04022 */
 }
 
-/* R22LEM96 +5 -- "PROTECT DISPLAY": N49DSP as a job at priority 27. */
+/* R22LEM96 +5 -- p. 506: "PROTECT DISPLAY": N49DSP as a job at priority
+ * 27. */
 void r22lem96_after_phaschng(void)
 {
     set_A(PRIO27);
     tc_to(R22LEM96 + 6u, NOVAC); /* 2CADR N49DSP */
 }
 
-/* R22LEM96 +011 -- then wait for the crew's answer. */
+/* R22LEM96 +011 -- p. 506: then wait for the crew's answer. */
 void r22lem96_after_novac(void)
 {
     tc_at(R22LEM96 + 011u);
@@ -333,20 +335,20 @@ static const word r22lem96_wait_words[] = {
     ADDRESS(R22LEM7), ORDER(EXIT),               /* "DISPLAY ANSERED BY RECYCLE" */
 };
 
-/* R22LEM96 +020 -- "ARE WE ON LUNAR SURFACE". */
+/* R22LEM96 +020 -- p. 506: "ARE WE ON LUNAR SURFACE". */
 void r22lem96_recycle(void)
 {
     tc_at(R22LEM96 + 020u);
     lunsfchk();
 }
 
-/* R22LEM96 +021 -- "YES -- 15 SECOND DELAY". */
+/* R22LEM96 +021 -- p. 506: "YES -- 15 SECOND DELAY". */
 void r22lem96_on_surface(void)
 {
     tc_to(R22LEM96 + 021u, R22WAIT);
 }
 
-/* R22LEM96 +022 -- "NO -- SET R65COUNTER = 0, DO FINE TRACKING TAKE
+/* R22LEM96 +022 -- p. 506: "NO -- SET R65COUNTER = 0, DO FINE TRACKING TAKE
  * ANOTHER RADAR READING". */
 void r22lem96_in_orbit(void)
 {
@@ -372,13 +374,13 @@ static void r22lem44(void)
     lunsfchk();
 }
 
-/* R22LEM44 +2 -- "YES -- WAIT 2 SECONDS". */
+/* R22LEM44 +2 -- p. 506: "YES -- WAIT 2 SECONDS". */
 void r22lem44_on_surface(void)
 {
     tc_to(R22LEM44 + 2u, R22LEM46);
 }
 
-/* R22LEM44 +3 -- "NOT ON LUNAR SURFACE": "R65COUNTER = 5". */
+/* R22LEM44 +3 -- p. 506: "NOT ON LUNAR SURFACE": "R65COUNTER = 5". */
 void r22lem44_in_orbit(void)
 {
     set_A(FIVE); /* CA FIVE */
@@ -394,13 +396,13 @@ void r22lem42(void)
     lunsfchk();
 }
 
-/* R22LEM42 +1 -- "YES -- WAIT 2 SECONDS". */
+/* R22LEM42 +1 -- p. 506: "YES -- WAIT 2 SECONDS". */
 void r22lem42_on_surface(void)
 {
     tc_to(R22LEM42 + 1u, R22LEM46);
 }
 
-/* R22LEM42 +2 -- "NO -- SET R65COUNTER = 2". */
+/* R22LEM42 +2 -- p. 506: "NO -- SET R65COUNTER = 2". */
 void r22lem42_in_orbit(void)
 {
     set_A(TWO); /* CA TWO */
@@ -415,7 +417,7 @@ static void r22lem45(void)
     tc_to(R22LEM45 + 1u, BANKCALL);              /* CADR R65LEM */
 }
 
-/* R22LEM45 +3 -- and R22 again. */
+/* R22LEM45 +3 -- p. 507: and R22 again. */
 void r22lem45_after_r65lem(void)
 {
     tc_to(R22LEM45 + 3u, R22LEM);
@@ -449,14 +451,14 @@ void n49dsp(void)
     tc_to(N49DSP + 1u, BANKCALL); /* CADR PRIODSP */
 }
 
-/* N49DSP +3 -- "TERMINATE -- EXIT R22 AND P20". */
+/* N49DSP +3 -- p. 507: "TERMINATE -- EXIT R22 AND P20". */
 void n49dsp_terminate(void)
 {
     tc_to(N49DSP + 3u, GOTOV56);
 }
 
-/* N49DSP +4 -- "PROCEED -- N49FLAG = -1". (The recycle return, N49DSP
- * +5, leaves N49FLAG the display's positive word.) */
+/* N49DSP +4 -- p. 507: "PROCEED -- N49FLAG = -1". (The recycle return,
+ * N49DSP +5, leaves N49FLAG the display's positive word.) */
 void n49dsp_proceed(void)
 {
     set_A(negate(ONE));                          /* CS ONE */
@@ -477,19 +479,19 @@ void r22rstrt_after_phaschng(void)
     tc_to(R22RSTRT + 2u, BANKCALL); /* CADR RRRDOT */
 }
 
-/* R22RSTRT +4 -- "WAIT FOR READ COMPLETE". */
+/* R22RSTRT +4 -- p. 507: "WAIT FOR READ COMPLETE". */
 void r22rstrt_after_rrrdot(void)
 {
     tc_to(R22RSTRT + 4u, BANKCALL); /* CADR RADSTALL */
 }
 
-/* R22RSTRT +6 -- "COULD NOT READ RADAR -- TRY TO REDISGNATE". */
+/* R22RSTRT +6 -- p. 507: "COULD NOT READ RADAR -- TRY TO REDISGNATE". */
 void r22rstrt_bad_read(void)
 {
     tc_to(R22RSTRT + 6u, P20LEMC);
 }
 
-/* R22RSTRT +7 -- "READ SUCCESSFUL -- CONTINUE AT R22". */
+/* R22RSTRT +7 -- p. 507: "READ SUCCESSFUL -- CONTINUE AT R22". */
 void r22rstrt_good_read(void)
 {
     tc_to(R22RSTRT + 7u, R22LEM);
@@ -498,7 +500,7 @@ void r22rstrt_good_read(void)
 /* LUNSFCHK -- p. 507. "LUNSFCHECK -- CLOSED SUBROUTINE TO CHECK IF ON
  * LUNAR SURFACE (P22FLAG) RETURNS TO CALLER +1 IF P22FLAG SET TO CALLER +2
  * IF P22FLAG NOT SET": the flag is FLAGWRD8's SURFFLAG. (The masked
- * complement is never negative: not modelled.) */
+ * complement is never negative.) */
 void lunsfchk(void)
 {
     cs(ADDRESS_OF(FLAGWRD8)); /* "CHECK IF ON LUNAR SURFACE" */
@@ -506,11 +508,14 @@ void lunsfchk(void)
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE:
         incr(Q_ADDRESS);
-        tc_q();
-        return;                        /* "NOT SET" */
-    case IS_PLUS_ZERO: tc_q(); return; /* "P22FLAG SET" */
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled();
+        tc_q(); /* "NOT SET" */
+        return;
+    case IS_PLUS_ZERO:
+        tc_q(); /* "P22FLAG SET" */
+        return;
+    /* (never: a masked bit. The words after the TC Q.) */
+    case NEGATIVE: continue_at(LUNSFCHK + 5u); return;
+    case IS_MINUS_ZERO: continue_at(LUNSFCHK + 6u); return; /* never */
     }
 }
 
@@ -533,14 +538,14 @@ void r21lem(void)
     lunsfchk();
 }
 
-/* R21LEM +4 -- on the surface. */
+/* R21LEM +4 -- p. 508: on the surface. */
 void r21lem_on_surface(void)
 {
     tc_to(R21LEM + 4u, R21LEM5);
 }
 
-/* R21LEM +5 -- "COMMAND ANTENNA TO MODE CENTER IF NOT ON SURFACE -- MODE 1
- * -- (T=0,S=0)". */
+/* R21LEM +5 -- p. 508: "COMMAND ANTENNA TO MODE CENTER IF NOT ON SURFACE --
+ * MODE 1 -- (T=0,S=0)". */
 void r21lem_in_orbit(void)
 {
     set_A(ZERO);
@@ -552,7 +557,7 @@ void r21lem_in_orbit(void)
 
 /* R21LEM5 -- p. 508. On the surface: RADMODES bit 12 set goes straight to
  * R21LEM10; else the antenna to mode 2's center (T = BIT15, S = -HALF).
- * (A masked bit 12 is never negative: not modelled.) */
+ * (A masked bit 12 is never negative or -0: the cases say what would run.) */
 void r21lem5(void)
 {
     set_A(BIT12);
@@ -560,13 +565,14 @@ void r21lem5(void)
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: tc_to(R21LEM5 + 3u, R21LEM10); return;
     case IS_PLUS_ZERO: continue_at(R21LEM5 + 4u); return;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled();
+    /* (never: a masked bit. On at the TS TANG; and at the CS HALF.) */
+    case NEGATIVE: continue_at(R21LEM5 + 5u); return;
+    case IS_MINUS_ZERO: continue_at(R21LEM5 + 6u); return; /* never */
     }
 }
 
-/* R21LEM5 +4 */
-void r21lem5_mode2_center(void)
+/* R21LEM5 +4 -- p. 508. */
+void r21lem5_plus4(void)
 {
     set_A(BIT15);
     if (ts(ADDRESS_OF(TANG))) not_modelled(); /* (CAF leaves no overflow) */
@@ -592,13 +598,13 @@ void r21lem6_after_rrdesnb(void)
     tc_to(R21LEM6 + 4u, R21LEM6 + 5u); /* TC +1 */
 }
 
-/* R21LEM6 +5 -- ...and RADSTALL waits for it. */
+/* R21LEM6 +5 -- p. 509: ...and RADSTALL waits for it. */
 void r21lem6_stall(void)
 {
     tc_to(R21LEM6 + 5u, BANKCALL); /* CADR RADSTALL */
 }
 
-/* R21LEM6 +7 -- "BAD RETURN FROM DESIGNATE -- ISSUE ALARM". */
+/* R21LEM6 +7 -- p. 509: "BAD RETURN FROM DESIGNATE -- ISSUE ALARM". */
 void r21lem6_bad_return(void)
 {
     tc_to(R21LEM6 + 7u, R21_503);
@@ -610,8 +616,8 @@ void r21lem10(void)
     tc_to(R21LEM10, UPFLAG); /* ADRES LOSCMFLG */
 }
 
-/* R21LEM10 +2 -- "ALLOW 60 PASSES (APPROX 45 SECONDS) TO DESIGNATE AND
- * LOCK ON". */
+/* R21LEM10 +2 -- p. 509: "ALLOW 60 PASSES (APPROX 45 SECONDS) TO DESIGNATE
+ * AND LOCK ON". */
 void r21lem10_after_upflag(void)
 {
     set_A(MAXTRIES);
@@ -661,35 +667,36 @@ static const word r21lem3_words[] = {
     ORDER(EXIT),
 };
 
-/* R21LEM3 +010 -- RRDESSM's returns: "LOS NOT IN MODE 2 COVERAGE ON LUNAR
- * SURFACE"... */
+/* R21LEM3 +010 -- p. 509: RRDESSM's returns: "LOS NOT IN MODE 2 COVERAGE ON
+ * LUNAR SURFACE"... */
 void r21lem3_not_in_coverage(void)
 {
     tc_at(R21LEM3 + 010u);
     r21lem4();
 }
 
-/* R21LEM3 +011 -- "VEHICLE MANEUVER REQUIRED."... */
+/* R21LEM3 +011 -- p. 509: "VEHICLE MANEUVER REQUIRED."... */
 void r21lem3_maneuver(void)
 {
     tc_at(R21LEM3 + 011u);
     p20lema();
 }
 
-/* R21LEM3 +012 -- "NO VEHICLE MANEUVER REQUIRED": "WAIT FOR DESIGNATE
- * COMPLETE -- LOCKON OR BAD END -- LOCKON NOT ACHIEVED IN 60 TRIES". */
+/* R21LEM3 +012 -- p. 509: "NO VEHICLE MANEUVER REQUIRED": "WAIT FOR
+ * DESIGNATE COMPLETE -- LOCKON OR BAD END -- LOCKON NOT ACHIEVED IN 60
+ * TRIES". */
 void r21lem3_designating(void)
 {
     tc_to(R21LEM3 + 012u, BANKCALL); /* CADR RADSTALL */
 }
 
-/* R21LEM3 +014 -- the bad end: TC +2, R21-503. */
+/* R21LEM3 +014 -- p. 509: the bad end: TC +2, R21-503. */
 void r21lem3_bad_end(void)
 {
     tc_to(R21LEM3 + 014u, R21_503);
 }
 
-/* R21LEM3 +015 -- "EXIT ROUTINE RETURN TO P20 (LOCK-ON)". */
+/* R21LEM3 +015 -- p. 509: "EXIT ROUTINE RETURN TO P20 (LOCK-ON)". */
 void r21lem3_lockon(void)
 {
     tc_at(R21LEM3 + 015u);
@@ -703,25 +710,25 @@ void r21_503(void)
     tc_to(R21_503 + 1u, BANKCALL); /* CADR PRIOLARM */
 }
 
-/* R21-503 +3 -- "TERMINATE EXITS P20 VIA V56 CODING". */
+/* R21-503 +3 -- p. 509: "TERMINATE EXITS P20 VIA V56 CODING". */
 void r21_503_terminate(void)
 {
     tc_to(R21_503 + 3u, GOTOV56);
 }
 
-/* R21-503 +4 -- "PROC": the search, R24. */
+/* R21-503 +4 -- p. 509: "PROC": the search, R24. */
 void r21_503_proceed(void)
 {
     tc_to(R21_503 + 4u, R21SRCH);
 }
 
-/* R21-503 +5 -- enter: designate again. */
+/* R21-503 +5 -- p. 509: enter: designate again. */
 void r21_503_enter(void)
 {
     tc_to(R21_503 + 5u, P20LEMC3);
 }
 
-/* R21-503 +6 -- PRIOLARM's immediate return. */
+/* R21-503 +6 -- p. 509: PRIOLARM's immediate return. */
 void r21_503_immediate_return(void)
 {
     tc_to(R21_503 + 6u, ENDOFJOB);
@@ -733,7 +740,7 @@ static void r21end(void)
     tc_to(R21END, DOWNFLAG); /* ADRES LOSCMFLG */
 }
 
-/* R21END +2 -- "PUT UP VERIFY MAIN LOBE LOCKON DISPLAY". */
+/* R21END +2 -- p. 509: "PUT UP VERIFY MAIN LOBE LOCKON DISPLAY". */
 void r21end_after_downflag(void)
 {
     tc_at(R21END + 2u);
@@ -788,20 +795,20 @@ static const word r21lem12_words[] = {
     ORDER(EXIT),
 };
 
-/* R21LEM12 +012 -- "LOS NOT IN MODE 2 COVERAGE". */
+/* R21LEM12 +012 -- p. 510: "LOS NOT IN MODE 2 COVERAGE". */
 void r21lem12_not_in_coverage(void)
 {
     tc_at(R21LEM12 + 012u);
     r21lem13();
 }
 
-/* R21LEM12 +013 -- "VEHICLE MANEUVER REQUIRED". */
+/* R21LEM12 +013 -- p. 510: "VEHICLE MANEUVER REQUIRED". */
 void r21lem12_maneuver(void)
 {
     tc_to(R21LEM12 + 013u, ENDOFJOB);
 }
 
-/* R21LEM12 +014 -- in coverage: BEGDES's task killed... */
+/* R21LEM12 +014 -- p. 510: in coverage: BEGDES's task killed... */
 void r21lem12_in_coverage(void)
 {
     tc_to(R21LEM12 + 014u, KILLTASK); /* CADR BEGDES */
@@ -833,8 +840,8 @@ static void r21lem13(void)
     }
 }
 
-/* R21LEM13 +2 -- 60 times. */
-void r21lem13_tried_enough(void)
+/* R21LEM13 +2 -- p. 510: 60 times. */
+void r21lem13_plus2(void)
 {
     tc_at(R21LEM13 + 2u);
     r21lem11();
@@ -868,7 +875,7 @@ static const word r21lem7_words[] = {
     ORDER(EXIT),
 };
 
-/* R21LEM8 +5 -- "SET RADMODES BIT 15 FOR CONTINUOUS DESIGNATION"
+/* R21LEM8 +5 -- p. 510: "SET RADMODES BIT 15 FOR CONTINUOUS DESIGNATION"
  * (CDESFLAG), LOKONSW cleared, NORRMON set, and RRDESNB. */
 void r21lem8_after_exit(void)
 {
@@ -895,7 +902,7 @@ void r21lem8_after_rrdesnb(void)
     tc_to(R21LEM8 + 015u, R21LEM8 + 016u); /* TC +1 */
 }
 
-/* R21LEM8 +016 -- "COMPUTE DELTA TIME FOR LONGCALL". */
+/* R21LEM8 +016 -- p. 511: "COMPUTE DELTA TIME FOR LONGCALL". */
 void r21lem8_delta_time(void)
 {
     tc_at(R21LEM8 + 016u);
@@ -906,7 +913,7 @@ static const word r21lem8_words[] = {
     ORDERS(RTB, BDSU), ADDRESS(LOADTIME), ADDRESS_PLUS_ONE(REPOSTM), STORE(DELTATM), ORDER(EXIT),
 };
 
-/* R21LEM8 +024 -- R21LEM9 when the time comes. */
+/* R21LEM8 +024 -- p. 511: R21LEM9 when the time comes. */
 void r21lem8_after_delta_time(void)
 {
     dca(ADDRESS_OF(DELTATM));        /* EXTEND; DCA DELTATM */
@@ -975,34 +982,34 @@ static void r21disp(void)
     tc_to(R21DISP, PHASCHNG); /* OCT 04022 */
 }
 
-/* R21DISP +2 -- "FLASH V 50 N 72 -- PLEASE PERFORM RR MAIN LOBE LOCKON
- * VERIFICATION" (V06N72PV, by GOPERF2R). */
+/* R21DISP +2 -- p. 511: "FLASH V 50 N 72 -- PLEASE PERFORM RR MAIN LOBE
+ * LOCKON VERIFICATION" (V06N72PV, by GOPERF2R). */
 void r21disp_after_phaschng(void)
 {
     set_A(V06N72PV);
     tc_to(R21DISP + 3u, BANKCALL); /* CADR GOPERF2R */
 }
 
-/* R21DISP +5 -- "TERMINATE EXITS VIA V 56". */
+/* R21DISP +5 -- p. 511: "TERMINATE EXITS VIA V 56". */
 void r21disp_terminate(void)
 {
     tc_to(R21DISP + 5u, GOTOV56);
 }
 
-/* R21DISP +6 -- "PROCEED CONTINUES TO R22". */
+/* R21DISP +6 -- p. 511: "PROCEED CONTINUES TO R22". */
 void r21disp_proceed(void)
 {
     tc_to(R21DISP + 6u, P20LEMWT);
 }
 
-/* R21DISP +7 -- "ENTER ILLEGAL": TC -5, the display again. */
+/* R21DISP +7 -- p. 511: "ENTER ILLEGAL": TC -5, the display again. */
 void r21disp_enter(void)
 {
     tc_to(R21DISP + 7u, R21DISP + 2u);
 }
 
-/* R21DISP +010 -- GOPERF2R's immediate return: "SET BITS TO MAKE THIS A
- * PRIORITY DISPLAY" (LINUS). */
+/* R21DISP +010 -- p. 511: GOPERF2R's immediate return: "SET BITS TO MAKE
+ * THIS A PRIORITY DISPLAY" (LINUS). */
 void r21disp_immediate_return(void)
 {
     set_A(BIT7);

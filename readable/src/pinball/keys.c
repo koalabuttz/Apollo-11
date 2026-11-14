@@ -80,26 +80,29 @@ static bool five_blank_plus2_returns(void);
  * (-) and AD MPAC (-0); a -0 adds the key to +0, so any key lights it. */
 void charin(void)
 {
+    bool full = true; /* CADRSTOR not +0 */
+
     set_A(ONE);
     xch(ADDRESS_OF(DSPLOCK));
     ts(ADDRESS_OF(TWENTY_ONE_22REG));
     switch (ccs_at(ADDRESS_OF(CADRSTOR))) {
     case POSITIVE:
         tc_at(CHARIN + 4u); /* TC +2 */
-        /* fall through */
-    case NEGATIVE:
         set_A(negate(ELRCODE1));
-        /* fall through */
-    case IS_MINUS_ZERO:
-        ad_at(ADDRESS_OF(MPAC)); /* EXTEND; BZF CHARIN2 */
-        if (!A_is_zero()) {
-            tc_at(CHARIN + 10u);
-            reldspon();
-        }
         break;
     case IS_PLUS_ZERO:
         tc_at(CHARIN + 5u); /* TC CHARIN2 */
+        full = false;
         break;
+    case NEGATIVE: set_A(negate(ELRCODE1)); break;
+    case IS_MINUS_ZERO: break;
+    }
+    if (full) {
+        ad_at(ADDRESS_OF(MPAC)); /* EXTEND; BZF CHARIN2 */
+        if (!A_is_zero()) {
+            tc_at(CHARIN + 012u);
+            reldspon();
+        }
     }
 
     /* CHARIN2: the key's code into CHAR, MPAC back as it was (the lock's
@@ -130,9 +133,9 @@ void eighty_nine_test(void)
     set_A(THREE);
     mask_at(ADDRESS_OF(DECBRNCH)); /* CCS A: MASK leaves 0 to 3 */
     if (ccs_at(A_ADDRESS) == POSITIVE)
-        tc(EIGHTY_NINE_TEST + 8u, NUM);
+        tc(EIGHTY_NINE_TEST + 010u, NUM);
     else
-        tc(EIGHTY_NINE_TEST + 9u, CHARALRM);
+        tc(EIGHTY_NINE_TEST + 011u, CHARALRM);
 }
 
 /* NUM -2 -- LM p. 399, CM p. 316. The 0 key, whose code is 20: CHAR +0. */
@@ -196,13 +199,13 @@ void num(void)
     ts(ADDRESS_OF(CODE));
     ca(ADDRESS_OF(DSPCOUNT));
     ts(ADDRESS_OF(COUNT));
-    tc_at(NUM + 16u);
+    tc_at(NUM + 020u);
     if (!dspin_returns()) return;
 
     set_A(THREE);
     mask_at(ADDRESS_OF(DECBRNCH)); /* "+0, OCTAL. +1, + DEC. +2, - DEC." */
     if (ccs_at(A_ADDRESS) == POSITIVE) {
-        tc_at(NUM + 20u);
+        tc_at(NUM + 024u);
         dectobin();
         return;
     }
@@ -234,12 +237,12 @@ static void dectobin(void)
     xch(ADDRESS_OF(MPAC) + 1u);
     ad_at(ADDRESS_OF(CHAR));
     if (!ts(ADDRESS_OF(MPAC) + 1u)) {
-        tc_at(DECTOBIN + 10u); /* "NO OF" */
+        tc_at(DECTOBIN + 012u); /* "NO OF" */
         endnmtst();
         return;
     }
     ads(ADDRESS_OF(MPAC));
-    tc_at(DECTOBIN + 12u);
+    tc_at(DECTOBIN + 014u);
     decend();
 }
 
@@ -297,9 +300,9 @@ static void decend(void)
     dmp(); /* ADRES DECON */
     set_A(THREE);
     mask_at(ADDRESS_OF(DECBRNCH));
-    tc_at(DECEND + 9u);
+    tc_at(DECEND + 011u);
     switch (a_word()) {
-    case 1u: /* "+" */ tc_at(DECEND + 10u); break;
+    case 1u: /* "+" */ tc_at(DECEND + 012u); break;
     case 2u: /* "- CASE" */
         dcs(ADDRESS_OF(MPAC) + 1u);
         dxch(ADDRESS_OF(MPAC) + 1u);
@@ -317,7 +320,8 @@ static void decend(void)
     endall();
 }
 
-/* MORNUM +1: DSPCOUNT gets A; then the job ends ("TC ENDOFJOB"). */
+/* MORNUM +1 -- LM p. 401, CM p. 318: DSPCOUNT gets A; then the job ends ("TC
+ * ENDOFJOB"). */
 static void mornum_plus1(void)
 {
     ts(ADDRESS_OF(DSPCOUNT));
@@ -391,7 +395,7 @@ static void nvcom(void)
     ts(ADDRESS_OF(REQRET));
     set_A(ENDINST);
     ts(ADDRESS_OF(ENTRET));
-    tc(NVCOM + 8u, ENDOFJOB);
+    tc(NVCOM + 010u, ENDOFJOB);
 }
 
 /* ---- The sign keys ---- */
@@ -459,8 +463,8 @@ static bool sgncom_returns(void)
     return true;
 }
 
-/* +ON: the register's - sign bit (SGNTAB, by INREL: SGNTAB -2 is R1's)
- * off, the + bit, one higher, on. */
+/* +ON -- LM p. 402, CM p. 319: the register's - sign bit (SGNTAB, by INREL:
+ * SGNTAB -2 is R1's) off, the + bit, one higher, on. */
 static bool plus_on_returns(void)
 {
     lxch(Q_ADDRESS);
@@ -473,7 +477,7 @@ static bool plus_on_returns(void)
     return sgncom_returns();
 }
 
-/* -ON: the - bit on, the + bit off. */
+/* -ON -- LM p. 403, CM p. 320: the - bit on, the + bit off. */
 static bool minus_on_returns(void)
 {
     lxch(Q_ADDRESS);
@@ -508,7 +512,7 @@ static bool signtest_returns(void)
     static const struct {
         word first_digit;
         word at;
-    } registers[] = {{R1D1, SIGNTEST + 6u}, {R2D1, SIGNTEST + 8u}, {R3D1, SIGNTEST + 10u}};
+    } registers[] = {{R1D1, SIGNTEST + 6u}, {R2D1, SIGNTEST + 010u}, {R3D1, SIGNTEST + 012u}};
     unsigned i;
 
     lxch(Q_ADDRESS);
@@ -528,7 +532,7 @@ static bool signtest_returns(void)
         }
         tc_return(Q_ADDRESS); /* TC Q: on to the next */
     }
-    tc(SIGNTEST + 11u, ENDOFJOB); /* "NO MATCH FOUND. SIGN ILLEGAL" */
+    tc(SIGNTEST + 013u, ENDOFJOB); /* "NO MATCH FOUND. SIGN ILLEGAL" */
     return false;
 }
 
@@ -564,18 +568,18 @@ void clear(void)
     ts(ADDRESS_OF(INREL));
     switch (ccs_at(ADDRESS_OF(CLPASS))) {
     case POSITIVE:
-        tc_at(CLEAR + 8u);
+        tc_at(CLEAR + 010u);
         clpashi();
         return;
-    case IS_PLUS_ZERO: tc_at(CLEAR + 9u); break; /* TC +2 */
-    case NEGATIVE: tc_at(CLEAR + 10u); break;    /* TC +1 */
+    case IS_PLUS_ZERO: tc_at(CLEAR + 011u); break; /* TC +2 */
+    case NEGATIVE: tc_at(CLEAR + 012u); break;     /* TC +1 */
     case IS_MINUS_ZERO: break;
     }
     /* "IF CLPASS IS +0 OR -, IT IS PASS0" */
     ca(ADDRESS_OF(INREL));
-    tc_at(CLEAR + 12u);
+    tc_at(CLEAR + 014u);
     if (!legaltst_returns()) return;
-    tc_at(CLEAR + 13u);
+    tc_at(CLEAR + 015u);
     clear1();
 }
 
@@ -601,12 +605,13 @@ static void clpashi(void)
     case IS_MINUS_ZERO: ads(ADDRESS_OF(REQRET)); break;
     }
     ca(ADDRESS_OF(INREL));
-    ts(ADDRESS_OF(MIXTEMP));    /* "TEMP STORAGE FOR INREL" */
-    dim(ADDRESS_OF(VERBREG));   /* "DECREMENT VERB AND RE-DISPLAY" */
-    tc(CLPASHI + 9u, BANKCALL); /* CADR UPDATVB */
+    ts(ADDRESS_OF(MIXTEMP));      /* "TEMP STORAGE FOR INREL" */
+    dim(ADDRESS_OF(VERBREG));     /* "DECREMENT VERB AND RE-DISPLAY" */
+    tc(CLPASHI + 011u, BANKCALL); /* CADR UPDATVB */
 }
 
-/* CLPASHI +11, after UPDATVB: INREL back ("RESTORE INREL"), then CLEAR1. */
+/* CLPASHI +013 -- LM p. 404, CM p. 321, after UPDATVB: INREL back ("RESTORE
+ * INREL"), then CLEAR1. */
 void clpashi_after_updatvb(void)
 {
     ca(ADDRESS_OF(MIXTEMP));
@@ -658,12 +663,12 @@ static bool five_blank_returns(void)
     return five_blank_plus2_returns();
 }
 
-/* 5BLANK +2: the register, its low word and CODE zeroed; DECBRNCH's sign
- * bit for the register and low two bits cleared ("ZERO PERTINENT DEC COMP
- * BIT. PROTECT OTHERS", BRNCHCON "ZERO LOW 2 BITS"); the register's odd
- * first character "BLANK ISOLATED CHAR SEPARATELY" (SINBLANK, DSPIN), then
- * its other four two by two (5BLANK1: DOUBLK, 2BLANK twice); DSPCOUNT at
- * its first digit. */
+/* 5BLANK +2 -- LM p. 404, CM p. 321: the register, its low word and CODE
+ * zeroed; DECBRNCH's sign bit for the register and low two bits cleared
+ * ("ZERO PERTINENT DEC COMP BIT. PROTECT OTHERS", BRNCHCON "ZERO LOW 2
+ * BITS"); the register's odd first character "BLANK ISOLATED CHAR
+ * SEPARATELY" (SINBLANK, DSPIN), then its other four two by two (5BLANK1:
+ * DOUBLK, 2BLANK twice); DSPCOUNT at its first digit. */
 static bool five_blank_plus2_returns(void)
 {
     word inrel = fetch(ADDRESS_OF(INREL));
@@ -678,7 +683,7 @@ static bool five_blank_plus2_returns(void)
     ts(ADDRESS_OF(DECBRNCH));
     ca(indexed_by(ADDRESS_OF(SINBLANK) - 2u, inrel));
     ts(ADDRESS_OF(COUNT));
-    tc_at(FIVE_BLANK + 16u);
+    tc_at(FIVE_BLANK + 020u);
     if (!dspin_returns()) return false;
 
     /* 5BLANK1 */

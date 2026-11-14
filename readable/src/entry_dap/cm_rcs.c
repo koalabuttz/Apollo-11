@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* CM_ENTRY_DIGITAL_AUTOPILOT.agc, part E (Comanche055 pp. 1081-1085, bank
- * 15): SETJTAG and the 2 s roll system's phase plane, CM/RCS.
+ * 15): SETJTAG and the 2 s roll system's phase plane, CM/RCS. The faithful C
+ * is c64-port/src/cm_entry_dap.c.
  *
  * "RCS		THIS SECTION IS ENTERED EACH 2 SEC BY WAITLIST CALL FOLLOWING A
  * DELAY OF 1.2 SEC AFTER PIPUP." SETJTAG sets JETAG, and on the next 0.1 s
@@ -30,9 +31,9 @@ static void geton2(void);
 
 /* ---- SETJTAG -- p. 1081 ---- */
 
-/* SETJTAG: "SAVE NOMINAL UPDATE TIME FOR SYNCH" (-TIME1 in TUSED), and 1
- * to JETAG ("RATHER THAN INCR, FOR SAFETY"), "TO CAUSE CM/RCS TO BE"
- * "EXECUTED AFTER NEXT BODYRATE UPDATE"; the phase (PHASCHNG, OCT
+/* SETJTAG -- p. 1081: "SAVE NOMINAL UPDATE TIME FOR SYNCH" (-TIME1 in
+ * TUSED), and 1 to JETAG ("RATHER THAN INCR, FOR SAFETY"), "TO CAUSE CM/RCS
+ * TO BE" "EXECUTED AFTER NEXT BODYRATE UPDATE"; the phase (PHASCHNG, OCT
  * 00001). */
 void setjtag(void)
 {
@@ -43,7 +44,7 @@ void setjtag(void)
     tc_to(SETJTAG + 4u, PHASCHNG);
 }
 
-/* SETJTAG +6: the task ends. */
+/* SETJTAG +6 -- p. 1081: the task ends. */
 void setjtag_taskover(void)
 {
     tc_to(SETJTAG + 6u, TASKOVER);
@@ -51,7 +52,8 @@ void setjtag_taskover(void)
 
 /* ---- CM/RCS -- pp. 1081-1082 ---- */
 
-/* CM/RCS: "SET NDX FOR POS ROLL, AND CHANGE LATER" (JNDX -1); the roll
+/* CM/RCS -- p. 1081: "SET NDX FOR POS ROLL, AND CHANGE LATER" (JNDX -1); the
+ * roll
  * rate, "ROLLDOT = DELAOG + DELAIG SINM =DELR", from PREL: "-2 RDOT T/180
  * IN L", added in, "SAVE -2VT/180 HERE" (-VT/180); "SAVE (-R/180) /2" in
  * SR (an overflow at TS -VT/180 skips the CS ROLL/180: A +1 or -1). Then
@@ -82,7 +84,8 @@ void cm_rcs(void)
     continue_at(COMPAT); /* "POSSIBLE OVFL ABOVE." */
 }
 
-/* GETLCX: "FORM RCOM/360" (POS1/2 doubled, and ROLLC), "IGNORE POSSIBLE
+/* GETLCX -- p. 1082: "FORM RCOM/360" (POS1/2 doubled, and ROLLC), "IGNORE
+ * POSSIBLE
  * OVFL."; "FORM -R/360" (SR, and NEG1/2 twice, "IGNORE OVFL"), and the
  * two summed: "LCX/360 = RCOM/360 -R/360  RANGE (-1,1)". Then "TAKE
  * SHORTEST ANGULAR PATH" "(BASED ON SINGLE JET ACCELERATION)": CCS
@@ -107,33 +110,34 @@ static void getlcx(void)
     }
 }
 
-/* GETLCX +012: -VT/180 positive: its magnitude (less 1, after CCS) plus
- * 1, */
-void cm_rcs_vt_positive(void)
+/* GETLCX +012 -- p. 1082: -VT/180 positive: its magnitude (less 1, after
+ * CCS) plus 1, */
+void getlcx_plus012(void)
 {
     ad(ONE);
-    cm_rcs_vt_plus0();
+    getlcx_plus013();
 }
 
-/* GETLCX +013: TCF +2 (+0 for a -VT/180 of +0), */
-void cm_rcs_vt_plus0(void)
+/* GETLCX +013 -- p. 1082: TCF +2 (+0 for a -VT/180 of +0), */
+void getlcx_plus013(void)
 {
-    cm_rcs_shortest();
+    getlcx_plus015();
 }
 
-/* GETLCX +014: -VT/180 negative: plus 1, */
-void cm_rcs_vt_negative(void)
+/* GETLCX +014 -- p. 1082: -VT/180 negative: plus 1, */
+void getlcx_plus014(void)
 {
     ad(ONE);
-    cm_rcs_shortest();
+    getlcx_plus015();
 }
 
-/* GETLCX +015: "DOES SGN(-VT) (VT/180) (VT/180) (180/(4 A1 TT COSALFA)) +
+/* GETLCX +015 -- p. 1082: "DOES SGN(-VT) (VT/180) (VT/180) (180/(4 A1 TT
+ * COSALFA)) +
  * X/360 + SGN(X) / 2	  OVFL ?": the magnitude times -VT/180, "C(-VT/180)
  * = -2 VT/180", times 1/16A1, "= 180/(16 A1 TT)", over CALFA, to L; then
  * POS1/2 by the sign of LCX/360 (+0 for either zero; CS POS1/2 for a
  * negative one, at GETLCX +027). */
-void cm_rcs_shortest(void)
+void getlcx_plus015(void)
 {
     mp_at(ADDRESS_OF(MVT_180)); /* EXTEND; MP -VT/180 */
     mp(ONE_16A1);               /* EXTEND; MP 1/16A1 */
@@ -141,21 +145,22 @@ void cm_rcs_shortest(void)
     ts(L_ADDRESS);
     switch (ccs_at(ADDRESS_OF(LCX_360))) {
     case POSITIVE: set_A(POS1_2); break; /* CAF POS1/2; TCF +2 */
-    case IS_PLUS_ZERO:
-    case IS_MINUS_ZERO: break;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: cm_rcs_cs_pos1_2(); return;
+    case IS_MINUS_ZERO: break;
     }
     cm_rcs_ad_lcx();
 }
 
-/* GETLCX +027: CS POS1/2, */
+/* GETLCX +027 -- p. 1082: CS POS1/2, */
 void cm_rcs_cs_pos1_2(void)
 {
     set_A(negate(POS1_2));
     cm_rcs_ad_lcx();
 }
 
-/* GETLCX +030: LCX/360 and L added: "IS LCX/360 LESS THAN 180 DEGS  $"
+/* GETLCX +030 -- p. 1082: LCX/360 and L added: "IS LCX/360 LESS THAN 180
+ * DEGS  $"
  * (TS L skips on an overflow): "YES, GO ON." (COMPAT); else TRTAGXPI,
  * "NO, SHIFT X BY - SGN(X) 2 PI": INDEX A on the overflow's +1 or -1, CS
  * HALFPR ("+A YIELDS -1/2"), doubled, into LCX/360; then COMPAT. */
@@ -173,7 +178,8 @@ void cm_rcs_ad_lcx(void)
 
 /* ---- COMPAT and WHICHALF -- pp. 1082-1083 ---- */
 
-/* COMPAT: "CORRECT FOR ASSUMED COORD TURN." (LCX/360 times CALFA, "COS
+/* COMPAT -- p. 1082: "CORRECT FOR ASSUMED COORD TURN." (LCX/360 times CALFA,
+ * "COS
  * ALFA", "SCALED LCX OK HERE."). CMDAPMOD, "FOUR POSSIBILITIES HERE": +1,
  * "EXIT, SETTING JETAG=0. (C(A)=0)" "ALL 3 AXES ALREADY DONE." (TC
  * DZCALL1); +0, "G LESS THAN .05.  CA POS. CONTINUE" (TC +1); -1, "G GEQ
@@ -192,21 +198,21 @@ void compat(void)
     }
 }
 
-/* COMPAT +6: TC +1, */
+/* COMPAT +6 -- p. 1082: TC +1, */
 void compat_tc(void)
 {
     tc_at(COMPAT + 6u);
     compat_ca();
 }
 
-/* COMPAT +7: CA LCX/360, */
+/* COMPAT +7 -- p. 1082: CA LCX/360, */
 void compat_ca(void)
 {
     ca(ADDRESS_OF(LCX_360));
     compat_errors();
 }
 
-/* COMPAT +010: the error to LCX/360, ERRORZ, "INITIAL ROLL ERROR
+/* COMPAT +010 -- p. 1082: the error to LCX/360, ERRORZ, "INITIAL ROLL ERROR
  * (UNREFLECTED) FOR TM.", and PAXERR1, "SAVE LCX FOR FDAI AND EDIT.
  * (/360)". "GET - 2 VT/180" through SR, "GET -VT/180, LEAVE -VT/360 IN SR
  * FOR DZ" (and -VT/180E, "DIAGNOSTIC ****"); "NOW CONTENTS OF -VT/180 AS
@@ -228,7 +234,8 @@ static void compat_errors(void)
     whichalf();
 }
 
-/* WHICHALF: "IS SGN(VT) ( (180/4A1 TT) VT/180 VT/180 - .5 BUFLIM/360 )
+/* WHICHALF -- p. 1083: "IS SGN(VT) ( (180/4A1 TT) VT/180 VT/180 - .5
+ * BUFLIM/360 )
  * -X/360 - .5 BUFLIM/360  POS?" ("FOR SECOND BURN, A1"): VSQ/4API
  * doubled, complemented, BUFLIM added, to L (an overflow skips the CCS:
  * CS L), signed by -VT/180 (+0 for either zero), LCX/360 and BUFLIM
@@ -275,17 +282,18 @@ static void whichalf(void)
 
 /* ---- REFLECT, DZ1, DZ2 and MAXVTEST -- pp. 1083-1084 ---- */
 
-/* REFLECT: "RELFECT LHP INTO RHP REL TO TERM CONTR": CS -VT/180, and on
- * at REFLECT +1 (the faithful port's run stops there, at a key of another
- * of its parts). */
+/* REFLECT -- p. 1083: "RELFECT LHP INTO RHP REL TO TERM CONTR": CS -VT/180,
+ * and on at REFLECT +1 (the faithful port's run stops there, at a key of
+ * another of its parts). */
 void reflect(void)
 {
     cs(ADDRESS_OF(MVT_180));
     continue_at(REFLECT + 1u);
 }
 
-/* REFLECT +1: to -VT/180 (an overflow skips the TS SR: A +1 or -1), */
-void reflect_ts(void)
+/* REFLECT +1 -- p. 1083: to -VT/180 (an overflow skips the TS SR: A +1 or
+ * -1), */
+void reflect_plus1(void)
 {
     if (!ts(ADDRESS_OF(MVT_180))) {
         reflect_ts_sr();
@@ -296,8 +304,8 @@ void reflect_ts(void)
     reflect_jndx();
 }
 
-/* REFLECT +2: "-VT/360 SAVED FOR DZ." (SR; an overflow skips the CS
- * LCX/360); LCX/360 complemented, */
+/* REFLECT +2 -- p. 1083: "-VT/360 SAVED FOR DZ." (SR; an overflow skips the
+ * CS LCX/360); LCX/360 complemented, */
 void reflect_ts_sr(void)
 {
     if (!ts(SR_ADDRESS)) cs(ADDRESS_OF(LCX_360));
@@ -305,7 +313,7 @@ void reflect_ts_sr(void)
     reflect_jndx();
 }
 
-/* REFLECT +5: and JNDX. */
+/* REFLECT +5 -- p. 1084: and JNDX. */
 void reflect_jndx(void)
 {
     cs(ADDRESS_OF(JNDX));
@@ -313,7 +321,8 @@ void reflect_jndx(void)
     dz1();
 }
 
-/* DZ1: "IS VSQ/4API - (VSQ/4API) MIN NEG  $" "YES, GO TEST FURTHER."
+/* DZ1 -- p. 1084: "IS VSQ/4API - (VSQ/4API) MIN NEG  $" "YES, GO TEST
+ * FURTHER."
  * (DZ2) "NO" (MAXVTEST). DZ2: "IS X/360 - XMIN/360 -VT/360 NEG  $" ("C(SR)
  * = -VT/360"): "YES, IN DZ. EXIT SETTING JETAG=0." (DZCALL, part F); else
  * MAXVTEST. */
@@ -335,9 +344,9 @@ void dz1(void)
     maxvtest();
 }
 
-/* MAXVTEST: "IS XD/360 - VM/360K - XS/360 POS?": "NOW CAN SET JNDX1 FOR
- * TON2 JETS." (JNDX complemented); then -XS/360, "XS/360 = (XMIN -YMIN/K)
- * /360", */
+/* MAXVTEST -- p. 1084: "IS XD/360 - VM/360K - XS/360 POS?": "NOW CAN SET
+ * JNDX1 FOR TON2 JETS." (JNDX complemented); then -XS/360, "XS/360 = (XMIN
+ * -YMIN/K) /360", */
 static void maxvtest(void)
 {
     cs(ADDRESS_OF(JNDX));
@@ -346,7 +355,8 @@ static void maxvtest(void)
     maxvtest_ad();
 }
 
-/* MAXVTEST +3: VSQ/4API and LCX/360 added, "XD/360= X/360 +VSQ/4API   X
+/* MAXVTEST +3 -- p. 1084: VSQ/4API and LCX/360 added, "XD/360= X/360
+ * +VSQ/4API   X
  * INTERCEPT" "BUT C(XD/360) = (XD - XS) /360" (an overflow skips the AD
  * -VM/360K, "X INTERCEPT FOR MAX V (VM)"); complemented: "YES, THRUST TO
  * VM" (BZMF MAXVTIM1); else XD/360 times KTRCS, doubled, "GO SAVE
@@ -369,7 +379,8 @@ void maxvtest_ad(void)
     geton1();
 }
 
-/* MAXVTIM1: "SET +Q AS TAG" (EXTEND; ZQ), and -VMT/180's complement, */
+/* MAXVTIM1 -- p. 1084: "SET +Q AS TAG" (EXTEND; ZQ), and -VMT/180's
+ * complement, */
 void maxvtim1(void)
 {
     qxch(7u);                /* EXTEND; ZQ */
@@ -379,9 +390,10 @@ void maxvtim1(void)
 
 /* ---- GETON1, OVRLINE and GETON2 -- pp. 1084-1085 ---- */
 
-/* GETON1: "VDT/180 OR VMT/180" (an overflow skips the AD -VT/180); with
- * -VT/180 added, doubled, times 180/8ATT: "TON1 / 4T". Not positive,
- * OVRLINE; else "RESET Q POS IF CAME FROM MAXVTIM1" (TC GETON2). */
+/* GETON1 -- p. 1084: "VDT/180 OR VMT/180" (an overflow skips the AD
+ * -VT/180); with -VT/180 added, doubled, times 180/8ATT: "TON1 / 4T". Not
+ * positive, OVRLINE; else "RESET Q POS IF CAME FROM MAXVTIM1" (TC
+ * GETON2). */
 static void geton1(void)
 {
     if (!ts(ADDRESS_OF(VDT_180))) ad_at(ADDRESS_OF(MVT_180));
@@ -396,9 +408,9 @@ static void geton1(void)
     geton2();
 }
 
-/* OVRLINE: CCS Q, the tag: positive, OVRLINE1; +0 (from MAXVTIM1),
- * MAXVTIM2, "ABOVE VM, SO THRUST DOWN": JNDX1 to JNDX (a negative Q's
- * magnitude, less 1, goes to JNDX; -0 skips both), and TON1 complemented
+/* OVRLINE -- p. 1085: CCS Q, the tag: positive, OVRLINE1; +0 (from
+ * MAXVTIM1), MAXVTIM2, "ABOVE VM, SO THRUST DOWN": JNDX1 to JNDX (a negative
+ * Q's magnitude, less 1, goes to JNDX; -0 skips both), and TON1 complemented
  * (TCF OVRLINE2 +1). */
 void ovrline(void)
 {
@@ -416,8 +428,8 @@ void ovrline(void)
     geton2();
 }
 
-/* OVRLINE1: "DRIFT AT V" (-VT/180 complemented to VDT/180); OVRLINE2:
- * TON1 +0; on at GETON2. */
+/* OVRLINE1 -- p. 1085: "DRIFT AT V" (-VT/180 complemented to VDT/180);
+ * OVRLINE2: TON1 +0; on at GETON2. */
 void ovrline1(void)
 {
     cs(ADDRESS_OF(MVT_180));
@@ -427,11 +439,11 @@ void ovrline1(void)
     geton2();
 }
 
-/* GETON2: "VDT/180, OR VMT/180 OR VT/180", doubled, times 180/8ATT, and
- * doubled again, "FOR SECOND BURN, A1": "= TON2 / 4T" (an overflow skips
- * the COM). Complemented, not positive: on at GETOFF; else TON2 again
- * (an overflow there skips the CA JNDX) and JNDX to JNDX1; on at GETOFF
- * (the faithful port's run stops there, at a key of another of its
+/* GETON2 -- p. 1085: "VDT/180, OR VMT/180 OR VT/180", doubled, times
+ * 180/8ATT, and doubled again, "FOR SECOND BURN, A1": "= TON2 / 4T" (an
+ * overflow skips the COM). Complemented, not positive: on at GETOFF; else
+ * TON2 again (an overflow there skips the CA JNDX) and JNDX to JNDX1; on at
+ * GETOFF (the faithful port's run stops there, at a key of another of its
  * parts). */
 static void geton2(void)
 {

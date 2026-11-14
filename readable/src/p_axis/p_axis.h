@@ -23,34 +23,34 @@
 #include "../agc/names.h"
 
 #if LUMINARY099
-void paxis(void);                         /* PAXIS: the T5RUPT task */
-void paxis_plus10(void);                  /* PAXIS +10: TC CHEKBITS */
-void paxis_after_chekbits(void);          /* PAXIS +11 */
-void paxfilt_after_acdt_c12(void);        /* PAXFILT +4 */
-void superjob(void);                      /* SUPERJOB: the DAP's job */
-void backp(void);                         /* BACKP: the rate derivation */
-void estimator_gains_after_trapeds(void); /* BACKP +133 */
-void q_rate(void);                        /* Q-RATE */
-void r_rate(void);                        /* R-RATE */
-void pretimck(void);                      /* PRETIMCK */
-void chkvisfz(void);                      /* CHKVISFZ */
-void abortyz_plus2(void);                 /* ABORTYZ +2 */
-void tsnextp_minus1(void);                /* TSNEXTP -1 */
-void tsnextp(void);                       /* TSNEXTP */
-void detentck(void);                      /* DETENTCK */
-void ratedone_after_zatteror(void);       /* RATEDONE +16 */
-void raterror(void);                      /* RATERROR */
-void pjetslec_minus6(void);               /* PJETSLEC -6 */
-void pjetslec_minus1(void);               /* PJETSLEC -1 */
-void pjetslec_after_writep(void);         /* PJETSLEC +25 */
-void pjetslec_after_jtlst(void);          /* PJETSLEC +46 */
-void jetsoff_after_writep(void);          /* JETSOFF +1 */
-void calcperr(void);                      /* CALCPERR, a subroutine */
-void purgency(void);                      /* PURGENCY */
-void purgency_plus4(void);                /* PURGENCY +4 */
-void purgency_after_spsrcs(void);         /* PURGENCY +15 */
-void headtjet_after_tjetlaw(void);        /* HEADTJET +5 */
-void selectp_after_alarm(void);           /* SELECTP +17 */
+void paxis(void);                   /* PAXIS: the T5RUPT task */
+void paxis_plus10(void);            /* PAXIS +10: TC CHEKBITS */
+void paxis_after_chekbits(void);    /* PAXIS +11 */
+void paxfilt_after_acdt_c12(void);  /* PAXFILT +4 */
+void superjob(void);                /* SUPERJOB: the DAP's job */
+void backp(void);                   /* BACKP: the rate derivation */
+void backp_plus0133(void);          /* BACKP +133 */
+void q_rate(void);                  /* Q-RATE */
+void r_rate(void);                  /* R-RATE */
+void pretimck(void);                /* PRETIMCK */
+void chkvisfz(void);                /* CHKVISFZ */
+void abortyz_plus2(void);           /* ABORTYZ +2 */
+void tsnextp_minus1(void);          /* TSNEXTP -1 */
+void tsnextp(void);                 /* TSNEXTP */
+void detentck(void);                /* DETENTCK */
+void ratedone_after_zatteror(void); /* RATEDONE +16 */
+void raterror(void);                /* RATERROR */
+void pjetslec_minus6(void);         /* PJETSLEC -6 */
+void pjetslec_minus1(void);         /* PJETSLEC -1 */
+void pjetslec_after_writep(void);   /* PJETSLEC +25 */
+void pjetslec_after_jtlst(void);    /* PJETSLEC +46 */
+void jetsoff_after_writep(void);    /* JETSOFF +1 */
+void calcperr(void);                /* CALCPERR, a subroutine */
+void purgency(void);                /* PURGENCY */
+void purgency_plus4(void);          /* PURGENCY +4 */
+void purgency_after_spsrcs(void);   /* PURGENCY +15 */
+void headtjet_after_tjetlaw(void);  /* HEADTJET +5 */
+void selectp_after_alarm(void);     /* SELECTP +17 */
 #endif
 
 #endif

@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* UPDATE_PROGRAM.agc, part 4: the updates themselves, V71 (UPEND71), V72
- * (UPEND72) and V70 (UPEND70); LM pages 1393-1396, CM pages 1504-1507. */
+ * (UPEND72) and V70 (UPEND70); LM pages 1393-1396, CM pages 1504-1507. The
+ * faithful C is c64-port/src/lm_update.c and cm_update.c. */
 #include "update_program.h"
 
 #define CA_CODE   030000u
@@ -39,7 +40,8 @@ static void lxch_indexed(void)
  * AND SAVE IT IN L", "CALCULATE NEXT RECEIVING ADDRESS", and store it, as
  * long as "THERE ANY WORDS LEFT TO BE STORED". Then "EXIT UPDATE
  * PROGRAM". A negative count would run ADUPBFM1's word, ADRES UPBUFF -1,
- * as an instruction: not modelled. */
+ * as an instruction: not modelled. A -0 one takes the TCF UPOUT after
+ * it. */
 void upend71(void)
 {
     ca(ADDRESS_OF(UPBUFF) + 1u);
@@ -66,8 +68,13 @@ void upend71(void)
         lxch_indexed();
         switch (ccs_at(ADDRESS_OF(MPAC))) {
         case POSITIVE: continue;
-        case NEGATIVE: not_modelled(); /* fall through */
-        default: upout(); return;
+        case IS_PLUS_ZERO: upout(); return;
+        case NEGATIVE:
+            /* never: the count is II - 3, and II was let in from 3 to 20 alone. The next word is
+             * an address word, ADUPBFM1's ADRES. */
+            not_modelled();
+            return;
+        case IS_MINUS_ZERO: upout(); return;
         }
     }
 }
@@ -87,9 +94,10 @@ void upend72(void)
     set_A(BIT1);
     mask_at(ADDRESS_OF(COMPNUMB));
     switch (ccs_register(A_ADDRESS)) {
+    case POSITIVE: set_A(negate(BIT2)); break; /* TCF +2: "YES" */
     case IS_PLUS_ZERO: uperrout(); return;
+    case NEGATIVE: set_A(negate(BIT2)); break;
     case IS_MINUS_ZERO: break;
-    default: set_A(negate(BIT2)); break; /* TCF +2: "YES" */
     }
     ad_at(ADDRESS_OF(COMPNUMB));
     for (;;) { /* LDLOOP72 */
@@ -125,16 +133,17 @@ void upend70(void)
     timedidl();
 }
 
-/* UPEND70 +4, TIMEDIDL's error return: "ERROR WHILE DECREMENTING CLOCK --
- * EXIT". */
+/* UPEND70 +4 -- LM p. 1395, CM p. 1506, TIMEDIDL's error return: "ERROR
+ * WHILE DECREMENTING CLOCK -- EXIT". */
 void upend70_clock_error(void)
 {
     tc_at((word)(UPEND70 + 4u)); /* TC UPERROUT */
     uperrout();
 }
 
-/* UPEND70 +5, TIMEDIDL's normal return: "COPY DECREMENTERS FOR RESTART
- * PROTECTION" in UPBUFF +10D and +12D, and "RESTART PROTECT(GROUP 6)". */
+/* UPEND70 +5 -- LM p. 1395, CM p. 1506, TIMEDIDL's normal return: "COPY
+ * DECREMENTERS FOR RESTART PROTECTION" in UPBUFF +10D and +12D, and "RESTART
+ * PROTECT(GROUP 6)". */
 void upend70_after_timedidl(void)
 {
     dcs(ADDRESS_OF(UPBUFF));
@@ -144,11 +153,12 @@ void upend70_after_timedidl(void)
     tc_to((word)(UPEND70 + 013u), PHASCHNG); /* OCT 04026 */
 }
 
-/* UPEND70 +015, where PHASCHNG returns, in TEPHEM's EBANK: "DECREMENT CSM
- * STATE VECTOR TIME", "DECREMENT LEM STATE VECTOR TIME", and "INCREMENT
- * TP TEPHEM" (a triple precision word: the DAS's carry goes on into its
- * top word). Each copy is zeroed as it is used, so a restart here does
- * none twice. Then "RESTART PROTECT(GROUP 6)" again. */
+/* UPEND70 +015 -- LM p. 1395, CM p. 1506, where PHASCHNG returns, in
+ * TEPHEM's EBANK: "DECREMENT CSM STATE VECTOR TIME", "DECREMENT LEM STATE
+ * VECTOR TIME", and "INCREMENT TP TEPHEM" (a triple precision word: the
+ * DAS's carry goes on into its top word). Each copy is zeroed as it is used,
+ * so a restart here does none twice. Then "RESTART PROTECT(GROUP 6)"
+ * again. */
 void upend70_after_phaschng(void)
 {
     set_A(ZERO);
@@ -167,8 +177,8 @@ void upend70_after_phaschng(void)
     tc_to((word)(UPEND70 + 032u), PHASCHNG); /* OCT 04026 */
 }
 
-/* UPEND70 +034, where PHASCHNG returns: "GO TO STANDARD UPDATE PROGRAM
- * EXIT". */
+/* UPEND70 +034 -- LM p. 1396, CM p. 1507, where PHASCHNG returns: "GO TO
+ * STANDARD UPDATE PROGRAM EXIT". */
 void upend70_after_phaschng2(void)
 {
     tc_at((word)(UPEND70 + 034u)); /* TC UPOUT */

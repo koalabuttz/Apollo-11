@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 8 (Luminary099 pp. 564-567): LPS20.1, "VECTOR
- * EXTRAPOLATION AND LOS COMPUTATION", and LPS20.2, the "400 NM RANGE
- * CHECK".
+ * EXTRAPOLATION AND LOS COMPUTATION", and LPS20.2, the "400 NM RANGE CHECK".
+ * The faithful C is c64-port/src/lm_p20_p25.c.
  *
  * LPS20.1 brings both vehicles' state vectors to the time in TDEC1: the
  * LM's by LEMCONIC (unless R21 called it on the lunar surface), kept in
@@ -21,8 +21,6 @@
 #include "../interpreter/interpreter.h"
 
 #if LUMINARY099
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* ---- LPS20.1 ---- */
 
@@ -58,8 +56,8 @@ static const word lps20_1_words[] = {
     ORDER(EXIT),
 };
 
-/* LPS20.1 +027: "KILL THE TASK WHICH CALLS DODES SINCE STORING INTO
- * ERASEABLES DODES USES". */
+/* LPS20.1 +027 -- p. 565: "KILL THE TASK WHICH CALLS DODES SINCE STORING
+ * INTO ERASEABLES DODES USES". */
 void lps20_1_after_exit(void)
 {
     tc_to(LPS20_1 + 027u, KILLTASK); /* CADR DESLOOP +2 */

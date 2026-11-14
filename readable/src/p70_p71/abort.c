@@ -16,12 +16,12 @@ static void abortalm(void);
 
 /* ---- R10,R11 -- pp. 829-830 ---- */
 
-/* R10,R11: "IS SERVICER STILL RUNNING?" (AVEGFLAG clear: CS FLAGWRD7 leaves
- * its bit set). If not, "LET AVGEND TAKE CARE OF GROUP 2" (TASKOVER). If
- * so, the pass count PIPCTR: on its "LAST PASS", +0, LRHTASK; otherwise
- * PIPCTR1 gets it less one, and R10,R11 waits for itself again (TWIDDLE,
- * OCT31 centiseconds). (A MASK leaves no negative word; and CCS of PIPCTR
- * -0 skips the TS, leaving PIPCTR1 alone.) */
+/* R10,R11 -- p. 829: "IS SERVICER STILL RUNNING?" (AVEGFLAG clear: CS
+ * FLAGWRD7 leaves its bit set). If not, "LET AVGEND TAKE CARE OF GROUP 2"
+ * (TASKOVER). If so, the pass count PIPCTR: on its "LAST PASS", +0, LRHTASK;
+ * otherwise PIPCTR1 gets it less one, and R10,R11 waits for itself again
+ * (TWIDDLE, OCT31 centiseconds). (A MASK leaves no negative word; and CCS of
+ * PIPCTR -0 skips the TS, leaving PIPCTR1 alone.) */
 void r10_r11(void)
 {
     cs(ADDRESS_OF(FLAGWRD7));
@@ -31,17 +31,17 @@ void r10_r11(void)
         return;
     }
     switch (ccs_at(ADDRESS_OF(PIPCTR))) {
-    case POSITIVE:
-    case NEGATIVE: ts(ADDRESS_OF(PIPCTR1)); break;   /* (A, CCS's result, never overflows) */
+    case POSITIVE: ts(ADDRESS_OF(PIPCTR1)); break;   /* (A, CCS's result, never overflows) */
     case IS_PLUS_ZERO: continue_at(LRHTASK); return; /* "LAST PASS. CALL LRHTASK." */
+    case NEGATIVE: ts(ADDRESS_OF(PIPCTR1)); break;   /* (A, CCS's result, never overflows) */
     case IS_MINUS_ZERO: break;
     }
     set_A(OCT31);
     tc_to(R10_R11 + 011u, TWIDDLE); /* ADRES R10,R11 */
 }
 
-/* R10,R11A: "IF LAMP TEST, DO NOT CHANGE LR LITES" (IMODES33's bit 1
- * clear): then on at 10,11; otherwise FLASHH?. */
+/* R10,R11A -- p. 829: "IF LAMP TEST, DO NOT CHANGE LR LITES" (IMODES33's bit
+ * 1 clear): then on at 10,11; otherwise FLASHH?. */
 void r10_r11a(void)
 {
     cs(ADDRESS_OF(IMODES33));
@@ -52,8 +52,8 @@ void r10_r11a(void)
         flashh_q();
 }
 
-/* FLASHH?: the altitude light's flash bit (FLGWRD11 bit 1: "C(A) = 1 =
- * HFLASH BIT"). Off, "LEAVE ALONE" (FLASHV?); on, "FLIP H LITE" (FLIP,
+/* FLASHH? -- p. 829: the altitude light's flash bit (FLGWRD11 bit 1: "C(A) =
+ * 1 = HFLASH BIT"). Off, "LEAVE ALONE" (FLASHV?); on, "FLIP H LITE" (FLIP,
  * with HLITE in L). (A, a MASK's, never overflows: TS L does not skip.) */
 static void flashh_q(void)
 {
@@ -67,8 +67,8 @@ static void flashh_q(void)
     tc_to(FLASHH_Q + 5u, FLIP);
 }
 
-/* FLASHV?: the velocity light's (VFLSHBIT: "MUST BE BIT 2"). Off, on at
- * 10,11; on, "FLIP V LITE". */
+/* FLASHV? -- p. 829: the velocity light's (VFLSHBIT: "MUST BE BIT 2"). Off,
+ * on at 10,11; on, "FLIP V LITE". */
 void flashv_q(void)
 {
     set_A(VFLSHBIT);
@@ -82,8 +82,8 @@ void flashv_q(void)
     tc_to(FLASHV_Q + 6u, FLIP);
 }
 
-/* 10,11: "IS THE LETABORT FLAG SET ?" No: "PROCEED TO R10" (LANDISP). Yes:
- * P71NOW?. */
+/* 10,11 -- p. 829: "IS THE LETABORT FLAG SET ?" No: "PROCEED TO R10"
+ * (LANDISP). Yes: P71NOW?. */
 void ten_11(void)
 {
     ca(ADDRESS_OF(FLAGWRD9));
@@ -94,8 +94,8 @@ void ten_11(void)
         p71now_q();
 }
 
-/* P71NOW?: "ARE WE IN P71 NOW?" Yes: R10 (LANDISP). No: "IS AN ABORT STAGE
- * COMMANDED?" (channel 30's bit 4 clear; L keeps the channel
+/* P71NOW? -- p. 829: "ARE WE IN P71 NOW?" Yes: R10 (LANDISP). No: "IS AN
+ * ABORT STAGE COMMANDED?" (channel 30's bit 4 clear; L keeps the channel
  * complemented): yes, P71A; no, P70NOW?. (READ leaves the channel's word
  * sign-extended, so COM cannot overflow, and TS L does not skip; a MASK
  * leaves no negative word.) */
@@ -117,8 +117,8 @@ static void p71now_q(void)
         p70now_q();
 }
 
-/* P70NOW?: "ARE WE IN P70 NOW?" Yes: R10. No: "IS AN ABORT COMMANDED?"
- * (channel 30's bit 1 clear, from L): yes, P70A; no, R10. */
+/* P70NOW? -- p. 830: "ARE WE IN P70 NOW?" Yes: R10. No: "IS AN ABORT
+ * COMMANDED?" (channel 30's bit 1 clear, from L): yes, P70A; no, R10. */
 static void p70now_q(void)
 {
     cs(ADDRESS_OF(MODREG));
@@ -137,36 +137,37 @@ static void p70now_q(void)
 
 /* ---- P70 and P71 -- p. 830 ---- */
 
-/* P70, from verb 37: LEGAL?, whose return is P70A. */
+/* P70 -- p. 830, from verb 37: LEGAL?, whose return is P70A. */
 void p70(void)
 {
     tc_at(P70);
     legal_q();
 }
 
-/* P70A: Q -0 for P70 ... */
+/* P70A -- p. 830: Q -0 for P70 ... */
 void p70a(void)
 {
     set_A(negate(ZERO));
     start_abort();
 }
 
-/* P71: LEGAL?, whose return is P71A. */
+/* P71 -- p. 830: LEGAL?, whose return is P71A. */
 void p71(void)
 {
     tc_at(P71);
     legal_q();
 }
 
-/* P71A: ... and two for P71. */
+/* P71A -- p. 830: ... and two for P71. */
 void p71a(void)
 {
     set_A(TWO);
     start_abort();
 }
 
-/* P70A +3 (P71A +1): Q gets A, then with interrupts inhibited CONTABRT
- * (DTCB of CNTABTAD, its 2CADR). (A is a constant: TS Q does not skip.) */
+/* P70A +3 -- p. 830 (P71A +1): Q gets A, then with interrupts inhibited
+ * CONTABRT (DTCB of CNTABTAD, its 2CADR). (A is a constant: TS Q does not
+ * skip.) */
 static void start_abort(void)
 {
     ts(Q_ADDRESS);
@@ -178,10 +179,10 @@ static void start_abort(void)
 
 /* ---- LEGAL? -- pp. 835-836 ---- */
 
-/* LEGAL?: "IS THE DESIRED PGM ALREADY IN PROGRESS?" (MMNUMBER, the program
- * asked for, MODREG): then ABORTALM. "ARE THE ABORTS ENABLED?" (LETABORT
- * set) and "IS SERVICER ON THE AIR?" (AVEGFLAG): if both, "ALL IS WELL"
- * (TC Q, back to the caller); otherwise ABORTALM. (Each MASK leaves no
+/* LEGAL? -- p. 835: "IS THE DESIRED PGM ALREADY IN PROGRESS?" (MMNUMBER, the
+ * program asked for, MODREG): then ABORTALM. "ARE THE ABORTS ENABLED?"
+ * (LETABORT set) and "IS SERVICER ON THE AIR?" (AVEGFLAG): if both, "ALL IS
+ * WELL" (TC Q, back to the caller); otherwise ABORTALM. (Each MASK leaves no
  * negative word.) */
 void legal_q(void)
 {
@@ -205,19 +206,20 @@ void legal_q(void)
         abortalm();
 }
 
-/* ABORTALM: the operator error light (FALTON), ... */
+/* ABORTALM -- p. 836: the operator error light (FALTON), ... */
 static void abortalm(void)
 {
     tc_to(ABORTALM, FALTON);
 }
 
-/* ... the display released (RELDSP), ... */
+/* ABORTALM +1 -- p. 836: ... the display released (RELDSP), ... */
 void abortalm_after_falton(void)
 {
     tc_to(ABORTALM + 1u, RELDSP);
 }
 
-/* ... and back to Pinball (POSTJUMP, CADR PINBRNCH). */
+/* ABORTALM +2 -- p. 836: ... and back to Pinball (POSTJUMP, CADR
+ * PINBRNCH). */
 void abortalm_after_reldsp(void)
 {
     tc_to(ABORTALM + 2u, POSTJUMP);

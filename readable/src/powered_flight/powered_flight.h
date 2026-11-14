@@ -17,9 +17,6 @@
 #include "../agc/agc.h"
 #include "../interpreter/notation.h"
 
-#ifndef COUNT
-#define COUNT(a) (sizeof(a) / sizeof((a)[0]))
-#endif
 #ifndef CODE_BANK
 #define CODE_BANK(fcadr) ((unsigned)(((fcadr) >> 10) & 037u))
 #define CODE_Z(fcadr)    ((word)(02000u + ((fcadr) & 01777u)))

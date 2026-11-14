@@ -21,8 +21,8 @@
 #include "../single_precision/single_precision.h"
 #include "../agc/names.h"
 
-/* QUICTRIG +4: the next angle's offset into ITEMP2, and the angle into A
- * for SPSIN. */
+/* QUICTRIG +4 -- LM p. 1261, CM p. 1367: the next angle's offset into
+ * ITEMP2, and the angle into A for SPSIN. */
 static void next_angle(void)
 {
     mask(SIX);
@@ -31,8 +31,8 @@ static void next_angle(void)
     tc_at(QUICTRIG + 010u); /* TC SPSIN */
 }
 
-/* QUICTRIG: interrupts off, the return into ITEMP1, the first angle
- * (CDUSPOT +4). */
+/* QUICTRIG -- LM p. 1261, CM p. 1367: interrupts off, the return into
+ * ITEMP1, the first angle (CDUSPOT +4). */
 static void start(void)
 {
     inhint();
@@ -52,23 +52,24 @@ static void store_sine(void)
 }
 
 /* After SPCOS: the cosine, scaled, to COSCDU; then the next angle (true),
- * or, after the last, interrupts on and back by TC A. Not modelled:
- * ITEMP2 negative, which the MASK never leaves, and a return that is not
- * an address in the program. */
+ * or, after the last, interrupts on and back by TC A. ITEMP2 is never
+ * negative, the MASK leaves none: it would skip the CA ITEMP1, and -0 the
+ * RELINT too. Not modelled: a return that is not an address in the
+ * program. */
 static bool store_cosine(void)
 {
     mp(BIT14);
     dxch(indexed_write(ADDRESS_OF(COSCDU), ITEMP2));
     switch (ccs_at(ADDRESS_OF(ITEMP2))) {
     case POSITIVE: next_angle(); return true;
-    case IS_PLUS_ZERO:
-        ca(ADDRESS_OF(ITEMP1));
-        relint();
+    case IS_PLUS_ZERO: ca(ADDRESS_OF(ITEMP1)); /* fall through */
+    case NEGATIVE: /* never */ relint();       /* fall through */
+    case IS_MINUS_ZERO:                        /* never */
         if (A < 010u || A > 07777u) not_modelled();
         tc_through(A_ADDRESS); /* TC A */
         return false;
-    default: not_modelled(); return false;
     }
+    return false;
 }
 
 void quictrig(void)

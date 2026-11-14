@@ -167,7 +167,7 @@ static const agc_routine_entry basic_keys[] = {
     {IN_FILE(V1STO2S), key_v1sto2s},
     {IN_FILE(V1STO2S + 1u), key_v1sto2s_plus1},
     {IN_FILE(V1STO2S + 4u), key_v1sto2s_plus4},
-    {IN_FILE(V1STO2S + 8u), key_v1sto2s_plus8},
+    {IN_FILE(V1STO2S + 010u), key_v1sto2s_plus8},
     {IN_FILE(TPMODE), key_tpmode},
     {IN_FILE(TWO_V1STO2S), key_two_v1sto2s},
     {IN_FILE(TWO_V1STO2S + 1u), key_two_v1sto2s_plus1},
@@ -176,7 +176,7 @@ static const agc_routine_entry basic_keys[] = {
     {IN_FILE(INCRCDUS), key_incrcdus},
     {IN_FILE(INCRCDUS + 4u), key_incrcdus_plus4},
     {IN_FILE(INCRCDUS + 7u), key_incrcdus_plus7},
-    {IN_FILE(INCRCDUS + 10u), key_incrcdus_plus10},
+    {IN_FILE(INCRCDUS + 012u), key_incrcdus_plus10},
 #endif
     {IN_FILE(CDUINC), key_cduinc_key},
     {IN_FILE(PULSEIMU), key_pulseimu},

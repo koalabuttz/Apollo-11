@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 /* CONIC_SUBROUTINES.agc, APSIDES and ABTCONIC (LM pp. 1200-1201, CM pp.
- * 1303-1304), in the listing's notation (src/interpreter/notation.h),
- * which the readable interpreter runs, and ABTCONIC's basic code.
+ * 1303-1304), in the listing's notation (src/interpreter/notation.h), which
+ * the readable interpreter runs, and ABTCONIC's basic code. The faithful C
+ * is c64-port/src/lm_conic_compiled.c (with lm_conic_checkctr.c) and
+ * cm_conics.c.
  *
  * APSIDES: "GIVEN AN INITIAL STATE VECTOR CALCULATES THE RADIUS OF
  * PERICENTER AND OF APOCENTER AND THE ECCENTRICITY OF THE RESULTING CONIC
@@ -69,8 +71,8 @@ static const word apsides_words[] = {
 const struct interpretive_code APSIDES_CODE = {I_APSIDES >> 10, K_APSIDES, COUNT(apsides_words),
                                                apsides_words};
 
-/* After ABTCONIC's EXIT: TC POODOO, with the alarm code after it (OCT
- * 00607). POODOO does not return. */
+/* ABTCONIC +1 -- LM p. 1201, CM p. 1304: After ABTCONIC's EXIT: TC POODOO,
+ * with the alarm code after it (OCT 00607). POODOO does not return. */
 void abtconic_after_exit(void)
 {
     tc_to(ABTCONIC + 1u, POODOO); /* OCT 00607 */

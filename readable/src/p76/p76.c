@@ -26,11 +26,7 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-#define P76_BANK     013u
-
-/* A label's address in its bank (02000-03777). */
-#define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
+#define P76_BANK 013u
 
 /* The words of the code from P76, as the listing places them. */
 #if LUMINARY099
@@ -47,25 +43,16 @@
 #define INTWAKE_AT  (P76 + 0116u)
 #endif
 
-/* TC at, to a routine out of the file or to INTPRET: Q gets the return
- * (for INTPRET, the first interpretive word), and the routine runs
- * next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* ---- P76 -- LM p. 709, CM p. 511 ---- */
 
-/* P76: TRACKFLG set (UPFLAG), */
+/* P76 -- LM p. 709, CM p. 511: TRACKFLG set (UPFLAG), */
 void p76(void)
 {
     tc_to(P76, UPFLAG); /* ADRES TRACKFLG */
 }
 
 #if LUMINARY099
-/* and to the interpreter, for P76_CODE: */
+/* P76 +2 -- LM p. 709: and to the interpreter, for P76_CODE: */
 void p76_intpret(void)
 {
     tc_to(P76 + 2u, INTPRET);
@@ -250,9 +237,10 @@ static const word out_words[] = {
     ORDER(EXIT),
 };
 
-/* ENDP76: "CLEAR RR TRACKING MARK COUNTER" (MARKCTR) and, for the CM,
- * VHFCNT, and "INVALIDATE MARK BUFFER" (MRKBUF2 -1); then GOTOPOOH. Each
- * TS would skip the next word on an overflow, which a CAF never leaves. */
+/* ENDP76 -- LM p. 711, CM p. 513: "CLEAR RR TRACKING MARK COUNTER" (MARKCTR)
+ * and, for the CM, VHFCNT, and "INVALIDATE MARK BUFFER" (MRKBUF2 -1); then
+ * GOTOPOOH. Each TS would skip the next word on an overflow, which a CAF
+ * never leaves. */
 void endp76(void)
 {
     set_A(ZERO);

@@ -17,10 +17,11 @@ static void oneshotok(void);
 
 /* ---- TVCEXEC and ROLLPREP -- p. 946 ---- */
 
-/* TVCEXEC, every half second from TVCINIT4: "CHECK FOR TERMINATION" (bits
- * 15 and 14 of FLAGWRD6 read 10 while the TVC DAP is on, so CS and MASK
- * leave a positive word; +0 or negative, "TERMINATE"). Otherwise WAITLIST
- * TVCEXEC again in half a second, "TO PERPETUATE TVCEXEC". */
+/* TVCEXEC -- p. 946, every half second from TVCINIT4: "CHECK FOR
+ * TERMINATION" (bits 15 and 14 of FLAGWRD6 read 10 while the TVC DAP is on,
+ * so CS and MASK leave a positive word; +0 or negative, "TERMINATE").
+ * Otherwise WAITLIST TVCEXEC again in half a second, "TO PERPETUATE
+ * TVCEXEC". */
 void tvcexec(void)
 {
     cs(ADDRESS_OF(FLAGWRD6));
@@ -33,9 +34,9 @@ void tvcexec(void)
     tc_to(TVCEXEC + 5u, WAITLIST); /* 2CADR TVCEXEC */
 }
 
-/* ROLLPREP, after the WAITLIST: "UPDATE ROLL LADDERS" (CDUX to OGANOW, the
- * last OGANOW to OGAPAST); AK the roll needle's "FLY-TO OGA ERROR" (OGAD
- * less OGANOW, "SC.AT B-1 REVS"), and OGAERR the roll DAP's
+/* ROLLPREP -- p. 946, after the WAITLIST: "UPDATE ROLL LADDERS" (CDUX to
+ * OGANOW, the last OGANOW to OGAPAST); AK the roll needle's "FLY-TO OGA
+ * ERROR" (OGAD less OGANOW, "SC.AT B-1 REVS"), and OGAERR the roll DAP's
  * "PHASE-PLANE (FLY-FROM) OGAERROR" (AK times -BIT14). Then the roll DAP
  * task in three centiseconds (WAITLIST, 2CADR ROLLDAP). */
 void rollprep(void)
@@ -52,8 +53,8 @@ void rollprep(void)
     tc_to(ROLLPREP + 013u, WAITLIST);
 }
 
-/* NEEDLEUP, after the WAITLIST: "DO A NEEDLES UPDATE" (IBNKCALL, CADR
- * NEEDLER; "NEEDLES RESTARTS ITSELF"). */
+/* NEEDLEUP -- p. 946, after the WAITLIST: "DO A NEEDLES UPDATE" (IBNKCALL,
+ * CADR NEEDLER; "NEEDLES RESTARTS ITSELF"). */
 void needleup(void)
 {
     tc_to(NEEDLEUP, IBNKCALL);
@@ -61,8 +62,8 @@ void needleup(void)
 
 /* ---- VARGAINS and EXECCOPY -- pp. 946-947 ---- */
 
-/* VARGAINS +5, the bypass of the "MASS/GAIN UPDATES": TVCEXPHS 2, and on
- * to 1SHOTCHK. */
+/* VARGAINS +5 -- p. 946, the bypass of the "MASS/GAIN UPDATES": TVCEXPHS 2,
+ * and on to 1SHOTCHK. */
 static void bypass_updates(void)
 {
     set_A(TWO);
@@ -70,23 +71,23 @@ static void bypass_updates(void)
     oneshotchk();
 }
 
-/* EXECCOPY: "RESTART-PROTECT THE COPYCYCLE" (TVCEXPHS 1 more), then the
- * copycycle itself. */
+/* EXECCOPY -- p. 947: "RESTART-PROTECT THE COPYCYCLE" (TVCEXPHS 1 more),
+ * then the copycycle itself. */
 static void execcopy(void)
 {
     incr(ADDRESS_OF(TVCEXPHS));
     execcopy_copycycle();
 }
 
-/* VARGAINS, after NEEDLER: "CHECK ENGINE-ON BIT TO INHIBIT VARIABLE"
- * "GAINS AND MASS IF ENGINE OFF" (bit 13 of DSALMOUT; with it +0, "OFF, SO
- * BYPASS MASS/GAIN UPDATES"). With the engine on, VCNTR counts down the
- * half seconds "TEST FOR GAIN OF UPDATE TIME": positive, "NOT YET", and
+/* VARGAINS -- p. 946, after NEEDLER: "CHECK ENGINE-ON BIT TO INHIBIT
+ * VARIABLE" "GAINS AND MASS IF ENGINE OFF" (bit 13 of DSALMOUT; with it +0,
+ * "OFF, SO BYPASS MASS/GAIN UPDATES"). With the engine on, VCNTR counts down
+ * the half seconds "TEST FOR GAIN OF UPDATE TIME": positive, "NOT YET", and
  * VCNTRTMP its count less one and MASSTMP CSMMASS, to "PROTECT VCNTR AND"
- * "CSMMASS DURING AN IMPULSIVE BURN"; +0, GAINCHNG; -0, "NO, LOTHRUST
- * (S40.8 R40)", the bypass. Negative, "NOT USED", is a TCF +0, a TC to
- * itself the hardware's TC trap ends in a restart: not modelled (the
- * faithful port refuses it too). */
+ * "CSMMASS DURING AN IMPULSIVE BURN"; +0, GAINCHNG; -0, "NO, LOTHRUST (S40.8
+ * R40)", the bypass. Negative, "NOT USED", is a TCF +0, a TC to itself the
+ * hardware's TC trap ends in a restart: not modelled (the faithful port
+ * refuses it too). */
 void vargains(void)
 {
     set_A(BIT13);
@@ -110,23 +111,24 @@ void vargains(void)
     }
 }
 
-/* GAINCHNG: "UPDATE IXX, IAVG, IAVG/TLX" (IBNKCALL, CADR FIXCW: the
+/* GAINCHNG -- p. 947: "UPDATE IXX, IAVG, IAVG/TLX" (IBNKCALL, CADR FIXCW:
+ * the
  * "MASSPROP ENTRY  (ALREADY INITIALIZED)"). */
 void gainchng(void)
 {
     tc_to(GAINCHNG, IBNKCALL);
 }
 
-/* GAINCHNG +2, after FIXCW: "UPDATE 1/CONACC, VARK" (IBNKCALL, CADR
- * S40.15). */
+/* GAINCHNG +2 -- p. 947, after FIXCW: "UPDATE 1/CONACC, VARK" (IBNKCALL,
+ * CADR S40.15). */
 void gainchng_after_fixcw(void)
 {
     tc_to(GAINCHNG + 2u, IBNKCALL);
 }
 
-/* GAINCHNG +4, after S40.15: MASSTMP the "MASS FOR NEXT 10 SEC. OF BURN"
- * (CSMMASS less TENMDOT, "KG B+16"), and VCNTRTMP NINETEEN to "RESET THE
- * VARIABLE-GAIN UPDATE COUNTER" (an overflow at the TS MASSTMP skips the
+/* GAINCHNG +4 -- p. 947, after S40.15: MASSTMP the "MASS FOR NEXT 10 SEC. OF
+ * BURN" (CSMMASS less TENMDOT, "KG B+16"), and VCNTRTMP NINETEEN to "RESET
+ * THE VARIABLE-GAIN UPDATE COUNTER" (an overflow at the TS MASSTMP skips the
  * CAF NINETEEN, leaving +1 or -1 in A). Then EXECCOPY. */
 void gainchng_after_s40_15(void)
 {
@@ -137,9 +139,9 @@ void gainchng_after_s40_15(void)
     execcopy();
 }
 
-/* EXECCOPY +1, the copycycle: MASSTMP to CSMMASS, VCNTRTMP to VCNTR and
- * V97VCNTR ("FOR ENGFAIL (R41) MASS UPDATES AT SPSOFF"); "COPYCYCLE OVER"
- * (TVCEXPHS 1 more); on to 1SHOTCHK. */
+/* EXECCOPY +1 -- p. 947, the copycycle: MASSTMP to CSMMASS, VCNTRTMP to
+ * VCNTR and V97VCNTR ("FOR ENGFAIL (R41) MASS UPDATES AT SPSOFF");
+ * "COPYCYCLE OVER" (TVCEXPHS 1 more); on to 1SHOTCHK. */
 void execcopy_copycycle(void)
 {
     ca(ADDRESS_OF(MASSTMP));
@@ -153,7 +155,8 @@ void execcopy_copycycle(void)
 
 /* ---- 1SHOTCHK to CNTRCOPY -- pp. 947-949 ---- */
 
-/* 1SHOTCHK: "CHECK TIME FOR ONE-SHOT OR REPCORR" by CNTR. Positive, "NOT
+/* 1SHOTCHK -- p. 947: "CHECK TIME FOR ONE-SHOT OR REPCORR" by CNTR.
+ * Positive, "NOT
  * YET": CNTRTMP its count less one ("COUNT DOWN") and TVCEXPHS 6, "FOR
  * ENTRY AT CNTRCOPY". +0, "NOW"; -0, "NOW  (ONE-SHOT ONLY, NO REPCORR)":
  * 1SHOTOK. Negative, "ONE-SHOT OVER, ON TO REPCORR": REPCHEK. */
@@ -166,15 +169,15 @@ void oneshotchk(void)
         ts(ADDRESS_OF(TVCEXPHS));
         cntrcopy();
         return;
-    case IS_PLUS_ZERO:
-    case IS_MINUS_ZERO: oneshotok(); return;
+    case IS_PLUS_ZERO: oneshotok(); return;
     case NEGATIVE: repchek(); return;
+    case IS_MINUS_ZERO: oneshotok(); return;
     }
 }
 
-/* REPCHEK: "CHECK FOR REPETITIVE UPDATES" by REPFRAC: +0 or negative, "NO,
- * OVER-AND-OUT"; positive, TEMPDAP +1 the "CORRECTION FRACTION", TVCEXPHS
- * 4 "FOR ENTRY AT CORSETUP", and CORSETUP. */
+/* REPCHEK -- p. 947: "CHECK FOR REPETITIVE UPDATES" by REPFRAC: +0 or
+ * negative, "NO, OVER-AND-OUT"; positive, TEMPDAP +1 the "CORRECTION
+ * FRACTION", TVCEXPHS 4 "FOR ENTRY AT CORSETUP", and CORSETUP. */
 static void repchek(void)
 {
     ca(ADDRESS_OF(REPFRAC));
@@ -188,7 +191,7 @@ static void repchek(void)
     corsetup();
 }
 
-/* 1SHOTOK: "CHECK ENGINE-ON BIT, NOT PERMITTING" "ONE-SHOT DURING
+/* 1SHOTOK -- p. 948: "CHECK ENGINE-ON BIT, NOT PERMITTING" "ONE-SHOT DURING
  * ENGINE-SHUTDOWN" (bit 13 of DSALMOUT +0: "NO, TERMINATE"); TVCEXPHS 1
  * more, and TEMPSET. */
 static void oneshotok(void)
@@ -203,8 +206,8 @@ static void oneshotok(void)
     tempset();
 }
 
-/* TEMPSET: TEMPDAP +1 the one-shot's "CORRECTION FRACTION", FCORFRAC;
- * TVCEXPHS 1 more, and CORSETUP. */
+/* TEMPSET -- p. 948: TEMPDAP +1 the one-shot's "CORRECTION FRACTION",
+ * FCORFRAC; TVCEXPHS 1 more, and CORSETUP. */
 void tempset(void)
 {
     set_A(FCORFRAC);
@@ -213,7 +216,7 @@ void tempset(void)
     corsetup();
 }
 
-/* CG.CORR, one axis's "TMC LOOP": in acttmp the offset deloff plus
+/* CG.CORR -- p. 948, one axis's "TMC LOOP": in acttmp the offset deloff plus
  * TEMPDAP times 4(delbar - deloff), the difference kept in TTMP1 (each a
  * double word; MP takes TTMP1's high word). */
 static void cg_corr(unsigned deloff, unsigned delbar, unsigned acttmp)
@@ -233,7 +236,8 @@ static void cg_corr(unsigned deloff, unsigned delbar, unsigned acttmp)
     das(acttmp);
 }
 
-/* CORSETUP: "CHECK FOR LEM-OFF/ON" (bit 13 of DAPDATR1, "SHOWS LEM-OFF"):
+/* CORSETUP -- p. 948: "CHECK FOR LEM-OFF/ON" (bit 13 of DAPDATR1, "SHOWS
+ * LEM-OFF"):
  * TEMPDAP the correction fraction, "LEM IS ON,  PICK UP   TEMPDAP+1" or
  * "LEM IS OFF, PICK UP 2(TEMPDAP+1)"; CNTRTMP -1, "ONE-SHOT DONE" (an
  * overflow at the TS TEMPDAP skips the CAF NEGONE, leaving +1 or -1 in
@@ -253,9 +257,9 @@ void corsetup(void)
     corcopy_copycycle();
 }
 
-/* CORCOPY +1, the copycycle: the "TRIM-ESTIMATES, AND" "TRIMS", PACTTMP to
- * PDELOFF and its high word to PACTOFF, YACTTMP to YDELOFF and YACTOFF;
- * TVCEXPHS 1 more, and CNTRCOPY. */
+/* CORCOPY +1 -- p. 949, the copycycle: the "TRIM-ESTIMATES, AND" "TRIMS",
+ * PACTTMP to PDELOFF and its high word to PACTOFF, YACTTMP to YDELOFF and
+ * YACTOFF; TVCEXPHS 1 more, and CNTRCOPY. */
 void corcopy_copycycle(void)
 {
     dca(ADDRESS_OF(PACTTMP));
@@ -268,8 +272,8 @@ void corcopy_copycycle(void)
     cntrcopy();
 }
 
-/* CNTRCOPY: "UPDATE CNTR (RESTARTS OK, FOLLOWS CPYCY)" from CNTRTMP; then
- * TVCEXFIN. */
+/* CNTRCOPY -- p. 949: "UPDATE CNTR (RESTARTS OK, FOLLOWS CPYCY)" from
+ * CNTRTMP; then TVCEXFIN. */
 void cntrcopy(void)
 {
     ca(ADDRESS_OF(CNTRTMP));
@@ -277,7 +281,8 @@ void cntrcopy(void)
     tvcexfin();
 }
 
-/* TVCEXFIN: "RESET TVCEXPHS", and TASKOVER, "TVCEXECUTIVE FINISHED". */
+/* TVCEXFIN -- p. 949: "RESET TVCEXPHS", and TASKOVER, "TVCEXECUTIVE
+ * FINISHED". */
 static void tvcexfin(void)
 {
     set_A(ZERO);

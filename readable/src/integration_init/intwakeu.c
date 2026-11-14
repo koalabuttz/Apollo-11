@@ -1,8 +1,10 @@
 /* SPDX-License-Identifier: MIT */
-/* INTEGRATION_INITIALIZATION.agc, INTWAKEU to GRP2PC (LM pp. 1225-1226,
- * CM pp. 1332-1333), in UPDATE2 (bank 4 in the LM, 27 in the CM).
- * The interpretive words are in the listing's notation
- * (src/interpreter/notation.h); the basic code between them is C.
+/* INTEGRATION_INITIALIZATION.agc, INTWAKEU to GRP2PC (LM pp. 1225-1226, CM
+ * pp. 1332-1333), in UPDATE2 (bank 4 in the LM, 27 in the CM). The
+ * interpretive words are in the listing's notation
+ * (src/interpreter/notation.h); the basic code between them is C. The
+ * faithful C is c64-port/src/lm_integration_init.c and
+ * cm_integration_init.c.
  *
  * INTWAKEU ends an uplinked state vector update (UPDATE_PROGRAM, P27):
  * the vector, put into RRECT and VRECT with UPSVFLAG saying whose it is,
@@ -15,14 +17,6 @@
 #include "integration_init.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
-
-/* TC at "at" to a routine outside the file (PHASCHNG), which reads the
- * word after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
 
 /* INTWAKEU -- LM p. 1225 (CM p. 1332): the return kept ("SAVE Q FOR
  * RETURN"), and into the interpreter. */
@@ -89,10 +83,10 @@ static const word intwakeu_words[] = {
 const struct interpretive_code INTWAKEU_CODE = {
     CODE_BANK(I_INTWAKEU), (word)(CODE_Z(I_INTWAKEU) + 4u), COUNT(intwakeu_words), intwakeu_words};
 
-/* After INTWAKUP's EXIT: group 2's phase (OCT 04026), and back by the
- * word in INTWAKUQ, the caller's return, which runs as an instruction (a
- * TC; anything else, which no program leaves, is not modelled): Q gets
- * the word after INTWAKUQ. */
+/* INTWAKUP +5 -- LM p. 1226, CM p. 1333: After INTWAKUP's EXIT: group 2's
+ * phase (OCT 04026), and back by the word in INTWAKUQ, the caller's return,
+ * which runs as an instruction (a TC; anything else, which no program
+ * leaves, is not modelled): Q gets the word after INTWAKUQ. */
 void intwakup_after_exit(void)
 {
     tc_to((word)(INTWAKUP + 5u), PHASCHNG); /* OCT 04026 */
@@ -121,8 +115,8 @@ static const word grp2pc_words[] = {
 const struct interpretive_code GRP2PC_CODE = {CODE_BANK(I_UPMNSVCD), CODE_Z(I_UPMNSVCD),
                                               COUNT(grp2pc_words), grp2pc_words};
 
-/* After GRP2PC's EXIT: group 2's phase (OCT 04022), and back into the
- * interpreter, to the return. */
+/* GRP2PC +2 -- LM p. 1226, CM p. 1333: After GRP2PC's EXIT: group 2's phase
+ * (OCT 04022), and back into the interpreter, to the return. */
 void grp2pc_after_exit(void)
 {
     tc_to((word)(GRP2PC + 2u), PHASCHNG); /* OCT 04022 */

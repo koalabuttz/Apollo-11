@@ -125,17 +125,17 @@ static bool own_code_at(word address)
 #if LUMINARY099
 #define POODOO_RETURN   ((word)(ABORT2 + 5u)) /* OCT77770 +1 */
 #define FLAGS_RETURN    ((word)(GOPOODOO + 3u))
-#define V37KLEAN_RETURN ((word)(GOPOODOO + 9u))
-#define MRKLEAN_RETURN  ((word)(GOPOODOO + 11u))
+#define V37KLEAN_RETURN ((word)(GOPOODOO + 011u))
+#define MRKLEAN_RETURN  ((word)(GOPOODOO + 013u))
 #define SUPERSW_RETURN  ((word)(STRTIDLE + 2u))
 #else
 #define BAILOUT_VAC5STOR_RETURN ((word)(BAILOUT + 5u))
 #define POODOO_VAC5STOR_RETURN  ((word)(POODOO + 5u))
-#define POODOO_RETURN           ((word)(POODOO + 9u)) /* OCT77770 +1 */
-#define STATEFLG_RETURN         ((word)(POODOO + 15u))
-#define REINTFLG_RETURN         ((word)(POODOO + 17u))
-#define NODOFLAG_RETURN         ((word)(POODOO + 19u))
-#define MRKLEAN_RETURN          ((word)(POODOO + 21u))
+#define POODOO_RETURN           ((word)(POODOO + 011u)) /* OCT77770 +1 */
+#define STATEFLG_RETURN         ((word)(POODOO + 017u))
+#define REINTFLG_RETURN         ((word)(POODOO + 021u))
+#define NODOFLAG_RETURN         ((word)(POODOO + 023u))
+#define MRKLEAN_RETURN          ((word)(POODOO + 025u))
 #define CCSHOLE_VAC5STOR_RETURN ((word)(CCSHOLE + 5u))
 #endif
 #define WHIMPER_MINUS1 ((word)(WHIMPER - 1u))

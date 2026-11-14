@@ -2759,11 +2759,15 @@
 #define K_CHAN5 00005u
 #define K_CHAN6 00006u
 #define K_CHAN12 00012u
+#define K_CHAN13 00013u
 #define K_CHAN14 00014u
+#define K_CHAN31 00031u
 #define K_CHAN33 00033u
 #define K_DSALMOUT 00011u
 #define K_NAVKEYIN 00016u
 #define K_MNKEYIN 00015u
+#define K_DNTM1 00034u
+#define K_DNTM2 00035u
 #define K_MMNUMBER 00775u
 #define K_MINDEX 00774u
 #define K_TEMPFLSH 00374u

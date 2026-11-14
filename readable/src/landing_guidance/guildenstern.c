@@ -15,16 +15,14 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void stabl_q(void);
 static void p66now_q(void);
 static void restart_q(void);
 static void vrtstart(void);
 
-/* GUILDEN: "IS UN-AUTO-THROTTLE DISCRETE PRESENT?" (channel 30's bit 5).
- * If so, STARTP67; if not, P67NOW?: "ARE WE IN P67 NOW?" (CHECKMM). (A,
- * a masked bit, is never negative: CCS A takes it as positive or +0.) */
+/* GUILDEN -- p. 800: "IS UN-AUTO-THROTTLE DISCRETE PRESENT?" (channel 30's
+ * bit 5). If so, STARTP67; if not, P67NOW?: "ARE WE IN P67 NOW?" (CHECKMM).
+ * (A, a masked bit, is never negative: CCS A takes it as positive or +0.) */
 void guilden(void)
 {
     read_channel(CHAN30);
@@ -35,27 +33,28 @@ void guilden(void)
         tc_to(P67NOW_Q, CHECKMM); /* DEC 67 */
 }
 
-/* CHECKMM's return when not in P67: TCF STABL?. */
+/* P67NOW? +2 -- p. 800: CHECKMM's return when not in P67: TCF STABL?. */
 void p67now_q_plus2(void)
 {
     stabl_q();
 }
 
-/* STARTP66 (CHECKMM's return when in P67, and P66NOW?'s): FASTCHNG, ... */
+/* STARTP66 -- p. 800 (CHECKMM's return when in P67, and P66NOW?'s):
+ * FASTCHNG, ... */
 void startp66(void)
 {
     tc_at(STARTP66);
     fastchng();
 }
 
-/* ... then NEWMODEX, the program P66 (DEC66), ... */
+/* STARTP66 +1 -- p. 800: ... then NEWMODEX, the program P66 (DEC66), ... */
 void startp66_after_fastchng(void)
 {
     tc_to(STARTP66 + 1u, NEWMODEX);
 }
 
-/* ... "SET DESIRED ALTITUDE RATE = CURRENT ALTITUDE RATE" (VDGVERT gets
- * HDOTDISP), and STRTP66A. */
+/* STARTP66 +3 -- p. 800: ... "SET DESIRED ALTITUDE RATE = CURRENT ALTITUDE
+ * RATE" (VDGVERT gets HDOTDISP), and STRTP66A. */
 void startp66_after_newmodex(void)
 {
     dca(ADDRESS_OF(HDOTDISP));
@@ -63,7 +62,7 @@ void startp66_after_newmodex(void)
     strtp66a();
 }
 
-/* STRTP66A: the interpretive code, ... */
+/* STRTP66A -- p. 800: the interpretive code, ... */
 void strtp66a(void)
 {
     tc_at(STRTP66A);
@@ -100,8 +99,8 @@ static const word strtp66a_words[] = {
 const struct interpretive_code STRTP66A_CODE = {031u, STRTP66A + 1u, COUNT(strtp66a_words),
                                                 strtp66a_words};
 
-/* After the EXIT: FCOLD, FWEIGHT and WCHVERT (VRTSTART) zero, for P66.
- * (A is +0: no TS skips.) */
+/* STRTP66A +025 -- p. 800: After the EXIT: FCOLD, FWEIGHT and WCHVERT
+ * (VRTSTART) zero, for P66. (A is +0: no TS skips.) */
 void strtp66a_after_exit(void)
 {
     set_A(ZERO);
@@ -111,9 +110,10 @@ void strtp66a_after_exit(void)
     vrtstart();
 }
 
-/* VRTSTART: WCHVERT gets A (+0 for P66, ten for P67), and "WCHPHASE = 2
- * ---> VERTICAL: P65,P66,P67" (WCHPHOLD too); then STOPRATE (BANKCALL:
- * "TEMPORARY, I HOPE HOPE HOPE"). (No TS skips: A is +0, ten or two.) */
+/* VRTSTART -- p. 800: WCHVERT gets A (+0 for P66, ten for P67), and
+ * "WCHPHASE = 2 ---> VERTICAL: P65,P66,P67" (WCHPHOLD too); then STOPRATE
+ * (BANKCALL: "TEMPORARY, I HOPE HOPE HOPE"). (No TS skips: A is +0, ten or
+ * two.) */
 static void vrtstart(void)
 {
     ts(ADDRESS_OF(WCHVERT));
@@ -123,33 +123,35 @@ static void vrtstart(void)
     tc_to(VRTSTART + 4u, BANKCALL); /* CADR STOPRATE */
 }
 
-/* STOPRATE's return: "PERMIT X-AXIS OVERRIDE" (DOWNFLAG XOVINFLG), ... */
+/* VRTSTART +6 -- p. 801: STOPRATE's return: "PERMIT X-AXIS OVERRIDE"
+ * (DOWNFLAG XOVINFLG), ... */
 void vrtstart_after_stoprate(void)
 {
     tc_to(VRTSTART + 6u, DOWNFLAG);
 }
 
-/* ... DOWNFLAG REDFLAG, ... */
+/* VRTSTART +010 -- p. 801: ... DOWNFLAG REDFLAG, ... */
 void vrtstart_after_xovinflg(void)
 {
     tc_to(VRTSTART + 010u, DOWNFLAG);
 }
 
-/* ... and VERTGUID (vertguid.c). */
+/* VRTSTART +012 -- p. 801: ... and VERTGUID (vertguid.c). */
 void vrtstart_after_redflag(void)
 {
     vertguid();
 }
 
-/* STARTP67: NEWMODEX, the program P67: "NO HARM IN "STARTING" P67 OVER
- * AND OVER SO NO NEED FOR A FASTCHNG AND NO NEED TO SEE IF ALREADY IN
+/* STARTP67 -- p. 801: NEWMODEX, the program P67: "NO HARM IN "STARTING" P67
+ * OVER AND OVER SO NO NEED FOR A FASTCHNG AND NO NEED TO SEE IF ALREADY IN
  * P67." */
 void startp67(void)
 {
     tc_to(STARTP67, NEWMODEX); /* DEC 67 */
 }
 
-/* NEWMODEX's return: RODCOUNT zero, and VRTSTART with ten. */
+/* STARTP67 +2 -- p. 801: NEWMODEX's return: RODCOUNT zero, and VRTSTART with
+ * ten. */
 void startp67_after_newmodex(void)
 {
     set_A(ZERO);
@@ -158,9 +160,9 @@ void startp67_after_newmodex(void)
     vrtstart();
 }
 
-/* STABL?: "IS UN-ATTITUDE-HOLD DISCRETE PRESENT?" (channel 31's bit 13).
- * "YES ALL'S WELL": GUILDRET; if not, P66NOW?. (A, a masked bit, is never
- * negative.) */
+/* STABL? -- p. 801: "IS UN-ATTITUDE-HOLD DISCRETE PRESENT?" (channel 31's
+ * bit 13). "YES ALL'S WELL": GUILDRET; if not, P66NOW?. (A, a masked bit, is
+ * never negative.) */
 static void stabl_q(void)
 {
     set_A(BIT13);
@@ -171,8 +173,8 @@ static void stabl_q(void)
         p66now_q();
 }
 
-/* P66NOW?: in P66 already, RESTART?; if not, "HAS THE ROD SWITCH BEEN
- * "CLICKED"?" (RODCOUNT): "NO. CONTINUE WITH AUTOMATIC LANDING"
+/* P66NOW? -- p. 801: in P66 already, RESTART?; if not, "HAS THE ROD SWITCH
+ * BEEN "CLICKED"?" (RODCOUNT): "NO. CONTINUE WITH AUTOMATIC LANDING"
  * (GUILDRET), "YES. SWITCH INTO THE ROD MODE." (STARTP66). */
 static void p66now_q(void)
 {
@@ -189,7 +191,7 @@ static void p66now_q(void)
         startp66();
 }
 
-/* RESTART?: "HAS THERE BEEN A RESTART?" (RODFLAG clear): "YES.
+/* RESTART? -- p. 801: "HAS THERE BEEN A RESTART?" (RODFLAG clear): "YES.
  * REINITIALIZE BUT LEAVE VDGVERT AS IS." (STRTP66A); "NO: CONTINUE WITH
  * R.O.D." (VERTGUID). */
 static void restart_q(void)

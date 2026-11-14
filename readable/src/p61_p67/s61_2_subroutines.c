@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: MIT */
-/* P61-P67.agc of the CM, part 3 (Comanche055 pp. 812-816, banks 26 and
- * 27): the subroutines S61.2 calls. FISHCALC (the Fischer radius at the
- * end of a transfer angle), VGAMCALC (the velocity and flight path angle
- * at a terminal radius, by vis viva), TFF/TRIG (the sine and cosine of the
- * transfer angle), DISPTARG and VRCALC (the range to the target).
+/* P61-P67.agc of the CM, part 3 (Comanche055 pp. 812-816, banks 26 and 27):
+ * the subroutines S61.2 calls. FISHCALC (the Fischer radius at the end of a
+ * transfer angle), VGAMCALC (the velocity and flight path angle at a
+ * terminal radius, by vis viva), TFF/TRIG (the sine and cosine of the
+ * transfer angle), DISPTARG and VRCALC (the range to the target). The
+ * faithful C is c64-port/src/cm_p61_p67.c.
  *
  * They read what the TFF routines (TIME_OF_FREE_FALL.agc) leave on the
  * push-down list, under those routines' names: "THE FOLLOWING PUSH LIST
@@ -17,8 +18,6 @@
 #include "../interpreter/interpreter.h"
 
 #if COMANCHE055
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* FISHCALC: "GIVEN THE PRESENT POSITION, UNITR, CALCULATE A NEW UNITR THAT
  * IS ROTATED THROUGH TRANSFER ANGLE, THETA, ALONG THE TRAJECTORY.": "URPR

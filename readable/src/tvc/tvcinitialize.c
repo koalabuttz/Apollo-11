@@ -68,9 +68,9 @@ static word index_at(unsigned address)
 
 /* ---- TVCDAPON and MRCLEAN -- pp. 937-938 ---- */
 
-/* TVCDAPON, the "T5 RUPT ARRIVAL (CALL BY DOTVCON - P40)": BANKRUPT and
- * QRUPT kept ("SAVE Q REQUIRED IN RESTARTS (MRCLEAN AND" "TVCINIT4 ARE
- * ENTRIES)"), then MRCLEAN. */
+/* TVCDAPON -- p. 937, the "T5 RUPT ARRIVAL (CALL BY DOTVCON - P40)":
+ * BANKRUPT and QRUPT kept ("SAVE Q REQUIRED IN RESTARTS (MRCLEAN AND"
+ * "TVCINIT4 ARE ENTRIES)"), then MRCLEAN. */
 void tvcdapon(void)
 {
     lxch(ADDRESS_OF(BANKRUPT));
@@ -78,7 +78,8 @@ void tvcdapon(void)
     mrclean();
 }
 
-/* MRCLEAN ("TVC RESTARTS ENTER HERE  (NEW BANK)"): the DAP's erasables
+/* MRCLEAN -- p. 937 ("TVC RESTARTS ENTER HERE  (NEW BANK)"): the DAP's
+ * erasables
  * zeroed, OMEGAYC on, two words a pass. NZERO is the "NUMBER TO ZERO, LESS
  * ONE  (MUST BE ODD)": CCS A takes it one less, to the even CNTR of the
  * pass ("FIRST (LAST) TWO LOCATIONS" at 50), and CCS CNTR one less again
@@ -104,8 +105,8 @@ void mrclean(void)
 
 /* ---- TVCINIT1 to TVCINIT4 -- pp. 938-941 ---- */
 
-/* TVCINIT1, the next T5 interrupt: BANKRUPT and QRUPT kept; MASSPROP
- * (IBNKCALL) to "UPDATE IXX, IAVG/TLX FOR DAP GAINS". */
+/* TVCINIT1 -- p. 938, the next T5 interrupt: BANKRUPT and QRUPT kept;
+ * MASSPROP (IBNKCALL) to "UPDATE IXX, IAVG/TLX FOR DAP GAINS". */
 void tvcinit1(void)
 {
     lxch(ADDRESS_OF(BANKRUPT));
@@ -113,14 +114,14 @@ void tvcinit1(void)
     tc_to(TVCINIT1 + 3u, IBNKCALL); /* CADR MASSPROP */
 }
 
-/* TVCINIT1 +5, after MASSPROP: TENMDOT, the "10-SEC MASS LOSS B+16 KG"
- * (EMDOT, the "SPS FLOW RATE, SCALED B+3 KG/CS", times ONETHOU), and
- * MASSTMP the CSM's mass less it, the "DECREMENT FOR FIRST 10 SEC OF
- * BURN" (an overflow there skips the CAE DAPDATR1, leaving +1 or -1 in A
- * for the MASK). CNTR from DAPDATR1's bit 14 ("CHECK LEM-ON/OFF"): BIT1
- * for "LEM-ON (BIT1)", +0 for "LEM-OFF (ZERO)". Then LOADCOEF, from the
- * coefficients at CSMCFADR or HBCFADR (CSMCFADR +1) as CNTR picks them;
- * the faithful port's run stops at LOADCOEF, a key of its own. */
+/* TVCINIT1 +5 -- p. 938, after MASSPROP: TENMDOT, the "10-SEC MASS LOSS B+16
+ * KG" (EMDOT, the "SPS FLOW RATE, SCALED B+3 KG/CS", times ONETHOU), and
+ * MASSTMP the CSM's mass less it, the "DECREMENT FOR FIRST 10 SEC OF BURN"
+ * (an overflow there skips the CAE DAPDATR1, leaving +1 or -1 in A for the
+ * MASK). CNTR from DAPDATR1's bit 14 ("CHECK LEM-ON/OFF"): BIT1 for "LEM-ON
+ * (BIT1)", +0 for "LEM-OFF (ZERO)". Then LOADCOEF, from the coefficients at
+ * CSMCFADR or HBCFADR (CSMCFADR +1) as CNTR picks them; the faithful port's
+ * run stops at LOADCOEF, a key of its own. */
 void tvcinit1_after_massprop(void)
 {
     ca(ADDRESS_OF(EMDOT));
@@ -137,10 +138,10 @@ void tvcinit1_after_massprop(void)
     tc_to(TVCINIT1 + 024u, LOADCOEF); /* "LOAD THE FILTER COEFFICIENTS" */
 }
 
-/* TVCINIT1 +025, after LOADCOEF: KTLX/I, the "LM-OFF,-ON KTLX/I" CNTR
- * picks from EKTLX/I on ("SCALED AT 1/(8 ASCREV) OF ACTUAL VALUE"), and
- * TCR S40.15 to "COMPUTE 1/CONACC , VARK"; the run stops at S40.15, a key
- * of its own. */
+/* TVCINIT1 +025 -- p. 938, after LOADCOEF: KTLX/I, the "LM-OFF,-ON KTLX/I"
+ * CNTR picks from EKTLX/I on ("SCALED AT 1/(8 ASCREV) OF ACTUAL VALUE"), and
+ * TCR S40.15 to "COMPUTE 1/CONACC , VARK"; the run stops at S40.15, a key of
+ * its own. */
 void tvcinit1_after_loadcoef(void)
 {
     ca_indexed(ADDRESS_OF(EKTLX_I), index_at(ADDRESS_OF(CNTR)));
@@ -148,15 +149,15 @@ void tvcinit1_after_loadcoef(void)
     tc_to(TVCINIT1 + 030u, S40_15);
 }
 
-/* TVCINIT2: KPRIMEDT, BIT2 (CNTR +0) or BIT3 (CNTR 1), the filter period
- * ("BIT2 FOR CSM ONLY 40MS FILTER", "BIT3 FOR CSM/LM 80MS FILTER");
- * T5TVCDT POSMAX +1 less it, the T5 time to "PREPARE"; the switch-over
- * flag, bit 15 of FLAGWRD9, cleared ("RESET SWTOVER FLAG"; an overflow at
- * the TS T5TVCDT would skip the CS BIT15, leaving +1 or -1 in A for the
- * MASK). Then KPRIMEDT the "LEM-OFF,-ON KPRIME" CNTR picks from EKPRIME on
- * ("SCALED (100 PI)/16"), times the period ("(TVCDT/2, SC.AT B+14CS)"):
- * the product's low word (LXCH A) and the period's next word (KPRIMEDT
- * +1, by DXCH). The run stops at TVCINIT2 +021, a key of its own. */
+/* TVCINIT2 -- p. 938: KPRIMEDT, BIT2 (CNTR +0) or BIT3 (CNTR 1), the filter
+ * period ("BIT2 FOR CSM ONLY 40MS FILTER", "BIT3 FOR CSM/LM 80MS FILTER");
+ * T5TVCDT POSMAX +1 less it, the T5 time to "PREPARE"; the switch-over flag,
+ * bit 15 of FLAGWRD9, cleared ("RESET SWTOVER FLAG"; an overflow at the TS
+ * T5TVCDT would skip the CS BIT15, leaving +1 or -1 in A for the MASK). Then
+ * KPRIMEDT the "LEM-OFF,-ON KPRIME" CNTR picks from EKPRIME on ("SCALED (100
+ * PI)/16"), times the period ("(TVCDT/2, SC.AT B+14CS)"): the product's low
+ * word (LXCH A) and the period's next word (KPRIMEDT +1, by DXCH). The run
+ * stops at TVCINIT2 +021, a key of its own. */
 void tvcinit2(void)
 {
     cs(ADDRESS_OF(CNTR));
@@ -175,11 +176,11 @@ void tvcinit2(void)
     continue_at(TVCINIT2 + 021u);
 }
 
-/* ATTINIT, the "ATTITUDE-ERROR INITIALIZATION LOGIC", for the CSM alone
- * (DAPDATR1's bit 13 set; "BYPASS INITIALIZATION FOR CSM/LM"): the RCS
- * attitude errors in ERRBTMP, yaw (ERRBTMP +1) then pitch, each limited
- * to ATTLIM, 1.5 degrees, with its sign (".007325(ERROR) = 0 IF ERROR <
- * 1.5 DEG": a product of +0 or -0 keeps it); then PERRB and YERRB. */
+/* ATTINIT -- p. 939, the "ATTITUDE-ERROR INITIALIZATION LOGIC", for the CSM
+ * alone (DAPDATR1's bit 13 set; "BYPASS INITIALIZATION FOR CSM/LM"): the RCS
+ * attitude errors in ERRBTMP, yaw (ERRBTMP +1) then pitch, each limited to
+ * ATTLIM, 1.5 degrees, with its sign (".007325(ERROR) = 0 IF ERROR < 1.5
+ * DEG": a product of +0 or -0 keeps it); then PERRB and YERRB. */
 static void attinit(void)
 {
     ca(ADDRESS_OF(DAPDATR1));
@@ -204,15 +205,15 @@ static void attinit(void)
     ts(ADDRESS_OF(YERRB));
 }
 
-/* TVCINIT2 +021: REPFRAC, the "LEM-OFF,-ON REPFRAC" CNTR picks from
- * EREPFRAC on; CNTR the "ONE-SHOT CORRECTION TIME" from TCORR on (5 for
+/* TVCINIT2 +021 -- p. 939: REPFRAC, the "LEM-OFF,-ON REPFRAC" CNTR picks
+ * from EREPFRAC on; CNTR the "ONE-SHOT CORRECTION TIME" from TCORR on (5 for
  * the CSM, +0 for the CSM/LM); STRKTIME -1 to "PREVENT STROKE TEST UNTIL
- * CALLED"; VCNTR and V97VCNTR 19, the "VARIABLE-GAIN UPDATES IN" "10
- * SECONDS (TVCEXEC 1/2 SEC RATE)". TVCINIT3: the "TRIM VALUES TO
- * TRIM-TRACKERS, OUTPUT" "TRACKERS, OFFSET-UPDATES, AND" "OFFSET-TRACKER
- * FILTERS", PACTOFF and YACTOFF. ATTINIT; then NEEDLEIN: bit 3 of
- * RCSFLAGS set "FOR INITIALIZATION PASS AND GO" "TO NEEDLER" (IBNKCALL). */
-void tvcinit2_repfrac(void)
+ * CALLED"; VCNTR and V97VCNTR 19, the "VARIABLE-GAIN UPDATES IN" "10 SECONDS
+ * (TVCEXEC 1/2 SEC RATE)". TVCINIT3: the "TRIM VALUES TO TRIM-TRACKERS,
+ * OUTPUT" "TRACKERS, OFFSET-UPDATES, AND" "OFFSET-TRACKER FILTERS", PACTOFF
+ * and YACTOFF. ATTINIT; then NEEDLEIN: bit 3 of RCSFLAGS set "FOR
+ * INITIALIZATION PASS AND GO" "TO NEEDLER" (IBNKCALL). */
+void tvcinit2_plus021(void)
 {
     ca_indexed(ADDRESS_OF(EREPFRAC), index_at(ADDRESS_OF(CNTR)));
     ts(ADDRESS_OF(REPFRAC));
@@ -238,12 +239,13 @@ void tvcinit2_repfrac(void)
     tc_to(NEEDLEIN + 3u, IBNKCALL); /* CADR NEEDLER */
 }
 
-/* TVCINIT4 ("POSSIBLE TVC-RESTART ENTRY"): TVCPHASE +0, "TVCDAPON-THRU-"
- * "NEEDLEIN INITIALIZATION FINISHED."; OGANOW CDUX, to "PREPARE ROLL
- * DAP". With the engine on (bit 13 of DSALMOUT) the "COPYCYCLE", MASSTMP
- * to CSMMASS; "IF ENGINE IS ALREADY OFF, ENGINOFF HAS" "ALREADY
- * ESTABLISHED THE POST-BURN" "CSMMASS". Then TVCEXEC in half a second
- * (WAITLIST, 2CADR TVCEXEC): "CALL TVCEXECUTIVE (ROLLDAP CALL, ETC)". */
+/* TVCINIT4 -- p. 940 ("POSSIBLE TVC-RESTART ENTRY"): TVCPHASE +0,
+ * "TVCDAPON-THRU-" "NEEDLEIN INITIALIZATION FINISHED."; OGANOW CDUX, to
+ * "PREPARE ROLL DAP". With the engine on (bit 13 of DSALMOUT) the
+ * "COPYCYCLE", MASSTMP to CSMMASS; "IF ENGINE IS ALREADY OFF, ENGINOFF HAS"
+ * "ALREADY ESTABLISHED THE POST-BURN" "CSMMASS". Then TVCEXEC in half a
+ * second (WAITLIST, 2CADR TVCEXEC): "CALL TVCEXECUTIVE (ROLLDAP CALL,
+ * ETC)". */
 void tvcinit4(void)
 {
     set_A(ZERO);
@@ -260,7 +262,7 @@ void tvcinit4(void)
     tc_to(TVCINIT4 + 014u, WAITLIST);
 }
 
-/* TVCINIT4 +017, after WAITLIST: "CALL FOR DAPINIT", its 2CADR
+/* TVCINIT4 +017 -- p. 940, after WAITLIST: "CALL FOR DAPINIT", its 2CADR
  * (DAPINIT5) in A,L. The run stops at TVCINIT4 +021, a key of its own. */
 void tvcinit4_after_waitlist(void)
 {
@@ -268,9 +270,9 @@ void tvcinit4_after_waitlist(void)
     continue_at(TVCINIT4 + 021u);
 }
 
-/* TVCINIT4 +021: the 2CADR to T5LOC, and TIME5 T5TVCDT ("ALLOW TIME FOR
- * RESTART COMPUTATIONS"); RESUME (ENDTVCIN). */
-void tvcinit4_t5(void)
+/* TVCINIT4 +021 -- p. 940: the 2CADR to T5LOC, and TIME5 T5TVCDT ("ALLOW
+ * TIME FOR RESTART COMPUTATIONS"); RESUME (ENDTVCIN). */
+void tvcinit4_plus021(void)
 {
     dxch(ADDRESS_OF(T5LOC));
     ca(ADDRESS_OF(T5TVCDT));
@@ -280,13 +282,13 @@ void tvcinit4_t5(void)
 
 /* ---- PRESWTCH and SWICHOVR -- pp. 941-942 ---- */
 
-/* SWICHOVR +5 ("RESTART ENTRY POINT," "TVCPHASE AND PHASETMP ALREADY
- * SET"): the return kept in RTRNLOC ("SAVE Q FOR RETURN"); the "ZEROING
- * LOOP FOR FILTER STORAGE LOCS", PTMP1 -1 on, two words a pass from
- * CNTRTMP NZEROJR (23, odd: MCLEANJR's two CCS's take it two less a pass,
- * to 1, the last); the switch-over flag set "FOR DOWNLINK" (bit 15 of
- * FLAGWRD9); KTLX/I the "LOW BANDWIDTH GAINS" (EKTLX/I +2), and
- * TCR S40.15 +7 for VARK. The run stops at S40.15 +7, a key of its own. */
+/* SWICHOVR +5 -- p. 941 ("RESTART ENTRY POINT," "TVCPHASE AND PHASETMP
+ * ALREADY SET"): the return kept in RTRNLOC ("SAVE Q FOR RETURN"); the
+ * "ZEROING LOOP FOR FILTER STORAGE LOCS", PTMP1 -1 on, two words a pass from
+ * CNTRTMP NZEROJR (23, odd: MCLEANJR's two CCS's take it two less a pass, to
+ * 1, the last); the switch-over flag set "FOR DOWNLINK" (bit 15 of
+ * FLAGWRD9); KTLX/I the "LOW BANDWIDTH GAINS" (EKTLX/I +2), and TCR S40.15
+ * +7 for VARK. The run stops at S40.15 +7, a key of its own. */
 void swichovr_restart(void)
 {
     qxch(ADDRESS_OF(RTRNLOC));
@@ -305,7 +307,7 @@ void swichovr_restart(void)
     tc_to(SWICHOVR + 025u, S40_15 + 7u);
 }
 
-/* SWICHOVR, by TCR: INHINT; TVCPHASE kept in PHASETMP ("SAVE
+/* SWICHOVR -- p. 941, by TCR: INHINT; TVCPHASE kept in PHASETMP ("SAVE
  * TVCPHASE"), and set to -2 ("INDICATES SWITCH-OVER" "TO RESTART
  * LOGIC"); then SWICHOVR +5. */
 static void swichovr(void)
@@ -318,25 +320,25 @@ static void swichovr(void)
     swichovr_restart();
 }
 
-/* PRESWTCH, the "ENTRY FROM V46": TCR SWICHOVR. */
+/* PRESWTCH -- p. 941, the "ENTRY FROM V46": TCR SWICHOVR. */
 void preswtch(void)
 {
     tc_at(PRESWTCH);
     swichovr();
 }
 
-/* PRESWTCH +1, SWICHOVR's return: POSTJUMP to PINBRNCH, "AN EXIT FROM
- * SWITCH-OVER" "(PINBRNCH DOES A RELINT)". */
+/* PRESWTCH +1 -- p. 941, SWICHOVR's return: POSTJUMP to PINBRNCH, "AN EXIT
+ * FROM SWITCH-OVER" "(PINBRNCH DOES A RELINT)". */
 void preswtch_after_swichovr(void)
 {
     tc_to(PRESWTCH + 1u, POSTJUMP); /* CADR PINBRNCH */
 }
 
-/* SWICHOVR +026, after S40.15 +7: the CSM/LM's low bandwidth KPRIMEDT
- * (FKPRIMDT, "- STEERING") and REPFRAC (FREPFRAC, "- TMC LOOP"); "UPDATE
- * TRIM ESTIMATES", DELPBAR to PDELOFF and DELYBAR to YDELOFF; and
- * LOADCOEF from LBN10 (LBCFADR). The run goes on into LOADCOEF, and stops
- * at LOADCOEF +014, a key of its own. */
+/* SWICHOVR +026 -- p. 941, after S40.15 +7: the CSM/LM's low bandwidth
+ * KPRIMEDT (FKPRIMDT, "- STEERING") and REPFRAC (FREPFRAC, "- TMC LOOP");
+ * "UPDATE TRIM ESTIMATES", DELPBAR to PDELOFF and DELYBAR to YDELOFF; and
+ * LOADCOEF from LBN10 (LBCFADR). The run goes on into LOADCOEF, and stops at
+ * LOADCOEF +014, a key of its own. */
 void swichovr_after_s40_15(void)
 {
     set_A(FKPRIMDT);
@@ -353,9 +355,9 @@ void swichovr_after_s40_15(void)
     loadcoef();
 }
 
-/* SWICHOVR +043, after LOADCOEF: "RESTORE TVCPHASE"; TC RTRNLOC, "BACK TO
- * PRESWTCH OR TVCRESTARTS": to the erasable word, which the program runs
- * as TC <return> (rtrnloc_return). */
+/* SWICHOVR +043 -- p. 942, after LOADCOEF: "RESTORE TVCPHASE"; TC RTRNLOC,
+ * "BACK TO PRESWTCH OR TVCRESTARTS": to the erasable word, which the program
+ * runs as TC <return> (rtrnloc_return). */
 void swichovr_after_loadcoef(void)
 {
     ca(ADDRESS_OF(PHASETMP));
@@ -372,7 +374,8 @@ void rtrnloc_return(void)
 
 /* ---- LOADCOEF -- p. 942 ---- */
 
-/* LOADCOEF: "LOAD DAP FILTER COEFFICIENTS" from COEFFADR on, into N10
+/* LOADCOEF -- p. 942: "LOAD DAP FILTER COEFFICIENTS" from COEFFADR on, into
+ * N10
  * on, two words at a time: "FROM: ERASABLE FOR CSM/LM HB" "FIXED    FOR
  * CSM/LM LB" "FIXED    FOR CSM". The first three pairs; the run stops at
  * LOADCOEF +014, a key of its own. */
@@ -387,8 +390,8 @@ void loadcoef(void)
     continue_at(LOADCOEF + 014u);
 }
 
-/* LOADCOEF +023: the fifth pair stored (N10 +8D), the sixth and seventh,
- * and the fifteenth word (14D); TC Q. */
+/* LOADCOEF +023 -- p. 942: the fifth pair stored (N10 +8D), the sixth and
+ * seventh, and the fifteenth word (14D); TC Q. */
 void loadcoef_n10_8(void)
 {
     dxch(ADDRESS_OF(N10) + 8u);
@@ -401,7 +404,8 @@ void loadcoef_n10_8(void)
     tc_q();
 }
 
-/* LOADCOEF +017: the fourth pair stored (N10 +6), and on from the fifth. */
+/* LOADCOEF +017 -- p. 942: the fourth pair stored (N10 +6), and on from the
+ * fifth. */
 void loadcoef_n10_6(void)
 {
     dxch(ADDRESS_OF(N10) + 6u);
@@ -409,8 +413,8 @@ void loadcoef_n10_6(void)
     loadcoef_n10_8();
 }
 
-/* LOADCOEF +014: the fourth pair, and on. */
-void loadcoef_dca6(void)
+/* LOADCOEF +014 -- p. 942: the fourth pair, and on. */
+void loadcoef_plus014(void)
 {
     dca_indexed(6u, index_at(ADDRESS_OF(COEFFADR)));
     loadcoef_n10_6();
@@ -418,9 +422,9 @@ void loadcoef_dca6(void)
 
 /* ---- S40.15 -- p. 943 ---- */
 
-/* S40.15 +8: VARK, KTLX/I (in A) times IAVG/TLX, scaled "(B+3 ASCREV)";
- * TC Q. Not modelled: an overflow at the TS VARK, whose skip lands on
- * CSMN10's coefficients, data (the faithful port refuses it too). */
+/* S40.15 +010 -- p. 943: VARK, KTLX/I (in A) times IAVG/TLX, scaled "(B+3
+ * ASCREV)"; TC Q. Not modelled: an overflow at the TS VARK, whose skip lands
+ * on CSMN10's coefficients, data (the faithful port refuses it too). */
 static void vark(void)
 {
     mp_at(ADDRESS_OF(IAVG_TLX));
@@ -430,7 +434,7 @@ static void vark(void)
     tc_q();
 }
 
-/* S40.15, the "GAIN COMPUTATIONS (1/CONACC, VARK)" "ENTERED FROM
+/* S40.15 -- p. 943, the "GAIN COMPUTATIONS (1/CONACC, VARK)" "ENTERED FROM
  * TVCINITIALIZE AND TVCEXEC": 1/CONACC, IXX times 2PI/M ("SCALED B+9
  * SEC-SQ/REV"); then VARK (an overflow at the TS 1/CONACC skips the CAE
  * KTLX/I, leaving +1 or -1 in A). */
@@ -445,7 +449,8 @@ void s40_15(void)
     vark();
 }
 
-/* S40.15 +7, the "ENTRY FROM CSM/LM V46 SWITCH-OVER": VARK alone. */
+/* S40.15 +7 -- p. 943, the "ENTRY FROM CSM/LM V46 SWITCH-OVER": VARK
+ * alone. */
 void s40_15_switchover(void)
 {
     ca(ADDRESS_OF(KTLX_I));

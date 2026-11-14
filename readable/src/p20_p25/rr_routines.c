@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 5 (Luminary099 pp. 521-537): the rendezvous radar's
- * subroutines, from MAGSUB to RRZ2, with ENDRADAR, RDBADEND and RADNOOP
- * (pp. 561-563), which RRZERO and RRZ2 end at.
+ * subroutines, from MAGSUB to RRZ2, with ENDRADAR, RDBADEND and RADNOOP (pp.
+ * 561-563), which RRZERO and RRZ2 end at. The faithful C is
+ * c64-port/src/lm_p20_p25.c.
  *
  * MAGSUB to FLIP are in fixed-fixed memory, called with interrupts held:
  * MAGSUB compares a magnitude with a limit, RRLIMCHK checks a pair of
@@ -114,8 +115,8 @@ void mode2chk_shaft_in(void)
     magsub(); /* DEC -.69444: "125 DEGS" */
 }
 
-/* RRLIMOK -- INDEX L; TC L "( = TC 1 )": L holds the caller +2, so the
- * indexed TC 1 goes to the caller +3. Not modelled: an L that does not
+/* RRLIMOK -- p. 523: INDEX L; TC L "( = TC 1 )": L holds the caller +2, so
+ * the indexed TC 1 goes to the caller +3. Not modelled: an L that does not
  * make it a TC to fixed memory. */
 void rrlimok(void)
 {
@@ -126,8 +127,8 @@ void rrlimok(void)
     continue_at(to);
 }
 
-/* After MODE2CHK's trunnion check, MAGSUB's +2 (within 125 degrees): the
- * TC L after RRLIMOK's INDEX, to the caller +2. */
+/* RRLIMOK +1 -- p. 523: After MODE2CHK's trunnion check, MAGSUB's +2 (within
+ * 125 degrees): the TC L after RRLIMOK's INDEX, to the caller +2. */
 void mode2chk_trunnion_out(void)
 {
     tc_return_in(RRLIMOK + 1u, L_ADDRESS);
@@ -151,8 +152,8 @@ void settrkf(void)
     rrtrkf();
 }
 
-/* RRTRKF: the lamp test aside (the radar lamps' RADLITES and LITIT go on
- * here when they have set their own lamps). */
+/* RRTRKF -- p. 524: the lamp test aside (the radar lamps' RADLITES and LITIT
+ * go on here when they have set their own lamps). */
 void rrtrkf(void)
 {
     set_A(BIT8);
@@ -169,7 +170,8 @@ void rrtrkf(void)
     trkflon_plus1();
 }
 
-/* TRKFLON +1: A the lamp's desired state (L, or +0), L the lamp's bit. */
+/* TRKFLON +1 -- p. 525: A the lamp's desired state (L, or +0), L the lamp's
+ * bit. */
 void trkflon_plus1(void)
 {
     ad_at(ADDRESS_OF(DSPTAB) + 11u); /* "HALF ADD DESIRED AND PRESENT STATES." */
@@ -180,8 +182,8 @@ void trkflon_plus1(void)
         continue_at(FLIP);
 }
 
-/* FLIP: DSPTAB +11D with L's bit changed, and bit 15 set for the DSKY's
- * display routine to send it ("CAN'T USE LXCH DSPTAB +11D (RESTART
+/* FLIP -- p. 525: DSPTAB +11D with L's bit changed, and bit 15 set for the
+ * DSKY's display routine to send it ("CAN'T USE LXCH DSPTAB +11D (RESTART
  * PROB)"). */
 void flip(void)
 {
@@ -240,7 +242,8 @@ void rrzerosb_after_zeroing(void)
     tc_to(RRZEROSB + 015u, FIXDELAY); /* DEC 1000: "RESET FAIL INHIBIT IN 10 SECS." */
 }
 
-/* Mode 1 while the trunnion angle is within 90 degrees, else mode 2. */
+/* RRZEROSB +017 -- p. 527: Mode 1 while the trunnion angle is within 90
+ * degrees, else mode 2. */
 void rrzerosb_after_settling(void)
 {
     set_A(negate(RCDU0BIT)); /* "REMOVE ZEROING IN PROCESS BIT" */
@@ -313,9 +316,9 @@ void dorrepos_shaft(void)
     rrsonly();
 }
 
-/* REPOSRPT -- the reposition done (or cut short by a remode, from RR1AX2):
- * its flag off, then BEGDES if "SOMEONE IS WAITING TO DESIGNATE", else the
- * error counters disabled and the task over. */
+/* REPOSRPT -- p. 530: the reposition done (or cut short by a remode, from
+ * RR1AX2): its flag off, then BEGDES if "SOMEONE IS WAITING TO DESIGNATE",
+ * else the error counters disabled and the task over. */
 void reposrpt(void)
 {
     set_A(negate(REPOSBIT));
@@ -332,9 +335,9 @@ void reposrpt(void)
     continue_at(TASKOVER); /* TCF TASKOVER */
 }
 
-/* SETRRECR -- "SET UP RR ERROR COUNTERS": channel 12 bit 2, with the last
- * commands (LASTYCMD, LASTXCMD) cleared, unless the counters are already
- * enabled. */
+/* SETRRECR -- p. 530: "SET UP RR ERROR COUNTERS": channel 12 bit 2, with the
+ * last commands (LASTYCMD, LASTXCMD) cleared, unless the counters are
+ * already enabled. */
 void setrrecr(void)
 {
     set_A(BIT2);
@@ -420,7 +423,7 @@ void remode_end(void)
     tc_to(REMODE + 037u, STDESIG); /* "YES -- RETURN TO DESIGNATE" */
 }
 
-/* RMODINV: "INVERT THE MODE STATUS." */
+/* RMODINV -- p. 532: "INVERT THE MODE STATUS." */
 void rmodinv(void)
 {
     lxch(ADDRESS_OF(RADMODES));
@@ -492,27 +495,34 @@ void rr1ax2(void)
     magsub(); /* "SEE IF WITHIN ONE DEGREE." DEC -.00555, "SCALED IN HALF-REVS." */
 }
 
-/* MAGSUB's +2: within one degree, back to the caller. */
-void rr1ax2_done(void)
+/* RR1AX2 +022 -- p. 534: MAGSUB's +2: within one degree, back to the
+ * caller. */
+void rr1ax2_plus022(void)
 {
     tc_return_in(RR1AX2 + 022u, ADDRESS_OF(RRRET)); /* "RETURN TO CALLER." */
 }
 
-/* MAGSUB's +1: not yet. ITEMP1 holds AUTOMBIT out of auto mode (then the
- * TC RRRET above), else +0, and L the command. The other axis's command is
- * zero: TANG the trunnion's, TANG +1 the shaft's. Not modelled: an ITEMP1
- * or RRINDEX other than RR1AX2 and RR1AXIS leave. */
+/* RR1AX2 +021 -- p. 534: MAGSUB's +1: not yet. ITEMP1 holds AUTOMBIT out of
+ * auto mode (then the TC RRRET above), else +0, and L the command. The other
+ * axis's command is zero: TANG the trunnion's, TANG +1 the shaft's. Not
+ * modelled: an ITEMP1 or RRINDEX other than RR1AX2 and RR1AXIS leave. */
 void rr1ax2_command(void)
 {
+    enum sign other = POSITIVE; /* how the CCS RRINDEX comes out */
+
     switch (ccs_at(ADDRESS_OF(ITEMP1))) {
     case POSITIVE: continue_at(RR1AX2 + 022u); return; /* "NO.  IF RR OUT OF AUTO MODE, EXIT." */
-    case IS_PLUS_ZERO: break;
-    default: not_modelled();
+    case IS_PLUS_ZERO:
+        other = ccs_at(ADDRESS_OF(RRINDEX));
+        break;                                       /* "COMMAND FOR OTHER AXIS IS ZERO." */
+    case NEGATIVE: other = POSITIVE; break;          /* (on at that CCS's TCF +2) */
+    case IS_MINUS_ZERO: other = IS_PLUS_ZERO; break; /* (on at its XCH L) */
     }
-    switch (ccs_at(ADDRESS_OF(RRINDEX))) { /* "COMMAND FOR OTHER AXIS IS ZERO." */
-    case POSITIVE: break;                  /* TCF +2: "SETTING A TO 0." */
+    switch (other) {
+    case POSITIVE: break; /* TCF +2: "SETTING A TO 0." */
     case IS_PLUS_ZERO: xch(L_ADDRESS); break;
-    default: not_modelled();
+    case NEGATIVE: break;
+    case IS_MINUS_ZERO: tc_to(RR1AX2 + 027u, RROUT); return; /* (past the DXCH TANG) */
     }
     dxch(ADDRESS_OF(TANG));
     tc_to(RR1AX2 + 027u, RROUT);
@@ -556,8 +566,8 @@ void rrout2(void)
     magsub(); /* "SEE IF WITHIN LIMITS." -RRLIMIT, DEC -384 */
 }
 
-/* SETRRCTR +1: "COUNT OUT DIFFERENCE BETWEEN DESIRED STATE AND PRESENT
- * STATE AS RECORDED IN LASTYCMD AND LASTXCMD". */
+/* SETRRCTR +1 -- p. 535: "COUNT OUT DIFFERENCE BETWEEN DESIRED STATE AND
+ * PRESENT STATE AS RECORDED IN LASTYCMD AND LASTXCMD". */
 static void count_out(void)
 {
     xch(rrout_axis(ADDRESS_OF(LASTYCMD)));
@@ -566,30 +576,34 @@ static void count_out(void)
     ad(NEG0);                                                /* "PREVENT +0 IN OUTCOUNTER" */
     if (ts(rrout_axis(ADDRESS_OF(CDUTCMD)))) not_modelled(); /* (commands of 384 pulses at most) */
     switch (ccs_at(ADDRESS_OF(ITEMP2))) {
-    case POSITIVE: rrout2(); return; /* "PROCESS BOTH INPUTS." */
-    case IS_PLUS_ZERO: break;
-    default: not_modelled();
+    case POSITIVE: rrout2(); return;        /* "PROCESS BOTH INPUTS." */
+    case IS_PLUS_ZERO: set_A(PRIO6); break; /* "ENABLE COUNTERS." */
+    case NEGATIVE: break;                   /* never: ITEMP2 is 1, then 0 */
+    case IS_MINUS_ZERO:                     /* never: the WOR CHAN14, not extended, is TC 5014 */
+        continue_at(05014u);
+        return;
     }
-    set_A(PRIO6);                             /* "ENABLE COUNTERS." */
     wor_channel(CHAN14);                      /* "PUT ON CDU DRIVES S AND T" */
     tc_return_in(SETRRCTR + 015u, L_ADDRESS); /* "RETURN." */
 }
 
-/* SETRRCTR: MAGSUB's +2, the command within the limit. */
+/* SETRRCTR -- p. 535: MAGSUB's +2, the command within the limit. */
 void setrrctr(void)
 {
     ca(ADDRESS_OF(ITEMP1));
     count_out();
 }
 
-/* RROUTLIM: MAGSUB's +1, "LIMIT COMMAND TO ABS VAL OF 384." (A zero ITEMP1,
- * which MAGSUB does not send here, stays +0.) */
+/* SETRRCTR -1 -- p. 535, MAGSUB's +1 (TCF RROUTLIM). RROUTLIM: "LIMIT
+ * COMMAND TO ABS VAL OF 384." (A zero ITEMP1, which MAGSUB does not send
+ * here, stays +0.) */
 void rroutlim(void)
 {
     switch (ccs_at(ADDRESS_OF(ITEMP1))) {
     case POSITIVE: set_A(negate(MINUS_RRLIMIT)); break; /* CS -RRLIMIT */
+    case IS_PLUS_ZERO: break;                           /* TCF +2: CCS leaves +0 */
     case NEGATIVE: set_A(MINUS_RRLIMIT); break;
-    default: break; /* CCS leaves +0 */
+    case IS_MINUS_ZERO: break;
     }
     ts(ADDRESS_OF(ITEMP1));
     count_out(); /* TCF SETRRCTR +1 */
@@ -612,7 +626,7 @@ void rdbadend(void)
     tc_to(RDBADEND + 1u, POSTJUMP);
 }
 
-/* ENDRADAR: "PROLOG TO CHECK RR CDU FAIL BEFORE END." */
+/* ENDRADAR -- p. 563: "PROLOG TO CHECK RR CDU FAIL BEFORE END." */
 void endradar(void)
 {
     set_A(RCDUFBIT);
@@ -661,7 +675,7 @@ void roadback(void)
     continue_at(SWRETURN); /* TCF SWRETURN */
 }
 
-/* RRZ2: the task. "COMMON TO TURNON AND RRZERO." */
+/* RRZ2 -- p. 537: the task. "COMMON TO TURNON AND RRZERO." */
 void rrz2(void)
 {
     tc_at(RRZ2);

@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: MIT */
 /* RT8_OP_CODES.agc of the CM, QUALITY1 and QUALITY2 (CM p. 1516), in the
- * listing's notation (src/interpreter/notation.h): a "MODULE CHANGE FOR
- * NEW LUNAR GRAVITY MODEL", in two banks, QUALITY1 at MODCHG3 (bank 13)
- * and QUALITY2 at MODCHG2 (bank 12). The LM keeps them in its
- * ORBITAL_INTEGRATION (src/orbital_integration/quality.c).
+ * listing's notation (src/interpreter/notation.h): a "MODULE CHANGE FOR NEW
+ * LUNAR GRAVITY MODEL", in two banks, QUALITY1 at MODCHG3 (bank 13) and
+ * QUALITY2 at MODCHG2 (bank 12). The LM keeps them in its
+ * ORBITAL_INTEGRATION (src/orbital_integration/quality.c). The faithful C is
+ * c64-port/src/lm_rtb_op_codes.c and cm_rtb_op_codes.c.
  *
  * The orbital integration calls QUALITY1 when it has added the oblateness
  * to FV. For the earth there is nothing more: on to NBRANCH. For the moon,
@@ -17,7 +18,6 @@
 
 #if !LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 /* A table's bank and first address, from an I_ name. */
 #define CODE_BANK(i) ((unsigned)((i) >> 10))
 #define CODE_Z(i)    ((word)(02000u + ((i) & 01777u)))

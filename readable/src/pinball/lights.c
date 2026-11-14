@@ -34,11 +34,11 @@
 /* ---- The lights test, verb 35 (bank 41) ---- */
 
 #if LUMINARY099
-#define TSTLTS1_WAITLIST (TSTLTS1 + 15u) /* TC WAITLIST */
-#define TSTLTS3_BANKCALL (TSTLTS3 + 25u) /* TC BANKCALL, CADR DSPMM */
+#define TSTLTS1_WAITLIST (TSTLTS1 + 017u) /* TC WAITLIST */
+#define TSTLTS3_BANKCALL (TSTLTS3 + 031u) /* TC BANKCALL, CADR DSPMM */
 #else
-#define TSTLTS1_WAITLIST (TSTLTS1 + 13u)
-#define TSTLTS3_BANKCALL (TSTLTS3 + 24u)
+#define TSTLTS1_WAITLIST (TSTLTS1 + 015u)
+#define TSTLTS3_BANKCALL (TSTLTS3 + 030u)
 #endif
 
 static void lights_on(void);
@@ -56,7 +56,7 @@ void vbtstlts(void)
     tc(VBTSTLTS, BANKCALL); /* CADR CHKPOOH */
 }
 
-/* VBTSTLTS +2, where CHKPOOH returns. */
+/* VBTSTLTS +2 -- CM p. 385, where CHKPOOH returns. */
 void vbtstlts_plus2(void)
 {
     lights_on();
@@ -87,12 +87,13 @@ static void lights_on(void)
     tstlts1();
 }
 
-/* TSTLTS1 -- one DSPTAB word, the count in A, "DISPLAY ALL 8:S" (FULLDSP
- * complemented: a negative DSPTAB word is one still to be sent to the
- * DSKY), and back to TSTLTS1 for the next, down to DSPTAB +0. Then "TURN ON 3 PLUS
- * SIGNS" (FULLDSP1 in DSPTAB +1, +4 and +6), NOUT ELEVEN (all the words to
- * be sent), and WAITLIST for TSTLTS2 in five seconds (SHOLTS). Luminary099
- * lets interrupts in for a moment around CAF SHOLTS. */
+/* TSTLTS1 -- LM p. 467, CM p. 385: one DSPTAB word, the count in A, "DISPLAY
+ * ALL 8:S" (FULLDSP complemented: a negative DSPTAB word is one still to be
+ * sent to the DSKY), and back to TSTLTS1 for the next, down to DSPTAB +0.
+ * Then "TURN ON 3 PLUS SIGNS" (FULLDSP1 in DSPTAB +1, +4 and +6), NOUT
+ * ELEVEN (all the words to be sent), and WAITLIST for TSTLTS2 in five
+ * seconds (SHOLTS). Luminary099 lets interrupts in for a moment around CAF
+ * SHOLTS. */
 void tstlts1(void)
 {
     if (ts(ADDRESS_OF(ERCNT))) not_modelled();
@@ -100,12 +101,13 @@ void tstlts1(void)
     ts(indexed_erasable(ADDRESS_OF(DSPTAB), fetch(ADDRESS_OF(ERCNT))));
     switch (ccs_at(ADDRESS_OF(ERCNT))) {
     case POSITIVE: tc(TSTLTS1 + 5u, TSTLTS1); return;
-    case IS_PLUS_ZERO: break;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); /* a count of 0 to 10 is never negative */
+    case IS_PLUS_ZERO:
+        set_A(negate(FULLDSP1)); /* fall through */
+    /* (A count of 0 to 10 is never negative or -0. Negative would skip the CS
+     * FULLDSP1, and -0 the TS DSPTAB +1 too.) */
+    case NEGATIVE: ts(ADDRESS_OF(DSPTAB) + 1u); /* fall through */
+    case IS_MINUS_ZERO: break;
     }
-    set_A(negate(FULLDSP1));
-    ts(ADDRESS_OF(DSPTAB) + 1u);
     ts(ADDRESS_OF(DSPTAB) + 4u);
     ts(ADDRESS_OF(DSPTAB) + 6u);
     set_A(ELEVEN);
@@ -132,27 +134,27 @@ void tstlts1_plus16(void)
     tc(TSTLTS1_WAITLIST + 3u, ENDOFJOB);
 }
 
-/* TSTLTS2 -- "CALLED BY WAITLIST": a job at CHARIN's priority (CHRPRIO)
- * for TSTLTS3. */
+/* TSTLTS2 -- LM p. 468, CM p. 386: "CALLED BY WAITLIST": a job at CHARIN's
+ * priority (CHRPRIO) for TSTLTS3. */
 void tstlts2(void)
 {
     set_A(CHRPRIO);
     tc(TSTLTS2 + 1u, NOVAC); /* 2CADR TSTLTS3 */
 }
 
-/* TSTLTS2 +4, where NOVAC returns: the task ends. */
+/* TSTLTS2 +4 -- LM p. 468, CM p. 386, where NOVAC returns: the task ends. */
 void tstlts2_plus4(void)
 {
     tc(TSTLTS2 + 4u, TASKOVER);
 }
 
-/* TSTLTS3 -- "CALLED BY EXECUTIVE". "TURN OFF UPLINK ACTIVITY, TEMP,
- * OPERATOR ERROR" (TSTCON3), "TURN OFF TEST ALARM OUTBIT". "MAKE NO ATT
- * FOLLOW BIT 4 OF CHANNEL 12 (NO ATT LIGHT ON IF IN COARSE ALIGN)" and
- * "TURN OFF AUTO, HOLD, FREE, SPARE, GIMBAL LOCK, SPARE, TRACKER, PROG ALM"
- * (DSPTAB +11D). "SET BITS TO INDICATE ALL LAMPS OUT. TEST LIGHTS
- * COMPLETE." in IMODES33 and IMODES30, and the radar's (LM) or the
- * optics' (CM) fail bits likewise. "REDISPLAY C(MODREG)" (DSPMM, by
+/* TSTLTS3 -- LM p. 468, CM p. 386: "CALLED BY EXECUTIVE". "TURN OFF UPLINK
+ * ACTIVITY, TEMP, OPERATOR ERROR" (TSTCON3), "TURN OFF TEST ALARM OUTBIT".
+ * "MAKE NO ATT FOLLOW BIT 4 OF CHANNEL 12 (NO ATT LIGHT ON IF IN COARSE
+ * ALIGN)" and "TURN OFF AUTO, HOLD, FREE, SPARE, GIMBAL LOCK, SPARE,
+ * TRACKER, PROG ALM" (DSPTAB +11D). "SET BITS TO INDICATE ALL LAMPS OUT.
+ * TEST LIGHTS COMPLETE." in IMODES33 and IMODES30, and the radar's (LM) or
+ * the optics' (CM) fail bits likewise. "REDISPLAY C(MODREG)" (DSPMM, by
  * BANKCALL). */
 void tstlts3(void)
 {
@@ -207,16 +209,17 @@ void tstlts3_plus26(void)
 
 /* ---- ERROR LIGHT RESET, the RSET key (bank 40) ---- */
 
-static void force_bit12(void);
+static enum sign force_bit12(void);
 
-/* ERROR -- CHARIN's key table sends the RSET key here. "RESTORE ORIGINAL
- * C(DSPLOCK). THUS ERROR LIGHT RESET LEAVES DSPLOCK UNCHANGED." (CHARIN
- * kept it in 21/22REG.) "TURN ON :CAUTION RESET: OUTBIT" (BIT10 of channel
- * 11). "LEAVE GIMBAL LOCK AND NO ATT INTACT, TURNING OFF AUTO, HOLD, FREE,
- * PROG ALARM, AND TRACKER." "RESET FAIL BITS WHICH GENERATE PROG ALARM SO
- * THAT IF THE FAILURE STILL EXISTS, THE ALARM WILL COME BACK" (IMODES33,
- * IMODES30, and the radar's or the optics' fail bits). "TURN OFF :TEST
- * ALARM: OUTBIT." "TURN OFF UPLINK ACTIVITY, OPERATOR ERROR." (ERCON). */
+/* ERROR -- LM p. 470, CM p. 388: CHARIN's key table sends the RSET key here.
+ * "RESTORE ORIGINAL C(DSPLOCK). THUS ERROR LIGHT RESET LEAVES DSPLOCK
+ * UNCHANGED." (CHARIN kept it in 21/22REG.) "TURN ON :CAUTION RESET: OUTBIT"
+ * (BIT10 of channel 11). "LEAVE GIMBAL LOCK AND NO ATT INTACT, TURNING OFF
+ * AUTO, HOLD, FREE, PROG ALARM, AND TRACKER." "RESET FAIL BITS WHICH
+ * GENERATE PROG ALARM SO THAT IF THE FAILURE STILL EXISTS, THE ALARM WILL
+ * COME BACK" (IMODES33, IMODES30, and the radar's or the optics' fail bits).
+ * "TURN OFF :TEST ALARM: OUTBIT." "TURN OFF UPLINK ACTIVITY, OPERATOR
+ * ERROR." (ERCON). */
 void error_(void)
 {
     xch(ADDRESS_OF(TWENTY_ONE_22REG));
@@ -250,23 +253,29 @@ void error_(void)
     wand_channel(CHAN13);
     set_A(negate(ERCON));
     wand_dsalmout();
-    force_bit12();
-    set_A(ZERO);
-    ts(ADDRESS_OF(FAILREG));
+    /* ERCOM's CCS ERCNT ends the loop on +0. (The count runs 10 to 0: never negative,
+     * which would skip the CAF ZERO, or -0, the TS FAILREG too.) */
+    switch (force_bit12()) {
+    case POSITIVE:                          /* (the loop goes on) */
+    case IS_PLUS_ZERO: set_A(ZERO);         /* fall through */
+    case NEGATIVE: ts(ADDRESS_OF(FAILREG)); /* fall through */
+    case IS_MINUS_ZERO: break;
+    }
     ts(ADDRESS_OF(FAILREG) + 1u);
     ts(ADDRESS_OF(FAILREG) + 2u);
     ts(ADDRESS_OF(SFAIL));
-    tc(ERCOM + 10u, ENDOFJOB);
+    tc(ERCOM + 012u, ENDOFJOB);
 }
 
-/* TSTAB -- each DSPTAB word, DSPTAB +10 down to +0 (ERCNT counts from
- * BINCON, DEC 10), with bit 12 forced on. CCS gives the word's magnitude
- * less one, so AD ONE puts it back: a + word (or +0) by ERPLUS, CS A, MASK
- * NOTBIT12, CS A, has bit 12 set; a - word (or -0) by ERMINUS, CS A, MASK
- * NOTBIT12, is put back negative with bit 12 of its complement clear: so
- * set in the word the relays get. "MIGHT WANT TO RESET CLPASS, DECBRNCH,
- * ETC." Interrupts in between words. */
-static void force_bit12(void)
+/* TSTAB -- LM p. 470, CM p. 388: each DSPTAB word, DSPTAB +10 down to +0
+ * (ERCNT counts from BINCON, DEC 10), with bit 12 forced on. CCS gives the
+ * word's magnitude less one, so AD ONE puts it back: a + word (or +0) by
+ * ERPLUS, CS A, MASK NOTBIT12, CS A, has bit 12 set; a - word (or -0) by
+ * ERMINUS, CS A, MASK NOTBIT12, is put back negative with bit 12 of its
+ * complement clear: so set in the word the relays get. "MIGHT WANT TO RESET
+ * CLPASS, DECBRNCH, ETC." Interrupts in between words. Returns how the CCS
+ * ERCNT that ended the loop came out. */
+static enum sign force_bit12(void)
 {
     word ercnt;
 
@@ -300,9 +309,9 @@ static void force_bit12(void)
         relint();
         switch (ccs_at(ADDRESS_OF(ERCNT))) {
         case POSITIVE: tc_at(ERCOM + 4u); continue; /* TC TSTAB +1 */
-        case IS_PLUS_ZERO: return;
-        case NEGATIVE:
-        case IS_MINUS_ZERO: not_modelled(); /* the count runs 10 to 0 */
+        case IS_PLUS_ZERO: return IS_PLUS_ZERO;
+        case NEGATIVE: return NEGATIVE;
+        case IS_MINUS_ZERO: return IS_MINUS_ZERO;
         }
     }
 }

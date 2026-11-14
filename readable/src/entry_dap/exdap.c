@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* CM_ENTRY_DIGITAL_AUTOPILOT.agc, part D (Comanche055 pp. 1077-1079, bank
- * 15): "EXTRA ATMOSPHERIC DIGITAL AUTOPILOT", from ATTRATES while .05GSW
- * is clear (the BZF EXDAP), every 0.1 s.
+ * 15): "EXTRA ATMOSPHERIC DIGITAL AUTOPILOT", from ATTRATES while .05GSW is
+ * clear (the BZF EXDAP), every 0.1 s. The faithful C is
+ * c64-port/src/cm_entry_dap.c.
  *
  * Its mode, CMDAPMOD, comes from the angle of attack, by CALFA:
  *   "1.	IF ABS(CALF) -C(45) POS, USE": the yaw jets hold beta,
@@ -32,10 +33,10 @@ static void exdap2(void);
 
 /* ---- EXDAP -- p. 1077 ---- */
 
-/* EXDAP: "+0 FOR NOW" (CMDAPMOD); then C45LIM, "=1.0-COS(45)", added to
- * the magnitude of CALFA, less 1 (CCS; +0 for either zero, which take no
- * AD). An overflow at TS CMDAPMOD, from the caller's A, skips the CCS:
- * the AD C45LIM, with A +1 or -1. */
+/* EXDAP -- p. 1077: "+0 FOR NOW" (CMDAPMOD); then C45LIM, "=1.0-COS(45)",
+ * added to the magnitude of CALFA, less 1 (CCS; +0 for either zero, which
+ * take no AD). An overflow at TS CMDAPMOD, from the caller's A, skips the
+ * CCS: the AD C45LIM, with A +1 or -1. */
 void exdap(void)
 {
     enum sign calfa = POSITIVE;
@@ -45,20 +46,21 @@ void exdap(void)
     exdap_ts_a();
 }
 
-/* EXDAP +3: TCF +2, to the TS A. */
+/* EXDAP +3 -- p. 1077: TCF +2, to the TS A. */
 void exdap_tcf(void)
 {
     exdap_ts_a();
 }
 
-/* EXDAP +4: C45LIM added (CALFA negative), */
+/* EXDAP +4 -- p. 1077: C45LIM added (CALFA negative), */
 void exdap_ad_c45lim(void)
 {
     ad(C45LIM);
     exdap_ts_a();
 }
 
-/* EXDAP +5: TS A, which skips on an overflow: without one, "HERE IF
+/* EXDAP +5 -- p. 1077: TS A, which skips on an overflow: without one, "HERE
+ * IF
  * ABS(CALFA) L COS(45)" (EXDAP2); with one, "|CALFA| > 0.707": "CONTINUE
  * IF POS; GO TO EXDAP4 IF NEG." (TC EXDAP4; -0 takes the TC +2 below).
  * Then P63FLAG, "VALID VALUES ARE:  -1, +1, +0.": +1 (positive after CCS
@@ -77,41 +79,42 @@ void exdap_ts_a(void)
         tc_at(EXDAP + 012u);
         exdap4();
         return;
-    case IS_MINUS_ZERO: exdap_p63_plus0(); return;
+    case IS_MINUS_ZERO: exdap_plus013(); return;
     }
     switch (ccs_at(ADDRESS_OF(P63FLAG))) {
     case POSITIVE:
         tc_at(EXDAP + 012u);
         exdap4();
         break;
-    case IS_PLUS_ZERO: exdap_p63_plus0(); break;
+    case IS_PLUS_ZERO: exdap_plus013(); break;
     case NEGATIVE: exdap_p63_negative(); break;
     case IS_MINUS_ZERO: exdap_phaschng(); break;
     }
 }
 
-/* EXDAP +013: TC +2, to the phase change. */
-void exdap_p63_plus0(void)
+/* EXDAP +013 -- p. 1077: TC +2, to the phase change. */
+void exdap_plus013(void)
 {
     tc_at(EXDAP + 013u);
     exdap_phaschng();
 }
 
-/* EXDAP +014: TC EXDAP4. */
+/* EXDAP +014 -- p. 1077: TC EXDAP4. */
 void exdap_p63_negative(void)
 {
     tc_at(EXDAP + 014u);
     exdap4();
 }
 
-/* EXDAP +015: "SINGLE PASS THROUGH HERE." (PHASCHNG, OCT 40334), */
+/* EXDAP +015 -- p. 1077: "SINGLE PASS THROUGH HERE." (PHASCHNG, OCT
+ * 40334), */
 void exdap_phaschng(void)
 {
     tc_to(EXDAP + 015u, PHASCHNG);
 }
 
-/* EXDAP +017: -1 to P63FLAG, "SET FLAG TO ASSURE SINGLE PASS.", and
- * WAKEP62 in NSEC (WAITLIST, 2CADR WAKEP62); back at EXDAP4. */
+/* EXDAP +017 -- p. 1077: -1 to P63FLAG, "SET FLAG TO ASSURE SINGLE PASS.",
+ * and WAKEP62 in NSEC (WAITLIST, 2CADR WAKEP62); back at EXDAP4. */
 void exdap_after_phaschng(void)
 {
     set_A(negate(ONE)); /* CS ONE */
@@ -122,26 +125,26 @@ void exdap_after_phaschng(void)
 
 /* ---- EXDAP4, EXDAP3 and EXDAP1 -- p. 1078 ---- */
 
-/* EXDAP4: "ROLLJET INTERFACE TEST BETWEEN .1 SEC" "DAP AND THE 2 SEC
- * CM/RCS DAP": a negative JETAG (-1, the roll jets run at 0.1 s), or -0,
- * "TURN OFF ROLL JETS IF ON AND WAIT" "UNTIL START OF 2 SEC CM/RCS
- * CYCLE" (+0 to channel 6 and JETAG, "RESTORE PROPER VALUE +0"). "ROLL
- * FDAI WILL BE IN ERROR UNTIL NEXT CM/RCS CALL." */
+/* EXDAP4 -- p. 1078: "ROLLJET INTERFACE TEST BETWEEN .1 SEC" "DAP AND THE 2
+ * SEC CM/RCS DAP": a negative JETAG (-1, the roll jets run at 0.1 s), or -0,
+ * "TURN OFF ROLL JETS IF ON AND WAIT" "UNTIL START OF 2 SEC CM/RCS CYCLE"
+ * (+0 to channel 6 and JETAG, "RESTORE PROPER VALUE +0"). "ROLL FDAI WILL BE
+ * IN ERROR UNTIL NEXT CM/RCS CALL." */
 void exdap4(void)
 {
     enum sign jetag = ccs_at(ADDRESS_OF(JETAG));
 
     if (jetag == NEGATIVE) set_A(ZERO); /* CA ZERO (the -0 leaves +0 too) */
     if (jetag == NEGATIVE || jetag == IS_MINUS_ZERO) {
-        write_channel(6); /* EXTEND; WRITE ROLLJETS */
+        write_channel(CHAN6); /* EXTEND; WRITE ROLLJETS */
         ts(ADDRESS_OF(JETAG));
     }
     exdap3();
 }
 
-/* EXDAP3: "HERE IF ABS(CALFA) GEQ COS(45)": the yaw error, RAXERR,
- * "BETACOM - BETA/180", as it is for CALFA positive (+0 for CALFA +0);
- * for CALFA negative CMDAPMOD -0 ("FOR CM/RCS"; +0 for CALFA -0) and
+/* EXDAP3 -- p. 1078: "HERE IF ABS(CALFA) GEQ COS(45)": the yaw error,
+ * RAXERR, "BETACOM - BETA/180", as it is for CALFA positive (+0 for CALFA
+ * +0); for CALFA negative CMDAPMOD -0 ("FOR CM/RCS"; +0 for CALFA -0) and
  * "COMPLEMENT OF YAW ERROR.". */
 static void exdap3(void)
 {
@@ -161,13 +164,13 @@ static void exdap3(void)
     exdap1();
 }
 
-/* EXDAP1: the yaw error to RAXERR, "FOR YAW FDAI", AK2, "WANT RAXERR FOR
- * TM.", and L (an overflow skips the TS AK2, A +1 or -1); then the rate,
- * "COORDINATE BETA CONTROL.": "C(CMDAPMOD) CAN BE +1, +0, OR -0." "USE
- * BETADOT TO COORD IN MODE +0" "OTHERWISE USE RREL." (+1, by TC +3, and
- * -0; a negative CMDAPMOD indexes from RREL). "GO TEST DZ. +0 IF IN DZ,
- * +-1 OTHERWISE" "IF GEQ 4D/S, SET ERROR BIT IN L=0" (BIASEDZ, back at
- * EXDAP1 +011). */
+/* EXDAP1 -- p. 1078: the yaw error to RAXERR, "FOR YAW FDAI", AK2, "WANT
+ * RAXERR FOR TM.", and L (an overflow skips the TS AK2, A +1 or -1); then
+ * the rate, "COORDINATE BETA CONTROL.": "C(CMDAPMOD) CAN BE +1, +0, OR -0."
+ * "USE BETADOT TO COORD IN MODE +0" "OTHERWISE USE RREL." (+1, by TC +3, and
+ * -0; a negative CMDAPMOD indexes from RREL). "GO TEST DZ. +0 IF IN DZ, +-1
+ * OTHERWISE" "IF GEQ 4D/S, SET ERROR BIT IN L=0" (BIASEDZ, back at EXDAP1
+ * +011). */
 void exdap1(void)
 {
     if (!ts(ADDRESS_OF(RAXERR))) ts(ADDRESS_OF(AK2));
@@ -184,8 +187,8 @@ void exdap1(void)
     tc_to(EXDAP1 + 010u, BIASEDZ);
 }
 
-/* EXDAP1 +5: mode +0: CA ONE; INDEX A; CA RREL, the word after it,
- * BETADOT. */
+/* EXDAP1 +5 -- p. 1078: mode +0: CA ONE; INDEX A; CA RREL, the word after
+ * it, BETADOT. */
 void exdap1_mode0(void)
 {
     set_A(ONE);
@@ -193,9 +196,10 @@ void exdap1_mode0(void)
     tc_to(EXDAP1 + 010u, BIASEDZ);
 }
 
-/* EXDAP1 +011: the tag with the error bit, "L HAS BETA BIT" (ROR LCHAN),
- * gives the yaw jets (YJETCODE) in JETEM. Then "ALFA ERROR." (QAXERR) in
- * L and, "FOR ALPHADOT USE QREL", its tag (BIASEDZ, back at EXDAP1 +022). */
+/* EXDAP1 +011 -- p. 1078: the tag with the error bit, "L HAS BETA BIT" (ROR
+ * LCHAN), gives the yaw jets (YJETCODE) in JETEM. Then "ALFA ERROR."
+ * (QAXERR) in L and, "FOR ALPHADOT USE QREL", its tag (BIASEDZ, back at
+ * EXDAP1 +022). */
 void exdap1_after_biasedz(void)
 {
     ror_lchan();        /* EXTEND; ROR LCHAN */
@@ -207,8 +211,8 @@ void exdap1_after_biasedz(void)
     tc_to(EXDAP1 + 021u, BIASEDZ);
 }
 
-/* EXDAP1 +022: the pitch tag with its error bit, and "CONTINUE ON IN DAP"
- * (TCF EXDAPIN), where the pitch jets are added. */
+/* EXDAP1 +022 -- p. 1078: the pitch tag with its error bit, and "CONTINUE ON
+ * IN DAP" (TCF EXDAPIN), where the pitch jets are added. */
 void exdap1_after_alfa_dz(void)
 {
     ror_lchan(); /* EXTEND; ROR LCHAN */
@@ -217,10 +221,10 @@ void exdap1_after_alfa_dz(void)
 
 /* ---- EXDAP2 -- pp. 1078-1079 ---- */
 
-/* EXDAP2: "SET CMDAPMOD TO +1" (INCR, from the +0 EXDAP left); -1 to
- * JETAG, "INDICATE CHANGE FROM .1 SEC UPDATE TO" "2 SEC FOR ROLL JETS.
- * (IF CMDAPMOD" "=0 AND JETAG =-1, QUENCHES JETS IF ON)"; on at EXDAP2
- * +3 (the faithful port's run stops there, at a key of another of its
+/* EXDAP2 -- p. 1078: "SET CMDAPMOD TO +1" (INCR, from the +0 EXDAP left); -1
+ * to JETAG, "INDICATE CHANGE FROM .1 SEC UPDATE TO" "2 SEC FOR ROLL JETS.
+ * (IF CMDAPMOD" "=0 AND JETAG =-1, QUENCHES JETS IF ON)"; on at EXDAP2 +3
+ * (the faithful port's run stops there, at a key of another of its
  * parts). */
 static void exdap2(void)
 {
@@ -230,12 +234,13 @@ static void exdap2(void)
     continue_at(EXDAP2 + 3u);
 }
 
-/* EXDAP2 +3: P63FLAG, "IF FLAG WAS +1, SET =0." (and a larger one less
+/* EXDAP2 +3 -- p. 1078: P63FLAG, "IF FLAG WAS +1, SET =0." (and a larger one
+ * less
  * 1; then NOOP). "BETA CONTROL WITH P JETS": the error "BETACOM -
  * BETA/180" from RAXERR, against SALFA's sign ("SGN(-SALF)"; +0 for
  * either zero), "TEMP SAVE.  ERROR/180" in PAXERR1. (A -0 P63FLAG skips
  * the CCS SALFA: the CS RAXERR.) */
-void exdap2_p63flag(void)
+void exdap2_plus3(void)
 {
     enum sign salfa = POSITIVE;
 
@@ -254,10 +259,10 @@ void exdap2_p63flag(void)
     exdap2_paxerr1();
 }
 
-/* EXDAP2 +013: halved, "CM/FDAI EXPECTS ERROR/360.", into PAXERR1,
- * "ERROR/360 FOR FDAI, GET ERROR/180." to L; and the rate, "USE BETADOT
- * TO COORD IN MODE +1", against SALFA's sign (+0 for either zero), to
- * BIASEDZ (back at EXDAP2 +024). */
+/* EXDAP2 +013 -- p. 1079: halved, "CM/FDAI EXPECTS ERROR/360.", into
+ * PAXERR1, "ERROR/360 FOR FDAI, GET ERROR/180." to L; and the rate, "USE
+ * BETADOT TO COORD IN MODE +1", against SALFA's sign (+0 for either zero),
+ * to BIASEDZ (back at EXDAP2 +024). */
 void exdap2_paxerr1(void)
 {
     mp(HALF); /* EXTEND; MP HALF */
@@ -275,25 +280,25 @@ void exdap2_paxerr1(void)
     tc_to(EXDAP2 + 023u, BIASEDZ);
 }
 
-/* EXDAP2 +022: CA BETADOT (SALFA negative), to BIASEDZ. */
+/* EXDAP2 +022 -- p. 1079: CA BETADOT (SALFA negative), to BIASEDZ. */
 void exdap2_betadot(void)
 {
     ca(ADDRESS_OF(BETADOT));
     tc_to(EXDAP2 + 023u, BIASEDZ);
 }
 
-/* EXDAP2 +024: the tag with its error bit, "GET ROLL CODE" (P/RJCODE):
- * "ROLL CONTROL WITH YAW JETS." "WE,LL SKIP REGULAR ROLL SYST" (channel
- * 6). Then the roll's drift, "ROLL/180 AT CM/DAPON TIME." (ROLLHOLD) less
- * ROLL/180 ("1,S COMPL, BUT SO WHATS A BIT.?"), to L, "FORCE A LIMIT
- * CYCLE IN YAW RATE." "TO REMOVE ITS BIASING EFFECT ON M DOT.": against
- * SALFA's sign (+0 for either zero), the yaw error for EXDAP1. (The
+/* EXDAP2 +024 -- p. 1079: the tag with its error bit, "GET ROLL CODE"
+ * (P/RJCODE): "ROLL CONTROL WITH YAW JETS." "WE,LL SKIP REGULAR ROLL SYST"
+ * (channel 6). Then the roll's drift, "ROLL/180 AT CM/DAPON TIME."
+ * (ROLLHOLD) less ROLL/180 ("1,S COMPL, BUT SO WHATS A BIT.?"), to L, "FORCE
+ * A LIMIT CYCLE IN YAW RATE." "TO REMOVE ITS BIASING EFFECT ON M DOT.":
+ * against SALFA's sign (+0 for either zero), the yaw error for EXDAP1. (The
  * faithful port's run stops at EXDAP1, a key of another of its parts.) */
 void exdap2_after_biasedz(void)
 {
-    ror_lchan();        /* EXTEND; ROR LCHAN */
-    jet_code(P_RJCODE); /* INDEX A; CAF P/RJCODE */
-    write_channel(6);   /* EXTEND; WRITE ROLLJETS */
+    ror_lchan();          /* EXTEND; ROR LCHAN */
+    jet_code(P_RJCODE);   /* INDEX A; CAF P/RJCODE */
+    write_channel(CHAN6); /* EXTEND; WRITE ROLLJETS */
     ca(ADDRESS_OF(ROLLHOLD));
     msu_at(ADDRESS_OF(ROLL_180)); /* EXTEND; MSU ROLL/180 */
     ts(L_ADDRESS);
@@ -308,15 +313,15 @@ void exdap2_after_biasedz(void)
     }
 }
 
-/* EXDAP2 +041: CS L (SALFA negative), to EXDAP1. */
+/* EXDAP2 +041 -- p. 1079: CS L (SALFA negative), to EXDAP1. */
 void exdap2_cs_l(void)
 {
     cs(L_ADDRESS);
     tc_to(EXDAP2 + 042u, EXDAP1);
 }
 
-/* EXDAP2 +043: NSEC, a constant (DEC 2100), which a TC Q to EXDAP2 +043
- * would run: the faithful port does not run it. */
+/* EXDAP2 +043 -- p. 1079: NSEC, a constant (DEC 2100), which a TC Q to
+ * EXDAP2 +043 would run: the faithful port does not run it. */
 void nsec_constant(void)
 {
     not_modelled();

@@ -52,14 +52,6 @@
 
 #if LUMINARY099
 
-/* TC at, to a routine out of the file (or to a keyed label): Q gets the
- * return, and the routine runs next. */
-static inline void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* TC Q: the routine returns to the address in Q (bits 1-12), and Q
  * becomes 3. Not modelled: a Q that is not such an address (bits 13-15
  * set, or below 010). */
@@ -88,15 +80,20 @@ static inline void tc_return_in(word at, unsigned address)
 }
 
 /* CCS A after a MASK of positive bits: true when a bit was set (A then
- * holds the masked word less one), false for +0. A MASK leaves neither a
- * negative word nor -0, so the CCS's other two ways are not modelled. */
+ * holds the masked word less one), false for +0. Such a MASK leaves neither
+ * a negative word nor -0. This one helper stands for that CCS at each place
+ * it is used, so it cannot follow the two outcomes that never come: what
+ * the listing would run differs with the place. (make style-check holds
+ * each place's mask to a clear sign bit: tools/ccs_helpers.py.) */
 static inline bool bit_set_in_A(void)
 {
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: return true;
     case IS_PLUS_ZERO: return false;
-    default: not_modelled(); return false;
+    case NEGATIVE:
+    case IS_MINUS_ZERO: not_modelled(); /* never; what would run differs with the place */
     }
+    return false;
 }
 
 /* ---- Part 1: P20 and P25 (programs.c) ---- */
@@ -215,7 +212,7 @@ extern const struct interpretive_code R21LEM8_CODE;
 /* R22 */
 void r22lem(void);
 void r22lem_after_phaschng(void);
-void r22lem_after_p20lemb5(void);
+void r22lem_plus025(void);
 void r22lem_read(void);
 void r22lem_after_read(void);
 void r22lem_good_data(void);
@@ -270,7 +267,7 @@ void r21lem(void);
 void r21lem_on_surface(void);
 void r21lem_in_orbit(void);
 void r21lem5(void);
-void r21lem5_mode2_center(void);
+void r21lem5_plus4(void);
 void r21lem6_after_downflag(void);
 void r21lem6_after_rrdesnb(void);
 void r21lem6_stall(void);
@@ -300,7 +297,7 @@ void r21lem12_not_in_coverage(void);
 void r21lem12_maneuver(void);
 void r21lem12_in_coverage(void);
 void r21lem12_after_killtask(void);
-void r21lem13_tried_enough(void);
+void r21lem13_plus2(void);
 void r21lem7(void);
 void r21lem8_after_exit(void);
 void r21lem8_after_cdesflag(void);
@@ -397,9 +394,9 @@ void r61c_l05_after_r60lem(void);
 void r61c_l05_after_restordb(void);
 void r61c_l05_after_phaschng(void);
 void r61c_l06(void);
-void r61c_l06_r65(void);
-void r61c_l06_count_out(void);
-void r61c_l06_again(void);
+void r61c_l06_plus4(void);
+void r61c_l06_plus6(void);
+void r61c_l06_plus7(void);
 void r61c_l06_after_twiddle(void);
 void r61c_l2(void);
 void r61c_l2_after_findvac(void);
@@ -454,7 +451,7 @@ void rmodinv(void);
 void rrtonly(void);
 void rrsonly(void);
 void rr1ax2(void);
-void rr1ax2_done(void);
+void rr1ax2_plus022(void);
 void rr1ax2_command(void);
 void rr1ax2_after_rrout(void);
 void rrout(void);
@@ -484,7 +481,7 @@ void rrdessm_not_in_mode(void);
 void okdessm(void);
 void okdessm_after_startdes(void);
 void lundesch(void);
-void lundesch_not_rendezvous(void);
+void lundesch_plus010(void);
 void startdes_after_setrrecr(void);
 void desretrn(void);
 void trysws_after_rmodinv(void);
@@ -515,7 +512,7 @@ void negshaft(void);
 
 /* BEGDES, STDESIG and DODES */
 void begdes(void);
-void begdes_remode(void);
+void begdes_plus4(void);
 void desloop(void);
 void stdesig(void);
 void moredes_after_findvac(void);
@@ -524,10 +521,10 @@ void dodes_after_exit(void);
 void dodes_after_dot(void);
 void rrdesdun_after_downflag(void);
 void notp20(void);
-void notp20_after_rrout(void);
-void notp20_new_los(void);
+void notp20_plus5(void);
+void notp20_plus013(void);
 void notp20_after_killtask(void);
-void notp20_after_chang1(void);
+void notp20_plus021(void);
 void dodesend(void);
 
 /* ---- Part 7: the radar data read (radar_read.c) ---- */
@@ -560,7 +557,7 @@ void radin(void);
 void dgcheck2_after_dgcheck(void);
 void scalchng(void);
 void scalchng_after_upflag(void);
-void dgcheck_good(void);
+void dgcheck_plus014(void);
 void datafail_after_radlites(void);
 
 /* LRPOS2 and RGOODEND */

@@ -29,8 +29,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* The words of the basic code the C names. */
 #define TC_BANKCALL_GOFLASH_V0412 (V89CALL + 7u)    /* TC BANKCALL; CADR GOFLASH */
 #define TC_ENDEXT_V0412           (V89CALL + 011u)  /* TC ENDEXT "TERMINATE" */
@@ -53,8 +51,8 @@ void v89call(void)
     continue_at(BANKCALL); /* CADR R02BOTH */
 }
 
-/* V89CALL +7: flash V04 N12, the axis to choose (OPTION1 and OPTION2,
- * OPTIONX and OPTIONX +1). */
+/* V89CALL +7 -- LM p. 339: flash V04 N12, the axis to choose (OPTION1 and
+ * OPTION2, OPTIONX and OPTIONX +1). */
 static void flash_v04n12(void)
 {
     set_A(VB04N12);

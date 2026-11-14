@@ -115,17 +115,17 @@ static void sn1(void)
 
     tc_at(SN1 + 4u);
     poly(); /* "EVALUATE FOURTH ORDER POLYNOMIAL." It returns to SN1 +16. */
-    sn1_plus16();
+    sn1_plus020();
 }
 
-/* SN1 +16: "MULTIPLY BY ARGUMENT AND SHIFT LEFT 2." "NEITHER SHIFT
- * OVERFLOWS." */
-void sn1_plus16(void)
+/* SN1 +020 -- LM p. 1083, CM p. 1188: "MULTIPLY BY ARGUMENT AND SHIFT LEFT
+ * 2." "NEITHER SHIFT OVERFLOWS." */
+void sn1_plus020(void)
 {
     unsigned shift;
 
     set_A(LBUF2);
-    tc_at(SN1 + 17u);
+    tc_at(SN1 + 021u);
     dmpsub_minus1();
 
     for (shift = 0; shift < 2u; ++shift) {
@@ -175,10 +175,11 @@ void arccos_plus1(void)
     acosst();
 }
 
-/* ACOSST: "TEST MAGNITUDE OF INPUT." Over .5 is "PROBABLY AN OVERFLOW
- * CASE"; exactly .5 in the major part (which the add makes -0) is "ANSWER
- * 0 UNLESS MINOR PART NEGATIVE". (The +0 slot never comes: it is the word
- * LASINEX, TCF ASINEX, that ARCSIN keeps in ESCAPE.) */
+/* ACOSST -- LM p. 1084, CM p. 1189: "TEST MAGNITUDE OF INPUT." Over .5 is
+ * "PROBABLY AN OVERFLOW CASE"; exactly .5 in the major part (which the add
+ * makes -0) is "ANSWER 0 UNLESS MINOR PART NEGATIVE". (The +0 slot never
+ * comes: it is the word LASINEX, TCF ASINEX, that ARCSIN keeps in
+ * ESCAPE.) */
 static void acosst(void)
 {
     set_A(negate(HALF));
@@ -194,13 +195,14 @@ static void acosst(void)
         set_A(ZERO);
         acos_eq_0();
         return;
+    case IS_PLUS_ZERO: acos_eq_0(); return;
     case NEGATIVE: acosst2(); return;
-    default: acos_eq_0(); return;
+    case IS_MINUS_ZERO: acos_eq_0(); return;
     }
 }
 
-/* ACOS=0: the answer, A (+0, or .25 from ACOSZERO), to MPAC, "SET MPAC AND
- * EXIT VIA ESCAPE." */
+/* ACOS=0 -- LM p. 1084, CM p. 1189: the answer, A (+0, or .25 from
+ * ACOSZERO), to MPAC, "SET MPAC AND EXIT VIA ESCAPE." */
 static void acos_eq_0(void)
 {
     ts(MPAC_AT(1u));
@@ -213,12 +215,12 @@ static void acos_eq_0_plus1(void)
     tc_escape(ACOS_EQ_0 + 2u, ADDRESS_OF(ESCAPE));
 }
 
-/* ACOSST2: "NOW THAT ARGUMENT IS IN PROPER RANGE, BEGIN COMPUTATION. USE
- * HASTINGS APPROXIMATION ARCCOS(X) = SQRT(1-X)P(X) IN A SCALED VERSION
- * WHERE P(X) IS A SEVENTH ORDER POLYNOMIAL." X is kept in BUF2 while
- * SQRTSUB takes the root of 1 - X. "SEE IF UN-NORMALIZATION REQUIRED."
- * (SQRTSUB's count is never negative: the other slots enter ACOS3 one and
- * two words in.) */
+/* ACOSST2 -- LM p. 1084, CM p. 1189: "NOW THAT ARGUMENT IS IN PROPER RANGE,
+ * BEGIN COMPUTATION. USE HASTINGS APPROXIMATION ARCCOS(X) = SQRT(1-X)P(X) IN
+ * A SCALED VERSION WHERE P(X) IS A SEVENTH ORDER POLYNOMIAL." X is kept in
+ * BUF2 while SQRTSUB takes the root of 1 - X. "SEE IF UN-NORMALIZATION
+ * REQUIRED." (SQRTSUB's count is never negative: the other slots enter ACOS3
+ * one and two words in.) */
 static void acosst2(void)
 {
     dcs(MPAC_AT(0u));
@@ -261,13 +263,13 @@ static void acos3_plus2(void)
     poly(); /* (it returns to ACOS3 +21) */
 
     set_A(LBUF2);
-    tc_at(ACOS3 + 22u);
+    tc_at(ACOS3 + 026u);
     dmpsub_minus1();
-    tc_escape(ACOS3 + 23u, ADDRESS_OF(ESCAPE));
+    tc_escape(ACOS3 + 027u, ADDRESS_OF(ESCAPE));
 }
 
-/* SUBTR: "EPILOGUE FOR NEGATIVE INPUTS TO ARCCOS." "FORMS PI - ARCCOS(-X) =
- * ARCCOS(X)." "GO TO POSSIBLE ARCSIN EPILOGUE." */
+/* SUBTR -- LM p. 1085, CM p. 1190: "EPILOGUE FOR NEGATIVE INPUTS TO ARCCOS."
+ * "FORMS PI - ARCCOS(-X) = ARCCOS(X)." "GO TO POSSIBLE ARCSIN EPILOGUE." */
 static void subtr(void)
 {
     dcs(MPAC_AT(0u));
@@ -276,8 +278,8 @@ static void subtr(void)
     tc_escape(SUBTR + 4u, ADDRESS_OF(ESCAPE2));
 }
 
-/* ASINEX: "ARCSIN EPILOGUE -- GET ARCSIN(X) = PI/2 - ARCCOS(X)." Then
- * LDANZIG, TCF DANZIG. */
+/* ASINEX -- LM p. 1085, CM p. 1190: "ARCSIN EPILOGUE -- GET ARCSIN(X) = PI/2
+ * - ARCCOS(X)." Then LDANZIG, TCF DANZIG. */
 static void asinex(void)
 {
     dcs(MPAC_AT(0u));
@@ -315,7 +317,8 @@ static void acosshr(void)
     acos3(); /* "PROCEED." */
 }
 
-/* ACOSOVF: "IF MAJOR PART WAS ONLY 1 MORE THAN .5, CALL ANSWER ZERO." */
+/* ACOSOVF -- LM p. 1086, CM p. 1191: "IF MAJOR PART WAS ONLY 1 MORE THAN .5,
+ * CALL ANSWER ZERO." */
 static void acosovf(void)
 {
     if (A_is_zero())
@@ -324,10 +327,10 @@ static void acosovf(void)
         acosabrt();
 }
 
-/* ACOSABRT: "IF OVERFLOW, CALL ANSWER ZERO BUT SOUND AN ALARM": alarm 1301
- * (the OCT after the TC). The LM's ALARM1 takes the interpretive return
- * from LOC in A,L; the CM's ALARM the plain one. Both return after the OCT,
- * to CAF ZERO; TCF ACOS=0, in basic code. */
+/* ACOSABRT -- LM p. 1086, CM p. 1191: "IF OVERFLOW, CALL ANSWER ZERO BUT
+ * SOUND AN ALARM": alarm 1301 (the OCT after the TC). The LM's ALARM1 takes
+ * the interpretive return from LOC in A,L; the CM's ALARM the plain one.
+ * Both return after the OCT, to CAF ZERO; TCF ACOS=0, in basic code. */
 static void acosabrt(void)
 {
 #if LUMINARY099
@@ -340,7 +343,8 @@ static void acosabrt(void)
 #endif
 }
 
-/* ACOSZERO: "ACOS(0) = PI/2." "SET MPAC AND EXIT VIA ESCAPE." */
+/* ACOSZERO -- LM p. 1086, CM p. 1191: "ACOS(0) = PI/2." "SET MPAC AND EXIT
+ * VIA ESCAPE." */
 static void acoszero(void)
 {
     set_A(QUARTER);

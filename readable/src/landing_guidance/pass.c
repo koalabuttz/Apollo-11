@@ -14,11 +14,10 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- GUILDRET -- pp. 801-802 ---- */
 
-/* GUILDRET: RODCOUNT zero, and on. (A is +0: TS RODCOUNT never skips.) */
+/* GUILDRET -- p. 801: RODCOUNT zero, and on. (A is +0: TS RODCOUNT never
+ * skips.) */
 void guildret(void)
 {
     set_A(ZERO);
@@ -26,7 +25,8 @@ void guildret(void)
     guildret_plus2();
 }
 
-/* GUILDRET +2: TPIPOLD gets TPIP, the last pass's time, and FASTCHNG. */
+/* GUILDRET +2 -- p. 802: TPIPOLD gets TPIP, the last pass's time, and
+ * FASTCHNG. */
 void guildret_plus2(void)
 {
     dca(ADDRESS_OF(TPIP));
@@ -35,11 +35,11 @@ void guildret_plus2(void)
     fastchng();
 }
 
-/* FASTCHNG's return: TPIP gets this pass's (PIPTIME1), and TTF/8TMP
- * TTF/8. Then by FLPASS0 (CCS): on a pass after the phase's first,
- * TTFINCR; on the first (+0), BRSPOT1, the phase's NEWPHASE word. A
- * negative FLPASS0 skips BRSPOT1's INDEX (so BRAKQUAD's word, TTFINCR),
- * and -0 runs on into P65START. */
+/* GUILDRET +6 -- p. 802: FASTCHNG's return: TPIP gets this pass's
+ * (PIPTIME1), and TTF/8TMP TTF/8. Then by FLPASS0 (CCS): on a pass after the
+ * phase's first, TTFINCR; on the first (+0), BRSPOT1, the phase's NEWPHASE
+ * word. A negative FLPASS0 skips BRSPOT1's INDEX (so BRAKQUAD's word,
+ * TTFINCR), and -0 runs on into P65START. */
 void guildret_after_fastchng(void)
 {
     dca(ADDRESS_OF(PIPTIME1));
@@ -56,15 +56,15 @@ void guildret_after_fastchng(void)
 
 /* ---- The new phases -- p. 802 ---- */
 
-/* P65START: NEWMODEX, the program P65 (DEC 65), ... */
+/* P65START -- p. 802: NEWMODEX, the program P65 (DEC 65), ... */
 void p65start(void)
 {
     tc_to(P65START, NEWMODEX);
 }
 
-/* ... WCHVERT -2 (P65's guidance, in VERTGUID), and "PERMIT X-AXIS
- * OVERRIDE" (DOWNFLAG XOVINFLG). (A, a constant, never overflows: TS
- * WCHVERT does not skip.) */
+/* P65START +2 -- p. 802: ... WCHVERT -2 (P65's guidance, in VERTGUID), and
+ * "PERMIT X-AXIS OVERRIDE" (DOWNFLAG XOVINFLG). (A, a constant, never
+ * overflows: TS WCHVERT does not skip.) */
 void p65start_after_newmodex(void)
 {
     set_A(negate(TWO));
@@ -72,21 +72,21 @@ void p65start_after_newmodex(void)
     tc_to(P65START + 4u, DOWNFLAG);
 }
 
-/* DOWNFLAG's return: TTFINCR. */
+/* P65START +6 -- p. 802: DOWNFLAG's return: TTFINCR. */
 void p65start_after_downflag(void)
 {
     ttfincr();
 }
 
-/* STARTP64: NEWMODEX, the program P64 (DEC 64), ... */
+/* STARTP64 -- p. 802: NEWMODEX, the program P64 (DEC 64), ... */
 void startp64(void)
 {
     tc_to(STARTP64, NEWMODEX);
 }
 
-/* ... "AUGMENT TTF/8" (DELTTFAP to TTF/8TMP), "ENABLE RUPT10" (channel
- * 13's bit 12), and "INITIALIZE REDESIGNATION FLAG" (DOWNFLAG REDFLAG):
- * on to TTFINCR. */
+/* STARTP64 +2 -- p. 802: ... "AUGMENT TTF/8" (DELTTFAP to TTF/8TMP), "ENABLE
+ * RUPT10" (channel 13's bit 12), and "INITIALIZE REDESIGNATION FLAG"
+ * (DOWNFLAG REDFLAG): on to TTFINCR. */
 void startp64_after_newmodex(void)
 {
     ca(ADDRESS_OF(DELTTFAP));
@@ -98,7 +98,7 @@ void startp64_after_newmodex(void)
 
 /* ---- TTFINCR -- pp. 802-804 ---- */
 
-/* TTFINCR. As the listing has it,
+/* TTFINCR -- p. 803. As the listing has it,
  *
  *     TTF/8 = TTF/8 + (TPIP - TPIPOLD)/8
  *     LAND = /LAND/ UNIT(LAND - LAND(TPIP - TPIPOLD) * WM)
@@ -135,8 +135,8 @@ static const word ttfincr_words[] = {
 const struct interpretive_code TTFINCR_CODE = {031u, TTFINCR + 1u, COUNT(ttfincr_words),
                                                ttfincr_words};
 
-/* After the EXIT: the time to TTF/8TMP ("NOW HAVE INCREMENTED TTF/8 IN
- * TTF/8TMP"), and FASTCHNG. */
+/* TTFINCR +020 -- p. 803: After the EXIT: the time to TTF/8TMP ("NOW HAVE
+ * INCREMENTED TTF/8 IN TTF/8TMP"), and FASTCHNG. */
 void ttfincr_after_exit(void)
 {
     dxch(ADDRESS_OF(MPAC));
@@ -156,8 +156,8 @@ static void land_from_landtemp(void)
     }
 }
 
-/* FASTCHNG's return: TTF/8 and LAND get the new ones, TDISPSET the
- * displays' (subroutines.c), and on: ... */
+/* TTFINCR +023 -- p. 803: FASTCHNG's return: TTF/8 and LAND get the new
+ * ones, TDISPSET the displays' (subroutines.c), and on: ... */
 void ttfincr_after_fastchng(void)
 {
     dca(ADDRESS_OF(TTF_8TMP));
@@ -168,14 +168,15 @@ void ttfincr_after_fastchng(void)
     ttfincr_after_tdispset();
 }
 
-/* ... FASTCHNG, "SINCE REDESIG MAY CHANGE LANDTEMP", ... */
+/* TTFINCR +040 -- p. 804: ... FASTCHNG, "SINCE REDESIG MAY CHANGE LANDTEMP",
+ * ... */
 void ttfincr_after_tdispset(void)
 {
     tc_at(TTFINCR + 040u);
     fastchng();
 }
 
-/* ... and BRSPOT2: the phase's PREGUIDE word. */
+/* BRSPOT2 -- p. 804: ... and BRSPOT2: the phase's PREGUIDE word. */
 void brspot2(void)
 {
     tcf_by_phase(PREGUIDE, ADDRESS_OF(WCHPHASE));
@@ -183,11 +184,11 @@ void brspot2(void)
 
 /* ---- REDESIG -- pp. 804-805 ---- */
 
-/* REDESIG: "IS REDFLAG SET?" and "HAS TREDES REACHED ZERO?": if not set,
- * or if zero, "SKIP REDESIGNATION LOGIC" (RGVGCALC). If set and not yet
- * zero, with interrupts inhibited, ELINCR and AZINCR get the increments
- * the redesignator counted (ELINCR1, AZINCR1), and FASTCHNG. (A is a
- * word's, which never overflows: no TS skips.) */
+/* REDESIG -- p. 804: "IS REDFLAG SET?" and "HAS TREDES REACHED ZERO?": if
+ * not set, or if zero, "SKIP REDESIGNATION LOGIC" (RGVGCALC). If set and not
+ * yet zero, with interrupts inhibited, ELINCR and AZINCR get the increments
+ * the redesignator counted (ELINCR1, AZINCR1), and FASTCHNG. (A is a word's,
+ * which never overflows: no TS skips.) */
 void redesig(void)
 {
     ca(ADDRESS_OF(FLAGWRD6));
@@ -210,9 +211,10 @@ void redesig(void)
     fastchng();
 }
 
-/* FASTCHNG's return: the counts zero (ELINCR1, AZINCR1) and the
- * increments' low words, the push-down list at its start ("SET PD TO
- * 0"), and the interpretive code. (No TS skips: A is +0, then FIXLOC.) */
+/* REDESIG +015 -- p. 804: FASTCHNG's return: the counts zero (ELINCR1,
+ * AZINCR1) and the increments' low words, the push-down list at its start
+ * ("SET PD TO 0"), and the interpretive code. (No TS skips: A is +0, then
+ * FIXLOC.) */
 void redesig_after_fastchng(void)
 {
     set_A(ZERO);
@@ -269,14 +271,14 @@ static const word redesig_words[] = {
 const struct interpretive_code REDESIG_CODE = {031u, REDESIG + 025u, COUNT(redesig_words),
                                                redesig_words};
 
-/* After the EXIT: FASTCHNG, ... */
+/* REDESIG +064 -- p. 805: After the EXIT: FASTCHNG, ... */
 void redes1_after_exit(void)
 {
     tc_at(REDESIG + 064u);
     fastchng();
 }
 
-/* ... then LAND gets the new site, and RGVGCALC. */
+/* REDESIG +065 -- p. 805: ... then LAND gets the new site, and RGVGCALC. */
 void redes1_after_fastchng(void)
 {
     land_from_landtemp();

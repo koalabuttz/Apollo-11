@@ -1,15 +1,17 @@
 /* SPDX-License-Identifier: MIT */
-/* CONIC_SUBROUTINES.agc, CHECKCTR (LM p. 1183, CM p. 1286): basic code
- * that KEPLER and ITERATOR reach by RTB ("RTB BHIZ CHECKCTR"), to count
- * the iterations down. */
+/* CONIC_SUBROUTINES.agc, CHECKCTR (LM p. 1183, CM p. 1286): basic code that
+ * KEPLER and ITERATOR reach by RTB ("RTB BHIZ CHECKCTR"), to count the
+ * iterations down. The faithful C is c64-port/src/lm_conic_compiled.c (with
+ * lm_conic_checkctr.c) and cm_conics.c. */
 #include "conics.h"
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
 
-/* CHECKCTR: ITERCTR, in the job's VAC area (INDEX FIXLOC), less one, to
- * ITERCTR and to MPAC, where the BHIZ after the RTB tests it: at zero the
- * iterations have run out. Then the pair goes on (TC DANZIG). (ITERCTR
- * -1 overflows only from -16383, where TS ITERCTR skips the TS MPAC.) */
+/* CHECKCTR -- LM p. 1183, CM p. 1286: ITERCTR, in the job's VAC area (INDEX
+ * FIXLOC), less one, to ITERCTR and to MPAC, where the BHIZ after the RTB
+ * tests it: at zero the iterations have run out. Then the pair goes on (TC
+ * DANZIG). (ITERCTR -1 overflows only from -16383, where TS ITERCTR skips
+ * the TS MPAC.) */
 void checkctr(void)
 {
     unsigned iterctr = indexed(ADDRESS_OF(ITERCTR), FIXLOC);

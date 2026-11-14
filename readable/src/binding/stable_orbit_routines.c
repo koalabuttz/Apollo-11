@@ -35,6 +35,7 @@
 #include "../rtb_op_codes/rtb_op_codes.h"
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
+#include "../interpreter/notation.h"
 
 /* Keys: the file's bank, and the address in it. */
 #if LUMINARY099
@@ -50,8 +51,6 @@
 #define FILE_FB       ((word)(STABLE_ORBIT_BANK << 10))
 #define LOADTIME_BANK ((word)(I_LOADTIME & 076000u))
 #define SUPERBANK_BIT 0100u /* channel 7 bit 7 */
-/* A label's address in its bank (02000-03777). */
-#define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
 
 static jmp_buf back;
 

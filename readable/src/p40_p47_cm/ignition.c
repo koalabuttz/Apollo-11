@@ -27,12 +27,6 @@
 
 #if COMANCHE055
 
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* TC Q, a subroutine's return (as in programs.c): Z gets the address in
  * Q, which becomes 3. Not modelled: a Q that is no such address. */
 static void tc_q(void)
@@ -60,15 +54,15 @@ static void tcr_e6setter(word at)
 
 /* ---- TIG-5 -- p. 694 ---- */
 
-/* TIG-5, a task: TIG-0 in five seconds (WAITLIST). */
+/* TIG-5 -- p. 694, a task: TIG-0 in five seconds (WAITLIST). */
 void tig_5(void)
 {
     set_A(FIVE_SEC);
     tc_to(TIG_5 + 1u, WAITLIST); /* 2CADR TIG-0 */
 }
 
-/* TIG-5 +4: NVWORD1 -BIT9, which "WILL CAUSE V99 FLASH"; restart groups
- * 4 and 3 (2PHSCHNG, OCT 40074, "4.7 = TIG-0 (500CS)", and OCT 00033,
+/* TIG-5 +4 -- p. 694: NVWORD1 -BIT9, which "WILL CAUSE V99 FLASH"; restart
+ * groups 4 and 3 (2PHSCHNG, OCT 40074, "4.7 = TIG-0 (500CS)", and OCT 00033,
  * "3.3 = S40.13 (PRIO20)"). */
 void tig_5_after_waitlist(void)
 {
@@ -77,14 +71,14 @@ void tig_5_after_waitlist(void)
     tc_to(TIG_5 + 6u, TWO_PHSCHNG);
 }
 
-/* TIG-5 +011: S40.13 as a job (FINDVAC, PRIO20), */
+/* TIG-5 +011 -- p. 694: S40.13 as a job (FINDVAC, PRIO20), */
 void tig_5_after_2phschng(void)
 {
     set_A(PRIO20);
     tc_to(TIG_5 + 012u, FINDVAC); /* 2CADR S40.13 */
 }
 
-/* and the task ends (TCF TASKOVER). */
+/* TIG-5 +015 -- p. 694: and the task ends (TCF TASKOVER). */
 void tig_5_after_findvac(void)
 {
     continue_at(TASKOVER);
@@ -95,7 +89,7 @@ void tig_5_after_findvac(void)
 static void implburn(void);
 static void preptvc(void);
 
-/* TIG-0, a task at ignition: "SET IGN FLAG" (IGNFLAG, bit 13 of
+/* TIG-0 -- p. 695, a task at ignition: "SET IGN FLAG" (IGNFLAG, bit 13 of
  * FLAGWRD7); "CHECK ASTN FLAG FOR V99 RESPONSE" (bit 12): not yet, "WAIT
  * FOR V99P" (TASKOVER). Otherwise "CLEAR THE V99" (NVWORD1, verb 06 noun
  * 40), and "V99P HAS COME ALREADY, DO IGNITION NOW" (PHASCHNG, OCT 00614,
@@ -116,11 +110,11 @@ void tig_0(void)
     tc_to(TIG_0 + 011u, PHASCHNG);
 }
 
-/* IGNITION: CDUX "FOR ROLL DAP REFERENCE" (OGAD); the time (TIME2) to
- * TEVENT; "SET ENGONFLG" (bit 7 of FLAGWRD5). SPSON: "TURN ON SPS ENGINE"
- * (bit 13 of DSALMOUT). IMPULCHK: "CHECK FOR IMPULSIVE BURN" (IMPULSW,
- * bit 9 of FLAGWRD2, by CCS A): IMPLBURN; or "NON-IMPULSIVE, SET STRULLSW
- * FOR STEERULL" (bit 13 of FLAGWRD6), and PREPTVC. */
+/* IGNITION -- p. 695: CDUX "FOR ROLL DAP REFERENCE" (OGAD); the time (TIME2)
+ * to TEVENT; "SET ENGONFLG" (bit 7 of FLAGWRD5). SPSON: "TURN ON SPS ENGINE"
+ * (bit 13 of DSALMOUT). IMPULCHK: "CHECK FOR IMPULSIVE BURN" (IMPULSW, bit 9
+ * of FLAGWRD2, by CCS A): IMPLBURN; or "NON-IMPULSIVE, SET STRULLSW FOR
+ * STEERULL" (bit 13 of FLAGWRD6), and PREPTVC. */
 void ignition(void)
 {
     ca(ADDRESS_OF(CDUX));
@@ -144,8 +138,8 @@ void ignition(void)
     preptvc();
 }
 
-/* PREPTVC: "RESET T5 BITS" (bits 15 and 14 of FLAGWRD6); "KILL RCS"
- * (T5LOC gets T5IDL24's 2CADR, T5IDLOC); "4.3 = DOTVCON (40CS)" (CS
+/* PREPTVC -- p. 695: "RESET T5 BITS" (bits 15 and 14 of FLAGWRD6); "KILL
+ * RCS" (T5LOC gets T5IDL24's 2CADR, T5IDLOC); "4.3 = DOTVCON (40CS)" (CS
  * THREE), restart group 4 (NEWPHASE). */
 static void preptvc(void)
 {
@@ -158,20 +152,20 @@ static void preptvc(void)
     tc_to(PREPTVC + 7u, NEWPHASE);
 }
 
-/* PREPTVC +011: "0.4 SECOND DELAY FOR THRUST BUILDUP" (FIXDELAY, DEC
- * 40), then DOTVCON. */
+/* PREPTVC +011 -- p. 696: "0.4 SECOND DELAY FOR THRUST BUILDUP" (FIXDELAY,
+ * DEC 40), then DOTVCON. */
 void preptvc_after_newphase(void)
 {
     tc_to(PREPTVC + 011u, FIXDELAY);
 }
 
-/* DOTVCON: "SET TVCPHASE = TVCDAPON CALL (FRESHDAP)" (-1); TVCEXPHS +0,
- * "SET TVCEXECUTIVE PHASE"; "SET T5 BITS TO INDICATE TVC TAKEOVER" (bits
- * 15,14 = 10). Restart group 6: "6.3 = CLOKTASK (100CS), DROPPING
- * PRE40.6" (-PHASE6 and PHASE6 from A and L, -3 and 3). "STORE RCS
- * ATTITUDE ERRORS FOR USE IN INITIALIZING TVC ATTITUDE ERRORS" (ERRBTMP
- * gets ERRORY's pair, complemented). "4.5 = DOSTRULL (160 CS)" (CS FIVE),
- * restart group 4 (NEWPHASE). */
+/* DOTVCON -- p. 696: "SET TVCPHASE = TVCDAPON CALL (FRESHDAP)" (-1);
+ * TVCEXPHS +0, "SET TVCEXECUTIVE PHASE"; "SET T5 BITS TO INDICATE TVC
+ * TAKEOVER" (bits 15,14 = 10). Restart group 6: "6.3 = CLOKTASK (100CS),
+ * DROPPING PRE40.6" (-PHASE6 and PHASE6 from A and L, -3 and 3). "STORE RCS
+ * ATTITUDE ERRORS FOR USE IN INITIALIZING TVC ATTITUDE ERRORS" (ERRBTMP gets
+ * ERRORY's pair, complemented). "4.5 = DOSTRULL (160 CS)" (CS FIVE), restart
+ * group 4 (NEWPHASE). */
 void dotvcon(void)
 {
     set_A(negate(BIT1));
@@ -191,10 +185,10 @@ void dotvcon(void)
     tc_to(DOTVCON + 020u, NEWPHASE);
 }
 
-/* DOTVCON +022: "SET TIME5 FOR STARTING RIGHT AWAY" (POSMAX); T5LOC gets
- * TVCON2C's 2CADR, TVCDAPON, "(KILLS RCS DAP)"; "0.4 + 1.6 = 2.0 SEC FOR
- * ULLAGE-OFF AND STEERING (IF NON-IMPULSIVE)" (FIXDELAY, DEC 160), then
- * DOSTRULL. */
+/* DOTVCON +022 -- p. 696: "SET TIME5 FOR STARTING RIGHT AWAY" (POSMAX);
+ * T5LOC gets TVCON2C's 2CADR, TVCDAPON, "(KILLS RCS DAP)"; "0.4 + 1.6 = 2.0
+ * SEC FOR ULLAGE-OFF AND STEERING (IF NON-IMPULSIVE)" (FIXDELAY, DEC 160),
+ * then DOSTRULL. */
 void dotvcon_after_newphase(void)
 {
     set_A(POSMAX); /* "SET TIME5 FOR STARTING RIGHT AWAY" */
@@ -204,8 +198,8 @@ void dotvcon_after_newphase(void)
     tc_to(DOTVCON + 027u, FIXDELAY);
 }
 
-/* ULAGEOFF: "ZERO CHANNEL 5" (the RCS jets, the ullage among them); TC
- * Q. */
+/* ULAGEOFF -- p. 697: "ZERO CHANNEL 5" (the RCS jets, the ullage among
+ * them); TC Q. */
 static void ulageoff(void)
 {
     set_A(ZERO);
@@ -213,7 +207,8 @@ static void ulageoff(void)
     tc_q();
 }
 
-/* STEERULL: "SET STEERSW" (bit 11 of FLAGWRD2), and on into ULAGEOFF. */
+/* STEERULL -- p. 696: "SET STEERSW" (bit 11 of FLAGWRD2), and on into
+ * ULAGEOFF. */
 static void steerull(void)
 {
     cs(ADDRESS_OF(FLAGWRD2));
@@ -222,9 +217,9 @@ static void steerull(void)
     ulageoff();
 }
 
-/* DOSTRULL: "CHECK STRULLSW FOR IMPULSIVE BURN" (bit 13 of FLAGWRD6, by
- * CCS A): "NON-IMPULSIVE, STEERING AND ULLAGE OFF" (TCR STEERULL); then
- * "ULLAGE OFF (ONLY, OR AGAIN)" (TCR ULAGEOFF). */
+/* DOSTRULL -- p. 696: "CHECK STRULLSW FOR IMPULSIVE BURN" (bit 13 of
+ * FLAGWRD6, by CCS A): "NON-IMPULSIVE, STEERING AND ULLAGE OFF" (TCR
+ * STEERULL); then "ULLAGE OFF (ONLY, OR AGAIN)" (TCR ULAGEOFF). */
 void dostrull(void)
 {
     set_A(BIT13);
@@ -236,7 +231,7 @@ void dostrull(void)
     dostrull_after_steerull();
 }
 
-/* DOSTRULL +4, STEERULL's return: TCR ULAGEOFF. */
+/* DOSTRULL +4 -- p. 696, STEERULL's return: TCR ULAGEOFF. */
 void dostrull_after_steerull(void)
 {
     tc_at(DOSTRULL + 4u);
@@ -244,8 +239,9 @@ void dostrull_after_steerull(void)
     dostrull_after_ulageoff();
 }
 
-/* DOSTRULL +5, ULAGEOFF's return: "KILL GROUP 4" (-PHASE4 and PHASE4 from
- * NEG0, "DP NEG0 = -0,+0"); ENDIGN, the task ends (TCF TASKOVER). */
+/* DOSTRULL +5 -- p. 696, ULAGEOFF's return: "KILL GROUP 4" (-PHASE4 and
+ * PHASE4 from NEG0, "DP NEG0 = -0,+0"); ENDIGN, the task ends (TCF
+ * TASKOVER). */
 void dostrull_after_ulageoff(void)
 {
     dca(ADDRESS_OF(NEG0)); /* EXTEND */
@@ -253,8 +249,8 @@ void dostrull_after_ulageoff(void)
     continue_at(TASKOVER);
 }
 
-/* IMPLBURN: "RESET STRULLSW (COULD BE AN IMPULSIVE ENGINE FAIL)"; EBANK 7
- * (TCR E7SETTER). */
+/* IMPLBURN -- p. 697: "RESET STRULLSW (COULD BE AN IMPULSIVE ENGINE FAIL)";
+ * EBANK 7 (TCR E7SETTER). */
 static void implburn(void)
 {
     set_A(negate(BIT13));
@@ -264,9 +260,10 @@ static void implburn(void)
     implburn_after_e7setter();
 }
 
-/* IMPLBURN +4, E7SETTER's return: "PREPARE FOR R1 OF V06N40 (CLOCKTASK)"
- * (TIG gets TGO plus the time); restart groups 3 and 4 (2PHSCHNG, OCT
- * 40153, "3.15 = ENGINOFF (TGO+1)", and OCT 07014, IMPLCONT at once). */
+/* IMPLBURN +4 -- p. 697, E7SETTER's return: "PREPARE FOR R1 OF V06N40
+ * (CLOCKTASK)" (TIG gets TGO plus the time); restart groups 3 and 4
+ * (2PHSCHNG, OCT 40153, "3.15 = ENGINOFF (TGO+1)", and OCT 07014, IMPLCONT
+ * at once). */
 void implburn_after_e7setter(void)
 {
     dca(ADDRESS_OF(TGO)); /* EXTEND */
@@ -276,16 +273,16 @@ void implburn_after_e7setter(void)
     tc_to(IMPLBURN + 012u, TWO_PHSCHNG);
 }
 
-/* IMPLBURN +020: ENGINOFF after the time to go, TGO +1 (WAITLIST), which
- * returns to IMPLCONT. */
+/* IMPLBURN +020 -- p. 697: ENGINOFF after the time to go, TGO +1 (WAITLIST),
+ * which returns to IMPLCONT. */
 void implburn_after_2phschng(void)
 {
     ca(ADDRESS_OF(TGO) + 1u);
     tc_to(IMPLBURN + 021u, WAITLIST); /* 2CADR ENGINOFF */
 }
 
-/* IMPLCONT: "RESET IMPULSW, ENGINOFF IS NOW SET UP" (bit 9 of FLAGWRD2);
- * EBANK 6 (TCR E6SETTER). */
+/* IMPLCONT -- p. 697: "RESET IMPULSW, ENGINOFF IS NOW SET UP" (bit 9 of
+ * FLAGWRD2); EBANK 6 (TCR E6SETTER). */
 void implcont(void)
 {
     set_A(negate(BIT9));
@@ -295,8 +292,8 @@ void implcont(void)
     implcont_after_e6setter();
 }
 
-/* IMPLCONT +4, E6SETTER's return: V97VCNTR +0, "SET UP V97VCNTR IN CASE
- * ENGINOFF" (its mass-back) "ARRIVES BEFORE TVCDAPON"; and PREPTVC. */
+/* IMPLCONT +4 -- p. 697, E6SETTER's return: V97VCNTR +0, "SET UP V97VCNTR IN
+ * CASE ENGINOFF" (its mass-back) "ARRIVES BEFORE TVCDAPON"; and PREPTVC. */
 void implcont_after_e6setter(void)
 {
     set_A(ZERO);
@@ -306,16 +303,16 @@ void implcont_after_e6setter(void)
 
 /* ---- ENGINOFF, DOTVCRCS, SPSOFF and TVCZAP -- pp. 697-699 ---- */
 
-/* ENGINOFF, IMPLBURN's task at the end of the time to go: EBANK 6 (TCR
- * E6SETTER). */
+/* ENGINOFF -- p. 697, IMPLBURN's task at the end of the time to go: EBANK 6
+ * (TCR E6SETTER). */
 void enginoff(void)
 {
     tcr_e6setter(ENGINOFF);
     enginoff_after_e6setter();
 }
 
-/* ENGINOFF +1, E6SETTER's return: CSMMASS to MASSTMP, "COPYCYCLE FOR
- * MASSBACK"; "KILL GROUP 3 PROTECTION OF ENGINOFF" and "4.63 = DOSPSOFF
+/* ENGINOFF +1 -- p. 697, E6SETTER's return: CSMMASS to MASSTMP, "COPYCYCLE
+ * FOR MASSBACK"; "KILL GROUP 3 PROTECTION OF ENGINOFF" and "4.63 = DOSPSOFF
  * (-0CS)" (2PHSCHNG, OCT 00003, OCT 40634), which runs on into DOSPSOFF. */
 void enginoff_after_e6setter(void)
 {
@@ -324,7 +321,7 @@ void enginoff_after_e6setter(void)
     tc_to(ENGINOFF + 3u, TWO_PHSCHNG);
 }
 
-/* DOSPSOFF: "SHUTDOWN SPS, MASS UPDATES, ETC." (TCR SPSOFF). */
+/* DOSPSOFF -- p. 698: "SHUTDOWN SPS, MASS UPDATES, ETC." (TCR SPSOFF). */
 void dospsoff(void)
 {
     tc_at(DOSPSOFF);
@@ -332,22 +329,23 @@ void dospsoff(void)
     dospsoff_after_spsoff();
 }
 
-/* DOSPSOFF +1, SPSOFF's return: "4.27 = DOTVCRCS (250 CS)" (CS OCT27/24),
- * restart group 4 (NEWPHASE). */
+/* DOSPSOFF +1 -- p. 698, SPSOFF's return: "4.27 = DOTVCRCS (250 CS)" (CS
+ * OCT27/24), restart group 4 (NEWPHASE). */
 void dospsoff_after_spsoff(void)
 {
     set_A(negate(OCT27_24));
     tc_to(DOSPSOFF + 2u, NEWPHASE);
 }
 
-/* DOSPSOFF +4: "2.5 SECOND DELAY FOR SPS TAILOFF" (FIXDELAY, DEC 250),
- * then DOTVCRCS. */
+/* DOSPSOFF +4 -- p. 698: "2.5 SECOND DELAY FOR SPS TAILOFF" (FIXDELAY, DEC
+ * 250), then DOTVCRCS. */
 void dospsoff_after_newphase(void)
 {
     tc_to(DOSPSOFF + 4u, FIXDELAY);
 }
 
-/* DOTVCRCS: "WIDE DEADBAND FOR CUTOFF TRANSIENT" (TCR SETMAXDB). */
+/* DOTVCRCS -- p. 698: "WIDE DEADBAND FOR CUTOFF TRANSIENT" (TCR
+ * SETMAXDB). */
 void dotvcrcs(void)
 {
     tc_at(DOTVCRCS);
@@ -355,21 +353,21 @@ void dotvcrcs(void)
     dotvcrcs_after_setmaxdb();
 }
 
-/* DOTVCRCS +1, SETMAXDB's return: "SET UP RCS DAP" (IBNKCALL, CADR
+/* DOTVCRCS +1 -- p. 698, SETMAXDB's return: "SET UP RCS DAP" (IBNKCALL, CADR
  * RCSDAPON), */
 void dotvcrcs_after_setmaxdb(void)
 {
     tc_to(DOTVCRCS + 1u, IBNKCALL); /* CADR RCSDAPON */
 }
 
-/* "UPDATE WEIGHT/G AND MASS-PROPERTIES FOR RCS DAP STARTUP" (IBNKCALL,
- * CADR MASSPROP), */
+/* DOTVCRCS +3 -- p. 698: "UPDATE WEIGHT/G AND MASS-PROPERTIES FOR RCS DAP
+ * STARTUP" (IBNKCALL, CADR MASSPROP), */
 void dotvcrcs_after_rcsdapon(void)
 {
     tc_to(DOTVCRCS + 3u, IBNKCALL); /* CADR MASSPROP */
 }
 
-/* "WIPE OUT TVC, TURN OFF CLOKTASK" (TCR TVCZAP), */
+/* DOTVCRCS +5 -- p. 698: "WIPE OUT TVC, TURN OFF CLOKTASK" (TCR TVCZAP), */
 void dotvcrcs_after_massprop(void)
 {
     tc_at(DOTVCRCS + 5u);
@@ -377,36 +375,35 @@ void dotvcrcs_after_massprop(void)
     dotvcrcs_after_tvczap();
 }
 
-/* restart group 4 (PHASCHNG, OCT 00354, "4.35 = POSTBURN (NOVAC,
- * PRIO12)"), */
+/* DOTVCRCS +6 -- p. 698: restart group 4 (PHASCHNG, OCT 00354, "4.35 =
+ * POSTBURN (NOVAC, PRIO12)"), */
 void dotvcrcs_after_tvczap(void)
 {
     tc_to(DOTVCRCS + 6u, PHASCHNG);
 }
 
-/* "SET UP POSTBURN V16N40 JOB" (NOVAC, PRIO12), */
+/* DOTVCRCS +010 -- p. 698: "SET UP POSTBURN V16N40 JOB" (NOVAC, PRIO12), */
 void dotvcrcs_after_phaschng(void)
 {
     set_A(PRIO12_WORD);
     tc_to(DOTVCRCS + 011u, NOVAC); /* 2CADR POSTBURN */
 }
 
-/* and the task ends (TCF TASKOVER). */
+/* DOTVCRCS +014 -- p. 698: and the task ends (TCF TASKOVER). */
 void dotvcrcs_after_novac(void)
 {
     continue_at(TASKOVER);
 }
 
-/* SPSOFF: "ESTABLISH SPSOFF TEVENT" (TIME2); "RESET ENGONFLG" (bit 7 of
- * FLAGWRD5), "RESTARTS WILL SHUT DOWN SPS NOW"; "SHUT DOWN SPS ENGINE"
- * (bit 13 of DSALMOUT); "ISSUE SIV CUTOFF COMMAND" (bit 14 of channel
- * 12). MASSBACK: "RESTORE PART OF PRE-DECREMENTED MASS": V97VCNTR's
- * half-seconds of flow (EMDOT, MP 1SEC) back on MASSTMP, to CSMMASS (an
- * overflow there skips the CA TVCPHASE). BESTTRIM, "UPDATE TRIMS WITH
- * DELFILTER VALUES" (PACTOFF from DELPBAR, YACTOFF from DELYBAR), only
- * once the TVC is set up: TVCPHASE not -1 ("INITIALIZATION NOT
- * COMPLETE"), and bit 15 of FLAGWRD6 set, bit 14 clear ("NOT TVC YET").
- * TC Q. */
+/* SPSOFF -- p. 698: "ESTABLISH SPSOFF TEVENT" (TIME2); "RESET ENGONFLG" (bit
+ * 7 of FLAGWRD5), "RESTARTS WILL SHUT DOWN SPS NOW"; "SHUT DOWN SPS ENGINE"
+ * (bit 13 of DSALMOUT); "ISSUE SIV CUTOFF COMMAND" (bit 14 of channel 12).
+ * MASSBACK: "RESTORE PART OF PRE-DECREMENTED MASS": V97VCNTR's half-seconds
+ * of flow (EMDOT, MP 1SEC) back on MASSTMP, to CSMMASS (an overflow there
+ * skips the CA TVCPHASE). BESTTRIM, "UPDATE TRIMS WITH DELFILTER VALUES"
+ * (PACTOFF from DELPBAR, YACTOFF from DELYBAR), only once the TVC is set up:
+ * TVCPHASE not -1 ("INITIALIZATION NOT COMPLETE"), and bit 15 of FLAGWRD6
+ * set, bit 14 clear ("NOT TVC YET"). TC Q. */
 void spsoff(void)
 {
     dca(ADDRESS_OF(TIME2)); /* EXTEND; "ESTABLISH SPSOFF TEVENT" */
@@ -442,9 +439,9 @@ void spsoff(void)
     tc_q(); /* BTRIMR */
 }
 
-/* TVCZAP: "DISABLE TVC AND OPT ERR CNTRLS, REENGAGE OPTICS DAC" (bits 2,
- * 8 and 11 of channel 12 clear, OCT02202); OPTIND -1, "ENABLE T4RUPT
- * OPTICS MONITOR"; "CLEAR NVWORD1 IN CASE CLOCKJOB WAITING"; "CLEAR
+/* TVCZAP -- p. 699: "DISABLE TVC AND OPT ERR CNTRLS, REENGAGE OPTICS DAC"
+ * (bits 2, 8 and 11 of channel 12 clear, OCT02202); OPTIND -1, "ENABLE
+ * T4RUPT OPTICS MONITOR"; "CLEAR NVWORD1 IN CASE CLOCKJOB WAITING"; "CLEAR
  * TIMRFLAG TO STOP CLOKTASK" (bit 11 of FLAGWRD7). TC Q. */
 void tvczap(void)
 {

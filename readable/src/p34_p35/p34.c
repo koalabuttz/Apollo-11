@@ -26,16 +26,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-/* TC at, to a routine out of the file: Q gets the return, and the
- * routine runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* The TC DISPLAYE after the first display (the CM's code is three words
  * shorter there, and one word longer in interpretive code); the
  * TC INTPRET after it, and the interpretive code from there. */
@@ -48,33 +38,35 @@ static void tc_to(word at, word routine)
 
 /* ---- P34, P74 and P34/P74A -- LM p. 661, CM p. 463 ---- */
 
-/* P34: this vehicle the active one (AVFLAGA). */
+/* P34 -- LM p. 661, CM p. 463: this vehicle the active one (AVFLAGA). */
 void p34(void)
 {
     tc_to(P34, AVFLAGA);
 }
 
-/* P34 +1: on at P34/P74A. */
+/* P34 +1 -- LM p. 661, CM p. 463: on at P34/P74A. */
 void p34_after_avflaga(void)
 {
     tc_at(P34 + 1u);
     p34_p74a();
 }
 
-/* P74: the other vehicle the active one (AVFLAGP), which comes back to
- * P34/P74A. */
+/* P74 -- LM p. 661, CM p. 463: the other vehicle the active one (AVFLAGP),
+ * which comes back to P34/P74A. */
 void p74(void)
 {
     tc_to(P74, AVFLAGP);
 }
 
-/* P34/P74A: P20's flags, "SET UPDATFLG, TRACKFLG" (P20FLGON). */
+/* P34/P74A -- LM p. 661, CM p. 463: P20's flags, "SET UPDATFLG, TRACKFLG"
+ * (P20FLGON). */
 void p34_p74a(void)
 {
     tc_to(P34_P74A, P20FLGON);
 }
 
-/* P34/P74A +1: "TTPI", verb 06 noun 37, through VNPOOH. */
+/* P34/P74A +1 -- LM p. 661, CM p. 463: "TTPI", verb 06 noun 37, through
+ * VNPOOH. */
 void p34_p74a_after_p20flgon(void)
 {
     set_A(V06N37);
@@ -83,8 +75,8 @@ void p34_p74a_after_p20flgon(void)
 }
 
 #if LUMINARY099
-/* P34/P74A +3: the central angle 130 degrees (DCA 130DEG, DXCH CENTANG)
- * and NN zero, then "ELEV AND CENTANG" shown (DISPLAYE). */
+/* P34/P74A +3 -- LM p. 661: the central angle 130 degrees (DCA 130DEG, DXCH
+ * CENTANG) and NN zero, then "ELEV AND CENTANG" shown (DISPLAYE). */
 void p34_p74a_after_vnpooh(void)
 {
     dca(DEG130); /* EXTEND; DCA */
@@ -95,7 +87,7 @@ void p34_p74a_after_vnpooh(void)
     displaye();
 }
 #else
-/* P34/P74A +3: to the interpreter, for P34_NN_CODE. */
+/* P34/P74A +3 -- CM p. 463: to the interpreter, for P34_NN_CODE. */
 void p34_p74a_after_vnpooh(void)
 {
     tc_at(P34_P74A + 3u);
@@ -109,7 +101,8 @@ static const word p34_nn_words[] = {
     NUMBER(0),
 };
 
-/* P34/P74A +7, after the EXIT: "ELEV AND CENTANG" shown (DISPLAYE). */
+/* P34/P74A +7 -- CM p. 463, after the EXIT: "ELEV AND CENTANG" shown
+ * (DISPLAYE). */
 void p34_p74a_after_nn(void)
 {
     tc_at(DISPLAYE_TC);
@@ -117,7 +110,8 @@ void p34_p74a_after_nn(void)
 }
 #endif
 
-/* After DISPLAYE: to the interpreter, for P34_TTPI_CODE. */
+/* LM P34/P74A +011, CM P34/P74A +010 -- LM p. 661, CM p. 463: After
+ * DISPLAYE: to the interpreter, for P34_TTPI_CODE. */
 void p34_p74a_after_displaye(void)
 {
     tc_at(DISPLAYE_TC + 1u);
@@ -168,33 +162,36 @@ static const word p34_ttpi_words[] = {
     ADDRESS(SWCHCLR),
 };
 
-/* After the EXIT: alarm 611 (OCT 611 after the TC). */
+/* P34/P74E -023 -- LM p. 662, CM p. 464: After the EXIT: alarm 611 (OCT 611
+ * after the TC). */
 void p34_alarm(void)
 {
     tc_to(P34_P74E - 023u, ALARM);
 }
 
-/* and verb 05 noun 09 flashed (GOFLASH). */
+/* P34/P74E -021 -- LM p. 662, CM p. 464: and verb 05 noun 09 flashed
+ * (GOFLASH). */
 void p34_after_alarm(void)
 {
     set_A(V05N09);
     tc_to(P34_P74E - 020u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* GOFLASH's terminate. */
+/* P34/P74E -016 -- LM p. 662, CM p. 464: GOFLASH's terminate. */
 void p34_terminate(void)
 {
     tc_to(P34_P74E - 016u, GOTOPOOH);
 }
 
-/* "PROCEED": TTPI asked for again, at P34/P74A. */
+/* P34/P74E -015 -- LM p. 662, CM p. 464: "PROCEED": TTPI asked for again, at
+ * P34/P74A. */
 void p34_proceed(void)
 {
     tc_at(P34_P74E - 015u);
     p34_p74a();
 }
 
-/* "V32" (TC -7): the alarm again. */
+/* P34/P74E -014 -- LM p. 662, CM p. 464: "V32" (TC -7): the alarm again. */
 void p34_recycle(void)
 {
     tc_at(P34_P74E - 014u);
@@ -210,14 +207,15 @@ static const word p34_swchclr_words[] = {
     ORDER(EXIT),
 };
 
-/* After the EXIT: "DISPLAY ELEV AND CENTANG" (DISPLAYE). */
+/* P34/P74E -5 -- LM p. 662, CM p. 464: After the EXIT: "DISPLAY ELEV AND
+ * CENTANG" (DISPLAYE). */
 void swchclr_after_exit(void)
 {
     tc_at(P34_P74E - 5u);
     displaye();
 }
 
-/* DISPLAYE's return: on at P34/P74E. */
+/* P34/P74E -4 -- LM p. 662, CM p. 464: DISPLAYE's return: on at P34/P74E. */
 void swchclr_after_displaye(void)
 {
     tc_at(P34_P74E - 4u);
@@ -227,8 +225,8 @@ void swchclr_after_displaye(void)
 /* P34/P74D: an EXIT, to show TTPI. */
 static const word p34_p74d_words[] = {ORDER(EXIT)};
 
-/* After it: "TTPI", verb 06 noun 37, through VNPOOH, which comes back to
- * P34/P74E. */
+/* P34/P74E -2 -- LM p. 662, CM p. 464: After it: "TTPI", verb 06 noun 37,
+ * through VNPOOH, which comes back to P34/P74E. */
 void p34_p74d_after_exit(void)
 {
     set_A(V06N37);
@@ -236,7 +234,8 @@ void p34_p74d_after_exit(void)
     vnpooh();
 }
 
-/* P34/P74E: to the interpreter, for P34_P74E_CODE. */
+/* P34/P74E -- LM p. 662, CM p. 464: to the interpreter, for
+ * P34_P74E_CODE. */
 void p34_p74e(void)
 {
     tc_at(P34_P74E);
@@ -302,8 +301,8 @@ static const word p34_p74e_words[] = {
     ORDER(EXIT),
 };
 
-/* After the EXIT: verb 06 noun 58 (POSTTPI, DELVTPI, DELVTPF), through
- * VNPOOH. */
+/* P34/P74E +054 -- LM p. 663, CM p. 465: After the EXIT: verb 06 noun 58
+ * (POSTTPI, DELVTPI, DELVTPF), through VNPOOH. */
 void p34_p74e_after_exit(void)
 {
     set_A(V06N58);
@@ -311,7 +310,8 @@ void p34_p74e_after_exit(void)
     vnpooh();
 }
 
-/* VNPOOH's return: to the interpreter, for P34_N58_CODE. */
+/* P34/P74E +056 -- LM p. 663, CM p. 465: VNPOOH's return: to the
+ * interpreter, for P34_N58_CODE. */
 void p34_p74e_after_v06n58(void)
 {
     tc_at(P34_P74E + 056u);

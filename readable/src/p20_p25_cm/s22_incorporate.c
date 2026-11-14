@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 11 (Comanche055 pp. 603-606): S22.1's next mark, and
- * the mark's incorporation into the CSM's state vector (bank 30).
+/* P20-P25.agc, part 11 (Comanche055 pp. 603-606): S22.1's next mark, and the
+ * mark's incorporation into the CSM's state vector (bank 30). The faithful C
+ * is c64-port/src/cm_p20_p25.c.
  *
  * S22SAVET keeps the mark's time, and S22I=N counts the marks: past the
  * last one, S22.1 goes on at S22F244X (the flowchart's figure 2.4-4, a
@@ -30,8 +31,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void incorporate_changes(void);
 
 /* S22SAVET -- p. 603: the mark's time (GETTF): "SAVE PRESENT TIME FOR
@@ -43,16 +42,16 @@ static const word s22savet_words[] = {
     ORDER(EXIT),     /* "TEST I=N" */
 };
 
-/* S22I=N +1 -- after the EXIT: restart group 2 at S22I=N +3. */
+/* S22I=N +1 -- p. 604: after the EXIT: restart group 2 at S22I=N +3. */
 void s22i_eq_n_after_exit(void)
 {
     tc_to(S22I_EQ_N + 1u, PHASCHNG); /* OCT 04022 */
 }
 
-/* S22I=N +3: 8NN less 8KK, the marks left; none (+0 or less), "EXIT TO
- * FIGURE 2.4-4" (S22F244X's TC INTPRET). Otherwise "I=I+1" into TEMPOR1,
- * and S22LOC plus seven into TEMPOR1 +1: "ADD 7 TO LOC TO GET ADDR. OF
- * NEXT MARK", and restart group 2 at S22I=N +017. (8KK is below 8NN, so
+/* S22I=N +3 -- p. 604: 8NN less 8KK, the marks left; none (+0 or less),
+ * "EXIT TO FIGURE 2.4-4" (S22F244X's TC INTPRET). Otherwise "I=I+1" into
+ * TEMPOR1, and S22LOC plus seven into TEMPOR1 +1: "ADD 7 TO LOC TO GET ADDR.
+ * OF NEXT MARK", and restart group 2 at S22I=N +017. (8KK is below 8NN, so
  * I+1 leaves no overflow for the TS to skip on.) */
 void s22i_eq_n_after_phaschng(void)
 {
@@ -72,8 +71,9 @@ void s22i_eq_n_after_phaschng(void)
     tc_to(S22I_EQ_N + 015u, PHASCHNG); /* OCT 04022 */
 }
 
-/* S22I=N +017: the next mark's number and address into 8KK and S22LOC,
- * then interpretive code. (A CA leaves no overflow for a TS to skip on.) */
+/* S22I=N +017 -- p. 604: the next mark's number and address into 8KK and
+ * S22LOC, then interpretive code. (A CA leaves no overflow for a TS to skip
+ * on.) */
 void s22i_eq_n_next_mark(void)
 {
     ca(ADDRESS_OF(TEMPOR1));
@@ -253,50 +253,50 @@ static const word s22next_words[] = {
     ORDER(EXIT),
 };
 
-/* S22.1 +0560 -- after the EXIT: verb 06 noun 49 (V06N49EE), the changes
- * in position and velocity, flashed by GOFLASHR. */
+/* S22.1 +0560 -- p. 606: after the EXIT: verb 06 noun 49 (V06N49EE), the
+ * changes in position and velocity, flashed by GOFLASHR. */
 void s22_display_after_exit(void)
 {
     set_A(V06N49EE);
     tc_to(S22_1 + 0561u, BANKCALL); /* CADR GOFLASHR */
 }
 
-/* S22.1 +0563: "V34E TERMINATE". */
+/* S22.1 +0563 -- p. 606: "V34E TERMINATE". */
 void s22_display_terminate(void)
 {
     tc_to(S22_1 + 0563u, GOTOPOOH);
 }
 
-/* S22.1 +0564: proceed, TC +5: "INCORPORATE CHANGES". */
+/* S22.1 +0564 -- p. 606: proceed, TC +5: "INCORPORATE CHANGES". */
 void s22_display_proceed(void)
 {
     tc_at(S22_1 + 0564u);
     incorporate_changes();
 }
 
-/* S22.1 +0565: enter, "V32E RECYCLE" (S22EXEX, part 12). */
+/* S22.1 +0565 -- p. 606: enter, "V32E RECYCLE" (S22EXEX, part 12). */
 void s22_display_enter(void)
 {
     tc_at(S22_1 + 0565u);
     s22exex();
 }
 
-/* S22.1 +0566: the display's immediate return: R3 blanked (BLANKET's bit
- * 3), */
+/* S22.1 +0566 -- p. 606: the display's immediate return: R3 blanked
+ * (BLANKET's bit 3), */
 void s22_display_immediate_return(void)
 {
     set_A(BIT3);
     tc_to(S22_1 + 0567u, BLANKET);
 }
 
-/* S22.1 +0570: and the job ends. */
+/* S22.1 +0570 -- p. 606: and the job ends. */
 void s22_display_after_blanket(void)
 {
     tc_to(S22_1 + 0570u, ENDOFJOB);
 }
 
-/* S22.1 +0571: TC INTPRET, on in interpretive code at S22BOX42 (the next
- * part). */
+/* S22.1 +0571 -- p. 606: TC INTPRET, on in interpretive code at S22BOX42
+ * (the next part). */
 static void incorporate_changes(void)
 {
     tc_at(S22_1 + 0571u);

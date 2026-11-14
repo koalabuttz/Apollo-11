@@ -26,12 +26,12 @@
 
 /* ---- Entry: the derivative's table -- pp. 823-824 ---- */
 
-/* ROOTPSRS: "STORE ENTERING DATA, INITIALIZE ERASABLES". The return to
- * RETROOT, the table's address to PWRPTR ("PWR TABLE POINTER") and, with
- * N-1, to MPAC +3; DERPTR and MPAC +5 the derivative table's (DERTABLL);
- * MPAC +6 N-2 ("NO POWER SERIES DEGREE 1 OR LESS"); and "MODE USED AS
- * ITERATION COUNTER. MODE MUST BE POS SO ABS WON'T COMP MPAC+3 ETC." Then
- * "COMPUTE CRITERION TO STOP ITERATING": the guess to ROOTPS too, and
+/* ROOTPSRS -- p. 823: "STORE ENTERING DATA, INITIALIZE ERASABLES". The
+ * return to RETROOT, the table's address to PWRPTR ("PWR TABLE POINTER")
+ * and, with N-1, to MPAC +3; DERPTR and MPAC +5 the derivative table's
+ * (DERTABLL); MPAC +6 N-2 ("NO POWER SERIES DEGREE 1 OR LESS"); and "MODE
+ * USED AS ITERATION COUNTER. MODE MUST BE POS SO ABS WON'T COMP MPAC+3 ETC."
+ * Then "COMPUTE CRITERION TO STOP ITERATING": the guess to ROOTPS too, and
  * PRECROOT times it (SHORTMP). An A with an overflow would skip the DXCH
  * (never: the caller loads A with CA). The CCS's outcomes, from the four
  * words
@@ -67,15 +67,15 @@ void rootpsrs(void)
     tc_to(ROOTPSRS + 020u, SHORTMP);       /* "YIELDS DP PRODUCT IN MPAC" */
 }
 
-/* SHORTMP's return: "YIELDS ABVAL OF CRITERION ON DX IN MPAC" (USPRCADR,
- * CADR ABS). */
+/* ROOTPSRS +021 -- p. 823: SHORTMP's return: "YIELDS ABVAL OF CRITERION ON
+ * DX IN MPAC" (USPRCADR, CADR ABS). */
 void rootpsrs_after_shortmp(void)
 {
     tc_to(ROOTPSRS + 021u, USPRCADR);
 }
 
-/* DERCLOOP: PWRCNT, the loop's counter, and its I (one more) for DMPNSUB:
- * "YIELDS DERCOF = I X A(I) IN MPAC". (A, a word or CCS's, never
+/* DERCLOOP -- p. 824: PWRCNT, the loop's counter, and its I (one more) for
+ * DMPNSUB: "YIELDS DERCOF = I X A(I) IN MPAC". (A, a word or CCS's, never
  * overflows: the TS does not skip.) */
 static void dercloop(void)
 {
@@ -84,8 +84,8 @@ static void dercloop(void)
     tc_to(DERCLOOP + 2u, DMPNSUB);
 }
 
-/* After ABS's EXIT: DXCRIT, the "CRITERION". "SET UP DER COF TABL": A(N)
- * to MPAC, and DERCLOOP from N-1. */
+/* ROOTPSRS +023 -- p. 823: After ABS's EXIT: DXCRIT, the "CRITERION". "SET
+ * UP DER COF TABL": A(N) to MPAC, and DERCLOOP from N-1. */
 void rootpsrs_after_abs(void)
 {
     dxch(ADDRESS_OF(MPAC));
@@ -99,9 +99,10 @@ void rootpsrs_after_abs(void)
 static void rootloop(void);
 static void rootloop_dxch(void);
 
-/* DMPNSUB's return: "(I-1) TO MPAC, FETCHING DERCOF", the DERCOF to its
- * table, both pointers down two words, and round again while PWRCNT
- * counts down (CCS, TCF DERCLOOP). Then ROOTLOOP, its first words
+/* DERCLOOP +3 -- p. 824: DMPNSUB's return: "(I-1) TO MPAC, FETCHING DERCOF",
+ * the DERCOF to its table, both pointers down two words, and round again
+ * while PWRCNT counts down (CCS, TCF DERCLOOP). Then ROOTLOOP, its first
+ * words
  *
  *         CCS    PWRCNT
  *         TCF    DERCLOOP
@@ -146,9 +147,9 @@ static void rootloop_dxch(void)
     tc_to(ROOTLOOP + 5u, POWRSERS); /* "YIELDS DERIVATIVE IN MPAC" */
 }
 
-/* POWRSERS's return: "CURRENT ROOT TO MPAC, FETCHING DERIVATIVE", "LEAVE
- * DERIVATIVE IN BUF AS DIVISOR", and the series itself from "PWR TABL
- * ADRES, N-1": "YIELDS RESIDUAL IN MPAC". */
+/* ROOTLOOP +6 -- p. 824: POWRSERS's return: "CURRENT ROOT TO MPAC, FETCHING
+ * DERIVATIVE", "LEAVE DERIVATIVE IN BUF AS DIVISOR", and the series itself
+ * from "PWR TABL ADRES, N-1": "YIELDS RESIDUAL IN MPAC". */
 void rootloop_after_derivative(void)
 {
     dca(ADDRESS_OF(ROOTPS));
@@ -158,14 +159,16 @@ void rootloop_after_derivative(void)
     tc_to(ROOTLOOP + 014u, POWRSERS);
 }
 
-/* "YIELDS -DX IN MPAC" (USPRCADR, CADR DDV/BDDV), */
+/* ROOTLOOP +015 -- p. 824: "YIELDS -DX IN MPAC" (USPRCADR, CADR
+ * DDV/BDDV), */
 void rootloop_after_residual(void)
 {
     tc_to(ROOTLOOP + 015u, USPRCADR);
 }
 
-/* and after its EXIT: "FETCH DX, LEAVING -DX IN MPAC", "CORRECTED ROOT
- * NOW IN ROOTPS"; "YIELDS ABS(DX) IN MPAC" (USPRCADR, CADR ABS). */
+/* ROOTLOOP +017 -- p. 824: and after its EXIT: "FETCH DX, LEAVING -DX IN
+ * MPAC", "CORRECTED ROOT NOW IN ROOTPS"; "YIELDS ABS(DX) IN MPAC" (USPRCADR,
+ * CADR ABS). */
 void rootloop_after_ddv(void)
 {
     dcs(ADDRESS_OF(MPAC));
@@ -184,10 +187,10 @@ static void tc_through_return(unsigned address)
     tc_through(address);
 }
 
-/* ROOTSTOR: the root to MPAC, the count to MPAC +2 ("STORE SP ITERATION
- * COUNT IN MPAC+2"; MODE, a word, never overflows), and INDEX RETROOT;
- * TCF 2: the caller's return +2. Not modelled: an index that makes the
- * TCF another instruction or sends it to erasable memory. */
+/* ROOTSTOR -- p. 825: the root to MPAC, the count to MPAC +2 ("STORE SP
+ * ITERATION COUNT IN MPAC+2"; MODE, a word, never overflows), and INDEX
+ * RETROOT; TCF 2: the caller's return +2. Not modelled: an index that makes
+ * the TCF another instruction or sends it to erasable memory. */
 static void rootstor(void)
 {
     word instruction;
@@ -201,11 +204,11 @@ static void rootstor(void)
     continue_at(ADDRESS_FIELD(instruction));
 }
 
-/* After ABS's EXIT: "ABS(DX)-ABS(DXCRIT) IN MPAC". "KLUMPP SAYS GIVE UP
- * AFTER EIGHT PASSES" (MODE bit 4): BADROOT, TC RETROOT, the caller's
- * return +0. Else one pass more; a step still above the criterion goes
- * round again ("TEST HI ORDER DX", "TEST LO ORDER DX"), any other is the
- * root (ROOTSTOR). The four-word tables:
+/* ROOTLOOP +024 -- p. 824: After ABS's EXIT: "ABS(DX)-ABS(DXCRIT) IN MPAC".
+ * "KLUMPP SAYS GIVE UP AFTER EIGHT PASSES" (MODE bit 4): BADROOT, TC
+ * RETROOT, the caller's return +0. Else one pass more; a step still above
+ * the criterion goes round again ("TEST HI ORDER DX", "TEST LO ORDER DX"),
+ * any other is the root (ROOTSTOR). The four-word tables:
  *
  *         CCS    MPAC              TESTLODX CCS    MPAC +1
  *         TCF    ROOTLOOP                   TCF    ROOTLOOP
@@ -227,8 +230,8 @@ void rootloop_after_abs(void)
     incr(ADDRESS_OF(MODE)); /* "INCREMENT ITERATION COUNTER" */
     switch (ccs_at(ADDRESS_OF(MPAC))) {
     case POSITIVE: rootloop(); return;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: rootstor(); return;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     if (ccs_at(ADDRESS_OF(MPAC) + 1u) == POSITIVE)

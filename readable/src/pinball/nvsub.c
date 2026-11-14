@@ -37,17 +37,18 @@
 
 static void nvsbcom_plus1(void);
 
-/* NVSUB -- "ZERO NVMONOPT OPTIONS" (LXCH 7), and on as NVMONOPT. */
+/* NVSUB -- LM p. 452, CM p. 370: "ZERO NVMONOPT OPTIONS" (LXCH 7), and on as
+ * NVMONOPT. */
 void nvsub(void)
 {
     zl();
     continue_at(NVMONOPT);
 }
 
-/* NVMONOPT -- the verb and noun into NVTEMP. With the external monitor
- * bit (BIT14 of MONSAVE1) or DSPLOCK set, "DSP SYST BLOCKED, RET TO 1+
- * CALLING LOC"; with both clear, "DSP SYST AVAILABLE": one more onto the
- * return at NVSBCOM. */
+/* NVMONOPT -- LM p. 452, CM p. 370: the verb and noun into NVTEMP. With the
+ * external monitor bit (BIT14 of MONSAVE1) or DSPLOCK set, "DSP SYST
+ * BLOCKED, RET TO 1+ CALLING LOC"; with both clear, "DSP SYST AVAILABLE":
+ * one more onto the return at NVSBCOM. */
 void nvmonopt(void)
 {
     if (ts(ADDRESS_OF(NVTEMP))) not_modelled();
@@ -65,9 +66,9 @@ void nvmonopt(void)
     }
 }
 
-/* NVSBCOM -- "2+ CALLING LOC INTO NVQTEM", "STORE NVMONOPT OPTIONS" (L)
- * in MONSAVE2, and "TURN ON KILL MONITOR BIT" (KILMONON, part 5): this
- * display ends any monitor running. */
+/* NVSBCOM -- LM p. 452, CM p. 370: "2+ CALLING LOC INTO NVQTEM", "STORE
+ * NVMONOPT OPTIONS" (L) in MONSAVE2, and "TURN ON KILL MONITOR BIT"
+ * (KILMONON, part 5): this display ends any monitor running. */
 void nvsbcom(void)
 {
     ad_at(Q_ADDRESS);
@@ -82,10 +83,10 @@ static void nvsbcom_plus1(void)
     tc(NVSBCOM + 3u, KILMONON);
 }
 
-/* NVSUBCOM, where KILMONON returns. Pinball's banks (NVSBBBNK, the BBCON
- * of NVSUB1) into BBANK, the caller's BBANK with its "OLD SUPERBITS" into
- * NVBNKTEM, Pinball's superbits (PINSUPBT) out, and "GO TO NVSUB1 THRU
- * STANDARD LOC" (NVSUBB, in bank 41). */
+/* NVSUBCOM -- LM p. 452, CM p. 370, where KILMONON returns. Pinball's banks
+ * (NVSBBBNK, the BBCON of NVSUB1) into BBANK, the caller's BBANK with its
+ * "OLD SUPERBITS" into NVBNKTEM, Pinball's superbits (PINSUPBT) out, and "GO
+ * TO NVSUB1 THRU STANDARD LOC" (NVSUBB, in bank 41). */
 void nvsubcom(void)
 {
     set_A(NVSBBBNK);
@@ -94,12 +95,12 @@ void nvsubcom(void)
     ts(ADDRESS_OF(NVBNKTEM));
     set_A(PINSUPBT);
     write_superbnk();
-    tc(NVSUBCOM + 8u, NVSUBB);
+    tc(NVSUBCOM + 010u, NVSUBB);
 }
 
-/* NVSUBEND -- back to the caller: the return and its banks (NVQTEM,
- * NVBNKTEM: "NVBNKTEM MUST = NVQTEM+1") to SUPDXCHZ, "DTCB WITH SUPERBIT
- * SWITCHING". */
+/* NVSUBEND -- LM p. 452, CM p. 370: back to the caller: the return and its
+ * banks (NVQTEM, NVBNKTEM: "NVBNKTEM MUST = NVQTEM+1") to SUPDXCHZ, "DTCB
+ * WITH SUPERBIT SWITCHING". */
 void nvsubend(void)
 {
     dxch(ADDRESS_OF(NVQTEM));
@@ -109,20 +110,20 @@ void nvsubend(void)
 
 /* ---- NVSUB1 and BLANKDSP (LM pp. 453-454, CM pp. 371-372, bank 41) ---- */
 
-/* BLANKDSP -- "BLANKS DISPLAY ACCORDING TO OPTION NUMBER IN NVTEMP AS
- * FOLLOWS: -4 FULL BLANK, -3 LEAVE MODE, -2 LEAVE MODE AND VERB, -1 BLANK
- * R'S ONLY." A comes from NVSUB1's CCS NVTEMP, 3, 2, 1 or 0, and with
- * SEVEN added is the last of the DSPTAB words to blank (CODE, "7,8,9, OR
- * 10"). Each word from there down to DSPTAB +0 gets the blank relay word,
- * -BIT12 (CS BIT12), and NOUT one more for each word that was +. Then the
- * registers blanked are zeroed (INDEX NVTEMP; TC +5: VERBREG for -4 and
- * -3, NOUNREG for -2 too, CLPASS for all; MODREG never), the keys blocked (DSPCOUNT -VD1), the flash off
- * ("PROTECT AGAINS INVISIBLE FLASH"), and to ENTSET -2, which "ZEROS
- * REQRET". */
+/* BLANKDSP -- LM p. 453, CM p. 371: "BLANKS DISPLAY ACCORDING TO OPTION
+ * NUMBER IN NVTEMP AS FOLLOWS: -4 FULL BLANK, -3 LEAVE MODE, -2 LEAVE MODE
+ * AND VERB, -1 BLANK R'S ONLY." A comes from NVSUB1's CCS NVTEMP, 3, 2, 1 or
+ * 0, and with SEVEN added is the last of the DSPTAB words to blank (CODE,
+ * "7,8,9, OR 10"). Each word from there down to DSPTAB +0 gets the blank
+ * relay word, -BIT12 (CS BIT12), and NOUT one more for each word that was +.
+ * Then the registers blanked are zeroed (INDEX NVTEMP; TC +5: VERBREG for -4
+ * and -3, NOUNREG for -2 too, CLPASS for all; MODREG never), the keys
+ * blocked (DSPCOUNT -VD1), the flash off ("PROTECT AGAINS INVISIBLE FLASH"),
+ * and to ENTSET -2, which "ZEROS REQRET". */
 void blankdsp(void)
 {
     word to;
-    bool more = true;
+    bool more = true, indexed = true;
 
     ad(SEVEN);
     inhint();
@@ -134,44 +135,50 @@ void blankdsp(void)
         switch (ccs_at(A_ADDRESS)) {
         case POSITIVE:
             incr(ADDRESS_OF(NOUT));
-            tc_at(BLANKDSP + 8u); /* TC +1 */
+            tc_at(BLANKDSP + 010u); /* TC +1 */
             break;
-        case IS_PLUS_ZERO: tc_at(BLANKDSP + 8u); break; /* TC +1 */
+        case IS_PLUS_ZERO: tc_at(BLANKDSP + 010u); break; /* TC +1 */
         case NEGATIVE: break;
-        case IS_MINUS_ZERO: /* to the TC BLANKDSP +2, with A +0 */ tc_at(BLANKDSP + 10u); continue;
+        case IS_MINUS_ZERO: /* to the TC BLANKDSP +2, with A +0 */ tc_at(BLANKDSP + 012u); continue;
         }
         switch (ccs_at(ADDRESS_OF(CODE))) {
-        case POSITIVE: tc_at(BLANKDSP + 10u); break; /* TC BLANKDSP +2: the next one down */
-        case IS_PLUS_ZERO: more = false; break;
-        case NEGATIVE:
-        case IS_MINUS_ZERO: not_modelled(); /* CODE counts down from 7 to 10 */
+        case POSITIVE: tc_at(BLANKDSP + 012u); break; /* TC BLANKDSP +2: the next one down */
+        case IS_PLUS_ZERO:
+            relint();
+            more = false;
+            break;
+        /* (CODE counts down from 7 to 10 and is never negative or -0. Negative would
+         * skip the RELINT, and -0 the INDEX NVTEMP too: TC +5 as it stands.) */
+        case NEGATIVE: more = false; break;
+        case IS_MINUS_ZERO: more = indexed = false; break;
         }
     }
-    relint();
-    /* INDEX NVTEMP; TC +5: -4 to TC +1 ("NEVER TOUCH MODREG"), -3 to TS
-     * VERBREG, -2 to TS NOUNREG, -1 to TS CLPASS. A is +0. */
-    to = indexed_by(BLANKDSP + 18u, fetch(ADDRESS_OF(NVTEMP)));
-    if (to < BLANKDSP + 14u || to > BLANKDSP + 17u) not_modelled();
-    tc_at(BLANKDSP + 13u);
-    if (to == BLANKDSP + 14u) tc_at(BLANKDSP + 14u); /* TC +1 */
-    if (to <= BLANKDSP + 15u) ts(ADDRESS_OF(VERBREG));
-    if (to <= BLANKDSP + 16u) ts(ADDRESS_OF(NOUNREG));
-    ts(ADDRESS_OF(CLPASS));
+    tc_at(BLANKDSP + 015u);
+    if (indexed) {
+        /* INDEX NVTEMP; TC +5: -4 to TC +1 ("NEVER TOUCH MODREG"), -3 to TS
+         * VERBREG, -2 to TS NOUNREG, -1 to TS CLPASS. A is +0. */
+        to = indexed_by(BLANKDSP + 022u, fetch(ADDRESS_OF(NVTEMP)));
+        if (to < BLANKDSP + 016u || to > BLANKDSP + 021u) not_modelled();
+        if (to == BLANKDSP + 016u) tc_at(BLANKDSP + 016u); /* TC +1 */
+        if (to <= BLANKDSP + 017u) ts(ADDRESS_OF(VERBREG));
+        if (to <= BLANKDSP + 020u) ts(ADDRESS_OF(NOUNREG));
+        ts(ADDRESS_OF(CLPASS));
+    }
     set_A(negate(VD1));
     ts(ADDRESS_OF(DSPCOUNT));
-    tc_at(BLANKDSP + 20u);
+    tc_at(BLANKDSP + 024u);
     flashoff();
-    tc(BLANKDSP + 21u, ENTSET - 2u);
+    tc(BLANKDSP + 025u, ENTSET - 2u);
 }
 
-/* NVSUB1 -- ENTRET gets ENTSET's word, TC NVSUBEND ("SET RETURN TO
- * NVSUBEND"), for the end of the verb. Then by NVTEMP ("WHAT NOW"): + is
- * the "NORMAL NVSUB CALL (EXECUTE VN OR PASTE)", - blanks (BLANKDSP), and
- * +0 or -0 is a program alarm (GODSPALM). The noun, the low seven bits,
- * into MPAC +3 and the verb, right seven by EDOP, into MPAC +4 ("CANT USE
- * MPAC. DSPDECVN USES MPAC, +1, +2"). "IF NOUN NOT +0, GO ON" (NVSUB2);
- * "IF NOUN = +0, DISPLAY VERB, THEN RETURN" (UPDATVB -1, back at NVSUB1
- * +18). */
+/* NVSUB1 -- LM p. 453, CM p. 371: ENTRET gets ENTSET's word, TC NVSUBEND
+ * ("SET RETURN TO NVSUBEND"), for the end of the verb. Then by NVTEMP ("WHAT
+ * NOW"): + is the "NORMAL NVSUB CALL (EXECUTE VN OR PASTE)", - blanks
+ * (BLANKDSP), and +0 or -0 is a program alarm (GODSPALM). The noun, the low
+ * seven bits, into MPAC +3 and the verb, right seven by EDOP, into MPAC +4
+ * ("CANT USE MPAC. DSPDECVN USES MPAC, +1, +2"). "IF NOUN NOT +0, GO ON"
+ * (NVSUB2); "IF NOUN = +0, DISPLAY VERB, THEN RETURN" (UPDATVB -1, back at
+ * NVSUB1 +18). */
 void nvsub1(void)
 {
     set_A(fetch_fixed(ENTSET));
@@ -190,36 +197,37 @@ void nvsub1(void)
     ca(ADDRESS_OF(EDOP));
     ts(ADDRESS_OF(MPAC) + 4u);
     switch (ccs_at(ADDRESS_OF(MPAC) + 3u)) { /* "TEST NOUN" */
-    case POSITIVE: tc(NVSUB1 + 15u, NVSUB2); return;
+    case POSITIVE: tc(NVSUB1 + 017u, NVSUB2); return;
     case IS_PLUS_ZERO:
         ca(ADDRESS_OF(MPAC) + 4u);
-        tc(NVSUB1 + 17u, UPDATVB - 1u);
+        tc(NVSUB1 + 021u, UPDATVB - 1u);
         return;
-    case NEGATIVE: tc(NVSUB1 + 17u, UPDATVB - 1u); return;
-    case IS_MINUS_ZERO: continue_at(NVSUB1 + 18u); return;
+    case NEGATIVE: tc(NVSUB1 + 021u, UPDATVB - 1u); return;
+    case IS_MINUS_ZERO: continue_at(NVSUB1 + 022u); return;
     }
 }
 
-/* NVSUB1 +18 (ENTSET -2), where UPDATVB returns and BLANKDSP goes: "ZERO
- * REQRET SO THAT PASTED VERBS CAN BE EXECUTED BY OPERATOR." */
-void nvsub1_plus18(void)
+/* NVSUB1 +022 -- LM p. 453, CM p. 371 (ENTSET -2), where UPDATVB returns and
+ * BLANKDSP goes: "ZERO REQRET SO THAT PASTED VERBS CAN BE EXECUTED BY
+ * OPERATOR." */
+void nvsub1_plus022(void)
 {
     set_A(ZERO);
     ts(ADDRESS_OF(REQRET));
     continue_at(ENTSET);
 }
 
-/* ENTSET -- to NVSUBEND, back to the caller. */
+/* ENTSET -- LM p. 453, CM p. 371: to NVSUBEND, back to the caller. */
 void entset(void)
 {
     tc(ENTSET, NVSUBEND);
 }
 
-/* NVSUB2 -- "TEST VERB". "IF VERB = +0, DISPLAY NOUN, THEN RETURN"
- * (UPDATNN -1, back at NVSUB2 +4). "IF VERB NOT +0, GO ON": MPAC +2,
- * which may hold a machine address for the noun ("TEMP FOR MACH CADR TO
- * BE SPEC. (DSPDECVN USES MPAC, +1, +2)"), into MPAC +5, and the verb on
- * the DSKY (UPDATVB -1, back at NVSUB2 +9). */
+/* NVSUB2 -- LM p. 453, CM p. 371: "TEST VERB". "IF VERB = +0, DISPLAY NOUN,
+ * THEN RETURN" (UPDATNN -1, back at NVSUB2 +4). "IF VERB NOT +0, GO ON":
+ * MPAC +2, which may hold a machine address for the noun ("TEMP FOR MACH
+ * CADR TO BE SPEC. (DSPDECVN USES MPAC, +1, +2)"), into MPAC +5, and the
+ * verb on the DSKY (UPDATVB -1, back at NVSUB2 +9). */
 void nvsub2(void)
 {
     switch (ccs_at(ADDRESS_OF(MPAC) + 4u)) {
@@ -234,27 +242,29 @@ void nvsub2(void)
     ca(ADDRESS_OF(MPAC) + 2u);
     ts(ADDRESS_OF(MPAC) + 5u);
     ca(ADDRESS_OF(MPAC) + 4u);
-    tc(NVSUB2 + 8u, UPDATVB - 1u);
+    tc(NVSUB2 + 010u, UPDATVB - 1u);
 }
 
-/* NVSUB2 +4, where UPDATNN returns: to NVSUBEND. */
+/* NVSUB2 +4 -- LM p. 454, CM p. 372, where UPDATNN returns: to NVSUBEND. */
 void nvsub2_plus4(void)
 {
     tc(NVSUB2 + 4u, NVSUBEND);
 }
 
-/* NVSUB2 +9, where UPDATVB returns: "IF BOTH NOUN AND VERB NOT +0,
- * DISPLAY BOTH AND GO TO ENTPAS0." The noun on the DSKY (UPDATNN -1). */
-void nvsub2_plus9(void)
+/* NVSUB2 +011 -- LM p. 454, CM p. 372, where UPDATVB returns: "IF BOTH NOUN
+ * AND VERB NOT +0, DISPLAY BOTH AND GO TO ENTPAS0." The noun on the DSKY
+ * (UPDATNN -1). */
+void nvsub2_plus011(void)
 {
     ca(ADDRESS_OF(MPAC) + 3u);
-    tc(NVSUB2 + 10u, UPDATNN - 1u);
+    tc(NVSUB2 + 012u, UPDATNN - 1u);
 }
 
-/* NVSUB2 +11, where UPDATNN returns. LOADSTAT +0, "SET FOR WAITING FOR
- * DATA CONDITION"; CLPASS +0; REQRET +0, "SET REQRET FOR PASS 0."; and
- * MPAC +5 back into MPAC +2, "FOR USE IN INTMCTBS (IN ENTPAS0)". */
-void nvsub2_plus11(void)
+/* NVSUB2 +013 -- LM p. 454, CM p. 372, where UPDATNN returns. LOADSTAT +0,
+ * "SET FOR WAITING FOR DATA CONDITION"; CLPASS +0; REQRET +0, "SET REQRET
+ * FOR PASS 0."; and MPAC +5 back into MPAC +2, "FOR USE IN INTMCTBS (IN
+ * ENTPAS0)". */
+void nvsub2_plus013(void)
 {
     set_A(ZERO);
     ts(ADDRESS_OF(LOADSTAT));
@@ -265,8 +275,9 @@ void nvsub2_plus11(void)
     continue_at(ENDNVSB1);
 }
 
-/* ENDNVSB1 -- the verb runs as if keyed: "IF INTERNAL MACH CADR TO BE
- * SPECIFIED, MPAC+2 WILL BE PLACED INTO NOUNCADR IN ENTPAS0 (INTMCTBS)." */
+/* ENDNVSB1 -- LM p. 454, CM p. 372: the verb runs as if keyed: "IF INTERNAL
+ * MACH CADR TO BE SPECIFIED, MPAC+2 WILL BE PLACED INTO NOUNCADR IN ENTPAS0
+ * (INTMCTBS)." */
 void endnvsb1(void)
 {
     tc(ENDNVSB1, ENTPAS0);
@@ -274,30 +285,36 @@ void endnvsb1(void)
 
 /* ---- ENDIDLE (LM p. 455, CM p. 373, fixed-fixed) ---- */
 
-/* DSPABORT -- "TC POODOO; OCT 01206": a second job asleep in Pinball. */
+/* DSPABORT -- LM p. 455, CM p. 373: "TC POODOO; OCT 01206": a second job
+ * asleep in Pinball. */
 static void dspabort(void)
 {
     tc(DSPABORT, POODOO);
 }
 
-/* ISLIST+0 -- "ABORTS (CODE 01206) IF DSPLIST NOT= +0. RETURNS IF DSPLIST
- * = +0." True when it went back. A -0 runs the OCT 01206 after DSPABORT,
- * which the readable port does not model. */
+/* ISLIST+0 -- LM p. 455, CM p. 373: "ABORTS (CODE 01206) IF DSPLIST NOT= +0.
+ * RETURNS IF DSPLIST = +0." True when it went back. A -0 runs the OCT 01206
+ * after DSPABORT as TC 1206, and the listing's lines do not say what erasable
+ * word 1206 holds then. */
 static bool islist_returns(void)
 {
     switch (ccs_at(ADDRESS_OF(DSPLIST))) {
     case POSITIVE: tc_at(ISLIST_PLUS0 + 1u); break;
     case IS_PLUS_ZERO: tc_return(Q_ADDRESS); return true;
     case NEGATIVE: break; /* the word after is DSPABORT */
-    case IS_MINUS_ZERO: not_modelled();
+    case IS_MINUS_ZERO:
+        /* (never: DSPLIST holds +0 or the CADR that NVSUBSY1 left there) */
+        tc_at(DSPABORT + 1u); /* OCT 01206, run as TC 1206 */
+        not_modelled();
+        return false;
     }
     dspabort();
     return false;
 }
 
-/* ISCADR+0 -- "ABORTS (CODE 01206) IF CADRSTOR NOT= +0. RETURNS IF
- * CADRSTOR = +0." True when it went back. A -0 goes on into ISLIST+0, and
- * back from there. */
+/* ISCADR+0 -- LM p. 455, CM p. 373: "ABORTS (CODE 01206) IF CADRSTOR NOT=
+ * +0. RETURNS IF CADRSTOR = +0." True when it went back. A -0 goes on into
+ * ISLIST+0, and back from there. */
 static bool iscadr_returns(void)
 {
     switch (ccs_at(ADDRESS_OF(CADRSTOR))) {
@@ -310,14 +327,14 @@ static bool iscadr_returns(void)
     return false;
 }
 
-/* ENDIDLE -- "ROUTINES THAT REQUEST LOADS THROUGH NVSUB SHOULD USE
- * ENDIDLE WHILE WAITING FOR THE DATA TO BE LOADED. ENDIDLE PUTS CURRENT
- * JOB TO SLEEP." "RETURN ADDRESS INTO L." It aborts with 1206 if a job is
- * asleep in Pinball already: in ENDIDLE (CADRSTOR not +0) or waiting for
- * the display (DSPLIST not +0). The return, as a CADR ("SAME STRATEGY FOR
- * CADR AS MAKECADR": the low ten bits, plus FBANK), into CADRSTOR, which
- * RECALTST wakes; then JOBSLEEP. "DONT SET DSPLOC TO 1 SO CAN USE ENDIDLE
- * WITH NVSUB INITIATED MONITOR." */
+/* ENDIDLE -- LM p. 455, CM p. 373: "ROUTINES THAT REQUEST LOADS THROUGH
+ * NVSUB SHOULD USE ENDIDLE WHILE WAITING FOR THE DATA TO BE LOADED. ENDIDLE
+ * PUTS CURRENT JOB TO SLEEP." "RETURN ADDRESS INTO L." It aborts with 1206
+ * if a job is asleep in Pinball already: in ENDIDLE (CADRSTOR not +0) or
+ * waiting for the display (DSPLIST not +0). The return, as a CADR ("SAME
+ * STRATEGY FOR CADR AS MAKECADR": the low ten bits, plus FBANK), into
+ * CADRSTOR, which RECALTST wakes; then JOBSLEEP. "DONT SET DSPLOC TO 1 SO
+ * CAN USE ENDIDLE WITH NVSUB INITIATED MONITOR." */
 void endidle(void)
 {
     lxch(Q_ADDRESS);
@@ -334,10 +351,10 @@ void endidle(void)
 
 /* ---- JAMTERM and JAMPROC (LM pp. 455-456, CM pp. 373-374) ---- */
 
-/* JAMTERM -- "ALLOWS PROGRAMS TO PERFORM THE TERMINATE FUNCTION. IT DOES
- * ENDOFJOB." Pinball's superbits, REQRET 34 ("LEAVE ENTER SET FOR
- * ENTPASS0."), the keys blocked (DSPCOUNT -VD1), and verb 34 (VBTERM,
- * part 6) by POSTJUMP. */
+/* JAMTERM -- LM p. 455, CM p. 373: "ALLOWS PROGRAMS TO PERFORM THE TERMINATE
+ * FUNCTION. IT DOES ENDOFJOB." Pinball's superbits, REQRET 34 ("LEAVE ENTER
+ * SET FOR ENTPASS0."), the keys blocked (DSPCOUNT -VD1), and verb 34
+ * (VBTERM, part 6) by POSTJUMP. */
 void jamterm(void)
 {
     set_A(PINSUPBT);
@@ -349,9 +366,9 @@ void jamterm(void)
     tc(JAMTERM + 7u, POSTJUMP); /* CADR VBTERM */
 }
 
-/* JAMPROC -- "ALLOWS PROGRAMS TO PERFORM THE PROCEED/PROCEED WITHOUT DATA
- * FUNCTION. IT DOES ENDOFJOB." As JAMTERM, with REQRET 33 and verb 33
- * (VBPROC). */
+/* JAMPROC -- LM p. 456, CM p. 374: "ALLOWS PROGRAMS TO PERFORM THE
+ * PROCEED/PROCEED WITHOUT DATA FUNCTION. IT DOES ENDOFJOB." As JAMTERM, with
+ * REQRET 33 and verb 33 (VBPROC). */
 void jamproc(void)
 {
     set_A(PINSUPBT);
@@ -365,15 +382,15 @@ void jamproc(void)
 
 /* ---- BLANKSUB (LM pp. 456-457, CM pp. 374-375) ---- */
 
-static void blanksub_plus8(void);
+static void blanksub_plus010(void);
 static void blanksub_plus11(void);
 static void blanksub_plus12(void);
 
-/* BLANKSUB -- "BLANKS ANY COMBINATION OF R1, R2, R3. CALL WITH BLANKING
- * CODE IN A. BIT1=1 BLANKS R1, BIT2=1 BLANKS R2, BIT3=1 BLANKS R3."
- * "STORE BLANKING CODE IN NVTEMP." With the external monitor bit or
- * DSPLOCK set, "DSP SYST BLOCKED. RET TO 1+ CALLING LOC"; with both clear,
- * "SET RETURN FOR 2+ CALLING LOC" (INCR Q). */
+/* BLANKSUB -- LM p. 456, CM p. 374: "BLANKS ANY COMBINATION OF R1, R2, R3.
+ * CALL WITH BLANKING CODE IN A. BIT1=1 BLANKS R1, BIT2=1 BLANKS R2, BIT3=1
+ * BLANKS R3." "STORE BLANKING CODE IN NVTEMP." With the external monitor bit
+ * or DSPLOCK set, "DSP SYST BLOCKED. RET TO 1+ CALLING LOC"; with both
+ * clear, "SET RETURN FOR 2+ CALLING LOC" (INCR Q). */
 void blanksub(void)
 {
     mask(SEVEN);
@@ -385,35 +402,37 @@ void blanksub(void)
     case POSITIVE: tc_return(Q_ADDRESS); return;
     case IS_PLUS_ZERO:
         incr(Q_ADDRESS);
-        blanksub_plus8();
+        blanksub_plus010();
         return;
-    case NEGATIVE: blanksub_plus8(); return;
+    case NEGATIVE: blanksub_plus010(); return;
     case IS_MINUS_ZERO: blanksub_plus11(); return;
     }
 }
 
-/* BLANKSUB +8. With a code of +0, "NOTHING TO BLANK. RET TO 2+ CALLING
- * LOC". */
-static void blanksub_plus8(void)
+/* BLANKSUB +010 -- LM p. 456, CM p. 374. With a code of +0, "NOTHING TO
+ * BLANK. RET TO 2+ CALLING LOC". */
+static void blanksub_plus010(void)
 {
     switch (ccs_at(ADDRESS_OF(NVTEMP))) {
-    case POSITIVE: /* TCF +2 */
-    case NEGATIVE: blanksub_plus11(); return;
+    case POSITIVE: blanksub_plus11(); return; /* TCF +2 */
     case IS_PLUS_ZERO: tc_return(Q_ADDRESS); return;
+    case NEGATIVE: blanksub_plus11(); return;
     case IS_MINUS_ZERO: blanksub_plus12(); return;
     }
 }
 
-/* BLANKSUB +11: "SET RETURN FOR 2 + CALLING LOC" in L. */
+/* BLANKSUB +11 -- LM p. 456, CM p. 374: "SET RETURN FOR 2 + CALLING LOC" in
+ * L. */
 static void blanksub_plus11(void)
 {
     lxch(Q_ADDRESS);
     blanksub_plus12();
 }
 
-/* BLANKSUB +12. Pinball's banks (BLNKBBNK, the BBCON of BLNKSUB1) into
- * BBANK; the caller's BBANK with its superbits ("SAVE OLD SUPERBITS.") and
- * the return into BUF, BUF +1; Pinball's superbits out; and to BLNKSUB1. */
+/* BLANKSUB +12 -- LM p. 456, CM p. 374. Pinball's banks (BLNKBBNK, the BBCON
+ * of BLNKSUB1) into BBANK; the caller's BBANK with its superbits ("SAVE OLD
+ * SUPERBITS.") and the return into BUF, BUF +1; Pinball's superbits out; and
+ * to BLNKSUB1. */
 static void blanksub_plus12(void)
 {
     set_A(BLNKBBNK);
@@ -422,12 +441,12 @@ static void blanksub_plus12(void)
     dxch(ADDRESS_OF(BUF));
     set_A(PINSUPBT);
     write_superbnk();
-    tc(BLANKSUB + 20u, BLNKSUB1);
+    tc(BLANKSUB + 024u, BLNKSUB1);
 }
 
-/* TESTBIT -- "NVTEMP CONTAINS BLANKING CODE." True for "IF CURRENT BIT =
- * 1, RETURN TO L+1"; false for "IF CURRENT BIT = 0, RETURN TO L+3" (INDEX
- * Q; TC 2), which skips the caller's CAF and TC 5BLANK -1. */
+/* TESTBIT -- LM p. 457, CM p. 375: "NVTEMP CONTAINS BLANKING CODE." True for
+ * "IF CURRENT BIT = 1, RETURN TO L+1"; false for "IF CURRENT BIT = 0, RETURN
+ * TO L+3" (INDEX Q; TC 2), which skips the caller's CAF and TC 5BLANK -1. */
 static bool testbit(void)
 {
     mask_at(ADDRESS_OF(NVTEMP));
@@ -441,12 +460,12 @@ static bool testbit(void)
     return false;
 }
 
-/* BLNKSUB1 -- "SAVE OLD DSPCOUNT FOR LATER RESTORATION" in BUF +2. For
- * BIT1, BIT2 and BIT3 in turn ("TEST BIT1. SEE IF R1 TO BE BLANKED."),
- * the register blanked by 5BLANK from its first digit (R1D1, R2D1, R3D1).
- * Then "RESTORE DSPCOUNT TO STATE IT HAD BEFORE BLANKSUB.", and "CALL L+2
- * DIRECTLY." by BUF's return and banks: SUPDXCHZ +1, "DTCB WITH SUPERBIT
- * SWITCHING". */
+/* BLNKSUB1 -- LM p. 456, CM p. 375: "SAVE OLD DSPCOUNT FOR LATER
+ * RESTORATION" in BUF +2. For BIT1, BIT2 and BIT3 in turn ("TEST BIT1. SEE
+ * IF R1 TO BE BLANKED."), the register blanked by 5BLANK from its first
+ * digit (R1D1, R2D1, R3D1). Then "RESTORE DSPCOUNT TO STATE IT HAD BEFORE
+ * BLANKSUB.", and "CALL L+2 DIRECTLY." by BUF's return and banks: SUPDXCHZ
+ * +1, "DTCB WITH SUPERBIT SWITCHING". */
 void blnksub1(void)
 {
     static const word bits[3] = {BIT1, BIT2, BIT3};
@@ -468,17 +487,17 @@ void blnksub1(void)
     ca(ADDRESS_OF(BUF) + 2u);
     ts(ADDRESS_OF(DSPCOUNT));
     dxch(ADDRESS_OF(BUF));
-    tc(BLNKSUB1 + 17u, SUPDXCHZ + 1u);
+    tc(BLNKSUB1 + 021u, SUPDXCHZ + 1u);
 }
 
 /* ---- DSPMM (LM pp. 457-458, CM pp. 375-376) ---- */
 
-/* DSPMM -- bank 04. "DSPMM DOES NOT DISPLAY MODREG DIRECTLY. IT PUTS IN
- * EXEC REQUEST WITH PRIO 30000 FOR DSPMMJB AND RETURNS TO CALLER." The
- * return into MPAC, a job at CHARIN's priority (CHRPRIO) for the 2CADR
- * after the TC NOVAC, and back by TC MPAC. With no core set for the job,
- * NOVAC's 1202 alarm instead. "DSPMM MUST BE IN BANK 27 OR LOWER, SO IT
- * CAN BE CALLED VIA BANKCALL." */
+/* DSPMM -- LM p. 457, CM p. 375: bank 04. "DSPMM DOES NOT DISPLAY MODREG
+ * DIRECTLY. IT PUTS IN EXEC REQUEST WITH PRIO 30000 FOR DSPMMJB AND RETURNS
+ * TO CALLER." The return into MPAC, a job at CHARIN's priority (CHRPRIO) for
+ * the 2CADR after the TC NOVAC, and back by TC MPAC. With no core set for
+ * the job, NOVAC's 1202 alarm instead. "DSPMM MUST BE IN BANK 27 OR LOWER,
+ * SO IT CAN BE CALLED VIA BANKCALL." */
 void dspmm(void)
 {
     word job[2];
@@ -496,13 +515,13 @@ void dspmm(void)
     tc(ENDSPMM, ADDRESS_OF(MPAC));
 }
 
-static void dspmmjb_plus8(void);
+static void dspmmjb_plus010(void);
 
-/* DSPMMJB -- "PLACE MAJOR MODE CODE INTO MODREG" ("GETS HERE THRU
- * DSPMM"): DSPCOUNT at the mode lights (MD1), its old value into DSPMMTEM
- * ("SAVE DSPCOUNT"). "IF MODREG IS + OR +0, DISPLAY MODREG" (DSPDECVN,
- * back at DSPMMJB +6), "IF MODREG IS -NZ, DO NOTHING", "IF MODREG IS -0,
- * BLANK MM" (2BLANK). */
+/* DSPMMJB -- LM p. 458, CM p. 376: "PLACE MAJOR MODE CODE INTO MODREG"
+ * ("GETS HERE THRU DSPMM"): DSPCOUNT at the mode lights (MD1), its old value
+ * into DSPMMTEM ("SAVE DSPCOUNT"). "IF MODREG IS + OR +0, DISPLAY MODREG"
+ * (DSPDECVN, back at DSPMMJB +6), "IF MODREG IS -NZ, DO NOTHING", "IF MODREG
+ * IS -0, BLANK MM" (2BLANK). */
 void dspmmjb(void)
 {
     set_A(MD1);
@@ -516,38 +535,40 @@ void dspmmjb(void)
     case IS_PLUS_ZERO: tc(DSPMMJB + 5u, DSPDECVN); return;
     case NEGATIVE:
         tc_at(DSPMMJB + 6u); /* TC +2 */
-        dspmmjb_plus8();
+        dspmmjb_plus010();
         return;
     case IS_MINUS_ZERO:
         tc_at(DSPMMJB + 7u);
-        if (two_blank_returns()) dspmmjb_plus8();
+        if (two_blank_returns()) dspmmjb_plus010();
         return;
     }
 }
 
-/* DSPMMJB +6, where DSPDECVN returns: TC +2. */
+/* DSPMMJB +6 -- LM p. 458, CM p. 376, where DSPDECVN returns: TC +2. */
 void dspmmjb_plus6(void)
 {
     tc_at(DSPMMJB + 6u);
-    dspmmjb_plus8();
+    dspmmjb_plus010();
 }
 
-/* DSPMMJB +8: "RESTORE DSPCOUNT", and the job ends. */
-static void dspmmjb_plus8(void)
+/* DSPMMJB +010 -- LM p. 458, CM p. 376: "RESTORE DSPCOUNT", and the job
+ * ends. */
+static void dspmmjb_plus010(void)
 {
     xch(ADDRESS_OF(DSPMMTEM));
     ts(ADDRESS_OF(DSPCOUNT));
-    tc(DSPMMJB + 10u, ENDOFJOB);
+    tc(DSPMMJB + 012u, ENDOFJOB);
 }
 
 /* ---- RECALTST (LM pp. 458-459, CM pp. 376-377, bank 40) ---- */
 
 static void recal1_plus1(void);
 
-/* RECALTST -- "RECALTST IS ENTERED DIRECTLY AFTER DATA IS LOADED (OR
- * RESEQUENCE VERB IS EXECUTED), TERMINATE VERB IS EXECUTED, OR PROCEED
- * WITHOUT DATA VERB IS EXECUTED. IT WAKES UP JOB THAT DID TC ENDIDLE." With
- * CADRSTOR +0 no job waits: "NORMAL EXIT IF KEYBOARD INITIATED". */
+/* RECALTST -- LM p. 458, CM p. 376: "RECALTST IS ENTERED DIRECTLY AFTER DATA
+ * IS LOADED (OR RESEQUENCE VERB IS EXECUTED), TERMINATE VERB IS EXECUTED, OR
+ * PROCEED WITHOUT DATA VERB IS EXECUTED. IT WAKES UP JOB THAT DID TC
+ * ENDIDLE." With CADRSTOR +0 no job waits: "NORMAL EXIT IF KEYBOARD
+ * INITIATED". */
 void recaltst(void)
 {
     switch (ccs_at(ADDRESS_OF(CADRSTOR))) {
@@ -558,10 +579,10 @@ void recaltst(void)
     }
 }
 
-/* RECAL1 -- CADRSTOR emptied, and the job asleep at its address woken
- * (JOBWAKE). Then by LOADSTAT: "+ PROCEED WITHOUT DATA" (DOPROC), "-
- * TERMINATE" (DOTERM), "-0 DATA IN OR RESEQUENCE" (two on, RECAL2), and
- * +0, waiting for data still, the "PATHALOGICAL CASE EXIT". */
+/* RECAL1 -- LM p. 458, CM p. 376: CADRSTOR emptied, and the job asleep at
+ * its address woken (JOBWAKE). Then by LOADSTAT: "+ PROCEED WITHOUT DATA"
+ * (DOPROC), "- TERMINATE" (DOTERM), "-0 DATA IN OR RESEQUENCE" (two on,
+ * RECAL2), and +0, waiting for data still, the "PATHALOGICAL CASE EXIT". */
 void recal1(void)
 {
     set_A(ZERO);
@@ -586,7 +607,8 @@ static void recal1_plus1(void)
     }
 }
 
-/* RECAL2 -- the woken job's LOC on by A: "RECALTST TESTS LOADSTAT AND
+/* RECAL2 -- LM p. 458, CM p. 376: the woken job's LOC on by A: "RECALTST
+ * TESTS LOADSTAT AND
  * WAKES JOB UP TO, L+1 FOR TERMINATE, L+2 FOR PROCEED WITHOUT DATA, L+3
  * FOR DATA IN, OR RESEQUENCE" ("LOC IS + FOR BASIC JOBS"). JOBWAKE left
  * LOCCTR at the job's core set. "SAVE VERB
@@ -607,7 +629,8 @@ void recal2(void)
     continue_at(RECAL3);
 }
 
-/* RECAL3 -- the display released (RELDSP), and the job ends. */
+/* RECAL3 -- LM p. 458, CM p. 377: the display released (RELDSP), and the job
+ * ends. */
 void recal3(void)
 {
     tc_at(RECAL3);
@@ -615,14 +638,14 @@ void recal3(void)
     tc(RECAL3 + 1u, ENDOFJOB);
 }
 
-/* DOTERM -- terminate: LOC on by +0. */
+/* DOTERM -- LM p. 459, CM p. 377: terminate: LOC on by +0. */
 void doterm(void)
 {
     set_A(ZERO);
     tc(DOTERM + 1u, RECAL2);
 }
 
-/* DOPROC -- proceed without data: LOC on by one. */
+/* DOPROC -- LM p. 459, CM p. 377: proceed without data: LOC on by one. */
 void doproc(void)
 {
     set_A(ONE);
@@ -641,10 +664,10 @@ void doproc(void)
 
 static void nvsbwt1(void);
 
-/* PRENVBSY -- "SPECIAL ENTRANCE FOR ROUTINES IN FIXED BANKS ONLY DESIRING
- * THE FCADR OF (LOC FROM WHICH THE TC PRENVBSY WAS DONE) -2 TO BE
- * ENTERED." The return (Q) less 2K+3, plus FBANK, is that FCADR. On into
- * NVSUBUSY. */
+/* PRENVBSY -- LM p. 464, CM p. 382: "SPECIAL ENTRANCE FOR ROUTINES IN FIXED
+ * BANKS ONLY DESIRING THE FCADR OF (LOC FROM WHICH THE TC PRENVBSY WAS DONE)
+ * -2 TO BE ENTERED." The return (Q) less 2K+3, plus FBANK, is that FCADR. On
+ * into NVSUBUSY. */
 void prenvbsy(void)
 {
     set_A(negate(TWO_K_PLUS_3));
@@ -653,18 +676,18 @@ void prenvbsy(void)
     continue_at(NVSUBUSY);
 }
 
-/* NVSUBUSY -- to NVSUBSY1 in bank 04 by POSTJUMP: "NVSUBSY1 MUST BE IN
- * BANK 27 OR LOWER, SO IT WILL PUT THE CALLER TO SLEEP WITH HIS PROPER
- * SUPERBITS." */
+/* NVSUBUSY -- LM p. 464, CM p. 382: to NVSUBSY1 in bank 04 by POSTJUMP:
+ * "NVSUBSY1 MUST BE IN BANK 27 OR LOWER, SO IT WILL PUT THE CALLER TO SLEEP
+ * WITH HIS PROPER SUPERBITS." */
 void nvsubusy(void)
 {
     tc(NVSUBUSY, POSTJUMP); /* CADR NVSUBSY1 */
 }
 
-/* NVSUBSY1 -- the wake FCADR into L. "ABORT IF CADRSTOR NOT= +0." "ABORT
- * IF DSPLIST NOT= +0." The key release light on (RELDSPON), the FCADR into
- * DSPLIST, which RELDSP wakes when the display is released, and the job
- * goes to sleep (ENDNVBSY: JOBSLEEP). */
+/* NVSUBSY1 -- LM p. 464, CM p. 382: the wake FCADR into L. "ABORT IF
+ * CADRSTOR NOT= +0." "ABORT IF DSPLIST NOT= +0." The key release light on
+ * (RELDSPON), the FCADR into DSPLIST, which RELDSP wakes when the display is
+ * released, and the job goes to sleep (ENDNVBSY: JOBSLEEP). */
 void nvsubsy1(void)
 {
     if (ts(L_ADDRESS)) not_modelled(); /* an overflow would skip TC ISCADR+0 */
@@ -679,14 +702,14 @@ void nvsubsy1(void)
     tc(ENDNVBSY, JOBSLEEP);
 }
 
-/* NVSBWAIT -- "NVSBWAIT IS A SPECIAL ENTRANCE FOR ROUTINES IN FIXED BANKS
- * ONLY. IF SYSTEM IS NOT BUSY, IT EXECUTES V/N AND RETURNS TO L+2 (L IS
- * LOC FROM WHICH THE TC NVSBWAIT WAS DONE). IF SYSTEM IS BUSY, IT PUTS JOB
- * TO SLEEP WITH L-1 GOING INTO LIST FOR EVENTUAL WAKING UP WHEN SYSTEM IS
- * NOT BUSY." "ZERO NVMONOPT OPTIONS" (LXCH 7), the verb and noun into
- * NVTEMP, and the system busy if the external monitor bit (BIT14 of
- * MONSAVE1) or DSPLOCK is set. "FREE. NVSUB WILL SAVE L+1 FOR RETURN
- * AFTER EXECUTION." (NVSBCOM). */
+/* NVSBWAIT -- LM p. 464, CM p. 382: "NVSBWAIT IS A SPECIAL ENTRANCE FOR
+ * ROUTINES IN FIXED BANKS ONLY. IF SYSTEM IS NOT BUSY, IT EXECUTES V/N AND
+ * RETURNS TO L+2 (L IS LOC FROM WHICH THE TC NVSBWAIT WAS DONE). IF SYSTEM
+ * IS BUSY, IT PUTS JOB TO SLEEP WITH L-1 GOING INTO LIST FOR EVENTUAL WAKING
+ * UP WHEN SYSTEM IS NOT BUSY." "ZERO NVMONOPT OPTIONS" (LXCH 7), the verb
+ * and noun into NVTEMP, and the system busy if the external monitor bit
+ * (BIT14 of MONSAVE1) or DSPLOCK is set. "FREE. NVSUB WILL SAVE L+1 FOR
+ * RETURN AFTER EXECUTION." (NVSBCOM). */
 void nvsbwait(void)
 {
     zl();
@@ -702,7 +725,8 @@ void nvsbwait(void)
     }
 }
 
-/* NVSBWT1 -- "L+2. PRENVBSY WILL PUT L-1 INTO LIST AND GO TO SLEEP." */
+/* NVSBWT1 -- LM p. 464, CM p. 382: "L+2. PRENVBSY WILL PUT L-1 INTO LIST AND
+ * GO TO SLEEP." */
 static void nvsbwt1(void)
 {
     incr(Q_ADDRESS);

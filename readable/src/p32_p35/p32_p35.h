@@ -27,14 +27,6 @@
 
 #if LUMINARY099
 
-/* TC at, to a routine out of the file (or to a keyed label): Q gets the
- * return, and the routine runs next. */
-static inline void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* ---- programs.c: P32 and P72 (bank 35) ---- */
 
 extern const struct interpretive_code ALMXITA_CODE, VN0611_CODE, VN0655_CODE, VN0637_CODE,

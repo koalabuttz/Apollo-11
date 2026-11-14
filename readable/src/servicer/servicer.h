@@ -54,17 +54,6 @@
 #include "../agc/names.h"
 #include "../interpreter/notation.h"
 
-#ifndef COUNT
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-#endif
-
-/* TC at, to a routine: Q gets the return and the routine runs next. */
-static inline void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* TC Q: back to the word after the TC that called; TC A, to the address
  * in A; TC to an erasable word that holds a return (servicer.c). */
 void return_to_q(void);

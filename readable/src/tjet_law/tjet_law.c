@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 /* TJET_LAW.agc, the LM's: Luminary099 pages 1460-1469, bank 17, in EBANK 6
- * (the listing's EBANK= TJP).
+ * (the listing's EBANK= TJP). The faithful C is c64-port/src/lm_tjet_law.c.
  *
  * Every branch of TJETLAW ends at RETURNTJ "WITH TJET" "(SCALED AT 4 SEC)
  * IN THE ACCUMULATOR." So each piece below leaves the jet time in A and
@@ -35,14 +35,14 @@ static unsigned by_axis(unsigned address)
     return indexed(address, fetch(ADDRESS_OF(AXISCTR)));
 }
 
-/* COASTTJ: "SET TJET = 0." */
+/* COASTTJ -- LM p. 1463: "SET TJET = 0." */
 static bool coasttj(void)
 {
     set_A(ZERO);
     return true;
 }
 
-/* FULLTIME: "250 MSEC SCALED AT 4 SEC." */
+/* FULLTIME -- LM p. 1464: "250 MSEC SCALED AT 4 SEC." */
 static bool fulltime(void)
 {
     set_A(BIT11);
@@ -51,9 +51,9 @@ static bool fulltime(void)
 
 /* ---- RETURNTJ -- LM p. 1464 ---- */
 
-/* RETURNTJ: "ROTSENSE APPLIES SIGN AND CHANGES SCALE." The time goes to
- * TJP, TJU or TJV; then NUMBERT is four, "SET SWITCH FOR JET SELECT IF
- * ROTATION IS" "IN A SENSE FOR WHICH 1/ACCS HAS FORCED" "A MAX-JET
+/* RETURNTJ -- LM p. 1464: "ROTSENSE APPLIES SIGN AND CHANGES SCALE." The
+ * time goes to TJP, TJU or TJV; then NUMBERT is four, "SET SWITCH FOR JET
+ * SELECT IF ROTATION IS" "IN A SENSE FOR WHICH 1/ACCS HAS FORCED" "A MAX-JET
  * CALCULATION.", and "RETURN VIA SAVED Q." */
 static void returntj(void)
 {
@@ -70,8 +70,8 @@ static void returntj(void)
 
 /* ---- CHKMINTJ -- LM p. 1467 ---- */
 
-/* CHKMINTJ: "IF COMPUTED JET TIME IS LESS THAN TJMIN, TJET IS SET TO
- * ZERO." */
+/* CHKMINTJ -- LM p. 1467: "IF COMPUTED JET TIME IS LESS THAN TJMIN, TJET IS
+ * SET TO ZERO." */
 static bool chkmintj(void)
 {
     ad(MINUS_TJMIN);
@@ -82,11 +82,11 @@ static bool chkmintj(void)
 
 /* ---- Z123COMP -- LM p. 1465 ---- */
 
-/* Z123COMP, by TC at at: "SUBROUTINIZED COMPUTATIONS REQUIRED FOR ALL
- * ENTRIES INTO CODING FOR ZONES 1, 2, AND 3." ROTSENSE reversed, and
- * TTOAXIS, the time to the axis. Returns whether "TIME TO AXIS LESS THAN
- * 150 MSEC." (RETURN); if not, the caller goes to FULLTIME: "FIRE JETS,
- * DO NOT CALCULATE TJET." */
+/* Z123COMP -- LM p. 1465, by TC at at: "SUBROUTINIZED COMPUTATIONS REQUIRED
+ * FOR ALL ENTRIES INTO CODING FOR ZONES 1, 2, AND 3." ROTSENSE reversed, and
+ * TTOAXIS, the time to the axis. Returns whether "TIME TO AXIS LESS THAN 150
+ * MSEC." (RETURN); if not, the caller goes to FULLTIME: "FIRE JETS, DO NOT
+ * CALCULATE TJET." */
 static bool z123comp(word at)
 {
     tc_at(at);
@@ -103,8 +103,8 @@ static bool z123comp(word at)
 
 /* ---- ZONE1 -- LM p. 1466 ---- */
 
-/* ZONE1, with FIREFCT in A: H, "DOUBLE PRECISION H SCALED AT 8 SEC(2).",
- * then the jet time by one of two approximations, or FULLTIME. */
+/* ZONE1 -- LM p. 1466, with FIREFCT in A: H, "DOUBLE PRECISION H SCALED AT 8
+ * SEC(2).", then the jet time by one of two approximations, or FULLTIME. */
 static bool zone1(void)
 {
     su_at(by_adrsdif1(ADDRESS_OF(AXISDIST)));
@@ -137,7 +137,8 @@ static bool zone1(void)
 
 /* ---- ZONE2,3 -- LM p. 1466 ---- */
 
-/* ZONE2,3: "FIRE FOR AXIS OR, IF CLOSE, FIRE MINIMUM IMPULSE.  IF ON
+/* ZONE2,3 -- LM p. 1466: "FIRE FOR AXIS OR, IF CLOSE, FIRE MINIMUM IMPULSE. 
+ * IF ON
  * AXIS, COAST." */
 static bool zone2_3(void)
 {
@@ -149,19 +150,19 @@ static bool zone2_3(void)
     }
     switch (ccs_at(ADDRESS_OF(EDOT))) { /* ZONE3: "CHECK IF EDOT IS ZERO." */
     case POSITIVE: set_A(BIT6); break;  /* "FIRE A ONE-JET MINIMUM IMPULSE." */
+    case IS_PLUS_ZERO: break;           /* "TJET = +0." */
     case NEGATIVE:                      /* "CANNOT BE BECAUSE NEG EDOT COMPLEMENTED." */
         tc_at(ZONE3 + 3u);
         continue_at(CCSHOLE);
         return false;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break; /* "TJET = +0." */
     }
     return true;
 }
 
-/* ZON1,2,3: Z123COMP, then "IF THE (NEG) DISTANCE BEYOND PARABOLA IS LESS
- * THAN FLAT, USE SPECIAL" "LOGIC TO ACQUIRE MINIMUM IMPULSE LIMIT
- * CYCLE." */
+/* ZON1,2,3 -- LM p. 1465: Z123COMP, then "IF THE (NEG) DISTANCE BEYOND
+ * PARABOLA IS LESS THAN FLAT, USE SPECIAL" "LOGIC TO ACQUIRE MINIMUM IMPULSE
+ * LIMIT CYCLE." */
 static bool zon1_2_3(void)
 {
     if (!z123comp(ZON1_2_3)) return fulltime();
@@ -173,9 +174,9 @@ static bool zon1_2_3(void)
 
 /* ---- ZONE4 -- LM p. 1463 ---- */
 
-/* DRIFT/ON: "CAN TARGET STRIP OF AXIS BE REACHED FROM" "THIS POINT IN THE
- * PHASE PLANE?" If so, "CALCULATE TJET AS THOUGH IN ZONE 2" "OR 3 AFTER
- * COMPUTING REQUIRED VALUES." */
+/* DRIFT/ON -- LM p. 1463: "CAN TARGET STRIP OF AXIS BE REACHED FROM" "THIS
+ * POINT IN THE PHASE PLANE?" If so, "CALCULATE TJET AS THOUGH IN ZONE 2" "OR
+ * 3 AFTER COMPUTING REQUIRED VALUES." */
 static bool drift_on(void)
 {
     cs(by_adrsdif1(ADDRESS_OF(FIREDB)));
@@ -186,7 +187,8 @@ static bool drift_on(void)
     return zone2_3();
 }
 
-/* ZONE4: "ZONE 4 IS THE COAST REGION.  HOWEVER, IF THE JETS ARE ON AND
+/* ZONE4 -- LM p. 1463: "ZONE 4 IS THE COAST REGION.  HOWEVER, IF THE JETS
+ * ARE ON AND
  * DRIVING TOWARD" the axis or the target parabola, "THEN THE THRUSTERS ARE
  * KEPT ON." JETSON's CCS FLAT asks "IS THIS DRIFTING OR POWERED FLIGHT?":
  * positive is drifting. For powered flight (+0) "CAN TARGET PARABOLA" "BE
@@ -215,11 +217,12 @@ static bool zone4(void)
 
 /* ---- ZONE5 -- LM pp. 1463-1464 ---- */
 
-/* ZONE5, with the function in A: TTOAXIS and H, "THE PARAMETERS UPON"
- * "WHICH THE APPROXIMATIONS TO TJET ARE" "ABASED.", then the time "FOR
- * TJET LESS THAN 50 MSEC." (FORMULA1), "FOR TJET GREATER THAN 50 MSEC."
- * (FORMULA2), or FULLTIME. CCS ROTSENSE moves ADRSDIF2 back two "IF THE"
- * "(ACTUAL) ERROR RATE IS NEGATIVE."; a TS L that overflows skips it. */
+/* ZONE5 -- LM p. 1463, with the function in A: TTOAXIS and H, "THE
+ * PARAMETERS UPON" "WHICH THE APPROXIMATIONS TO TJET ARE" "ABASED.", then
+ * the time "FOR TJET LESS THAN 50 MSEC." (FORMULA1), "FOR TJET GREATER THAN
+ * 50 MSEC." (FORMULA2), or FULLTIME. CCS ROTSENSE moves ADRSDIF2 back two
+ * "IF THE" "(ACTUAL) ERROR RATE IS NEGATIVE."; a TS L that overflows skips
+ * it. */
 static bool zone5(void)
 {
     if (!ts(L_ADDRESS)) {
@@ -285,10 +288,12 @@ enum jets { MIN_JETS, MAX_JETS, NUMBERT_KEPT };
 static enum jets senstest(void)
 {
     switch (ccs_at(ADDRESS_OF(SENSETYP))) {
+    case POSITIVE: return MIN_JETS; /* TCF TJCALC */
     case IS_PLUS_ZERO: return MAX_JETS;
-    case IS_MINUS_ZERO: return NUMBERT_KEPT;
-    default: return MIN_JETS;
+    case NEGATIVE: return MIN_JETS; /* TJCALC is the next word */
+    case IS_MINUS_ZERO: break;
     }
+    return NUMBERT_KEPT;
 }
 
 /* From SCALEDOT ("*** FINELAW STARTS HERE ***"), with E rescaled: EDOTSQ;
@@ -307,9 +312,9 @@ static bool finelaw(void)
     mp(BIT13);
     ts(ADDRESS_OF(EDOTSQ));
     switch (ccs_at(ADDRESS_OF(E))) { /* ERRTEST */
-    case POSITIVE:
+    case POSITIVE: ad(MINUS_3DEG); break;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: ad(MINUS_3DEG); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     su_at(by_adrsdif1(ADDRESS_OF(FIREDB)));
@@ -340,10 +345,10 @@ static bool finelaw(void)
 
 /* ---- The rough laws -- LM pp. 1468-1469 ---- */
 
-/* RUFSETUP, by TC at at: "SUBROUTINE USED IN ALL ENTRIES TO ROUGHLAW."
- * "REVERSE ROTSENSE WHEN ENTER HERE." (RUFSETUP +2, from SMALRATE, does
- * not), then "REQUIRE MAXIMUM (2) JETS IN U,V-AXES." and "SUGGEST MAXIMUM
- * (4) JETS IN P-AXIS." */
+/* RUFSETUP -- LM p. 1469, by TC at at: "SUBROUTINE USED IN ALL ENTRIES TO
+ * ROUGHLAW." "REVERSE ROTSENSE WHEN ENTER HERE." (RUFSETUP +2, from
+ * SMALRATE, does not), then "REQUIRE MAXIMUM (2) JETS IN U,V-AXES." and
+ * "SUGGEST MAXIMUM (4) JETS IN P-AXIS." */
 static void rufsetup(word at, bool reverse)
 {
     tc_at(at);
@@ -358,8 +363,8 @@ static void rufsetup(word at, bool reverse)
     tc_q();
 }
 
-/* RUFLAW12, with the desired rate change in A: "COMPUTE TJET" "=
- * (DESIRED RATE CHANGE)/(2-JET ACCEL.)"; "IF TJET, SCALED AT 32 SEC,
+/* RUFLAW12 -- LM p. 1468, with the desired rate change in A: "COMPUTE TJET"
+ * "= (DESIRED RATE CHANGE)/(2-JET ACCEL.)"; "IF TJET, SCALED AT 32 SEC,
  * EXCEEDS" "4 SECONDS, SET TJET TO TJMAX." */
 static bool ruflaw12(void)
 {
@@ -374,7 +379,8 @@ static bool ruflaw12(void)
     return chkmintj(); /* "RETURN AS FROM FINELAW." */
 }
 
-/* RUFLAW1: "ERROR MORE NEGATIVE THAN PI/16 RAD.  FIRE TO A RATE OF 6.5
+/* RUFLAW1 -- LM p. 1468: "ERROR MORE NEGATIVE THAN PI/16 RAD.  FIRE TO A
+ * RATE OF 6.5
  * DEG/SEC (IF JET TIME EXCEEDS 20 MSEC.)." SMALRATE: "MODIFY INDEXER TO
  * POINT TO 1/ANET" "CORRESPONDING TO THE PROPER SENSE." */
 static bool ruflaw1(void)
@@ -389,8 +395,8 @@ static bool ruflaw1(void)
     rufsetup(SMALRATE, false); /* "BRANCH IF RATE LESS THAN TARGET." */
     switch (ccs_at(ADDRESS_OF(ROTSENSE))) {
     case POSITIVE: set_A(ONE); break;
+    case IS_PLUS_ZERO: break; /* ADS of +0 */
     case NEGATIVE: set_A(NEGONE); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break; /* ADS of +0 */
     }
     ads(ADDRESS_OF(ADRSDIF2));
@@ -398,7 +404,8 @@ static bool ruflaw1(void)
     return ruflaw12();
 }
 
-/* RUFLAW2: "ERROR MORE POSITIVE THAN PI/16 RAD.  FIRE TO AN OPPOSING RATE
+/* RUFLAW2 -- LM p. 1468: "ERROR MORE POSITIVE THAN PI/16 RAD.  FIRE TO AN
+ * OPPOSING RATE
  * OF 6.5 DEG/SEC." */
 static bool ruflaw2(void)
 {
@@ -409,8 +416,8 @@ static bool ruflaw2(void)
     return ruflaw12();
 }
 
-/* RUFLAW3: "ERROR RATE GREATER THAN PI/32 RAD/SEC AND ERROR WITHIN BOUNDS.
- * COAST IF BELOW FIREFCT, FIRE IF ABOVE" */
+/* RUFLAW3 -- LM p. 1469: "ERROR RATE GREATER THAN PI/32 RAD/SEC AND ERROR
+ * WITHIN BOUNDS. COAST IF BELOW FIREFCT, FIRE IF ABOVE" */
 static bool ruflaw3(void)
 {
     rufsetup(RUFLAW3, true);
@@ -438,8 +445,8 @@ static bool jet_time(void)
     mp(BIT5);
     switch (ccs_register(A_ADDRESS)) {
     case POSITIVE: return ruflaw2();
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: return ruflaw1();
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     set_A(BIT13); /* SCALEE: "ERROR IS IN L SCALED AT PI/16." */
@@ -451,12 +458,13 @@ static bool jet_time(void)
     return finelaw();
 }
 
-/* TJETLAW: "SAVE Q FOR RETURN.", then "SET INDEXERS TO CORRESPOND TO THE
- * AXIS AND TO THE SIGN OF EDOT". AXISDIFF holds the distance from the U
- * axis's 1/ACCS parameters to this axis's. For a negative EDOT (NEGEDOT)
- * E and EDOT are complemented, the indexers moved on one and ROTSENSE
- * made negative: "IN ORDER FOR NEG EDOT CASE TO USE CODING" "OF POS EDOT".
- * (A TS ADRSDIF2 that overflowed would skip the CS SENSOR.) */
+/* TJETLAW -- LM p. 1461: "SAVE Q FOR RETURN.", then "SET INDEXERS TO
+ * CORRESPOND TO THE AXIS AND TO THE SIGN OF EDOT". AXISDIFF holds the
+ * distance from the U axis's 1/ACCS parameters to this axis's. For a
+ * negative EDOT (NEGEDOT) E and EDOT are complemented, the indexers moved on
+ * one and ROTSENSE made negative: "IN ORDER FOR NEG EDOT CASE TO USE CODING"
+ * "OF POS EDOT". (A TS ADRSDIF2 that overflowed would skip the CS
+ * SENSOR.) */
 void tjetlaw(void)
 {
     qxch(ADDRESS_OF(HOLDQ));

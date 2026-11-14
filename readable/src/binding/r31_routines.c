@@ -126,7 +126,7 @@ static const struct {
 #else
     {R31_BANK, DSPDELAY, dspdelay},
     {R31_BANK, DISPN5X, dispn5x},
-    {R31_BANK, DISPN5X + 6u, dispn5x_r34},
+    {R31_BANK, DISPN5X + 6u, dispn5x_plus6},
     {R31_BANK, V83, v83},
 #endif
 };
@@ -209,7 +209,7 @@ BASIC(getrvn_after_exit_intpret, R31_BANK, false)
 BASIC(r31call, R31_BANK, false)
 BASIC(dspdelay, R31_BANK, false)
 BASIC(dspdelay_wake, R31_BANK, false)
-BASIC(dispn5x_r34, R31_BANK, false)
+BASIC(dispn5x_plus6, R31_BANK, false)
 BASIC(dispn5x_terminate, R31_BANK, false)
 BASIC(dispn5x_proceed, R31_BANK, false)
 BASIC(dispn5x_recycle, R31_BANK, false)
@@ -523,7 +523,7 @@ static const agc_routine_entry basic_keys[] = {
     B(R31_BANK, R31CALL, r31call),
     B(R31_BANK, DSPDELAY, dspdelay),
     B(R31_BANK, DSPDELAY + 3u, dspdelay_wake),
-    B(R31_BANK, DISPN5X + 6u, dispn5x_r34),
+    B(R31_BANK, DISPN5X + 6u, dispn5x_plus6),
     B(R31_BANK, DISPN5X + 011u, dispn5x_terminate),
     B(R31_BANK, DISPN5X + 012u, dispn5x_proceed),
     B(R31_BANK, DISPN5X + 013u, dispn5x_recycle),

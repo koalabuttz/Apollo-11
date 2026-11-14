@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* P51-P53.agc, part 8 (Luminary099 pp. 968-974, bank 15): GYROTRIM, the
- * gyro torque to a set of CDU angles; P57's star sightings (1STAR,
- * R59RET, ASTAR); and the lunar surface alignment (SURFLINE to P57POST,
- * COATRIM), coarse or fine.
+/* P51-P53.agc, part 8 (Luminary099 pp. 968-974, bank 15): GYROTRIM, the gyro
+ * torque to a set of CDU angles; P57's star sightings (1STAR, R59RET,
+ * ASTAR); and the lunar surface alignment (SURFLINE to P57POST, COATRIM),
+ * coarse or fine. The faithful C is c64-port/src/lm_p51_p53.c.
  *
  * GYROTRIM "COMPUTES AND SENDS GYRO COMMANDS WHICH CAUSE THE CDUS" to
  * reach THETAD. P57 sights two stars through the AOT (R59); SURFLINE
@@ -23,8 +23,6 @@
 #include "../interpreter/interpreter.h"
 
 #if LUMINARY099
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 static void astar(void);
 static void one_star_plus1(void);
@@ -73,9 +71,9 @@ static const word gyrotrim_words[] = {
 const struct interpretive_code GYROTRIM_CODE = {015u, GYROTRIM, COUNT(gyrotrim_words),
                                                 gyrotrim_words};
 
-/* JUSTTRIM +1, after the EXIT: the IMU fine aligned (IMUFINE), IMUSTALL
- * waiting (CURTAINS when it fails); the gyros torqued by OGC's angles
- * (IMUPULSE, GYRCDR), IMUSTALL waiting again; back to the caller
+/* JUSTTRIM +1 -- p. 968, after the EXIT: the IMU fine aligned (IMUFINE),
+ * IMUSTALL waiting (CURTAINS when it fails); the gyros torqued by OGC's
+ * angles (IMUPULSE, GYRCDR), IMUSTALL waiting again; back to the caller
  * (QMINEXIT). */
 void justtrim_after_exit(void)
 {
@@ -115,10 +113,10 @@ void justtrim_return(void)
 
 /* ---- The star sightings -- p. 970 ---- */
 
-/* 2STARS: "INITIALIZE STARIND", "ZERO FOR 1ST STAR, ONE FOR 2ND STAR";
- * 1STAR: STARIND 1, the second star. Then a restart point (PHASCHNG,
- * 04024), and R59, "GO DO STAR ACQUIRE AND AOTMARK". (A is a constant:
- * TS does not skip.) */
+/* 2STARS -- p. 970: "INITIALIZE STARIND", "ZERO FOR 1ST STAR, ONE FOR 2ND
+ * STAR"; 1STAR: STARIND 1, the second star. Then a restart point (PHASCHNG,
+ * 04024), and R59, "GO DO STAR ACQUIRE AND AOTMARK". (A is a constant: TS
+ * does not skip.) */
 void two_stars(void)
 {
     set_A(ZERO);
@@ -142,9 +140,10 @@ void one_star_r59(void)
     r59(); /* TCF R59 */
 }
 
-/* R59RET, "BACK FROM SURFACE MARKING": after the first star, ASTAR; after
- * the second, a restart point (PHASCHNG, 04024), and its catalog vector
- * at the time of its mark (PLANET) to VEC2, then SURFLINE. */
+/* R59OUT +5 -- p. 960 (TCF R59RET). R59RET, "BACK FROM SURFACE MARKING":
+ * after the first star, ASTAR; after the second, a restart point (PHASCHNG,
+ * 04024), and its catalog vector at the time of its mark (PLANET) to VEC2,
+ * then SURFLINE. */
 void r59ret(void)
 {
     ca(ADDRESS_OF(STARIND));
@@ -171,9 +170,9 @@ static const word r59ret_words[] = {
 
 const struct interpretive_code R59RET_CODE = {015u, R59RET + 6u, COUNT(r59ret_words), r59ret_words};
 
-/* ASTAR: the first star as sighted (STARAD +6) to STARSAV1, its catalog
- * vector at the time of its mark (PLANET) to VEC1; then the second star
- * (1STAR). */
+/* ASTAR -- p. 970: the first star as sighted (STARAD +6) to STARSAV1, its
+ * catalog vector at the time of its mark (PLANET) to VEC1; then the second
+ * star (1STAR). */
 static void astar(void)
 {
     tc_at(ASTAR);
@@ -238,10 +237,10 @@ static const word surfline_words[] = {
 const struct interpretive_code SURFLINE_CODE = {015u, SURFLINE, COUNT(surfline_words),
                                                 surfline_words};
 
-/* INITBY +5, after the EXIT: "IF INITIAL PASS BYPASS NOUN 93 DISPLAY";
- * else the angles flashed (DISPGYRO, V06N93): terminate, proceed (5DEGTEST)
- * or recycle ("MAYBE RE-ALIGN", P57POST +1). (After the MASK, A is +0
- * or the bit: CCS takes its first two ways only.) */
+/* INITBY +5 -- p. 971, after the EXIT: "IF INITIAL PASS BYPASS NOUN 93
+ * DISPLAY"; else the angles flashed (DISPGYRO, V06N93): terminate, proceed
+ * (5DEGTEST) or recycle ("MAYBE RE-ALIGN", P57POST +1). (After the MASK, A
+ * is +0 or the bit: CCS takes its first two ways only.) */
 void initby_after_exit(void)
 {
     set_A(INITABIT);
@@ -252,7 +251,12 @@ void initby_after_exit(void)
         set_A(DISPGYRO);
         tc_to(INITBY + 012u, BANKCALL); /* CADR GOFLASH */
         break;
-    default: not_modelled();
+    /* (never: a masked bit. Negative would skip the CAF DISPGYRO.) */
+    case NEGATIVE: tc_to(INITBY + 012u, BANKCALL); break;
+    case IS_MINUS_ZERO:
+        /* never: A is INITABIT or +0 after the MASK. The next word is an address word, CADR
+         * GOFLASH. */
+        not_modelled();
     }
 }
 
@@ -271,8 +275,8 @@ void initby_recycle(void)
     p57post_plus1(); /* TCF P57POST +1 */
 }
 
-/* 5DEGTEST: "IF ANGLES GREATER THAN 5 DEGS, DO COARSE" (COATRIM): the
- * angles (OGC) to OGCT, scaled by 5DEGREES; less, and with SURFDISP as
+/* 5DEGTEST -- p. 971: "IF ANGLES GREATER THAN 5 DEGS, DO COARSE" (COATRIM):
+ * the angles (OGC) to OGCT, scaled by 5DEGREES; less, and with SURFDISP as
  * the return (QMIN), the gyros torqued (JUSTTRIM). */
 static void five_deg_test(void)
 {
@@ -298,8 +302,8 @@ static const word five_deg_test_words[] = {
 const struct interpretive_code FIVE_DEG_TEST_CODE = {
     015u, FIVE_DEG_TEST + 1u, COUNT(five_deg_test_words), five_deg_test_words};
 
-/* SURFDISP +1, after the EXIT: a restart point (PHASCHNG, 04024); the
- * desired stable member (XSMD) to REFSMMAT (MATMOVE), REFSMFLG set. */
+/* SURFDISP +1 -- p. 972, after the EXIT: a restart point (PHASCHNG, 04024);
+ * the desired stable member (XSMD) to REFSMMAT (MATMOVE), REFSMFLG set. */
 void surfdisp_after_exit(void)
 {
     tc_to(SURFDISP + 1u, PHASCHNG); /* OCT 04024 */
@@ -324,8 +328,9 @@ static const word surfdisp_words[] = {
 const struct interpretive_code SURFDISP_CODE = {015u, SURFDISP + 4u, COUNT(surfdisp_words),
                                                 surfdisp_words};
 
-/* After the EXIT: "IF OPTION ZERO DO FINISH" (P57POST +1); else B2F8.
- * (CCS of -0 leaves A +0 at B2F8 +1, after the CAF.) */
+/* SURFDISP +013 -- p. 972: After the EXIT: "IF OPTION ZERO DO FINISH"
+ * (P57POST +1); else B2F8. (CCS of -0 leaves A +0 at B2F8 +1, after the
+ * CAF.) */
 void surfdisp_option(void)
 {
     switch (ccs_at(ADDRESS_OF(OPTION2))) {
@@ -336,9 +341,9 @@ void surfdisp_option(void)
     }
 }
 
-/* B2F8: "IF INITIAL FLAG SET, RE-CYCLE" (P57JUMP); else the LM's attitude
- * in moon-fixed axes (REFMF), then P57POST. (After the MASK, A is +0 or
- * the bit: CCS takes its first two ways only.) */
+/* B2F8 -- p. 972: "IF INITIAL FLAG SET, RE-CYCLE" (P57JUMP); else the LM's
+ * attitude in moon-fixed axes (REFMF), then P57POST. (After the MASK, A is
+ * +0 or the bit: CCS takes its first two ways only.) */
 static void b2f8(void)
 {
     set_A(INITABIT);
@@ -354,7 +359,9 @@ static void b2f8_plus1(void)
         tc_at(B2F8 + 4u);
         intpret();
         break;
-    default: not_modelled();
+    /* (never: a masked bit) */
+    case NEGATIVE:
+    case IS_MINUS_ZERO: not_modelled(); /* the next words are interpretive words: CALL, REFMF */
     }
 }
 
@@ -366,10 +373,10 @@ static const word b2f8_words[] = {
 
 const struct interpretive_code B2F8_CODE = {015u, B2F8 + 5u, COUNT(b2f8_words), b2f8_words};
 
-/* P57POST +1, after the EXIT: "DISPLAY V50N25 CHK CODE 14" (GOPERF1):
- * terminate, proceed ("TO RE-ALIGN", P57JUMP) or enter: after option 2,
- * a restart point (PHASCHNG, 04024) and the landing site; else out of
- * P57. */
+/* P57POST +1 -- p. 972, after the EXIT: "DISPLAY V50N25 CHK CODE 14"
+ * (GOPERF1): terminate, proceed ("TO RE-ALIGN", P57JUMP) or enter: after
+ * option 2, a restart point (PHASCHNG, 04024) and the landing site; else out
+ * of P57. */
 void p57post_plus1(void)
 {
     set_A(OCT14);
@@ -466,8 +473,9 @@ static const word coatrim_words[] = {
 
 const struct interpretive_code COATRIM_CODE = {015u, COATRIM, COUNT(coatrim_words), coatrim_words};
 
-/* After the EXIT: the gimbal angles flashed (V06N22): terminate, proceed
- * (a restart point, PHASCHNG 04024, then CORSIT) or enter (again). */
+/* COATRIM +016 -- p. 974: After the EXIT: the gimbal angles flashed
+ * (V06N22): terminate, proceed (a restart point, PHASCHNG 04024, then
+ * CORSIT) or enter (again). */
 void coatrim_after_exit(void)
 {
     set_A(V06N22);

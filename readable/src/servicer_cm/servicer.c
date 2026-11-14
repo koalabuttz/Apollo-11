@@ -12,14 +12,13 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void pipcheck(void);
 static void averageg(void);
 
 /* ---- SERVICER -- p. 828 ---- */
 
-/* SERVICER: the PIPA check, Z, Y and X (RUPTREG1 counting 2, 1, 0), ... */
+/* SERVICER -- p. 828: the PIPA check, Z, Y and X (RUPTREG1 counting 2, 1,
+ * 0), ... */
 void servicer(void)
 {
     set_A(TWO);
@@ -65,14 +64,14 @@ static void pipcheck(void)
     }
 }
 
-/* PIPCHECK +5: TC PIPLOOP. */
+/* PIPCHECK +5 -- p. 828: TC PIPLOOP. */
 void pipcheck_no_count(void)
 {
     tc_at(PIPCHECK + 5u);
     piploop();
 }
 
-/* PIPCHECK +6: the count's magnitude less one, less 6398. */
+/* PIPCHECK +6 -- p. 828: the count's magnitude less one, less 6398. */
 void saturation_test(void)
 {
     ad(MINUS_MAXDELV);
@@ -83,15 +82,15 @@ void saturation_test(void)
     tc_to(PIPCHECK + 011u, ALARM); /* OCT 00205 */
 }
 
-/* After the alarm: AVERAGEG, the compensation, DVTOTAL and DVMON
- * "BYPASSED". */
+/* PIPCHECK +013 -- p. 828: After the alarm: AVERAGEG, the compensation,
+ * DVTOTAL and DVMON "BYPASSED". */
 void pipcheck_after_alarm(void)
 {
     tc_at(PIPCHECK + 013u);
     averageg();
 }
 
-/* PIPLOOP: the next count; after X, "RESTART REREADAC + SERVICER"
+/* PIPLOOP -- p. 828: the next count; after X, "RESTART REREADAC + SERVICER"
  * (PHASCHNG, OCT 16035, OCT 20000, 2CADR DVTOTUP). (A
  * negative RUPTREG1 would leave the CCS on those data words: not
  * modelled.) */
@@ -105,14 +104,14 @@ void piploop(void)
     }
 }
 
-/* The "PIPA COMPENSATION CALL" (1/PIPA, through BANKCALL), back at
- * DVTOTUP. */
+/* PIPLOOP +7 -- p. 828: The "PIPA COMPENSATION CALL" (1/PIPA, through
+ * BANKCALL), back at DVTOTUP. */
 void piploop_after_phaschng(void)
 {
     tc_to(PIPLOOP + 7u, BANKCALL);
 }
 
-/* DVTOTUP: to the interpreter, for DVTOTUP_CODE. */
+/* DVTOTUP -- p. 828: to the interpreter, for DVTOTUP_CODE. */
 void dvtotup(void)
 {
     tc_at(DVTOTUP);
@@ -130,7 +129,8 @@ static const word dvtotup_words[] = {
 const struct interpretive_code DVTOTUP_CODE = {037u, DVTOTUP + 1u, COUNT(dvtotup_words),
                                                dvtotup_words};
 
-/* After the EXIT: "ACCUMULATE DVTOTAL", and AVERAGEG. */
+/* DVTOTUP +5 -- p. 828: After the EXIT: "ACCUMULATE DVTOTAL", and
+ * AVERAGEG. */
 void dvtotup_after_exit(void)
 {
     dca(ADDRESS_OF(MPAC));
@@ -140,14 +140,15 @@ void dvtotup_after_exit(void)
 
 /* ---- AVERAGEG -- pp. 828-829 ---- */
 
-/* AVERAGEG: a phase change (PHASCHNG, OCT 10035); ... */
+/* AVERAGEG -- p. 828: a phase change (PHASCHNG, OCT 10035); ... */
 static void averageg(void)
 {
     tc_to(AVERAGEG, PHASCHNG);
 }
 
-/* ... CALCRVG: "RN1, VN1, GDT1/2 CALCULATED VIA CALCRVG ROUTINE BY
- * UPDATING RN, VN WITH DELV AND AN AVERAGED VALUE OF GDT/2." */
+/* AVERAGEG +2 -- p. 828: ... CALCRVG: "RN1, VN1, GDT1/2 CALCULATED VIA
+ * CALCRVG ROUTINE BY UPDATING RN, VN WITH DELV AND AN AVERAGED VALUE OF
+ * GDT/2." */
 void averageg_after_phaschng(void)
 {
     tc_at(AVERAGEG + 2u);
@@ -163,29 +164,32 @@ static const word averageg_words[] = {
 const struct interpretive_code AVERAGEG_CODE = {037u, AVERAGEG + 3u, COUNT(averageg_words),
                                                 averageg_words};
 
-/* After the EXIT: the phase again (PHASCHNG, OCT 10035); ... */
+/* AVERAGEG +6 -- p. 829: After the EXIT: the phase again (PHASCHNG, OCT
+ * 10035); ... */
 void averageg_after_exit(void)
 {
     tc_to(AVERAGEG + 6u, PHASCHNG);
 }
 
-/* ... "COPY RN1,VN1,GOT102,GOBL1/2,PIPTIME1" (sic) "INTO RN ,VN ,GDT/12
- * ,GOBL/2 ,PIPTIME" (GENTRAN, OCT31 + 1 words, ADRES RN1, ADRES RN), "FOR
- * RESTART PROTECTION"; ... */
+/* AVERAGEG +010 -- p. 829: ... "COPY RN1,VN1,GOT102,GOBL1/2,PIPTIME1" (sic)
+ * "INTO RN ,VN ,GDT/12 ,GOBL/2 ,PIPTIME" (GENTRAN, OCT31 + 1 words, ADRES
+ * RN1, ADRES RN), "FOR RESTART PROTECTION"; ... */
 void averageg_copy(void)
 {
     set_A(OCT31);
     tc_to(AVERAGEG + 011u, GENTRAN);
 }
 
-/* ... "GENTRAN DOES AN INHINT"; the phase once more; ... */
+/* AVERAGEG +014 -- p. 829: ... "GENTRAN DOES AN INHINT"; the phase once
+ * more; ... */
 void averageg_after_gentran(void)
 {
     relint();
     tc_to(AVERAGEG + 015u, PHASCHNG);
 }
 
-/* ... and "AVERAGEG EXIT": DXCH Z with AVGEXIT's 2CADR. */
+/* AVERAGEG +017 -- p. 829: ... and "AVERAGEG EXIT": DXCH Z with AVGEXIT's
+ * 2CADR. */
 void averageg_exit(void)
 {
     dca(ADDRESS_OF(AVGEXIT));
@@ -194,8 +198,9 @@ void averageg_exit(void)
 
 /* ---- AVGEND -- pp. 829-830 ---- */
 
-/* AVGEND, the "FINAL AVERAGE G EXIT": OLDBT1, "SET UP FREE FALL GYRO
- * COMPENSATION" (PIPTIME's low word), and "SET DRIFTFLG" (UPFLAG); ... */
+/* AVGEND -- p. 829, the "FINAL AVERAGE G EXIT": OLDBT1, "SET UP FREE FALL
+ * GYRO COMPENSATION" (PIPTIME's low word), and "SET DRIFTFLG" (UPFLAG);
+ * ... */
 void avgend(void)
 {
     ca(ADDRESS_OF(PIPTIME) + 1u);
@@ -203,14 +208,15 @@ void avgend(void)
     tc_to(AVGEND + 2u, UPFLAG);
 }
 
-/* ... "GROUP 5 OFF", "GROUP 2 ON FOR AVETOMID" (2PHSCHNG, OCT 5, OCT
- * 05022, OCT 20000); ... */
+/* AVGEND +4 -- p. 829: ... "GROUP 5 OFF", "GROUP 2 ON FOR AVETOMID"
+ * (2PHSCHNG, OCT 5, OCT 05022, OCT 20000); ... */
 void avgend_after_upflag(void)
 {
     tc_to(AVGEND + 4u, TWO_PHSCHNG);
 }
 
-/* ... AVETOMID: "CONVERT STATE VECTOR TO REFERENCE SCALE." */
+/* AVGEND +010 -- p. 829: ... AVETOMID: "CONVERT STATE VECTOR TO REFERENCE
+ * SCALE." */
 void avgend_after_2phschng(void)
 {
     tc_at(AVGEND + 010u);
@@ -226,8 +232,8 @@ static const word avgend_words[] = {
 const struct interpretive_code AVGEND_CODE = {037u, AVGEND + 011u, COUNT(avgend_words),
                                               avgend_words};
 
-/* After the EXIT: "ZERO MARK COUNTERS." (VHFCNT, TRKMKCNT), and PIPFREE
- * (BANKCALL); ... */
+/* AVGEND +014 -- p. 829: After the EXIT: "ZERO MARK COUNTERS." (VHFCNT,
+ * TRKMKCNT), and PIPFREE (BANKCALL); ... */
 void avgend_after_exit(void)
 {
     set_A(ZERO);
@@ -236,8 +242,9 @@ void avgend_after_exit(void)
     tc_to(AVGEND + 017u, BANKCALL);
 }
 
-/* ... "INVALIDATE MARK BUFFER" (MRKBUF2, -BIT9), the "TEST CONNECTOR
- * OUTBIT" off (DSALMOUT bit 9), and CM/DSTBY down (DOWNFLAG); ... */
+/* AVGEND +021 -- p. 829: ... "INVALIDATE MARK BUFFER" (MRKBUF2, -BIT9), the
+ * "TEST CONNECTOR OUTBIT" off (DSALMOUT bit 9), and CM/DSTBY down
+ * (DOWNFLAG); ... */
 void avgend_after_pipfree(void)
 {
     set_A(negate(BIT9));
@@ -246,14 +253,14 @@ void avgend_after_pipfree(void)
     tc_to(AVGEND + 025u, DOWNFLAG);
 }
 
-/* ... V37FLAG down; ... */
+/* AVGEND +027 -- p. 829: ... V37FLAG down; ... */
 void avgend_after_downflag(void)
 {
     tc_to(AVGEND + 027u, DOWNFLAG);
 }
 
-/* ... "RESTORE GROUP 1 + 2 IF P20 IS RUNNING." (FLAGWRD0 bit 7: 2PHSCHNG,
- * "1.11SPOT", "2.13SPOT"); ... */
+/* AVGEND +031 -- p. 830: ... "RESTORE GROUP 1 + 2 IF P20 IS RUNNING."
+ * (FLAGWRD0 bit 7: 2PHSCHNG, "1.11SPOT", "2.13SPOT"); ... */
 void avgend_after_downflag_2(void)
 {
     set_A(BIT7);
@@ -265,20 +272,21 @@ void avgend_after_downflag_2(void)
     tc_to(AVGEND + 035u, TWO_PHSCHNG);
 }
 
-/* ... and CANV37 (POSTJUMP): "CONTROL TRANSFERRED TO CANV37 TO CONTINUE MM
- * CHANGE ROUTINE (R00)." */
+/* AVGEND +040 -- p. 830: ... and CANV37 (POSTJUMP): "CONTROL TRANSFERRED TO
+ * CANV37 TO CONTINUE MM CHANGE ROUTINE (R00)." */
 void avgend_after_2phschng_2(void)
 {
     tc_to(AVGEND + 040u, POSTJUMP);
 }
 
-/* SERVEXIT: "A, 5.3 = REREADAC (ONLY)" (PHASCHNG, OCT 00035), ... */
+/* SERVEXIT -- p. 830: "A, 5.3 = REREADAC (ONLY)" (PHASCHNG, OCT 00035),
+ * ... */
 void servexit(void)
 {
     tc_to(SERVEXIT, PHASCHNG);
 }
 
-/* ... and the job's end. */
+/* SERVEXIT +2 -- p. 830: ... and the job's end. */
 void servexit_after_phaschng(void)
 {
     continue_at(ENDOFJOB);
@@ -286,16 +294,16 @@ void servexit_after_phaschng(void)
 
 /* ---- NORMLIZE -- p. 831 ---- */
 
-/* NORMLIZE "PERFORMS THE INITIALIZATION REQUIRED PRIOR TO THE FIRST ENTRY
- * TO AVERAGEG": "SET UP TO COPY 14 REGS- RN1,VN1,PIPTIME1" "INTO RN,VN,
- * PIPTIME" (GENTRAN, THIRTEEN + 1 words); ... */
+/* NORMLIZE -- p. 831 "PERFORMS THE INITIALIZATION REQUIRED PRIOR TO THE
+ * FIRST ENTRY TO AVERAGEG": "SET UP TO COPY 14 REGS- RN1,VN1,PIPTIME1" "INTO
+ * RN,VN, PIPTIME" (GENTRAN, THIRTEEN + 1 words); ... */
 void normlize(void)
 {
     set_A(THIRTEEN);
     tc_to(NORMLIZE + 1u, GENTRAN);
 }
 
-/* ... then GDT/2 from RN (CALCGRAV), and GOBL/2. */
+/* NORMLIZE +4 -- p. 831: ... then GDT/2 from RN (CALCGRAV), and GOBL/2. */
 void normlize_after_gentran(void)
 {
     relint();
@@ -316,7 +324,7 @@ static const word normlize_words[] = {
 const struct interpretive_code NORMLIZE_CODE = {037u, NORMLIZE + 6u, COUNT(normlize_words),
                                                 normlize_words};
 
-/* After the EXIT, the job's end. */
+/* NORMLIZE +015 -- p. 831: After the EXIT, the job's end. */
 void normlize_after_exit(void)
 {
     continue_at(ENDOFJOB);

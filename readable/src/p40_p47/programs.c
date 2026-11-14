@@ -34,16 +34,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-/* TC at, to a routine out of the file: Q gets the return, and the
- * routine runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* TC to an erasable word that holds a return (P40/RET): the word runs as
  * TC <address>. Not modelled: a word that is not such an address (bits
  * 13-15 set, or below 010). */
@@ -69,14 +59,14 @@ static void tc_return_in(unsigned address)
 
 /* ---- P40 -- p. 753 ---- */
 
-/* P40LM: restart group 4 (PHASCHNG, OCT 04024). */
+/* P40LM -- p. 753: restart group 4 (PHASCHNG, OCT 04024). */
 void p40lm(void)
 {
     tc_to(P40LM, PHASCHNG);
 }
 
-/* P40LM +2: "INITIALIZATION FOR BURNBABY" (WHICH, P40TABLE). With the
- * descent stage gone (APSFLAG of FLGWRD10 set), alarm 1706 (P40ALM);
+/* P40LM +2 -- p. 753: "INITIALIZATION FOR BURNBABY" (WHICH, P40TABLE). With
+ * the descent stage gone (APSFLAG of FLGWRD10 set), alarm 1706 (P40ALM);
  * otherwise "GO DO IMU STATUS CHECK ROUTINE" (R02BOTH). MASK leaves A
  * positive or +0: those are the two ways CCS goes on here. */
 void p40lm_after_phaschng(void)
@@ -92,9 +82,10 @@ void p40lm_after_phaschng(void)
     tc_to(P40LM + 010u, BANKCALL); /* CADR R02BOTH */
 }
 
-/* P40LM +012: "INITIALIZE DVMON". The threshold is THRESH3, and THRESH1
- * more undocked (CSMDOCKD of DAPBOOLS clear; MASK again leaves A positive
- * or +0); the count four. Then "LOAD CONSTANTS FOR DPS BURN" (P40_CODE). */
+/* P40LM +012 -- p. 753: "INITIALIZE DVMON". The threshold is THRESH3, and
+ * THRESH1 more undocked (CSMDOCKD of DAPBOOLS clear; MASK again leaves A
+ * positive or +0); the count four. Then "LOAD CONSTANTS FOR DPS BURN"
+ * (P40_CODE). */
 void p40lm_after_r02both(void)
 {
     cs(ADDRESS_OF(DAPBOOLS));
@@ -128,7 +119,8 @@ static const word p40_words[] = {
     ORDER(EXIT),
 };
 
-/* After the EXIT: "ZERO ATTITUDE ERRORS, SET DB TO ONE DEG." (PFLITEDB). */
+/* P40LM +037 -- p. 754: After the EXIT: "ZERO ATTITUDE ERRORS, SET DB TO ONE
+ * DEG." (PFLITEDB). */
 void p40lm_after_exit(void)
 {
     inhint();
@@ -144,14 +136,15 @@ void p40lm_after_pflitedb(void)
     p40sxt4();
 }
 
-/* P40SXT4's return: on to the countdown (TCF BURNBABY). */
+/* P40LM +043 -- p. 754: P40SXT4's return: on to the countdown (TCF
+ * BURNBABY). */
 void p40lm_burn(void)
 {
     continue_at(BURNBABY);
 }
 
-/* P40SXT4: the caller's return kept in P40/RET (QXCH). At P41MANU, the
- * interrupts on again, and "CLEAR 3AXISFLG -- R60 USE VECPOINT."
+/* P40SXT4 -- p. 754: the caller's return kept in P40/RET (QXCH). At P41MANU,
+ * the interrupts on again, and "CLEAR 3AXISFLG -- R60 USE VECPOINT."
  * (DOWNFLAG). */
 static void p40sxt4(void)
 {
@@ -160,13 +153,13 @@ static void p40sxt4(void)
     tc_to(P40SXT4 + 3u, DOWNFLAG); /* ADRES 3AXISFLG */
 }
 
-/* P40SXT4 +5: "DO ATTITUDE MANEUVER ROUTINE" (R60LEM). */
+/* P40SXT4 +5 -- p. 754: "DO ATTITUDE MANEUVER ROUTINE" (R60LEM). */
 void p40sxt4_after_downflag(void)
 {
     tc_to(P40SXT4 + 5u, BANKCALL); /* CADR R60LEM */
 }
 
-/* P40SXT4 +7: back to the caller (TC P40/RET). */
+/* P40SXT4 +7 -- p. 754: back to the caller (TC P40/RET). */
 void p40sxt4_after_r60lem(void)
 {
     tc_at(P40SXT4 + 7u);
@@ -175,8 +168,8 @@ void p40sxt4_after_r60lem(void)
 
 /* ---- After the burn -- pp. 754-755 ---- */
 
-/* POSTBURN: DISPDEX the address of the next word (CA Z: positive, the
- * display up); SERVICER's exit to CALCN85 (AVEGEXIT gets the 2CADR at
+/* POSTBURN -- p. 754: DISPDEX the address of the next word (CA Z: positive,
+ * the display up); SERVICER's exit to CALCN85 (AVEGEXIT gets the 2CADR at
  * ACADN85); and the final values, verb 16 noun 40 (TGO, VG, DELTAVM),
  * flashed by GOFLASHR. */
 void postburn(void)
@@ -191,28 +184,28 @@ void postburn(void)
 
 static void term40(void);
 
-/* GOFLASHR's returns: terminate (TC TERM40), */
+/* POSTBURN +010 -- p. 754: GOFLASHR's returns: terminate (TC TERM40), */
 void postburn_terminate(void)
 {
     tc_at(POSTBURN + 010u);
     term40();
 }
 
-/* proceed (TCF TIGNOW), */
+/* POSTBURN +011 -- p. 754: proceed (TCF TIGNOW), */
 void postburn_proceed(void)
 {
     tignow();
 }
 
-/* enter (TC POSTBURN: the display again), */
+/* POSTBURN +012 -- p. 754: enter (TC POSTBURN: the display again), */
 void postburn_enter(void)
 {
     tc_at(POSTBURN + 012u);
     postburn();
 }
 
-/* and the immediate return, P40PHS1: restart group 4's phase 1 (PHASCHNG,
- * OCT 00014), and the job ends. */
+/* P40PHS1 -- p. 755: and the immediate return, P40PHS1: restart group 4's
+ * phase 1 (PHASCHNG, OCT 00014), and the job ends. */
 void p40phs1(void)
 {
     tc_to(P40PHS1, PHASCHNG);
@@ -223,8 +216,8 @@ void p40phs1_after_phaschng(void)
     continue_at(ENDOFJOB);
 }
 
-/* TIGNOW: the attitude errors zeroed (ZATTEROR) and the minimum deadband
- * set (SETMINDB), with interrupts inhibited, */
+/* TIGNOW -- p. 755: the attitude errors zeroed (ZATTEROR) and the minimum
+ * deadband set (SETMINDB), with interrupts inhibited, */
 void tignow(void)
 {
     inhint();
@@ -250,35 +243,35 @@ void tignow_after_setmindb(void)
     tignow_display();
 }
 
-/* REFLASHR's returns: terminate (TC TERM40), */
+/* TIGNOW +011 -- p. 755: REFLASHR's returns: terminate (TC TERM40), */
 void tignow_terminate(void)
 {
     tc_at(TIGNOW + 011u);
     term40();
 }
 
-/* proceed (TCF TERM40), */
+/* TIGNOW +012 -- p. 755: proceed (TCF TERM40), */
 void tignow_proceed(void)
 {
     term40();
 }
 
-/* enter (TC -5: the display again), */
+/* TIGNOW +013 -- p. 755: enter (TC -5: the display again), */
 void tignow_enter(void)
 {
     tc_at(TIGNOW + 013u);
     tignow_display();
 }
 
-/* and the immediate return (TCF P40PHS1). */
+/* TIGNOW +014 -- p. 755: and the immediate return (TCF P40PHS1). */
 void tignow_immediate(void)
 {
     p40phs1();
 }
 
-/* TERM40: SERVICER's exit back to its own (AVEGEXIT gets SERVCADR's
- * 2CADR); "ZERO RENDZVS CNTERS" (TRKMKCNT); DISPDEX the address of the
- * next word (CA Z); and the deadband the DAP had (RESTORDB). */
+/* TERM40 -- p. 755: SERVICER's exit back to its own (AVEGEXIT gets
+ * SERVCADR's 2CADR); "ZERO RENDZVS CNTERS" (TRKMKCNT); DISPDEX the address
+ * of the next word (CA Z); and the deadband the DAP had (RESTORDB). */
 static void term40(void)
 {
     dca(SERVCADR); /* EXTEND; DCA */
@@ -291,7 +284,7 @@ static void term40(void)
     tc_to(TERM40 + 010u, IBNKCALL); /* CADR RESTORDB */
 }
 
-/* TERM40 +012: the program ends (GOTOPOOH). */
+/* TERM40 +012 -- p. 755: the program ends (GOTOPOOH). */
 void term40_after_restordb(void)
 {
     relint();
@@ -300,7 +293,8 @@ void term40_after_restordb(void)
 
 /* ---- P41 -- pp. 755-757 ---- */
 
-/* P41LM: "INITIALIZATION FOR BURNBABY" (WHICH, P41TABLE -5), and R02. */
+/* P41LM -- p. 755: "INITIALIZATION FOR BURNBABY" (WHICH, P41TABLE -5), and
+ * R02. */
 void p41lm(void)
 {
     set_A(P41ADRES);
@@ -308,7 +302,7 @@ void p41lm(void)
     tc_to(P41LM + 2u, BANKCALL); /* CADR R02BOTH */
 }
 
-/* P41LM +4: to the interpreter, for P41_CODE. */
+/* P41LM +4 -- p. 755: to the interpreter, for P41_CODE. */
 void p41lm_after_r02both(void)
 {
     tc_at(P41_TC_INTPRET);
@@ -339,27 +333,29 @@ static const word p41_words[] = {
     ORDER(EXIT),
 };
 
-/* After the EXIT: "ZERO ATTITUDE ERRORS" (ZATTEROR), */
+/* P41LM +023 -- p. 756: After the EXIT: "ZERO ATTITUDE ERRORS"
+ * (ZATTEROR), */
 void p41lm_after_exit(void)
 {
     inhint();
     tc_to(P41_EXIT + 2u, IBNKCALL); /* CADR ZATTEROR */
 }
 
-/* "SET 0.3 DEGREE DEADBAND" (SETMINDB), */
+/* P41LM +026 -- p. 756: "SET 0.3 DEGREE DEADBAND" (SETMINDB), */
 void p41lm_after_zatteror(void)
 {
     tc_to(P41_EXIT + 4u, IBNKCALL); /* CADR SETMINDB */
 }
 
-/* and the maneuver (P40SXT4), */
+/* P41LM +030 -- p. 756: and the maneuver (P40SXT4), */
 void p41lm_after_setmindb(void)
 {
     tc_at(P41_TC_P40SXT4);
     p40sxt4();
 }
 
-/* which comes back to the TC INTPRET for P41_VGBODY_CODE. */
+/* P41LM +031 -- p. 756: which comes back to the TC INTPRET for
+ * P41_VGBODY_CODE. */
 void p41lm_after_p40sxt4(void)
 {
     tc_at(P41_TC_P40SXT4 + 1u);
@@ -373,15 +369,16 @@ static const word p41_vgbody_words[] = {
     ORDERS(VLOAD, CALL), ADDRESS_PLUS_ONE(VGTIG), ADDRESS(S41_1), STORE(VGBODY), ORDER(EXIT),
 };
 
-/* After the EXIT: verb 16 noun 85 (GODSPRET, which returns at once), */
+/* P41LM +037 -- p. 756: After the EXIT: verb 16 noun 85 (GODSPRET, which
+ * returns at once), */
 void p41lm_after_vgbody(void)
 {
     set_A(V16N85B);
     tc_to(P41_VGBODY_EXIT + 2u, BANKCALL); /* CADR GODSPRET */
 }
 
-/* then DYNMDISP as a job of priority 5 to keep it up to date, DISPDEX
- * "FOR SAFETY ONLY", */
+/* P41LM +042 -- p. 756: then DYNMDISP as a job of priority 5 to keep it up
+ * to date, DISPDEX "FOR SAFETY ONLY", */
 void p41lm_after_godspret(void)
 {
     set_A(PRIO5);
@@ -389,21 +386,21 @@ void p41lm_after_godspret(void)
     tc_to(P41_VGBODY_EXIT + 6u, FINDVAC); /* 2CADR DYNMDISP */
 }
 
-/* "GROUP 6 RESTARTS AT REDO6.7", "GROUP 4 RESTARTS HERE" (2PHSCHNG, OCT
- * 00076, OCT 04024), */
+/* P41LM +047 -- p. 756: "GROUP 6 RESTARTS AT REDO6.7", "GROUP 4 RESTARTS
+ * HERE" (2PHSCHNG, OCT 00076, OCT 04024), */
 void p41lm_after_findvac(void)
 {
     tc_to(P41_VGBODY_EXIT + 011u, TWO_PHSCHNG);
 }
 
-/* and on to the countdown (TCF B*RNB*B*). */
+/* P41LM +052 -- p. 756: and on to the countdown (TCF B*RNB*B*). */
 void p41lm_burn(void)
 {
     continue_at(B_STAR_RNB_STAR_B_STAR);
 }
 
-/* REDO6.7: "ON A RESTART, DO NOT PUT UP DISPLAY IF BLANKING (BETWEEN
- * TIG-35 AND TIG-30)", DISPDEX -2 then: BLNKWAIT waits a second
+/* REDO6.7 -- p. 756: "ON A RESTART, DO NOT PUT UP DISPLAY IF BLANKING
+ * (BETWEEN TIG-35 AND TIG-30)", DISPDEX -2 then: BLNKWAIT waits a second
  * (DELAYJOB), and comes back here. Otherwise verb 16 noun 85 again. */
 void redo6_7(void)
 {
@@ -418,14 +415,16 @@ void redo6_7(void)
     tc_to(REDO6_7 + 5u, BANKCALL); /* CADR GODSPRET */
 }
 
-/* REDO6.7 +7: DYNMDISP's priority (PRIOCHNG), and on at DYNMDISP. */
+/* REDO6.7 +7 -- p. 757: DYNMDISP's priority (PRIOCHNG), and on at
+ * DYNMDISP. */
 void redo6_7_after_godspret(void)
 {
     set_A(PRIO5);
     tc_to(REDO6_7 + 010u, PRIOCHNG);
 }
 
-/* DYNMDISP: "A NON-POSITIVE DISPDEX INDICATES PAST TIG-35, SO SERVICER
+/* DYNMDISP -- p. 757: "A NON-POSITIVE DISPDEX INDICATES PAST TIG-35, SO
+ * SERVICER
  * WILL BE DOING THE UPDATING OF NOUN 85.  STOP DYNMDISP." (ENDOFJOB).
  * Otherwise noun 85 from VGPREV (DYNMDISP_CODE). */
 void dynmdisp(void)
@@ -444,20 +443,21 @@ static const word dynmdisp_words[] = {
     ORDERS(VLOAD, CALL), ADDRESS_PLUS_ONE(VGPREV), ADDRESS(S41_1), STORE(VGBODY), ORDER(EXIT),
 };
 
-/* After the EXIT: a second's wait (DELAYJOB), */
+/* DYNMDISP +011 -- p. 757: After the EXIT: a second's wait (DELAYJOB), */
 void dynmdisp_after_exit(void)
 {
     set_A(ONE_SEC);
     tc_to(DYNMDISP + 012u, BANKCALL); /* CADR DELAYJOB */
 }
 
-/* and round again (TCF DYNMDISP). */
+/* DYNMDISP +014 -- p. 757: and round again (TCF DYNMDISP). */
 void dynmdisp_after_delayjob(void)
 {
     dynmdisp();
 }
 
-/* CALCN85: SERVICER's exit (AVEGEXIT) after the burn. CALCN85_CODE. */
+/* CALCN85 -- p. 757: SERVICER's exit (AVEGEXIT) after the burn.
+ * CALCN85_CODE. */
 void calcn85(void)
 {
     tc_at(CALCN85);
@@ -471,7 +471,8 @@ static const word calcn85_words[] = {
     ADDRESS(S41_1), STORE(VGBODY),     ORDER(EXIT),
 };
 
-/* After the EXIT: back to SERVICER (POSTJUMP, CADR SERVEXIT). */
+/* CALCN85 +010 -- p. 757: After the EXIT: back to SERVICER (POSTJUMP, CADR
+ * SERVEXIT). */
 void calcn85_after_exit(void)
 {
     tc_to(CALCN85 + 010u, POSTJUMP);
@@ -479,14 +480,14 @@ void calcn85_after_exit(void)
 
 /* ---- P42 -- pp. 757-758 ---- */
 
-/* P42LM: restart group 4 (PHASCHNG, OCT 04024). */
+/* P42LM -- p. 757: restart group 4 (PHASCHNG, OCT 04024). */
 void p42lm(void)
 {
     tc_to(P42LM, PHASCHNG);
 }
 
-/* P42LM +2: "INITIALIZATION FOR BURNBABY." (WHICH, P42TABLE). With the
- * descent stage still on (APSFLAG clear), P40ALM's alarm (TC P40ALM);
+/* P42LM +2 -- p. 757: "INITIALIZATION FOR BURNBABY." (WHICH, P42TABLE). With
+ * the descent stage still on (APSFLAG clear), P40ALM's alarm (TC P40ALM);
  * otherwise P42STAGE. MASK leaves A positive or +0. */
 void p42lm_after_phaschng(void)
 {
@@ -501,14 +502,14 @@ void p42lm_after_phaschng(void)
     p42stage();
 }
 
-/* P42STAGE: R02. */
+/* P42STAGE -- p. 757: R02. */
 void p42stage(void)
 {
     tc_to(P42STAGE, BANKCALL); /* CADR R02BOTH */
 }
 
-/* P42STAGE +2: "INITIALIZE DVMON" (THRESH2, the count four), and to the
- * interpreter, for P42_CODE. */
+/* P42STAGE +2 -- p. 758: "INITIALIZE DVMON" (THRESH2, the count four), and
+ * to the interpreter, for P42_CODE. */
 void p42stage_after_r02both(void)
 {
     set_A(THRESH2);
@@ -528,13 +529,13 @@ static const word p42_words[] = {
 
 /* ---- P47 -- pp. 758-759 ---- */
 
-/* P47LM: R02, */
+/* P47LM -- p. 758: R02, */
 void p47lm(void)
 {
     tc_to(P47LM, BANKCALL); /* CADR R02BOTH */
 }
 
-/* then to the interpreter, for P47_CODE, */
+/* P47LM +2 -- p. 758: then to the interpreter, for P47_CODE, */
 void p47lm_after_r02both(void)
 {
     tc_at(P47LM + 2u);
@@ -548,26 +549,27 @@ static const word p47_words[] = {
     ADDRESS(MIDTOAV2),
 };
 
-/* MIDTOAV2's return: STARTP47 after that wait (TWIDDLE), */
+/* P47LM +5 -- p. 758: MIDTOAV2's return: STARTP47 after that wait
+ * (TWIDDLE), */
 void p47lm_after_midtoav2(void)
 {
     ca(ADDRESS_OF(MPAC) + 1u);
     tc_to(P47LM + 6u, TWIDDLE); /* ADRES STARTP47 */
 }
 
-/* and the job ends. */
+/* P47LM +010 -- p. 758: and the job ends. */
 void p47lm_after_twiddle(void)
 {
     continue_at(ENDOFJOB);
 }
 
-/* STARTP47: restart group 5 (PHASCHNG, OCT 05014, OCT 77777), */
+/* STARTP47 -- p. 758: restart group 5 (PHASCHNG, OCT 05014, OCT 77777), */
 void startp47(void)
 {
     tc_to(STARTP47, PHASCHNG);
 }
 
-/* STARTP47 +3: SERVICER's exit to CALCN83 (AVEGEXIT gets ACADN83's
+/* STARTP47 +3 -- p. 758: SERVICER's exit to CALCN83 (AVEGEXIT gets ACADN83's
  * 2CADR), and P47BODY as a job of priority 20; */
 void startp47_after_phaschng(void)
 {
@@ -577,13 +579,14 @@ void startp47_after_phaschng(void)
     tc_to(STARTP47 + 7u, FINDVAC); /* 2CADR P47BODY */
 }
 
-/* then REDO4.2, which "CHECKS PHASE 5 AND GOES TO PREREAD". */
+/* STARTP47 +012 -- p. 758: then REDO4.2, which "CHECKS PHASE 5 AND GOES TO
+ * PREREAD". */
 void startp47_after_findvac(void)
 {
     continue_at(REDO4_2);
 }
 
-/* CALCN83: SERVICER's exit, each pass. CALCN83_CODE. */
+/* CALCN83 -- p. 758: SERVICER's exit, each pass. CALCN83_CODE. */
 void calcn83(void)
 {
     tc_at(CALCN83);
@@ -603,13 +606,15 @@ static const word calcn83_words[] = {
     ORDER(EXIT),
 };
 
-/* After the EXIT: "REREADAC AND HERE" (PHASCHNG, OCT 10035), */
+/* CALCN83 +011 -- p. 759: After the EXIT: "REREADAC AND HERE" (PHASCHNG, OCT
+ * 10035), */
 void calcn83_after_exit(void)
 {
     tc_to(CALCN83_EXIT + 1u, PHASCHNG);
 }
 
-/* and to the interpreter, for CALCN83_DELVCTL_CODE. */
+/* CALCN83 +013 -- p. 759: and to the interpreter, for
+ * CALCN83_DELVCTL_CODE. */
 void calcn83_after_phaschng(void)
 {
     tc_at(CALCN83_EXIT + 3u);
@@ -624,20 +629,22 @@ static const word calcn83_delvctl_words[] = {
     ORDER(EXIT),
 };
 
-/* After the EXIT: back to SERVICER (POSTJUMP, CADR SERVEXIT). */
+/* CALCN83 +020 -- p. 759: After the EXIT: back to SERVICER (POSTJUMP, CADR
+ * SERVEXIT). */
 void calcn83_after_delvctl(void)
 {
     tc_to(CALCN83_EXIT2 + 1u, POSTJUMP);
 }
 
-/* P47BOD: verb 16 noun 83 (DELVIMU), flashed by GOFLASHR. */
+/* P47BOD -- p. 759: verb 16 noun 83 (DELVIMU), flashed by GOFLASHR. */
 static void p47bod(void)
 {
     set_A(V1683);
     tc_to(P47BOD + 1u, BANKCALL); /* CADR GOFLASHR */
 }
 
-/* GOFLASHR's returns: terminate and proceed end the program (GOTOPOOH), */
+/* P47BOD +3 -- p. 759: GOFLASHR's returns: terminate and proceed end the
+ * program (GOTOPOOH), */
 void p47bod_terminate(void)
 {
     tc_to(P47BOD + 3u, GOTOPOOH);
@@ -648,19 +655,20 @@ void p47bod_proceed(void)
     tc_to(P47BOD + 4u, GOTOPOOH);
 }
 
-/* enter starts again (TCF P47BODY), */
+/* P47BOD +5 -- p. 759: enter starts again (TCF P47BODY), */
 void p47bod_enter(void)
 {
     p47body();
 }
 
-/* and the immediate return is P40PHS1's (TCF P40PHS1). */
+/* P47BOD +6 -- p. 759: and the immediate return is P40PHS1's (TCF
+ * P40PHS1). */
 void p47bod_immediate(void)
 {
     p40phs1();
 }
 
-/* P47BODY: to the interpreter, for P47BODY_CODE. */
+/* P47BODY -- p. 759: to the interpreter, for P47BODY_CODE. */
 void p47body(void)
 {
     tc_at(P47BODY);
@@ -672,7 +680,7 @@ static const word p47body_words[] = {
     ORDER(VLOAD), ADDRESS_PLUS_ONE(HI6ZEROS), STORE(DELVIMU), STORE(DELVCTL), ORDER(EXIT),
 };
 
-/* After the EXIT: the display (TC P47BOD). */
+/* P47BODY +6 -- p. 759: After the EXIT: the display (TC P47BOD). */
 void p47body_after_exit(void)
 {
     tc_at(P47BODY + 6u);

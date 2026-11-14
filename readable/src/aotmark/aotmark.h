@@ -50,8 +50,8 @@ void markrupt(void);
 void markrupt_after_resume(void); /* MARKRUPT +026 */
 void markrupt_after_alarm(void);  /* MARKRUPT +032 */
 void findkey(void);
-void findkey_plus10(void);         /* FINDKEY +010: CCS A, the Y mark's bit */
-void findkey_plus15(void);         /* FINDKEY +015: CCS A, the X mark's bit */
+void findkey_plus010(void);        /* FINDKEY +010: CCS A, the Y mark's bit */
+void findkey_plus015(void);        /* FINDKEY +015: CCS A, the X mark's bit */
 void somekey_plus3(void);          /* SOMEKEY +3: EXTEND; BZF +3 */
 void somekey_after_postjump(void); /* SOMEKEY +7 */
 void somekey_after_alarm(void);    /* SOMEKEY +011 */

@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P51-P53.agc of the CM, part 2 (Comanche055 pp. 743-747, bank 14): R52,
- * the automatic optics positioning routine, and ADVORB.
+/* P51-P53.agc of the CM, part 2 (Comanche055 pp. 743-747, bank 14): R52, the
+ * automatic optics positioning routine, and ADVORB. The faithful C is
+ * c64-port/src/cm_p51_p53.c.
  *
  * R52 "TO POINT THE STAR LOS OF THE OPTICS AT A STAR OR LANDMARK DEFINED
  * BY THE PROGRAM OR BY DSKY INPUT", or at the LM while tracking it. Its
@@ -21,8 +22,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void r52d(void);
 static void r52f(void);
 static void r52f_plus1(void);
@@ -42,8 +41,8 @@ static const word r52_words[] = {
 
 const struct interpretive_code R52_CODE = {014u, R52, COUNT(r52_words), r52_words};
 
-/* R52VRB +1: the optics to stay where they are for now (CDUT and CDUS to
- * DESOPTT and DESOPTS). */
+/* R52VRB +1 -- p. 744: the optics to stay where they are for now (CDUT and
+ * CDUS to DESOPTT and DESOPTS). */
 void r52vrb_after_exit(void)
 {
     dca(ADDRESS_OF(CDUT));
@@ -63,8 +62,8 @@ static const word r52vrb_words[] = {
 
 const struct interpretive_code R52VRB_CODE = {014u, R52VRB + 5u, COUNT(r52vrb_words), r52vrb_words};
 
-/* R52A: TRUNFLAG set; with TARG1FLG set, the LM's (R52H); else TERMIFLG
- * cleared. */
+/* R52A -- p. 744: TRUNFLAG set; with TARG1FLG set, the LM's (R52H); else
+ * TERMIFLG cleared. */
 void r52a(void)
 {
     tc_at(R52A);
@@ -82,8 +81,8 @@ static const word r52a_words[] = {
 
 const struct interpretive_code R52A_CODE = {014u, R52A + 1u, COUNT(r52a_words), r52a_words};
 
-/* R52C: "IS OPTICS MODE IN AGC" (SWSAMPLE, its sign bit): no, "MANUAL"
- * (R52M); yes, SR52.1 (R52D). */
+/* R52C -- p. 744: "IS OPTICS MODE IN AGC" (SWSAMPLE, its sign bit): no,
+ * "MANUAL" (R52M); yes, SR52.1 (R52D). */
 void r52c(void)
 {
     ca(ADDRESS_OF(SWSAMPLE));
@@ -94,33 +93,34 @@ void r52c(void)
     r52d();
 }
 
-/* R52D: SR52.1, where the optics must point. It returns to one of three
- * words, by the trunnion angle. */
+/* R52D -- p. 744: SR52.1, where the optics must point. It returns to one of
+ * three words, by the trunnion angle. */
 static void r52d(void)
 {
     tc_to(R52D, BANKCALL); /* CADR SR52.1 */
 }
 
-/* "GR 90 DEGREES" (R52L). */
+/* R52D +2 -- p. 744: "GR 90 DEGREES" (R52L). */
 void r52d_over_90(void)
 {
     r52l(); /* TCF R52L */
 }
 
-/* "GR 50 DEGREES" (R52J). */
+/* R52D +3 -- p. 744: "GR 50 DEGREES" (R52J). */
 void r52d_over_50(void)
 {
     r52j(); /* TCF R52J */
 }
 
-/* "LS 50 DEGREES": "SET TRUNFLAG BIT 4 FLAG 0" (UPFLAG), then R52JA. */
+/* R52D +4 -- p. 744: "LS 50 DEGREES": "SET TRUNFLAG BIT 4 FLAG 0" (UPFLAG),
+ * then R52JA. */
 void r52d_under_50(void)
 {
     tc_to(R52D + 4u, UPFLAG); /* ADRES TRUNFLAG */
 }
 
-/* R52JA: "IS THIS A LEM" (STATE +1, bit 10): yes, R52E. (After each MASK,
- * A is +0 or the bit: CCS takes its first two ways only.) */
+/* R52JA -- p. 744: "IS THIS A LEM" (STATE +1, bit 10): yes, R52E. (After
+ * each MASK, A is +0 or the bit: CCS takes its first two ways only.) */
 void r52ja(void)
 {
     set_A(BIT10);
@@ -133,8 +133,8 @@ void r52ja(void)
     r52ja_not_lem();
 }
 
-/* R52JA +4: "NO, IS R53FLAG SET" (STATE, bit 6): yes, R52E; no, the angles
- * shown (V06N92, GODSPR). */
+/* R52JA +4 -- p. 744: "NO, IS R53FLAG SET" (STATE, bit 6): yes, R52E; no,
+ * the angles shown (V06N92, GODSPR). */
 void r52ja_not_lem(void)
 {
     set_A(BIT6);
@@ -147,9 +147,9 @@ void r52ja_not_lem(void)
     tc_to(R52JA + 011u, BANKCALL); /* CADR GODSPR */
 }
 
-/* R52E: "IS OSS IN CMC MODE" (SWSAMPLE): no, R52F; yes, "IS TRUNFLAG SET"
- * (STATE, bit 4, through CS: +0 when it is): no, only the shaft (SAC to
- * DESOPTS); yes, the trunnion too (PAC to DESOPTT). */
+/* R52E -- p. 745: "IS OSS IN CMC MODE" (SWSAMPLE): no, R52F; yes, "IS
+ * TRUNFLAG SET" (STATE, bit 4, through CS: +0 when it is): no, only the
+ * shaft (SAC to DESOPTS); yes, the trunnion too (PAC to DESOPTT). */
 void r52e(void)
 {
     ca(ADDRESS_OF(SWSAMPLE));
@@ -169,7 +169,7 @@ void r52e(void)
     r52e_trunnion();
 }
 
-/* R52E +7: PAC to DESOPTT and SAC to DESOPTS. (CA leaves A without
+/* R52E +7 -- p. 745: PAC to DESOPTT and SAC to DESOPTS. (CA leaves A without
  * overflow: the TSs do not skip.) */
 void r52e_trunnion(void)
 {
@@ -180,7 +180,7 @@ void r52e_trunnion(void)
     r52f();
 }
 
-/* R52F: "WAIT 1/2 SEC" (DELAYJOB). */
+/* R52F -- p. 745: "WAIT 1/2 SEC" (DELAYJOB). */
 static void r52f(void)
 {
     set_A(HALF_SEC);
@@ -192,8 +192,9 @@ static void r52f_plus1(void)
     tc_to(R52F + 1u, BANKCALL); /* CADR DELAYJOB */
 }
 
-/* R52F +3: a LM (STATE +1, bit 10), R52HA; else "IS TERMIFLG SET" (STATE
- * +7, bit 15): no, round again (R52C); yes, back to the caller (R52Q). */
+/* R52F +3 -- p. 745: a LM (STATE +1, bit 10), R52HA; else "IS TERMIFLG SET"
+ * (STATE +7, bit 15): no, round again (R52C); yes, back to the caller
+ * (R52Q). */
 void r52f_after_delayjob(void)
 {
     set_A(BIT10);
@@ -211,7 +212,7 @@ void r52f_after_delayjob(void)
     r52q();
 }
 
-/* R52Q: back to the caller (GOTO SAVQR52). */
+/* R52Q -- p. 745: back to the caller (GOTO SAVQR52). */
 static void r52q(void)
 {
     tc_at(R52Q);
@@ -226,13 +227,13 @@ static const word r52q_words[] = {
 
 const struct interpretive_code R52Q_CODE = {014u, R52Q + 1u, COUNT(r52q_words), r52q_words};
 
-/* R52HA: the LM's: R61CSM points the CM at it. */
+/* R52HA -- p. 745: the LM's: R61CSM points the CM at it. */
 void r52ha(void)
 {
     tc_to(R52HA, BANKCALL); /* CADR R61CSM */
 }
 
-/* R52HA +2: without TRACKFLG (STATE +1, bit 5), back to the caller
+/* R52HA +2 -- p. 745: without TRACKFLG (STATE +1, bit 5), back to the caller
  * (R52Q). Without UPDATFLG (bit 7, through CS: +0 when it is set),
  * R52SYNC; with it, R52I: with PRFTRKAT (STATE +5, bit 10), SR52.1 again
  * (TC R52D); else R52SYNC. */
@@ -260,15 +261,16 @@ void r52ha_after_r61csm(void)
     r52sync();
 }
 
-/* R52SYNC: "MAKE UP FOR LOST TIME": 1.8 seconds, then DELAYJOB (TCF R52F
- * +1). */
+/* R52SYNC -- p. 745: "MAKE UP FOR LOST TIME": 1.8 seconds, then DELAYJOB
+ * (TCF R52F +1). */
 void r52sync(void)
 {
     set_A(ONE_8SEC);
     r52f_plus1();
 }
 
-/* R52J: "CLEAR TRUNFLAG" (DOWNFLAG), "SET 407 ALARM", then R52JA. */
+/* R52J -- p. 745: "CLEAR TRUNFLAG" (DOWNFLAG), "SET 407 ALARM", then
+ * R52JA. */
 void r52j(void)
 {
     tc_to(R52J, DOWNFLAG); /* ADRES TRUNFLAG */
@@ -285,8 +287,8 @@ void r52j_after_alarm(void)
     r52ja();
 }
 
-/* R52M: "IS R53FLAG SET": yes, R52F; no, R53JOB as a job (FINDVAC, PRIO24)
- * with interrupts inhibited. */
+/* R52M -- p. 746: "IS R53FLAG SET": yes, R52F; no, R53JOB as a job (FINDVAC,
+ * PRIO24) with interrupts inhibited. */
 void r52m(void)
 {
     set_A(BIT6);
@@ -312,7 +314,7 @@ void r52m_after_findvac(void)
     r52f(); /* TCF R52F */
 }
 
-/* R53JOB: R53, the sighting marks; ENDPLAC, "INTERPRETER RETURN TO
+/* R53JOB -- p. 746: R53, the sighting marks; ENDPLAC, "INTERPRETER RETURN TO
  * ENDOFJOB (R22 USES)". */
 void r53job(void)
 {
@@ -335,9 +337,9 @@ void endplac_after_exit(void)
 
 /* ---- R52L and TERM52 -- pp. 746-747 ---- */
 
-/* R52L: "IS THIS A LEM": yes, R52J; no, alarm 404 (PRIOLARM): terminate
- * (TERM52), proceed (R52F), "NO PROVISION FOR NEW DATA" (R52F), or the
- * immediate return (ENDOFJOB). */
+/* R52L -- p. 746: "IS THIS A LEM": yes, R52J; no, alarm 404 (PRIOLARM):
+ * terminate (TERM52), proceed (R52F), "NO PROVISION FOR NEW DATA" (R52F), or
+ * the immediate return (ENDOFJOB). */
 static void r52l(void)
 {
     set_A(BIT10);
@@ -376,8 +378,9 @@ void r52l_immediate_return(void)
     continue_at(ENDOFJOB); /* TCF ENDOFJOB */
 }
 
-/* TERM52: the marks cleared (CLEARMRK), "KILL MARK SYSTEM" (MKRELEAS),
- * OPTCADR +0, "CLEAR OUT EXTENDED VERBS" (KLEENEX), "NO GO TO P00". */
+/* TERM52 -- p. 746: the marks cleared (CLEARMRK), "KILL MARK SYSTEM"
+ * (MKRELEAS), OPTCADR +0, "CLEAR OUT EXTENDED VERBS" (KLEENEX), "NO GO TO
+ * P00". */
 void term52(void)
 {
     tc_to(TERM52, CLEARMRK);
@@ -388,7 +391,7 @@ void term52_after_clearmrk(void)
     tc_to(TERM52 + 1u, BANKCALL); /* CADR MKRELEAS */
 }
 
-/* (A is +0: TS does not skip.) */
+/* TERM52 +3 -- p. 747: (A is +0: TS does not skip.) */
 void term52_after_mkreleas(void)
 {
     set_A(ZERO);

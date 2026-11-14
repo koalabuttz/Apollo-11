@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* TPI_SEARCH.agc of the CM, part 3 (Comanche055 pp. 559-561, bank 35):
- * the "TPI SEARCH DISPLAY ROUTNE", P17 and P77, which run the search
- * (S17.1 and S17.2) between the crew's displays.
+/* TPI_SEARCH.agc of the CM, part 3 (Comanche055 pp. 559-561, bank 35): the
+ * "TPI SEARCH DISPLAY ROUTNE", P17 and P77, which run the search (S17.1 and
+ * S17.2) between the crew's displays. The faithful C is
+ * c64-port/src/cm_tpi_search.c.
  *
  * P17 searches with the CSM as the active vehicle, P77 with the LM
  * (AVFLAGA, AVFLAGP); both set the track and update flags and go on at
@@ -42,16 +43,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-/* TC at, to a routine out of the file: Q gets the return and the routine
- * runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* TC to an erasable word that holds a return: the AGC runs the word as an
  * instruction, a TC when the program has saved an address there. Any
  * other word (another instruction, or a register's address) is not
@@ -68,21 +59,21 @@ static void vncomp17(void);
 
 /* ---- P17 and P77 -- p. 559 ---- */
 
-/* P17: "AVFLAG = CSM , SET TRACK + UPDATE FLAGS", */
+/* P17 -- p. 559: "AVFLAG = CSM , SET TRACK + UPDATE FLAGS", */
 void p17(void)
 {
     tc_to(P17, AVFLAGA);
 }
 
-/* P17 +1: and on at P17.1. */
+/* P17 +1 -- p. 559: and on at P17.1. */
 void p17_after_avflaga(void)
 {
     tc_at(P17 + 1u);
     p17_1();
 }
 
-/* P77: "AVFLAG = LEM , SET TRACK + UPDATE FLAGS", and on at P17.1 (AVFLAGP
- * comes back to it). */
+/* P77 -- p. 559: "AVFLAG = LEM , SET TRACK + UPDATE FLAGS", and on at P17.1
+ * (AVFLAGP comes back to it). */
 void p77(void)
 {
     tc_to(P77, AVFLAGP);
@@ -90,20 +81,21 @@ void p77(void)
 
 /* ---- P17.1 -- pp. 559-560 ---- */
 
-/* P17.1: "SET UPDATE FLAG" (P20FLGON, which sets the track flag too), */
+/* P17.1 -- p. 559: "SET UPDATE FLAG" (P20FLGON, which sets the track flag
+ * too), */
 void p17_1(void)
 {
     tc_to(P17_1, P20FLGON);
 }
 
-/* P17.1 +1: "DISPLAY TTPI TIME", verb 06 noun 37 (VNPOOH), */
+/* P17.1 +1 -- p. 559: "DISPLAY TTPI TIME", verb 06 noun 37 (VNPOOH), */
 void p17_1_after_p20flgon(void)
 {
     set_A(V06N37);
     tc_to(P17_1 + 2u, VNPOOH);
 }
 
-/* P17.1 +3: and to the interpreter, for P17_1_CODE. */
+/* P17.1 +3 -- p. 559: and to the interpreter, for P17_1_CODE. */
 void p17_1_after_vnpooh(void)
 {
     tc_at(P17_1 + 3u);
@@ -121,8 +113,8 @@ static const word p17_1_words[] = {
     NUMBER(1),           ORDERS(SXA_1, EXIT),     ADDRESS(OPTION2),
 };
 
-/* P17.1 +020, after the EXIT: "DISPLAY PHI , DELTA H , SEARCH OPTION K",
- * verb 06 noun 72 (VNCOMP17), */
+/* P17.1 +020 -- p. 560, after the EXIT: "DISPLAY PHI , DELTA H , SEARCH
+ * OPTION K", verb 06 noun 72 (VNCOMP17), */
 void p17_1_after_exit(void)
 {
     set_A(V06N72);
@@ -130,7 +122,7 @@ void p17_1_after_exit(void)
     vncomp17();
 }
 
-/* P17.1 +022: and to the interpreter, for P17_1_OPTION_CODE. */
+/* P17.1 +022 -- p. 560: and to the interpreter, for P17_1_OPTION_CODE. */
 void p17_1_after_vncomp17(void)
 {
     tc_at(P17_1 + 022u);
@@ -168,8 +160,8 @@ static const word p17_1_option_words[] = {
 
 /* ---- P17.3 -- p. 560 ---- */
 
-/* P17.3, after the EXIT: "DISPLAY DELTA VTPI , DELTA VTPF , AND H", verb
- * 06 noun 58 (VNCOMP17), */
+/* P17.3 -- p. 560, after the EXIT: "DISPLAY DELTA VTPI , DELTA VTPF , AND
+ * H", verb 06 noun 58 (VNCOMP17), */
 void p17_3(void)
 {
     set_A(V06N58);
@@ -177,41 +169,42 @@ void p17_3(void)
     vncomp17();
 }
 
-/* P17.3 +2: then "DISPLAY PERICENTER CODE AND CENTRAL ANG.", verb 06 noun
- * 55, flashed by GOFLASHR. */
+/* P17.3 +2 -- p. 560: then "DISPLAY PERICENTER CODE AND CENTRAL ANG.", verb
+ * 06 noun 55, flashed by GOFLASHR. */
 void p17_3_after_vncomp17(void)
 {
     set_A(V06N55);
     tc_to(P17_3 + 3u, BANKCALL); /* CADR GOFLASHR */
 }
 
-/* P17.3 +5: terminate, "TERMINATE PROGRAM". */
+/* P17.3 +5 -- p. 560: terminate, "TERMINATE PROGRAM". */
 void p17_3_terminate(void)
 {
     tc_to(P17_3 + 5u, GOTOPOOH);
 }
 
-/* P17.3 +6: proceed, "END PROGRAM". */
+/* P17.3 +6 -- p. 560: proceed, "END PROGRAM". */
 void p17_3_proceed(void)
 {
     tc_to(P17_3 + 6u, GOTOPOOH);
 }
 
-/* P17.3 +7: recycle, "RECYCLE WITH NEW TTPI OR SEARCH OPTION". */
+/* P17.3 +7 -- p. 560: recycle, "RECYCLE WITH NEW TTPI OR SEARCH OPTION". */
 void p17_3_recycle(void)
 {
     tc_at(P17_3 + 7u);
     p17_1();
 }
 
-/* P17.3 +010: the immediate return: "BLANK R2" (BLANKET, A two), */
+/* P17.3 +010 -- p. 560: the immediate return: "BLANK R2" (BLANKET, A
+ * two), */
 void p17_3_immediate_return(void)
 {
     set_A(TWO);
     tc_to(P17_3 + 011u, BLANKET);
 }
 
-/* P17.3 +012: and the job ends. */
+/* P17.3 +012 -- p. 560: and the job ends. */
 void p17_3_after_blanket(void)
 {
     continue_at(ENDOFJOB); /* TCF */
@@ -219,16 +212,17 @@ void p17_3_after_blanket(void)
 
 /* ---- VNCOMP17 -- pp. 560-561 ---- */
 
-/* VNCOMP17 +3 on: the display in VERBNOUN, flashed by GOFLASH (TCR). */
+/* VNCOMP17 +3 -- p. 560 on: the display in VERBNOUN, flashed by GOFLASH
+ * (TCR). */
 static void vncomp17_flash(void)
 {
     ca(ADDRESS_OF(VERBNOUN));
     tc_to(VNCOMP17 + 4u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* VNCOMP17: the return in QSAVED (EXTEND; QXCH), the verb and noun in A
- * to VERBNOUN (TS: on an overflow in A the TS skips the CA, and A, +1 or
- * -1, goes to GOFLASH), and the display. */
+/* VNCOMP17 -- p. 560: the return in QSAVED (EXTEND; QXCH), the verb and noun
+ * in A to VERBNOUN (TS: on an overflow in A the TS skips the CA, and A, +1
+ * or -1, goes to GOFLASH), and the display. */
 static void vncomp17(void)
 {
     qxch(ADDRESS_OF(QSAVED));
@@ -236,24 +230,25 @@ static void vncomp17(void)
     tc_to(VNCOMP17 + 4u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* VNCOMP17 +6: terminate, "TERMINATE ILLEGAL REDISPLAY" (TC -3). */
+/* VNCOMP17 +6 -- p. 560: terminate, "TERMINATE ILLEGAL REDISPLAY" (TC
+ * -3). */
 void vncomp17_terminate(void)
 {
     tc_at(VNCOMP17 + 6u);
     vncomp17_flash();
 }
 
-/* VNCOMP17 +7: proceed ("PROCEED"), back through QSAVED. */
+/* VNCOMP17 +7 -- p. 560: proceed ("PROCEED"), back through QSAVED. */
 void vncomp17_proceed(void)
 {
     tc_at(VNCOMP17 + 7u);
     tc_return_in(ADDRESS_OF(QSAVED));
 }
 
-/* VNCOMP17 +010: recycle: MPAC equal to BIT6 (-MPAC + BIT6 +0 or -0,
- * EXTEND; BZF) goes back to P17.1, "RECYCLE WITH NEW TPI TIME"; anything
- * else shows the display again (TC VNCOMP17 +3), "OR PROCEED WITH NEW
- * SEARCH OPTION". */
+/* VNCOMP17 +010 -- p. 560: recycle: MPAC equal to BIT6 (-MPAC + BIT6 +0 or
+ * -0, EXTEND; BZF) goes back to P17.1, "RECYCLE WITH NEW TPI TIME"; anything
+ * else shows the display again (TC VNCOMP17 +3), "OR PROCEED WITH NEW SEARCH
+ * OPTION". */
 void vncomp17_recycle(void)
 {
     cs(ADDRESS_OF(MPAC));
@@ -274,14 +269,14 @@ static const word alarums_words[] = {
     SWITCH(SET, UPDATFLG),
 };
 
-/* ALARUMS +2, after the EXIT: alarm 124 (ALARM, OCT 00124), "NO SAFE
- * PERICENTER IN THIS SECTOR", */
+/* ALARUMS +2 -- p. 561, after the EXIT: alarm 124 (ALARM, OCT 00124), "NO
+ * SAFE PERICENTER IN THIS SECTOR", */
 void alarums_after_exit(void)
 {
     tc_to(ALARUMS + 2u, ALARM); /* OCT 00124 */
 }
 
-/* ALARUMS +4: shown, verb 05 noun 09 (VNCOMP17), */
+/* ALARUMS +4 -- p. 561: shown, verb 05 noun 09 (VNCOMP17), */
 void alarums_after_alarm(void)
 {
     set_A(V05N09);
@@ -289,7 +284,8 @@ void alarums_after_alarm(void)
     vncomp17();
 }
 
-/* ALARUMS +6: and on proceed, "PROCEED ILLEGAL TERMINATE PROGRAM". */
+/* ALARUMS +6 -- p. 561: and on proceed, "PROCEED ILLEGAL TERMINATE
+ * PROGRAM". */
 void alarums_after_vncomp17(void)
 {
     tc_to(ALARUMS + 6u, GOTOPOOH);

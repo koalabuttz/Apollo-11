@@ -11,33 +11,33 @@
 
 /* ---- PREREAD -- p. 857 ---- */
 
-/* PREREAD: phase 5.7, the "SPOT TO SKIP LASTBIAS AFTER RESTART" (TC
- * GNUFAZE5), ... */
+/* PREREAD -- p. 857: phase 5.7, the "SPOT TO SKIP LASTBIAS AFTER RESTART"
+ * (TC GNUFAZE5), ... */
 void preread(void)
 {
     set_A(SEVEN);
     tc_to(PREREAD + 1u, GNUFAZE5);
 }
 
-/* ... and the LASTBIAS job, "LAST GYRO COMPENSATION IN FREE FALL" (NOVAC
- * at priority 21, 2CADR LASTBIAS). */
+/* PREREAD +2 -- p. 857: ... and the LASTBIAS job, "LAST GYRO COMPENSATION IN
+ * FREE FALL" (NOVAC at priority 21, 2CADR LASTBIAS). */
 void preread_after_gnufaze5(void)
 {
     set_A(PRIO21);
     tc_to(PREREAD + 3u, NOVAC);
 }
 
-/* BIBIBIAS: the PIPAs cleared and read (TC PIPASR +3; "DO NOT DESTROY
- * VALUE OF PIPTIME1"), ... */
+/* BIBIBIAS -- p. 857: the PIPAs cleared and read (TC PIPASR +3; "DO NOT
+ * DESTROY VALUE OF PIPTIME1"), ... */
 void bibibias(void)
 {
     tc_to(BIBIBIAS, PIPASR + 3u);
 }
 
-/* ... V37FLAG and AVEGFLAG set ("BITS 5 AND 6 OF FLAGWRD7"), DRIFTFLAG
- * reset, PIPAGE 4 ("INITIALIZE DV MONITOR"), OUTROUTE "TO END-OF-JOB"
- * (SERVEXIT +2), and the first average-G job, NORMLIZE (FINDVAC at
- * priority 22, 2CADR NORMLIZE). */
+/* BIBIBIAS +1 -- p. 857: ... V37FLAG and AVEGFLAG set ("BITS 5 AND 6 OF
+ * FLAGWRD7"), DRIFTFLAG reset, PIPAGE 4 ("INITIALIZE DV MONITOR"), OUTROUTE
+ * "TO END-OF-JOB" (SERVEXIT +2), and the first average-G job, NORMLIZE
+ * (FINDVAC at priority 22, 2CADR NORMLIZE). */
 void bibibias_after_pipasr(void)
 {
     cs(ADDRESS_OF(FLAGWRD7));
@@ -58,21 +58,22 @@ void bibibias_after_pipasr(void)
     tc_to(BIBIBIAS + 014u, FINDVAC);
 }
 
-/* Then phase 5.2, the "5.2SPOT FOR REREADAC AND NORMLIZE", and GOREADAX. */
+/* BIBIBIAS +017 -- p. 857: Then phase 5.2, the "5.2SPOT FOR REREADAC AND
+ * NORMLIZE", and GOREADAX. */
 void bibibias_after_findvac(void)
 {
     set_A(TWO);
     goreadax();
 }
 
-/* GOREADAX: the phase in A set, with TBASE5 (TC GNUTFAZ5), ... */
+/* GOREADAX -- p. 857: the phase in A set, with TBASE5 (TC GNUTFAZ5), ... */
 void goreadax(void)
 {
     tc_to(GOREADAX, GNUTFAZ5);
 }
 
-/* ... and READACCS two seconds on: "WAIT TWO SECONDS FOR READACCS"
- * (VARDELAY). */
+/* GOREADAX +1 -- p. 857: ... and READACCS two seconds on: "WAIT TWO SECONDS
+ * FOR READACCS" (VARDELAY). */
 void goreadax_after_gnutfaz5(void)
 {
     set_A(TWO_SECS);
@@ -81,13 +82,13 @@ void goreadax_after_gnutfaz5(void)
 
 /* ---- READACCS -- pp. 858-859 ---- */
 
-/* READACCS: TIME5 nudged by one centisecond toward 037771, so that the
- * DAP's P-axis interrupt comes about 70 ms after this one: "THIS PIECE OF
- * CODING ATTEMPTS TO SYNCHRONIZE READACCS WITH THE DIGITAL AUTOPILOT".
+/* READACCS -- p. 858: TIME5 nudged by one centisecond toward 037771, so that
+ * the DAP's P-axis interrupt comes about 70 ms after this one: "THIS PIECE
+ * OF CODING ATTEMPTS TO SYNCHRONIZE READACCS WITH THE DIGITAL AUTOPILOT".
  * CCS of TIME5 - 037771: positive, -1 added; negative, +1; -0 (TIME5 at
  * 037771), +0. (+0 needs TIME5 - 037771 to be +0, which one's complement
- * never gives: equal words make -0.) Then the PIPAs read (TC PIPASR), on
- * to PIPSDONE. */
+ * never gives: equal words make -0.) Then the PIPAs read (TC PIPASR), on to
+ * PIPSDONE. */
 void readaccs(void)
 {
     set_A(negate(OCT37771));
@@ -102,15 +103,15 @@ void readaccs(void)
     tc_to(READACCS + 7u, PIPASR);
 }
 
-/* PIPSDONE: phase 5.5 (TC GNUFAZE5), on to REDO5.5. */
+/* PIPSDONE -- p. 858: phase 5.5 (TC GNUFAZE5), on to REDO5.5. */
 void pipsdone(void)
 {
     set_A(FIVE);
     tc_to(PIPSDONE + 1u, GNUFAZE5);
 }
 
-/* REDO5.5: PIPAGE 1, and the SERVICER job "SET UP" (FINDVAC at priority
- * 20, 2CADR SERVICER). */
+/* REDO5.5 -- p. 858: PIPAGE 1, and the SERVICER job "SET UP" (FINDVAC at
+ * priority 20, 2CADR SERVICER). */
 void redo5_5(void)
 {
     set_A(ONE);
@@ -119,12 +120,12 @@ void redo5_5(void)
     tc_to(REDO5_5 + 3u, FINDVAC);
 }
 
-/* "TURN ON TEST CONNECTOR OUTBIT" (DSALMOUT bit 9). With AVEGFLAG down,
- * the final exit (AVEGOUT); with MUNFLAG clear, "BYPASS LR AND DISP."
- * (MAKEACCS); with group 2 running ("PHASE 2 ACTIVATED -- AVOID MULTIPLE
- * R10."), MAKEACCS too. Else PIPCTR 7, "FOR 4X/SEC RATE", TBASE2 ".05
- * SECONDS IN THE PAST", phase 2.21 ("2.21SPOT FOR R10,R11") and the first
- * R10,R11 task "IN .200 SECONDS" (WAITLIST, 2CADR R10,R11).
+/* REDO5.5 +6 -- p. 858: "TURN ON TEST CONNECTOR OUTBIT" (DSALMOUT bit 9).
+ * With AVEGFLAG down, the final exit (AVEGOUT); with MUNFLAG clear, "BYPASS
+ * LR AND DISP." (MAKEACCS); with group 2 running ("PHASE 2 ACTIVATED --
+ * AVOID MULTIPLE R10."), MAKEACCS too. Else PIPCTR 7, "FOR 4X/SEC RATE",
+ * TBASE2 ".05 SECONDS IN THE PAST", phase 2.21 ("2.21SPOT FOR R10,R11") and
+ * the first R10,R11 task "IN .200 SECONDS" (WAITLIST, 2CADR R10,R11).
  *
  * CCS PHASE2 has two more outcomes, as the AGC runs them: a negative
  * PHASE2 skips to TS PIPCTR with its magnitude less one in A, and -0 past
@@ -170,16 +171,16 @@ void redo5_5_after_findvac(void)
     tc_to(REDO5_5 + 037u, WAITLIST);
 }
 
-/* MAKEACCS: phase 5.4, and READACCS again: "DO PHASE CHANGE AND RECALL
- * READACCS". */
+/* MAKEACCS -- p. 859: phase 5.4, and READACCS again: "DO PHASE CHANGE AND
+ * RECALL READACCS". */
 void makeaccs(void)
 {
     set_A(FOUR);
     goreadax();
 }
 
-/* AVEGOUT: "SET UP FINAL SERVICER EXIT" (AVGEXIT gets AVOUTCAD's 2CADR
- * AVGEND), and phase 5.4, the "5.4 SPOT FOR REREADAC AND SERVICER" (TC
+/* AVEGOUT -- p. 859: "SET UP FINAL SERVICER EXIT" (AVGEXIT gets AVOUTCAD's
+ * 2CADR AVGEND), and phase 5.4, the "5.4 SPOT FOR REREADAC AND SERVICER" (TC
  * GNUTFAZ5); ... */
 void avegout(void)
 {
@@ -189,14 +190,15 @@ void avegout(void)
     tc_to(AVEGOUT + 4u, GNUTFAZ5);
 }
 
-/* ... "END TASK WITHOUT CALLING READACCS" (TASKOVER). */
+/* AVEGOUT +5 -- p. 859: ... "END TASK WITHOUT CALLING READACCS"
+ * (TASKOVER). */
 void avegout_after_gnutfaz5(void)
 {
     tc_to(AVEGOUT + 5u, TASKOVER);
 }
 
-/* GNUFAZE5 +1: the phase in L and its complement in A ("-PHASE IN A,
- * PHASE IN L.") into -PHASE5 and PHASE5, and back (TC Q). */
+/* GNUFAZE5 +1 -- p. 859: the phase in L and its complement in A ("-PHASE IN
+ * A, PHASE IN L.") into -PHASE5 and PHASE5, and back (TC Q). */
 static void set_phase5(void)
 {
     cs(L_ADDRESS);
@@ -204,8 +206,8 @@ static void set_phase5(void)
     return_to_q();
 }
 
-/* GNUTFAZ5: group 5's phase from A ("SAVE INPUT IN L"), with TBASE5 the
- * time now (-TIME1), and on as GNUFAZE5 (TCF +2). */
+/* GNUTFAZ5 -- p. 859: group 5's phase from A ("SAVE INPUT IN L"), with
+ * TBASE5 the time now (-TIME1), and on as GNUFAZE5 (TCF +2). */
 void gnutfaz5(void)
 {
     /* A TS that overflows stores the corrected word, leaves A +1 or -1 and
@@ -215,8 +217,8 @@ void gnutfaz5(void)
     set_phase5();
 }
 
-/* GNUFAZE5: group 5's phase from A. (A TS L that overflows skips CS L:
- * -PHASE5 gets A's +1 or -1.) */
+/* GNUFAZE5 -- p. 859: group 5's phase from A. (A TS L that overflows skips
+ * CS L: -PHASE5 gets A's +1 or -1.) */
 void gnufaze5(void)
 {
     if (ts(L_ADDRESS)) {

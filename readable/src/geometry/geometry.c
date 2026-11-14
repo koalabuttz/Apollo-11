@@ -8,8 +8,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 #if LUMINARY099
 
 /* SVDWN2, SVDWN1 -- LM pp. 320-321.

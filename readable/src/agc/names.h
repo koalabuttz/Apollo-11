@@ -653,9 +653,9 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 
 /* The channels: CHAN13 (bit 7 is the downlink's word order code), and
  * DNTM1 and DNTM2, the two words each DOWNRUPT sends. */
-#define CHAN13 013u
-#define DNTM1  034u
-#define DNTM2  035u
+#define CHAN13 ((unsigned)K_CHAN13)
+#define DNTM1  ((unsigned)K_DNTM1)
+#define DNTM2  ((unsigned)K_DNTM2)
 
 /* ---- Fresh start and restart (FRESH_START_AND_RESTART.agc) ---- */
 
@@ -674,14 +674,16 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define STATE(n) ERASABLE(K_STATE + (n)) /* STATE +n: flag word n */
 
 /* Its channels: CHAN5 and CHAN6 (the RCS jets), DSALMOUT (11), CHAN12,
- * CHAN14, CHAN33, MNKEYIN (15, the main DSKY's keys) and NAVKEYIN (16, the
- * navigation DSKY's keys and the MARK buttons); SUPERBNK is channel 7 and
- * LCHAN (1) register L. */
+ * CHAN14, CHAN31 (the hand controllers and the autopilot's mode), CHAN33,
+ * MNKEYIN (15, the main DSKY's keys) and NAVKEYIN (16, the navigation
+ * DSKY's keys and the MARK buttons); SUPERBNK is channel 7 and LCHAN (1)
+ * register L. */
 #define CHAN5    ((unsigned)K_CHAN5)
 #define CHAN6    ((unsigned)K_CHAN6)
 #define DSALMOUT ((unsigned)K_DSALMOUT)
 #define CHAN12   ((unsigned)K_CHAN12)
 #define CHAN14   ((unsigned)K_CHAN14)
+#define CHAN31   ((unsigned)K_CHAN31)
 #define CHAN33   ((unsigned)K_CHAN33)
 #define MNKEYIN  ((unsigned)K_MNKEYIN)
 #define NAVKEYIN ((unsigned)K_NAVKEYIN)
@@ -2010,6 +2012,7 @@ static const word MORECADR[2] = KW_MORECADR; /* 2CADR CHEKMORE */
 #define QRAXIS      ((word)K_QRAXIS)
 #define ACDTPC12    ((word)K_ACDTPC12) /* ACDT+C12 */
 #define RATELOOP    ((word)K_RATELOOP)
+#define SMALLTJU    ((word)K_SMALLTJU)
 #define CALLQERR    ((word)K_CALLQERR)
 #define SPSRCS      ((word)K_SPSRCS)
 #define TJETLAW     ((word)K_TJETLAW)
@@ -2692,7 +2695,7 @@ static const word TWO_SATSTCK[2] = KW_2SATSTCK; /* 2SATSTCK: 2CADR SATSTICK */
 #define POSGN            ((word)K_POSGN)
 #define SGNCOM           ((word)K_SGNCOM)
 #define PLUS_ON          ((word)(K_POSGN + 4u))  /* +ON: the word after POSGN's TC BOTHSGN */
-#define MINUS_ON         ((word)(K_SGNCOM + 9u)) /* -ON: the word after SGNCOM's TC L */
+#define MINUS_ON         ((word)(K_SGNCOM + 011u)) /* -ON: the word after SGNCOM's TC L */
 #define SIGNTEST         ((word)K_SIGNTEST)
 #define SGNTST1          ((word)K_SGNTST1)
 #define CLEAR            ((word)K_CLEAR)
@@ -4230,7 +4233,6 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define AFTRGUID ((word)K_AFTRGUID)
 #define CALCRGVG ((word)K_CALCRGVG)
 #define CGCALC   ((word)K_CGCALC)
-#define CHAN31   031u
 #define DERCLOOP ((word)K_DERCLOOP)
 #define DISPCOMN ((word)K_DISPCOMN)
 #define DISPEXIT ((word)K_DISPEXIT)
@@ -4268,6 +4270,7 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define ROOTLOOP ((word)K_ROOTLOOP)
 #define ROOTPSRS ((word)K_ROOTPSRS)
 #define SHORTMP  ((word)K_SHORTMP)
+#define STEER_Q  ((word)K_STEER_Q) /* STEER? */
 #define TARGTDEX ((word)K_TARGTDEX)
 #define VHORCOMP ((word)K_VHORCOMP)
 #define BRSPOT1   ((word)K_BRSPOT1)

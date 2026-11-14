@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 1 (Comanche055 pp. 562-564): P20, the CSM's
- * "RENDEZVOUS NAVIGATION PROGRAM 20" (bank 37).
+/* P20-P25.agc, part 1 (Comanche055 pp. 562-564): P20, the CSM's "RENDEZVOUS
+ * NAVIGATION PROGRAM 20" (bank 37). The faithful C is
+ * c64-port/src/cm_p20_p25.c.
  *
  * "TO CONTROL THE CSM ATTITUDE AND OPTICS TO ACQUIRE THE LEM IN THE S+T
  * FIELD AND TO POINT THE CSM TRANSPONDER AT THE LEM.  TO UPDATE EITHER THE
@@ -25,17 +26,15 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* PROG20 -- p. 562. "IMU STATUS CHECK". */
 void prog20(void)
 {
     tc_to(PROG20, BANKCALL); /* CADR R02BOTH */
 }
 
-/* PROG20 +2: "ZERO REND TRACKING MARK COUNTER" (TRKMKCNT) and "ZERO REND
- * VHF RNG MRK COUNTER" (VHFCNT); "SET PREF TRACK ATT FLAG". (CAF ZERO
- * leaves no overflow for either TS to skip on.) */
+/* PROG20 +2 -- p. 562: "ZERO REND TRACKING MARK COUNTER" (TRKMKCNT) and
+ * "ZERO REND VHF RNG MRK COUNTER" (VHFCNT); "SET PREF TRACK ATT FLAG". (CAF
+ * ZERO leaves no overflow for either TS to skip on.) */
 void prog20_after_r02both(void)
 {
     set_A(ZERO);
@@ -44,7 +43,7 @@ void prog20_after_r02both(void)
     tc_to(PROG20 + 5u, UPFLAG); /* ADRES PRFTRKAT */
 }
 
-/* PROG20 +7: "LEM TO BE UPDATED.  VEHUPFLG RESET." */
+/* PROG20 +7 -- p. 562: "LEM TO BE UPDATED.  VEHUPFLG RESET." */
 void prog20_after_prftrkat(void)
 {
     tc_to(PROG20 + 7u, DOWNFLAG); /* ADRES VEHUPFLG */
@@ -56,27 +55,27 @@ void prog20_after_vehupflg(void)
     tc_to(PROG20 + 011u, UPFLAG); /* ADRES TRACKFLG */
 }
 
-/* PROG20 +013: "SET UPDATFLG". */
+/* PROG20 +013 -- p. 563: "SET UPDATFLG". */
 void prog20_after_trackflg(void)
 {
     tc_to(PROG20 + 013u, UPFLAG); /* ADRES UPDATFLG */
 }
 
-/* PROG20 +015: "SET RNDVZFLG". */
+/* PROG20 +015 -- p. 563: "SET RNDVZFLG". */
 void prog20_after_updatflg(void)
 {
     tc_to(PROG20 + 015u, UPFLAG); /* ADRES RNDVZFLG */
 }
 
-/* PROG20 +017: 2PHSCHNG. OCT 4 makes restart group 4 inactive, and OCT
- * 05022 restarts group 2 at PROG20 +023, the word after the phase words,
+/* PROG20 +017 -- p. 563: 2PHSCHNG. OCT 4 makes restart group 4 inactive, and
+ * OCT 05022 restarts group 2 at PROG20 +023, the word after the phase words,
  * as a job of priority 26 (OCT 26000). */
 void prog20_after_rndvzflg(void)
 {
     tc_to(PROG20 + 017u, TWO_PHSCHNG);
 }
 
-/* PROG20 +023: the state vectors, in interpretive code. */
+/* PROG20 +023 -- p. 563: the state vectors, in interpretive code. */
 void prog20_after_2phschng(void)
 {
     tc_at(PROG20 + 023u);
@@ -121,17 +120,17 @@ static const word prog20_words[] = {
     ORDER(EXIT),
 };
 
-/* PROG20 +055 -- after the EXIT: R22, the "REND TRACK DATA PROC ROUT", as
- * a job of priority 26 (FINDVAC: with a work area). */
+/* PROG20 +055 -- p. 563: after the EXIT: R22, the "REND TRACK DATA PROC
+ * ROUT", as a job of priority 26 (FINDVAC: with a work area). */
 void prog20_after_exit(void)
 {
     set_A(PRIO26);
     tc_to(PROG20 + 056u, FINDVAC); /* 2CADR R22 */
 }
 
-/* PROG20 +061: 2PHSCHNG. OCT 00072 is group 2's phase 7, which restarts
- * the R22 job (RESTART_TABLES.agc's 2.7SPOT), and OCT 00111 group 1's
- * phase 11, which restarts this job at PIKUP20 (1.11SPOT). */
+/* PROG20 +061 -- p. 563: 2PHSCHNG. OCT 00072 is group 2's phase 7, which
+ * restarts the R22 job (RESTART_TABLES.agc's 2.7SPOT), and OCT 00111 group
+ * 1's phase 11, which restarts this job at PIKUP20 (1.11SPOT). */
 void prog20_after_findvac(void)
 {
     tc_to(PROG20 + 061u, TWO_PHSCHNG);
@@ -144,9 +143,9 @@ void pikup20(void)
     tc_to(PIKUP20 + 1u, PRIOCHNG);
 }
 
-/* PIKUP20 +2: "IS TRACK FLAG SET" (STATE +1 bit 5, TRACKFLG) and, p. 564,
- * "IS REFSMFLG SET" (STATE +3 bit 13): if either is clear, the job ends.
- * Else "INITIALIZE R61 COUNTER" and R61CSM, the preferred tracking
+/* PIKUP20 +2 -- p. 563: "IS TRACK FLAG SET" (STATE +1 bit 5, TRACKFLG) and,
+ * p. 564, "IS REFSMFLG SET" (STATE +3 bit 13): if either is clear, the job
+ * ends. Else "INITIALIZE R61 COUNTER" and R61CSM, the preferred tracking
  * attitude. (CAF ZERO leaves no overflow for the TS to skip on.) */
 void pikup20_after_priochng(void)
 {
@@ -167,8 +166,8 @@ void pikup20_after_priochng(void)
     tc_to(PIKUP20 + 014u, BANKCALL); /* CADR R61CSM */
 }
 
-/* PIKUP20 +016: E bank 5 ("EBANK= QMIN"), and "SET TARGET FLAG TO LEM".
- * (CAF EBANK5 leaves no overflow for the TS to skip on.) */
+/* PIKUP20 +016 -- p. 564: E bank 5 ("EBANK= QMIN"), and "SET TARGET FLAG TO
+ * LEM". (CAF EBANK5 leaves no overflow for the TS to skip on.) */
 void pikup20_after_r61csm(void)
 {
     set_A(EBANK5);
@@ -176,7 +175,7 @@ void pikup20_after_r61csm(void)
     tc_to(PIKUP20 + 020u, UPFLAG); /* ADRES TARG1FLG */
 }
 
-/* P20R52JB -- R52 in interpretive code. */
+/* P20R52JB -- p. 564: R52 in interpretive code. */
 void p20r52jb(void)
 {
     tc_at(P20R52JB);
@@ -190,14 +189,14 @@ static const word p20r52jb_words[] = {
     ORDER(EXIT),
 };
 
-/* P20R52JB +4 -- after the EXIT: MKRLEES. */
+/* P20R52JB +4 -- p. 564: after the EXIT: MKRLEES. */
 void p20r52jb_after_exit(void)
 {
     tc_to(P20R52JB + 4u, BANKCALL); /* CADR MKRLEES */
 }
 
-/* P20R52JB +6: "HOLD PRESENT ATTITUDE" (HOLDFLAG 1), and the job ends.
- * (CAF ONE leaves no overflow for the TS to skip on.) */
+/* P20R52JB +6 -- p. 564: "HOLD PRESENT ATTITUDE" (HOLDFLAG 1), and the job
+ * ends. (CAF ONE leaves no overflow for the TS to skip on.) */
 void p20r52jb_after_mkrlees(void)
 {
     set_A(ONE);

@@ -16,8 +16,6 @@
 #include "gimbal_lock.h"
 #include "../agc/names.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 #if LUMINARY099
 
 /* NOGIMLOC, WCALC -- LM p. 364. "DETECTING GIMBAL LOCK"

@@ -24,10 +24,9 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-/* A data word the run has reached (a VN constant): the faithful port does
- * not run it. */
+/* SOMERR2 +5 and NOAZCHGE and OPTDATA +021 and TAR/EREF -2 -- pp. 442, 446
+ * and 449: A data word the run has reached (a VN constant): the faithful
+ * port does not run it. */
 void data_word(void)
 {
     not_modelled();
@@ -43,7 +42,7 @@ void gcompver(void)
     continue_at(PHASCHNG);
 }
 
-/* GCOMPVER +2: major mode 03 (NEWMODEX). */
+/* GCOMPVER +2 -- p. 449: major mode 03 (NEWMODEX). */
 void gcompver_after_phaschng(void)
 {
     tc_at(GCOMPVER + 2u);
@@ -58,14 +57,14 @@ void setnbpos(void)
     nbpospl();
 }
 
-/* SETNBPOS +1: release the display (MKRELEAS), and OPTDATA. */
-void setnbpos_after_nbpospl(void)
+/* SETNBPOS +1 -- p. 449: release the display (MKRELEAS), and OPTDATA. */
+void setnbpos_plus1(void)
 {
     tc_at(SETNBPOS + 1u);
     continue_at(BANKCALL); /* CADR MKRELEAS */
 }
 
-/* OPTDATA +010: show the target's azimuth and elevation (V05 N30,
+/* OPTDATA +010 -- p. 449: show the target's azimuth and elevation (V05 N30,
  * GODSPRET). */
 void optdata_display(void)
 {
@@ -84,8 +83,9 @@ static unsigned tazel1_pair(enum indexed_use use)
     return at - 1u;
 }
 
-/* OPTDATA +2: RUN the pass (L: "1ST PASS=0 2ND PASS=2"), DSPTEM1 +2 one,
- * and DSPTEM1 the pass's azimuth and elevation (INDEX RUN; DCA TAZEL1). */
+/* OPTDATA +2 -- p. 449: RUN the pass (L: "1ST PASS=0 2ND PASS=2"), DSPTEM1
+ * +2 one, and DSPTEM1 the pass's azimuth and elevation (INDEX RUN; DCA
+ * TAZEL1). */
 static void optdata_plus2(void)
 {
     lxch(E(RUN));
@@ -104,7 +104,8 @@ void optdata(void)
     optdata_plus2();
 }
 
-/* OPTDATA +013: flash them for the crew to load (V06 N41, GOFLASH). */
+/* OPTDATA +013 -- p. 449: flash them for the crew to load (V06 N41,
+ * GOFLASH). */
 void optdata_after_godspret(void)
 {
     set_A(VN0641);
@@ -112,7 +113,7 @@ void optdata_after_godspret(void)
     continue_at(BANKCALL); /* CADR GOFLASH */
 }
 
-/* OPTDATA +016: terminate, GCOMP5. */
+/* OPTDATA +016 -- p. 449: terminate, GCOMP5. */
 void optdata_terminate(void)
 {
     tc_at(OPTDATA + 016u);
@@ -141,14 +142,14 @@ static void optdata_store(void)
     optdata_plus2(); /* TCF OPTDATA +2 */
 }
 
-/* OPTDATA +017: proceed. */
+/* OPTDATA +017 -- p. 449: proceed. */
 void optdata_proceed(void)
 {
     tc_at(OPTDATA + 017u);
     optdata_store();
 }
 
-/* OPTDATA +020: enter, show them again (TC -8D). */
+/* OPTDATA +020 -- p. 449: enter, show them again (TC -8D). */
 void optdata_enter(void)
 {
     tc_at(OPTDATA + 020u);
@@ -219,8 +220,8 @@ void contin33(void)
     targdrve();
 }
 
-/* CONTIN33 +4: the interpreter (NEXTBNKS): the line of sight to it in
- * stable member axes (LITTLSUB) into LOSVEC. */
+/* CONTIN33 +4 -- p. 450: the interpreter (NEXTBNKS): the line of sight to it
+ * in stable member axes (LITTLSUB) into LOSVEC. */
 void contin33_after_targdrve(void)
 {
     tc_at(CONTIN33 + 4u);
@@ -271,8 +272,8 @@ void nexbnkss(void)
     targdrve();
 }
 
-/* NEXBNKSS +4: the interpreter: the platform's error from the two lines
- * of sight (AXISGEN, CALCGTA). */
+/* NEXBNKSS +4 -- p. 451: the interpreter: the platform's error from the two
+ * lines of sight (AXISGEN, CALCGTA). */
 void nexbnkss_after_targdrve(void)
 {
     tc_at(NEXBNKSS + 4u);
@@ -306,15 +307,15 @@ void gcomp4(void)
     continue_at(BANKCALL); /* CADR GOFLASH */
 }
 
-/* GCOMP4 +3: terminate, GCOMP5. */
+/* GCOMP4 +3 -- p. 451: terminate, GCOMP5. */
 void gcomp4_terminate(void)
 {
     tc_at(GCOMP4 + 3u);
     gcomp5();
 }
 
-/* GCOMP4 +4: proceed (TCF +2), the interpreter at +6 adds the error OGC
- * into the earth rate ERCOMP1. */
+/* GCOMP4 +4 -- p. 451: proceed (TCF +2), the interpreter at +6 adds the
+ * error OGC into the earth rate ERCOMP1. */
 void gcomp4_proceed(void)
 {
     tc_at(GCOMP4 + 6u);
@@ -334,7 +335,7 @@ static const word gcomp4_words[] = {
 
 const struct interpretive_code GCOMP4_CODE = {033u, GCOMP4 + 7u, COUNT(gcomp4_words), gcomp4_words};
 
-/* GCOMP4 +5: enter, show it again (TCF GCOMP4). */
+/* GCOMP4 +5 -- p. 451: enter, show it again (TCF GCOMP4). */
 void gcomp4_enter(void)
 {
     gcomp4();
@@ -347,28 +348,28 @@ void gcomp5(void)
     continue_at(BANKCALL); /* CADR MKRELEAS */
 }
 
-/* GCOMP5 +2: TRM03FLG reset (DOWNFLAG). */
+/* GCOMP5 +2 -- p. 451: TRM03FLG reset (DOWNFLAG). */
 void gcomp5_after_mkreleas(void)
 {
     tc_at(GCOMP5 + 2u);
     continue_at(DOWNFLAG); /* ADRES TRM03FLG */
 }
 
-/* GCOMP5 +4: back to major mode 02 (NEWMODEX). */
+/* GCOMP5 +4 -- p. 451: back to major mode 02 (NEWMODEX). */
 void gcomp5_after_downflag(void)
 {
     tc_at(GCOMP5 + 4u);
     continue_at(NEWMODEX); /* MM 02 */
 }
 
-/* GCOMP5 +6: the phase (PHASCHNG, OCT 00004). */
+/* GCOMP5 +6 -- p. 451: the phase (PHASCHNG, OCT 00004). */
 void gcomp5_after_newmodex(void)
 {
     tc_at(GCOMP5 + 6u);
     continue_at(PHASCHNG);
 }
 
-/* GCOMP5 +010: ENDOFJOB. */
+/* GCOMP5 +010 -- p. 451: ENDOFJOB. */
 void gcomp5_after_phaschng(void)
 {
     tc_at(GCOMP5 + 010u);
@@ -383,7 +384,7 @@ static void gtsoptcs(void)
     continue_at(ALARM);
 }
 
-/* GTSOPTCS +2: then GCOMP5. */
+/* GTSOPTCS +2 -- p. 451: then GCOMP5. */
 void gtsoptcs_after_alarm(void)
 {
     tc_at(GTSOPTCS + 2u);
@@ -420,7 +421,7 @@ void latazchk_after_exit(void)
     continue_at(BANKCALL); /* CADR CLEANDSP */
 }
 
-/* LATAZCHK +012: flash them (V06 N41, GOFLASH). */
+/* LATAZCHK +012 -- p. 452: flash them (V06 N41, GOFLASH). */
 void latazchk_flash(void)
 {
     set_A(VNG0641);
@@ -428,7 +429,8 @@ void latazchk_flash(void)
     continue_at(BANKCALL); /* CADR GOFLASH */
 }
 
-/* LATAZCHK +015: terminate, "NOT ALLOWED" (TC +2; TC -5): flash again. */
+/* LATAZCHK +015 -- p. 452: terminate, "NOT ALLOWED" (TC +2; TC -5): flash
+ * again. */
 void latazchk_terminate(void)
 {
     tc_at(LATAZCHK + 015u);
@@ -436,15 +438,15 @@ void latazchk_terminate(void)
     latazchk_flash();
 }
 
-/* LATAZCHK +017: enter, flash again (TC -5). */
+/* LATAZCHK +017 -- p. 452: enter, flash again (TC -5). */
 void latazchk_enter(void)
 {
     tc_at(LATAZCHK + 017u);
     latazchk_flash();
 }
 
-/* LATAZCHK +020: the interpreter keeps what the crew loaded (AZIMUTH,
- * LATITUDE). */
+/* LATAZCHK +020 -- p. 452: the interpreter keeps what the crew loaded
+ * (AZIMUTH, LATITUDE). */
 void latazchk_load(void)
 {
     tc_at(LATAZCHK + 020u);
@@ -469,7 +471,7 @@ static const word latazchk_load_words[] = {
 const struct interpretive_code LATAZCHK_LOAD_CODE = {
     04u, LATAZCHK + 021u, COUNT(latazchk_load_words), latazchk_load_words};
 
-/* LATAZCHK +016: proceed (TC +2). */
+/* LATAZCHK +016 -- p. 452: proceed (TC +2). */
 void latazchk_proceed(void)
 {
     tc_at(LATAZCHK + 016u);
@@ -519,8 +521,8 @@ static const word targdrve_words[] = {
 const struct interpretive_code TARGDRVE_CODE = {033u, TARGDRVE + 4u, COUNT(targdrve_words),
                                                 targdrve_words};
 
-/* TARGDRVE +014, after the EXIT: drive the sextant to them (DESOPTS,
- * DESOPTT), and RETARG. */
+/* TARGDRVE +014 -- p. 452, after the EXIT: drive the sextant to them
+ * (DESOPTS, DESOPTT), and RETARG. */
 void targdrve_after_exit(void)
 {
     ca(E(SAC));
@@ -530,14 +532,14 @@ void targdrve_after_exit(void)
     retarg();
 }
 
-/* RETARG +5: wait for the optics (OPTSTALL). */
+/* RETARG +5 -- p. 453: wait for the optics (OPTSTALL). */
 void retarg_after_sxtmark(void)
 {
     tc_at(RETARG + 5u);
     continue_at(BANKCALL); /* CADR OPTSTALL */
 }
 
-/* RETARG +7: OPTSTALL's error return, GTSOPTCS. */
+/* RETARG +7 -- p. 453: OPTSTALL's error return, GTSOPTCS. */
 void retarg_bad_stall(void)
 {
     tc_at(RETARG + 7u);
@@ -560,8 +562,8 @@ static void retarg1(void)
     retarg(); /* TCF RETARG */
 }
 
-/* RETARG +016: a mark taken (its QPRET word nonzero) goes back through
- * QPLAC; none, RETARG1. */
+/* RETARG +016 -- p. 453: a mark taken (its QPRET word nonzero) goes back
+ * through QPLAC; none, RETARG1. */
 static void retarg_mark_taken(void)
 {
     if (A_is_zero()) { /* EXTEND; BZF RETARG1 */
@@ -571,14 +573,15 @@ static void retarg_mark_taken(void)
     tc_return(E(QPLAC));
 }
 
-/* RETARG +014: the mark's QPRET word (INDEX MARKSTAT). */
+/* RETARG +014 -- p. 453: the mark's QPRET word (INDEX MARKSTAT). */
 void retarg_mark(void)
 {
     ca(indexed_erasable(ADDRESS_OF(QPRET), fetch(ADDRESS_OF(MARKSTAT)), INDEXED_READ));
     retarg_mark_taken();
 }
 
-/* RETARG +010: a terminate (TRM03BIT of FLAGWRD1) ends it, GCOMP5. */
+/* RETARG +010 -- p. 453: a terminate (TRM03BIT of FLAGWRD1) ends it,
+ * GCOMP5. */
 void retarg_after_optstall(void)
 {
     ca(ADDRESS_OF(FLAGWRD1));
@@ -643,7 +646,7 @@ static const word azmthcg1_words[] = {
 const struct interpretive_code AZMTHCG1_CODE = {033u, AZMTHCG1 + 1u, COUNT(azmthcg1_words),
                                                 azmthcg1_words};
 
-/* AZMTHCG1 +5, after the EXIT: DSPTEM1 it; clear the display
+/* AZMTHCG1 +5 -- p. 454, after the EXIT: DSPTEM1 it; clear the display
  * (CLEANDSP). */
 void azmthcg1_after_exit(void)
 {
@@ -653,7 +656,7 @@ void azmthcg1_after_exit(void)
     continue_at(BANKCALL); /* CADR CLEANDSP */
 }
 
-/* AZMTHCG1 +011: flash it (V06 N29, GOFLASH). */
+/* AZMTHCG1 +011 -- p. 454: flash it (V06 N29, GOFLASH). */
 void azmthcg1_flash(void)
 {
     set_A(VN0629);
@@ -661,7 +664,7 @@ void azmthcg1_flash(void)
     continue_at(BANKCALL); /* CADR GOFLASH */
 }
 
-/* AZMTHCG1 +017: the interpreter keeps the azimuth the crew loaded
+/* AZMTHCG1 +017 -- p. 454: the interpreter keeps the azimuth the crew loaded
  * (LAUNCHAZ). */
 static void azmthcg1_load(void)
 {
@@ -683,26 +686,26 @@ static const word azmthcg1_load_words[] = {
 const struct interpretive_code AZMTHCG1_LOAD_CODE = {
     033u, AZMTHCG1 + 020u, COUNT(azmthcg1_load_words), azmthcg1_load_words};
 
-/* AZMTHCG1 +014: terminate (TCF +2; TCF -5): flash again. */
+/* AZMTHCG1 +014 -- p. 454: terminate (TCF +2; TCF -5): flash again. */
 void azmthcg1_terminate(void)
 {
     azmthcg1_flash();
 }
 
-/* AZMTHCG1 +015: proceed (TCF +2). */
+/* AZMTHCG1 +015 -- p. 454: proceed (TCF +2). */
 void azmthcg1_proceed(void)
 {
     azmthcg1_load();
 }
 
-/* AZMTHCG1 +016: enter (TCF -5): flash again. */
+/* AZMTHCG1 +016 -- p. 454: enter (TCF -5): flash again. */
 void azmthcg1_enter(void)
 {
     azmthcg1_flash();
 }
 
-/* AZMTHCG1 +025, after the EXIT: PREMTRXC +0 (the azimuth changed), and
- * the phase (PHASCHNG, OCT 00004). */
+/* AZMTHCG1 +025 -- p. 454, after the EXIT: PREMTRXC +0 (the azimuth
+ * changed), and the phase (PHASCHNG, OCT 00004). */
 void azmthcg1_after_load(void)
 {
     set_A(ZERO);
@@ -711,7 +714,7 @@ void azmthcg1_after_load(void)
     continue_at(PHASCHNG);
 }
 
-/* AZMTHCG1 +031: back to Pinball (POSTJUMP, PINBRNCH). */
+/* AZMTHCG1 +031 -- p. 454: back to Pinball (POSTJUMP, PINBRNCH). */
 void azmthcg1_after_phaschng(void)
 {
     tc_at(AZMTHCG1 + 031u);

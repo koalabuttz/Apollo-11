@@ -23,11 +23,6 @@
 #include "p34_p35.h"
 #include "../agc/names.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-/* A label's address in its bank (02000-03777). */
-#define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
-
 /* INITVEL: GUESSW set ("COGA GUESS NOT AVAILABLE"); HAVEGUES: the return
  * to NORMEX, RTARG to RTARG1 (the LM keeps its length in RTMAG), and in
  * the Moon's sphere (RTX2 not zero) RINIT, VINIT and RTARG1 shifted left

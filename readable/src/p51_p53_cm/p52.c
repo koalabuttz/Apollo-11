@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P51-P53.agc of the CM, parts 1 and 2 (Comanche055 pp. 737-743, banks
- * 15 and 16): P52, and P54 (P54 = PROG52); P52LS, the landing site's
- * orientation.
+/* P51-P53.agc of the CM, parts 1 and 2 (Comanche055 pp. 737-743, banks 15
+ * and 16): P52, and P54 (P54 = PROG52); P52LS, the landing site's
+ * orientation. The faithful C is c64-port/src/cm_p51_p53.c.
  *
  * PROG52 "ALIGNS THE IMU TO ONE OF THREE ORIENTATIONS SELECTED BY THE
  * ASTRONAUT." The options (OPTION2, flashed with V04N06): 1, the preferred
@@ -23,8 +23,6 @@
 
 #if COMANCHE055
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static void p52a_plus1(void);
 static void p52b(void);
 static void p52_option(void);
@@ -34,13 +32,13 @@ static void coarstyp(void);
 
 /* ---- PROG52 -- pp. 738-739 ---- */
 
-/* PROG52: a restart point (PHASCHNG, 00254). */
+/* PROG52 -- p. 738: a restart point (PHASCHNG, 00254). */
 void prog52(void)
 {
     tc_to(PROG52, PHASCHNG); /* OCT 00254 */
 }
 
-/* PROG52 +2 and +4: UPDATFLG and TRACKFLG cleared (DOWNFLAG). */
+/* PROG52 +2 and +4 -- p. 738: UPDATFLG and TRACKFLG cleared (DOWNFLAG). */
 void prog52_after_phaschng(void)
 {
     tc_to(PROG52 + 2u, DOWNFLAG); /* ADRES UPDATFLG */
@@ -51,15 +49,15 @@ void prog52_after_updatflg(void)
     tc_to(PROG52 + 4u, DOWNFLAG); /* ADRES TRACKFLG */
 }
 
-/* PROG52 +6: "IMU STATUS CHECK" (R02BOTH, through BANKCALL). */
+/* PROG52 +6 -- p. 739: "IMU STATUS CHECK" (R02BOTH, through BANKCALL). */
 void prog52_after_trackflg(void)
 {
     tc_to(PROG52 + 6u, BANKCALL); /* CADR R02BOTH */
 }
 
-/* PROG52 +010: "IS PFRATFLG SET?" (STATE +2, bit 4) YES: TC P52A, option
- * 1 (preferred); NO: option 2 (nominal). (After the MASK, A is +0 or the
- * bit: CCS takes its first two ways only.) */
+/* PROG52 +010 -- p. 739: "IS PFRATFLG SET?" (STATE +2, bit 4) YES: TC P52A,
+ * option 1 (preferred); NO: option 2 (nominal). (After the MASK, A is +0 or
+ * the bit: CCS takes its first two ways only.) */
 void prog52_after_r02both(void)
 {
     set_A(BIT4);
@@ -72,7 +70,7 @@ void prog52_after_r02both(void)
     }
 }
 
-/* PROG52 +014, P52A's return: "NO", option 2: TC P52A +1. */
+/* PROG52 +014 -- p. 739, P52A's return: "NO", option 2: TC P52A +1. */
 void prog52_no_preferred(void)
 {
     set_A(BIT2);
@@ -80,21 +78,22 @@ void prog52_no_preferred(void)
     p52a_plus1();
 }
 
-/* P52A: option 1. */
+/* P52A -- p. 739: option 1. */
 void p52a(void)
 {
     set_A(BIT1);
     p52a_plus1();
 }
 
-/* P52A +1: the option to OPTION2. (A is a constant: TS does not skip.) */
+/* P52A +1 -- p. 739: the option to OPTION2. (A is a constant: TS does not
+ * skip.) */
 static void p52a_plus1(void)
 {
     ts(ADDRESS_OF(OPTION2));
     p52b();
 }
 
-/* P52B: "FLASH OPTION CODE AND ORIENTATION CODE" (GOPERF4R). */
+/* P52B -- p. 739: "FLASH OPTION CODE AND ORIENTATION CODE" (GOPERF4R). */
 static void p52b(void)
 {
     set_A(BIT1);
@@ -106,22 +105,23 @@ void p52b_terminate(void)
     tc_to(P52B + 3u, GOTOPOOH);
 }
 
-/* P52B +4: proceed (TC +5). */
+/* P52B +4 -- p. 739: proceed (TC +5). */
 void p52b_proceed(void)
 {
     tc_at(P52B + 4u);
     p52_option();
 }
 
-/* P52B +5: "NEW CODE -- NEW ORIENTATION CODE INPUT": flash it again. */
+/* P52B +5 -- p. 739: "NEW CODE -- NEW ORIENTATION CODE INPUT": flash it
+ * again. */
 void p52b_enter(void)
 {
     tc_at(P52B + 5u); /* TC P52B */
     p52b();
 }
 
-/* P52B +6: the display's immediate return, a restart point (PHASCHNG,
- * 00014), then ENDOFJOB. */
+/* P52B +6 -- p. 739: the display's immediate return, a restart point
+ * (PHASCHNG, 00014), then ENDOFJOB. */
 void p52b_immediate_return(void)
 {
     tc_to(P52B + 6u, PHASCHNG); /* OCT 00014 */
@@ -132,9 +132,10 @@ void p52b_after_phaschng(void)
     tc_to(P52B + 010u, ENDOFJOB);
 }
 
-/* P52B +011: the option's last two bits pick one of four words (INDEX A;
- * TC +1): "L.S." (P52T), "PREF" (P52J), "NORM" (P52T) or "REF" (P52C).
- * The TC leaves Q at the first of them, and each TC there at the next. */
+/* P52B +011 -- p. 739: the option's last two bits pick one of four words
+ * (INDEX A; TC +1): "L.S." (P52T), "PREF" (P52J), "NORM" (P52T) or "REF"
+ * (P52C). The TC leaves Q at the first of them, and each TC there at the
+ * next. */
 static void p52_option(void)
 {
     ca(ADDRESS_OF(OPTION2));
@@ -171,8 +172,8 @@ void p52_reference(void)
     p52c(); /* TCF P52C */
 }
 
-/* P52T: the align time, +0 to begin with (DCA NEG0: -0 and +0), flashed
- * with V06N34. */
+/* P52T -- p. 739: the align time, +0 to begin with (DCA NEG0: -0 and +0),
+ * flashed with V06N34. */
 static void p52t(void)
 {
     dca(ADDRESS_OF(NEG0));
@@ -191,24 +192,24 @@ void p52t_terminate(void)
     tc_to(P52T + 6u, GOTOPOOH);
 }
 
-/* P52T +7: proceed (TC +2). */
+/* P52T +7 -- p. 739: proceed (TC +2). */
 void p52t_proceed(void)
 {
     tc_at(P52T + 7u);
     p52t_time();
 }
 
-/* P52T +010: enter, the time loaded: flash it again (TC -5). */
+/* P52T +010 -- p. 739: enter, the time loaded: flash it again (TC -5). */
 void p52t_enter(void)
 {
     tc_at(P52T + 010u);
     p52t_display();
 }
 
-/* P52T +011: the align time; none loaded (its first word +0 or -0, BZF),
- * the present time (TIME2). Then the option's bit 2: "NOM" (option 2)
- * the nominal orientation at that time (S52.3); option 4, the landing
- * site's (P52LS). (After the MASK, A is +0 or the bit.) */
+/* P52T +011 -- p. 739: the align time; none loaded (its first word +0 or -0,
+ * BZF), the present time (TIME2). Then the option's bit 2: "NOM" (option 2)
+ * the nominal orientation at that time (S52.3); option 4, the landing site's
+ * (P52LS). (After the MASK, A is +0 or the bit.) */
 void p52t_time(void)
 {
     dca(ADDRESS_OF(DSPTEM1));
@@ -250,7 +251,7 @@ const struct interpretive_code P52T_NOMINAL_CODE = {015u, P52T + 033u, COUNT(p52
 
 /* ---- P52D to P52I -- pp. 740-741 ---- */
 
-/* P52D +3: "DISPLAY GIMBAL ANGLES" (V06N22). */
+/* P52D +3 -- p. 740: "DISPLAY GIMBAL ANGLES" (V06N22). */
 void p52d_after_exit(void)
 {
     set_A(VB06N22);
@@ -262,15 +263,15 @@ void p52d_terminate(void)
     tc_to(P52D + 6u, GOTOPOOH);
 }
 
-/* P52D +7: proceed, the alignment's type (TC COARSTYP). */
+/* P52D +7 -- p. 740: proceed, the alignment's type (TC COARSTYP). */
 void p52d_proceed(void)
 {
     tc_at(P52D + 7u);
     coarstyp();
 }
 
-/* P52J: "RECYCLE: VEHICLE HAS BEEN MANEUVERED": the gimbal angles again
- * (GOTO P52D). */
+/* P52J -- p. 740: "RECYCLE: VEHICLE HAS BEEN MANEUVERED": the gimbal angles
+ * again (GOTO P52D). */
 void p52j(void)
 {
     tc_at(P52J);
@@ -284,7 +285,7 @@ static const word p52j_words[] = {
 
 const struct interpretive_code P52J_CODE = {015u, P52J + 1u, COUNT(p52j_words), p52j_words};
 
-/* P52J +3: "DO COARSE ALIGN" "ROUTINE" (CAL53A); then REFSMFLG set
+/* P52J +3 -- p. 740: "DO COARSE ALIGN" "ROUTINE" (CAL53A); then REFSMFLG set
  * (CAL53RET). */
 void p52j_coarse(void)
 {
@@ -302,7 +303,7 @@ static const word p52j_coarse_words[] = {
 const struct interpretive_code P52J_COARSE_CODE = {015u, P52J + 4u, COUNT(p52j_coarse_words),
                                                    p52j_coarse_words};
 
-/* P52C: a restart point (PHASCHNG, 04024), then the star selection
+/* P52C -- p. 740: a restart point (PHASCHNG, 04024), then the star selection
  * offered (GOPERF1, ALRM15: code 15). */
 void p52c(void)
 {
@@ -320,22 +321,22 @@ void p52c_terminate(void)
     tc_to(P52C + 5u, GOTOPOOH);
 }
 
-/* P52C +6: "V33" (TC +2): the stars at TSIGHT1 from now. */
+/* P52C +6 -- p. 740: "V33" (TC +2): the stars at TSIGHT1 from now. */
 void p52c_proceed(void)
 {
     tc_at(P52C + 6u);
     p52c_stars();
 }
 
-/* P52C +7: "E" (enter): TC P52F, the stars the crew picks. */
+/* P52C +7 -- p. 740: "E" (enter): TC P52F, the stars the crew picks. */
 void p52c_enter(void)
 {
     tc_at(P52C + 7u);
     p52f();
 }
 
-/* P52C +010: the sun's, the earth's and the moon's places (LOCSAM) at
- * TSIGHT1 from now. */
+/* P52C +010 -- p. 740: the sun's, the earth's and the moon's places (LOCSAM)
+ * at TSIGHT1 from now. */
 void p52c_stars(void)
 {
     tc_at(P52C + 010u);
@@ -354,8 +355,8 @@ static const word p52c_stars_words[] = {
 const struct interpretive_code P52C_STARS_CODE = {015u, P52C + 011u, COUNT(p52c_stars_words),
                                                   p52c_stars_words};
 
-/* P52E: "DO STAR SELECTION" (PICAPAR); PICAPAR's return is "2 STARS NOT
- * AVAILABLE" (P52I), its +1 "2 STARS AVAILABLE" (P52F). */
+/* P52E -- p. 740: "DO STAR SELECTION" (PICAPAR); PICAPAR's return is "2
+ * STARS NOT AVAILABLE" (P52I), its +1 "2 STARS AVAILABLE" (P52F). */
 void p52e(void)
 {
     tc_to(P52E, BANKCALL); /* CADR PICAPAR */
@@ -367,7 +368,7 @@ void p52e_no_stars(void)
     tc_to(P52I, ALARM); /* OCT 405 */
 }
 
-/* P52F: R51, the fine alignment; then GOTOPOOH (ENDP50S +1). */
+/* P52F -- p. 740: R51, the fine alignment; then GOTOPOOH (ENDP50S +1). */
 void p52f(void)
 {
     tc_at(P52F);
@@ -387,7 +388,8 @@ void p52f_after_exit(void)
     tc_to(ENDP50S + 1u, GOTOPOOH);
 }
 
-/* P52I, alarm 405's return: V05N09 flashed; "PROCEED:  DO FINE ALIGN-R51"
+/* P52I +2 -- p. 741, alarm 405's return: V05N09 flashed; "PROCEED:  DO FINE
+ * ALIGN-R51"
  * (P52F); "RECYCLE:  VEHICLE HAS BEEN MANEUVERED" (P52C). */
 void p52i_after_alarm(void)
 {
@@ -414,8 +416,9 @@ void p52i_recycle(void)
 
 /* ---- COARSTYP and GYCRS -- pp. 741-742 ---- */
 
-/* COARSTYP: the alignment's type offered (GOPERF1, code 13): "V34", or
- * "NORMAL", the coarse alignment (P52J +3), or "GYRO COARSE" (GYCRS). */
+/* COARSTYP -- p. 741: the alignment's type offered (GOPERF1, code 13):
+ * "V34", or "NORMAL", the coarse alignment (P52J +3), or "GYRO COARSE"
+ * (GYCRS). */
 static void coarstyp(void)
 {
     set_A(OCT13);
@@ -464,8 +467,8 @@ static const word gycrs_words[] = {
 
 const struct interpretive_code GYCRS_CODE = {015u, GYCRS, COUNT(gycrs_words), gycrs_words};
 
-/* GYCRS +022: the gimbals shown (V16N20, GODSPR) while IMUPULSE torques
- * the gyros (R55CDR) and IMUSTALL waits; if it fails, CURTAINS. */
+/* GYCRS +022 -- p. 741: the gimbals shown (V16N20, GODSPR) while IMUPULSE
+ * torques the gyros (R55CDR) and IMUSTALL waits; if it fails, CURTAINS. */
 void gycrs_after_exit(void)
 {
     set_A(V16N20);
@@ -488,7 +491,7 @@ void gycrs_torque_failed(void)
     tc_to(GYCRS + 032u, CURTAINS);
 }
 
-/* GYCRS +033: a restart point (PHASCHNG, 04024). */
+/* GYCRS +033 -- p. 741: a restart point (PHASCHNG, 04024). */
 void gycrs_torqued(void)
 {
     tc_to(GYCRS + 033u, PHASCHNG); /* OCT 04024 */
@@ -558,8 +561,8 @@ static const word p52ls_words[] = {
 
 const struct interpretive_code P52LS_CODE = {016u, P52LS, COUNT(p52ls_words), p52ls_words};
 
-/* LSDISP: the site flashed (V06N89*, GOFLASH): terminate (GOTOPOOH),
- * proceed (TC +2), or a new site loaded (TC LSDISP). */
+/* LSDISP -- p. 743: the site flashed (V06N89*, GOFLASH): terminate
+ * (GOTOPOOH), proceed (TC +2), or a new site loaded (TC LSDISP). */
 void lsdisp(void)
 {
     set_A(V06N89_STAR);

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P51-P53.agc of the CM, part 3 (Comanche055 pp. 748-755, bank 14): S50
- * and R56, the stars to sight.
+/* P51-P53.agc of the CM, part 3 (Comanche055 pp. 748-755, bank 14): S50 and
+ * R56, the stars to sight. The faithful C is c64-port/src/cm_p51_p53.c.
  *
  * S50, alias LOCSAM, "TO COMPUTE QUATITIGS LISTED BELOW, USED IN THE IMU
  * ALIGNMENT PROGRAMS": the unit vectors to the sun, the earth and the
@@ -23,8 +23,6 @@
 #include "../interpreter/interpreter.h"
 
 #if COMANCHE055
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* ---- S50 (LOCSAM) -- pp. 748-751 ---- */
 
@@ -119,7 +117,7 @@ const struct interpretive_code S50_CODE = {014u, LOCSAM, COUNT(s50_words), s50_w
 
 static void picbxt(void);
 
-/* PICAPAR: the caller's return, as a CADR, to QMIN. */
+/* PICAPAR -- p. 752: the caller's return, as a CADR, to QMIN. */
 void picapar(void)
 {
     tc_to(PICAPAR, MAKECADR);
@@ -279,14 +277,14 @@ void picend_after_exit(void)
     picbxt();
 }
 
-/* PICGXT +1: the caller's +3, the normal return. */
+/* PICGXT +1 -- p. 755: the caller's +3, the normal return. */
 void picgxt_after_exit(void)
 {
     incr(ADDRESS_OF(QMIN));
     picbxt();
 }
 
-/* PICBXT: back to the caller through its CADR in QMIN (SWCALL). */
+/* PICBXT -- p. 755: back to the caller through its CADR in QMIN (SWCALL). */
 static void picbxt(void)
 {
     ca(ADDRESS_OF(QMIN));

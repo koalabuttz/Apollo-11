@@ -40,14 +40,6 @@
 
 #include "../agc/names.h"
 
-/* TC at, to a routine out of the file: Q gets the return, and the
- * routine runs next. */
-static inline void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* The instruction TCF k, as INDEX UPVERB changes it. */
 #define TCF_TO(k) ((word)(010000u | (k)))
 

@@ -2,7 +2,8 @@
 /* P37_P70.agc of the CM, part 1 (Comanche055 pp. 895-899, bank 36): the
  * "RETURN TO EARTH DISPLAY SUBROUTINE" RTEVN; the "PRECISION DISPLAY,
  * TARGETING COMPUTATION AND RTE END PROCESSING" (P37G to P37W); and the
- * display subroutines P37GFRB1, P370GOFR and P370GOF.
+ * display subroutines P37GFRB1, P370GOFR and P370GOF. The faithful C is
+ * c64-port/src/cm_p37_p70.c.
  *
  * RTEVN shows a trajectory, the conic or the precision one: the landing
  * site (V06N61), the time to entry (V06N39), the speed and angle at entry
@@ -16,8 +17,6 @@
 #include "../interpreter/interpreter.h"
 
 #if COMANCHE055
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* TC to an erasable word that holds a return: the AGC runs the word as an
  * instruction, a TC when the program has saved an address there. Any
@@ -55,7 +54,7 @@ static const word rtevn_words[] = {
 
 const struct interpretive_code RTEVN_CODE = {036u, RTEVN, COUNT(rtevn_words), rtevn_words};
 
-/* RTEVN +4, after the EXIT: "LATITUDE,LONGITUDE,BLANK" "IN
+/* RTEVN +4 -- p. 895, after the EXIT: "LATITUDE,LONGITUDE,BLANK" "IN
  * LAT(SPL),LNG(SPL),-" (V06N61, GOFLASHR). */
 void rtevn_after_exit(void)
 {
@@ -63,8 +62,9 @@ void rtevn_after_exit(void)
     p370gofr(RTEVN + 5u);
 }
 
-/* RTEVN +6, GOFLASHR's immediate return: R3 blanked (FOUR, at 37BLANK +1)
- * and the job ends. (Its TCF +5 after, to RTEVN +015, is a key too.) */
+/* RTEVN +6 -- p. 895, GOFLASHR's immediate return: R3 blanked (FOUR, at
+ * 37BLANK +1) and the job ends. (Its TCF +5 after, to RTEVN +015, is a key
+ * too.) */
 void rtevn_blank_r3(void)
 {
     set_A(FOUR);
@@ -72,14 +72,15 @@ void rtevn_blank_r3(void)
     tc_to(ADDRESS_OF(37BLANK) + 1u, BLANKET);
 }
 
-/* RTEVN +012, its proceed: "T21 HRS,MIN,SEC IN T3TOT4" (V06N39). */
+/* RTEVN +012 -- p. 895, its proceed: "T21 HRS,MIN,SEC IN T3TOT4"
+ * (V06N39). */
 void rtevn_v6n39(void)
 {
     set_A(V6N39RTE);
     p370gof(RTEVN + 013u);
 }
 
-/* RTEVN +015, its proceed: "DISPLAY BLANK,V(T2),FPA2" "IN
+/* RTEVN +015 -- p. 895, its proceed: "DISPLAY BLANK,V(T2),FPA2" "IN
  * -,VPRED,GAMMAEI" (V06N60, R1 blanked). */
 void rtevn_v6n60(void)
 {
@@ -87,14 +88,15 @@ void rtevn_v6n60(void)
     p37gfrb1(RTEVN + 016u);
 }
 
-/* RTEVN +020, its proceed: "DISPLAY DELTA V (LV) IN DELVLVC" (V06N81). */
+/* RTEVN +020 -- p. 896, its proceed: "DISPLAY DELTA V (LV) IN DELVLVC"
+ * (V06N81). */
 void rtevn_v6n81(void)
 {
     set_A(V6N81RTE);
     p370gof(RTEVN + 021u);
 }
 
-/* RTEVN +023, its proceed: into the interpreter (TCR INTPRET), */
+/* RTEVN +023 -- p. 896, its proceed: into the interpreter (TCR INTPRET), */
 void rtevn_return(void)
 {
     tc_at(RTEVN + 023u);
@@ -115,9 +117,9 @@ const struct interpretive_code RTEVN_RETURN_CODE = {036u, RTEVN + 024u, COUNT(rt
 
 /* ---- P37N to P37T -- pp. 896-897 ---- */
 
-/* P37N, after the EXIT: OPTION1 7 and OPTION2 1, the SPS ("PROPULSION
- * SYSTEM OPTION" "1=SPS, 2=RCS"), for the "DISPLAY RCS OR SPS OPTION SPS
- * ASSUMED" (V04N06). (A is a constant: neither TS skips.) */
+/* P37N -- p. 896, after the EXIT: OPTION1 7 and OPTION2 1, the SPS
+ * ("PROPULSION SYSTEM OPTION" "1=SPS, 2=RCS"), for the "DISPLAY RCS OR SPS
+ * OPTION SPS ASSUMED" (V04N06). (A is a constant: neither TS skips.) */
 void p37n_after_exit(void)
 {
     set_A(SEVEN);
@@ -127,14 +129,15 @@ void p37n_after_exit(void)
     p37n_option();
 }
 
-/* P37N +4: the display; a recycle shows it again. */
+/* P37N +6 -- p. 896, the recycle (TCF -2), which shows the display of P37N
+ * +4 again. */
 void p37n_option(void)
 {
     set_A(V4N06RTE);
     p370gof(P37N + 5u);
 }
 
-/* P37N +7, its proceed: into the interpreter, */
+/* P37N +7 -- p. 896, its proceed: into the interpreter, */
 void p37n_proceed(void)
 {
     tc_at(P37N + 7u);
@@ -175,14 +178,14 @@ static const word p37n_words[] = {
 
 const struct interpretive_code P37N_CODE = {036u, P37N + 010u, COUNT(p37n_words), p37n_words};
 
-/* P37T +3, after the EXIT: TC POLY (DEC 1, then three 2DECs), back at
- * P37T +013. */
+/* P37T +3 -- p. 896, after the EXIT: TC POLY (DEC 1, then three 2DECs), back
+ * at P37T +013. */
 void p37t_after_exit(void)
 {
     tc_to(P37T + 3u, POLY);
 }
 
-/* P37T +013: into the interpreter, */
+/* P37T +013 -- p. 897: into the interpreter, */
 void p37t_after_poly(void)
 {
     tc_at(P37T + 013u);
@@ -209,16 +212,16 @@ static const word p37t_poly_words[] = {
 const struct interpretive_code P37T_POLY_CODE = {036u, P37T + 014u, COUNT(p37t_poly_words),
                                                  p37t_poly_words};
 
-/* P37T +026, after the EXIT: "DISPLAY BIASED TIG" (V06N33); a recycle
- * shows it again. */
+/* P37T +026 -- p. 897, after the EXIT: "DISPLAY BIASED TIG" (V06N33); a
+ * recycle shows it again. */
 void p37t_tig(void)
 {
     set_A(V6N33RTE);
     p370gof(P37T + 027u);
 }
 
-/* P37T +031, its proceed: VHFCNT and TRKMKCNT +0 (A from a CAF has no
- * overflow for the TSes to skip on), and into the interpreter, */
+/* P37T +031 -- p. 897, its proceed: VHFCNT and TRKMKCNT +0 (A from a CAF has
+ * no overflow for the TSes to skip on), and into the interpreter, */
 void p37t_proceed(void)
 {
     set_A(ZERO);
@@ -302,8 +305,9 @@ const struct interpretive_code P37T_TIG_CODE = {036u, P37T + 035u, COUNT(p37t_ti
 
 /* ---- The display subroutines -- pp. 898-899 ---- */
 
-/* P37GFRB1, the "SUBROUTINE TO GO TO GOFLASHR AND BLANK R1", called by
- * TCR at `at`: its return in SPRTEX (EXTEND; QXCH), and P370GOFR. */
+/* P37GFRB1 -- p. 898, the "SUBROUTINE TO GO TO GOFLASHR AND BLANK R1",
+ * called by TCR at `at`: its return in SPRTEX (EXTEND; QXCH), and
+ * P370GOFR. */
 void p37gfrb1(word at)
 {
     tc_at(at);
@@ -311,21 +315,21 @@ void p37gfrb1(word at)
     p370gofr(ADDRESS_OF(P37GFRB1) + 2u);
 }
 
-/* 37BLANK, GOFLASHR's immediate return to P37GFRB1: R1 blanked (ONE,
- * BLANKET), */
+/* 37BLANK -- p. 898, GOFLASHR's immediate return to P37GFRB1: R1 blanked
+ * (ONE, BLANKET), */
 void blank37(void)
 {
     set_A(ONE);
     tc_to(ADDRESS_OF(37BLANK) + 1u, BLANKET);
 }
 
-/* and the job ends. */
+/* 37BLANK +2 -- p. 898: and the job ends. */
 void blank37_after_blanket(void)
 {
     continue_at(ENDOFJOB);
 }
 
-/* 37BLANK +3: "RECYCLE", back to the word after P37GFRB1's TCR (TC
+/* 37BLANK +3 -- p. 898: "RECYCLE", back to the word after P37GFRB1's TCR (TC
  * SPRTEX). */
 void blank37_recycle(void)
 {
@@ -333,14 +337,14 @@ void blank37_recycle(void)
     tc_return_in(ADDRESS_OF(SPRTEX));
 }
 
-/* 37BLANK +4: "PROCEED", to the word after that (P37PROC). */
+/* 37BLANK +4 -- p. 898: "PROCEED", to the word after that (P37PROC). */
 void blank37_proceed(void)
 {
     tcf_past_return_in(ADDRESS_OF(SPRTEX), 1u);
 }
 
-/* P370GOFR, the "SUBROUTINE TO GO TO GOFLASHR", called by TCR at `at`:
- * its return in RTENCKEX (EXTEND; QXCH), and the display flashed by
+/* P370GOFR -- p. 898, the "SUBROUTINE TO GO TO GOFLASHR", called by TCR at
+ * `at`: its return in RTENCKEX (EXTEND; QXCH), and the display flashed by
  * GOFLASHR (BANKCALL), the verb and noun in A. */
 void p370gofr(word at)
 {
@@ -349,27 +353,27 @@ void p370gofr(word at)
     tc_to(P370GOFR + 2u, BANKCALL); /* CADR GOFLASHR */
 }
 
-/* P370GOFR +4: "TERMINATE". */
+/* P370GOFR +4 -- p. 898: "TERMINATE". */
 void p370gofr_terminate(void)
 {
     continue_at(GOTOPOOH);
 }
 
-/* P370GOFR +5: "PROCEED", on at the fifth word after the TCR (TCF +3;
- * INDEX RTENCKEX; TCF 0 +4). */
+/* P370GOFR +5 -- p. 898: "PROCEED", on at the fifth word after the TCR (TCF
+ * +3; INDEX RTENCKEX; TCF 0 +4). */
 void p370gofr_proceed(void)
 {
     tcf_past_return_in(ADDRESS_OF(RTENCKEX), 4u);
 }
 
-/* P370GOFR +6: "RECYCLE", on at the fourth (TCF +4; INDEX RTENCKEX; TCF 0
- * +3). */
+/* P370GOFR +6 -- p. 898: "RECYCLE", on at the fourth (TCF +4; INDEX
+ * RTENCKEX; TCF 0 +3). */
 void p370gofr_recycle(void)
 {
     tcf_past_return_in(ADDRESS_OF(RTENCKEX), 3u);
 }
 
-/* P370GOFR +7: "IMMEDIATE RETURN", to the word after the TCR (TC
+/* P370GOFR +7 -- p. 898: "IMMEDIATE RETURN", to the word after the TCR (TC
  * RTENCKEX). */
 void p370gofr_immediate(void)
 {
@@ -377,9 +381,9 @@ void p370gofr_immediate(void)
     tc_return_in(ADDRESS_OF(RTENCKEX));
 }
 
-/* P370GOF, the "SUBROUTINE TO GO TO GOFLASH", called by TCR at `at`: its
- * return in SPRTEX (EXTEND; QXCH), and the display flashed by GOFLASH
- * (BANKCALL), the verb and noun in A. */
+/* P370GOF -- p. 899, the "SUBROUTINE TO GO TO GOFLASH", called by TCR at
+ * `at`: its return in SPRTEX (EXTEND; QXCH), and the display flashed by
+ * GOFLASH (BANKCALL), the verb and noun in A. */
 void p370gof(word at)
 {
     tc_at(at);
@@ -387,20 +391,20 @@ void p370gof(word at)
     tc_to(P370GOF + 2u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* P370GOF +4: terminate. */
+/* P370GOF +4 -- p. 899: terminate. */
 void p370gof_terminate(void)
 {
     continue_at(GOTOPOOH);
 }
 
-/* P370GOF +5: proceed, at the second word after the TCR (TCF +2;
+/* P370GOF +5 -- p. 899: proceed, at the second word after the TCR (TCF +2;
  * P37PROC: INDEX SPRTEX; TCF 0 +1). */
 void p370gof_proceed(void)
 {
     tcf_past_return_in(ADDRESS_OF(SPRTEX), 1u);
 }
 
-/* P370GOF +6: recycle, the word after the TCR (TC SPRTEX). */
+/* P370GOF +6 -- p. 899: recycle, the word after the TCR (TC SPRTEX). */
 void p370gof_recycle(void)
 {
     tc_at(P370GOF + 6u);

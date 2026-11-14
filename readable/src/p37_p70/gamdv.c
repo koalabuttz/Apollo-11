@@ -1,18 +1,16 @@
 /* SPDX-License-Identifier: MIT */
 /* P37_P70.agc of the CM, part 5 (Comanche055 pp. 924-930, bank 32): the
- * "X(T1)-DV ITERATOR SUBROUTINE" (GAMDV10), which "COMPUTES A POST
- * IMPULSE VELOCITY VECTOR (V2(T1)) WHICH REQUIRES A MINIMUM DV" (or the
- * change in speed asked for), the "DV CALCULATION SUBROUTINE" (DVCALC)
- * and the "SUBROUTINE TO COMPUTE BOUNDS ON INDEPENDENT VARIABLE X(T1)"
- * (XT1LIM). The file's constants follow them (pp. 931-933, banks 36, 32
- * and 16); they are data, not code. */
+ * "X(T1)-DV ITERATOR SUBROUTINE" (GAMDV10), which "COMPUTES A POST IMPULSE
+ * VELOCITY VECTOR (V2(T1)) WHICH REQUIRES A MINIMUM DV" (or the change in
+ * speed asked for), the "DV CALCULATION SUBROUTINE" (DVCALC) and the
+ * "SUBROUTINE TO COMPUTE BOUNDS ON INDEPENDENT VARIABLE X(T1)" (XT1LIM). The
+ * file's constants follow them (pp. 931-933, banks 36, 32 and 16); they are
+ * data, not code. The faithful C is c64-port/src/cm_p37_p70.c. */
 #include "p37_p70.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
 #if COMANCHE055
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* ---- GAMDV10 -- pp. 924-927 ---- */
 

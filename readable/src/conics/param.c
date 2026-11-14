@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 /* CONIC_SUBROUTINES.agc, PARAM and GEOM (LM pp. 1186-1188, CM pp.
  * 1289-1291), in bank 4, in the listing's notation
- * (src/interpreter/notation.h), which the readable interpreter runs.
+ * (src/interpreter/notation.h), which the readable interpreter runs. The
+ * faithful C is c64-port/src/lm_conic_compiled.c (with lm_conic_checkctr.c)
+ * and cm_conics.c.
  *
  * GEOM: the geometry of two vectors, the first at 0D of the push-down list
  * and the second in MPAC: their unit vectors (UR1 and U2) and lengths (R1

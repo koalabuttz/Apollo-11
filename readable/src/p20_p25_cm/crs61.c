@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 8 (Comanche055 pp. 590-597): CRS61.1, the CSM's
  * preferred tracking attitude, and R63, which works out the desired CDU
- * angles for it (bank 34).
+ * angles for it (bank 34). The faithful C is c64-port/src/cm_p20_p25.c.
  *
  * R61CSM calls CRS61.1, which leaves in MPAC what it did ("RETURNS: ALL TO
  * L+1"): 0, the "NORMAL EXIT", the "3 SETS OF INPUTS FED TO DAP" (the
@@ -24,8 +24,6 @@
 #include "../interpreter/interpreter.h"
 
 #if COMANCHE055
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 static void step2ck(void);
 static void cduloop(void);
@@ -51,19 +49,20 @@ static const word crs61_1_words[] = {
     ORDER(EXIT),
 };
 
-/* CRS61.1 +013 -- after the EXIT: STEP2CK. */
+/* CRS61.1 +013 -- p. 593: after the EXIT: STEP2CK. */
 void crs61_1_after_exit(void)
 {
     tc_at(CRS61_1 + 013u);
     step2ck();
 }
 
-/* AUTOCK: "AUTO MODE SELECTED (BITS 15-13=011)" in channel 31 (RXOR with
- * PRIO30, 030000, and FURST3, 070000): "YES -- CONTINUE", DAPCK; no, ASET. */
+/* AUTOCK -- p. 593: "AUTO MODE SELECTED (BITS 15-13=011)" in channel 31
+ * (RXOR with PRIO30, 030000, and FURST3, 070000): "YES -- CONTINUE", DAPCK;
+ * no, ASET. */
 void autock(void)
 {
     set_A(PRIO30);
-    rxor_channel(031);
+    rxor_channel(CHAN31);
     mask(FURST3);
     if (A_is_zero()) { /* EXTEND; BZF DAPCK */
         dapck();
@@ -73,9 +72,10 @@ void autock(void)
     aset();
 }
 
-/* DAPCK: "IS STIKFLAG SET (I.E., IS SOMEONE ON RHC)": no, STEP3CK (CS
- * FLAGWRD1 leaves the bit set when the flag is clear); yes, ASET. (A word
- * masked by STIKBIT is never negative, for the CCS's other two words.) */
+/* DAPCK -- p. 593: "IS STIKFLAG SET (I.E., IS SOMEONE ON RHC)": no, STEP3CK
+ * (CS FLAGWRD1 leaves the bit set when the flag is clear); yes, ASET. (A
+ * word masked by STIKBIT is never negative, for the CCS's other two
+ * words.) */
 void dapck(void)
 {
     cs(ADDRESS_OF(FLAGWRD1));
@@ -91,8 +91,8 @@ void dapck(void)
     }
 }
 
-/* ASET: MPAC +0, and in interpretive code to "EXIT CRS61.1". (+0 leaves no
- * overflow for the TS to skip on.) */
+/* ASET -- p. 593: MPAC +0, and in interpretive code to "EXIT CRS61.1". (+0
+ * leaves no overflow for the TS to skip on.) */
 void aset(void)
 {
     set_A(ZERO);
@@ -107,13 +107,13 @@ static const word aset_words[] = {
     ADDRESS(Q611),
 };
 
-/* STEP2CK: the UPACTY light off (UPACTOFF), */
+/* STEP2CK -- p. 593: the UPACTY light off (UPACTOFF), */
 static void step2ck(void)
 {
     tc_to(STEP2CK, BANKCALL); /* CADR UPACTOFF */
 }
 
-/* STEP2CK +2: and each CDU angle checked, the third first: "SET
+/* STEP2CK +2 -- p. 593: and each CDU angle checked, the third first: "SET
  * TEMPORARY INDEX DTHETASM = 2". */
 void step2ck_after_upactoff(void)
 {
@@ -121,10 +121,10 @@ void step2ck_after_upactoff(void)
     cduloop();
 }
 
-/* CDULOOP: "SET A = ACTUAL CDU (ACDU)", and "A = DIFF = ACDU - DCDU" (MSU:
- * the CDUs' two's complement), to MPAC, and in interpretive code "FOR 10
- * DEGREE CK". Not modelled: an index in DTHETASM that would make the CA or
- * the MSU another instruction, or address fixed memory. (No A here
+/* CDULOOP -- p. 593: "SET A = ACTUAL CDU (ACDU)", and "A = DIFF = ACDU -
+ * DCDU" (MSU: the CDUs' two's complement), to MPAC, and in interpretive code
+ * "FOR 10 DEGREE CK". Not modelled: an index in DTHETASM that would make the
+ * CA or the MSU another instruction, or address fixed memory. (No A here
  * overflows, for a TS to skip on.) */
 static void cduloop(void)
 {
@@ -156,9 +156,9 @@ static const word cduloop_words[] = {
     ADDRESS(STKTEST),
 };
 
-/* CDULOOP +014 -- after the EXIT: "HAVE ALL 3 ANGLE DIFFS BEEN CHECKED."
- * "NO -- DIM COUNT, CHECK NEXT ANGLE DIFF."; yes, AUTOCK. DTHETASM -0
- * runs the word after STKTEST's EXIT. Not modelled: DTHETASM negative,
+/* CDULOOP +014 -- p. 593: after the EXIT: "HAVE ALL 3 ANGLE DIFFS BEEN
+ * CHECKED." "NO -- DIM COUNT, CHECK NEXT ANGLE DIFF."; yes, AUTOCK. DTHETASM
+ * -0 runs the word after STKTEST's EXIT. Not modelled: DTHETASM negative,
  * which would run the EXIT as an instruction. */
 void cduloop_after_exit(void)
 {
@@ -173,7 +173,7 @@ void cduloop_after_exit(void)
     }
 }
 
-/* CDULOOP +016: TC AUTOCK. */
+/* CDULOOP +016 -- p. 593: TC AUTOCK. */
 void cduloop_done(void)
 {
     tc_at(CDULOOP + 016u);
@@ -185,7 +185,7 @@ static const word stktest_words[] = {
     ORDER(EXIT),
 };
 
-/* STKTEST +1 -- after the EXIT: "STIKFLAG IS NOT SET (DO R63)",
+/* STKTEST +1 -- p. 593: after the EXIT: "STIKFLAG IS NOT SET (DO R63)",
  * MANUEXIS; set, the UPACTY light on. (A word masked by STIKBIT is never
  * negative.) */
 void stktest_after_exit(void)
@@ -203,8 +203,8 @@ void stktest_after_exit(void)
     }
 }
 
-/* STKTEST +5: "STIKFLG IS SET": "TURN ON UPACTY LIGHT" (channel 11 bit
- * 3), and "EXIT AND SET R61CNTR" (ASET). */
+/* STKTEST +5 -- p. 594: "STIKFLG IS SET": "TURN ON UPACTY LIGHT" (channel 11
+ * bit 3), and "EXIT AND SET R61CNTR" (ASET). */
 void stktest_upacty(void)
 {
     set_A(BIT3);
@@ -213,7 +213,7 @@ void stktest_upacty(void)
     aset();
 }
 
-/* STEP3CK: in interpretive code, */
+/* STEP3CK -- p. 594: in interpretive code, */
 void step3ck(void)
 {
     tc_at(STEP3CK);
@@ -315,13 +315,12 @@ static const word step3ck_words[] = {
     ORDER(EXIT),
 };
 
-/* CRS61.2A +1 -- after the EXIT, with interrupts held: the DAP's inputs,
- * the "DESIRED GIMBAL ANGLES" from SAVEDCDU to CDUXD, CDUYD and CDUZD
- * (double words, the low +0), the "OMEGA CONTROL (ANG. LOS RATE)" from
+/* CRS61.2A +1 -- p. 595: after the EXIT, with interrupts held: the DAP's
+ * inputs, the "DESIRED GIMBAL ANGLES" from SAVEDCDU to CDUXD, CDUYD and
+ * CDUZD (double words, the low +0), the "OMEGA CONTROL (ANG. LOS RATE)" from
  * MPAC to WBODY, WBODY1 and WBODY2, and the "CDU INCREMENTS" from the work
- * area's 14D to DELCDUX, DELCDUY and DELCDUZ; HOLDFLAG -1, and ASET. (A
- * word of erasable memory, or -1, leaves no overflow for a TS to skip
- * on.) */
+ * area's 14D to DELCDUX, DELCDUY and DELCDUZ; HOLDFLAG -1, and ASET. (A word
+ * of erasable memory, or -1, leaves no overflow for a TS to skip on.) */
 void crs61_2a_after_exit(void)
 {
     inhint();
@@ -354,7 +353,7 @@ void crs61_2a_after_exit(void)
     aset();
 }
 
-/* MANUEXIS: in interpretive code, */
+/* MANUEXIS -- p. 596: in interpretive code, */
 void manuexis(void)
 {
     tc_at(MANUEXIS);

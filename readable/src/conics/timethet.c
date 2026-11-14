@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* CONIC_SUBROUTINES.agc, TIMETHET (LM p. 1186, CM p. 1289): TIME-THETA,
- * in the listing's notation (src/interpreter/notation.h), which the
- * readable interpreter runs.
+/* CONIC_SUBROUTINES.agc, TIMETHET (LM p. 1186, CM p. 1289): TIME-THETA, in
+ * the listing's notation (src/interpreter/notation.h), which the readable
+ * interpreter runs. The faithful C is c64-port/src/lm_conic_compiled.c (with
+ * lm_conic_checkctr.c) and cm_conics.c.
  *
  * "GIVEN AN INITIAL STATE VECTOR AND A DESIRED TRUE-ANOMALY-DIFFERENCE
  * THROUGH WHICH THE STATE IS TO BE UPDATED ALONG A CONIC TRAJECTORY,

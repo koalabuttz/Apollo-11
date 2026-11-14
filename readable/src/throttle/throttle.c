@@ -9,14 +9,6 @@
 #if LUMINARY099
 #include "../interpreter/interpreter.h"
 
-/* TC at, to a routine out of the file: Q gets the return and the routine
- * runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* Every return word these routines keep (Q at FLATOUT, WHATOUT and
  * MASSMULT, RTNHOLD at DOPIF's return) is a TC to fixed memory, 02000 to
  * 07777: TC RTNHOLD and TC BUF run it as an instruction. Any other is not
@@ -33,9 +25,9 @@ static void doit(void);
 
 /* ---- FC and FP -- p. 793 ---- */
 
-/* THROTTLE: "HERE FC, DESIRED THRUST, AND FP, PRESENT THRUST, UNWEIGHTED,
- * ARE COMPUTED." ABDELV, the present acceleration, times /AF/CNST: "IN
- * UNITS OF 2(-4) M/CS/CS, SAVING SERVICER TROUBLE". */
+/* THROTTLE -- p. 793: "HERE FC, DESIRED THRUST, AND FP, PRESENT THRUST,
+ * UNWEIGHTED, ARE COMPUTED." ABDELV, the present acceleration, times
+ * /AF/CNST: "IN UNITS OF 2(-4) M/CS/CS, SAVING SERVICER TROUBLE". */
 void throttle(void)
 {
     ca(ADDRESS_OF(ABDELV));
@@ -43,16 +35,16 @@ void throttle(void)
     throttle_plus3();
 }
 
-/* THROTTLE +3: the caller's return to RTNHOLD, and MASSMULT turns the
- * acceleration in A,L into a force. */
+/* THROTTLE +3 -- p. 793: the caller's return to RTNHOLD, and MASSMULT turns
+ * the acceleration in A,L into a force. */
 void throttle_plus3(void)
 {
     qxch(ADDRESS_OF(RTNHOLD));
     tc_to(AFDUMP, MASSMULT);
 }
 
-/* "FP = PRESENT THRUST"; then the guidance's acceleration, /AFC/, to
- * MASSMULT. */
+/* AFDUMP +1 -- p. 793: "FP = PRESENT THRUST"; then the guidance's
+ * acceleration, /AFC/, to MASSMULT. */
 void afdump_after_massmult(void)
 {
     dxch(ADDRESS_OF(FP));
@@ -60,10 +52,10 @@ void afdump_after_massmult(void)
     tc_to(AFDUMP + 4u, MASSMULT);
 }
 
-/* "FC = THRUST DESIRED BY GUIDANCE", and "FCODD = WHAT IT IS GOING TO GET"
- * (MASSMULT leaves A a word, so TS FC never skips). "IF IT HAS BEEN LESS
- * THAN 3 SECONDS SINCE THE LAST THROTTLING, AUGMENT FP USING THE FWEIGHT
- * CALCULATED" last pass. */
+/* AFDUMP +5 -- p. 793: "FC = THRUST DESIRED BY GUIDANCE", and "FCODD = WHAT
+ * IT IS GOING TO GET" (MASSMULT leaves A a word, so TS FC never skips). "IF
+ * IT HAS BEEN LESS THAN 3 SECONDS SINCE THE LAST THROTTLING, AUGMENT FP
+ * USING THE FWEIGHT CALCULATED" last pass. */
 void afdump_after_second_massmult(void)
 {
     if (!ts(ADDRESS_OF(FC))) dxch(ADDRESS_OF(FCODD));
@@ -82,9 +74,9 @@ void afdump_after_second_massmult(void)
 
 /* ---- The throttling bands -- pp. 793-794 ---- */
 
-/* WHERETO: "THIS LOGIC DETERMINES THE THROTTLING IN THE REGION 10% - 94%."
- * The low and high critical thrusts, LOWCRIT and HIGHCRIT in E-bank 5,
- * go to L*WCR*T and H*GHCR*T (BUF, BUF +1), and PIFPSET to -0. Then:
+/* WHERETO -- p. 793: "THIS LOGIC DETERMINES THE THROTTLING IN THE REGION 10%
+ * - 94%." The low and high critical thrusts, LOWCRIT and HIGHCRIT in E-bank
+ * 5, go to L*WCR*T and H*GHCR*T (BUF, BUF +1), and PIFPSET to -0. Then:
  *   - FCOLD, the last command, above H*GHCR*T and FCODD above L*WCR*T:
  *     FCODD gets FP, so PIF will be zero ("SEE NOTE 1"), and PIFPSET
  *     FEXTRA (FLATOUT1);
@@ -128,7 +120,7 @@ static void whereto(void)
     flatout1();
 }
 
-/* FLATOUT1: FCODD gets the thrust in A, and PIFPSET FEXTRA. */
+/* FLATOUT1 -- p. 794: FCODD gets the thrust in A, and PIFPSET FEXTRA. */
 static void flatout1(void)
 {
     dxch(ADDRESS_OF(FCODD));
@@ -136,8 +128,8 @@ static void flatout1(void)
     flatout2();
 }
 
-/* FLATOUT2: PIFPSET, and DOPIF's TC FASTCHNG, which an overflow at TS
- * PIFPSET skips. */
+/* FLATOUT2 -- p. 794: PIFPSET, and DOPIF's TC FASTCHNG, which an overflow at
+ * TS PIFPSET skips. */
 static void flatout2(void)
 {
     if (ts(ADDRESS_OF(PIFPSET)))
@@ -148,8 +140,8 @@ static void flatout2(void)
 
 /* ---- The command -- pp. 794-796 ---- */
 
-/* DOPIF, after FASTCHNG: FCOLD gets FCODD, and "PIF = FC - FP, NEVER
- * EQUALS +0". (DCA leaves A a word, so TS FCOLD never skips.) */
+/* DOPIF +1 -- p. 794, after FASTCHNG: FCOLD gets FCODD, and "PIF = FC - FP,
+ * NEVER EQUALS +0". (DCA leaves A a word, so TS FCOLD never skips.) */
 void dopif_after_fastchng(void)
 {
     need_tc_return(fetch(ADDRESS_OF(RTNHOLD)));
@@ -160,8 +152,8 @@ void dopif_after_fastchng(void)
     doit();
 }
 
-/* DOIT: PIF and PIFPSET to the engine: PSEUDO55 and THRUST, the drive's
- * count ("ADD IN PIFPSET, WITHOUT CHANGING PIF"; an overflow at TS
+/* DOIT -- p. 795: PIF and PIFPSET to the engine: PSEUDO55 and THRUST, the
+ * drive's count ("ADD IN PIFPSET, WITHOUT CHANGING PIF"; an overflow at TS
  * PSEUDO55 skips TS THRUST), channel 14 bit 4 to send it, and TTHROT the
  * time. Then FWEIGHT for the next pass:
  *
@@ -209,9 +201,9 @@ static void doit(void)
     dxch(ADDRESS_OF(FWEIGHT));
     /* |PIF|: CCS leaves |PIF| - 1, and AD ONE restores it. */
     switch (ccs_at(ADDRESS_OF(PIF))) {
-    case POSITIVE:
+    case POSITIVE: ad(ONE); break;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: ad(ONE); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     mp_at(ADDRESS_OF(PIF));
@@ -221,17 +213,17 @@ static void doit(void)
     tc_through(ADDRESS_OF(RTNHOLD)); /* THDUMP */
 }
 
-/* FLATOUT "THROTTLES UP THE DESCENT ENGINE, AND IS CALLED AS A BASIC
- * SUBROUTINE": BIT13, "4096 PULSES", to WHATOUT. */
+/* FLATOUT -- p. 796 "THROTTLES UP THE DESCENT ENGINE, AND IS CALLED AS A
+ * BASIC SUBROUTINE": BIT13, "4096 PULSES", to WHATOUT. */
 void flatout(void)
 {
     set_A(BIT13);
     whatout();
 }
 
-/* WHATOUT: the throttle setting in A to PIFPSET ("USE PIFPSET SO FWEIGHT
- * WILL BE ZERO"), FCOLD and PIF -0, the caller's return to RTNHOLD, and
- * DOIT. */
+/* WHATOUT -- p. 796: the throttle setting in A to PIFPSET ("USE PIFPSET SO
+ * FWEIGHT WILL BE ZERO"), FCOLD and PIF -0, the caller's return to RTNHOLD,
+ * and DOIT. */
 void whatout(void)
 {
     need_tc_return(Q);
@@ -244,11 +236,11 @@ void whatout(void)
 
 /* ---- MASSMULT -- p. 796 ---- */
 
-/* MASSMULT "SCALES ACCELERATION, ARRIVING IN A AND L IN UNITS OF 2(-4)
- * M/CS/CS, TO FORCE IN PULSE UNITS": the interpreter's DMP by MASS and by
- * SCALEFAC ("LEAVES PROPERLY SCALED FORCE IN MPAC"), TPAGREE, and the
- * force in A,L, or POSMAX when its high word is not zero. The return is
- * kept in BUF. */
+/* MASSMULT -- p. 796 "SCALES ACCELERATION, ARRIVING IN A AND L IN UNITS OF
+ * 2(-4) M/CS/CS, TO FORCE IN PULSE UNITS": the interpreter's DMP by MASS and
+ * by SCALEFAC ("LEAVES PROPERLY SCALED FORCE IN MPAC"), TPAGREE, and the
+ * force in A,L, or POSMAX when its high word is not zero. The return is kept
+ * in BUF. */
 void massmult(void)
 {
     need_tc_return(Q);

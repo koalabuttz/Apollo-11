@@ -8,8 +8,6 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 static const word lat_long[] = {
     /* LAT-LONG -- p. 1133 (CM p. 1236).
      * "SUBROUTINE TO CONVERT RAD VECTOR AT GIVEN TIME TO LAT,LONG AND

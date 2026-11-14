@@ -5,8 +5,6 @@
 #include "p12.h"
 #include "../agc/names.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 #if LUMINARY099
 
 /* GUIDINIT: the return in TEMPR60 (STQ), the push-down list from 0D;

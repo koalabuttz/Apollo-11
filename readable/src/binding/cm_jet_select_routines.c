@@ -21,12 +21,13 @@
  *
  * The file reads channel 31 (the translation hand controller), writes the
  * jets' channels 5 and 6, in the program's hardware record, and sets T6's
- * enable in channel 13, in the io record. The faithful routines take the hardware record, and without
- * one refuse, so the binding does too. The states they take: FB bank 17,
- * any EBANK, ZERO +0, the bank registers agreeing, the interrupt and
- * superbank latches in range and every erasable word an ordinary one. A
- * run the readable code refuses part way leaves the state and io record
- * as they were (and the hardware record, whose jet channels it writes). */
+ * enable in channel 13, in the io record. The faithful routines take the
+ * hardware record, and without one refuse, so the binding does too. The
+ * states they take: FB bank 17, any EBANK, ZERO +0, the bank registers
+ * agreeing, the interrupt and superbank latches in range and every erasable
+ * word an ordinary one. A run the readable code refuses part way leaves the
+ * state and io record as they were (and the hardware record, whose jet
+ * channels it writes). */
 #include <setjmp.h>
 #include <stddef.h>
 #include "binding.h"
@@ -153,7 +154,7 @@ static const struct basic_entry {
     {YTAUPOS + 010u, ytaupos_dftmax},
     {AD14MSY, ad14msy},
     {ROLLTIME, rolltime},
-    {RBLAST + 015u, rblast_limit},
+    {RBLAST + 015u, rblast_plus015},
     {AD14MSR, ad14msr},
     {RBLASTOK, rblastok},
     {ASMBLWP, asmblwp},
@@ -165,14 +166,14 @@ static const struct basic_entry {
     {NO2Y + 2u, no2y_plus2},
     {NO2Z, no2z},
     {NO2Z + 1u, no2z_plus1},
-    {ACBD2Y + 012u, acbd2y_rtable},
+    {ACBD2Y + 012u, acbd2y_plus012},
     {ACBD2Y + 014u, acbd2y_acrjets},
     {AC2Y, ac2y},
     {AC2Y + 4u, ac2y_index},
     {AC2Y + 010u, ac2y_acyjets},
     {ACBD2Z, acbd2z},
     {ACBD2Z + 010u, acbd2z_index},
-    {ACBD2Z + 026u, acbd2z_dft},
+    {ACBD2Z + 026u, acbd2z_plus026},
     {BDF2Z, bdf2z},
     {BDF2Z + 4u, bdf2z_index},
     {RBYPASS, rbypass},

@@ -77,9 +77,9 @@ bool dspin_returns(void)
     set_A(BIT1);
     mask_at(ADDRESS_OF(COUNT)); /* CCS A: MASK leaves 0 or 1 */
     if (ccs_at(A_ADDRESS) == POSITIVE) {
-        tc_at(DSPIN + 10u); /* TC +2: "LEFT IF COUNT IS ODD" */
+        tc_at(DSPIN + 012u); /* TC +2: "LEFT IF COUNT IS ODD" */
         xch(ADDRESS_OF(CODE));
-        tc_at(DSPIN + 13u);
+        tc_at(DSPIN + 015u);
         sleft5(); /* "DOES NOT USE CYL" */
         ts(ADDRESS_OF(CODE));
         set_A(BIT14);
@@ -87,7 +87,7 @@ bool dspin_returns(void)
         if (ccs_at(A_ADDRESS) == POSITIVE) set_A(TWO); /* "BIT14 = 1, BLANK SIGN" */
         ad(ONE);
     } else
-        tc_at(DSPIN + 11u); /* TC DSPIN1 -1: "RIGHT IF COUNT IS EVEN" */
+        tc_at(DSPIN + 013u); /* TC DSPIN1 -1: "RIGHT IF COUNT IS EVEN" */
     ts(ADDRESS_OF(COUNT));
     return dspin1_returns();
 }

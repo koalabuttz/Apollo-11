@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* CONIC_SUBROUTINES.agc, LAMBERT (LM pp. 1193-1197, CM pp. 1296-1300),
- * in the listing's notation (src/interpreter/notation.h), which the
- * readable interpreter runs.
+/* CONIC_SUBROUTINES.agc, LAMBERT (LM pp. 1193-1197, CM pp. 1296-1300), in
+ * the listing's notation (src/interpreter/notation.h), which the readable
+ * interpreter runs. The faithful C is c64-port/src/lm_conic_compiled.c (with
+ * lm_conic_checkctr.c) and cm_conics.c.
  *
  * "THIS SUBROUTINE CALCULATES THE INITIAL VELOCITY REQUIRED TO TRANSFER A
  * POINT-MASS ALONG A CONIC TRAJECTORY FROM AN INITIAL POSITION TO A

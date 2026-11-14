@@ -56,7 +56,7 @@ void t6rupt_lead_in(void)
     dtcb((word)(LEAD_IN(RUPT_T6) + 3u));
 }
 
-/* T5RUPT (04010) -- LM p. 153, CM p. 131.
+/* T5RUPT (04010) -- LM p. 153, CM pp. 131-132.
  * TIME5 has overflowed: the autopilot's clock. The LM jumps by DTCB to the
  * 2CADR in T5ADR, the autopilot's next pass. The CM first asks how soon
  * TIME5 overflows again: "CS TIME5; AD .5SEC; TCF T5RUPT". */

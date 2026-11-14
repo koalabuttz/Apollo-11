@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: MIT */
-/* INTEGRATION_INITIALIZATION.agc, the entries to orbital integration, in
- * the listing's notation (src/interpreter/notation.h): CSMPREC, LEMPREC,
- * CSMCONIC and LEMCONIC (LM pp. 1213-1215, CM pp. 1317-1319), INTEGRVS
- * (LM p. 1215, CM p. 1319), and INTEGRV with ALOADED (LM p. 1216, CM p.
- * 1320).
+/* INTEGRATION_INITIALIZATION.agc, the entries to orbital integration, in the
+ * listing's notation (src/interpreter/notation.h): CSMPREC, LEMPREC,
+ * CSMCONIC and LEMCONIC (LM pp. 1213-1215, CM pp. 1317-1319), INTEGRVS (LM
+ * p. 1215, CM p. 1319), and INTEGRV with ALOADED (LM p. 1216, CM p. 1320).
+ * The faithful C is c64-port/src/lm_integration_init.c and
+ * cm_integration_init.c.
  *
  * "CSMPREC AND LEMPREC PERFORM ORBIT INTEGRATION BY THE ENCKE METHOD TO
  * THE TIME INDICATED IN TDEC1"; CSMCONIC and LEMCONIC by Kepler's method,

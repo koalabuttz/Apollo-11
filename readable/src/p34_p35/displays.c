@@ -48,34 +48,39 @@ static void goflash(word at)
 
 /* ---- DISPLAYE -- LM p. 682, CM p. 483 ---- */
 
-/* DISPLAYE +2: verb 06 noun 55 flashed (BANKCALL, CADR GOFLASH). */
+/* DISPLAYE +2 -- LM p. 682, CM p. 483: verb 06 noun 55 flashed (BANKCALL,
+ * CADR GOFLASH). */
 static void displaye_flash(void)
 {
     set_A(V06N55);
     goflash(DISPLAYE + 3u);
 }
 
-/* DISPLAYE: the return to NORMEX (QXCH), and the display. */
+/* DISPLAYE -- LM p. 682, CM p. 483: the return to NORMEX (QXCH), and the
+ * display. */
 void displaye(void)
 {
     qxch(ADDRESS_OF(NORMEX)); /* EXTEND; QXCH */
     displaye_flash();
 }
 
-/* GOFLASH's returns: terminate (GOTOPOOH), */
+/* DISPLAYE +5 -- LM p. 682, CM p. 483: GOFLASH's returns: terminate
+ * (GOTOPOOH), */
 void displaye_terminate(void)
 {
     continue_at(GOTOPOOH);
 }
 
-/* proceed (TC NORMEX: back to the caller), */
+/* DISPLAYE +6 -- LM p. 682, CM p. 483: proceed (TC NORMEX: back to the
+ * caller), */
 void displaye_proceed(void)
 {
     tc_at(DISPLAYE + 6u);
     tc_return_in(ADDRESS_OF(NORMEX));
 }
 
-/* and recycle (TCF -5): the display again. */
+/* DISPLAYE +7 -- LM p. 682, CM p. 483: and recycle (TCF -5): the display
+ * again. */
 void displaye_recycle(void)
 {
     displaye_flash();
@@ -83,9 +88,9 @@ void displaye_recycle(void)
 
 /* ---- P3XORP7X -- LM p. 683, CM p. 484 ---- */
 
-/* P3XORP7X: the major mode's bits above the sixth (HIGH9 of MODREG) are
- * zero in P34 and P35, and not in P74 and P75: P3x returns to Q, P7x to
- * Q + 1. */
+/* P3XORP7X -- LM p. 683, CM p. 484: the major mode's bits above the sixth
+ * (HIGH9 of MODREG) are zero in P34 and P35, and not in P74 and P75: P3x
+ * returns to Q, P7x to Q + 1. */
 void p3xorp7x(void)
 {
     set_A(HIGH9);
@@ -97,8 +102,8 @@ void p3xorp7x(void)
 /* ---- VNPOOH -- LM p. 683, CM p. 484 ---- */
 
 #if LUMINARY099
-/* VNPOOH: the return to RTRN (QXCH), and the verb and noun in A to
- * VERBNOUN, and flashed (BANKCALL, CADR GOFLASH). TS skips the CA after
+/* VNPOOH -- LM p. 683: the return to RTRN (QXCH), and the verb and noun in A
+ * to VERBNOUN, and flashed (BANKCALL, CADR GOFLASH). TS skips the CA after
  * it on an overflow. */
 void vnpooh(void)
 {
@@ -107,31 +112,31 @@ void vnpooh(void)
     goflash(VNPOOH + 4u);
 }
 
-/* GOFLASH's returns: terminate (GOTOPOOH), */
+/* VNPOOH +6 -- LM p. 683: GOFLASH's returns: terminate (GOTOPOOH), */
 void vnpooh_terminate(void)
 {
     continue_at(GOTOPOOH);
 }
 
-/* proceed (TC RTRN: back to the caller), */
+/* VNPOOH +7 -- LM p. 683: proceed (TC RTRN: back to the caller), */
 void vnpooh_proceed(void)
 {
     tc_at(VNPOOH + 7u);
     tc_return_in(ADDRESS_OF(RTRN));
 }
 
-/* and recycle (TCF -5): VERBNOUN flashed again. */
+/* VNPOOH +010 -- LM p. 683: and recycle (TCF -5): VERBNOUN flashed again. */
 void vnpooh_recycle(void)
 {
     ca(ADDRESS_OF(VERBNOUN));
     goflash(VNPOOH + 4u);
 }
 #else
-/* VNPOOH: the return to RTRN (QXCH), and the verb and noun in A to
- * VERBNOUN. Then bank 2 selected, the word at VNBANK (TC -5) being one
- * of its addresses, and the caller's bank kept in TBASE5; and VERBNOUN
- * flashed (BANKCALL, CADR GOFLASH). The first TS skips the CAF VNBANK on
- * an overflow, and FB is then XCH'd with A as it is. */
+/* VNPOOH -- CM p. 484: the return to RTRN (QXCH), and the verb and noun in A
+ * to VERBNOUN. Then bank 2 selected, the word at VNBANK (TC -5) being one of
+ * its addresses, and the caller's bank kept in TBASE5; and VERBNOUN flashed
+ * (BANKCALL, CADR GOFLASH). The first TS skips the CAF VNBANK on an
+ * overflow, and FB is then XCH'd with A as it is. */
 void vnpooh(void)
 {
     qxch(ADDRESS_OF(RTRN));                    /* EXTEND; QXCH */
@@ -142,14 +147,14 @@ void vnpooh(void)
     goflash(VNPOOH + 7u);
 }
 
-/* GOFLASH's returns: terminate (GOTOPOOH), */
+/* VNPOOH +011 -- CM p. 484: GOFLASH's returns: terminate (GOTOPOOH), */
 void vnpooh_terminate(void)
 {
     continue_at(GOTOPOOH);
 }
 
-/* VNPOOH +014: the caller's bank back (TBASE5 to FBANK), and back to the
- * caller (TC RTRN). */
+/* VNPOOH +014 -- CM p. 484: the caller's bank back (TBASE5 to FBANK), and
+ * back to the caller (TC RTRN). */
 void vnpooh_restore(void)
 {
     ca(ADDRESS_OF(TBASE5));
@@ -158,14 +163,14 @@ void vnpooh_restore(void)
     tc_return_in(ADDRESS_OF(RTRN));
 }
 
-/* proceed (TCF +2, to the bank's restoring), */
+/* VNPOOH +012 -- CM p. 484: proceed (TCF +2, to the bank's restoring), */
 void vnpooh_proceed(void)
 {
     vnpooh_restore();
 }
 
-/* and recycle (VNBANK, TC -5, whose return the TCR BANKCALL replaces):
- * VERBNOUN flashed again. */
+/* VNPOOH +013 -- CM p. 484: and recycle (VNBANK, TC -5, whose return the TCR
+ * BANKCALL replaces): VERBNOUN flashed again. */
 void vnpooh_recycle(void)
 {
     tc_at(VNBANK);

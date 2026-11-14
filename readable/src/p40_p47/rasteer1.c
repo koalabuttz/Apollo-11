@@ -15,8 +15,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* RASTEER1: RMAG the magnitude of RN, IC the unit chord to RTARG
  * (NORMUNX1), "C(36D) = ABVAL(C)", in 30D, R1C the product of RMAG and
  * the chord, normalized (its scale in MUSCALE). "SS = (R1 + R2 + C)/2".

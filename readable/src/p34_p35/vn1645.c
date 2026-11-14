@@ -28,21 +28,9 @@
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
-/* A label's address in its bank (02000-03777). */
-#define IN_BANK(label) ((word)(I_##label % 02000u + 02000u))
-#define FLAGON         IN_BANK(FLAGON)
-#define FLAGOFF        IN_BANK(FLAGOFF)
-#define GET45          IN_BANK(GET45)
-
-/* TC at, to a routine out of the file: Q gets the return, and the
- * routine runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
+#define FLAGON  IN_BANK(FLAGON)
+#define FLAGOFF IN_BANK(FLAGOFF)
+#define GET45   IN_BANK(GET45)
 
 /* ---- S34/35.5 -- LM pp. 678-679, CM pp. 480-481 ---- */
 
@@ -64,37 +52,38 @@ static const word s34_35_5_words[] = {
 };
 
 #if LUMINARY099
-/* FLAGON +5: verb 06 noun 81 flashed (BANKCALL, CADR GOFLASH). */
+/* FLAGON +5 -- LM p. 678: verb 06 noun 81 flashed (BANKCALL, CADR
+ * GOFLASH). */
 void s34_35_5_after_exit(void)
 {
     set_A(V06N81);
     tc_to(FLAGON + 6u, BANKCALL);
 }
 
-/* GOFLASH's returns: terminate (GOTOPOOH), */
+/* FLAGON +010 -- LM p. 678: GOFLASH's returns: terminate (GOTOPOOH), */
 void s34_35_5_terminate(void)
 {
     tc_to(FLAGON + 010u, GOTOPOOH);
 }
 
-/* proceed ("PRO", TC +2: the comparison), */
+/* FLAGON +011 -- LM p. 678: proceed ("PRO", TC +2: the comparison), */
 void s34_35_5_proceed(void)
 {
     tc_at(FLAGON + 011u);
     s34_35_5_compare();
 }
 
-/* and recycle ("LOAD", TC FLAGON +5: the display again, after the
- * astronaut's load). */
+/* FLAGON +012 -- LM p. 678: and recycle ("LOAD", TC FLAGON +5: the display
+ * again, after the astronaut's load). */
 void s34_35_5_recycle(void)
 {
     tc_at(FLAGON + 012u);
     s34_35_5_after_exit();
 }
 
-/* FLAGON +013: EBANK 7 ("TO BE SURE"), and the six words of DELVLVC
- * taken from GDT/2's, the differences summed in L (NTARGCHK, Q from 5
- * down to 0). Their sum not zero: the astronaut keyed in a new delta V,
+/* FLAGON +013 -- LM p. 678: EBANK 7 ("TO BE SURE"), and the six words of
+ * DELVLVC taken from GDT/2's, the differences summed in L (NTARGCHK, Q from
+ * 5 down to 0). Their sum not zero: the astronaut keyed in a new delta V,
  * NTARGFLG set (UPFLAG). Then to the interpreter. */
 void s34_35_5_compare(void)
 {
@@ -116,14 +105,14 @@ void s34_35_5_compare(void)
     tc_to(FLAGON + 032u, UPFLAG); /* ADRES NTARGFLG */
 }
 
-/* FLAGON +034: to the interpreter, for S34_35_5_LOADED_CODE. */
+/* FLAGON +034 -- LM p. 678: to the interpreter, for S34_35_5_LOADED_CODE. */
 void s34_35_5_after_upflag(void)
 {
     tc_at(FLAGON + 034u);
     intpret();
 }
 #else
-/* FLAGON +4: verb 06 noun 81 flashed (VNPOOH). */
+/* FLAGON +4 -- CM p. 480: verb 06 noun 81 flashed (VNPOOH). */
 void s34_35_5_after_exit(void)
 {
     set_A(V06N81);
@@ -131,7 +120,7 @@ void s34_35_5_after_exit(void)
     vnpooh();
 }
 
-/* FLAGON +6: to the interpreter, for S34_35_5_LOADED_CODE. */
+/* FLAGON +6 -- CM p. 480: to the interpreter, for S34_35_5_LOADED_CODE. */
 void s34_35_5_after_vnpooh(void)
 {
     tc_at(FLAGON + 6u);
@@ -170,7 +159,8 @@ static const word s34_35_5_loaded_words[] = {
     ORDER(EXIT),
 };
 
-/* FLAGOFF +3: verb 06 noun 59 (DVLOS) through VNPOOH. */
+/* FLAGOFF +3 -- LM p. 679, CM p. 480: verb 06 noun 59 (DVLOS) through
+ * VNPOOH. */
 void flagoff_after_exit(void)
 {
     set_A(V06N59);
@@ -178,7 +168,8 @@ void flagoff_after_exit(void)
     vnpooh();
 }
 
-/* FLAGOFF +5: to the interpreter, and back by SUBEXIT. */
+/* FLAGOFF +5 -- LM p. 679, CM p. 480: to the interpreter, and back by
+ * SUBEXIT. */
 void flagoff_after_vnpooh(void)
 {
     tc_at(FLAGOFF + 5u);
@@ -209,8 +200,8 @@ static const word vn1645_words[] = {
     ADDRESS(GET45),
 };
 
-/* After the EXIT: P3XORP7X, which comes back to the TC +2 in P34 and
- * P35, to the TC GET45 +1 in P74 and P75. */
+/* GET45 -010 -- LM p. 680, CM p. 481: After the EXIT: P3XORP7X, which comes
+ * back to the TC +2 in P34 and P35, to the TC GET45 +1 in P74 and P75. */
 void vn1645_after_exit(void)
 {
     tc_at(GET45 - 010u);
@@ -221,21 +212,22 @@ void vn1645_after_exit(void)
         vn1645_p7x();
 }
 
-/* "P3X": TC +2, the angle worked out; */
+/* GET45 -7 -- LM p. 680, CM p. 481: "P3X": TC +2, the angle worked out; */
 void vn1645_p3x(void)
 {
     tc_at(GET45 - 7u);
     vn1645_mga();
 }
 
-/* "P7X": TC GET45 +1, the clock started. */
+/* GET45 -6 -- LM p. 680, CM p. 481: "P7X": TC GET45 +1, the clock
+ * started. */
 void vn1645_p7x(void)
 {
     tc_at(GET45 - 6u);
     vn1645_clock();
 }
 
-/* GET45 -5: to the interpreter, for GETMGA_CODE. */
+/* GET45 -5 -- LM p. 680, CM p. 481: to the interpreter, for GETMGA_CODE. */
 void vn1645_mga(void)
 {
     tc_at(GET45 - 5u);
@@ -253,14 +245,15 @@ static const word getmga_words[] = {
     ORDER(EXIT),
 };
 
-/* GET45 +1: "INITIATE TASK TO UPDATE TTOGO" (COMPTGO). */
+/* GET45 +1 -- LM p. 680, CM p. 481: "INITIATE TASK TO UPDATE TTOGO"
+ * (COMPTGO). */
 void vn1645_clock(void)
 {
     tc_to(GET45 + 1u, COMPTGO);
 }
 
-/* GET45 +2: SUBEXIT kept in QSAVED (TS skips the CAF on an overflow), and
- * a second's wait (BANKCALL, CADR DELAYJOB). */
+/* GET45 +2 -- LM p. 680, CM p. 481: SUBEXIT kept in QSAVED (TS skips the CAF
+ * on an overflow), and a second's wait (BANKCALL, CADR DELAYJOB). */
 void vn1645_after_comptgo(void)
 {
     ca(ADDRESS_OF(SUBEXIT));
@@ -268,37 +261,39 @@ void vn1645_after_comptgo(void)
     tc_to(GET45 + 5u, BANKCALL);
 }
 
-/* GET45 +7: verb 16 noun 45 flashed, "TRKMKCNT, TTOGO, +MGA" (BANKCALL,
- * CADR GOFLASH). */
+/* GET45 +7 -- LM p. 680, CM p. 481: verb 16 noun 45 flashed, "TRKMKCNT,
+ * TTOGO, +MGA" (BANKCALL, CADR GOFLASH). */
 void vn1645_after_delayjob(void)
 {
     set_A(V16N45);
     tc_to(GET45 + 010u, BANKCALL);
 }
 
-/* GOFLASH's returns: "TERMINATE" (KILCLOCK), */
+/* GET45 +012 -- LM p. 680, CM p. 481: GOFLASH's returns: "TERMINATE"
+ * (KILCLOCK), */
 void vn1645_terminate(void)
 {
     tc_at(GET45 + 012u);
     kilclock();
 }
 
-/* "PROCEED" (N45PROC), */
+/* GET45 +013 -- LM p. 680, CM p. 481: "PROCEED" (N45PROC), */
 void vn1645_proceed(void)
 {
     tc_at(GET45 + 013u);
     n45proc();
 }
 
-/* and "RECYCLE -- RETURN FOR INITIAL COMPUTATION" (CLUPDATE). */
+/* GET45 +014 -- LM p. 680, CM p. 481: and "RECYCLE -- RETURN FOR INITIAL
+ * COMPUTATION" (CLUPDATE). */
 void vn1645_recycle(void)
 {
     tc_at(GET45 + 014u);
     clupdate();
 }
 
-/* KILCLOCK: DISPDEX positive (CA Z: the address after the CA), which
- * stops the clock, and the program ended (GOTOPOOH). */
+/* KILCLOCK -- LM p. 680, CM p. 481: DISPDEX positive (CA Z: the address
+ * after the CA), which stops the clock, and the program ended (GOTOPOOH). */
 void kilclock(void)
 {
     set_A(KILCLOCK + 1u); /* CA Z */
@@ -306,8 +301,9 @@ void kilclock(void)
     tc_to(KILCLOCK + 2u, GOTOPOOH);
 }
 
-/* N45PROC: with FINALFLG set, "FLASH V37 -- AWAIT NEW PGM" (KILCLOCK);
- * else, after a restart point (PHASCHNG, OCT 04024), FINALFLG set. */
+/* N45PROC -- LM p. 681, CM p. 482: with FINALFLG set, "FLASH V37 -- AWAIT
+ * NEW PGM" (KILCLOCK); else, after a restart point (PHASCHNG, OCT 04024),
+ * FINALFLG set. */
 void n45proc(void)
 {
     cs(ADDRESS_OF(FLAGWRD2));
@@ -324,8 +320,8 @@ void n45proc_after_phaschng(void)
     tc_to(N45PROC + 6u, UPFLAG); /* ADRES FINALFLG */
 }
 
-/* CLUPDATE: the clock stopped (DISPDEX), a restart point, and to the
- * interpreter. */
+/* CLUPDATE -- LM p. 681, CM p. 482: the clock stopped (DISPDEX), a restart
+ * point, and to the interpreter. */
 void clupdate(void)
 {
     set_A(CLUPDATE + 1u); /* CA Z */

@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: MIT */
 /* RADAR_LEADIN_ROUTINES.agc (Luminary099 pp. 490-491): "RADAR SAMPLING
  * LOOP." The radar tests (R04, R77) set RSAMPDT, the sampling period, and
- * start RADSAMP as a task. Each time it runs, it puts itself on the
- * WAITLIST again, starts DORSAMP as a job and works out RTSTDEX, which
- * measurement to take. DORSAMP reads the radar once (VARADAR and RADSTALL)
- * and, except in R77, keeps the sample in RSTACK; RTSTLOC steps through
- * RSTACK's double words. "+0 INSERTED MANUALLY TERMINATES TEST."
+ * start RADSAMP as a task. Each time it runs, it puts itself on the WAITLIST
+ * again, starts DORSAMP as a job and works out RTSTDEX, which measurement to
+ * take. DORSAMP reads the radar once (VARADAR and RADSTALL) and, except in
+ * R77, keeps the sample in RSTACK; RTSTLOC steps through RSTACK's double
+ * words. "+0 INSERTED MANUALLY TERMINATES TEST." The faithful C is
+ * c64-port/src/lm_radar_leadin_routines.c.
  *
  * Each call out of the file (WAITLIST, NOVAC, SWCALL, BANKCALL) leaves Z
  * at the routine and Q at the word after the TC, where the routine comes
@@ -32,16 +33,23 @@ void radsamp(void)
 {
     switch (ccs_at(ADDRESS_OF(RSAMPDT))) {
     case POSITIVE: /* TCF +2 */
-    case NEGATIVE:
         tc_at(RADSAMP + 3u);
         continue_at(WAITLIST); /* 2CADR RADSAMP */
         return;
     case IS_PLUS_ZERO: continue_at(TASKOVER); return;
-    case IS_MINUS_ZERO: not_modelled();
+    case NEGATIVE:
+        tc_at(RADSAMP + 3u);
+        continue_at(WAITLIST);
+        return;
+    case IS_MINUS_ZERO:
+        /* never from the program, whose stores in RSAMPDT are 1SEC+1, 250MS+1 and +0. A -0 keyed
+         * in by hand would run the next word, an address word, 2CADR RADSAMP. */
+        not_modelled();
     }
 }
 
-/* RADSAMP +6 -- the sample itself, a job: DORSAMP at priority 25. */
+/* RADSAMP +6 -- LM p. 490: the sample itself, a job: DORSAMP at priority
+ * 25. */
 void radsamp_after_waitlist(void)
 {
     set_A(PRIO25);
@@ -49,9 +57,9 @@ void radsamp_after_waitlist(void)
     continue_at(NOVAC); /* 2CADR DORSAMP */
 }
 
-/* RADSAMP +012 -- "FOR CYCLIC SAMPLING, RTSTDEX = RTSTLOC/2 + RTSTBASE",
- * RTSTBASE "0 FOR RR, 2 FOR LR": the CAF BIT14 and MP halve RTSTLOC. An
- * overflow at the TS skips the TCF TASKOVER into DORSAMP. */
+/* RADSAMP +012 -- LM p. 490: "FOR CYCLIC SAMPLING, RTSTDEX = RTSTLOC/2 +
+ * RTSTBASE", RTSTBASE "0 FOR RR, 2 FOR LR": the CAF BIT14 and MP halve
+ * RTSTLOC. An overflow at the TS skips the TCF TASKOVER into DORSAMP. */
 void radsamp_after_novac(void)
 {
     set_A(BIT14);
@@ -72,15 +80,15 @@ void dorsamp(void)
     varadar();
 }
 
-/* DORSAMP +1 -- RADSTALL waits for the reading. */
+/* DORSAMP +1 -- LM p. 490: RADSTALL waits for the reading. */
 void dorsamp_after_varadar(void)
 {
     tc_at(DORSAMP + 1u);
     continue_at(BANKCALL); /* CADR RADSTALL */
 }
 
-/* DORSAMP +3 -- RADSTALL's bad return: "ADVANCE FAIL COUNTER BUT ACCEPT BAD
- * DATA". */
+/* DORSAMP +3 -- LM p. 490: RADSTALL's bad return: "ADVANCE FAIL COUNTER BUT
+ * ACCEPT BAD DATA". */
 void dorsamp_bad_return(void)
 {
     incr(ADDRESS_OF(RFAILCNT));
@@ -114,8 +122,9 @@ void dorsamp2(void)
         dxch(ADDRESS_OF(SAMPLSUM));
         dxch_rstack_indexed();
         break;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); /* (a masked bit is never negative) */
+    /* (never: a masked bit. The INDEX RTSTLOC; and the DXCH RSTACK, not indexed.) */
+    case NEGATIVE: continue_at(DORSAMP2 + 6u); return;
+    case IS_MINUS_ZERO: continue_at(DORSAMP2 + 7u); return; /* never */
     }
     cs(ADDRESS_OF(RTSTLOC));
     ad_at(ADDRESS_OF(RTSTMAX));

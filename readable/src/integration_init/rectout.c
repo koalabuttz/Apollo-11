@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: MIT */
-/* INTEGRATION_INITIALIZATION.agc, the end of an integration: A-PCHK,
- * PHEXIT, RECTOUT and INTEXIT (LM pp. 1216-1217, CM pp. 1320-1321). The
- * interpretive words are in the listing's notation
- * (src/interpreter/notation.h); the basic code between them is C.
+/* INTEGRATION_INITIALIZATION.agc, the end of an integration: A-PCHK, PHEXIT,
+ * RECTOUT and INTEXIT (LM pp. 1216-1217, CM pp. 1320-1321). The interpretive
+ * words are in the listing's notation (src/interpreter/notation.h); the
+ * basic code between them is C. The faithful C is
+ * c64-port/src/lm_integration_init.c and cm_integration_init.c.
  *
  * A-PCHK is where the integration has reached TDEC. With STATEFLG set
  * the answer is also the new permanent state vector: a phase change of
@@ -55,14 +56,6 @@ static const word a_pchk_words[] = {
 
 const struct interpretive_code A_PCHK_CODE = {CODE_BANK(I_A_PCHK), CODE_Z(I_A_PCHK),
                                               COUNT(a_pchk_words), a_pchk_words};
-
-/* TC at "at" to a routine outside the file (PHASCHNG, UPFLAG), which
- * reads the word after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
 
 /* After the EXIT: group 2's phase (OCT 04022), REINTFLG set ("PHASE
  * CHANGE HAS OCCURRED BETWEEN" INTSTALL and INTWAKE), and back into the

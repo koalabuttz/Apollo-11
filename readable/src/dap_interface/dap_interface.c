@@ -1,19 +1,13 @@
 /* SPDX-License-Identifier: MIT */
-/* DAP_INTERFACE_SUBROUTINES.agc, the LM's: Luminary099 pages 1406-1409,
- * bank 20 (the CM has none of it). The calling sequence the listing gives
- * is TC IBNKCALL; FCADR ROUTINE, in an interrupt "OR WITH INTERRUPT
- * INHIBITED". The DAP's deadband, DB, is an angle "SCALED AT 45" (degrees):
- * NARROWDB 0.3 degree, WIDEDB 5.0 degrees, POWERDB 1.0 degree. */
+/* DAP_INTERFACE_SUBROUTINES.agc, the LM's: Luminary099 pages 1406-1409, bank
+ * 20 (the CM has none of it). The calling sequence the listing gives is TC
+ * IBNKCALL; FCADR ROUTINE, in an interrupt "OR WITH INTERRUPT INHIBITED".
+ * The DAP's deadband, DB, is an angle "SCALED AT 45" (degrees): NARROWDB 0.3
+ * degree, WIDEDB 5.0 degrees, POWERDB 1.0 degree. The faithful C is
+ * c64-port/src/lm_dap_interface.c. */
 #include "dap_interface.h"
 
 #if LUMINARY099
-
-/* TC at at, to a routine out of this run: Q the word after. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
 
 /* TC to a word of fixed memory, the address in the word at address (Q,
  * RUPTREG1 or RUPTREG2: a caller's return). Not modelled: one that is not
@@ -31,16 +25,16 @@ static void return_through(unsigned address)
  * "ALL ENTRIES SET UP A NOVAC JOB TO DO 1/ACCS SO THAT THE TJETLAW SWITCH
  * CURVES ARE POSITIONED TO REFLECT THE NEW DEADBAND." */
 
-/* CALLACCS: a NOVAC job at priority 27 to 1/ACCJOB (the 2CADR after the
- * TC); NOVAC returns past the 2CADR, to TC RUPTREG1. */
+/* CALLACCS -- LM p. 1407: a NOVAC job at priority 27 to 1/ACCJOB (the 2CADR
+ * after the TC); NOVAC returns past the 2CADR, to TC RUPTREG1. */
 static void callaccs(void)
 {
     set_A(PRIO27);
     tc_to(CALLACCS + 1u, NOVAC);
 }
 
-/* SETMAXDB +1: the deadband in A to DB; the caller's return kept in
- * RUPTREG1 ("SET UP JOB TO RE-POSITION SWITCH CURVES"). */
+/* SETMAXDB +1 -- LM p. 1407: the deadband in A to DB; the caller's return
+ * kept in RUPTREG1 ("SET UP JOB TO RE-POSITION SWITCH CURVES"). */
 static void set_db(void)
 {
     ts(ADDRESS_OF(DB));
@@ -48,8 +42,8 @@ static void set_db(void)
     callaccs();
 }
 
-/* RESTORDB -- "SET DEADBAND TO MAX OR MIN ACCORDING TO SETTINGS OF
- * DBSELECT BIT OF DAPBOOLS". */
+/* RESTORDB -- LM p. 1407: "SET DEADBAND TO MAX OR MIN ACCORDING TO SETTINGS
+ * OF DBSELECT BIT OF DAPBOOLS". */
 void restordb(void)
 {
     ca(ADDRESS_OF(DAPBOOLS)); /* "DETERMINE CREW-SELECTED DEADBAND." */
@@ -65,28 +59,28 @@ void restordb_plus1(void)
         setmaxdb();
 }
 
-/* SETMAXDB -- "SET DEADBAND TO 5.0 DEGREES". */
+/* SETMAXDB -- LM p. 1407: "SET DEADBAND TO 5.0 DEGREES". */
 void setmaxdb(void)
 {
     set_A(WIDEDB); /* CAF WIDEDB */
     set_db();
 }
 
-/* SETMINDB -- "SET DEADBAND TO 0.3 DEGREE". */
+/* SETMINDB -- LM p. 1407: "SET DEADBAND TO 0.3 DEGREE". */
 void setmindb(void)
 {
     set_A(NARROWDB); /* CAF NARROWDB */
     set_db();        /* TCF SETMAXDB +1 */
 }
 
-/* CALLACCS +4, where NOVAC returns: "RETURN TO CALLER." */
+/* CALLACCS +4 -- LM p. 1407, where NOVAC returns: "RETURN TO CALLER." */
 void callaccs_after_novac(void)
 {
     return_through(ADDRESS_OF(RUPTREG1)); /* TC RUPTREG1 */
 }
 
-/* PFLITEDB -- "SET DEADBAND TO 1.0 DEGREE AND ZERO THE COMMANDED ATTITUDE
- * CHANGE AND COMMANDED RATE". The caller's return in RUPTREG1, for
+/* PFLITEDB -- LM p. 1407: "SET DEADBAND TO 1.0 DEGREE AND ZERO THE COMMANDED
+ * ATTITUDE CHANGE AND COMMANDED RATE". The caller's return in RUPTREG1, for
  * CALLACCS ("THE RETURN FROM CALLACCS IS TO RUPTREG1."); then ZATTEROR. */
 void pflitedb(void)
 {
@@ -94,7 +88,7 @@ void pflitedb(void)
     tc_to(PFLITEDB + 2u, ZATTEROR); /* "ZERO THE ERRORS AND COMMANDED RATES." */
 }
 
-/* PFLITEDB +3, where ZATTEROR returns. */
+/* PFLITEDB +3 -- LM p. 1407, where ZATTEROR returns. */
 void pflitedb_after_zatteror(void)
 {
     set_A(POWERDB); /* "SET DB TO 1.0 DEG." */
@@ -111,10 +105,11 @@ static void save_ebank(void)
     ts(L_ADDRESS);
 }
 
-/* STOPRATE +3: the commanded rates OMEGAPD, OMEGAQD and OMEGARD, the
- * commanded attitude changes DELCDUX, DELCDUY and DELCDUZ and the attitude
- * error offsets DELPEROR, DELQEROR and DELREROR to +0 (A +0); the caller's
- * EBANK back ("RESTORE CALLERS EBANK.", L left with EBANK6), and TC Q. */
+/* STOPRATE +3 -- LM p. 1408: the commanded rates OMEGAPD, OMEGAQD and
+ * OMEGARD, the commanded attitude changes DELCDUX, DELCDUY and DELCDUZ and
+ * the attitude error offsets DELPEROR, DELQEROR and DELREROR to +0 (A +0);
+ * the caller's EBANK back ("RESTORE CALLERS EBANK.", L left with EBANK6),
+ * and TC Q. */
 static void stoprate_plus3(void)
 {
     set_A(ZERO);
@@ -131,8 +126,9 @@ static void stoprate_plus3(void)
     return_through(Q_ADDRESS); /* TC Q */
 }
 
-/* ZATTEROR: the desired CDU angles (CDUXD, CDUYD, CDUZD) set to the CDUs
- * now, so that the attitude error is zero; then STOPRATE's clears. */
+/* ZATTEROR -- LM p. 1408: the desired CDU angles (CDUXD, CDUYD, CDUZD) set
+ * to the CDUs now, so that the attitude error is zero; then STOPRATE's
+ * clears. */
 void zatteror(void)
 {
     save_ebank();
@@ -160,7 +156,8 @@ void allcoast(void)
     tc_to(ALLCOAST + 2u, STOPRATE); /* "CLEAR RATE INTERFACE." */
 }
 
-/* ALLCOAST +3, where STOPRATE returns ("RETURN WITH A=0", and L EBANK6):
+/* ALLCOAST +3 -- LM p. 1409, where STOPRATE returns ("RETURN WITH A=0", and
+ * L EBANK6):
  * in EBANK 6
  * (the caller's EBANK in L meanwhile) the offset accelerations AOSQ and
  * AOSR (double words), ALPHAQ and ALPHAR ("FOR DOWNLIST.") and AOSQTERM
@@ -188,7 +185,8 @@ void allcoast_after_stoprate(void)
     tc_to(ALLCOAST + 020u, RESTORDB + 1u);
 }
 
-/* ALLCOAST +021, where RESTORDB +1 returns (by CALLACCS and RUPTREG1). */
+/* ALLCOAST +021 -- LM p. 1409, where RESTORDB +1 returns (by CALLACCS and
+ * RUPTREG1). */
 void allcoast_after_restordb(void)
 {
     return_through(ADDRESS_OF(RUPTREG2)); /* "RETURN." */

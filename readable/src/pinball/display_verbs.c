@@ -151,9 +151,12 @@ void dctstcyc(void)
     (void)dctstcyc_returns();
 }
 
+static bool tstfordp_returns(void);
+
 /* NOUNTEST -- LM p. 415, CM p. 332. "NOUNTEST ALARMS IF NO-LOAD BIT (BIT5
  * OF COMP CODE NUMBER) = 1. IF NOT, IT RETURNS." The no-load bit is the
- * word's sign. */
+ * word's sign. (GETCOMP's MASK leaves no -0; on -0 the next word is
+ * TSTFORDP's first.) */
 void nountest(void)
 {
     lxch(Q_ADDRESS);
@@ -163,7 +166,7 @@ void nountest(void)
     case POSITIVE:
     case IS_PLUS_ZERO: tc_return(L_ADDRESS); return;
     case NEGATIVE: tc(NOUNTEST + 5u, GODSPALM); return;
-    case IS_MINUS_ZERO: not_modelled(); /* MASK HI5 never leaves -0 */
+    case IS_MINUS_ZERO: (void)tstfordp_returns(); return;
     }
 }
 
@@ -187,9 +190,9 @@ static bool tstfordp_returns(void)
         return true;
     }
     tc_at(TSTFORDP + 7u); /* TC +2: "NORMAL" */
-    tc_at(TSTFORDP + 9u);
+    tc_at(TSTFORDP + 011u);
     sfrutnor();
-    tc_at(TSTFORDP + 10u);
+    tc_at(TSTFORDP + 012u);
     if (dptest()) incr(ADDRESS_OF(NOUNADD)); /* "DP" */
     tc_return(L_ADDRESS);
     return true;
@@ -237,7 +240,8 @@ void dspa(void)
     dspcom1();
 }
 
-/* DSPCOM1: the first word into BUF, and on to show them. */
+/* DSPCOM1 -- LM p. 414, CM p. 331: the first word into BUF, and on to show
+ * them. */
 static void dspcom1(void)
 {
     xch(ADDRESS_OF(BUF));
@@ -296,12 +300,12 @@ static void dspcom2_plus2(void)
     tc(DSPCOM3 + 6u, DSPOCTWD);
 }
 
-/* DSPCOM3 +7, where DSPOCTWD comes back: the count back into A, and round
- * again (TC DSPCOM2 +2). */
+/* DSPCOM3 +7 -- LM p. 414, CM p. 331, where DSPOCTWD comes back: the count
+ * back into A, and round again (TC DSPCOM2 +2). */
 void dspcom3_after_dspoctwd(void)
 {
     xch(ADDRESS_OF(DISTEM));
-    tc_at(DSPCOM3 + 8u);
+    tc_at(DSPCOM3 + 010u);
     dspcom2_plus2();
 }
 
@@ -343,8 +347,10 @@ void decdsp(void)
         switch (ccs_at(ADDRESS_OF(DECTEM))) {
         case POSITIVE: tc_at(DSPDCGET + 7u); continue; /* TC DSPDCGET: "MORE TO GET" */
         case IS_PLUS_ZERO: break;
-        case NEGATIVE:
-        case IS_MINUS_ZERO: not_modelled(); /* MASK THREE leaves 0 to 3 */
+        case NEGATIVE: /* never: MASK THREE leaves 0 to 3, counted down; DSPDCPUT's TS MPAC +1 */
+            continue_at(DSPDCPUT + 1u);
+            return;
+        case IS_MINUS_ZERO: /* never: on at its TS MPAC +2 */ continue_at(DSPDCPUT + 2u); return;
         }
         break;
     }
@@ -371,18 +377,18 @@ void dspdcput(void)
     ts(ADDRESS_OF(DSPCOUNT));
     cs(indexed_by(ADDRESS_OF(XREG), k));
     ts(ADDRESS_OF(MPAC));
-    tc_at(DSPDCPUT + 9u);
+    tc_at(DSPDCPUT + 011u);
     sfconum(); /* "2X (SF CON NUMB) IN A" */
     ts(ADDRESS_OF(SFTEMP1));
     dca(ADDRESS_OF(GTSFOUTL));
-    dtcb(DSPDCPUT + 13u); /* "LOADS SFTEMP1, SFTEMP2" */
+    dtcb(DSPDCPUT + 015u); /* "LOADS SFTEMP1, SFTEMP2" */
     gtsfout();
-    if (mixed_noun(DSPDCPUT + 15u)) {
-        tc_at(DSPDCPUT + 17u);
+    if (mixed_noun(DSPDCPUT + 017u)) {
+        tc_at(DSPDCPUT + 021u);
         sfrutmix();
-        tc_at(DSPDCPUT + 18u);
+        tc_at(DSPDCPUT + 022u);
     } else {
-        tc_at(DSPDCPUT + 16u);
+        tc_at(DSPDCPUT + 020u);
         /* DSPSFNOR */
         tc_at(DSPSFNOR);
         sfrutnor();
@@ -409,8 +415,9 @@ void dspdcend(void)
     tc(DSPDCEND, BANKCALL); /* CADR DSPDECWD */
 }
 
-/* DSPDCEND +2, where DSPDECWD comes back (and 2INTOUT and M/SOUT go):
- * "MORE TO DISPLAY" while DECOUNT counts down, else the verb is done. */
+/* DSPDCEND +2 -- LM p. 417, CM p. 334, where DSPDECWD comes back (and
+ * 2INTOUT and M/SOUT go): "MORE TO DISPLAY" while DECOUNT counts down, else
+ * the verb is done. */
 void dspdcend_plus2(void)
 {
     switch (ccs_at(ADDRESS_OF(DECOUNT))) {
@@ -425,12 +432,12 @@ void dspdcend_plus2(void)
 
 /* ---- Verb 07 (LM p. 424, CM pp. 341-342) ---- */
 
-/* DSPDPDEC -- "THIS IS A SPECIAL PURPOS VERB FOR DISPLAYING A DOUBLE
- * PRECISION AGC WORD AS 10 DECIMAL DIGITS ON THE AGC DISPLAY PANEL. IT
- * CAN BE USED WITH ANY NOUN, EXCEPT MIXED NOUNS." The double word NOUNADD
- * points at into MPAC, made to agree in sign (TPAGREE), for DSP2DEC in R1
- * and R2. The faithful port's step ends at TPAGREE, and so does this
- * one. */
+/* DSPDPDEC -- LM p. 424, CM p. 341: "THIS IS A SPECIAL PURPOS VERB FOR
+ * DISPLAYING A DOUBLE PRECISION AGC WORD AS 10 DECIMAL DIGITS ON THE AGC
+ * DISPLAY PANEL. IT CAN BE USED WITH ANY NOUN, EXCEPT MIXED NOUNS." The
+ * double word NOUNADD points at into MPAC, made to agree in sign (TPAGREE),
+ * for DSP2DEC in R1 and R2. The faithful port's step ends at TPAGREE, and so
+ * does this one. */
 void dspdpdec(void)
 {
     if (mixed_noun(DSPDPDEC + 1u)) {
@@ -445,16 +452,18 @@ void dspdpdec(void)
     ts(ADDRESS_OF(DSPCOUNT));
     set_A(ZERO);
     ts(ADDRESS_OF(MPAC) + 2u);
-    tc(DSPDPDEC + 12u, TPAGREE); /* "MAKE DP DATA AGREE" */
+    tc(DSPDPDEC + 014u, TPAGREE); /* "MAKE DP DATA AGREE" */
 }
 
-/* DSPDPDEC +13, where TPAGREE (INTERPRETER.agc) comes back. */
-void dspdpdec_plus13(void)
+/* DSPDPDEC +015 -- LM p. 424, CM p. 342, where TPAGREE (INTERPRETER.agc)
+ * comes back. */
+void dspdpdec_plus015(void)
 {
-    tc(DSPDPDEC + 13u, DSP2DEC);
+    tc(DSPDPDEC + 015u, DSP2DEC);
 }
 
-/* ENDDPDEC, where DSP2DEC comes back: the verb is done. */
+/* ENDDPDEC -- LM p. 424, CM p. 342, where DSP2DEC comes back: the verb is
+ * done. */
 void enddpdec(void)
 {
     tc(ENDDPDEC, ADDRESS_OF(ENTRET)); /* TC ENTEXIT */

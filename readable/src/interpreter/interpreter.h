@@ -204,7 +204,7 @@ void vecagree(void);
 
 void unit(void);
 void unit_plus1(void);
-void unit_plus16(void);
+void unit_plus020(void);
 void dsq(void);
 void abvalabs(void);
 void sqrt_(void);
@@ -223,7 +223,7 @@ bool sqrtsub(void);
 void cosine(void);
 void sine(void);
 void sine_plus1(void);
-void sn1_plus16(void);
+void sn1_plus020(void);
 void arcsin(void);
 void arccos(void);
 void arccos_plus1(void);

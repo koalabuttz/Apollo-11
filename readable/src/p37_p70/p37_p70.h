@@ -45,14 +45,6 @@
 
 #if COMANCHE055
 
-/* TC at, to a routine out of the file (or to a keyed label): Q gets the
- * return, and the routine runs next. */
-static inline void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* Part 1, P37's main line -- p37.c */
 void p37(void);                /* P37 */
 void p37_after_phaschng(void); /* P37 +2 */

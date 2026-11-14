@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, part 19 (Luminary099 pp. 608-611): the "W-MATRIX
- * MONITOR", verb 67 (V67CALL, bank 31, and ADDPOS, bank 30).
+/* P20-P25.agc, part 19 (Luminary099 pp. 608-611): the "W-MATRIX MONITOR",
+ * verb 67 (V67CALL, bank 31, and ADDPOS, bank 30). The faithful C is
+ * c64-port/src/lm_p20_p25.c.
  *
  * V67 shows the astronaut, in noun 99, how big the W-matrix's errors are:
  * the root sum square of its words in three groups, position, velocity
@@ -30,8 +31,6 @@
 
 #if LUMINARY099
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- V67CALL and the display ---- */
 
 /* V67CALL -- p. 608: V67WW, by the interpreter. */
@@ -47,15 +46,17 @@ static const word v67call_words[] = {
     ORDER(EXIT),
 };
 
-/* V06N99DS: V06N99 on the display (GOXDSPF), waiting for the astronaut. */
+/* V06N99DS -- p. 608: V06N99 on the display (GOXDSPF), waiting for the
+ * astronaut. */
 static void v06n99ds(void)
 {
     set_A(V06N99);
     tc_to(V06N99DS + 1u, BANKCALL); /* CADR GOXDSPF */
 }
 
-/* V67CALL +4: "SAVE THE PRESENT N99 VALUES FOR" "COMPARISON AFTER THE
- * DISPLAY": WWPOS, WWVEL and WWBIAS to WWBIAS +2 to +7. Then V06N99DS. */
+/* V67CALL +4 -- p. 608: "SAVE THE PRESENT N99 VALUES FOR" "COMPARISON AFTER
+ * THE DISPLAY": WWPOS, WWVEL and WWBIAS to WWBIAS +2 to +7. Then
+ * V06N99DS. */
 void v67call_after_exit(void)
 {
     dca(ADDRESS_OF(WWPOS)); /* EXTEND; DCA WWPOS */
@@ -67,23 +68,24 @@ void v67call_after_exit(void)
     v06n99ds();
 }
 
-/* V06N99DS +3: GOXDSPF's first return, terminate: ENDEXT. */
+/* V06N99DS +3 -- p. 608: GOXDSPF's first return, terminate: ENDEXT. */
 void v06n99ds_terminate(void)
 {
     continue_at(ENDEXT); /* TCF ENDEXT */
 }
 
-/* V06N99DS +5: GOXDSPF's third return (data loaded): display again. */
+/* V06N99DS +5 -- p. 608: GOXDSPF's third return (data loaded): display
+ * again. */
 void v06n99ds_loaded(void)
 {
     v06n99ds(); /* TCF V06N99DS */
 }
 
-/* V6N99PRO -- p. 608, GOXDSPF's second return, proceed: L sums WWPOS +Q
- * subtracted from its saved copy (WWPOS +6 +Q) for Q 5 down to 0. "THE SUM
- * OF ALL DIFFERENCES MUST BE ZERO." (V06N9933); else V67FLAG is set. (A
- * TS of 5 ... 0 does not skip; Q is never negative, and CCS Q takes Q
- * less one back to TS Q.) */
+/* V06N99DS +4 -- p. 608, GOXDSPF's second return, proceed (TCF V6N99PRO).
+ * V6N99PRO: L sums WWPOS +Q subtracted from its saved copy (WWPOS +6 +Q) for
+ * Q 5 down to 0. "THE SUM OF ALL DIFFERENCES MUST BE ZERO." (V06N9933); else
+ * V67FLAG is set. (A TS of 5 ... 0 does not skip; Q is never negative, and
+ * CCS Q takes Q less one back to TS Q.) */
 void v06n99ds_proceed(void)
 {
     zl();
@@ -119,7 +121,7 @@ static const word v06n9933_words[] = {
     ADDRESS_AT(V06N9933, 5), /* +2 */
 };
 
-/* V06N9933 +4: nothing changed: ENDEXT. */
+/* V06N9933 +4 -- p. 608: nothing changed: ENDEXT. */
 void v06n9933_after_exit(void)
 {
     continue_at(ENDEXT); /* TCF ENDEXT */
@@ -168,7 +170,7 @@ static const word v67_new_w_words[] = {
     SWITCH(CLEAR, RENDWFLG),
 };
 
-/* V67CLRF +7: ENDEXT. */
+/* V67CLRF +7 -- p. 609: ENDEXT. */
 void v67clrf_after_exit(void)
 {
     continue_at(ENDEXT); /* TCF ENDEXT */

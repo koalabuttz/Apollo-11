@@ -115,7 +115,7 @@ void r04z(void)
     mask_at(ADDRESS_OF(RADMODES));
     ts(ADDRESS_OF(RADMODES));
     set_A(LRPOSCAL);
-    rand_channel(033);
+    rand_channel(CHAN33);
     ads(ADDRESS_OF(RADMODES));
     relint();
 
@@ -157,7 +157,7 @@ void r04a_after_terminate(void)
 /* R04A +6 -- LM p. 277: V33 (TCF +5). */
 void r04a_after_proceed(void)
 {
-    continue_at(R04A + 11u);
+    continue_at(R04A + 013u);
 }
 
 /* R04A +7 -- LM p. 277: V32. */
@@ -166,22 +166,22 @@ void r04a_after_recycle(void)
     continue_at(R04A + 2u); /* TCF R04A +2 */
 }
 
-/* R04A +8 -- LM p. 277: GOMARKFR's immediate return, with the display
+/* R04A +010 -- LM p. 277: GOMARKFR's immediate return, with the display
  * up: blank R3 and end the job until the crew responds. */
 void r04a_immediate_return(void)
 {
     set_A(BIT3);
-    tc(R04A + 9u, BLANKET);
+    tc(R04A + 011u, BLANKET);
 }
 
-/* R04A +10 -- LM p. 277. */
+/* R04A +012 -- LM p. 277. */
 void r04a_after_blanket(void)
 {
-    tc(R04A + 10u, ENDOFJOB);
+    tc(R04A + 012u, ENDOFJOB);
 }
 
-/* R04A +11 -- LM p. 277: "SAVE DESIRED OPTION RR =1 LR =2". */
-void r04a_plus11(void)
+/* R04A +013 -- LM p. 277: "SAVE DESIRED OPTION RR =1 LR =2". */
+void r04a_plus013(void)
 {
     ca(ADDRESS_OF(OPTIONX) + 1u);
     r04x_minus1();
@@ -216,7 +216,7 @@ void r04x(void)
 void r04b(void)
 {
     set_A(BIT2);
-    rand_channel(033);
+    rand_channel(CHAN33);
     if (A_is_zero()) { /* EXTEND; BZF R04C: "YES" */
         continue_at(R04C);
         return;
@@ -232,19 +232,19 @@ void r04b_plus5(void)
     show(R04B + 7u, V50N25X); /* CADR GOMARK4 */
 }
 
-/* R04B +10 -- LM p. 277: V34. */
+/* R04B +012 -- LM p. 277: V34. */
 void r04b_after_terminate(void)
 {
     continue_at(R04END); /* TCF R04END */
 }
 
-/* R04B +11 -- LM p. 277: V33, look again. */
+/* R04B +013 -- LM p. 277: V33, look again. */
 void r04b_after_proceed(void)
 {
     continue_at(R04B); /* TCF R04B */
 }
 
-/* R04B +12 -- LM p. 277: enter (TCF -7). */
+/* R04B +014 -- LM p. 277: enter (TCF -7). */
 void r04b_after_enter(void)
 {
     continue_at(R04B + 5u);
@@ -256,7 +256,7 @@ void r04b_after_enter(void)
 void r04c(void)
 {
     set_A(BIT14);
-    wor_channel(012);
+    wor_channel(CHAN12);
     set_A(TWO);
     r04c_plus4();
 }
@@ -271,7 +271,7 @@ void r04c_plus4(void)
     tc(R04C + 5u, WAITLIST); /* EBANK= RSTACK; 2CADR RADSAMP */
 }
 
-/* R04C +8 -- LM pp. 277-278.
+/* R04C +010 -- LM pp. 277-278.
  * R77 (R04FLAG down) goes back to PINBALL, sampling; R04 shows the radar
  * RTSTDEX names. */
 void r04c_after_waitlist(void)
@@ -328,19 +328,19 @@ void r04rr_plus6(void)
     show(R04RR + 6u, V16N78); /* CADR GOMARKF */
 }
 
-/* R04RR +9 -- LM p. 278: V34. */
+/* R04RR +011 -- LM p. 278: V34. */
 void r04rr_plus6_after_terminate(void)
 {
     continue_at(R04END);
 }
 
-/* R04RR +10 -- LM p. 278: V33. */
+/* R04RR +012 -- LM p. 278: V33. */
 void r04rr_plus6_after_proceed(void)
 {
     continue_at(R04Y);
 }
 
-/* R04RR +11 -- LM p. 278: V32. */
+/* R04RR +013 -- LM p. 278: V32. */
 void r04rr_plus6_after_recycle(void)
 {
     continue_at(R04RR);
@@ -380,19 +380,19 @@ void r04lr_plus6(void)
     show(R04LR + 6u, V16N67); /* CADR GOMARKF */
 }
 
-/* R04LR +9 -- LM p. 278: V34. */
+/* R04LR +011 -- LM p. 278: V34. */
 void r04lr_plus6_after_terminate(void)
 {
     continue_at(R04END);
 }
 
-/* R04LR +10 -- LM p. 278: V33. */
+/* R04LR +012 -- LM p. 278: V33. */
 void r04lr_plus6_after_proceed(void)
 {
     continue_at(R04Y);
 }
 
-/* R04LR +11 -- LM p. 278: V32. */
+/* R04LR +013 -- LM p. 278: V32. */
 void r04lr_plus6_after_recycle(void)
 {
     continue_at(R04LR);
@@ -467,14 +467,14 @@ void r04end_after_delayjob(void)
 {
     inhint();
     set_A(negate(BIT14)); /* CS BIT14 */
-    wand_channel(012);
-    tc(R04END + 9u, DOWNFLAG); /* ADRES R04FLAG */
+    wand_channel(CHAN12);
+    tc(R04END + 011u, DOWNFLAG); /* ADRES R04FLAG */
 }
 
-/* R04END +11 -- LM p. 279. */
+/* R04END +013 -- LM p. 279. */
 void r04end_after_downflag(void)
 {
-    tc(R04END + 11u, ENDEXT);
+    tc(R04END + 013u, ENDEXT);
 }
 
 /* R77END -- LM p. 279.
@@ -496,7 +496,7 @@ void r77end_after_delayjob(void)
     tc(R77END + 7u, DOWNFLAG); /* ADRES R77FLAG */
 }
 
-/* R77END +9 -- LM p. 279. */
+/* R77END +011 -- LM p. 279. */
 void r77end_after_downflag(void)
 {
     continue_at(GOPIN); /* TCF GOPIN */

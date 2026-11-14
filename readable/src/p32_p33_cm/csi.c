@@ -1,13 +1,13 @@
 /* SPDX-License-Identifier: MIT */
-/* P32-P33_P72-P73.agc (Comanche055 pp. 664-674): CSI/A, the CSI
- * computation, from its start to SCNDSOL. P32's CSI/A finds the delta V of
- * the CSI burn: a first guess, then (from NTP/2 on) the CDH and TPI it
- * leads to, and a Newton iteration on the guess. The code matches the
- * LM's (src/p32_p35/csi.c) but for its constants (ZEROVEC and ZEROVECS
- * for the LM's P30ZERO, 1RTEB2 for 1DPB2 once, INITST1 for INITST in the
- * second cycle, 600SEC for TMIN, 2PISC doubled for TWOPI) and its SETLOCs,
- * which cut it into ten stretches in ten banks, joined by GOTOs and
- * STCALLs.
+/* P32-P33_P72-P73.agc (Comanche055 pp. 664-674): CSI/A, the CSI computation,
+ * from its start to SCNDSOL. P32's CSI/A finds the delta V of the CSI burn:
+ * a first guess, then (from NTP/2 on) the CDH and TPI it leads to, and a
+ * Newton iteration on the guess. The code matches the LM's
+ * (src/p32_p35/csi.c) but for its constants (ZEROVEC and ZEROVECS for the
+ * LM's P30ZERO, 1RTEB2 for 1DPB2 once, INITST1 for INITST in the second
+ * cycle, 600SEC for TMIN, 2PISC doubled for TWOPI) and its SETLOCs, which
+ * cut it into ten stretches in ten banks, joined by GOTOs and STCALLs. The
+ * faithful C is c64-port/src/cm_p32_p33.c.
  *
  * The listing's own words for its flags (p. 664): S32.1F1, "DVT1 HAS
  * EXCEEDED MAX INDICATOR"; S32.1F2, "FIRST PASS FOR NEWTON ITERATION
@@ -27,8 +27,6 @@
 #include "../agc/names.h"
 
 #if COMANCHE055
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 /* CSI/A to CSI/B1 (bank 6, pp. 664-665). */
 static const word csi_a_words[] = {

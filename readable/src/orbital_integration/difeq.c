@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 /* ORBITAL_INTEGRATION.agc, DIFEQ+0 to WMATEND (LM pp. 1241-1244, CM pp.
  * 1348-1351). The interpretive words are in the listing's notation
- * (src/interpreter/notation.h); the basic code between them is C.
+ * (src/interpreter/notation.h); the basic code between them is C. The
+ * faithful C is c64-port/src/lm_orbital_integration.c and
+ * cm_orbital_integration.c.
  *
  * "THE THREE DIFEQ ROUTINES -- DIFEQ+0, DIFEQ+12, DIFEQ+24 -- ARE ENTERED
  * TO PROCESS THE CONTRIBUTIONS AT THE" beginning, middle and end of the
@@ -133,16 +135,9 @@ static const word difeq_words[] = {
 const struct interpretive_code DIFEQ_CODE = {CODE_BANK(I_DIFEQP0), CODE_Z(I_DIFEQP0),
                                              COUNT(difeq_words), difeq_words};
 
-/* TC at "at" to a routine outside the file (PHASCHNG, UPFLAG, ALARM),
- * which reads the word after the TC. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
-/* After ENDSTATE's EXIT: group 2's phase (OCT 04022, "PHASE 1"), REINTFLG
- * set, and back into the interpreter. */
+/* ENDSTATE +014 -- LM p. 1242, CM p. 1349: After ENDSTATE's EXIT: group 2's
+ * phase (OCT 04022, "PHASE 1"), REINTFLG set, and back into the
+ * interpreter. */
 void endstate_after_exit(void)
 {
     tc_to((word)(ENDSTATE + 014u), PHASCHNG); /* OCT 04022 */
@@ -226,7 +221,8 @@ static const word amoved_words[] = {
 const struct interpretive_code AMOVED_CODE = {
     CODE_BANK(I_ENDSTATE), (word)(CODE_Z(I_ENDSTATE) + 021u), COUNT(amoved_words), amoved_words};
 
-/* After WMATEND's EXIT: alarm 421, and back into the interpreter. */
+/* WMATEND +7 -- LM p. 1243, CM p. 1350: After WMATEND's EXIT: alarm 421, and
+ * back into the interpreter. */
 void wmatend_after_exit(void)
 {
     tc_to((word)(WMATEND + 7u), ALARM); /* OCT 421 */

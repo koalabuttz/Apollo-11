@@ -17,18 +17,18 @@ static void sett5(void);
 
 /* ---- REDORCS, RCSATT -- pp. 1002-1003 ---- */
 
-/* RCSATT +1: "SAVE Q"; then the autopilot's control, from channel 31:
- * "BIT15 CHAN31 = 0 IF IMU POWER IS ON AND S/C CONT SW IS IN CMC (I.E. IF
- * G/C AUTO PILOT IS FULLY ENABLED)": on to SETT5. If not, "SET NORATE
+/* RCSATT +1 -- p. 1002: "SAVE Q"; then the autopilot's control, from channel
+ * 31: "BIT15 CHAN31 = 0 IF IMU POWER IS ON AND S/C CONT SW IS IN CMC (I.E.
+ * IF G/C AUTO PILOT IS FULLY ENABLED)": on to SETT5. If not, "SET NORATE
  * FLAG" (bit 14 of RCSFLAGS), "SET HOLDFLAG +", "ZERO ERRORX, ERRORY, AND
- * ERRORZ", "AND CHECK FREE FUNCTION (BIT14 CHAN31)": "IF IN FREE MODE, GO
- * TO SETT5". Otherwise "SCHEDULE REINITIALIZATION (FRESHDAP) IN 100 MS
- * VIA T5RUPT" (T5PHASE +) and "ZERO JET CHANNELS IN 14 MS VIA ZEROJET". */
+ * ERRORZ", "AND CHECK FREE FUNCTION (BIT14 CHAN31)": "IF IN FREE MODE, GO TO
+ * SETT5". Otherwise "SCHEDULE REINITIALIZATION (FRESHDAP) IN 100 MS VIA
+ * T5RUPT" (T5PHASE +) and "ZERO JET CHANNELS IN 14 MS VIA ZEROJET". */
 static void rcsatt_after_lxch(void)
 {
     qxch(ADDRESS_OF(QRUPT));
     set_A(BIT15);
-    rand_channel(031);
+    rand_channel(CHAN31);
     if (A_is_zero()) { /* EXTEND; BZF SETT5 */
         sett5();
         return;
@@ -43,7 +43,7 @@ static void rcsatt_after_lxch(void)
     ts(ADDRESS_OF(ERRORY));
     ts(ADDRESS_OF(ERRORZ));
     set_A(BIT14);
-    rand_channel(031);
+    rand_channel(CHAN31);
     if (A_is_zero()) { /* EXTEND; BZF SETT5 */
         sett5();
         return;
@@ -54,9 +54,9 @@ static void rcsatt_after_lxch(void)
     tc_to(RCSATT + 031u, ZEROJET); /* TCR */
 }
 
-/* REDORCS: "RESTART OF AUTOPILOT COMES HERE ON A T5 RUPT": "IF T5PHASE
- * +0, -0, OR -, RESET TO -" (a restart of the DAP), "IF T5PHASE +, LEAVE
- * IT +. DO A FRESHDAP"; then "HOOK UP T5RUPT TO AUTOPILOT" (T5LOC the
+/* REDORCS -- p. 1002: "RESTART OF AUTOPILOT COMES HERE ON A T5 RUPT": "IF
+ * T5PHASE +0, -0, OR -, RESET TO -" (a restart of the DAP), "IF T5PHASE +,
+ * LEAVE IT +. DO A FRESHDAP"; then "HOOK UP T5RUPT TO AUTOPILOT" (T5LOC the
  * 2CADR RCSLOC, of RCSATT) and on as RCSATT. */
 void redorcs(void)
 {
@@ -71,14 +71,14 @@ void redorcs(void)
     rcsatt_after_lxch(); /* TCF RCSATT +1 */
 }
 
-/* RCSATT, the T5 interrupt's entry: "SAVE BB". */
+/* RCSATT -- p. 1002, the T5 interrupt's entry: "SAVE BB". */
 void rcsatt(void)
 {
     lxch(ADDRESS_OF(BANKRUPT));
     rcsatt_after_lxch();
 }
 
-/* After TCR ZEROJET: TCF KMATRIX. */
+/* RCSATT +032 -- p. 1003: After TCR ZEROJET: TCF KMATRIX. */
 void rcsatt_after_zerojet(void)
 {
     continue_at(KMATRIX);
@@ -86,11 +86,11 @@ void rcsatt_after_zerojet(void)
 
 /* ---- SETT5, the IMU status check -- pp. 1003-1004 ---- */
 
-/* FREECHK, with no IMU ("NO ATTITUDE REFERENCE"): bit 14 of RCSFLAGS set
- * ("RATES HAVE NOT BEEN INITIALIZED"), HOLDFLAG + ("STOP ANY AUTOMATIC
- * STEERING AND PREPARE TO PICK UP CDU ANGLES UPON RESUMPTION OF ATTITUDE
- * HOLD"); "IN FREE MODE PROVIDE FREE CONTROL ONLY" (KRESUME1), otherwise
- * REINIT. */
+/* FREECHK -- p. 1004, with no IMU ("NO ATTITUDE REFERENCE"): bit 14 of
+ * RCSFLAGS set ("RATES HAVE NOT BEEN INITIALIZED"), HOLDFLAG + ("STOP ANY
+ * AUTOMATIC STEERING AND PREPARE TO PICK UP CDU ANGLES UPON RESUMPTION OF
+ * ATTITUDE HOLD"); "IN FREE MODE PROVIDE FREE CONTROL ONLY" (KRESUME1),
+ * otherwise REINIT. */
 static void freechk(void)
 {
     cs(ADDRESS_OF(RCSFLAGS));
@@ -98,15 +98,15 @@ static void freechk(void)
     ads(ADDRESS_OF(RCSFLAGS));
     set_A(BIT14);
     ts(ADDRESS_OF(HOLDFLAG));
-    rand_channel(031); /* "CHECK FOR FREE MODE" */
+    rand_channel(CHAN31); /* "CHECK FOR FREE MODE" */
     if (A_is_zero())
         continue_at(KRESUME1); /* EXTEND; BZF */
     else
         continue_at(REINIT); /* TCF */
 }
 
-/* RATEFILT: "SEE IF RATEFILTER HAS BEEN INITIALIZED": "IF SO, PROCEED
- * WITH RATE DERIVATION", "IF NOT, SKIP RATE DERIVATION". */
+/* RATEFILT -- p. 1004: "SEE IF RATEFILTER HAS BEEN INITIALIZED": "IF SO,
+ * PROCEED WITH RATE DERIVATION", "IF NOT, SKIP RATE DERIVATION". */
 static void ratefilt(void)
 {
     ca(ADDRESS_OF(RCSFLAGS));
@@ -119,12 +119,12 @@ static void ratefilt(void)
     drholoop();
 }
 
-/* SETT5: "CHECK PHASE OF T5 PROGRAM" (CCS T5PHASE): FRESHDAP, "TURN ON
- * AUTOPILOT"; T5PHASE2, "BRANCH TO PHASE2 OF PROGRAM"; REDAP, "RESTART
- * AUTOPILOT"; or phase 1: "PHASE 1 RESET FOR PHASE 2" (T5PHASE +0), the
- * time saved in T5TIME ("USED IN COMPENSATING FOR DELAYS IN T5"), "RESET
- * FOR T5RUPT IN 20MS FOR PHASE2", and the "IMU STATUS CHECK" ("BIT6 = 0
- * IMU OK" in IMODES33): RATEFILT, or FREECHK. */
+/* SETT5 -- p. 1003: "CHECK PHASE OF T5 PROGRAM" (CCS T5PHASE): FRESHDAP,
+ * "TURN ON AUTOPILOT"; T5PHASE2, "BRANCH TO PHASE2 OF PROGRAM"; REDAP,
+ * "RESTART AUTOPILOT"; or phase 1: "PHASE 1 RESET FOR PHASE 2" (T5PHASE +0),
+ * the time saved in T5TIME ("USED IN COMPENSATING FOR DELAYS IN T5"), "RESET
+ * FOR T5RUPT IN 20MS FOR PHASE2", and the "IMU STATUS CHECK" ("BIT6 = 0 IMU
+ * OK" in IMODES33): RATEFILT, or FREECHK. */
 static void sett5(void)
 {
     switch (ccs_at(ADDRESS_OF(T5PHASE))) {
@@ -157,8 +157,8 @@ static void sett5(void)
  * 2, 1 and 0 (DPNDX twice it, for the double words); ATTKALMN picks the
  * filter's gains. */
 
-/* DRHOLOOP: the axis' indexes. (TS SPNDX overflows only for an A that
- * holds an overflow, and skips the DOUBLE; TS DPNDX overflows only when
+/* DRHOLOOP -- p. 1004: the axis' indexes. (TS SPNDX overflows only for an A
+ * that holds an overflow, and skips the DOUBLE; TS DPNDX overflows only when
  * the DOUBLE does, and skips the INDEX DPNDX: CS DRHO runs unindexed.) */
 void drholoop(void)
 {
@@ -166,29 +166,30 @@ void drholoop(void)
     continue_at(ts(ADDRESS_OF(DPNDX)) ? DRHOLOOP + 4u : DRHOLOOP + 3u);
 }
 
-/* DRHOLOOP +5: "PICK UP DESIRED FILTER GAIN": DRHO times GAIN1, "(1
- * -.064)DRHO". */
+/* DRHOLOOP +5 -- p. 1004: "PICK UP DESIRED FILTER GAIN": DRHO times GAIN1,
+ * "(1 -.064)DRHO". */
 static void drholoop_gain(void)
 {
     mp_at(index_read(ADDRESS_OF(GAIN1), fetch(ADDRESS_OF(ATTKALMN))));
     drholoop_das();
 }
 
-/* DRHOLOOP +3: INDEX DPNDX; CS DRHO, "DRHO SCALED 180 DEGS". */
+/* DRHOLOOP +3 -- p. 1004: INDEX DPNDX; CS DRHO, "DRHO SCALED 180 DEGS". */
 void drholoop_drho(void)
 {
     cs(index_read(ADDRESS_OF(DRHO), dpndx()));
     drholoop_gain();
 }
 
-/* DRHOLOOP +4: CS DRHO, the INDEX skipped. */
+/* DRHOLOOP +4 -- p. 1004: CS DRHO, the INDEX skipped. */
 void drholoop_drho_unindexed(void)
 {
     cs(ADDRESS_OF(DRHO));
     drholoop_gain();
 }
 
-/* DRHOLOOP +010: -(.1)ADOT, by SMALLMP: QUARTER times -ADOT in KMPAC. */
+/* DRHOLOOP +010 -- p. 1004: -(.1)ADOT, by SMALLMP: QUARTER times -ADOT in
+ * KMPAC. */
 void drholoop_das(void)
 {
     das_indexed(ADDRESS_OF(DRHO), dpndx());
@@ -242,8 +243,8 @@ static void body_rates(enum sign entry)
     adotloop();
 }
 
-/* DRHOLOOP +020, after SMALLMP: DRHO's last term added in; CCS SPNDX:
- * the next axis, or the measured body rates. */
+/* DRHOLOOP +020 -- p. 1005, after SMALLMP: DRHO's last term added in; CCS
+ * SPNDX: the next axis, or the measured body rates. */
 void drholoop_after_smallmp(void)
 {
     enum sign axis;
@@ -257,9 +258,9 @@ void drholoop_after_smallmp(void)
         body_rates(axis);
 }
 
-/* ADOTLOOP: the axis' indexes, and DELTEMP's double word (as in DRHOLOOP,
- * TS DPNDX overflows only when the DOUBLE does, and then skips the EXTEND:
- * DCA DELTEMPX runs as CA DELTEMPX +1). */
+/* ADOTLOOP -- p. 1006: the axis' indexes, and DELTEMP's double word (as in
+ * DRHOLOOP, TS DPNDX overflows only when the DOUBLE does, and then skips the
+ * EXTEND: DCA DELTEMPX runs as CA DELTEMPX +1). */
 void adotloop(void)
 {
     if (!ts(ADDRESS_OF(SPNDX))) double_A();
@@ -272,11 +273,11 @@ void adotloop(void)
 
 static void kmatrix_ccs(enum sign entry);
 
-/* ADOTLOOP +013: DELTEMP into MERRORX too; then "ADOT + (.16)(.1)DRHO"
- * (DRHO doubled twice, "N.B.", times GAIN2, "PICK UP DESIRED FILTER
- * GAINS") and "KMJ(DFT)" ("S/C TORQUE TO INERTIA RATIO" times DFT) into
- * ADOT; CCS SPNDX: the next axis ("END CALCULATION OF VEHICLE RATES"), or
- * KMATRIX. */
+/* ADOTLOOP +013 -- p. 1006: DELTEMP into MERRORX too; then "ADOT +
+ * (.16)(.1)DRHO" (DRHO doubled twice, "N.B.", times GAIN2, "PICK UP DESIRED
+ * FILTER GAINS") and "KMJ(DFT)" ("S/C TORQUE TO INERTIA RATIO" times DFT)
+ * into ADOT; CCS SPNDX: the next axis ("END CALCULATION OF VEHICLE RATES"),
+ * or KMATRIX. */
 void adotloop_merrorx(void)
 {
     enum sign axis;
@@ -297,8 +298,8 @@ void adotloop_merrorx(void)
         kmatrix_ccs(axis);
 }
 
-/* ADOTLOOP +6: DELTEMP into DRHO. */
-void adotloop_drho(void)
+/* ADOTLOOP +6 -- p. 1006: DELTEMP into DRHO. */
+void adotloop_plus6(void)
 {
     das_indexed(ADDRESS_OF(DRHO), dpndx());
     dca_indexed(ADDRESS_OF(DELTEMPX), dpndx());
@@ -309,11 +310,11 @@ void adotloop_drho(void)
 
 static void tenthsek(void);
 
-/* KMATRIX: ATTSEC counts the passes, ten to a second: in the tenth, "CALL
- * FOR 1 SEC UPDATE OF TRANSFORMATION MATRIX FROM GIMBAL AXES TO BODY AXES"
- * (AMBGUPDT, by NOVAC). (CCS SPNDX comes in at CA ATTSEC on +0, at MASK
- * LOW4 on a negative SPNDX and at CCS A, with A +0, on -0, where MASK
- * LOW4 changes nothing. The low four bits leave A + or +0.) */
+/* KMATRIX -- p. 1006: ATTSEC counts the passes, ten to a second: in the
+ * tenth, "CALL FOR 1 SEC UPDATE OF TRANSFORMATION MATRIX FROM GIMBAL AXES TO
+ * BODY AXES" (AMBGUPDT, by NOVAC). (CCS SPNDX comes in at CA ATTSEC on +0,
+ * at MASK LOW4 on a negative SPNDX and at CCS A, with A +0, on -0, where
+ * MASK LOW4 changes nothing. The low four bits leave A + or +0.) */
 static void kmatrix_ccs(enum sign entry)
 {
     if (entry == IS_PLUS_ZERO) ca(ADDRESS_OF(ATTSEC));
@@ -331,17 +332,17 @@ void kmatrix(void)
     kmatrix_ccs(IS_PLUS_ZERO);
 }
 
-/* KMATRIX +010, after NOVAC: ATTSEC starts again at NINE. */
+/* KMATRIX +010 -- p. 1006, after NOVAC: ATTSEC starts again at NINE. */
 void kmatrix_after_novac(void)
 {
     set_A(NINE);
     tenthsek();
 }
 
-/* TENTHSEK: "WHEN AUTOMATIC MANEUVERS ARE BEING PERFORMED, THE FOLLOWING
- * ANGLE ADDITION MUST BE MADE TO PROVIDE A SMOOTH SEQUENCE OF ANGULAR
- * COMMANDS TO THE AUTOPILOT": CDUXD = CDUXD + DELCDUX, and so on, double
- * length. HOLDFLAG is - while "PERFORMING AUTOMATIC MANEUVER": "IF
+/* TENTHSEK -- p. 1006: "WHEN AUTOMATIC MANEUVERS ARE BEING PERFORMED, THE
+ * FOLLOWING ANGLE ADDITION MUST BE MADE TO PROVIDE A SMOOTH SEQUENCE OF
+ * ANGULAR COMMANDS TO THE AUTOPILOT": CDUXD = CDUXD + DELCDUX, and so on,
+ * double length. HOLDFLAG is - while "PERFORMING AUTOMATIC MANEUVER": "IF
  * HOLDFLAG +0,-0,+, BYPASS AUTOMATIC COMMANDS". */
 static void tenthsek(void)
 {
@@ -355,10 +356,10 @@ static void tenthsek(void)
     deloop();
 }
 
-/* DELOOP: the axis' indexes and the desired angle, CDUXD's double word.
- * (TS SPNDX's and TS DPNDX's overflows as in DRHOLOOP: TS DPNDX's leaves A
- * +1 or -1 to INDEX A, and skips the EXTEND, so DCA CDUXD runs as CA CDUXD
- * +1.) */
+/* DELOOP -- p. 1007: the axis' indexes and the desired angle, CDUXD's double
+ * word. (TS SPNDX's and TS DPNDX's overflows as in DRHOLOOP: TS DPNDX's
+ * leaves A +1 or -1 to INDEX A, and skips the EXTEND, so DCA CDUXD runs as
+ * CA CDUXD +1.) */
 void deloop(void)
 {
     if (!ts(ADDRESS_OF(SPNDX))) double_A();
@@ -369,23 +370,23 @@ void deloop(void)
     continue_at(DELOOP + 6u);
 }
 
-/* DELOOP +6: the angle into KMPAC and its increment, DELCDUX's double
- * word, added by DPADD (round the circle on an overflow). */
-void deloop_delcdux(void)
+/* DELOOP +6 -- p. 1008: the angle into KMPAC and its increment, DELCDUX's
+ * double word, added by DPADD (round the circle on an overflow). */
+void deloop_plus6(void)
 {
     dxch(ADDRESS_OF(KMPAC));
     dca_indexed(ADDRESS_OF(DELCDUX), dpndx());
     deloop_dpadd();
 }
 
-/* DELOOP +012: TC DPADD. */
+/* DELOOP +012 -- p. 1008: TC DPADD. */
 void deloop_dpadd(void)
 {
     tc_to(DELOOP + 012u, DPADD);
 }
 
-/* DELOOP +013, after DPADD: the sum's upper word into THETADX, the
- * single-length desired angle, and the double word back into CDUXD. */
+/* DELOOP +013 -- p. 1008, after DPADD: the sum's upper word into THETADX,
+ * the single-length desired angle, and the double word back into CDUXD. */
 void deloop_after_dpadd(void)
 {
     dca(ADDRESS_OF(KMPAC));
@@ -394,7 +395,8 @@ void deloop_after_dpadd(void)
     deloop_next();
 }
 
-/* DELOOP +021: CCS SPNDX: the next axis, or the attitude error display. */
+/* DELOOP +021 -- p. 1008: CCS SPNDX: the next axis, or the attitude error
+ * display. */
 void deloop_next(void)
 {
     enum sign axis = ccs_at(ADDRESS_OF(SPNDX));

@@ -19,11 +19,9 @@
 #include "../interpreter/interpreter.h"
 #include "../interpreter/notation.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 /* ---- EXGSUB -- pp. 811-812 ---- */
 
-/* EXGSUB: "COMPUTE TRIM VELOCITY CORRECTION TERM." */
+/* EXGSUB -- p. 811: "COMPUTE TRIM VELOCITY CORRECTION TERM." */
 void exgsub(void)
 {
     tc_at(EXGSUB);
@@ -44,12 +42,13 @@ static const word exgsub_words[] = {
 
 const struct interpretive_code EXGSUB_CODE = {031u, EXGSUB + 1u, COUNT(exgsub_words), exgsub_words};
 
-/* EXGSUB's EXIT +1: while NGUIDSUB counts passes still to run, GUIDSUB
- * again; then, with the ignition algorithm's loop count NIGNLOOP not +0,
- * on to DDUMCALC (POSTJUMP); at +0, alarm 1412 first. The CCSs follow
- * the listing's words: NGUIDSUB negative goes on at the TCF +3, -0 at
- * the alarm. Not modelled: NIGNLOOP negative (the alarm's code would run
- * as an instruction). */
+/* EXGSUB +011 -- p. 812: EXGSUB's EXIT +1: while NGUIDSUB counts passes
+ * still to run, GUIDSUB again; then, with the ignition algorithm's loop
+ * count NIGNLOOP not +0, on to DDUMCALC (POSTJUMP); at +0, alarm 1412 first.
+ * The CCSs follow the listing's words: NGUIDSUB negative goes on at the TCF
+ * +3, -0 at the alarm. NIGNLOOP negative: the alarm's code would run as
+ * the instruction TC 1412, and the listing's lines do not say what erasable
+ * word 1412 holds then. */
 void exgsub_after_exit(void)
 {
     switch (ccs_at(ADDRESS_OF(NGUIDSUB))) {
@@ -59,14 +58,19 @@ void exgsub_after_exit(void)
     case IS_MINUS_ZERO: tc_to(EXGSUB + 015u, ALARM); return;
     }
     switch (ccs_at(ADDRESS_OF(NIGNLOOP))) {
-    case POSITIVE:
-    case IS_MINUS_ZERO: exgsub_postjump(); return;
+    case POSITIVE: exgsub_postjump(); return;               /* TCF +3 */
     case IS_PLUS_ZERO: tc_to(EXGSUB + 015u, ALARM); return; /* OCT 01412 */
-    case NEGATIVE: not_modelled();
+    case NEGATIVE:
+        /* (never: NIGNLOOP is the 40 of P63's SSP, then what this CCS left of it) */
+        tc_at(EXGSUB + 016u); /* OCT 01412, run as TC 1412 */
+        not_modelled();
+        return;
+    case IS_MINUS_ZERO: exgsub_postjump(); return;
     }
 }
 
-/* +3: on to DDUMCALC (THE_LUNAR_LANDING.agc), and ALARM's return. */
+/* EXGSUB +017 -- p. 812: +3: on to DDUMCALC (THE_LUNAR_LANDING.agc), and
+ * ALARM's return. */
 void exgsub_postjump(void)
 {
     tc_to(EXGSUB + 017u, POSTJUMP);
@@ -74,7 +78,7 @@ void exgsub_postjump(void)
 
 /* ---- EXBRAK -- p. 812 ---- */
 
-/* EXBRAK: "UNIT(R) IS THE WINDOW POINTING VECTOR" (UNWC/2). */
+/* EXBRAK -- p. 812: "UNIT(R) IS THE WINDOW POINTING VECTOR" (UNWC/2). */
 void exbrak(void)
 {
     tc_at(EXBRAK);
@@ -92,8 +96,8 @@ const struct interpretive_code EXBRAK_CODE = {031u, EXBRAK + 1u, COUNT(exbrak_wo
 
 /* ---- EXNORM -- pp. 812-813 ---- */
 
-/* EXNORM: "UNIT(LAND - R) IS TENTATIVE CHOICE" of the window pointing
- * vector; PROJ, its projection, is "IN MPAC 1/8 REAL SIZE". */
+/* EXNORM -- p. 812: "UNIT(LAND - R) IS TENTATIVE CHOICE" of the window
+ * pointing vector; PROJ, its projection, is "IN MPAC 1/8 REAL SIZE". */
 void exnorm(void)
 {
     tc_at(EXNORM);
@@ -115,13 +119,13 @@ static const word exnorm_words[] = {
 
 const struct interpretive_code EXNORM_CODE = {031u, EXNORM + 1u, COUNT(exnorm_words), exnorm_words};
 
-/* EXNORM's EXIT +1: the window vector UNWC/2 blends CG +14 in, by two
- * weights: BUF, PROJMAX less PROJ ("RESULT IS 0 IF PROJMAX - PROJ
- * NEGATIVE"), on CG +14, and BUF +1, PROJ less PROJMIN ("RESULT IS 0 IF
- * PROJ - PROJMIN NEGATIVE"), on UNIT(LAND - R). Each difference plus
- * POSMAX overflows if it is positive: TS then stores one less, skips the
- * CS and leaves +1 in A, which ADS adds back. Else the CS, ADS pair zeroes
- * the weight. Then UNWCLOOP. */
+/* EXNORM +013 -- p. 812: EXNORM's EXIT +1: the window vector UNWC/2 blends
+ * CG +14 in, by two weights: BUF, PROJMAX less PROJ ("RESULT IS 0 IF PROJMAX
+ * - PROJ NEGATIVE"), on CG +14, and BUF +1, PROJ less PROJMIN ("RESULT IS 0
+ * IF PROJ - PROJMIN NEGATIVE"), on UNIT(LAND - R). Each difference plus
+ * POSMAX overflows if it is positive: TS then stores one less, skips the CS
+ * and leaves +1 in A, which ADS adds back. Else the CS, ADS pair zeroes the
+ * weight. Then UNWCLOOP. */
 void exnorm_after_exit(void)
 {
     cs(ADDRESS_OF(MPAC)); /* "GET COEFFICIENT FOR CG +14" */
@@ -140,9 +144,9 @@ void exnorm_after_exit(void)
     unwcloop();
 }
 
-/* UNWCLOOP: for each component, Q 4, 2 and 0 (MASK SIX of the count),
- * BUF times CG +14's (in E-bank 5, CG's) and BUF +1 times UNWC/2's (in
- * E-bank 6, UNWC/2's) to UNWC/2. Then E-bank 7 (PIF's) and STEER?. (A
+/* UNWCLOOP -- p. 813: for each component, Q 4, 2 and 0 (MASK SIX of the
+ * count), BUF times CG +14's (in E-bank 5, CG's) and BUF +1 times UNWC/2's
+ * (in E-bank 6, UNWC/2's) to UNWC/2. Then E-bank 7 (PIF's) and STEER?. (A
  * masked count and EBANK5 never overflow: neither TS skips. Q is never
  * negative.) */
 void unwcloop(void)
@@ -164,15 +168,18 @@ void unwcloop(void)
             incr(BBANK_ADDRESS);
             steer();
             return;
-        case NEGATIVE:
-        case IS_MINUS_ZERO: not_modelled();
+        /* (never: Q is a count masked with SIX. Negative would skip the INCR BBANK,
+         * and -0 STEER?'s first word too.) */
+        case NEGATIVE: steer(); return;
+        case IS_MINUS_ZERO: continue_at(STEER_Q + 1u); return; /* never */
         }
     }
 }
 
 /* ---- STEER? to RATESTOP -- pp. 813-814 ---- */
 
-/* STEER?: "IF STEERSW DOWN NO OUTPUTS" (RATESTOP). */
+/* EXBRAK +5 -- p. 812, after the EXIT (TCF STEER?). STEER?: "IF STEERSW DOWN
+ * NO OUTPUTS" (RATESTOP). */
 void steer(void)
 {
     ca(ADDRESS_OF(FLAGWRD2));
@@ -183,7 +190,7 @@ void steer(void)
         exvert();
 }
 
-/* EXVERT: "IF OVERFLOW ANYWHERE IN GUIDANCE DON'T CALL THROTTLE OR
+/* EXVERT -- p. 813: "IF OVERFLOW ANYWHERE IN GUIDANCE DON'T CALL THROTTLE OR
  * FINDCDUW": EXOVFLOW sounds the alarm ("NON-ABORTIVELY") and ALARM
  * returns to RATESTOP. Else GDUMP1. */
 void exvert(void)
@@ -195,8 +202,8 @@ void exvert(void)
         tc_to(EXOVFLOW, ALARM); /* OCT 01410 */
 }
 
-/* RATESTOP: "ARE WE IN ATTITUDE-HOLD?" (channel 31's bit 13 clear). If
- * not, "DO A STOPRATE" (BANKCALL), and both on to DISPEXIT. */
+/* RATESTOP -- p. 813: "ARE WE IN ATTITUDE-HOLD?" (channel 31's bit 13
+ * clear). If not, "DO A STOPRATE" (BANKCALL), and both on to DISPEXIT. */
 void ratestop(void)
 {
     set_A(BIT13);
@@ -207,13 +214,13 @@ void ratestop(void)
         tc_to(RATESTOP + 5u, BANKCALL); /* CADR STOPRATE */
 }
 
-/* GDUMP1: THROTTLE, then the CDU commands' interpretive code. */
+/* GDUMP1 -- p. 813: THROTTLE, then the CDU commands' interpretive code. */
 void gdump1(void)
 {
     tc_to(GDUMP1, THROTTLE);
 }
 
-/* THROTTLE's return: TC INTPRET. */
+/* GDUMP1 +1 -- p. 814: THROTTLE's return: TC INTPRET. */
 void gdump1_after_throttle(void)
 {
     tc_at(GDUMP1 + 1u);

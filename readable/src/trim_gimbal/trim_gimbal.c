@@ -1,19 +1,13 @@
 /* SPDX-License-Identifier: MIT */
 /* TRIM_GIMBAL_CONTROL_SYSTEM.agc, the LM's: Luminary099 pages 1472-1484,
- * bank 21 in EBANK 6 (the listing's EBANK= QDIFF); ACDT+C12 in bank 16. */
+ * bank 21 in EBANK 6 (the listing's EBANK= QDIFF); ACDT+C12 in bank 16. The
+ * faithful C is c64-port/src/lm_trim_gimbal.c. */
 #include "trim_gimbal.h"
 
 #if LUMINARY099
 
 /* The CA order's operation code. */
 #define CA_CODE 3u
-
-/* TC at at, to a routine out of this run: Q the word after. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
 
 /* RETURN: TC Q. */
 static void tc_q(void)
@@ -41,24 +35,24 @@ static void sign_of_double(unsigned high)
 {
     switch (ccs_at(high)) {
     case POSITIVE: set_A(BIT1); return;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: set_A(negate(BIT1)); return;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     switch (ccs_at(high + 1u)) {
     case POSITIVE: set_A(BIT1); return;
+    case IS_PLUS_ZERO: return; /* TCF +2 */
     case NEGATIVE: set_A(negate(BIT1)); return;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: return; /* TCF +2 */
     }
 }
 
 /* ---- ROOTCYCL -- LM p. 1484 ---- */
 
-/* ROOTCYCL, by TC at at: "ONE NEWTON SQUARE ROOT ALGORITHM ITERATION."
- * "THE INITIAL GUESS AT THE SQUARE ROOT IS PRESUMED TO BE IN THE A
- * REGISTER AND ONE-HALF THE SQUARE IS TAKEN FROM HALFARG." TS SR halves
- * X: "X/2 NOW IN SR"; a TS SCRATCH that overflows would skip it. */
+/* ROOTCYCL -- LM p. 1484, by TC at at: "ONE NEWTON SQUARE ROOT ALGORITHM
+ * ITERATION." "THE INITIAL GUESS AT THE SQUARE ROOT IS PRESUMED TO BE IN THE
+ * A REGISTER AND ONE-HALF THE SQUARE IS TAKEN FROM HALFARG." TS SR halves X:
+ * "X/2 NOW IN SR"; a TS SCRATCH that overflows would skip it. */
 static void rootcycl(word at)
 {
     tc_at(at);
@@ -72,8 +66,8 @@ static void rootcycl(word at)
 
 /* ---- GTSQRT -- LM pp. 1481-1482 ---- */
 
-/* MULBUSH and SCALLOOP from GOODARG +1, A the shift (0, or 7 from
- * ZEROHIGH) for SHFTFLAG: ININDEX counts 12, 10, ... down while the
+/* MULBUSH -- LM p. 1481 and SCALLOOP from GOODARG +1, A the shift (0, or 7
+ * from ZEROHIGH) for SHFTFLAG: ININDEX counts 12, 10, ... down while the
  * argument is not less than 2 to the power -ININDEX ("IF ARG IS NOT LESS
  * THAN REFERENCE, GO AROUND THE MULBERRY BUSH ONCE MORE."). Then the
  * argument is divided by that power ("RESCALE ARGUMENT."), unless ININDEX
@@ -103,25 +97,27 @@ static void scale(void)
     dv_at(ADDRESS_OF(HALFARG));
 }
 
-/* GTSQRT, by TC GTSQRT from RSTOFGTS: "A SINGLE-PRECISION SQUARE ROOT OF
- * THE FOURTEEN MOST SIGNIFICANT BITS OF THE ARGUMENT" in FUNCTION,
- * FUNCTION +1, and in SHFTFLAG the exponent S: "THE SQUARE ROOT (RETURNED
- * IN THE A REGISTER) MUST BE SHIFTED RIGHT" by S. "ZERO OR NEGATIVE
- * ARGUMENTS YIELD ZERO FOR SQUARE ROOTS." (ZEROOT, which returns by TC
- * Q). A zero high word moves the low one up (ZEROHIGH: "14 MOST
+/* GTSQRT -- LM p. 1481, by TC GTSQRT from RSTOFGTS: "A SINGLE-PRECISION
+ * SQUARE ROOT OF THE FOURTEEN MOST SIGNIFICANT BITS OF THE ARGUMENT" in
+ * FUNCTION, FUNCTION +1, and in SHFTFLAG the exponent S: "THE SQUARE ROOT
+ * (RETURNED IN THE A REGISTER) MUST BE SHIFTED RIGHT" by S. "ZERO OR
+ * NEGATIVE ARGUMENTS YIELD ZERO FOR SQUARE ROOTS." (ZEROOT, which returns by
+ * TC Q). A zero high word moves the low one up (ZEROHIGH: "14 MOST
  * SIGNIFICANT BITS ARE IN THE LOWER WORD.", seven more to shift). Then
  * SCALDONE: Q saved in FUNCTION +1, half the scaled argument in HALFARG,
- * "INITIAL GUESS IS ROOT 1/2 OR POSMAX" (by bit 13 of HALFARG), three
- * Newton steps, and TC FUNCTION +1: the saved return, PRODUCT. */
+ * "INITIAL GUESS IS ROOT 1/2 OR POSMAX" (by bit 13 of HALFARG), three Newton
+ * steps, and TC FUNCTION +1: the saved return, PRODUCT. */
 static void gtsqrt(void)
 {
-    bool zero_root = false;
+    bool zero_root = false, high_zero = false;
 
     switch (ccs_at(ADDRESS_OF(FUNCTION))) {
-    case POSITIVE: set_A(ZERO); break; /* GOODARG */
-    case NEGATIVE: zero_root = true; break;
-    case IS_PLUS_ZERO:
-    case IS_MINUS_ZERO:
+    case POSITIVE: set_A(ZERO); break;          /* GOODARG */
+    case IS_PLUS_ZERO: high_zero = true; break; /* TCF +2 */
+    case NEGATIVE: zero_root = true; break;     /* TCF ZEROOT */
+    case IS_MINUS_ZERO: high_zero = true; break;
+    }
+    if (high_zero) {
         ca(ADDRESS_OF(FUNCTION) + 1u);
         if (A_is_zero_or_minus()) {
             zero_root = true;
@@ -130,7 +126,6 @@ static void gtsqrt(void)
             xch(ADDRESS_OF(FUNCTION) + 1u);
             set_A(SEVEN);
         }
-        break;
     }
     if (zero_root) {
         set_A(ZERO); /* ZEROOT */
@@ -144,12 +139,14 @@ static void gtsqrt(void)
     ts(ADDRESS_OF(HALFARG));
     mask(BIT13);
     switch (ccs_at(A_ADDRESS)) {
-    case POSITIVE: set_A(OCT11276); break;
-    case IS_PLUS_ZERO: break;
-    default: not_modelled(); return; /* a MASK of BIT13 is never negative */
+    case POSITIVE: set_A(OCT11276); /* fall through */
+    case IS_PLUS_ZERO:
+        ad(ROOTHALF); /* fall through */
+    /* (never: a MASK of BIT13. Negative would skip the AD ROOTHALF, and -0 the first
+     * TC ROOTCYCL too.) */
+    case NEGATIVE: rootcycl(SCALDONE + 011u); /* fall through */
+    case IS_MINUS_ZERO: break;                /* never */
     }
-    ad(ROOTHALF);
-    rootcycl(SCALDONE + 011u);
     rootcycl(SCALDONE + 012u);
     rootcycl(SCALDONE + 013u);
     tc_through(ADDRESS_OF(FUNCTION) + 1u);
@@ -157,7 +154,8 @@ static void gtsqrt(void)
 
 /* ---- GTS -- LM pp. 1472-1476, 1482-1484 ---- */
 
-/* GTSQAXIS -3 to ALGORTHM: the axis's offset acceleration ALPHA and rate
+/* GTSQAXIS -3 -- LM p. 1473 to ALGORTHM: the axis's offset acceleration
+ * ALPHA and rate
  * OMEGA into ACENTRAL and WCENTRAL, and its control authority K into
  * KCENTRAL. "AOS SCALED AT PI/2", MP BIT2 "RESCALE AOS TO PI/4" (its low
  * word, unless the high one is nonzero: then "USE FULL SCALE FOR LARGER
@@ -176,8 +174,11 @@ static bool axis_inputs(void)
     switch (ccs_at(ADDRESS_OF(QRCNTR))) {
     case POSITIVE: ca(indexed(ADDRESS_OF(EDOTQ), a_word())); break;
     case IS_PLUS_ZERO: ca(ADDRESS_OF(EDOTQ)); break;
-    case NEGATIVE: break;                             /* to GTSQAXIS */
-    case IS_MINUS_ZERO: not_modelled(); return false; /* QRCNTR is 2, +-1 or 0 */
+    case NEGATIVE: break; /* to GTSQAXIS */
+    case IS_MINUS_ZERO:   /* never: QRCNTR is 2, +-1 or 0. Past GTSQAXIS's DXCH WCENTRAL */
+        ca(by_axis(ADDRESS_OF(KQ)));
+        ts(ADDRESS_OF(KCENTRAL));
+        return !A_is_zero();
     }
     dxch(ADDRESS_OF(WCENTRAL));  /* GTSQAXIS */
     ca(by_axis(ADDRESS_OF(KQ))); /* "COLLECT K FOR THIS AXIS" */
@@ -185,9 +186,9 @@ static bool axis_inputs(void)
     return !A_is_zero();
 }
 
-/* ALGORTHM: the first term of NEGUSUM, K times the error ("Q(R)DIFF IS
- * THETA (ERROR) SCALED AT PI."), "D.P. AT 4*PI(2)" in K2THETA. Then
- * ALPHA(2)/(2*K) in A2CNTRAL, "LIMITING QUOTIENT TO AVOID OVERFLOW."
+/* ALGORTHM -- LM p. 1473: the first term of NEGUSUM, K times the error
+ * ("Q(R)DIFF IS THETA (ERROR) SCALED AT PI."), "D.P. AT 4*PI(2)" in K2THETA.
+ * Then ALPHA(2)/(2*K) in A2CNTRAL, "LIMITING QUOTIENT TO AVOID OVERFLOW."
  * ("K-ALPHA(2)/2 SHOULD BE PNZ FO DIVISION"; else HUGEQUOT, POSMAX). */
 static void error_term_and_quotient(void)
 {
@@ -219,14 +220,15 @@ static void error_term_and_quotient(void)
     xch(ADDRESS_OF(A2CNTRAL) + 1u);
 }
 
-/* HAVEQUOT to GETROOT: "RESCALE OMEGA AT 16*PI IN D.P." into K2CNTRAL
- * and FUNCTION; "OMEGA + ALPHA*ABS(ALPHA)/(2*K) AT 16*PI" in FUNCTION, and
- * DEL its sign, +1, -1 or +0 ("DEL = +1 FOR FUNCT1 GREATER THAN ZERO.").
- * "REPLACE OMEGA BY DEL*OMEGA" (DEFUNCT: +0; NEGFNCT2: negated). FUNCT2:
- * "DEL*OMEGA + ALPHA(2)/(2*K)" in K2CNTRAL; FUNCT3: A2CNTRAL times -1/3,
- * plus K2CNTRAL: "DEL*OMEGA + ALPHA(2)/(3*K)", times ALPHA into K2THETA
- * ("TWO TERMS OF NEGUSUM ACCUMULATED, SO FAR"). GETROOT: K times
- * K2CNTRAL, "THE TERM FOR WHICH A SQUARE ROOT IS NEEDED.", in FUNCTION. */
+/* HAVEQUOT -- LM p. 1474 to GETROOT: "RESCALE OMEGA AT 16*PI IN D.P." into
+ * K2CNTRAL and FUNCTION; "OMEGA + ALPHA*ABS(ALPHA)/(2*K) AT 16*PI" in
+ * FUNCTION, and DEL its sign, +1, -1 or +0 ("DEL = +1 FOR FUNCT1 GREATER
+ * THAN ZERO."). "REPLACE OMEGA BY DEL*OMEGA" (DEFUNCT: +0; NEGFNCT2:
+ * negated). FUNCT2: "DEL*OMEGA + ALPHA(2)/(2*K)" in K2CNTRAL; FUNCT3:
+ * A2CNTRAL times -1/3, plus K2CNTRAL: "DEL*OMEGA + ALPHA(2)/(3*K)", times
+ * ALPHA into K2THETA ("TWO TERMS OF NEGUSUM ACCUMULATED, SO FAR"). GETROOT:
+ * K times K2CNTRAL, "THE TERM FOR WHICH A SQUARE ROOT IS NEEDED.", in
+ * FUNCTION. */
 static void second_term(void)
 {
     ca(ADDRESS_OF(WCENTRAL)); /* HAVEQUOT */
@@ -246,13 +248,16 @@ static void second_term(void)
     switch (ccs_at(ADDRESS_OF(DEL))) {
     case POSITIVE: break; /* "POSITIVE DEL VALUE.  PROCEED." */
     case IS_PLUS_ZERO:
-    case IS_MINUS_ZERO:
         ts(ADDRESS_OF(K2CNTRAL)); /* DEFUNCT */
         ts(ADDRESS_OF(K2CNTRAL) + 1u);
         break;
     case NEGATIVE:
         dcs(ADDRESS_OF(K2CNTRAL)); /* NEGFNCT2 */
         dxch(ADDRESS_OF(K2CNTRAL));
+        break;
+    case IS_MINUS_ZERO:
+        ts(ADDRESS_OF(K2CNTRAL)); /* DEFUNCT */
+        ts(ADDRESS_OF(K2CNTRAL) + 1u);
         break;
     }
     dca(ADDRESS_OF(A2CNTRAL)); /* FUNCT2 */
@@ -332,13 +337,13 @@ static void third_term(void)
     carry_into(ADDRESS_OF(K2THETA));
 }
 
-/* NEGUSUM to LOUPE, A the new drive: +1 for a positive NEGUSUM (NEGDRIVE),
- * -1 (POSDRIVE), or +0 ("STOP GIMBAL DRIVE FOR A ZERO NEGUSUM."). It goes
- * to NEGUQ or NEGUR, and the old drive times the new one tells: "NON-ZERO
- * GIMBAL DRIVE BEING CONTINUED.", LOUPE; "NON-ZERO GIMBAL DRIVE BEING
- * REVERSED.", REVERSAL: "A ZERO-DRIVE PAUSE IS NEEDED HERE." (QACCDOT or
- * RACCDOT +0, the axis's drive bits off in channel 12); else ZEROLOUP:
- * "SET UP REQUEST FOR ACDT+C12 CALL." */
+/* NEGUSUM -- LM p. 1483 to LOUPE, A the new drive: +1 for a positive NEGUSUM
+ * (NEGDRIVE), -1 (POSDRIVE), or +0 ("STOP GIMBAL DRIVE FOR A ZERO
+ * NEGUSUM."). It goes to NEGUQ or NEGUR, and the old drive times the new one
+ * tells: "NON-ZERO GIMBAL DRIVE BEING CONTINUED.", LOUPE; "NON-ZERO GIMBAL
+ * DRIVE BEING REVERSED.", REVERSAL: "A ZERO-DRIVE PAUSE IS NEEDED HERE."
+ * (QACCDOT or RACCDOT +0, the axis's drive bits off in channel 12); else
+ * ZEROLOUP: "SET UP REQUEST FOR ACDT+C12 CALL." */
 static void new_drive(void)
 {
     ts(L_ADDRESS); /* "SAVE FOR DRIVE REVERSAL TEST." */
@@ -346,12 +351,12 @@ static void new_drive(void)
     mp_at(L_ADDRESS); /* "MULTIPLY OLD NEGU AND NEW NEGU." */
     switch (ccs_at(L_ADDRESS)) {
     case POSITIVE: return;
+    case IS_PLUS_ZERO: break; /* "NO REVERSAL PROBLEM HERE." */
     case NEGATIVE:
         ts(by_axis(ADDRESS_OF(QACCDOT))); /* REVERSAL */
         cs(by_axis(GMBLBITA));
         wand_channel(CHAN12);
         break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break; /* "NO REVERSAL PROBLEM HERE." */
     }
     cs(ADDRESS_OF(RCSFLAGS)); /* ZEROLOUP */
@@ -359,18 +364,18 @@ static void new_drive(void)
     ads(ADDRESS_OF(RCSFLAGS));
 }
 
-/* GTS, from Q_R-AXIS by DTCB: "THE ENTRY TO THE GIMBAL TRIM SYSTEM FOR
- * CONTROLLING ATTITUDE ERRORS AND RATES AS WELL AS ACCELERATIONS." "MAKE
- * THE NEXT PASS THROUGH THE DAP BE THROUGH RCS CONTROL," (COTROLER -1)
- * "AND ENSURE THAT IT IS NOT A SKIP." (SKIPU, SKIPV four); INGTS and the
- * gimbal timers two ("SET TIMERS TO 200 MSEC TO AVOID BOTH RUNAWAY AND
- * INTERFERENCE BY NULLING."); SR saved doubled, "TO CORRECT FOR THE RIGHT
- * SHIFT DUE TO EDITING." Then, for the R axis and the Q axis (QRCNTR 2,
- * then 0; a TS SAVESR that overflows leaves QRCNTR +1 or -1), "THE DRIVE
- * SETTING ALGORITHM": NEGUSUM, the sum of K times the error, ALPHA times
- * "DEL*OMEGA + ALPHA /(3*K)", and DEL times the 3/2 power of K times
- * "DEL*OMEGA + ALPHA /(2*K)"; "DRIVE = -SGN(NEGUSUM)". Then SR as it was,
- * and GOCLOSE: "TERMINATE THE JASK." by DTCB to CLOSEOUT. */
+/* GTS -- LM p. 1472, from Q_R-AXIS by DTCB: "THE ENTRY TO THE GIMBAL TRIM
+ * SYSTEM FOR CONTROLLING ATTITUDE ERRORS AND RATES AS WELL AS
+ * ACCELERATIONS." "MAKE THE NEXT PASS THROUGH THE DAP BE THROUGH RCS
+ * CONTROL," (COTROLER -1) "AND ENSURE THAT IT IS NOT A SKIP." (SKIPU, SKIPV
+ * four); INGTS and the gimbal timers two ("SET TIMERS TO 200 MSEC TO AVOID
+ * BOTH RUNAWAY AND INTERFERENCE BY NULLING."); SR saved doubled, "TO CORRECT
+ * FOR THE RIGHT SHIFT DUE TO EDITING." Then, for the R axis and the Q axis
+ * (QRCNTR 2, then 0; a TS SAVESR that overflows leaves QRCNTR +1 or -1),
+ * "THE DRIVE SETTING ALGORITHM": NEGUSUM, the sum of K times the error,
+ * ALPHA times "DEL*OMEGA + ALPHA /(3*K)", and DEL times the 3/2 power of K
+ * times "DEL*OMEGA + ALPHA /(2*K)"; "DRIVE = -SGN(NEGUSUM)". Then SR as it
+ * was, and GOCLOSE: "TERMINATE THE JASK." by DTCB to CLOSEOUT. */
 void gts(void)
 {
     bool more = true;
@@ -394,12 +399,12 @@ void gts(void)
             second_term();
             switch (ccs_at(ADDRESS_OF(DEL))) {
             case POSITIVE: third_term(); break;
-            case NEGATIVE: /* NEGATE */
+            case IS_PLUS_ZERO: break; /* to NEGUSUM */
+            case NEGATIVE:            /* NEGATE */
                 dcs(ADDRESS_OF(K2CNTRAL));
                 dxch(ADDRESS_OF(K2CNTRAL));
                 third_term();
                 break;
-            case IS_PLUS_ZERO:
             case IS_MINUS_ZERO: break; /* to NEGUSUM */
             }
             sign_of_double(ADDRESS_OF(K2THETA)); /* NEGUSUM */
@@ -416,7 +421,7 @@ void gts(void)
             ts(SR_ADDRESS);
             more = false;
             break;
-        case IS_MINUS_ZERO: not_modelled(); return; /* QRCNTR is 2, +-1 or 0 */
+        case IS_MINUS_ZERO: more = false; break; /* never: QRCNTR is 2, +-1 or 0. On at GOCLOSE */
         }
     }
     set_A(CLOSEADR[0]); /* GOCLOSE: EXTEND; DCA CLOSEADR; DTCB */
@@ -426,7 +431,8 @@ void gts(void)
 
 /* ---- ACDT+C12 -- LM pp. 1476-1477 ---- */
 
-/* ACDT+C12, by IBNKCALL (from TIMEGMBL, or P-AXIS when CALLGMBL of
+/* ACDT+C12 -- LM p. 1476, by IBNKCALL (from TIMEGMBL, or P-AXIS when
+ * CALLGMBL of
  * RCSFLAGS asks), Q the return: "SETS Q(R)ACCDOT TO REFLECT THE NEW
  * DRIVES." (the drive times ACCDOTQ or ACCDOTR, the acceleration's rate of
  * change, NEGUQ and NEGUR being "THE NEGATIVES OF THE DESIRED ACCELERATION
@@ -446,15 +452,15 @@ void acdt_c12(void)
 
     switch (ccs_at(ADDRESS_OF(NEGUQ))) {
     case POSITIVE: set_A(BIT10); break;
+    case IS_PLUS_ZERO: break; /* A +0 */
     case NEGATIVE: set_A(BIT9); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break; /* A +0 */
     }
     ts(ADDRESS_OF(CHNL12));
     switch (ccs_at(ADDRESS_OF(NEGUR))) {
     case POSITIVE: set_A(BIT12); break;
+    case IS_PLUS_ZERO: break;
     case NEGATIVE: set_A(BIT11); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break;
     }
     ads(ADDRESS_OF(CHNL12));
@@ -517,7 +523,8 @@ static enum drive drive_setting(unsigned axis)
     return DRIVE_ON;
 }
 
-/* TIMEGMBL, by TC, Q the return: "COMPUTES THE DRIVE TIME NEEDED FOR THE
+/* TIMEGMBL -- LM p. 1478, by TC, Q the return: "COMPUTES THE DRIVE TIME
+ * NEEDED FOR THE
  * TRIM GIMBAL TO POSITION THE DESCENT ENGINE NOZZLE SO AS TO NULL THE
  * OFFSET ANGULAR ACCELERATION ABOUT THE Q (OR R) AXIS." For the R axis,
  * then the Q axis: TGOFFNOW ("TURN OFF GIMBAL NOW.", NEGU +0); NOTALLOW
@@ -556,7 +563,13 @@ void timegmbl(void)
         switch (ccs_at(ADDRESS_OF(QRNDXER))) { /* DONEYET */
         case POSITIVE: set_A(ZERO); break;     /* TIMQGMBL: "NOW DO THE Q-AXIS" */
         case IS_PLUS_ZERO: more = false; break;
-        default: not_modelled(); return; /* QRNDXER is 2 or 0 */
+        /* (never: QRNDXER is 2, then 0. Negative would skip the DXCH RUPTREG3, and -0 the
+         * DXCH ITEMP2 too.) */
+        case NEGATIVE:
+            dxch(ADDRESS_OF(ITEMP2));
+            tc_to(DONEYET + 4u, IBNKCALL);
+            return;
+        case IS_MINUS_ZERO: /* never */ tc_to(DONEYET + 4u, IBNKCALL); return;
         }
     }
     dxch(ADDRESS_OF(RUPTREG3));
@@ -564,8 +577,8 @@ void timegmbl(void)
     tc_to(DONEYET + 4u, IBNKCALL); /* CADR ACDT+C12 */
 }
 
-/* DONEYET +6, where ACDT+C12 returns: "RESTORE ERASABLES FOR IBNKCALL."
- * and "RETURN TO CALLER." by TC RUPTREG2. */
+/* DONEYET +6 -- LM p. 1480, where ACDT+C12 returns: "RESTORE ERASABLES FOR
+ * IBNKCALL." and "RETURN TO CALLER." by TC RUPTREG2. */
 void timegmbl_return(void)
 {
     dxch(ADDRESS_OF(ITEMP2));

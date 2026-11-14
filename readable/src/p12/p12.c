@@ -7,49 +7,52 @@
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
 
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
-
 #if LUMINARY099
 
 /* ---- P12LM -- p. 838 ---- */
 
-/* P12LM: restart group 4 at 4.2 (PHASCHNG, OCT 04024), ... */
+/* P12LM -- p. 838: restart group 4 at 4.2 (PHASCHNG, OCT 04024), ... */
 void p12lm(void)
 {
     tc_to(P12LM, PHASCHNG);
 }
 
-/* ... "CHECK THE STATUS OF THE IMU." (R02BOTH, through BANKCALL), ... */
+/* P12LM +2 -- p. 838: ... "CHECK THE STATUS OF THE IMU." (R02BOTH, through
+ * BANKCALL), ... */
 void p12lm_after_phaschng(void)
 {
     tc_to(P12LM + 2u, BANKCALL);
 }
 
-/* ... MUNFLAG set, ... */
+/* P12LM +4 -- p. 838: ... MUNFLAG set, ... */
 void p12lm_after_r02both(void)
 {
     tc_to(P12LM + 4u, UPFLAG); /* ADRES MUNFLAG */
 }
 
-/* ... "INSURE 4-JET TRANSLATION CAPABILITY." (ACC4-2FL), ... */
+/* P12LM +6 -- p. 838: ... "INSURE 4-JET TRANSLATION CAPABILITY." (ACC4-2FL),
+ * ... */
 void p12lm_after_munflag(void)
 {
     tc_to(P12LM + 6u, UPFLAG); /* ADRES ACC4-2FL */
 }
 
-/* ... "PREVENT R10 FROM ISSUING CROSS-POINTER OUTPUTS." (R10FLAG), ... */
+/* P12LM +010 -- p. 838: ... "PREVENT R10 FROM ISSUING CROSS-POINTER
+ * OUTPUTS." (R10FLAG), ... */
 void p12lm_after_acc4_2fl(void)
 {
     tc_to(P12LM + 010u, UPFLAG); /* ADRES R10FLAG */
 }
 
-/* ... "INITIALIZE RADMODES FOR R29." (CLRADMOD), ... */
+/* P12LM +012 -- p. 838: ... "INITIALIZE RADMODES FOR R29." (CLRADMOD),
+ * ... */
 void p12lm_after_r10flag(void)
 {
     tc_to(P12LM + 012u, CLRADMOD);
 }
 
-/* ... "CLEAR RENDEZVOUS FLAG FOR P22" (RNDVZFLG), ... */
+/* P12LM +013 -- p. 838: ... "CLEAR RENDEZVOUS FLAG FOR P22" (RNDVZFLG),
+ * ... */
 void p12lm_after_clradmod(void)
 {
     tc_to(P12LM + 013u, DOWNFLAG); /* ADRES RNDVZFLG */
@@ -62,9 +65,9 @@ static void flash_tig(void)
     tc_to(P12LM + 024u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* ... "INITIALIZE DVMON" (DVTHRUSH THRESH2, DVCNTR four), TRKMKCNT +0:
- * "SHOW THAT R29 DOWNLINK DATA ISN'T READY.", and FLASH TIG. (Each TS
- * stores a constant: none skips.) */
+/* P12LM +015 -- p. 838: ... "INITIALIZE DVMON" (DVTHRUSH THRESH2, DVCNTR
+ * four), TRKMKCNT +0: "SHOW THAT R29 DOWNLINK DATA ISN'T READY.", and FLASH
+ * TIG. (Each TS stores a constant: none skips.) */
 void p12lm_after_rndvzflg(void)
 {
     set_A(THRESH2);
@@ -76,25 +79,26 @@ void p12lm_after_rndvzflg(void)
     flash_tig();
 }
 
-/* GOFLASH's returns: terminate, to P00 (GOTOPOOH); ... */
+/* P12LM +026 -- p. 838: GOFLASH's returns: terminate, to P00 (GOTOPOOH);
+ * ... */
 void p12lm_terminate(void)
 {
     continue_at(GOTOPOOH);
 }
 
-/* ... "PROCEED": restart group 4 at 4.2 again, ... */
+/* P12LM +027 -- p. 838: ... "PROCEED": restart group 4 at 4.2 again, ... */
 void p12lm_proceed(void)
 {
     tc_to(P12LM + 031u, PHASCHNG);
 }
 
-/* ... or "ENTER": FLASH TIG again. */
+/* P12LM +030 -- p. 838: ... or "ENTER": FLASH TIG again. */
 void p12lm_enter(void)
 {
     flash_tig();
 }
 
-/* Then the interpretive code (P12LM_CODE). */
+/* P12LM +033 -- p. 838: Then the interpretive code (P12LM_CODE). */
 void p12lm_intpret(void)
 {
     tc_at(P12LM + 033u);
@@ -148,29 +152,29 @@ const struct interpretive_code P12LM_CODE = {030u, P12LM + 034u, COUNT(p12lm_wor
 
 /* ---- NEWLOAD -- p. 839 ---- */
 
-/* After the EXIT: restart group 4 at 4.2, ... */
+/* NEWLOAD -2 -- p. 839: After the EXIT: restart group 4 at 4.2, ... */
 void p12lmb_after_exit(void)
 {
     tc_to(NEWLOAD - 2u, PHASCHNG);
 }
 
-/* ... and NEWLOAD: "FLASH CROSS-RANGE, AND APOLUNE VALUES." (verb 06 noun
- * 76). */
+/* NEWLOAD -- p. 839: ... and NEWLOAD: "FLASH CROSS-RANGE, AND APOLUNE
+ * VALUES." (verb 06 noun 76). */
 void newload(void)
 {
     set_A(V06N76);
     tc_to(NEWLOAD + 1u, BANKCALL); /* CADR GOFLASH */
 }
 
-/* GOFLASH's returns: terminate, to P00; ... */
+/* NEWLOAD +3 -- p. 839: GOFLASH's returns: terminate, to P00; ... */
 void newload_terminate(void)
 {
     continue_at(GOTOPOOH);
 }
 
-/* ... "PROCEED": WHICH the ascent's table of the ignition steps
- * (P12ADRES, P12TABLE), and restart group 4 at 4.2; ... (A is a constant:
- * TS does not skip.) */
+/* NEWLOAD +4 -- p. 839: ... "PROCEED": WHICH the ascent's table of the
+ * ignition steps (P12ADRES, P12TABLE), and restart group 4 at 4.2; ... (A is
+ * a constant: TS does not skip.) */
 void newload_proceed(void)
 {
     set_A(P12ADRES);
@@ -178,13 +182,13 @@ void newload_proceed(void)
     tc_to(NEWLOAD + 010u, PHASCHNG);
 }
 
-/* ... or "ENTER NEW DATA.": NEWLOAD again. */
+/* NEWLOAD +5 -- p. 839: ... or "ENTER NEW DATA.": NEWLOAD again. */
 void newload_enter(void)
 {
     newload();
 }
 
-/* Then the interpretive code (NEWLOAD_CODE). */
+/* NEWLOAD +012 -- p. 839: Then the interpretive code (NEWLOAD_CODE). */
 void newload_intpret(void)
 {
     tc_at(NEWLOAD + 012u);
@@ -247,26 +251,27 @@ const struct interpretive_code NEWLOAD_CODE = {030u, NEWLOAD + 013u, COUNT(newlo
 
 /* ---- P12RET's end -- p. 840 ---- */
 
-/* After the EXIT: restart group 4 at 4.2, ... */
+/* NEWLOAD +062 -- p. 840: After the EXIT: restart group 4 at 4.2, ... */
 void p12ret_after_exit(void)
 {
     tc_to(NEWLOAD + 062u, PHASCHNG);
 }
 
-/* ... FLPI clear, ... */
+/* NEWLOAD +064 -- p. 840: ... FLPI clear, ... */
 void p12ret_after_phaschng(void)
 {
     tc_to(NEWLOAD + 064u, DOWNFLAG); /* ADRES FLPI */
 }
 
-/* ... with interrupts inhibited, PFLITEDB (through IBNKCALL), ... */
+/* NEWLOAD +066 -- p. 840: ... with interrupts inhibited, PFLITEDB (through
+ * IBNKCALL), ... */
 void p12ret_after_flpi(void)
 {
     inhint();
     tc_to(NEWLOAD + 067u, IBNKCALL); /* CADR PFLITEDB */
 }
 
-/* ... and BURNBABY (POSTJUMP). */
+/* NEWLOAD +071 -- p. 840: ... and BURNBABY (POSTJUMP). */
 void p12ret_after_pflitedb(void)
 {
     relint();

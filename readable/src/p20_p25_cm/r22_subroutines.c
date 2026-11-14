@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 /* P20-P25.agc, part 7 (Comanche055 pp. 586-589): R22's subroutines in bank
- * 27, from SETINTG to INITIALW.
+ * 27, from SETINTG to INITIALW. The faithful C is c64-port/src/cm_p20_p25.c.
  *
  * SETINTG sets up an integration of the state vector to the mark's time.
  * CNTCHK and CONTCHK decide whether R22 may go on: not without a good
@@ -25,8 +25,6 @@
 #include "../interpreter/interpreter.h"
 
 #if COMANCHE055
-
-#define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 static void lighton(void);
 static void rangerd3(void);
@@ -85,21 +83,21 @@ static const word cntchk_words[] = {
     ORDER(EXIT),
 };
 
-/* REDOR22 -- after CONTCHK's EXIT, and where a restart comes back to: a
- * restart phase change (PHASCHNG, OCT 00132), */
+/* REDOR22 -- p. 586: after CONTCHK's EXIT, and where a restart comes back
+ * to: a restart phase change (PHASCHNG, OCT 00132), */
 void redor22(void)
 {
     tc_to(REDOR22, PHASCHNG);
 }
 
-/* REDOR22 +2: the job's priority to 26 (PRIOCHNG), */
+/* REDOR22 +2 -- p. 586: the job's priority to 26 (PRIOCHNG), */
 void redor22_after_phaschng(void)
 {
     set_A(PRIO26);
     tc_to(REDOR22 + 3u, PRIOCHNG);
 }
 
-/* REDOR22 +4: and the wait, at WAITONE +3. */
+/* REDOR22 +4 -- p. 586: and the wait, at WAITONE +3. */
 void redor22_after_priochng(void)
 {
     tc_at(REDOR22 + 4u);
@@ -114,14 +112,14 @@ static const word waitone_words[] = {
     ORDER(EXIT),
 };
 
-/* WAITONE +3 -- after the EXIT: "WAIT 4 SECS." (DELAYJOB), */
+/* WAITONE +3 -- p. 586: after the EXIT: "WAIT 4 SECS." (DELAYJOB), */
 void waitone_after_exit(void)
 {
     set_A(K4SECS);
     tc_to(WAITONE + 4u, BANKCALL); /* CADR DELAYJOB */
 }
 
-/* WAITONE +6: and in interpretive code again, */
+/* WAITONE +6 -- p. 586: and in interpretive code again, */
 void waitone_after_delayjob(void)
 {
     tc_at(WAITONE + 6u);
@@ -139,44 +137,44 @@ static const word rangerd_words[] = {
     ORDER(EXIT),
 };
 
-/* RANGERD +1 -- after the EXIT: with interrupts held, "ZERO OUT BITS 1-4
- * OF CHANNEL 13" and set bits 1 and 4 (OCT11): "GENERAGE SHIFT PULSES TO
+/* RANGERD +1 -- p. 586: after the EXIT: with interrupts held, "ZERO OUT BITS
+ * 1-4 OF CHANNEL 13" and set bits 1 and 4 (OCT11): "GENERAGE SHIFT PULSES TO
  * RADR, SET R. BIT". Then "READ PRESENT TIME" into MARKTIME, and SKIPVHF
  * cleared, so that VHFREAD takes the reading. */
 void rangerd_after_exit(void)
 {
     inhint();
     set_A(negate(OCT17)); /* CS OCT17 */
-    wand_channel(013);
+    wand_channel(CHAN13);
     set_A(OCT11);
-    wor_channel(013);
+    wor_channel(CHAN13);
     relint();
     dca(ADDRESS_OF(TIME2));
     dxch(ADDRESS_OF(MARKTIME));
     tc_to(RANGERD + 014u, DOWNFLAG); /* ADRES SKIPVHF */
 }
 
-/* RANGERD +016: "WAIT FOR RANGE COMPLETE" (RADSTALL). */
+/* RANGERD +016 -- p. 587: "WAIT FOR RANGE COMPLETE" (RADSTALL). */
 void rangerd_after_skipvhf(void)
 {
     tc_to(RANGERD + 016u, BANKCALL); /* CADR RADSTALL */
 }
 
-/* RANGERD +020: the read failed, "BAD DATA GOOD BIT" (LIGHTON). */
+/* RANGERD +020 -- p. 587: the read failed, "BAD DATA GOOD BIT" (LIGHTON). */
 void rangerd_bad(void)
 {
     tc_at(RANGERD + 020u);
     lighton();
 }
 
-/* RANGERD +021: the read was good: "TURN TRACKER LIGHT OFF". */
+/* RANGERD +021 -- p. 587: the read was good: "TURN TRACKER LIGHT OFF". */
 void rangerd_good(void)
 {
     tc_to(RANGERD + 021u, TRFAILOF);
 }
 
-/* RANGERD1 -- after TRFAILOF: the "15 BIT UNSIGNED RANGE" in RM, by its
- * sign: positive ("GR + 0"), RANGERD4; +0, LIGHTON +4, no range;
+/* RANGERD1 -- p. 587: after TRFAILOF: the "15 BIT UNSIGNED RANGE" in RM, by
+ * its sign: positive ("GR + 0"), RANGERD4; +0, LIGHTON +4, no range;
  * negative or -0, RANGERD3 (the top bit set). */
 void rangerd1(void)
 {
@@ -212,7 +210,7 @@ void rangerd1_minus_zero(void)
     rangerd3();
 }
 
-/* RANGERD4: in interpretive code, */
+/* RANGERD4 -- p. 587: in interpretive code, */
 void rangerd4(void)
 {
     tc_at(RANGERD4);
@@ -232,9 +230,9 @@ static const word rangerd4_words[] = {
     SWITCH(SET, SOURCFLG), /* "SOURCE OF DATA TO VHF RADAR" */
 };
 
-/* RANGERD3: a range with the top bit set: the bit masked off ("MASK OUT
- * NEG. SIGN BIT") into MPAC, and in interpretive code. (A word masked by
- * POSMAX leaves no overflow for the TS to skip on.) */
+/* RANGERD3 -- p. 587: a range with the top bit set: the bit masked off
+ * ("MASK OUT NEG. SIGN BIT") into MPAC, and in interpretive code. (A word
+ * masked by POSMAX leaves no overflow for the TS to skip on.) */
 static void rangerd3(void)
 {
     ca(ADDRESS_OF(RM));
@@ -257,8 +255,9 @@ static const word rangerd3_words[] = {
     ADDRESS(RANGERD2),
 };
 
-/* LIGHTON: the tracker lamp on (TRFAILON) unless VHFREAD left VHFRANGE
- * +0 (the update flag or the priority displays flag stopped the read). */
+/* LIGHTON -- p. 587: the tracker lamp on (TRFAILON) unless VHFREAD left
+ * VHFRANGE +0 (the update flag or the priority displays flag stopped the
+ * read). */
 static void lighton(void)
 {
     ca(ADDRESS_OF(VHFRANGE));
@@ -269,7 +268,7 @@ static void lighton(void)
     tc_to(LIGHTON + 3u, TRFAILON);
 }
 
-/* LIGHTON +4: in interpretive code, */
+/* LIGHTON +4 -- p. 587: in interpretive code, */
 void lighton_after_trfailon(void)
 {
     tc_at(LIGHTON + 4u);
@@ -324,7 +323,7 @@ void vhfread(void)
     ca(ADDRESS_OF(RNRAD));
     if (ts(ADDRESS_OF(RM))) not_modelled(); /* "SAVE RANGE" */
     set_A(BIT2);
-    rand_channel(033); /* "READ DATA GOOD BIT" */
+    rand_channel(CHAN33); /* "READ DATA GOOD BIT" */
     if (A_is_zero()) {
         vhfgood();
         return;
@@ -332,9 +331,9 @@ void vhfread(void)
     bypass();
 }
 
-/* BYPASS: VHFRANGE gets A, "STORE NON ZERO VALUE" (BIT2, the data good
- * bit), and out through BADEND. (A constant leaves no overflow for the TS
- * to skip on.) */
+/* BYPASS -- p. 588: VHFRANGE gets A, "STORE NON ZERO VALUE" (BIT2, the data
+ * good bit), and out through BADEND. (A constant leaves no overflow for the
+ * TS to skip on.) */
 static void bypass(void)
 {
     if (ts(ADDRESS_OF(VHFRANGE))) not_modelled(); /* "STORE NON ZERO VALUE" */
@@ -342,7 +341,7 @@ static void bypass(void)
     tc_to(BYPASS + 2u, POSTJUMP); /* CADR BADEND */
 }
 
-/* BYPASS1: BYPASS with +0, which LIGHTON looks for. */
+/* BYPASS1 -- p. 588: BYPASS with +0, which LIGHTON looks for. */
 static void bypass1(void)
 {
     set_A(ZERO);
@@ -350,7 +349,7 @@ static void bypass1(void)
     bypass();
 }
 
-/* VHFGOOD: out through GOODEND. */
+/* VHFGOOD -- p. 588: out through GOODEND. */
 void vhfgood(void)
 {
     set_A(TWO);

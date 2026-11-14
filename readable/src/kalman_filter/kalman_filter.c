@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* KALMAN_FILTER.agc, the LM's: Luminary099 pages 1470-1471, bank 16, in
- * EBANK 6 (the listing's EBANK= NO.UJETS). */
+ * EBANK 6 (the listing's EBANK= NO.UJETS). The faithful C is
+ * c64-port/src/lm_kalman.c. */
 #include "kalman_filter.h"
 
 #if LUMINARY099
@@ -16,8 +17,8 @@ static void jet_time(void)
     unsigned tj = indexed(ADDRESS_OF(TJP), fetch(ADDRESS_OF(DAPTEMP6)));
 
     switch (ccs_at(tj)) {
+    case POSITIVE: ad(MINUS_100MST6); break;
     case IS_PLUS_ZERO: return; /* TCF LOOPRATE, A +0 */
-    case POSITIVE:
     case NEGATIVE: ad(MINUS_100MST6); break;
     case IS_MINUS_ZERO: break; /* A +0 */
     }
@@ -30,30 +31,30 @@ static void jet_time(void)
     }
     switch (ccs_at(tj)) {
     case POSITIVE: set_A(MINUS_100MST6); break;
+    case IS_PLUS_ZERO: break; /* ADS of +0 */
     case NEGATIVE: set_A(negate(MINUS_100MST6)); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break; /* ADS of +0 */
     }
     ads(tj);
     switch (ccs_at(tj)) {
     case POSITIVE: set_A(negate(MINUS_100MS)); break; /* "0.1 AT 1" */
+    case IS_PLUS_ZERO: break;                         /* A +0 */
     case NEGATIVE: set_A(MINUS_100MS); break;
-    case IS_PLUS_ZERO:
     case IS_MINUS_ZERO: break; /* A +0 */
     }
 }
 
 /* ---- RATELOOP -- LM pp. 1470-1471 ---- */
 
-/* RATELOOP: DAPTEMP6 counts the axes down, 2, 1, 0 (V, U, P), and Q holds
- * twice it, the axis's pair of DOWNTORK counters. LOOPRATE: the torque,
- * the time times the axis's jet count, is the "SIGNED TORQUE AT 1
+/* RATELOOP -- LM p. 1470: DAPTEMP6 counts the axes down, 2, 1, 0 (V, U, P),
+ * and Q holds twice it, the axis's pair of DOWNTORK counters. LOOPRATE: the
+ * torque, the time times the axis's jet count, is the "SIGNED TORQUE AT 1
  * JET-SEC FOR FILTER"; MP BIT10 "RESCALE TO 32; ONE BIT ABOUT 2 JET-MSEC";
- * and STORTORK adds its magnitude to the axis's positive counter, or, for
- * a negative torque (NEGTORK), to the next one: "INCREMENT DOWNLIST
- * REGISTER." ("NOTE: NOT INITIALIZED; OVERFLOWS."). Then ROTORQUE: the
- * jet rates about R and Q, from the sum and the difference of the U and V
- * torques, and TCF BACKP. */
+ * and STORTORK adds its magnitude to the axis's positive counter, or, for a
+ * negative torque (NEGTORK), to the next one: "INCREMENT DOWNLIST REGISTER."
+ * ("NOTE: NOT INITIALIZED; OVERFLOWS."). Then ROTORQUE: the jet rates about
+ * R and Q, from the sum and the difference of the U and V torques, and TCF
+ * BACKP. */
 void rateloop(void)
 {
     bool more = true;
@@ -77,9 +78,13 @@ void rateloop(void)
         }
         ads(indexed(ADDRESS_OF(DOWNTORK), Q)); /* STORTORK */
         switch (ccs_at(ADDRESS_OF(DAPTEMP6))) {
-        case POSITIVE: break;                   /* TCF RATELOOP +1, A the next axis */
-        case IS_PLUS_ZERO: more = false; break; /* TCF ROTORQUE */
-        default: not_modelled(); return;        /* DAPTEMP6 is never negative */
+        case POSITIVE: break; /* TCF RATELOOP +1, A the next axis */
+        case IS_PLUS_ZERO:
+            more = false; /* TCF ROTORQUE */
+            break;
+        /* (never: DAPTEMP6 counts 2, 1, 0. The next words are SMALLTJU's.) */
+        case NEGATIVE: continue_at(SMALLTJU); return;
+        case IS_MINUS_ZERO: continue_at(SMALLTJU + 1u); return; /* never */
         }
     }
     ca(ADDRESS_OF(DAPTEMP2)); /* ROTORQUE */

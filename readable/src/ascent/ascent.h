@@ -36,14 +36,6 @@
 #if LUMINARY099
 #include "../interpreter/notation.h"
 
-/* TC at, to a routine out of the file: Q gets the return and the routine
- * runs next. */
-static inline void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* ATMAG -- atmag.c */
 void atmag(void);                /* ATMAG */
 void atmag_after_phaschng(void); /* PHASCHNG's return: TC INTPRET */
