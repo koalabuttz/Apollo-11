@@ -45,7 +45,6 @@
 #include "binding.h"
 #include "flight_undo.h"
 #include "lm_imu_performance.h"
-#include "rope_image.h"
 #include "../imu_performance/imu_performance.h"
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
@@ -80,19 +79,10 @@ static void channel_out(unsigned number, word value)
     not_modelled(); /* the test writes no channel */
 }
 
-static word rope_word(unsigned physical)
-{
-    uint16_t value;
-
-    if (physical > 0xFFFFu || !apollo_rope_read(0u, (uint16_t)physical, &value)) not_modelled();
-    return (word)(value & MINUS_ZERO);
-}
-
 static void bind(const agc_native_program *program, apollo_overlay_state *state, lm_ipt_io *io)
 {
     bind_machine(program, state, &io->control);
     io_now = io;
-    agc.fixed_memory = rope_word;
     agc.channel_in = channel_in;
     agc.channel_out = channel_out;
     agc.leave = leave;
@@ -441,20 +431,20 @@ static enum exec_status run(const agc_native_program *program, apollo_overlay_st
     FFK(K_FINETIME + 1u)                                                                           \
     FFK(K_FINETIME + 010u)                                                                         \
     K(K_REDO)                                                                                      \
-    K(K_GEOIMUTT) K(K_LATAZCHK + 6u) K(K_LATAZCHK + 013u) K(K_LATAZCHK + 014u)                     \
-        K(K_LATAZCHK + 015u) F(K_POSGMBL + 3u) K(K_POSGMBL + 5u) K(K_POSGMBL + 014u)               \
-            K(K_POSGMBL + 025u) K(K_GOESTIMS) K(K_GOESTIMS + 2u) K(K_PIPACHK + 022u) K(K_PIPATASK) \
-                K(K_STARTPIP) K(K_STARTPIP + 4u) K(K_PIPJOBB) F(K_AINGOTN + 7u) K(K_ENDTEST1 + 2u) \
-                    K(K_ENDTEST1 + 4u) K(K_ALIGNCOA) K(K_ALIGNCOA + 2u) K(K_ALIGNCOA + 3u)         \
-                        K(K_FINIMUDD + 4u) K(K_IMUZERR + 4u) K(K_CHECKG1) K(K_CHECKG1 + 5u)        \
-                            K(K_CHECKG1 + 017u) F(K_EARTHR_STAR + 6u) K(K_SHOW + 7u)               \
-                                K(K_SHOW + 010u) K(K_SHOW + 011u) K(K_ESTIMS) K(K_ESTIMS + 4u)     \
-                                    F(K_VERTSKIP + 1u) K(K_ALLOOP) K(K_ALLOOP + 023u)              \
-                                        K(K_SPECSTS + 4u) K(K_ALFLT) K(K_NORMLOP)                  \
-                                            F(K_PERFERAS + 1u) K(K_PERFERAS + 4u)                  \
-                                                F(K_SETUPER1 + 014u) K(K_SETUPER1 + 017u)          \
-                                                    F(K_GEOSTRT4 + 6u) K(K_SOMEERRR + 6u)          \
-                                                        K(K_SOMERR2 + 2u) K(K_SOMERR2 + 4u)
+    K(K_GEOIMUTT)                                                                                  \
+    K(K_LATAZCHK + 6u) K(K_LATAZCHK + 013u) K(K_LATAZCHK + 014u) K(K_LATAZCHK + 015u)              \
+        F(K_POSGMBL + 3u) K(K_POSGMBL + 5u) K(K_POSGMBL + 014u) K(K_POSGMBL + 025u) K(K_GOESTIMS)  \
+            K(K_GOESTIMS + 2u) K(K_PIPACHK + 022u) K(K_PIPATASK) K(K_STARTPIP) K(K_STARTPIP + 4u)  \
+                K(K_PIPJOBB) F(K_AINGOTN + 7u) K(K_ENDTEST1 + 2u) K(K_ENDTEST1 + 4u) K(K_ALIGNCOA) \
+                    K(K_ALIGNCOA + 2u) K(K_ALIGNCOA + 3u) K(K_FINIMUDD + 4u) K(K_IMUZERR + 4u)     \
+                        K(K_CHECKG1) K(K_CHECKG1 + 5u) K(K_CHECKG1 + 017u) F(K_EARTHR_STAR + 6u)   \
+                            K(K_SHOW + 7u) K(K_SHOW + 010u) K(K_SHOW + 011u) K(K_ESTIMS)           \
+                                K(K_ESTIMS + 4u) F(K_VERTSKIP + 1u) K(K_ALLOOP) K(K_ALLOOP + 023u) \
+                                    K(K_SPECSTS + 4u) K(K_ALFLT) K(K_NORMLOP) F(K_PERFERAS + 1u)   \
+                                        K(K_PERFERAS + 4u) F(K_SETUPER1 + 014u)                    \
+                                            K(K_SETUPER1 + 017u) F(K_GEOSTRT4 + 6u)                \
+                                                K(K_SOMEERRR + 6u) K(K_SOMERR2 + 2u)               \
+                                                    K(K_SOMERR2 + 4u)
 
 /* Every order-pair and store word: each can follow a DANZIG, where a job
  * of higher priority may take the computer (CHANG2), and the Executive

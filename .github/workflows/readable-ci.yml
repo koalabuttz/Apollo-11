@@ -1,6 +1,7 @@
 # The readable C (readable/README.md): its gates.
 #   1. The case tests (a few minutes): make all, which is names-check
-#      (the listing names against the listings), coverage, and every
+#      (the listing names against the listings), coverage, style-check
+#      (readable/STYLE.md's rules that a script can count) and every
 #      subsystem's case tests (the readable routines against the faithful
 #      port's oracles and routines, side by side; readable/README.md).
 #   2. The x86 exact scenario suite with the readable routines linked in:

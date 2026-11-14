@@ -22,11 +22,24 @@
  * or the CM. Where either runs, the other must too, with the same memory
  * and channels word for word; where the readable one refuses, it must
  * leave everything as it found it; and the faithful module must run from
- * some state of every entry. The ropes are named on the command line. */
+ * some state of every entry.
+ *
+ * Last, TC INTPRET from the file's basic code: the binding's table of one
+ * key (lanec_ev_lm_intpret, src/binding/extended_verbs_routines.c) beside
+ * the port's (c64-port/src/lanec_ev_routines.c, built with its tables
+ * renamed faithful_), which the flight program names and the interpreter's
+ * own table answers first. From 4,096 of the states above, Z at INTPRET:
+ * for most, Q and the fixed bank those of the word after a TC INTPRET that
+ * the port's table of interpretive keys holds (faithful_
+ * lanec_ev_lm_interpretive); else Q any address of the bank or any word.
+ * The same rules, and the faithful routine must run in at least half.
+ *
+ * The ropes are named on the command line. */
 #include <stdio.h>
 #include <string.h>
 #include "lanec_suites.h"
 #include "lanec_ev_lmi.h"
+#include "lm_downtelemetry.h"
 #include "rope_image.h"
 
 /* The readable words. */
@@ -173,6 +186,78 @@ static void show(const apollo_overlay_state *start, const apollo_overlay_state *
                    start->words[w]);
 }
 
+/* TC INTPRET from the file's basic code. */
+extern const agc_routine_table lanec_ev_lm_intpret, faithful_lanec_ev_lm_intpret,
+    faithful_lanec_ev_lm_interpretive;
+#define INTPRET_AT 06037u
+
+static unsigned intpret_cases(uint16_t count)
+{
+    const agc_routine_table *keys = &faithful_lanec_ev_lm_interpretive;
+    agc_native_program program;
+    unsigned n, ran = 0, bad = 0;
+
+    memset(&program, 0, sizeof program);
+    if (lanec_ev_lm_intpret.count != 1u || faithful_lanec_ev_lm_intpret.count != 1u ||
+        lanec_ev_lm_intpret.entries[0].physical !=
+            faithful_lanec_ev_lm_intpret.entries[0].physical) {
+        printf("FAIL: the INTPRET tables are not one key, the same\n");
+        return 1;
+    }
+    for (n = 0; n < STATES; ++n) {
+        apollo_overlay_state start, fa, ra;
+        lanec_io io;
+        lm_dntm_io record, frecord, rrecord;
+        enum exec_status sf, sr;
+        const char *why = 0;
+        uint16_t *w = start.words, key = keys->entries[rnd() % keys->count].physical;
+        uint16_t bank = (uint16_t)(key / 1024u);
+
+        (void)state(&start, &io, (uint16_t)(n % count), count, n);
+        memset(&record, 0, sizeof record);
+        record.control.superbank = io.superbank;
+        record.control.interrupt_enabled = (uint16_t)(rnd() % 2u);
+        w[Z_AT] = (uint16_t)(rnd() % 32u ? INTPRET_AT : INTPRET_AT ^ 1u);
+        switch (rnd() % 8u) {
+        case 0: w[Q_AT] = (uint16_t)(02000u + rnd() % 02000u); break; /* any word of the bank */
+        case 1: w[Q_AT] = (uint16_t)(rnd() & 077777u); break;
+        default:
+            w[Q_AT] = (uint16_t)(02000u + key % 1024u);
+            w[BB_AT] = (uint16_t)(w[BB_AT] & 7u);
+            w[FB_AT] = (uint16_t)((bank >= 040u ? bank - 010u : bank) << 10);
+            w[BB_AT] |= w[FB_AT];
+            break;
+        }
+        fa = ra = start;
+        frecord = rrecord = record;
+        sf = faithful_lanec_ev_lm_intpret.entries[0].call(&program, &fa, &frecord);
+        sr = lanec_ev_lm_intpret.entries[0].call(&program, &ra, &rrecord);
+        ran += sf == EXEC_OK;
+        if (sr != EXEC_OK &&
+            (memcmp(&ra, &start, sizeof ra) || memcmp(&rrecord, &record, sizeof record)))
+            why = "readable refusal changed the state";
+        else if (sf == EXEC_OK && sr != EXEC_OK)
+            why = "readable refused, faithful ran";
+        else if (sf != EXEC_OK && sr == EXEC_OK)
+            why = "readable ran, faithful refused";
+        else if (sf == EXEC_OK && memcmp(&fa, &ra, sizeof fa))
+            why = "different memory";
+        else if (sf == EXEC_OK && memcmp(&frecord, &rrecord, sizeof frecord))
+            why = "different io record";
+        if (why && ++bad <= 3u) {
+            printf("FAIL INTPRET state %u (Q %06o, FB %06o): %s\n", n, w[Q_AT], w[FB_AT], why);
+            show(&start, &fa, &ra);
+        }
+    }
+    if (ran < STATES / 2u || ran == STATES) {
+        printf("FAIL INTPRET: the faithful routine ran in %u of %u states\n", ran, STATES);
+        ++bad;
+    }
+    printf("ev-lmi-cases: TC INTPRET from %u states, %u run by the faithful routine, %u failures\n",
+           STATES, ran, bad);
+    return bad;
+}
+
 int main(int argc, char **argv)
 {
     unsigned i, n, failures = 0, suite_ran = 0;
@@ -245,5 +330,6 @@ int main(int argc, char **argv)
     }
     printf("ev-lmi-cases: %u entries from %u states each, %u failures\n", (unsigned)count, STATES,
            failures);
+    failures += intpret_cases(count);
     return failures != 0;
 }

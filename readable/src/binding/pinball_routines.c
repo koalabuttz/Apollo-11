@@ -841,8 +841,8 @@ static enum exec_status request_return(const agc_native_program *p, apollo_overl
     (void)device;
     if (!state || (state->words[LANEC_Z] & 07777u) != mpac3 || state->words[mpac3] != ENDOFJOB)
         return EXEC_OUT_OF_SCOPE;
-    state->words[LANEC_Q] = (uint16_t)(mpac3 + 1u);
-    state->words[LANEC_Z] = ENDOFJOB;
+    bind_record(state);
+    tc_through(mpac3);
     return EXEC_OK;
 }
 

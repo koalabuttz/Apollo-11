@@ -111,7 +111,7 @@ static bool code_word(unsigned off, word *out)
     agc_word value;
 
     if (address >= 04000u) {
-        address = 2048u + (address & 07777u) - 04000u;
+        address = 2048u + (address & 07777u) - 04000u; /* never: no program is in fixed-fixed */
     } else {
         if (address < 02000u) return false;
         bank = (BANKSET >> 10) & 037u;

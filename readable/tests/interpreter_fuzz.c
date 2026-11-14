@@ -158,6 +158,8 @@ static int near_bank_end(const apollo_overlay_state *s, unsigned w, int indexed)
  * ("UP TO 64 SWITCH WORDS"); past the last one, STATE + n is another
  * erasable word, from 070 the interpreter's LOC and BANKSET. */
 #define LAST_FLAGWORD (MISSION ? 11u : 15u)
+/* SWRETURN, where one case in 16 starts (main, below). */
+#define SWRETURN_AT (MISSION ? 04675u : 04631u)
 
 /* Whether order code c stores into its operand, which must be erasable:
  * SSP and TSLC. */
@@ -191,7 +193,7 @@ static int unassembled(const apollo_overlay_state *s)
     unsigned z = s->words[5], c[2], n = 0, i, off = 1u, w;
     int indexes_changed = 0;
 
-    if (z == (MISSION ? 06037u : 06070u)) {
+    if (z == (MISSION ? 06037u : 06070u) || z == SWRETURN_AT) { /* (SWRETURN goes on to DANZIG) */
         w = code_at(s, 0u);
         if (w == 0u || w == 077777u) return 1; /* "never +0", and no pair is -0 */
         if (!(w & 040000u)) return store_unassembled(s, w - 1u, 1u);
@@ -440,6 +442,14 @@ int main(int argc, char **argv)
         /* The banks as at NEWOPS: FB is the program's, BBANK agrees. */
         f->words[4] = (agc_word)(f->words[0165] & 076000u);
         f->words[6] = (agc_word)(f->words[4] | (f->words[3] >> 8));
+        /* One case in 16 comes in as an RTB's routine leaves it: at
+         * SWRETURN, with what SWCALL kept in BUF2 (RTB's return, BHIZ +1 of
+         * bank 01, and that bank). */
+        if (c % 16u == 7u) {
+            f->words[5] = SWRETURN_AT;
+            f->words[0133] = MISSION ? 02500u : 02453u;
+            f->words[0134] = 02000u;
+        }
         *r = *f;
         memset(fa.pad, 0, sizeof fa.pad);
         memset(ra.pad, 0, sizeof ra.pad);

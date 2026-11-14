@@ -29,18 +29,11 @@
 #include <setjmp.h>
 #include <stddef.h>
 #include "binding.h"
-#include "rope_image.h"
 #include "../measurement_inc/measurement_inc.h"
 #include "../integration_init/integration_init.h"
 #include "../interpreter/interpreter.h"
 #include "../rtb_op_codes/rtb_op_codes.h"
 #include "../agc/names.h"
-
-#if LUMINARY099
-#define ROPE 0u /* the LM's rope */
-#else
-#define ROPE 1u /* the CM's */
-#endif
 
 /* A bank's number as FB holds it. */
 #define BANK(n) (word)((n) << 10)
@@ -76,21 +69,11 @@ static void channel_out(unsigned number, word value)
     not_modelled();
 }
 
-/* The file's constants are the rope's. */
-static word rope_word(unsigned physical)
-{
-    agc_word value = 0;
-
-    if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    return (word)(value & MINUS_ZERO);
-}
-
 static bool bind(const agc_native_program *program, apollo_overlay_state *state, mission_io *io)
 {
     if (!bind_machine(program, state, io)) return false;
     agc.channel_in = channel_in;
     agc.channel_out = channel_out;
-    agc.fixed_memory = rope_word;
     agc.leave = leave;
     return true;
 }
@@ -243,13 +226,6 @@ static enum exec_status pair(uint16_t key, const agc_native_program *program,
         *io = kept;
     }
     return status;
-}
-
-/* For the side-by-side test: whether a key runs readable code. */
-bool measurement_inc_readable(uint16_t key, bool order_pair)
-{
-    if (order_pair) return code_at(key / 1024u, (word)(02000u + key % 1024u)) != NULL;
-    return basic_entry(key) != NULL;
 }
 
 #define BASIC(i, bank, address)                                                                    \

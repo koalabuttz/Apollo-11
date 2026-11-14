@@ -28,7 +28,6 @@
 #include <setjmp.h>
 #include <stddef.h>
 #include "binding.h"
-#include "rope_image.h"
 #include "../ground_track/ground_track.h"
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
@@ -36,11 +35,9 @@
 /* Keys: the bank, and the address in it. */
 #define KEY(bank, z) (uint16_t)((bank) * 1024u + ((z) - 02000u))
 #if LUMINARY099
-#define ROPE       0u   /* the LM's rope */
 #define P21_BANK   024u /* the file's bank */
 #define SUPERBANKS 0u   /* the superbank bit either way */
 #else
-#define ROPE       1u /* the CM's */
 #define P21_BANK   037u
 #define SUPERBANKS 0100u /* the superbank bit clear */
 #endif
@@ -53,19 +50,9 @@ static void leave(void)
     longjmp(back, 1);
 }
 
-/* The interpreter's fixed operands are the rope's. */
-static word rope_word(unsigned physical)
-{
-    agc_word value = 0;
-
-    if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    return (word)(value & MINUS_ZERO);
-}
-
 static void bind(const agc_native_program *program, apollo_overlay_state *state, mission_io *io)
 {
     bind_machine(program, state, io);
-    agc.fixed_memory = rope_word;
     agc.leave = leave;
 }
 

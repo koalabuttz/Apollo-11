@@ -79,6 +79,15 @@ static unsigned pick(unsigned n)
     return (unsigned)((rnd() >> 6) % n);
 }
 
+/* A stream of its own for states added later, so that the states of the
+ * first stay as they were. */
+static uint32_t later_seed = 6007u;
+static unsigned later(unsigned n)
+{
+    later_seed = later_seed * 1103515245u + 12345u;
+    return (unsigned)((later_seed >> 18) % n);
+}
+
 /* A run that loops for ever: what the timer stops it with. The timer counts
  * the processor time the test itself uses, so on a busy machine a run that
  * is only waiting its turn is not stopped. */
@@ -345,6 +354,13 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hw, u
         w[AT(SALFA)] = pick(2u) ? sign_word() : value_word();
         w[AT(CMDAPMOD)] = sign_word();
         w[AT(P63FLAG)] = sign_word();
+        /* Now and then the roll rate whose -2VT/180 is -0, with LATSW set
+         * (GETLCX's CCS of -0): 050 times 13516 is 32 x 2^14 + 16352, and
+         * the two halves' sum, -2^14, overflows to -0 at the TS. */
+        if (later(16u) == 0u) {
+            w[AT(PREL)] = 13516u;
+            w[AT(CM_FLAGS)] |= 010u;
+        }
         hw->channel5 = any_word();
         hw->channel6 = any_word();
         /* Any of the erasable banks' words. */

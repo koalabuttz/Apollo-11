@@ -778,6 +778,7 @@ const struct interpretive_code NORMLOP_CODE = {033u, NORMLOP + 1u, COUNT(normlop
 /* SOMEERRR -- p. 442. Alarm 1600, "OVERFLOW IN DRIFT TEST" (p. 432). */
 void someerrr(void)
 {
+    /* (never run: no word of Comanche055 names SOMEERRR) */
     tc_at(SOMEERRR);
     continue_at(ALARM); /* OCT 1600 */
 }

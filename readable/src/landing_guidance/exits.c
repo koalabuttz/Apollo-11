@@ -61,11 +61,13 @@ void exgsub_after_exit(void)
     case POSITIVE: exgsub_postjump(); return;               /* TCF +3 */
     case IS_PLUS_ZERO: tc_to(EXGSUB + 015u, ALARM); return; /* OCT 01412 */
     case NEGATIVE:
-        /* (never: NIGNLOOP is the 40 of P63's SSP, then what this CCS left of it) */
+        /* (never: NIGNLOOP is the 40 of P63's SSP, then the A that DDUMCALC
+         * stores: what this CCS left of it or, after the alarm, the address
+         * ALARM returns to) */
         tc_at(EXGSUB + 016u); /* OCT 01412, run as TC 1412 */
         not_modelled();
         return;
-    case IS_MINUS_ZERO: exgsub_postjump(); return;
+    case IS_MINUS_ZERO: exgsub_postjump(); return; /* never, likewise */
     }
 }
 

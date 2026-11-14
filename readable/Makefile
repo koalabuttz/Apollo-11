@@ -1183,6 +1183,17 @@ EV_NAMES := $(EV_PARTS:%=lanec_ev_%_dispatch)
 # (ATTACHIT_CODE and TCPIN_CODE are both missions' names, so the CM's stay
 # local here; part 9's test links the CM's own).
 EV_TABLES := RRLOSDSP_CODE TRMTRAK1_CODE ATTACHIT_CODE ATTACHIT_CODE_2 TCPIN_CODE
+# TC INTPRET from the LM file's basic code: the binding's table of one key
+# (lanec_ev_lm_intpret), which part 8's test runs beside the port's
+# (c64-port/src/lanec_ev_routines.c, its four tables renamed faithful_; the
+# parts its other tables call are the readable ones here, and are not run).
+EV_LM_KEPT := $(EV_TABLES) lanec_ev_lm_intpret
+EV_ROUTINE_TABLES := lanec_ev_lm_routines lanec_ev_lm_interpretive lanec_ev_lm_intpret \
+	lanec_ev_cm_routines
+$(BUILD)/ev-routines-faithful.o: $(PORT)/src/lanec_ev_routines.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(EV_ROUTINE_TABLES),-D$(n)=faithful_$(n)) \
+		-c $< -o $@
 
 $(BUILD)/ev-%-faithful.o: $(PORT)/src/lanec_ev_%.c
 	@mkdir -p $(dir $@)
@@ -1191,7 +1202,7 @@ $(BUILD)/ev-readable-lm.o: $(EV_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
 $(BUILD)/ev-readable-cm.o: $(EV_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
 $(BUILD)/ev-readable-%.o:
 	ld -r $^ -o $@.all
-	objcopy $(foreach n,$(EV_NAMES) $(if $(filter lm,$*),$(EV_TABLES)),--keep-global-symbol=$(n)) \
+	objcopy $(foreach n,$(EV_NAMES) $(if $(filter lm,$*),$(EV_LM_KEPT)),--keep-global-symbol=$(n)) \
 		$@.all $@.kept
 	objcopy $(foreach n,$(EV_NAMES),--redefine-sym $(n)=readable_$*_$(n:lanec_%=%)) $@.kept $@
 EV_READABLE := $(BUILD)/ev-readable-lm.o $(BUILD)/ev-readable-cm.o tests/extended_verbs_missions.c
@@ -1250,7 +1261,8 @@ EV_INTERP_COMMON := $(PORT)/src/lm_interp_orders.c $(PORT)/src/lm_interp_steps.c
 $(BUILD)/ev-lmi-oracle: $(EV_READABLE) $(BUILD)/ev-lmi-faithful.o tests/extended_verbs_lmi_oracle.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LANEC_COMMON) $(EV_INTERP_COMMON) \
 		$(PORT)/tests/lanec_ev_lmi_cases.c $(filter %.o %.c,$^) -o $@
-$(BUILD)/ev-lmi-cases: $(EV_READABLE) $(BUILD)/ev-lmi-faithful.o tests/extended_verbs_lmi_cases.c
+$(BUILD)/ev-lmi-cases: $(EV_READABLE) $(BUILD)/ev-lmi-faithful.o $(BUILD)/ev-routines-faithful.o \
+		tests/extended_verbs_lmi_cases.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LANEC_COMMON) $(EV_INTERP_COMMON) \
 		$(PORT)/tests/lanec_ev_lmi_cases.c $(filter %.o %.c,$^) -o $@
 
@@ -1421,8 +1433,26 @@ $(BUILD)/pin-readable-%.o:
 	ld -r $^ -o $@.all
 	objcopy --keep-global-symbol=lanec_pin_run_$* --keep-global-symbol=pinball_refused_state_$* $@.all $@
 
-pinball-cases: $(BUILD)/pin-readable-lm.o $(BUILD)/pin-readable-cm.o tests/pinball_transfer.py
+# MPAC +3 after an operator's request: the binding's table of one key,
+# which the Pinball tests above do not enter (they run the port's tables),
+# beside the port's (tests/pinball_request_cases.c). Each mission's
+# readable table is kept under readable_ and the rest of its name.
+$(BUILD)/pin-request-lm.o: $(PIN_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/pin-seams-lm.o
+$(BUILD)/pin-request-cm.o: $(PIN_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/pin-seams-cm.o
+$(BUILD)/pin-request-%.o:
+	ld -r $^ -o $@.all
+	objcopy --keep-global-symbol=lanec_pin_request_$*_routines $@.all $@.kept
+	objcopy --redefine-sym lanec_pin_request_$*_routines=readable_pin_request_$*_routines $@.kept $@
+$(BUILD)/pin-request-cases: $(BUILD)/pin-request-lm.o $(BUILD)/pin-request-cm.o \
+		tests/pinball_request_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(PORT)/src/lanec_pin_request_routines.c \
+		$(PORT)/src/agc_image_ops.c $(PORT)/src/agc_word.c $(PORT)/src/agc_multiword.c \
+		$(PORT)/src/agc_hardware_divide.c $(filter %.o %.c,$^) -o $@
+
+pinball-cases: $(BUILD)/pin-readable-lm.o $(BUILD)/pin-readable-cm.o tests/pinball_transfer.py \
+		$(BUILD)/pin-request-cases
 	python3 tests/pinball_transfer.py $(BUILD)/pin-readable-lm.o $(BUILD)/pin-readable-cm.o
+	./$(BUILD)/pin-request-cases
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in
@@ -2549,8 +2579,12 @@ $(BUILD)/p51-oracle: $(P51_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p51-f
 		$(BUILD)/p51-test.o tests/with_ropes.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(P51_COMMON) $(PORT)/src/cm_p51_p53.c \
 		$(PORT)/tests/p51_p53_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/p51-rtb-faithful.o: $(PORT)/src/lm_p51_p53_rtb_routines.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dlm_p51_p53_rtb_routines=faithful_lm_p51_p53_rtb_routines \
+		-c $< -o $@
 $(BUILD)/p51-cases: $(P51_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p51-faithful.o \
-		tests/p51_cases.c
+		$(BUILD)/p51-rtb-faithful.o tests/p51_cases.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(P51_COMMON) $(filter %.o,$^) tests/p51_cases.c -o $@
 
 p51-p53-cases: $(BUILD)/p51-oracle $(BUILD)/p51-cases

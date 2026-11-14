@@ -176,7 +176,8 @@ static void x_translation(void)
     }
     if (!selctsub(TSNUMBRT + 1u)) return;
     /* CCS POLYTEMP, never negative: POLICY's word, a word of the table ALLJETS
-     * masked with one of TYPEPOLY, jet bits of channel 5 (bits 1 to 8). */
+     * masked with one of TYPEPOLY. Every word of the two tables holds jet
+     * bits of channel 5 only, bits 1 to 8. */
     if (!ccs_positive(ADDRESS_OF(POLYTEMP))) {
         tc_to(TSNUMBRT + 4u, ALARM); /* TC ALARM; OCT 02002 */
         return;

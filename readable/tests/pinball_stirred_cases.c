@@ -117,9 +117,12 @@ static const lanec_suite pin_stirred = {"pin-stirred", CASES, make, run};
 
 /* The readable tests' other suite (tests/pinball_noun_z_cases.c). */
 extern const lanec_suite pin_noun_z;
+/* And their third (tests/pinball_edge_cases.c). */
+extern const lanec_suite pin_edges;
 
 const lanec_suite *lanec_find_suite(const char *name)
 {
     if (!strcmp(name, pin_noun_z.name)) return &pin_noun_z;
+    if (!strcmp(name, pin_edges.name)) return &pin_edges;
     return strcmp(name, pin_stirred.name) ? port_lanec_find_suite(name) : &pin_stirred;
 }

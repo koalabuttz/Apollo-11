@@ -56,6 +56,15 @@ static uint16_t rnd(void)
     return (uint16_t)(seed >> 12);
 }
 
+/* A stream of its own for states added later, so that the states of the
+ * first stay as they were. */
+static uint32_t later_seed = 54321u;
+static unsigned later(unsigned n)
+{
+    later_seed = later_seed * 1103515245u + 12345u;
+    return (unsigned)((later_seed >> 18) % n);
+}
+
 /* The compiled operands (the CADRs after TCs in fixed memory) and the rope. */
 static agc_site_operand sites[SITES];
 static uint16_t hash(uint16_t physical)
@@ -157,6 +166,13 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t z, uint32_t 
         break;
     }
     default: break;
+    }
+    /* Now and then a negative overflow in A with a zero at 1777 (case 9's
+     * states seldom have the overflow, and none of them brought a zero):
+     * BANKJUMP's CCS 1777 of +0 and of -0. */
+    if (later(64u) == 0u) {
+        s->words[0] = (uint16_t)(0100000u | later(040000u));
+        s->words[(s->words[3] >> 8) * 0400u + 0377u] = later(2u) ? 0u : 077777u;
     }
 }
 

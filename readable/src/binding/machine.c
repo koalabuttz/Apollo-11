@@ -5,6 +5,17 @@
 #include <stddef.h>
 #include "binding.h"
 
+/* A binding whose basic routines read no word of fixed memory sets no hook
+ * for one (interpret_listing() has its own, for the interpreter's fixed
+ * operands): a routine that did read one would stop, and its binding refuse
+ * the state. */
+static word no_fixed_memory(unsigned physical)
+{
+    (void)physical;
+    not_modelled();
+    return 0;
+}
+
 bool bind_machine(const agc_native_program *program, apollo_overlay_state *state, void *device)
 {
     mission_io *io = device;
@@ -21,7 +32,7 @@ bool bind_machine(const agc_native_program *program, apollo_overlay_state *state
     agc.dsalmout = &io->channel11;
 #endif
     agc.in_interrupt = hardware ? &hardware->in_interrupt : NULL;
-    agc.fixed_memory = NULL;
+    agc.fixed_memory = no_fixed_memory;
     agc.channel_in = NULL;
     agc.channel_out = NULL;
     agc.leave = NULL;

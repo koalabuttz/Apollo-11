@@ -720,8 +720,8 @@ void nvsbwait(void)
     switch (ccs_at(A_ADDRESS)) {
     case POSITIVE: nvsbwt1(); return; /* TCF NVSBWT1: "BUSY" */
     case IS_PLUS_ZERO: continue_at(NVSBCOM); return;
-    case NEGATIVE: nvsbwt1(); return;
-    case IS_MINUS_ZERO: continue_at(PRENVBSY); return;
+    case NEGATIVE: nvsbwt1(); return;                  /* never: DSPLOCK is +0 or 1 */
+    case IS_MINUS_ZERO: continue_at(PRENVBSY); return; /* never, likewise */
     }
 }
 

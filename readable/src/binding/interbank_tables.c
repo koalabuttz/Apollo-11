@@ -17,7 +17,8 @@
 static const agc_native_program *program_now;
 
 /* The one word of fixed memory a routine reads (the CADR after its TC, or
- * SUPDACAL's data), found before the routine runs. */
+ * SUPDACAL's data), found before the routine runs. The file's routines
+ * read no other. */
 static struct {
     unsigned physical;
     word value;
@@ -25,12 +26,8 @@ static struct {
 
 static word fixed_memory(unsigned physical)
 {
-    agc_word value = 0;
-
-    if (physical == fixed_word.physical) return fixed_word.value;
-    if (!fixed_word_at(program_now, physical, &value) && program_now->fixed_data)
-        program_now->fixed_data(program_now, (uint16_t)physical, &value);
-    return value;
+    if (physical != fixed_word.physical) not_modelled();
+    return fixed_word.value;
 }
 
 /* ---- The states the faithful routines take ---- */

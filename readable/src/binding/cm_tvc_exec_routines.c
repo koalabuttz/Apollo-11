@@ -24,7 +24,6 @@
 #include <setjmp.h>
 #include <stddef.h>
 #include "binding.h"
-#include "rope_image.h"
 #include "agc_transfer.h"
 #include "cm_tvc_exec.h"
 #include "../tvc/tvc.h"
@@ -65,22 +64,12 @@ static void channel_out(unsigned number, word value)
     not_modelled();
 }
 
-/* The file's constants are the rope's. */
-static word rope_word(unsigned physical)
-{
-    agc_word value = 0;
-
-    if (physical > 0xFFFFu || !apollo_rope_read(1u, (uint16_t)physical, &value)) not_modelled();
-    return (word)(value & MINUS_ZERO);
-}
-
 static void bind(const agc_native_program *program, apollo_overlay_state *state, cm_native_io *io)
 {
     bind_machine(program, state, io);
     io_now = io;
     agc.channel_in = channel_in;
     agc.channel_out = channel_out;
-    agc.fixed_memory = rope_word;
     agc.leave = leave;
 }
 

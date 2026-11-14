@@ -63,9 +63,12 @@ static agc_word *channel(unsigned number)
     }
 }
 
+/* The file reads no channel: it writes the jets' whole words. */
 static word channel_in(unsigned number)
 {
-    return (word)*channel(number);
+    (void)number;
+    not_modelled();
+    return 0;
 }
 
 static void channel_out(unsigned number, word value)

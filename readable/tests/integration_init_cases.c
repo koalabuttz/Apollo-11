@@ -218,6 +218,15 @@ static int code_in(uint16_t fb, uint16_t loc)
 /* The frozen cases of the mission. */
 static unsigned mission_cases[FROZEN_CASES], mission_count;
 
+/* A stream of its own for states added later, so that the states of the
+ * first stay as they were. */
+static uint32_t later_seed = 244949u;
+static unsigned later(unsigned n)
+{
+    later_seed = later_seed * 1103515245u + 12345u;
+    return (unsigned)((later_seed >> 18) % n);
+}
+
 static uint16_t any_word(void)
 {
     return (uint16_t)(rnd() & 077777u);
@@ -376,6 +385,9 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
                 w[BANKSET_AT] = (uint16_t)(bank << 10 | (rnd() % 4u ? 0u : rnd() & 01777u));
         }
 #endif
+    /* Now and then LOCCTR (ITEMP4) a zero of either sign, for the CCS after
+     * JOBWAKE. */
+    if (later(32u) == 0u) w[0064u] = later(2u) ? 077777u : 0u;
 }
 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,

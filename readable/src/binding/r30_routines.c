@@ -25,7 +25,6 @@
 #include <setjmp.h>
 #include <string.h>
 #include "binding.h"
-#include "rope_image.h"
 #include "../r30/r30.h"
 #include "../rtb_op_codes/rtb_op_codes.h"
 #include "../interpreter/interpreter.h"
@@ -34,10 +33,8 @@
 /* Keys: the file's bank, and the address in it. */
 #if LUMINARY099
 #define R30_BANK 022u
-#define ROPE     0u /* the LM's rope */
 #else
 #define R30_BANK 023u
-#define ROPE     1u /* the CM's */
 #endif
 #define KEY(z)        (uint16_t)(R30_BANK * 1024u + ((z) - 02000u))
 #define LOADTIME_BANK ((word)(I_LOADTIME & 076000u))
@@ -49,19 +46,9 @@ static void leave(void)
     longjmp(back, 1);
 }
 
-/* The interpreter's fixed operands are the rope's. */
-static word rope_word(unsigned physical)
-{
-    agc_word value = 0;
-
-    if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
-    return (word)(value & MINUS_ZERO);
-}
-
 static void bind(const agc_native_program *program, apollo_overlay_state *state, mission_io *io)
 {
     bind_machine(program, state, io);
-    agc.fixed_memory = rope_word;
     agc.leave = leave;
 }
 

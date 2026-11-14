@@ -249,11 +249,13 @@ so a reader sees both versions together.
   (`src/agc/agc.h`), for a word that is never negative: A after a MASK
   with a constant whose sign bit is clear (`make style-check` has the C
   compiler check the constant), or another word, and then a comment at
-  the call names the word and says what keeps it from being negative, in
+  the call names the word and says what keeps it from being negative or
+  -0 (the helper refuses both, and "never negative" stands for both), in
   this form: `/* CCS SPNDX, never negative: the loop's index, counted
   down 2, 1, 0. */`. Where the reason is a mask, it names the constants
   right after the words "masked with" (`FLAGWRD8 masked with SURFFBIT`),
-  and the compiler checks those too.
+  and the compiler checks the constants it names (the names in the
+  comment, not that the code masks with them: a person reads that).
 - Register effects that carry state from one step to the next use the
   instruction helpers (`dxch()`, `xch()`, `ts()`), named as the instruction.
   Effects that do not are plain C on named words.

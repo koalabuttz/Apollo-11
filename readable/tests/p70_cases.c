@@ -193,6 +193,15 @@ static unsigned unreadable(const agc_routine_table *table, bool order_pair)
     return failures;
 }
 
+/* A stream of its own for states added later, so that the states of the
+ * first stay as they were. */
+static uint32_t later_seed = 223606u;
+static unsigned later(unsigned n)
+{
+    later_seed = later_seed * 1103515245u + 12345u;
+    return (unsigned)((later_seed >> 18) % n);
+}
+
 static uint16_t any_word(void)
 {
     return (uint16_t)(rnd() & 077777u);
@@ -300,6 +309,9 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
         } else if (k < 7u) {
             w[2] = any_word();
         }
+        /* Now and then a Q that takes ABRTJASK's index from MODE70 (03476)
+         * down into erasable memory. */
+        if (later(16u) == 0u) w[2] = (uint16_t)(~(01477u + later(01770u)) & 077777u);
         if (rnd() % 32u == 0u) w[2] |= 0100000u; /* (Q may hold 16 bits) */
         /* The program asked for and the one running. */
         if (rnd() % 2u) w[MMNUMBER_AT] = program_number();

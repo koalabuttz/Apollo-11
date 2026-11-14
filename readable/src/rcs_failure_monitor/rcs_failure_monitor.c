@@ -65,7 +65,9 @@ void rcsmon(void)
     ca(indexed(ADDRESS_OF(BIT8) - 1u, bit_number())); /* INDEX L; CA BIT8 -1 */
     ts(Q_ADDRESS);
     mask_at(ADDRESS_OF(PVALVEST)); /* "LOOK AT PREVIOUS VALVE STATE BIT" */
-    /* CCS A, never negative: one bit of PVALVEST, BIT8 or a lower one. */
+    /* CCS A, never negative: one bit of PVALVEST, BIT8 or a lower one. L is 1
+     * to 8 after the doubling loop above (A held one of the low eight bits),
+     * and the eight words from BIT8 on run down to BIT1. */
     if (ccs_positive(A_ADDRESS)) { /* TCF VOPENED */
         vopened();
         return;

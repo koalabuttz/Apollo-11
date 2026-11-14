@@ -300,6 +300,7 @@ void gotangls_after_cos_s(void)
     case IS_PLUS_ZERO:
     case NEGATIVE: break; /* (NOOP; A +0) */
     case IS_MINUS_ZERO: /* never: the DAS leaves +1, +0 or -1. WOR CHAN12, not extended: TC 5012 */
+        tc_at(GOTANGLS + 050u);
         continue_at(05012u);
         return;
     }

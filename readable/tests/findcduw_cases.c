@@ -92,10 +92,18 @@ bool findcduw_readable(uint16_t key, bool order_pair);
 #define CASES 4096u
 
 static uint32_t seed = 3113u;
+static uint32_t sign_seed =
+    7129u; /* a stream of its own, so the states of the first stay as they were */
 static uint16_t rnd(void)
 {
     seed = seed * 1103515245u + 12345u;
     return (uint16_t)(seed >> 12);
+}
+
+static uint16_t sign_word(void)
+{
+    sign_seed = sign_seed * 1103515245u + 12345u;
+    return (uint16_t)(sign_seed >> 12);
 }
 
 static unsigned words_differ(const struct interpretive_code *code)
@@ -263,6 +271,12 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
         /* TEM2: a return (FLTRSUB's), or CDUWXFR's count (2 to 0). */
         k = rnd() % 4u;
         if (k < 2u) w[TEM2_AT] = k == 0u ? return_word() : (uint16_t)(rnd() % 3u);
+        /* Now and then a word of each sign there, for the CCS TEM2 of the lag angles' loop and of
+         * USECOS +2: +0, -0, +1 and -1. */
+        if (sign_word() % 8u == 0u) {
+            static const uint16_t signs[] = {0u, 077777u, 1u, 077776u};
+            w[TEM2_AT] = signs[sign_word() % COUNT(signs)];
+        }
         if (rnd() % 2u) w[TEM2_AT + 1u] = edge_or_any();
         if (rnd() % 2u) w[TEM2_AT + 2u] = return_word();
         for (k = 0; k < 6u; ++k)

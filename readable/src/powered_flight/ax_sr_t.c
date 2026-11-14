@@ -187,7 +187,7 @@ static void tstpoint(void)
 
     switch (ccs_at(ADDRESS_OF(DEXDEX))) {
     case POSITIVE: r_star_tl_star_star_p(); return;
-    case IS_PLUS_ZERO: break; /* TC RTNSAVER */
+    case IS_PLUS_ZERO: break; /* TC RTNSAVER (never: the DIM leaves -0) */
     case NEGATIVE: r_star_tl_star_star_p(); return;
     case IS_MINUS_ZERO: break; /* TC RTNSAVER */
     }

@@ -76,7 +76,7 @@ void dca_indexed_in(fixed_tables *tables, unsigned address, word index)
     unsigned field = double_field(tables, address, index);
 
     if (field == 0u) {
-        set_L(overflow_corrected(A));
+        set_L(overflow_corrected(A)); /* never: an index is an axis or twice it */
         A = sign_extend(fetch(01777u));
         return;
     }
@@ -88,7 +88,7 @@ void dcs_indexed_in(fixed_tables *tables, unsigned address, word index)
     unsigned field = double_field(tables, address, index);
 
     if (field == 0u) {
-        set_L(negate(overflow_corrected(A)));
+        set_L(negate(overflow_corrected(A))); /* never, likewise */
         A = sign_extend(negate(fetch(01777u)));
         return;
     }

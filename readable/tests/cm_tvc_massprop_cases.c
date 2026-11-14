@@ -30,6 +30,7 @@
 #define _XOPEN_SOURCE 700 /* fork, pipe, setitimer */
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
 #include <sys/wait.h>
@@ -138,7 +139,8 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, unsig
         w[LEMMASS_AT] = value_word();
         w[CSMMASS_AT] = value_word();
         /* the LM's ascent stage alone, its mass at an edge: a breakpoint
-         * that overflows, leaving PHI333 -1 (FIXCW without DXTEST) */
+         * that overflows at the TS VARST0, which skips the CCS and leaves
+         * PHI333 +1 (the last passes run again) */
         if (rnd() % 8u == 0u) {
             w[DAPDATR1_AT] = 060000u;
             w[LEMMASS_AT] = rnd() % 2u ? 040000u : (uint16_t)(040000u + rnd() % 010000u);
@@ -225,7 +227,7 @@ static struct child start_child(const agc_routine_entry *entry, bool with_hardwa
         run->status = entry->call(&program, &run->state, &run->io);
         while (put < sizeof *run && (n = write(ends[1], out + put, sizeof *run - put)) > 0)
             put += (size_t)n;
-        _exit(0);
+        exit(0); /* not _exit: a build for line coverage writes its counts as it exits */
     }
     close(ends[1]);
     c.from = ends[0];

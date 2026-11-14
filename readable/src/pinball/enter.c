@@ -371,7 +371,7 @@ void mixnoun(void)
     case POSITIVE: tc_at(MIXNOUN + 1u); break;             /* TC +4: "+ IN USE" */
     case IS_PLUS_ZERO: tc(MIXNOUN + 2u, GODSPALM); return; /* "+0 NOT IN USE" */
     case NEGATIVE: tc_at(MIXNOUN + 3u); break;             /* TC +2: "- IN USE" */
-    case IS_MINUS_ZERO: tc_at(MIXNOUN + 4u); break;        /* TC +1: "-0 IN USE" */
+    case IS_MINUS_ZERO: tc_at(MIXNOUN + 4u); break;        /* (never) "-0 IN USE" */
     }
     set_A(negate(SIX));
     ad_at(ADDRESS_OF(VERBREG));

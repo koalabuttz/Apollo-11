@@ -33,7 +33,6 @@
 #include "binding.h"
 #include "flight_undo.h"
 #include "lm_lunar_landing.h"
-#include "rope_image.h"
 #include "../lunar_landing/lunar_landing.h"
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
@@ -52,15 +51,6 @@ static lm_lld_io *io_record;
 static void leave(void)
 {
     longjmp(back, 1);
-}
-
-/* The interpreter's fixed operands are the rope's. */
-static word rope_word(unsigned physical)
-{
-    agc_word value = 0;
-
-    if (physical > 0xFFFFu || !apollo_rope_read(0u, (uint16_t)physical, &value)) not_modelled();
-    return (word)(value & MINUS_ZERO);
 }
 
 /* The file's channels: 12 (WAND) and 33 (RAND). */
@@ -89,7 +79,6 @@ static void bind(const agc_native_program *program, apollo_overlay_state *state,
     io_record = io;
     agc.channel_in = channel_in;
     agc.channel_out = channel_out;
-    agc.fixed_memory = rope_word;
     agc.leave = leave;
 }
 

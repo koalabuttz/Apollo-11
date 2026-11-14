@@ -178,6 +178,15 @@ static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
     return failures;
 }
 
+/* A stream of its own for states added later, so that the states of the
+ * first stay as they were. */
+static uint32_t later_seed = 173205u;
+static unsigned later(unsigned n)
+{
+    later_seed = later_seed * 1103515245u + 12345u;
+    return (unsigned)((later_seed >> 18) % n);
+}
+
 static uint16_t any_word(void)
 {
     return (uint16_t)(rnd() & 077777u);
@@ -416,6 +425,11 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
             w[LASTYCMD_AT + w[ITEMP2_AT]] = rnd() % 2u ? 077777u : 0u;
         }
     }
+    /* At RROUTLIM, a negative command or -0 for half; and RADMODES -0 now
+     * and then. */
+    if (key == RROUTLIM_KEY && later(2u))
+        w[ITEMP1_AT] = later(4u) ? (uint16_t)(~(1u + later(037777u)) & 077777u) : 077777u;
+    if (later(64u) == 0u) w[RADMODES_AT] = 077777u;
 }
 
 /* R21LEM12's CLRGO (24,3030) branches to R21LEM7 +1, a TC INTPRET the

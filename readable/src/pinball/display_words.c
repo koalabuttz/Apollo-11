@@ -101,8 +101,8 @@ void dsprnd(void)
 void dspdecwd(void)
 {
     xch(Q_ADDRESS);
-    if (ts(ADDRESS_OF(WDRET))) { /* an overflow in Q skips the sign */
-        dspdecwd_after_dspsign();
+    if (ts(ADDRESS_OF(WDRET))) {  /* an overflow in Q skips the sign */
+        dspdecwd_after_dspsign(); /* never: Q holds an address */
         return;
     }
     tc(DSPDECWD + 2u, DSPSIGN);
@@ -174,8 +174,8 @@ void dspdcwd1_after_dspin(void)
 void dspdecnr(void)
 {
     xch(Q_ADDRESS);
-    if (ts(ADDRESS_OF(WDRET))) { /* an overflow in Q skips the sign */
-        dspdecnr_after_dspsign();
+    if (ts(ADDRESS_OF(WDRET))) {  /* an overflow in Q skips the sign */
+        dspdecnr_after_dspsign(); /* never: nothing calls DSPDECNR */
         return;
     }
     tc(DSPDECNR + 2u, DSPSIGN);
@@ -193,7 +193,7 @@ void dspdc2nr(void)
 {
     xch(Q_ADDRESS);
     if (ts(ADDRESS_OF(WDRET))) { /* an overflow in Q skips the sign */
-        dspdc2nr_plus3();
+        dspdc2nr_plus3();        /* never: Q holds an address */
         return;
     }
     tc(DSPDC2NR + 2u, DSPSIGN);
