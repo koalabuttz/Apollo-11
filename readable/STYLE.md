@@ -281,7 +281,9 @@ describes each in full, and `.github/workflows/readable-ci.yml` runs them.
      label plus an offset, a helper defined twice, a decimal offset, a
      long line, `goto`, the wording). `tests/style_owed.txt` lists what each directory of `src/`
      still owes of the whole-tree review (issue #1334); a new break
-     anywhere fails, and the list only gets shorter. `tools/ccs_helpers.py`
+     that the script sees fails, wherever it is, and the list only gets
+     shorter. (README.md, *Gates*, says what the script does not see yet:
+     the list owing nothing is said of what it sees.) `tools/ccs_helpers.py`
      holds every call of a helper that is one CCS at several places to
      the helper's premise, a mask whose sign bit is clear: the C compiler
      checks a static assert of each mask. What a script cannot

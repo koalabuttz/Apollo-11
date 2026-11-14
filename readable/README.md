@@ -1393,10 +1393,19 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    know by their form (tools/style_check.py) and holds each directory of
    src/ to tests/style_owed.txt, the list of what the whole-tree review
    (issue #1334) found and was still to fix. The list owes nothing now,
-   so any break fails. A switch on a CCS names its four outcomes in the
-   listing's order and follows each as the listing's words say. One
-   that refuses an outcome (`not_modelled()`) must say in its comment
-   that the outcome never comes and what rules it out. Three helpers
+   so any break the script sees fails. A switch on a CCS names its four
+   outcomes in the listing's order and follows each as the listing's
+   words say. One that refuses an outcome (`not_modelled()`) must say
+   in its comment that the outcome never comes and what rules it out.
+   The script does not see all of the tree yet, so "owes nothing" is
+   said of what it sees. A slip in how it reads an `#if` on a mission's
+   name blanks the code that only the CM builds, where 61 places in 25
+   files still break one of these rules. It knows a CCS's switch only
+   by `switch (ccs_at(...))` and the like, not one on a sign that was
+   kept in a variable first. And of a refusal's comment it asks only
+   for the word "never" and, where the rule wants one, a word for the
+   kind of word that follows, not that a reason is given. Issue #1334's
+   next part mends the first and takes up the others. Three helpers
    stand for one CCS at several places and refuse the two outcomes a
    masked bit never has: tools/ccs_helpers.py finds every call of them
    and has the C compiler check, by a static assert, that the call's

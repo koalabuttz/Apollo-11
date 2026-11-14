@@ -288,7 +288,8 @@ def write_ledger(path, found):
     out = ['# The breaks of STYLE.md that tools/style_check.py counts, by rule and',
            '# directory of src/: what is still owed of issue #1334. The check holds',
            '# the tree to these counts; `tools/style_check.py --write` writes them.',
-           '# A directory that is not here owes nothing and may not break a rule.',
+           '# A directory that is not here owes nothing that the check sees and may',
+           '# not break a rule. (What the check does not see yet: README.md, Gates.)',
            '#',
            '# Owed in all: ' + (', '.join(f'{rule} {totals[rule]}' for rule in RULES if totals[rule]) or 'nothing')
            + '.',
