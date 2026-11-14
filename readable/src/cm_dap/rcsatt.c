@@ -204,14 +204,12 @@ void drholoop_das(void)
  * DELTEMPY and DELTEMPZ, double length, "MUST BE DOUBLE PRECISION OR WILL
  * LOSE PULSES": DELTEMPX = (CDUX-RHO) + AMGB1(CDUY-RHO1), DELTEMPY =
  * AMGB4(CDUY-RHO1) + AMGB5(CDUZ-RHO2), DELTEMPZ = AMGB7(CDUY-RHO1) +
- * AMGB8(CDUZ-RHO2). Then ADOTLOOP. (CCS SPNDX comes in at CA CDUX on +0,
- * at XCH RHO on a negative SPNDX and at EXTEND; MSU RHO on -0. MSU leaves
- * no overflow in A, so TS T5TEMP never skips; DAS has left L +0 before
- * ZL.) */
-static void body_rates(enum sign entry)
+ * AMGB8(CDUZ-RHO2). Then ADOTLOOP. (From EXTEND; MSU RHO on: the two words
+ * before it, CA CDUX and XCH RHO, are with DRHOLOOP's CCS SPNDX, whose
+ * outcomes come in at one, at the other, or here. MSU leaves no overflow
+ * in A, so TS T5TEMP never skips; DAS has left L +0 before ZL.) */
+static void body_rates(void)
 {
-    if (entry == IS_PLUS_ZERO) ca(ADDRESS_OF(CDUX));
-    if (entry != IS_MINUS_ZERO) xch(ADDRESS_OF(RHO));
     msu_at(ADDRESS_OF(RHO));
     com();
     zl();
@@ -247,15 +245,19 @@ static void body_rates(enum sign entry)
  * SPNDX: the next axis, or the measured body rates. */
 void drholoop_after_smallmp(void)
 {
-    enum sign axis;
-
     dxch(ADDRESS_OF(KMPAC));
     das_indexed(ADDRESS_OF(DRHO), dpndx());
-    axis = ccs_at(ADDRESS_OF(SPNDX));
-    if (axis == POSITIVE)
-        continue_at(DRHOLOOP); /* TCF */
-    else
-        body_rates(axis);
+    switch (ccs_at(ADDRESS_OF(SPNDX))) {
+    case POSITIVE: /* TCF DRHOLOOP */ continue_at(DRHOLOOP); return;
+    case IS_PLUS_ZERO:
+        ca(ADDRESS_OF(CDUX)); /* "MEASURED BODY RATES" */
+        /* fall through */
+    case NEGATIVE:
+        xch(ADDRESS_OF(RHO));
+        /* fall through */
+    case IS_MINUS_ZERO: break; /* EXTEND; MSU RHO */
+    }
+    body_rates();
 }
 
 /* ADOTLOOP -- p. 1006: the axis' indexes, and DELTEMP's double word (as in
@@ -271,7 +273,8 @@ void adotloop(void)
     continue_at(ADOTLOOP + 6u);
 }
 
-static void kmatrix_ccs(enum sign entry);
+static void kmatrix_plus1(void);
+static void kmatrix_plus2(void);
 
 /* ADOTLOOP +013 -- p. 1006: DELTEMP into MERRORX too; then "ADOT +
  * (.16)(.1)DRHO" (DRHO doubled twice, "N.B.", times GAIN2, "PICK UP DESIRED
@@ -280,8 +283,6 @@ static void kmatrix_ccs(enum sign entry);
  * or KMATRIX. */
 void adotloop_merrorx(void)
 {
-    enum sign axis;
-
     das_indexed(ADDRESS_OF(MERRORX), dpndx());
     ca(index_read(ADDRESS_OF(DRHO), dpndx()));
     double_A(); /* "N.B." */
@@ -291,11 +292,12 @@ void adotloop_merrorx(void)
     ca(index_read(ADDRESS_OF(KMJ), spndx()));
     mp_at(index_read(ADDRESS_OF(DFT), spndx()));
     das_indexed(ADDRESS_OF(ADOT), dpndx()); /* "KMJ(DFT)" */
-    axis = ccs_at(ADDRESS_OF(SPNDX));
-    if (axis == POSITIVE)
-        continue_at(ADOTLOOP); /* TCF */
-    else
-        kmatrix_ccs(axis);
+    switch (ccs_at(ADDRESS_OF(SPNDX))) {
+    case POSITIVE: /* TCF ADOTLOOP */ continue_at(ADOTLOOP); return;
+    case IS_PLUS_ZERO: kmatrix(); return;        /* KMATRIX is the next word */
+    case NEGATIVE: kmatrix_plus1(); return;      /* MASK LOW4 */
+    case IS_MINUS_ZERO: kmatrix_plus2(); return; /* CCS A, with A +0 */
+    }
 }
 
 /* ADOTLOOP +6 -- p. 1006: DELTEMP into DRHO. */
@@ -312,24 +314,33 @@ static void tenthsek(void);
 
 /* KMATRIX -- p. 1006: ATTSEC counts the passes, ten to a second: in the
  * tenth, "CALL FOR 1 SEC UPDATE OF TRANSFORMATION MATRIX FROM GIMBAL AXES TO
- * BODY AXES" (AMBGUPDT, by NOVAC). (CCS SPNDX comes in at CA ATTSEC on +0,
- * at MASK LOW4 on a negative SPNDX and at CCS A, with A +0, on -0, where
- * MASK LOW4 changes nothing. The low four bits leave A + or +0.) */
-static void kmatrix_ccs(enum sign entry)
+ * BODY AXES" (AMBGUPDT, by NOVAC). (ADOTLOOP's CCS SPNDX comes in at KMATRIX
+ * on +0, at KMATRIX +1 on a negative SPNDX and at KMATRIX +2, with A +0, on
+ * -0.) */
+void kmatrix(void)
 {
-    if (entry == IS_PLUS_ZERO) ca(ADDRESS_OF(ATTSEC));
+    ca(ADDRESS_OF(ATTSEC));
+    kmatrix_plus1();
+}
+
+/* KMATRIX +1 -- p. 1006: MASK LOW4. */
+static void kmatrix_plus1(void)
+{
     mask(LOW4);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    kmatrix_plus2();
+}
+
+/* KMATRIX +2 -- p. 1006: CCS A. */
+static void kmatrix_plus2(void)
+{
+    /* CCS A, never negative: a word masked with LOW4, or the +0 that the CCS
+     * SPNDX before leaves of a -0. */
+    if (ccs_positive(A_ADDRESS)) {
         tenthsek(); /* TCF */
         return;
     }
     set_A(PRIO34);
     tc_to(KMATRIX + 5u, NOVAC);
-}
-
-void kmatrix(void)
-{
-    kmatrix_ccs(IS_PLUS_ZERO);
 }
 
 /* KMATRIX +010 -- p. 1006, after NOVAC: ATTSEC starts again at NINE. */
@@ -399,12 +410,12 @@ void deloop_after_dpadd(void)
  * display. */
 void deloop_next(void)
 {
-    enum sign axis = ccs_at(ADDRESS_OF(SPNDX));
-
-    if (axis == POSITIVE)
-        continue_at(DELOOP); /* TCF */
-    else
-        dacndls_ccs(axis);
+    switch (ccs_at(ADDRESS_OF(SPNDX))) {
+    case POSITIVE: /* TCF DELOOP */ continue_at(DELOOP); return;
+    case IS_PLUS_ZERO: dacndls(); return;        /* DACNDLS is the next word */
+    case NEGATIVE: dacndls_plus1(); return;      /* MASK BIT4 */
+    case IS_MINUS_ZERO: dacndls_plus2(); return; /* EXTEND; BZF FDAIDSP2, with A +0 */
+    }
 }
 
 #endif

@@ -99,7 +99,7 @@ static bool dectest_returns(void)
     tc_at(DECTEST + 2u);
     getcomp();
     mask(BIT14);
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc(DECTEST + 5u, GODSPALM);
         return false;
     }
@@ -138,7 +138,7 @@ bool dctstcyc_returns(void)
     tc_at(DCTSTCYC + 1u);
     getcomp();
     mask(BIT14);
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc(DCTSTCYC + 4u, ALMCYCLE);
         return false;
     }

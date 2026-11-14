@@ -365,9 +365,15 @@ bool chkscode(void)
     switch (ccs_at(ADDRESS_OF(STARCODE))) {
     case POSITIVE:
         ad(NEG47); /* -0 at code 50 */
-        good = ccs_register(A_ADDRESS) != POSITIVE;
+        /* fall through */
+    case IS_PLUS_ZERO: /* the CCS A: for a STARCODE of +0, +0 again and its TCF +2 */
+        switch (ccs_register(A_ADDRESS)) {
+        case POSITIVE: good = false; break;     /* TC Q, "SC > 50" */
+        case IS_PLUS_ZERO:                      /* TCF +2 */
+        case NEGATIVE:                          /* TCF +1, "0 <= SC< 50" */
+        case IS_MINUS_ZERO: good = true; break; /* "SC = 50" */
+        }
         break;
-    case IS_PLUS_ZERO: good = true; break;  /* the CCS A: +0 again, and its TCF +2 */
     case NEGATIVE: good = false; break;     /* the TC Q */
     case IS_MINUS_ZERO: good = true; break; /* the TCF +2 */
     }

@@ -65,9 +65,11 @@ static void inhibition(void)
     case NEGATIVE: cs(by_axis(ADDRESS_OF(TJU))); break; /* NEGCHECK */
     case IS_MINUS_ZERO: cs(ADDRESS_OF(TJU)); break;     /* never */
     }
-    if (ccs_at(A_ADDRESS) == POSITIVE) { /* NEGCHECK +2 */
-        tc_q();                          /* "RETURN" */
-        return;
+    switch (ccs_at(A_ADDRESS)) {   /* NEGCHECK +2 */
+    case POSITIVE: tc_q(); return; /* "RETURN" */
+    case IS_PLUS_ZERO:             /* TCF +2 */
+    case NEGATIVE:                 /* TCF +1 */
+    case IS_MINUS_ZERO: break;     /* (SETCTR is the next word) */
     }
     ca(by_axis(UTIME)); /* SETCTR: "JET FIRING REVERSAL COMMANDED.  SET CTR," */
     ts(by_axis(ADDRESS_OF(UJETCTR)));

@@ -141,7 +141,7 @@ void v82stall(void)
 {
     set_A(THREE);
     mask_at(ADDRESS_OF(V82FLAGS));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(V82STALL + 3u); /* TC FLAGGON */
         flaggon();
         return;
@@ -362,7 +362,7 @@ void ticktest(void)
 {
     set_A(BIT5);
     mask_at(ADDRESS_OF(EXTVBACT));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(TICKTEST + 3u); /* TC DOTICK */
         dotick();
         return;
@@ -467,11 +467,21 @@ void v82gon_findvac(void)
 void v82gon_relint(void)
 {
     relint();
-    if (ccs_at(ADDRESS_OF(NEWJOB)) == POSITIVE) {
-        tc_to(V82GON + 7u, CHANG1);
+    switch (ccs_at(ADDRESS_OF(NEWJOB))) {
+    case POSITIVE: tc_to(V82GON + 7u, CHANG1); return;
+    case IS_PLUS_ZERO: v82redsp(); return;
+    case NEGATIVE:
+        /* (never: NEWJOB is +0 or a core set's place, a positive word, the
+         * Executive's stores. The TC BANKCALL is the next word, past the CAF
+         * V16N44.) */
+        tc_to(V82REDSP + 1u, BANKCALL);
+        return;
+    case IS_MINUS_ZERO:
+        /* never: NEWJOB is -0 only in DUMMYJOB, while no job runs. The next
+         * word is an address word, CADR GOXDSPF. */
+        not_modelled();
         return;
     }
-    v82redsp();
 }
 
 /* V82REDSP -- LM p. 717, CM p. 519: "MONITOR HAPO, HPER, TFF", verb 16 noun

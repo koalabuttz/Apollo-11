@@ -92,7 +92,7 @@ void vargains(void)
 {
     set_A(BIT13);
     rand_channel(DSALMOUT_CHANNEL);
-    if (ccs_register(A_ADDRESS) == IS_PLUS_ZERO) { /* (A is BIT13 or +0) */
+    if (!ccs_positive(A_ADDRESS)) { /* (A is BIT13 or +0) */
         bypass_updates();
         return;
     }
@@ -201,7 +201,7 @@ static void oneshotok(void)
 {
     set_A(BIT13);
     rand_channel(DSALMOUT_CHANNEL);
-    if (ccs_register(A_ADDRESS) == IS_PLUS_ZERO) { /* (A is BIT13 or +0) */
+    if (!ccs_positive(A_ADDRESS)) { /* (A is BIT13 or +0) */
         tvcexfin();
         return;
     }

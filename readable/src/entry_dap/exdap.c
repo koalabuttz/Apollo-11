@@ -39,10 +39,12 @@ static void exdap2(void);
  * CCS: the AD C45LIM, with A +1 or -1. */
 void exdap(void)
 {
-    enum sign calfa = POSITIVE;
-
-    if (!ts(ADDRESS_OF(CMDAPMOD))) calfa = ccs_at(ADDRESS_OF(CALFA));
-    if (calfa == POSITIVE || calfa == NEGATIVE) ad(C45LIM);
+    switch (ts(ADDRESS_OF(CMDAPMOD)) ? POSITIVE : ccs_at(ADDRESS_OF(CALFA))) {
+    case POSITIVE: ad(C45LIM); break; /* AD C45LIM; TCF +2 */
+    case IS_PLUS_ZERO: break;         /* TCF +2 */
+    case NEGATIVE: ad(C45LIM); break; /* AD C45LIM */
+    case IS_MINUS_ZERO: break;
+    }
     exdap_ts_a();
 }
 
@@ -132,12 +134,16 @@ void exdap_after_phaschng(void)
  * IN ERROR UNTIL NEXT CM/RCS CALL." */
 void exdap4(void)
 {
-    enum sign jetag = ccs_at(ADDRESS_OF(JETAG));
-
-    if (jetag == NEGATIVE) set_A(ZERO); /* CA ZERO (the -0 leaves +0 too) */
-    if (jetag == NEGATIVE || jetag == IS_MINUS_ZERO) {
+    switch (ccs_at(ADDRESS_OF(JETAG))) {
+    case POSITIVE:
+    case IS_PLUS_ZERO: break; /* TCF EXDAP3, twice */
+    case NEGATIVE:
+        set_A(ZERO); /* CA ZERO */
+        /* fall through */
+    case IS_MINUS_ZERO:       /* (the CCS has left +0 in A too) */
         write_channel(CHAN6); /* EXTEND; WRITE ROLLJETS */
         ts(ADDRESS_OF(JETAG));
+        break;
     }
     exdap3();
 }
@@ -247,14 +253,17 @@ void exdap2_plus3(void)
     switch (ccs_at(ADDRESS_OF(P63FLAG))) {
     case POSITIVE:
         ts(ADDRESS_OF(P63FLAG));
-        salfa = ccs_at(ADDRESS_OF(SALFA));
-        break;
-    case IS_PLUS_ZERO:
+        /* fall through */
+    case IS_PLUS_ZERO: /* NOOP */
     case NEGATIVE: salfa = ccs_at(ADDRESS_OF(SALFA)); break;
+    case IS_MINUS_ZERO: break; /* (salfa as it began: on at the CS RAXERR) */
+    }
+    switch (salfa) {
+    case POSITIVE: cs(ADDRESS_OF(RAXERR)); break; /* CS RAXERR; TCF +2 */
+    case IS_PLUS_ZERO: break;                     /* TCF +2 */
+    case NEGATIVE: ca(ADDRESS_OF(RAXERR)); break; /* CA RAXERR */
     case IS_MINUS_ZERO: break;
     }
-    if (salfa == POSITIVE) cs(ADDRESS_OF(RAXERR));
-    if (salfa == NEGATIVE) ca(ADDRESS_OF(RAXERR));
     ts(ADDRESS_OF(PAXERR1));
     exdap2_paxerr1();
 }

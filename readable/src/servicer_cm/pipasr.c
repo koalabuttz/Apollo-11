@@ -114,16 +114,20 @@ void rereadac(void)
     }
     /* DELVZ +0: "Z NOT DONE, CHECK Y."; anything else, "Z DONE, GO DO
      * CDUS" (back, TC Q). */
-    if (ccs_at(ADDRESS_OF(DELVZ)) != IS_PLUS_ZERO) {
-        return_to_q();
-        return;
+    switch (ccs_at(ADDRESS_OF(DELVZ))) {
+    case POSITIVE: return_to_q(); return; /* TC Q */
+    case IS_PLUS_ZERO: break;             /* TCF +3 */
+    case NEGATIVE:
+    case IS_MINUS_ZERO: return_to_q(); return; /* TC Q, twice */
     }
     /* DELVY +0: "Y NOT DONE, CHECK X." (CHKTEMX, L +0). Else "Y DONE, ZERO
      * Z PIP.", its count to L. */
     zl();
-    if (ccs_at(ADDRESS_OF(DELVY)) == IS_PLUS_ZERO) {
-        chktemx();
-        return;
+    switch (ccs_at(ADDRESS_OF(DELVY))) {
+    case POSITIVE: break;                 /* TCF +3 */
+    case IS_PLUS_ZERO: chktemx(); return; /* TCF CHKTEMX */
+    case NEGATIVE: break;                 /* TCF +1 */
+    case IS_MINUS_ZERO: break;            /* (the LXCH PIPAZ is the next word) */
     }
     lxch(ADDRESS_OF(PIPAZ));
     /* "TEMZ NOT = -0, CONTAINS -PIPAZ VALUE.": the count is its

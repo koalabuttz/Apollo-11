@@ -95,7 +95,7 @@ void restarts(void)
     set_A(TEMPPHS);
     mask(OCT1400);
     /* CCS A: "IS IT A VARIABLE OR TABLE RESTART" (A is never negative) */
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         itsavar(); /* "IT'S A VARIABLE RESTART" */
         return;
     }
@@ -109,8 +109,9 @@ void getpart2(void)
 {
     switch (ccs(TEMPPHS)) { /* "IS IT AN X.1 RESTART" */
     case POSITIVE:
-        /* CCS A: the phase less one, never negative. */
-        if (ccs_register(A_ADDRESS) == POSITIVE) {
+        /* CCS A, never negative: what the CCS of TEMPPHS left, the phase less
+         * one. */
+        if (ccs_positive(A_ADDRESS)) {
             itsatbl(); /* "NO, ITS A TABLE RESTART" */
             return;
         }
@@ -143,7 +144,7 @@ void getpart2_after_findvac(void)
 static void itsavar(void)
 {
     mask(OCT1400);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         itslikeb(); /* "YES, IT IS TYPE B" */
         return;
     }
@@ -217,8 +218,13 @@ static void findtime(void)
     case NEGATIVE: ad(ONE);          /* fall through */
     case IS_MINUS_ZERO: break;
     }
-    A = add16(A, L);                                      /* AD L */
-    if (ccs_register(A_ADDRESS) == POSITIVE) set_A(ZERO); /* CA ZERO; TCF +2 */
+    A = add16(A, L); /* AD L */
+    switch (ccs_register(A_ADDRESS)) {
+    case POSITIVE: set_A(ZERO); break; /* CA ZERO; TCF +2 */
+    case IS_PLUS_ZERO: break;          /* TCF +2 */
+    case NEGATIVE: break;              /* TCF +1 */
+    case IS_MINUS_ZERO: break;         /* (IMEDIATE is the next word) */
+    }
     imediate();
 }
 
@@ -324,7 +330,7 @@ static void contbl2(void)
     ts(GOLOC_ADDRESS(-1));
     set_A(GOLOC(1)); /* "NOW FIND OUT IF IT IS A WAITLIST CALL" */
     mask(BIT10);     /* "THIS SHOULD BE ONE IF WE HAVE -BB" */
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         itswtlst(); /* "IT IS A WAITLIST CALL" */
         return;
     }

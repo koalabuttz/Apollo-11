@@ -223,7 +223,7 @@ void rootloop_after_abs(void)
     das(ADDRESS_OF(MPAC));
     ca(ADDRESS_OF(MODE));
     mask(BIT4);
-    if (ccs_at(A_ADDRESS) == POSITIVE) { /* BADROOT */
+    if (ccs_positive(A_ADDRESS)) { /* BADROOT */
         tc_through_return(ADDRESS_OF(RETROOT));
         return;
     }
@@ -234,10 +234,12 @@ void rootloop_after_abs(void)
     case NEGATIVE: rootstor(); return;
     case IS_MINUS_ZERO: break;
     }
-    if (ccs_at(ADDRESS_OF(MPAC) + 1u) == POSITIVE)
-        rootloop();
-    else
-        rootstor();
+    switch (ccs_at(ADDRESS_OF(MPAC) + 1u)) { /* TESTLODX, "TEST LO ORDER DX" */
+    case POSITIVE: rootloop(); return;
+    case IS_PLUS_ZERO:
+    case NEGATIVE:
+    case IS_MINUS_ZERO: rootstor(); return; /* TCF ROOTSTOR, twice; then ROOTSTOR itself */
+    }
 }
 
 #endif

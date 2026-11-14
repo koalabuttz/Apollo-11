@@ -56,10 +56,12 @@ static unsigned store_field(unsigned field, unsigned index_address)
  * positive or +0, on to FIXCW as it is. */
 static void dxtest(void)
 {
-    enum sign configuration = ccs_at(ADDRESS_OF(DAPDATR1));
-
-    if (configuration != NEGATIVE && configuration != IS_MINUS_ZERO) return;
-    if (configuration == NEGATIVE) dxch(ADDRESS_OF(VARST0) + 8u);
+    switch (ccs_at(ADDRESS_OF(DAPDATR1))) {
+    case POSITIVE:
+    case IS_PLUS_ZERO: return; /* TCF FIXCW */
+    case NEGATIVE: dxch(ADDRESS_OF(VARST0) + 8u); break;
+    case IS_MINUS_ZERO: break;
+    }
     das(ADDRESS_OF(VARST0) + 1u);
     set_A(DXITFIX);
     ads(ADDRESS_OF(VARST0) + 7u);
@@ -75,30 +77,32 @@ static void dxtest(void)
  * and +2). */
 void massprop(void)
 {
-    enum sign passes_left;
+    unsigned field;
 
     set_A(NINE); /* "SET UP TEN PASSES" */
-    do {
+    for (;;) {
         ts(ADDRESS_OF(PHI333)); /* MASSPROP +1 */
         ca(ADDRESS_OF(DAPDATR1));
         mask(BIT13);
         if (!A_is_zero()) { /* EXTEND; BZF LEMYES */
             /* LEMNO */ ca(read_field(ADDRESS_OF(NOLEMVAL), ADDRESS_OF(PHI333)));
-            ts(store_field(ADDRESS_OF(VARST0), ADDRESS_OF(PHI333))); /* STOINST */
-            passes_left = ccs_at(ADDRESS_OF(PHI333));
-            continue;
+        } else {
+            /* LEMYES */ ca(ADDRESS_OF(LEMMASS));
+            double_A();
+            mp_at(read_field(ADDRESS_OF(SLOPEVAL), ADDRESS_OF(PHI333)));
+            ddoubl();
+            ad_at(read_field(ADDRESS_OF(INTVALUE), ADDRESS_OF(PHI333)));
         }
-        /* LEMYES */ ca(ADDRESS_OF(LEMMASS));
-        double_A();
-        mp_at(read_field(ADDRESS_OF(SLOPEVAL), ADDRESS_OF(PHI333)));
-        ddoubl();
-        ad_at(read_field(ADDRESS_OF(INTVALUE), ADDRESS_OF(PHI333)));
-        if (ts(store_field(ADDRESS_OF(VARST0), ADDRESS_OF(PHI333)))) /* STOINST */
-            passes_left = POSITIVE;
-        else
-            passes_left = ccs_at(ADDRESS_OF(PHI333));
-    } while (passes_left == POSITIVE); /* TCF MASSPROP +1 */
-    if (passes_left == IS_PLUS_ZERO) dxtest();
+        /* STOINST (LEMNO's word, a constant, does not overflow) */
+        field = store_field(ADDRESS_OF(VARST0), ADDRESS_OF(PHI333));
+        switch (ts(field) ? POSITIVE : ccs_at(ADDRESS_OF(PHI333))) {
+        case POSITIVE: continue;            /* TCF MASSPROP +1 */
+        case IS_PLUS_ZERO: dxtest(); break; /* DXTEST is the next word */
+        case NEGATIVE:                      /* TCF FIXCW, at DXTEST +1 */
+        case IS_MINUS_ZERO: break;          /* TCF FIXCW, at DXTEST +2 */
+        }
+        break;
+    }
     fixcw();
 }
 
@@ -121,7 +125,9 @@ static bool massprop_finished(void)
     case NEGATIVE: mask(BIT14); break;
     case IS_MINUS_ZERO: break;
     }
-    if (ccs_register(A_ADDRESS) == POSITIVE) ca(ADDRESS_OF(LEMMASS)); /* (A is BIT14 or +0) */
+    /* CCS A, never negative: A masked with BIT14 in the cases above, or the +0
+     * that the CCS leaves of a -0. */
+    if (ccs_positive(A_ADDRESS)) ca(ADDRESS_OF(LEMMASS));
     ad_at(ADDRESS_OF(CSMMASS));
     return !ts(ADDRESS_OF(WEIGHT_G)); /* "SCALED AT B+16 KILOGRAMS" */
 }

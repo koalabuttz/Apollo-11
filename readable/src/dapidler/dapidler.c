@@ -324,7 +324,8 @@ static void needles(void)
         ad_at(L_ADDRESS);
         ads(indexed(ADDRESS_OF(CDUXCMD), fetch(ADDRESS_OF(DINDX))));
         lxch(indexed(ADDRESS_OF(EDRIVEX), fetch(ADDRESS_OF(DINDX))));
-    } while (ccs_at(ADDRESS_OF(DINDX)) == POSITIVE); /* CCS DINDX: 2, 1 or 0 */
+        /* CCS DINDX, never negative: the loop's index, 2, 1 or 0. */
+    } while (ccs_positive(ADDRESS_OF(DINDX))); /* TCF DACLOOP */
     set_A(BITS13_14_15);
     wor_channel(CHAN14);
     retnmore();

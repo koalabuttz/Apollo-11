@@ -103,7 +103,12 @@ static void findvac2(void)
 
     EXECTEM1 = a_word(); /* the caller's FBANK */
     while (at < 013u) {
-        at += 1u + (unsigned)ccs(fetch(VACNUSE_ADDRESS(at / 2u + 1u)));
+        switch (ccs(fetch(VACNUSE_ADDRESS(at / 2u + 1u)))) {
+        case POSITIVE: at += 1u; break;      /* its TCF VACFOUND */
+        case IS_PLUS_ZERO: at += 2u; break;  /* the next area's CCS */
+        case NEGATIVE: at += 3u; break;      /* (never) the next area's TCF VACFOUND */
+        case IS_MINUS_ZERO: at += 4u; break; /* (never) the CCS after that */
+        }
         if (at < 013u && at % 2u == 0u) {
             vacfound();
             return;

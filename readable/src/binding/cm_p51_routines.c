@@ -493,18 +493,20 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
 
 /* ---- The keys, in the faithful tables' order ---- */
 
-/* Each key's routine. */
 /* States the faithful routine stops at and the readable one follows: P51E +6
  * with STARIND negative or -0, which never come (the OCT 05024 and OCT 13000
  * after its TC PHASCHNG, run as TC 5024 and TCF 3000). The two are compared
  * where both run. */
 static bool port_stops_at(uint16_t key)
 {
-    enum sign starind = sign_of(fetch(ADDRESS_OF(STARIND)));
+    enum sign starind;
 
-    return key == KEY(014u, P51E + 6u) && (starind == NEGATIVE || starind == IS_MINUS_ZERO);
+    if (key != KEY(014u, P51E + 6u)) return false;
+    starind = sign_of(fetch(ADDRESS_OF(STARIND)));
+    return starind == NEGATIVE || starind == IS_MINUS_ZERO;
 }
 
+/* Each key's routine. */
 static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {

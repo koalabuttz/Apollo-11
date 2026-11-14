@@ -91,7 +91,7 @@ static void pcloop(void);
 static void nxtrst(void);
 static void pactive(void);
 static void pactive_plus1(void);
-static void pinact_end(enum sign mpac5);
+static bool pinact_again(void);
 static bool lightset(void);
 static void startsub(void);
 static void startsb2(void);
@@ -728,14 +728,19 @@ static void pcloop(void)
         double_A();
         dca(indexed(ADDRESS_OF(MINUS_PHASE1), a_word())); /* EXTEND; INDEX A; DCA -PHASE1 */
         rxor_lchan();
-        if (ccs_register(A_ADDRESS) != IS_MINUS_ZERO) {
+        switch (ccs_register(A_ADDRESS)) {
+        case POSITIVE:
+        case IS_PLUS_ZERO:
+        case NEGATIVE: /* TCF PTBAD, three times */
             /* PTBAD -- LM p. 217, CM p. 189. "SET ALARM TO SHOW PHASE TABLE
              * FAILURE": alarm 1107. */
             tc_at(PTBAD);
             continue_at(ALARM);
             return;
+        case IS_MINUS_ZERO: break;
         }
-    } while (ccs_at(MPAC5) == POSITIVE); /* "PROCESS ALL RESTART GROUPS." */
+        /* CCS MPAC +5, never negative: the loop's index, NUMGRPS counted down. */
+    } while (ccs_positive(MPAC5)); /* "PROCESS ALL RESTART GROUPS." */
     ts(MPAC6); /* "SET TO +0." */
     tc_at(TC_MMDSPLAY);
     continue_at(MMDSPLAY);
@@ -794,7 +799,6 @@ void goprog3_after_stoprate(void)
  * running (PACTIVE). The first CCS tells; PINACT's goes on to the next. */
 static void nxtrst(void)
 {
-    enum sign more;
     do {
         word instruction;
         ts(MPAC5);
@@ -810,9 +814,7 @@ static void nxtrst(void)
         case NEGATIVE: pactive(); return; /* PACTIVE is the next word */
         case IS_MINUS_ZERO: pactive_plus1(); return;
         }
-        more = ccs_at(MPAC5); /* PINACT */
-    } while (more == POSITIVE);
-    pinact_end(more);
+    } while (pinact_again()); /* PINACT */
 }
 
 /* PACTIVE -- LM p. 217, CM p. 189.
@@ -840,31 +842,28 @@ static void pactive_plus1(void)
  * After a group: the next one (NXTRST), or the end. */
 void pinact(void)
 {
-    enum sign more = ccs_at(MPAC5); /* "PROCESS ALL RESTART GROUPS." */
-    if (more == POSITIVE)
-        nxtrst();
-    else
-        pinact_end(more);
+    if (pinact_again()) nxtrst();
 }
 
-/* PINACT +2 -- LM p. 217, CM p. 189 on: all groups seen. With a group
- * running ("PHASE ACTIVE"), or a major mode, back to the Executive
- * (ENDRSTRT); with neither ("IS MODE -0", no program and nothing to restart)
- * go to P00 (GOTOPOOH). mpac5 is how the CCS of MPAC +5 came out: +0, or
- * (never, as MPAC +5 counts down) a negative or -0, which land one and two
- * words on. */
-static void pinact_end(enum sign mpac5)
+/* PINACT's steps -- LM p. 217, CM p. 189 on. "PROCESS ALL RESTART GROUPS.":
+ * true for the next group (TCF NXTRST, A the group's number). Otherwise
+ * all groups are seen: with a group running ("PHASE ACTIVE"), or a major
+ * mode, back to the Executive (ENDRSTRT); with neither ("IS MODE -0", no
+ * program and nothing to restart) go to P00 (GOTOPOOH); and false. The CCS
+ * of MPAC +5 comes out positive or +0, or (never, as MPAC +5 counts down)
+ * negative or -0, which land one and two words on. */
+static bool pinact_again(void)
 {
     enum sign groups = POSITIVE;
 
-    switch (mpac5) {
-    case POSITIVE: break; /* (not here: PINACT went on to NXTRST) */
+    switch (ccs_at(MPAC5)) {
+    case POSITIVE: return true; /* TCF NXTRST */
     case IS_PLUS_ZERO: groups = ccs_at(MPAC6); break;
     case NEGATIVE: groups = POSITIVE; break;          /* on TCF ENDRSTRT */
     case IS_MINUS_ZERO: groups = IS_PLUS_ZERO; break; /* on CAF BIT15 */
     }
     switch (groups) {
-    case POSITIVE: endrstrt(); return;
+    case POSITIVE: endrstrt(); return false;
     case IS_PLUS_ZERO: set_A(BIT15);            /* fall through */
     case NEGATIVE: mask_at(ADDRESS_OF(MODREG)); /* fall through */
     case IS_MINUS_ZERO: break;
@@ -873,6 +872,7 @@ static void pinact_end(enum sign mpac5)
         gotopooh();
     else
         endrstrt();
+    return false;
 }
 
 /* ---- The fresh start checks ---- */
@@ -1068,7 +1068,8 @@ static void startsb2(void)
         ts(ADDRESS_OF(MPAC));
         set_A(negate(BIT12));
         ts(indexed(ADDRESS_OF(DSPTAB), MPAC(0)));
-    } while (ccs_at(ADDRESS_OF(MPAC)) == POSITIVE);
+        /* CCS MPAC, never negative: the loop's index, TEN counted down. */
+    } while (ccs_positive(ADDRESS_OF(MPAC))); /* TCF DSPOFF */
     ts_each(display_words, COUNT(display_words));
     store_constant(ADDRESS_OF(NOUT), NOUTCON);
 #if LUMINARY099

@@ -469,6 +469,30 @@ void not_modelled(void);
  * Does not return. */
 void not_modelled_state(const char *state);
 
+/* ---- A CCS of a word that is never negative ---- */
+
+/* CCS of a word that is never negative and never -0: A after a MASK with a
+ * word whose sign bit is clear, a count that runs down to +0, a major mode.
+ * True when the word was positive (A then holds it less one), false for +0
+ * (A then holds +0). This one helper stands for that CCS at each place it
+ * is used, so it cannot follow the two outcomes that never come: what the
+ * listing would run differs with the place. Each call is held to the
+ * premise (tools/ccs_helpers.py, part of make style-check): a CCS of A
+ * after a mask that is a constant by a static assert that the constant has
+ * no sign bit, any other by a comment at the call that says what keeps the
+ * word from being negative. No other CCS is written as a test: it is a
+ * switch that names its four outcomes (STYLE.md, Structure). */
+static inline bool ccs_positive(unsigned address)
+{
+    switch (ccs_at(address)) {
+    case POSITIVE: return true;
+    case IS_PLUS_ZERO: return false;
+    case NEGATIVE:
+    case IS_MINUS_ZERO: not_modelled(); /* never; what would run differs with the place */
+    }
+    return false;
+}
+
 /* ---- Leaving a routine ---- */
 
 /* TC at fixed address at: Q gets the address after it (the return). Like

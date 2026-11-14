@@ -16,7 +16,7 @@ void endimu(void)
 {
     read_channel(DSALMOUT);
     mask(BIT1);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         imubad();
         return;
     }
@@ -46,24 +46,27 @@ static void endmode_plus1(void)
  * any negative MODECADR as a CADR. */
 static void report(void)
 {
-    enum sign state;
-
     ts(ADDRESS_OF(RUPTREG3));
-    state = ccs_at(indexed(ADDRESS_OF(MODECADR), RUPTREG2));
-    if (state == IS_PLUS_ZERO) {
-        ca(ADDRESS_OF(RUPTREG3)); /* ENDMODE */
+    switch (ccs_at(indexed(ADDRESS_OF(MODECADR), RUPTREG2))) {
+    case POSITIVE: set_A(ZERO); break; /* TCF to the CAF ZERO */
+    case IS_PLUS_ZERO:                 /* TCF ENDMODE */
+        ca(ADDRESS_OF(RUPTREG3));      /* ENDMODE */
         endmode_plus1();
         return;
-    }
 #if LUMINARY099
-    if (state == IS_MINUS_ZERO || (state == NEGATIVE && A_is_zero())) {
-        endmode_plus1();
-        return;
-    }
-    set_A(ZERO);
+    case NEGATIVE: /* EXTEND; BZF ENDMODE +1 */
+        if (A_is_zero()) {
+            endmode_plus1();
+            return;
+        }
+        set_A(ZERO);
+        break;
+    case IS_MINUS_ZERO: /* the BZF without its EXTEND, a TCF ENDMODE +1 */ endmode_plus1(); return;
 #else
-    if (state != IS_MINUS_ZERO) set_A(ZERO); /* -0 comes to the INDEX with A +0 */
+    case NEGATIVE: set_A(ZERO); break; /* CAF ZERO */
+    case IS_MINUS_ZERO: break;         /* the INDEX, with A +0 */
 #endif
+    }
     xch(indexed(ADDRESS_OF(MODECADR), RUPTREG2)); /* "WAKE SLEEPING PROGRAM." */
     tc_at((word)(ENDMODE - 5u));                  /* TC JOBWAKE */
     continue_at(JOBWAKE);
@@ -103,7 +106,7 @@ bool cagetest(void)
 {
     set_A(BIT6);
     mask_at(ADDRESS_OF(IMODES30));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         imubad(); /* "DIRECTLY." */
         return false;
     }
@@ -118,7 +121,7 @@ bool cagetstq(void)
 
     cs(ADDRESS_OF(IMODES30));
     mask(BIT6);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         incr(Q_ADDRESS);
         free = true;
     }
@@ -133,7 +136,7 @@ bool cagetstj(void)
 {
     cs(ADDRESS_OF(IMODES30));
     mask(BIT6);
-    if (ccs_register(A_ADDRESS) != POSITIVE) {
+    if (!ccs_positive(A_ADDRESS)) {
         cagetstj_failed();
         return false;
     }
@@ -191,8 +194,10 @@ static void stall(void)
         tc_at(MODESLP); /* TC MAKECADR */
         continue_at(MAKECADR);
         return;
-    case NEGATIVE: /* MODEGOOD: "MAKE SURE INITIAL STATE -1." (the CCS left A +0 or more) */
-        if (ccs_register(A_ADDRESS) == POSITIVE) {
+    case NEGATIVE: /* MODEGOOD: "MAKE SURE INITIAL STATE -1." */
+        /* CCS A, never negative: what the CCS above left of a negative
+         * MODECADR, its magnitude less one. */
+        if (ccs_positive(A_ADDRESS)) {
             modabort();
             return;
         }

@@ -23,6 +23,7 @@
 static void opjump(void);
 static void opjump2(void);
 static void opjump3(void);
+static void fifteen_bitadr_plus1(void);
 static void ierastst(void);
 static void index_(void);
 static void index2(void);
@@ -202,7 +203,9 @@ static void opjump(void)
         break;
     case IS_MINUS_ZERO: break; /* (never: the code has seven bits. To ADDRESS +1, past the MASK.) */
     }
-    if (ccs_at(A_ADDRESS) == POSITIVE)
+    /* CCS A, never negative: A masked with BIT1 in the case above, or the +0
+     * that the CCS leaves of a -0. */
+    if (ccs_positive(A_ADDRESS))
         index_(); /* A is 1 or +0 */
     else
         diradres();
@@ -378,18 +381,29 @@ static void pushup(void)
     set_A(OCT23);
     mask_at(CYR_ADDRESS);
     ad(MINUS_OCT10); /* "(NO -0)" */
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    switch (ccs_at(A_ADDRESS)) {
+    case POSITIVE:
         /* REGUP: "MOST ALL OP CODES PUSHUP HERE." */
         cs(indexed(ADDRESS_OF(NO_WDS), MODE));
         regup_plus2();
         return;
+    case IS_PLUS_ZERO:
+        /* (never: a sum with -OCT10 that is zero is -0. The AGC would run
+         * -OCT10, OCT -10, as MASK 7767.) */
+        mask_at(07767u);
+        /* fall through */
+    case NEGATIVE:
+        /* "WE NOW HAVE 7 -- OP CODE (MOD4)": the masked code was 0-3. */
+        ad(NEG4);
+        break;
+    case IS_MINUS_ZERO: break; /* (never: the masked code is not 10. Past the AD NEG4.) */
     }
-    /* "WE NOW HAVE 7 -- OP CODE (MOD4)": the masked code was 0-3. */
-    ad(NEG4);
-    if (ccs_at(A_ADDRESS) == POSITIVE)
-        cs(indexed(ADDRESS_OF(NO_WDS), a_word()));
-    else
-        cs(indexed(ADDRESS_OF(REVCNT), MODE)); /* -0: code 3, "REVERSE" */
+    switch (ccs_at(A_ADDRESS)) {
+    case POSITIVE: cs(indexed(ADDRESS_OF(NO_WDS), a_word())); break; /* INDEX A; CS NO.WDS */
+    case IS_PLUS_ZERO: cs(ADDRESS_OF(NO_WDS)); break; /* (never: 4 and NEG4 add to -0. No INDEX.) */
+    case NEGATIVE: break; /* (never: A was 4 to 7 before the AD NEG4.) TCF REGUP +2 */
+    case IS_MINUS_ZERO: cs(indexed(ADDRESS_OF(REVCNT), MODE)); break; /* code 3, "REVERSE" */
+    }
     regup_plus2();
 }
 
@@ -406,10 +420,16 @@ static void regup_plus2(void)
  * UNARY/SHORT SHIFT OPERATION." (CYR is +0 only for EXIT, taken before.) */
 static void opjump2(void)
 {
-    if (ccs_at(CYR_ADDRESS) == POSITIVE)
-        opjump3();
-    else
-        fifteen_bitadr();
+    switch (ccs_at(CYR_ADDRESS)) {
+    case POSITIVE: opjump3(); return;
+    case IS_PLUS_ZERO:
+        /* (never: EXIT was taken before. The AGC would run -ENDVAC, DEC -45,
+         * as MASK 7722.) */
+        mask_at(07722u);
+        /* fall through */
+    case NEGATIVE: fifteen_bitadr(); return;
+    case IS_MINUS_ZERO: fifteen_bitadr_plus1(); return; /* (never: the code has seven bits) */
+    }
 }
 
 /* 15BITADR -- LM p. 1009, CM p. 1114.
@@ -421,6 +441,11 @@ static void opjump2(void)
 void fifteen_bitadr(void)
 {
     incr(ADDRESS_OF(LOC));
+    fifteen_bitadr_plus1();
+}
+
+static void fifteen_bitadr_plus1(void)
+{
     ca(indexed(0u, LOC));
     ts(ADDRESS_OF(POLISH)); /* "WE MAY NEED A SUBADDRESS LATER." */
     set_A(LOW7_PLUS_2K);
@@ -437,9 +462,13 @@ void fifteen_bitadr(void)
 static void opjump3(void)
 {
     ts(FBANK_ADDRESS);
-    if (ccs_at(CYR_ADDRESS) == POSITIVE) {
-        unajump(a_word()); /* INDEX A; TCF UNAJUMP */
+    switch (ccs_at(CYR_ADDRESS)) {
+    case POSITIVE:     /* INDEX A; TCF UNAJUMP */
+    case IS_PLUS_ZERO: /* (never: EXIT was taken before. TCF UNAJUMP, A being +0.) */
+        unajump(a_word());
         return;
+    case NEGATIVE: break;
+    case IS_MINUS_ZERO: shortt(); return; /* (never: the code has seven bits.) TCF SHORTT */
     }
     switch (ccs_at(ADDRESS_OF(MODE))) {
     case POSITIVE:

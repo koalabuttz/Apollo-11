@@ -66,7 +66,7 @@ void findcduw_after_exit(void)
     ts(ADDRESS_OF(ECDUWUSR));
     ca(ADDRESS_OF(DAPBOOLS));
     mask(CSMDOCKD); /* "CSMDOCKD MUST NOT BE BIT15" */
-    if (ccs_register(A_ADDRESS) == POSITIVE) set_A(ONE);
+    if (ccs_positive(A_ADDRESS)) set_A(ONE);
     ts(ADDRESS_OF(NDXCDUW));
     set_A(XOVINHIB);
     ts(ADDRESS_OF(FLPAUTNO));
@@ -82,10 +82,10 @@ void findcduw_after_exit(void)
     ts(ADDRESS_OF(CDUSPOTZ));
     set_A(BIT10); /* "PNGCS CONTROL BIT" */
     rand_channel(CHAN30);
-    if (ccs_register(A_ADDRESS) == IS_PLUS_ZERO) {
+    if (!ccs_positive(A_ADDRESS)) {
         set_A(BIT14); /* "AUTO MODE BIT" */
         rand_channel(CHAN31);
-        if (ccs_register(A_ADDRESS) == IS_PLUS_ZERO) {
+        if (!ccs_positive(A_ADDRESS)) {
             ts(ADDRESS_OF(FLPAUTNO)); /* "RESET FLAG PNGCS AUTO NOT" */
             ca(ADDRESS_OF(CDUXD));    /* "PNGCS AUTO: FETCH CDUXD,CDUYD,CDUZD" */
             ts(ADDRESS_OF(CDUSPOTX));

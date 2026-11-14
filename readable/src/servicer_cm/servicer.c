@@ -105,8 +105,9 @@ void piploop(void)
         not_modelled();
         return;
     case IS_MINUS_ZERO:
-        /* (never, for the same reason) */
-        ddoubl(); /* OCT 20000, run as DAS A; the 2CADR's words follow */
+        /* never: RUPTREG1 is not -0, for the same reason. The next word, OCT 20000, is no
+         * instruction's word: a DAS with an address field of 0, which the assembler makes of no
+         * line (DAS A is 20001). */
         not_modelled();
         return;
     }

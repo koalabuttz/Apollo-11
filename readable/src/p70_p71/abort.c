@@ -26,7 +26,7 @@ void r10_r11(void)
 {
     cs(ADDRESS_OF(FLAGWRD7));
     mask(AVEGFBIT);
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(TASKOVER);
         return;
     }
@@ -111,7 +111,7 @@ static void p71now_q(void)
     com();
     ts(L_ADDRESS);
     mask(BIT4);
-    if (ccs_at(A_ADDRESS) == POSITIVE)
+    if (ccs_positive(A_ADDRESS))
         p71a();
     else
         p70now_q();
@@ -129,7 +129,7 @@ static void p70now_q(void)
     }
     ca(L_ADDRESS);
     mask(BIT1);
-    if (ccs_at(A_ADDRESS) == POSITIVE)
+    if (ccs_positive(A_ADDRESS))
         p70a();
     else
         continue_at(LANDISP);
@@ -194,13 +194,13 @@ void legal_q(void)
     }
     cs(ADDRESS_OF(FLAGWRD9));
     mask(LETABBIT);
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         abortalm();
         return;
     }
     ca(ADDRESS_OF(FLAGWRD7));
     mask(AVEGFBIT);
-    if (ccs_at(A_ADDRESS) == POSITIVE)
+    if (ccs_positive(A_ADDRESS))
         tc_q(); /* "YES. ALL IS WELL." */
     else
         abortalm();

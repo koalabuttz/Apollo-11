@@ -70,24 +70,6 @@ static bool lamptest(void);
  * ATT), as T4RUPT sends it. */
 #define LAMPS (ADDRESS_OF(DSPTAB) + 11u)
 
-/* CCS A after a MASK of positive bits: true when a bit was set (A then
- * holds the masked word less one), false for +0. Such a MASK leaves neither
- * a negative word nor -0. This one helper stands for that CCS at each place
- * it is used, so it cannot follow the two outcomes that never come: what
- * the listing would run differs with the place. (make style-check holds
- * each place's mask to a clear sign bit, and lists the places with no
- * constant mask: tools/ccs_helpers.py.) */
-static bool ccs_A_positive(void)
-{
-    switch (ccs_at(A_ADDRESS)) {
-    case POSITIVE: return true;
-    case IS_PLUS_ZERO: return false;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); /* never; what would run differs with the place */
-    }
-    return false;
-}
-
 /* ======================================================================
  * Channel 30
  * ====================================================================== */
@@ -187,13 +169,16 @@ static void tnontest_plus1(void)
 /* TNONTEST +2 -- LM p. 164, CM p. 142: the CCS, and on. */
 static void tnontest_plus2(void)
 {
-    if (ccs_A_positive()) { /* "NO -- EXAMINE CHANNEL 33" */
+    /* CCS A, never negative: IMODES30's complement masked with BIT7 at
+     * TNONTEST +1, or the +0 that NXTIFAIL's CCS leaves of a -0, which comes
+     * straight here. */
+    if (ccs_positive(A_ADDRESS)) { /* "NO -- EXAMINE CHANNEL 33" */
         c33test();
         return;
     }
     set_A(BIT8); /* "SEE IF FIRST SAMPLE OR SECOND" */
     mask_at(ADDRESS_OF(IMODES30));
-    if (ccs_A_positive()) { /* "REACT AFTER A SECOND SAMPLE" */
+    if (ccs_positive(A_ADDRESS)) { /* "REACT AFTER A SECOND SAMPLE" */
         proctnon();
         return;
     }
@@ -212,14 +197,14 @@ static void proctnon(void)
     set_A(negate(BITS7_8)); /* CS BITS7&8 */
     mask_at(ADDRESS_OF(IMODES30));
     ts(ADDRESS_OF(IMODES30));
-    mask(BIT14);            /* "SEE IF TURN-ON REQUEST" */
-    if (ccs_A_positive()) { /* "OPERATE ON ONLY" */
+    mask(BIT14);                   /* "SEE IF TURN-ON REQUEST" */
+    if (ccs_positive(A_ADDRESS)) { /* "OPERATE ON ONLY" */
         oponly();
         return;
     }
     cs(ADDRESS_OF(IMODES30));
     mask(BIT9);
-    if (ccs_A_positive()) { /* TCF +3 */
+    if (ccs_positive(A_ADDRESS)) { /* TCF +3 */
         proctnon_after_alarm();
         return;
     }
@@ -285,7 +270,7 @@ void endtnon(void)
     cs(ADDRESS_OF(STATE));
     mask(IMUSEFLG);
 #endif
-    if (ccs_A_positive()) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(TASKOVER); /* TCF TASKOVER */
         return;
     }
@@ -375,7 +360,7 @@ static void oponly(void)
 {
     set_A(BIT4);
     rand_channel(CHAN12); /* EXTEND; RAND CHAN12 */
-    if (ccs_A_positive()) {
+    if (ccs_positive(A_ADDRESS)) {
         c33test();
         return;
     }
@@ -386,7 +371,7 @@ static void oponly(void)
     set_A(IMUSEFLG);
     mask_at(ADDRESS_OF(STATE));
 #endif
-    if (ccs_A_positive()) {
+    if (ccs_positive(A_ADDRESS)) {
         c33test();
         return;
     }
@@ -546,7 +531,7 @@ static void glockchk(void)
     }
     set_A(BIT4);
     rand_channel(CHAN12); /* EXTEND; RAND CHAN12 */
-    if (ccs_A_positive()) {
+    if (ccs_positive(A_ADDRESS)) {
         nogimrun();
         return;
     }
@@ -585,13 +570,15 @@ static void setglock(void)
         return;
     }
     mask_at(LAMPS); /* MASK DSPTAB +11D */
-    if (ccs_A_positive()) {
+    /* CCS A, never negative: the word SETGLOCK +1 masked with BIT6, masked
+     * again with DSPTAB +11D. */
+    if (ccs_positive(A_ADDRESS)) {
         glamptst();
         return;
     }
     set_A(BIT6);
     mask_at(ADDRESS_OF(IMODES30));
-    if (ccs_A_positive()) { /* TCF GLOCKOK */
+    if (ccs_positive(A_ADDRESS)) { /* TCF GLOCKOK */
         continue_at(RESUME);
         return;
     }
@@ -669,7 +656,7 @@ static void iturnon(void)
 {
     set_A(BIT2);
     mask_at(ADDRESS_OF(IMODES30));
-    if (ccs_A_positive()) {
+    if (ccs_positive(A_ADDRESS)) {
         nxtifail();
         return;
     }
@@ -721,7 +708,10 @@ static void iturnon2(void)
  * RNDREFDR). */
 static void imucage(void)
 {
-    if (ccs_A_positive()) { /* CCS A; TCF ISSZERO */
+    /* CCS A, never negative: IMODES30 masked with BIT11, the bit NXTIFBIT
+     * found (INDEX RUPTREG1; CAF BIT14), since IFAILJMP's fourth word alone
+     * comes here. */
+    if (ccs_positive(A_ADDRESS)) { /* CCS A; TCF ISSZERO */
         isszero();
         return;
     }
@@ -793,7 +783,7 @@ void imuop_after_rndrefdr(void)
 #endif
     com();
     mask(IMUSEFLG);
-    if (ccs_A_positive()) {
+    if (ccs_positive(A_ADDRESS)) {
         nxtifail();
         return;
     }
@@ -814,7 +804,7 @@ static void imuop2(void)
 {
     set_A(BIT2);
     mask_at(ADDRESS_OF(IMODES30));
-    if (ccs_A_positive())
+    if (ccs_positive(A_ADDRESS))
         nxtifail();
     else
         iturnon2();
@@ -829,7 +819,9 @@ static void imuop2(void)
  * ONE REGISTER", and SETISSW. */
 static void pipfail(void)
 {
-    if (ccs_A_positive()) set_A(BIT10); /* CCS A; CAF BIT10 */
+    /* CCS A, never negative: IMODES33 masked with BIT13, the bit NXTIBT found
+     * (INDEX RUPTREG1; CAF BIT13), since C33JMP's first word alone comes here. */
+    if (ccs_positive(A_ADDRESS)) set_A(BIT10); /* CCS A; CAF BIT10 */
     xch(ADDRESS_OF(IMODES30));
     mask(MINUS_BIT10); /* MASK -BIT10 */
     ads(ADDRESS_OF(IMODES30));
@@ -843,13 +835,13 @@ static void pipfail_after_setissw(void)
 {
     cs(ADDRESS_OF(IMODES30));
     mask(BIT1);
-    if (ccs_A_positive()) {
+    if (ccs_positive(A_ADDRESS)) {
         nxtfl33();
         return;
     }
     ca(ADDRESS_OF(IMODES30));
     mask(OCT1720);
-    if (ccs_A_positive()) { /* "ABOVE CONDITION NOT MET" */
+    if (ccs_positive(A_ADDRESS)) { /* "ABOVE CONDITION NOT MET" */
         nxtfl33();
         return;
     }
@@ -867,7 +859,9 @@ void pipfail_after_alarm(void)
  * Bit 12: "DO PROG ALARM IF TM TOO FAST" (1105) when it goes to 0. */
 static void dntmfast(void)
 {
-    if (ccs_A_positive()) {
+    /* CCS A, never negative: IMODES33 masked with BIT12, the bit NXTIBT found
+     * (INDEX RUPTREG1; CAF BIT13), since C33JMP's second word alone comes here. */
+    if (ccs_positive(A_ADDRESS)) {
         nxtfl33();
         return;
     }
@@ -885,7 +879,9 @@ void dntmfast_after_alarm(void)
  * Bit 11: "SAME AS DNLINK TOO FAST WITH DIFFERENT ALARM CODE" (1106). */
 static void uptmfast(void)
 {
-    if (ccs_A_positive()) {
+    /* CCS A, never negative: IMODES33 masked with BIT11, the bit NXTIBT found
+     * (INDEX RUPTREG1; CAF BIT13), since C33JMP's third word alone comes here. */
+    if (ccs_positive(A_ADDRESS)) {
         nxtfl33();
         return;
     }
@@ -919,14 +915,14 @@ bool setissw(void)
     ror_lchan(); /* EXTEND; ROR LCHAN */
     com();       /* "0 INDICATES FAILURE" */
     mask(OCT15000);
-    if (ccs_A_positive()) { /* TCF ISSWON: "FAILURE" */
+    if (ccs_positive(A_ADDRESS)) { /* TCF ISSWON: "FAILURE" */
         isswon();
         return false;
     }
     /* ISSWOFF: "DON'T TURN OFF ISS WARNING IF LAMP TEST IN PROGRESS". */
     set_A(BIT1);
     mask_at(ADDRESS_OF(IMODES33));
-    if (!ccs_A_positive()) {
+    if (!ccs_positive(A_ADDRESS)) {
         set_A(negate(BIT1)); /* CS BIT1 */
         wand_channel(DSALMOUT);
     }
@@ -1008,8 +1004,8 @@ static bool lamptest(void)
 
     cs(ADDRESS_OF(IMODES33));
     mask(BIT1);
-    skip = ccs_A_positive();   /* CCS A */
-    if (skip) incr(Q_ADDRESS); /* INCR Q */
-    tc_through(Q_ADDRESS);     /* TC Q */
+    skip = ccs_positive(A_ADDRESS); /* CCS A */
+    if (skip) incr(Q_ADDRESS);      /* INCR Q */
+    tc_through(Q_ADDRESS);          /* TC Q */
     return skip;
 }

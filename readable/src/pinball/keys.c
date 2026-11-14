@@ -132,7 +132,7 @@ void eighty_nine_test(void)
     }
     set_A(THREE);
     mask_at(ADDRESS_OF(DECBRNCH)); /* CCS A: MASK leaves 0 to 3 */
-    if (ccs_at(A_ADDRESS) == POSITIVE)
+    if (ccs_positive(A_ADDRESS))
         tc(EIGHTY_NINE_TEST + 010u, NUM);
     else
         tc(EIGHTY_NINE_TEST + 011u, CHARALRM);
@@ -204,7 +204,7 @@ void num(void)
 
     set_A(THREE);
     mask_at(ADDRESS_OF(DECBRNCH)); /* "+0, OCTAL. +1, + DEC. +2, - DEC." */
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(NUM + 024u);
         dectobin();
         return;
@@ -261,7 +261,7 @@ static void endnmtst(void)
         /* ENDNUM: a decimal word is made a fraction (DECEND). */
         set_A(THREE);
         mask_at(ADDRESS_OF(DECBRNCH));
-        if (ccs_at(A_ADDRESS) == POSITIVE) {
+        if (ccs_positive(A_ADDRESS)) {
             tc_at(ENDNUM + 3u);
             decend();
         } else
@@ -518,7 +518,7 @@ static bool signtest_returns(void)
     lxch(Q_ADDRESS);
     set_A(THREE);
     mask_at(ADDRESS_OF(DECBRNCH)); /* CCS A: MASK leaves 0 to 3 */
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc(SIGNTEST + 4u, ENDOFJOB);
         return false;
     }

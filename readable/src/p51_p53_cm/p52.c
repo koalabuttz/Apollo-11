@@ -62,7 +62,7 @@ void prog52_after_r02both(void)
 {
     set_A(BIT4);
     mask_at(ADDRESS_OF(STATE) + 2u);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(PROG52 + 013u); /* TC P52A */
         p52a();
     } else {
@@ -219,7 +219,7 @@ void p52t_time(void)
     }
     ca(ADDRESS_OF(OPTION2));
     mask(BIT2);
-    tc_at(ccs_register(A_ADDRESS) == POSITIVE ? P52T + 032u : P52T + 025u); /* TC INTPRET */
+    tc_at(ccs_positive(A_ADDRESS) ? P52T + 032u : P52T + 025u); /* TC INTPRET */
     intpret();
 }
 

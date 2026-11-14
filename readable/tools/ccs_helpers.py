@@ -1,41 +1,52 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
-"""The helpers that stand for one CCS at several places, and their masks.
+"""The CCS that is written as a test, and what holds it to two outcomes.
 
-Some helpers of readable/src are one CCS used at many places:
-bit_set_in_A() (src/p20_p25/p20_p25.h), pack_flag() (src/p51_p53/p57.c),
-ccs_positive() (src/q_r_axis/q_r_axis.c), masked_is_set()
-(src/extended_verbs/radar.c and dap.c), ccs_A_positive()
-(src/t4rupt/imu_monitor.c and optics.c) and positive()
-(src/fresh_start/v37.c). Each follows the CCS's first two outcomes and
-refuses the other two, negative and -0, with not_modelled(): what the
-listing would run there differs with the place (STYLE.md, Fidelity). That
-rests on one premise: the word the CCS looks at is A after a MASK with a
-word whose bit 15, the sign, is clear, so it is never negative and never
--0. The helpers' names are tools/style_check.py's CCS_HELPERS: the style
-check lets no other function refuse with those words, so a new helper
-has to be named there, and is then held to the premise here.
+A CCS has four outcomes and the readable C names all four in a switch
+(STYLE.md, Structure). One form is let off: ccs_positive() of src/agc/agc.h,
+a CCS written as a test, `if (ccs_positive(A_ADDRESS))`. It follows the
+CCS's first two outcomes and refuses the other two, negative and -0, with
+not_modelled(): the one helper stands for that CCS at every place it is
+used, and what the listing would run there differs with the place
+(STYLE.md, Fidelity). pack_flag() of src/p51_p53/p57.c is the same for
+two flags. That rests on one premise: the word the CCS looks at is never
+negative and never -0. The helpers' names are tools/style_check.py's
+CCS_HELPERS: the style check lets no other function refuse with those
+words and lets no CCS be compared with an outcome outside them, so a new
+helper has to be named there, and is then held to the premise here.
 
-This check holds every call of them to that premise:
+This check holds every call of them to that premise, one of two ways:
 
-  - It finds the mask of each call: the mask(X) before it, or the set_A(X)
-    before a mask_at() or a rand_channel() (A is then X masked with an
-    erasable word or a channel), with nothing between but steps that leave
-    A as it is. A helper's first argument, for pack_flag(). Where a
-    function begins before a mask is found, every caller of the function
-    is followed the same way.
-  - Each mission's text is searched apart (#if LUMINARY099 and the
-    like), so a call whose mask differs between the two has both.
-  - Each mask that is a constant's name goes into a C file as a static
-    assert that its bit 15 is clear, under the #if of the mission that
-    compiles the call, and the C compiler says whether it holds, with
-    src/agc/names.h's own values.
-  - A call whose mask is no constant is in NOT_CONSTANT below, with what
-    bounds the word there instead. A call that is not listed, or a listed
-    one that is gone, fails.
+  - A CCS of A after a MASK with a constant. It finds the mask of the
+    call: the mask(X) before it, or the set_A(X) before a mask_at(), a
+    mask() of an erasable word or a rand_channel() (A is then X masked
+    with an erasable word or a channel), with nothing between but steps
+    that leave A as it is. A
+    helper's first argument, for pack_flag(). Where a function begins
+    before a mask is found, every caller of the function is followed the
+    same way. Each mission's text is searched apart (#if LUMINARY099 and
+    the like), so a call whose mask differs between the two has both.
+    Each mask that is a constant's name goes into a C file as a static
+    assert that its bit 15, the sign, is clear, under the #if of the
+    mission that compiles the call, and the C compiler says whether it
+    holds, with src/agc/names.h's own values.
+  - Any other call: a CCS of another word (a count, a major mode), or of
+    an A whose mask is no constant or was not found. A comment at the
+    call, on its lines or right above them, names the word and says what
+    keeps it from being negative, in one form:
+        CCS SPNDX, never negative: the loop's index, counted down 2, 1, 0.
+    The check holds the comment to that form, to the word of the call
+    (SPNDX for ADDRESS_OF(SPNDX), A for A_ADDRESS, W.IND for
+    ADDRESS_OF(W_IND)) and to a reason of three words at least. Whether
+    the reason is right, a person reads: these calls rest on the reason,
+    not on the compiler. One part of a reason the compiler does take: the
+    constants after the words "masked with" (FLAGWRD8 masked with
+    SURFFBIT; L masked with BIT1, BIT2, BIT5 or BIT6) get the same static
+    assert as a mask that was found. A call with neither a constant mask
+    nor such a comment fails.
 
---list prints every call and its mask. --self-check runs the search on
-made-up sources.
+--list prints every call with its mask, or with its reason and whether
+any of it is asserted. --self-check runs the search on made-up sources.
 """
 import re
 import subprocess
@@ -56,52 +67,28 @@ CONSTANT = re.compile(r'[A-Z][A-Z0-9_]*')
 KEEPS_A = ('ts', 'lxch', 'qxch', 'inhint', 'relint')        # steps that leave a masked A as it is
 MASKS_A = ('mask_at', 'rand_channel')                       # A masked with a word that is no constant
 HEADERS = ('agc/agc.h', 'agc/names.h')
+ERASABLE = re.compile(r'^#define (\w+) +ERASABLE\(', re.M)        # src/agc/names.h: a word, no constant
+VALUE = re.compile(r'^#define (\w+) +\(\(word\)KW_\w+\)', re.M)   # src/agc/names.h: a constant's value
+ABOVE = re.compile(r'\s*(?:/\*|\*)')                         # a comment's line
+REASON = re.compile(r'\bCCS ([^,]+), never negative: (.+)')   # the comment at a call with no constant mask
+MASKED = re.compile(r'\bmasked with ([A-Z][A-Z0-9_]*(?:(?:,? (?:or |and )?)[A-Z][A-Z0-9_]*\b)*)')
 
-MAJOR_MODE = ('a CCS of MMNUMBER, not of A: the major mode V37 was entered with (TS MMNUMBER at V37, and in '
-              'the CM at R00TOP00 too), a program\'s number')
-CHANNEL_33 = ('A is IMODES33 masked with the bit NXTIBT found (INDEX RUPTREG1; CAF BIT13): %s, since '
-              'C33JMP\'s %s word alone comes here')
+def erasables(found=[]):
+    """The names of src/agc/names.h that are erasable words (FLAGWRD7 is ERASABLE(K_FLAGWRD7)), not
+    constants."""
+    if not found:
+        found.append(set(ERASABLE.findall((SRC / HEADERS[1]).read_text())))
+    return found[0]
 
-# The calls whose mask is no constant: (file, function, helper, which call of the helper in it) and what
-# bounds the word instead, the missions that compile the call, and the constants the reason rests on:
-# they are asserted too.
-NOT_CONSTANT = {
-    ('p20_p25/radar_read.c', 'scalechk_with_bit', 'bit_set_in_A', 1):
-        ('A is the caller\'s scale bit masked with RADMODES, then RXOR with L, the same bit masked with '
-         'channel 33: no bit but the caller\'s, and the two callers load BIT9 and BIT3', 'lm', ('BIT9', 'BIT3')),
-    ('p20_p25/radar_read.c', 'bothlits', 'bit_set_in_A', 2):
-        ('A is FLGWRD11 masked with a word of fixed memory: HFLSHBIT, the constant BIT1, or the word before '
-         'it, BIT2 (INDEX ITEMP5, +0 or -1)', 'lm', ('BIT1', 'BIT2')),
-    ('q_r_axis/q_r_axis.c', 'x_translation', 'ccs_positive', 2):
-        ('a CCS of POLYTEMP, not of A: POLICY\'s word, a word of the table ALLJETS masked with one of '
-         'TYPEPOLY, jet bits of channel 5 (bits 1 to 8)', 'lm', ()),
-    ('q_r_axis/q_r_axis.c', 'selctsub', 'ccs_positive', 1):
-        ('A is POLYTEMP masked with CH5MASK in POLICY: jet bits of channel 5 again', 'lm', ()),
-    ('q_r_axis/q_r_axis.c', 'selctsub', 'ccs_positive', 2):
-        ('a CCS of NUMBERT, not of A: the THREE loaded above the loop, then what this CCS left of it', 'lm', ()),
-    ('fresh_start/v37.c', 'r00_after_downflag_xovinflg', 'positive', 1):
-        (MAJOR_MODE, 'lm', ()),
-    ('fresh_start/v37.c', 'roc_after_downflag_r21mark', 'positive', 1):
-        (MAJOR_MODE, 'cm', ()),
-    ('fresh_start/v37.c', 'seudop00_after_v37klean', 'positive', 1):
-        (MAJOR_MODE + ' (the CM\'s function is groupkil_after_v37klean)', 'both', ()),
-    ('fresh_start/v37.c', 'rake', 'positive', 1):
-        ('a CCS of MPAC, not of A: the ELEVEN loaded above the loop, then what this CCS left of it', 'cm', ()),
-    ('t4rupt/imu_monitor.c', 'tnontest_plus2', 'ccs_A_positive', 1):
-        ('A is IMODES30\'s complement masked with BIT7 at TNONTEST +1, or the +0 that NXTIFAIL\'s CCS leaves '
-         'of a -0, which comes straight here', 'both', ('BIT7',)),
-    ('t4rupt/imu_monitor.c', 'setglock', 'ccs_A_positive', 1):
-        ('A is the word SETGLOCK +1 masked with BIT6, masked again with DSPTAB +11D', 'both', ('BIT6',)),
-    ('t4rupt/imu_monitor.c', 'imucage', 'ccs_A_positive', 1):
-        ('A is IMODES30 masked with the bit NXTIFBIT found (INDEX RUPTREG1; CAF BIT14): BIT11, since '
-         'IFAILJMP\'s fourth word alone comes here', 'both', ('BIT11',)),
-    ('t4rupt/imu_monitor.c', 'pipfail', 'ccs_A_positive', 1):
-        (CHANNEL_33 % ('BIT13', 'first'), 'both', ('BIT13',)),
-    ('t4rupt/imu_monitor.c', 'dntmfast', 'ccs_A_positive', 1):
-        (CHANNEL_33 % ('BIT12', 'second'), 'both', ('BIT12',)),
-    ('t4rupt/imu_monitor.c', 'uptmfast', 'ccs_A_positive', 1):
-        (CHANNEL_33 % ('BIT11', 'third'), 'both', ('BIT11',)),
-}
+
+def values(found={}):
+    """The names of src/agc/names.h that are constants with a value (BIT7 is (word)KW_BIT7), not words
+    of the erasable memory and not places of the fixed: {'lm': those the LM's program has, 'cm': ...}."""
+    if not found:
+        names = (SRC / HEADERS[1]).read_text()
+        found.update({mission: set(VALUE.findall(style_check.for_mission(names, mission == 'lm')))
+                      for mission in ('lm', 'cm')})
+    return found
 
 
 def functions(code):
@@ -167,11 +154,12 @@ def mask_before(code, defined, at, wanted='mask', depth=0):
         if name is None or before[-1] not in ';{}':
             return None, 'a step that is no plain call comes before the CCS'
         arguments = arguments.strip()
-        if wanted == 'mask' and name == 'mask' or wanted == 'set' and name == 'set_A':
-            if CONSTANT.fullmatch(arguments):
+        word = arguments in erasables()
+        if wanted == 'mask' and name == 'mask' and not word or wanted == 'set' and name == 'set_A':
+            if CONSTANT.fullmatch(arguments) and not word:
                 return [arguments], None
             return None, f'the mask is {arguments}, no constant\'s name'
-        if wanted == 'mask' and name in MASKS_A:
+        if wanted == 'mask' and (name in MASKS_A or name == 'mask'):    # mask(FLAGWRD7): an erasable word
             wanted = 'set'
         elif not (wanted == 'mask' and name in KEEPS_A):
             return None, f'{name}() comes before the CCS'
@@ -185,38 +173,84 @@ def as_compiled(code, lm):
     return '\n'.join(line if keep == line else ' ' * len(line) for line, keep in zip(code.split('\n'), kept))
 
 
+def said_at(text, first, last):
+    """The comments at a call whose lines are first to last (counted from 1), each as one line: those
+    on the call's lines and on the comment's lines right above them."""
+    lines = text.split('\n')
+    top = first
+    while top > 1 and ABOVE.match(lines[top - 2]):
+        top -= 1
+    return [' '.join(re.sub(r'\n\s*\*(?=\s)', ' ', comment).split()) for comment in
+            style_check.COMMENT.findall('\n'.join(lines[top - 1:last]))]
+
+
+def plain(name):
+    """A word's name with its letters and digits only: W.IND and W_IND are the same word."""
+    return re.sub(r'[^A-Z0-9]', '', name.upper())
+
+
+def word_of(first):
+    """The word a call looks at, by its argument: A for A_ADDRESS, MPAC +1 for ADDRESS_OF(MPAC) + 1u."""
+    name = re.sub(r'\bADDRESS_OF\(([^()]*)\)', r'\1', first)
+    return plain(re.sub(r'(\d)u\b', r'\1', re.sub(r'_ADDRESS\b', '', name)))
+
+
+def reasoned(said, first):
+    """The reason a call's comments give that its word is never negative, or None: the comment names
+    the word of the call, CCS X, never negative: and has three words more at least."""
+    for comment in said:
+        told = REASON.search(comment)
+        if told and plain(told.group(1)) == word_of(first) and \
+                len(style_check.WORD.findall(told.group(2))) >= style_check.REASON_WORDS:
+            return told.group(2)
+    return None
+
+
+def masks_named(reason, here='both'):
+    """The constants a reason says the word is masked with, each with the missions that have it,
+    [(mission, constant)]: those the compiler can hold to a clear bit 15 (an erasable word or a place
+    named there is passed over). here: the missions that compile the call."""
+    out = []
+    for name in (name for told in MASKED.finditer(reason) for name in CONSTANT.findall(told.group(1))):
+        has = [mission for mission in ('lm', 'cm') if here in ('both', mission) and name in values()[mission]]
+        if has:
+            out.append(('both' if len(has) == 2 else has[0], name))
+    return out
+
+
 def sites(file, text):
-    """Each call of a helper in one file: (function, which call of that helper in it, line, helper,
-    [(mission, constant)] or None, why not). mission: 'lm', 'cm' or 'both', the programs that compile
-    the call with that mask."""
+    """Each call of a helper in one file: (function, line, helper, [(mission, constant)] or None, why
+    not, the comments at the call, the call's first argument, the missions that compile the call).
+    mission: 'lm', 'cm' or 'both', the programs that compile the call with that mask."""
     code = style_check.blanked(text)
     missions = {'lm': as_compiled(code, True), 'cm': as_compiled(code, False)}
     defined = {mission: functions(compiled_code) for mission, compiled_code in missions.items()}
-    out, count = [], {}
+    out = []
     for found in CALL.finditer(code):
         if OWN.search(code, code.rfind('\n', 0, found.start()) + 1, found.start()):
             continue                                            # the helper's own definition, or a prototype
         helper = found.group(1)
         function = next((within(defined[mission], found.start())[0] for mission in missions
                          if missions[mission][found.start():found.end()].strip()), None)
-        if function is None:
-            line = code.count('\n', 0, found.start()) + 1
-            out.append((f'line {line}', 1, line, helper, None, 'the call is in no function that was found'))
-            continue
-        count[function, helper] = which = count.get((function, helper), 0) + 1
         line = code.count('\n', 0, found.start()) + 1
-        _, arguments, _ = argument(code, style_check_close(code, found.end() - 1))
+        close = style_check_close(code, found.end() - 1)
+        said = said_at(text, line, code.count('\n', 0, close) + 1)
+        if function is None:
+            out.append((f'line {line}', line, helper, None, 'the call is in no function that was found', [],
+                        '', 'both'))
+            continue
+        _, arguments, _ = argument(code, close)
         first = arguments.split(',')[0].strip()
-        of = re.fullmatch(r'ccs(?:_at|_register)?\((.*)\)', first)       # positive(ccs_at(X)): a CCS of X
         got, why = {}, None
+        here = [mission for mission in missions if missions[mission][found.start():found.end()].strip()]
         for mission, compiled_code in missions.items():
             if not compiled_code[found.start():found.end()].strip():
                 continue                                        # the other mission's line
             if helper == 'pack_flag':
                 masks, reason = ([first], None) if CONSTANT.fullmatch(first) else \
                     (None, f'the flag\'s bit is {first}')
-            elif helper == 'ccs_positive' and first != 'A_ADDRESS' or of and of.group(1) != 'A_ADDRESS':
-                masks, reason = None, f"a CCS of {of.group(1) if of else first}, not of A"
+            elif first != 'A_ADDRESS':
+                masks, reason = None, f'a CCS of {first}, not of A'
             else:
                 masks, reason = mask_before(compiled_code, defined[mission], found.start())
             if masks is None:
@@ -227,7 +261,7 @@ def sites(file, text):
             same = got.get('lm') == got.get('cm')
             got = [('both' if same else mission, name) for mission, masks in got.items() for name in masks
                    if not (same and mission == 'cm')]
-        out.append((function, which, line, helper, got, why))
+        out.append((function, line, helper, got, why, said, first, 'both' if len(here) == 2 else here[0]))
     return out
 
 
@@ -270,29 +304,39 @@ def compiled(source):
 
 
 def self_check():
-    made = '''static void lamp(void)
+    made = """static void lamp(void)
 {
     mask_at(RADMODES);
-    if (bit_set_in_A()) on();
+    if (ccs_positive(A_ADDRESS)) on();
 }
 void first(void)
 {
     ca(STATE);
     mask(RNDVZBIT);
     ts(Q_ADDRESS);
-    if (bit_set_in_A()) return;
+    if (ccs_positive(A_ADDRESS)) return;
     set_A(BIT4);
     rand_channel(CHAN33);
-    if (!bit_set_in_A()) {
+    if (!ccs_positive(A_ADDRESS)) {
         set_A(BIT8);
         lamp();
     }
     ca(FLGWRD11);
     mask_at(indexed(HFLSHBIT, fetch(ITEMP5)));
-    if (bit_set_in_A()) return;
-    policy();
+    /* CCS A, never negative: FLGWRD11 masked with BIT1 or BIT2, HFLSHBIT or the
+     * word before it, then masked with RADMODES. */
     if (ccs_positive(A_ADDRESS)) return;
-    if (ccs_positive(ADDRESS_OF(NUMBERT))) return;
+    policy();
+    if (ccs_positive(A_ADDRESS)) return; /* TCF +2 */
+    do {
+        step();
+        /* CCS NUMBERT, never negative: the THREE loaded above, counted down. */
+    } while (ccs_positive(ADDRESS_OF(NUMBERT))); /* TCF -3 */
+    if (ccs_positive(ADDRESS_OF(NUMBERT))) return; /* CCS NUMBERT, never negative */
+    /* CCS A, never negative: the THREE loaded above, counted down. */
+    if (ccs_positive(ADDRESS_OF(W_IND) + 1u)) return;
+    /* CCS W.IND +1, never negative: masked with BIT9, BIT3 and POODOO. */
+    if (ccs_positive(ADDRESS_OF(W_IND) + 1u)) return;
     pack_flag(REFSMBIT, ADDRESS_OF(FLAGWRD3), BIT7);
 }
 void second(void)
@@ -302,21 +346,23 @@ void second(void)
     mask_at(ADDRESS_OF(FLAGWRD0));
 #else
     set_A(IMUSEFLG);
-    mask_at(ADDRESS_OF(STATE));
+    mask(FLAGWRD7);
 #endif
-    if (ccs_A_positive()) return;
+    if (ccs_positive(A_ADDRESS)) return;
 #if COMANCHE055
     mask(BIT7);
-    if (ccs_A_positive()) return;
+    if (ccs_positive(A_ADDRESS)) return;
 #endif
-    if (positive(ccs_at(ADDRESS_OF(MMNUMBER)))) return;
 }
-'''
-    expect = [('lamp', [('both', 'BIT8')]), ('first', [('both', 'RNDVZBIT')]), ('first', [('both', 'BIT4')]),
-              ('first', None), ('first', None), ('first', None), ('first', [('both', 'REFSMBIT')]),
-              ('second', [('lm', 'IMUSEBIT'), ('cm', 'IMUSEFLG')]), ('second', [('cm', 'BIT7')]),
-              ('second', None)]
-    got = [(function, masks) for function, _, _, _, masks, _ in sites('made/up.c', made)]
+"""
+    expect = [('lamp', [('both', 'BIT8')], None), ('first', [('both', 'RNDVZBIT')], None),
+              ('first', [('both', 'BIT4')], None), ('first', None, ['BIT1', 'BIT2']), ('first', None, None),
+              ('first', None, []), ('first', None, None), ('first', None, None), ('first', None, ['BIT9', 'BIT3']),
+              ('first', [('both', 'REFSMBIT')], None),
+              ('second', [('lm', 'IMUSEBIT'), ('cm', 'IMUSEFLG')], None), ('second', [('cm', 'BIT7')], None)]
+    got = [(function, masks, None if masks or reasoned(said, first) is None else
+            [name for _, name in masks_named(reasoned(said, first), here)])
+           for function, _, _, masks, _, said, first, here in sites('made/up.c', made)]
     wrong = 0 if got == expect else 1
     if wrong:
         print(f'FAIL the made-up source: {got}, not {expect}')
@@ -336,39 +382,39 @@ void second(void)
 def main():
     if '--self-check' in sys.argv:
         return self_check()
-    found, loose, listing, calls = [], {}, [], 0
+    found, listing, bad, calls, told, named = [], [], [], 0, 0, 0
     for path in sorted(SRC.glob('*/*.[ch]')):
         file = str(path.relative_to(SRC))
-        for function, which, line, helper, masks, why in sites(file, path.read_text()):
+        for function, line, helper, masks, why, said, first, here in sites(file, path.read_text()):
             calls += 1
-            if masks is None:
-                loose[file, function, helper, which] = (line, why)
-                listing.append(f'src/{file}:{line}: {helper}() in {function}(): no constant ({why})')
-            else:
+            where = f'src/{file}:{line}: {helper}() in {function}()'
+            reason = None if masks is not None else reasoned(said, first)
+            if masks is not None:
                 found += [(mission, name, f'src/{file}:{line}') for mission, name in masks]
-                listing.append(f'src/{file}:{line}: {helper}() in {function}(): ' + ', '.join(
+                listing.append(f'{where}: ' + ', '.join(
                     name if mission == 'both' else f'{name} ({mission.upper()})' for mission, name in masks))
-    bad = []
-    for key in sorted(set(loose) - set(NOT_CONSTANT)):
-        line, why = loose[key]
-        bad.append(f'src/{key[0]}:{line}: {key[2]}() in {key[1]}() has no constant mask ({why}) and is not listed')
-    for key in sorted(set(NOT_CONSTANT) - set(loose)):
-        bad.append(f'src/{key[0]}: the listed call {key[3]} of {key[2]}() in {key[1]}() is not there, or has a '
-                   'constant mask')
-    for key, (reason, mission, names) in sorted(NOT_CONSTANT.items()):
-        found += [(mission, name, f'src/{key[0]} {key[1]}()') for name in names]
+            elif reason is not None:
+                told += 1
+                constants = masks_named(reason, here)
+                named += bool(constants)
+                found += [(mission, name, f'src/{file}:{line}') for mission, name in constants]
+                listing.append(f'{where}: no constant mask ({why}); CCS {first}, never negative: {reason} [' + (
+                    'asserted: ' + ', '.join(name for _, name in constants) if constants else
+                    'by the reason alone') + ']')
+            else:
+                bad.append(f'{where} has no constant mask ({why}), and no comment at the call says CCS '
+                           f'{first}, never negative: and why')
     said = compiled(asserts(found))
     if said:
         bad.append('the masks\' static asserts do not compile:\n' + said)
     if '--list' in sys.argv:
         print('\n'.join(listing))
-        for key, (reason, _, _) in sorted(NOT_CONSTANT.items()):
-            print(f'not a constant: src/{key[0]}, {key[1]}(), call {key[3]} of {key[2]}(): {reason}')
     for line in bad:
         print('FAIL ' + line)
     print(f"{'FAIL' if bad else 'ok  '} ccs helpers: {calls} calls of {', '.join(HELPERS)}; "
-          f'{calls - len(loose)} with constant masks, {len(found)} static asserts of a clear bit 15 compiled; '
-          f'{len(loose)} with no constant mask, {len(set(loose) & set(NOT_CONSTANT))} of them as listed')
+          f'{len(listing) - told} after constant masks; {told} more with a reason at the call, {named} of '
+          f'them naming constants that mask the word and {told - named} by the reason alone; {len(found)} '
+          f'static asserts of a clear bit 15 compiled; {calls - len(listing)} with neither')
     return 1 if bad else 0
 
 

@@ -92,7 +92,7 @@ static void entpashi(void)
     }
     set_A(THREE);
     mask_at(ADDRESS_OF(DECBRNCH)); /* CCS A: MASK leaves 0 to 3 */
-    if (ccs_at(A_ADDRESS) != POSITIVE) {
+    if (!ccs_positive(A_ADDRESS)) {
         tc_at(ENTPASHI + 010u); /* TC ACCEPTWD: "OCTAL. ANY NUMBER OF CHAR OK." */
         acceptwd();
         return;

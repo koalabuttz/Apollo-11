@@ -123,7 +123,7 @@ void makeprio_after_linuschr(void)
 {
     ca(ADDRESS_OF(FLAGWRD4));
     mask(OCT20100);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         priobort();
         return;
     }
@@ -163,10 +163,12 @@ void oktoplay(void)
     ror_superbnk();
     ts(ADDRESS_OF(RESTREG));
     ca(ADDRESS_OF(FLAGWRD4));
-    mask(PMMASK);
-    if (ccs_register(A_ADDRESS) != IS_PLUS_ZERO) {
-        continue_at(GOSLEEPS);
-        return;
+    mask(PMMASK); /* (OCT 66521: bit 15 too, so the masked word can be negative) */
+    switch (ccs_register(A_ADDRESS)) {
+    case POSITIVE: continue_at(GOSLEEPS); return; /* TCF GOSLEEPS, "MARK GOING" */
+    case IS_PLUS_ZERO: break;                     /* TCF +2 */
+    case NEGATIVE: continue_at(GOSLEEPS); return; /* TCF GOSLEEPS */
+    case IS_MINUS_ZERO: break; /* (never: PMMASK is not -0, so no masked word is) */
     }
     tc_at((word)(OKTOPLAY + 013u));
     witchone();
@@ -182,7 +184,7 @@ void iflegal_after_linuschr(void)
 {
     cs(ADDRESS_OF(EBANKTEM));
     mask(BIT4);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         oktoplay(); /* "NO" */
         return;
     }

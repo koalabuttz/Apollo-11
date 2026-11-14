@@ -411,7 +411,7 @@ void rrlosdsp_after_delayjob(void)
 {
     set_A(BIT5);
     mask_at(ADDRESS_OF(EXTVBACT));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc(RRLOSDSP + 055u, RRLOSDSP);
         return;
     }

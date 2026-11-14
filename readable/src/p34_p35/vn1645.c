@@ -96,7 +96,8 @@ void s34_35_5_compare(void)
         cs(indexed(ADDRESS_OF(DELVLVC), Q));
         ad_at(indexed(ADDRESS_OF(GDT_2), Q));
         ads(L_ADDRESS);
-    } while (ccs_at(Q_ADDRESS) == POSITIVE); /* CCS Q; TCF NTARGCHK */
+        /* CCS Q, never negative: the loop's index, FIVE counted down. */
+    } while (ccs_positive(Q_ADDRESS)); /* CCS Q; TCF NTARGCHK */
     lxch(A_ADDRESS);
     if (A_is_zero()) { /* EXTEND; BZF +3 */
         s34_35_5_after_upflag();

@@ -168,7 +168,9 @@ void cmdsout(void)
     case POSITIVE:
     case IS_PLUS_ZERO: chkstrk(); return;
     case NEGATIVE:
-        if (ccs_register(A_ADDRESS) == IS_PLUS_ZERO) { /* (A +0 or positive) */
+        /* CCS A, never negative: what the CCS of TVCPHASE left, "THE
+         * DIMINISHED ABSOLUTE". */
+        if (!ccs_positive(A_ADDRESS)) {
             phschk2_mrclean();
             return;
         }
@@ -194,9 +196,15 @@ void phschk2_mrclean(void)
  * AND" "CALLS TVC DAPS VIA DAPINIT)" (POSTJUMP). */
 void chkstrk(void)
 {
-    enum sign stroker = ccs_at(ADDRESS_OF(STROKER));
+    bool in_progress = false;
 
-    if (stroker == POSITIVE || stroker == NEGATIVE) { /* TSTINITJ */
+    switch (ccs_at(ADDRESS_OF(STROKER))) {
+    case POSITIVE: in_progress = true; break; /* TCF TSTINITJ */
+    case IS_PLUS_ZERO: break;                 /* TCF +2 */
+    case NEGATIVE: in_progress = true; break; /* TCF TSTINITJ */
+    case IS_MINUS_ZERO: break;
+    }
+    if (in_progress) { /* TSTINITJ */
         set_A(ZERO);
         ts(ADDRESS_OF(STROKER));
     }

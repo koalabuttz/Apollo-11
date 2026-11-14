@@ -336,7 +336,7 @@ void ascterm_after_exit(void)
 {
     ca(ADDRESS_OF(FLAGWRD9));
     mask(FLRCSBIT);
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         ascterm3();
         return;
     }
@@ -364,13 +364,13 @@ void ascterm1_after_exit(void)
 {
     ca(ADDRESS_OF(FLAGWRD9));
     mask(FLRCSBIT);
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         ascterm3();
         return;
     }
     ca(ADDRESS_OF(FLAGWRD8));
     mask(FLUNDBIT);
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         ascterm3();
         return;
     }

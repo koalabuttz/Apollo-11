@@ -102,7 +102,8 @@ void wlinit_zero_w(void)
         ts(ADDRESS_OF(W_IND));
         set_A(ZERO);
         ts(indexed(ADDRESS_OF(W), fetch(ADDRESS_OF(W_IND)))); /* INDEX W.IND; TS W */
-        if (ccs_at(ADDRESS_OF(W_IND)) != POSITIVE) break;
+        /* CCS W.IND, never negative: the loop's index, WSIZE counted down. */
+        if (!ccs_positive(ADDRESS_OF(W_IND))) break;
         tc_at(WLINIT + 011u); /* TC -5 */
     }
     continue_at(WLINIT + 012u);

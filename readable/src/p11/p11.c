@@ -292,9 +292,12 @@ void matrxjob_after_phaschng(void)
     ts(ADDRESS_OF(TBASE5));
     cs(ADDRESS_OF(TIME1));
     ad(TWO_SECS);
-    /* CCS A: "TIME POSITIVE" (TCF +3), and for +0 or -0 A is +0; "TIME
-     * NEGATIVE - SET TO 1". */
-    if (ccs_register(A_ADDRESS) == NEGATIVE) set_A(ZERO);
+    switch (ccs_register(A_ADDRESS)) { /* "CHECK TO INSURE DT IS POSITIVE" */
+    case POSITIVE: break;              /* TCF +3, "TIME POSITIVE" */
+    case IS_PLUS_ZERO: break;          /* TCF +2, "CANNOT GET HERE" */
+    case NEGATIVE: set_A(ZERO); break; /* "TIME NEGATIVE - SET TO 1" */
+    case IS_MINUS_ZERO: break;         /* (the AD ONE is the next word; A is +0) */
+    }
     ad(ONE);                           /* "RESTORE TIME  -  OR MAKE POSITIVE" */
     tc_to(MATRXJOB + 0124u, WAITLIST); /* 2CADR READACCS */
 }
@@ -329,9 +332,11 @@ void rep11(void)
     switch (ccs_at(ADDRESS_OF(PHASE5))) {
     case POSITIVE: tc_to(REP11 + 2u, ENDOFJOB); return;
     case IS_PLUS_ZERO:
-        if (ccs_at(ADDRESS_OF(LIFTTEMP)) == IS_MINUS_ZERO) {
-            p11_plus7();
-            return;
+        switch (ccs_at(ADDRESS_OF(LIFTTEMP))) {
+        case POSITIVE:        /* TCF +4 */
+        case IS_PLUS_ZERO:    /* TCF +3 */
+        case NEGATIVE: break; /* TCF +2 */
+        case IS_MINUS_ZERO: p11_plus7(); return;
         }
         break;
     case NEGATIVE: break;

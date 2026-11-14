@@ -362,7 +362,7 @@ void rrdesnbk_after_testxact(void)
 {
     set_A(RNDVZBIT);
     mask_at(ADDRESS_OF(FLAGWRD0));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(XACTALM); /* "OPERADOR ERROR IF IN P20" */
         return;
     }
@@ -452,7 +452,7 @@ void rrdesk2_plus3(void)
 {
     ca(ADDRESS_OF(PRIORITY));
     mask(LOW9);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         unsigned vac_use = A; /* INDEX A */
         if (vac_use < 061u) not_modelled();
         ts(vac_use); /* TS A */
@@ -598,7 +598,7 @@ void aurlokon_plus017(void)
 {
     ca(ADDRESS_OF(OPTIONX) + 1u);
     mask(BIT2);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(NOLOKON); /* TCF NOLOKON */
         return;
     }
@@ -855,19 +855,19 @@ void rdruseck(void)
 {
     cs(ADDRESS_OF(FLAGWRD3)); /* "IS R29 ON?" */
     mask(NR29FBIT);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc(RDRUSECK + 3u, ALM_END); /* "YES" */
         return;
     }
     ca(ADDRESS_OF(FLAGWRD5)); /* "IS R77 RUNNING?" */
     mask(R77FLBIT);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc(RDRUSECK + 7u, ALM_END); /* "YES." */
         return;
     }
     cs(ADDRESS_OF(FLAGWRD7)); /* "IS SERVICER RUNNING ..." */
     mask(V37FLBIT);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(CHECKRR); /* "NO" */
         return;
     }
@@ -897,7 +897,7 @@ void checkrr(void)
 void checkrr_plus1(void)
 {
     mask(TRACKBIT);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(CHECKP22); /* "NO, CHECK FOR P22." */
         return;
     }
@@ -910,7 +910,7 @@ void ckrndbit(void)
 {
     ca(ADDRESS_OF(FLAGWRD0));
     mask(RNDVZBIT);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc(CKRNDBIT + 3u, ALM_END);
         return;
     }
@@ -954,7 +954,7 @@ void imuattck_after_chkpooh(void)
     set_A(OCTAL30); /* "CHECK IF IMU ZERO AND IMU COARSE ARE ON" */
 #endif
     rand_channel(CHAN12);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(ALM_END); /* "NOT ALLOWED IF IMU COARSE OR IMU ZERO ON" */
         return;
     }
@@ -1121,13 +1121,13 @@ void cklftbts(void)
 {
     set_A(GRRBKBIT);
     mask_at(ADDRESS_OF(FLAGWRD5));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         return_to_q(); /* "YES" */
         return;
     }
     set_A(BIT5);
     rand_channel(CHAN30);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(Q_PLUS_1); /* TCF Q+1 */
         return;
     }

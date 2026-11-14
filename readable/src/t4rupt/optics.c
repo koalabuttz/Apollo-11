@@ -73,29 +73,17 @@ static void delopcmd(void);
 static void sendocmd(void);
 static void setbit(void);
 
-/* CCS A after a MASK of positive bits: true when a bit was set (A then
- * holds the masked word less one), false for +0. Such a MASK leaves neither
- * a negative word nor -0. This one helper stands for that CCS at each place
- * it is used, so it cannot follow the two outcomes that never come: what
- * the listing would run differs with the place. (make style-check holds
- * each place's mask to a clear sign bit: tools/ccs_helpers.py.) */
-static bool ccs_A_positive(void)
-{
-    switch (ccs_at(A_ADDRESS)) {
-    case POSITIVE: return true;
-    case IS_PLUS_ZERO: return false;
-    case NEGATIVE:
-    case IS_MINUS_ZERO: not_modelled(); /* never; what would run differs with the place */
-    }
-    return false;
-}
-
 /* The listing's ABS(X) less a constant (CCS X; AD K; TCF +2; TCF -2, K
  * negative): after the CCS A holds |X| - 1, and both nonzero ways go
  * through AD K; for +0 or -0, A is left +0. */
 static void abs_less(enum sign x, word k)
 {
-    if (x == POSITIVE || x == NEGATIVE) ad(k);
+    switch (x) {
+    case POSITIVE: ad(k); break; /* AD K */
+    case IS_PLUS_ZERO: break;    /* TCF +2 */
+    case NEGATIVE: ad(k); break; /* TCF -2: the AD K */
+    case IS_MINUS_ZERO: break;
+    }
 }
 
 /* ======================================================================
@@ -112,7 +100,7 @@ void optmon(void)
     rxor_channel(CHAN30); /* EXTEND; RXOR CHAN30 */
     mask(BIT7);
     ts(ADDRESS_OF(RUPTREG1));
-    if (ccs_A_positive()) {         /* CCS A */
+    if (ccs_positive(A_ADDRESS)) {  /* CCS A */
         tc_at((word)(OPTMON + 6u)); /* TC OCDUFTST */
         ocduftst();
     }
@@ -127,9 +115,11 @@ void optmon(void)
  * "MANUAL-SET ZERO", "CSC-SET SWSAMPLE POS", "ZOPTICS-SET SWSAMPLE (-1)". */
 static void optmon33(void)
 {
-    if (ccs_at(ADDRESS_OF(OPTIND)) == IS_MINUS_ZERO) { /* TCF +4, +3, +2; TCF RESUME */
-        continue_at(RESUME);
-        return;
+    switch (ccs_at(ADDRESS_OF(OPTIND))) {
+    case POSITIVE:                                   /* TCF +4 */
+    case IS_PLUS_ZERO:                               /* TCF +3 */
+    case NEGATIVE: break;                            /* TCF +2 */
+    case IS_MINUS_ZERO: continue_at(RESUME); return; /* TCF RESUME */
     }
     ca(ADDRESS_OF(OPTMODES));
     rxor_channel(CHAN33); /* EXTEND; RXOR CHAN33 */
@@ -145,7 +135,7 @@ static void optmon33(void)
         return;
     }
     mask(BIT5); /* "SEE IF CSC" */
-    if (ccs_A_positive())
+    if (ccs_positive(A_ADDRESS))
         tc_at((word)(SETSAMP - 2u)); /* TC +2 */
     else
         set_A(NEGONE); /* CAF NEGONE */
@@ -306,7 +296,7 @@ static enum back_to zopfini(void)
 {
     set_A(BIT1);
     mask_at(ADDRESS_OF(OPTMODES));
-    if (ccs_A_positive()) {          /* CCS A */
+    if (ccs_positive(A_ADDRESS)) {   /* CCS A */
         tc_at((word)(ZOPFINI + 3u)); /* TC RESUME */
         continue_at(RESUME);
         return NOWHERE;
@@ -320,9 +310,9 @@ static enum back_to zopfini(void)
 static enum back_to zopfin2(void)
 {
     mask_at(ADDRESS_OF(OPTMODES));
-    if (ccs_A_positive()) {    /* ZOPFIN3: CCS A */
-        incr(Q_ADDRESS);       /* INCR Q */
-        tc_through(Q_ADDRESS); /* TC Q */
+    if (ccs_positive(A_ADDRESS)) { /* ZOPFIN3: CCS A */
+        incr(Q_ADDRESS);           /* INCR Q */
+        tc_through(Q_ADDRESS);     /* TC Q */
         return L_PLUS_2;
     }
     tc_through(Q_ADDRESS); /* TC Q */
@@ -599,14 +589,14 @@ static void ocduftst(void)
 {
     set_A(BIT7); /* CAF BIT7 */
     rand_channel(CHAN30);
-    if (ccs_A_positive()) { /* TCF OPFAILOF: "OCDUFAIL LIGHT OFF" */
+    if (ccs_positive(A_ADDRESS)) { /* TCF OPFAILOF: "OCDUFAIL LIGHT OFF" */
         opfailof();
         return;
     }
     set_A(BIT2); /* CAF BIT2 */
     mask_at(ADDRESS_OF(OPTMODES));
-    if (ccs_A_positive()) {    /* "OCDUFAIL INHIBITED" */
-        tc_through(Q_ADDRESS); /* TC Q */
+    if (ccs_positive(A_ADDRESS)) { /* "OCDUFAIL INHIBITED" */
+        tc_through(Q_ADDRESS);     /* TC Q */
         return;
     }
     opfailon();
@@ -646,8 +636,8 @@ static void opfailof(void)
 {
     set_A(BIT1); /* CAF BIT1 */
     mask_at(ADDRESS_OF(IMODES33));
-    if (ccs_A_positive()) {    /* "LAMP TEST IN PROGRESS" */
-        tc_through(Q_ADDRESS); /* TC Q */
+    if (ccs_positive(A_ADDRESS)) { /* "LAMP TEST IN PROGRESS" */
+        tc_through(Q_ADDRESS);     /* TC Q */
         return;
     }
     set_A(BIT8); /* CAF BIT8 */
@@ -717,7 +707,7 @@ static void contdrve(void)
     }
     set_A(BIT10); /* CAF BIT10 */
     mask_at(ADDRESS_OF(OPTMODES));
-    if (!ccs_A_positive()) {            /* CCS A */
+    if (!ccs_positive(A_ADDRESS)) {     /* CCS A */
         tc_at((word)(CONTDRVE + 014u)); /* TC ALARM; OCT 00120: "OPTICS NOT ZEROED" */
         continue_at(ALARM);
         return;
@@ -780,7 +770,8 @@ static void storcmd(void)
 {
     lxch(
         indexed(ADDRESS_OF(COMMANDO), fetch(ADDRESS_OF(OPTIND)))); /* INDEX OPTIND; LXCH COMMANDO */
-    if (ccs_at(ADDRESS_OF(OPTIND)) == POSITIVE) {                  /* CCS OPTIND; TCF OPT2 */
+    /* CCS OPTIND, never negative: the loop's index, 1 and then 0. */
+    if (ccs_positive(ADDRESS_OF(OPTIND))) { /* CCS OPTIND; TCF OPT2 */
         opt2();
         return;
     }
@@ -914,12 +905,15 @@ static void nextopt_plus1(void)
 {
     ad(NEG0);
     ts(indexed(ADDRESS_OF(CDUTCMD), fetch(ADDRESS_OF(OPTIND)))); /* INDEX OPTIND; TS CDUTCMD */
-    if (ccs_at(ADDRESS_OF(OPTIND)) == POSITIVE) {                /* CCS OPTIND */
-        tc_at((word)(NEXTOPT + 5u));                             /* TC CMDSETUP +1 */
+    /* CCS OPTIND, never negative: the loop's index, 1 and then 0. */
+    if (ccs_positive(ADDRESS_OF(OPTIND))) {
+        tc_at((word)(NEXTOPT + 5u)); /* TC CMDSETUP +1 */
         cmdsetup_plus1();
         return;
     }
-    if (ccs_at(ADDRESS_OF(ITEMP1)) == POSITIVE) { /* CCS ITEMP1; TCF SENDOCMD */
+    /* CCS ITEMP1, never negative: the send indicator, +0 at STORCMD and
+     * counted up from there. */
+    if (ccs_positive(ADDRESS_OF(ITEMP1))) { /* TCF SENDOCMD */
         sendocmd();
         return;
     }

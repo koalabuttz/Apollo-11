@@ -51,7 +51,7 @@ void prog52_after_r02both(void)
 {
     set_A(PFRATBIT);
     mask_at(ADDRESS_OF(FLAGWRD2));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(PROG52 + 5u); /* TC P52A */
         p52a();
     } else {
@@ -222,7 +222,7 @@ static void p52v(void)
 {
     ca(ADDRESS_OF(OPTION2));
     mask(BIT2);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(P52V + 3u); /* TC P52W */
         p52w();
     } else {

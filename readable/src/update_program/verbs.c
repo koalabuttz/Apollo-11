@@ -49,8 +49,8 @@ static bool ckmdmore(void)
 {
     cs(ADDRESS_OF(FLAGWRD5));
     mask(BIT8);
-    if (ccs_register(A_ADDRESS) == POSITIVE) return false; /* UPERLEM */
-    set_A(negate(TWO));                                    /* CS TWO */
+    if (ccs_positive(A_ADDRESS)) return false; /* UPERLEM */
+    set_A(negate(TWO));                        /* CS TWO */
     mask_at(ADDRESS_OF(MODREG));
     switch (ccs_register(A_ADDRESS)) {
     case POSITIVE: return false; /* UPERCMC */

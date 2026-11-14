@@ -150,7 +150,8 @@ static void incrdcdu(void)
         ca(indexed(ADDRESS_OF(NCDU), axis));    /* CDUXD, CDUYD, CDUZD EVERY TENTH */
         xch(indexed(ADDRESS_OF(BCDU), axis));   /* SECOND BY LEM DAP" */
         ts(indexed(ADDRESS_OF(CDUXD), axis));
-    } while (ccs_at(ADDRESS_OF(SPNDX)) == POSITIVE); /* "LOOP FOR THREE AXES" */
+        /* CCS SPNDX, never negative: the loop's index, counted down 2, 1, 0. */
+    } while (ccs_positive(ADDRESS_OF(SPNDX))); /* "LOOP FOR THREE AXES" */
     relint();
     tmanuchk();
 }
@@ -268,7 +269,8 @@ void manustat_after_exit(void)
         mp_at(indexed(ADDRESS_OF(BRATE), fetch(ADDRESS_OF(KDPNDX))));
         dv_at(indexed(ADDRESS_OF(1JACC), axis)); /* "=AJX $ 90 DEG/SEC-SEC" */
         ts(indexed(ADDRESS_OF(DELPEROR), axis)); /* "$ 180 DEG" */
-    } while (ccs_at(ADDRESS_OF(KSPNDX)) == POSITIVE);
+        /* CCS KSPNDX, never negative: the loop's index, counted down 2, 1, 0. */
+    } while (ccs_positive(ADDRESS_OF(KSPNDX)));
     ca(ADDRESS_OF(TIME1));
     ad(ONESEK_LOW);
     xch(ADDRESS_OF(NEXTIME));
@@ -466,7 +468,8 @@ static void incrdcdu(void)
         ca(indexed(ADDRESS_OF(NCDU), axis));      /* DCDU EVERY TENTH SEC BY LEM DAP" */
         xch(indexed(ADDRESS_OF(BCDU), axis));
         ts(indexed(ADDRESS_OF(CDUXD), pair));
-    } while (ccs_at(ADDRESS_OF(KSPNDX)) == POSITIVE); /* "LOOP FOR THREE AXES" */
+        /* CCS KSPNDX, never negative: the loop's index, counted down 2, 1, 0. */
+    } while (ccs_positive(ADDRESS_OF(KSPNDX))); /* "LOOP FOR THREE AXES" */
     relint();
     tmanuchk();
 }

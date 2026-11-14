@@ -1,8 +1,12 @@
-# The breaks of STYLE.md that tools/style_check.py counts, by rule and
-# directory of src/: what is still owed of issue #1334. The check holds
-# the tree to these counts; `tools/style_check.py --write` writes them.
-# A directory that is not here owes nothing that the check sees and may
-# not break a rule. (What the check does not see yet: README.md, Gates.)
+# The breaks of STYLE.md that tools/style_check.py finds and that are still
+# owed a fix (issue #1334), one line each: the rule, the file, the
+# function, a digest of the line's text, and which such line of the
+# function it is. Under each, the line as it stood when this was written.
+# The check holds the tree to these lines: a break that is not here fails,
+# and so does a line here that the tree no longer has (a fix: take it off
+# with `tools/style_check.py --write`, which only takes off). A file that
+# is not here owes nothing that the check sees. (What the check does not
+# see yet: README.md, Gates.)
 #
 # Owed in all: nothing.
 

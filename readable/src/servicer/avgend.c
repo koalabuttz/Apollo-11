@@ -94,7 +94,7 @@ void servidle(void)
     group_off(ADDRESS_OF(MINUS_PHASE1));
     ca(ADDRESS_OF(FLAGWRD6));
     mask(MUNFLBIT);
-    if (ccs_register(A_ADDRESS) != POSITIVE) group_off(ADDRESS_OF(MINUS_PHASE2));
+    if (!ccs_positive(A_ADDRESS)) group_off(ADDRESS_OF(MINUS_PHASE2));
     group_off(ADDRESS_OF(MINUS_PHASE3));
     group_off(ADDRESS_OF(MINUS_PHASE6));
 

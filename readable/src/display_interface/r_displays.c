@@ -83,7 +83,7 @@ void godsprs1(void)
     mask(PRIO37);
     if (!ts(ADDRESS_OF(NEWPRIO))) ca(ADDRESS_OF(PLAYTEM4));
     mask(BIT4);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         vacdsp();
         return;
     }

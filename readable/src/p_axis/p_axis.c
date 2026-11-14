@@ -151,7 +151,7 @@ void paxis_after_chekbits(void)
 
     set_A(CALLGMBL); /* PAXFILT */
     mask_at(ADDRESS_OF(RCSFLAGS));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_to(PAXFILT + 3u, ACDTPC12);
         return;
     }
@@ -394,7 +394,7 @@ void r_rate(void)
 
     cs(ADDRESS_OF(DAPBOOLS));
     mask(DRIFTBIT);
-    if (ccs_register(A_ADDRESS) == POSITIVE) { /* TCF WORKTIME */
+    if (ccs_positive(A_ADDRESS)) { /* TCF WORKTIME */
         ca(ADDRESS_OF(QACCDOT));
         mp(CALLCODE);
         das(ADDRESS_OF(AOSQ));
@@ -533,7 +533,9 @@ static bool selectp(word at, bool selectyz)
         mask_at(indexed(JETSALL, fetch(ADDRESS_OF(ROTINDEX))));
         ts(ADDRESS_OF(POLYTEMP));
         mask_at(ADDRESS_OF(CH6MASK));
-        if (ccs_register(A_ADDRESS) == IS_PLUS_ZERO) {
+        /* CCS A, never negative: masked above with JETSALL's word, of bits 1
+         * to 8 only. */
+        if (!ccs_positive(A_ADDRESS)) {
             tc_q();
             return true;
         }
@@ -700,7 +702,7 @@ void tsnextp(void)
     }
     ca(ADDRESS_OF(DAPBOOLS));
     mask(XOVINHIB);
-    continue_at(ccs_register(A_ADDRESS) == POSITIVE ? PURGENCY : DETENTCK);
+    continue_at(ccs_positive(A_ADDRESS) ? PURGENCY : DETENTCK);
 }
 
 /* ---- The manual rate command mode -- LM pp. 1431-1435 ---- */
@@ -909,7 +911,12 @@ void raterror(void)
 
     ca(ADDRESS_OF(CDUX)); /* "FINDCDUW REQUIRES THAT CDUXD=CDUX DURING" */
     ts(ADDRESS_OF(CDUXD));
-    (void)ccs_at(ADDRESS_OF(P_RHCCTR)); /* each exit to the DOUBLE */
+    switch (ccs_at(ADDRESS_OF(P_RHCCTR))) { /* (for A: the count's magnitude less one) */
+    case POSITIVE:                          /* TCF +3 */
+    case IS_PLUS_ZERO:                      /* TCF +2 */
+    case NEGATIVE:                          /* TCF +1 */
+    case IS_MINUS_ZERO: break;              /* each to the DOUBLE */
+    }
     double_A();
     double_A();
     ad(LINRATP);
@@ -996,7 +1003,7 @@ void pjetslec_minus6(void)
 {
     set_A(AORBSYST);
     mask_at(ADDRESS_OF(DAPBOOLS));
-    if (ccs_register(A_ADDRESS) == POSITIVE) set_A(ONE);
+    if (ccs_positive(A_ADDRESS)) set_A(ONE);
     ad(FOUR);
     pjetslec_minus1();
 }

@@ -175,7 +175,9 @@ void attck2_plus1(void)
     ca(indexed(ADDRESS_OF(THETAD), A)); /* INDEX A; CA THETAD */
     mp(ATTSCALE);
     xch(indexed(ADDRESS_OF(CDUXCMD), Q)); /* INDEX Q; XCH CDUXCMD */
-    if (ccs_register(Q_ADDRESS) == POSITIVE) {
+    /* CCS Q, never negative: the axis' index, 2, 1 or 0 (a larger one was
+     * refused above). */
+    if (ccs_positive(Q_ADDRESS)) {
         continue_at(ATTCK2 + 1u); /* TCF ATTCK2 +1 */
         return;
     }

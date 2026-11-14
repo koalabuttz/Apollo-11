@@ -75,7 +75,7 @@ void p40lm_after_phaschng(void)
     ts(ADDRESS_OF(WHICH));
     ca(ADDRESS_OF(FLGWRD10));
     mask(APSFLBIT);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(P40ALM); /* TCF P40ALM */
         return;
     }
@@ -90,7 +90,7 @@ void p40lm_after_r02both(void)
 {
     cs(ADDRESS_OF(DAPBOOLS));
     mask(CSMDOCKD);
-    if (ccs_register(A_ADDRESS) == POSITIVE) set_A(THRESH1);
+    if (ccs_positive(A_ADDRESS)) set_A(THRESH1);
     ad(THRESH3);
     ts(ADDRESS_OF(DVTHRUSH));
     set_A(FOUR);
@@ -495,7 +495,7 @@ void p42lm_after_phaschng(void)
     ts(ADDRESS_OF(WHICH));
     cs(ADDRESS_OF(FLGWRD10));
     mask(APSFLBIT);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_to(P42LM + 7u, P40ALM);
         return;
     }

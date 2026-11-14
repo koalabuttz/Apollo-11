@@ -469,9 +469,13 @@ static void normunit_plus1(void)
 /* CCS: +0 or -0 goes on (TCF +2, or the next word), the rest to NOSHIFT. */
 static bool upper_half_zero(unsigned address)
 {
-    enum sign sign = ccs_at(address);
-
-    return sign == IS_PLUS_ZERO || sign == IS_MINUS_ZERO;
+    switch (ccs_at(address)) {
+    case POSITIVE: return false;     /* TCF NOSHIFT */
+    case IS_PLUS_ZERO: return true;  /* TCF +2 */
+    case NEGATIVE: return false;     /* TCF NOSHIFT */
+    case IS_MINUS_ZERO: return true; /* (the next CCS, or the CA, is the next word) */
+    }
+    return false;
 }
 
 static void offtunit_minus2(void);

@@ -56,13 +56,13 @@ void landisp(void)
     dxch(ADDRESS_OF(TBASE2));
     cs(ADDRESS_OF(FLAGWRD7));
     mask(SWANDBIT);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         disprset(); /* "NO." */
         return;
     }
     ca(ADDRESS_OF(IMODES33));
     mask(BIT7);
-    if (ccs_register(A_ADDRESS) == POSITIVE)
+    if (ccs_positive(A_ADDRESS))
         altout();
     else
         altrout();
@@ -249,7 +249,7 @@ static void disindat(void)
     qxch(ADDRESS_OF(LADQSAVE));
     set_A(BIT6);
     rand_channel(CHAN30);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         disprset(); /* "NO.  ASTRONAUT REQUESTS NO INERTIAL DATA" */
         return;
     }
@@ -369,7 +369,7 @@ void speedrun_after_vardelay(void)
 {
     cs(ADDRESS_OF(FLAGWRD0)); /* "ARE WE IN DESCENT TRAJECTORY?" */
     mask(R10FLBIT);
-    if (ccs_register(A_ADDRESS) != POSITIVE) {
+    if (!ccs_positive(A_ADDRESS)) {
         tc_ladqsave(SPEEDRUN + 0106u); /* "NO." */
         return;
     }
@@ -442,7 +442,8 @@ void speedrun_after_vardelay(void)
     do {
         ts(ADDRESS_OF(ITEMP5));
         vmonitor(fetch(ADDRESS_OF(ITEMP5)));
-    } while (ccs_at(ADDRESS_OF(ITEMP5)) == POSITIVE);
+        /* CCS ITEMP5, never negative: the loop's index, 1 and then 0. */
+    } while (ccs_positive(ADDRESS_OF(ITEMP5)));
     set_A(BITSET);
     wor_channel(CHAN14);
     tc_ladqsave(ZERODATA - 1u);
@@ -724,7 +725,7 @@ static void disprset(void)
     }
     set_A(BIT8);
     mask_at(ADDRESS_OF(IMODES33));
-    if (ccs_register(A_ADDRESS) == POSITIVE) set_A(BIT2);
+    if (ccs_positive(A_ADDRESS)) set_A(BIT2);
     ad(BIT8);
     com();
     wand_channel(CHAN12);

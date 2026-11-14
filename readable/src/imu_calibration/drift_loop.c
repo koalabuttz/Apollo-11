@@ -839,13 +839,13 @@ void chkcomed(void)
     set_A(negate(ZERO));
     rxor_channel(ADDRESS_OF(CHAN30));
     mask(BIT5);
-    if (ccs_register(A_ADDRESS) == POSITIVE) { /* "LIFTOFF HAS OCCURRED" */
+    if (ccs_positive(A_ADDRESS)) { /* "LIFTOFF HAS OCCURRED" */
         prelterm();
         return;
     }
     set_A(GRRBKBIT);
     mask_at(ADDRESS_OF(FLAGWRD5));
-    if (ccs_register(A_ADDRESS) == POSITIVE) { /* "BACKUP RECEIVED" */
+    if (ccs_positive(A_ADDRESS)) { /* "BACKUP RECEIVED" */
         prelterm();
         return;
     }

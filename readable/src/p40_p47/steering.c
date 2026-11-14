@@ -147,11 +147,11 @@ void nsteer(void)
     ts(EBANK_ADDRESS);
     cs(ADDRESS_OF(FLAGWRD2));
     mask(IMPULBIT);
-    if (ccs_register(A_ADDRESS) != POSITIVE) { /* IMPULSW set */
+    if (!ccs_positive(A_ADDRESS)) { /* IMPULSW set */
         cs(ADDRESS_OF(FLAGWRD7));
         mask(IDLEFBIT);
-        if (ccs_register(A_ADDRESS) == POSITIVE) { /* IDLEFLAG clear: TCF +3 */
-            tc_to(NSTEER + 015u, IBNKCALL);        /* CADR STOPRATE */
+        if (ccs_positive(A_ADDRESS)) {      /* IDLEFLAG clear: TCF +3 */
+            tc_to(NSTEER + 015u, IBNKCALL); /* CADR STOPRATE */
             return;
         }
     }
@@ -217,7 +217,12 @@ void nsteer_after_2phschng(void)
  * and A again; back to the caller (TC Q). */
 void getdt(void)
 {
-    if (ccs_register(A_ADDRESS) == NEGATIVE) set_A(ZERO); /* CCS A; TCF +3; TCF +2; CAF ZERO */
+    switch (ccs_register(A_ADDRESS)) {
+    case POSITIVE: break;              /* TCF +3 */
+    case IS_PLUS_ZERO: break;          /* TCF +2 */
+    case NEGATIVE: set_A(ZERO); break; /* CAF ZERO */
+    case IS_MINUS_ZERO: break;         /* (the AD ONE is the next word) */
+    }
     ad(ONE);
     xch(L_ADDRESS);
     set_A(ZERO);

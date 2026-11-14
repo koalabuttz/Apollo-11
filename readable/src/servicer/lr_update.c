@@ -34,7 +34,7 @@ void updatchk(void)
 {
     set_A(NOLRRBIT);
     mask_at(ADDRESS_OF(FLGWRD11));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         contserv();
         return;
     }
@@ -177,7 +177,7 @@ void noreason(void)
 {
     cs(ADDRESS_OF(FLGWRD11));
     mask(LRINHBIT);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         vmeaschk();
         return;
     }
@@ -285,7 +285,7 @@ void vmeaschk_after_quikfaz5(void)
 {
     cs(ADDRESS_OF(FLGWRD11));
     mask(VELDABIT);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         valtchk();
         return;
     }
@@ -462,7 +462,7 @@ void vupdat(void)
 {
     cs(ADDRESS_OF(FLGWRD11));
     mask(LRINHBIT);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         valtchk(); /* "UPDATE INHIBITED" */
         return;
     }
@@ -568,7 +568,7 @@ void valtchk_after_quikfaz5(void)
 {
     set_A(READVBIT);
     mask_at(ADDRESS_OF(FLGWRD11));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         readv();
         return;
     }

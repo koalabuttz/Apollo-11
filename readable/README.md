@@ -1389,39 +1389,61 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    tools/code_extents.py names for it. The case tests check a table's
    words against the rope but take its count from the table, so this is
    what notices a table one word short.
-   `make style-check` counts the breaks of STYLE.md that a script can
-   know by their form (tools/style_check.py) and holds each directory of
-   src/ to tests/style_owed.txt, the list of what the whole-tree review
-   (issue #1334) found and was still to fix. The list owes nothing now,
-   so any break the script sees fails. A switch on a CCS names its four
-   outcomes in the listing's order and follows each as the listing's
-   words say; the script takes for one every switch whose head calls a
-   CCS or that names one of the four outcomes (the outcome was kept in
-   a variable, or a function returned it). It reads each mission's code
-   apart, also the code that only one of them builds. One that refuses
-   an outcome (`not_modelled()`), in a case, in an else or behind a test
-   of the outcome, must say in its comment that the outcome never
-   comes, what kind of word the listing has there, and what rules it
-   out: the script holds the comment to those words and to a reason's
-   three words more, and a person reads whether the reason is right.
-   "Owes nothing" is still said of what the script sees, and three
-   things it does not see yet. A CCS whose outcome is compared and not
-   switched on (`if (ccs_at(X) == POSITIVE)`) folds three outcomes into
-   one else, which STYLE.md's rule for a CCS does not allow: 252 places,
-   160 of them a CCS of A right after a mask by a constant (issue
-   #1334's next part proves those by the helpers' static assert and
-   makes the rest switches). The files of tables (`.inc`, 66 of them)
-   are not read. And the list is kept by rule, directory and count, so
-   a new break beside a mended one of its rule and directory would not
-   show while the list owed anything there. Six helpers stand for one
-   CCS at several places and refuse the two outcomes a masked bit never
-   has: tools/ccs_helpers.py finds every call of them (112) and has the
-   C compiler check, by a static assert under the mission that compiles
-   the call, that the call's mask has a clear sign bit (the 15 calls
-   with no constant mask are listed in it, each with what bounds its
-   word). The style check lets no other function refuse in the helpers'
-   words, so a new helper has to be named to both. It also holds each
-   function's header to the
+   `make style-check` finds the breaks of STYLE.md that a script can
+   know by their form (tools/style_check.py) and holds the tree to
+   tests/style_owed.txt, the list of what the whole-tree review (issue
+   #1334) found and was still to fix. The list is kept by place: the
+   rule, the file, the function, a digest of the line's text, and which
+   such line of the function it is. A break that is not on it fails,
+   and so does a line of it that the tree no longer has. The list owes
+   nothing now, so any break the script sees fails. A switch on a CCS
+   names its four outcomes in the listing's order, leaves none without
+   a case, and follows each as the listing's words say; the script
+   takes for one every switch whose head calls a CCS or that names one
+   of the four outcomes (the outcome was kept in a variable, or a
+   function returned it). It reads each mission's code apart, also the
+   code that only one of them builds, and the files of tables (`.inc`,
+   66 of them, which tools write; their long lines are let be). One
+   that refuses an outcome (`not_modelled()`), in a case, in an else or
+   behind a test of the outcome, must say in its comment that the
+   outcome never comes, what kind of word the listing has there, and
+   what rules it out: the script holds the comment to those words and
+   to a reason's three words more, and a person reads whether the
+   reason is right.
+   A CCS's outcome is not compared (`if (ccs_at(X) == POSITIVE)`), since
+   a test folds outcomes that the listing tells apart, and it is not
+   dropped: it goes to a switch, and so does an outcome kept in a
+   variable. One CCS is written as a test, `ccs_positive()` of
+   src/agc/agc.h, for a word that is never negative: it follows the
+   positive and the +0 outcome and refuses the other two.
+   (`pack_flag()` of src/p51_p53/p57.c is the same for two flags.)
+   tools/ccs_helpers.py finds every call of the two (325) and holds each
+   to that premise, one of two ways. 257 are a CCS of A after a mask by
+   a constant: the C compiler checks, by a static assert under the
+   mission that compiles the call, that the mask has a clear sign bit.
+   The other 68 (a count that runs down to +0, a major mode, an A whose
+   mask is not one constant) have a comment at the call in one form,
+   `CCS SPNDX, never negative:` and a reason, and the script holds the
+   comment to that form, to the word of the call and to a reason of
+   three words. In 20 of them the reason names the constants the word
+   was masked with, and those get the static assert too (297 asserts in
+   all). The other 48 rest on the reason alone, which a person reads
+   (`tools/ccs_helpers.py --list` prints every call with its mask or
+   its reason). The style check lets no other function refuse in the
+   helpers' words, so a new helper has to be named to both.
+   "Owes nothing" is still said of what the script sees. It does not
+   see whether a reason is right: it holds a reason to its form and to
+   three words, so three words that say nothing pass. It does not
+   examine a refusal behind a test that is no CCS's outcome
+   (`if (ts(X)) not_modelled();`), also where that stands in a CCS's
+   case. A rule's pattern takes the spellings that clang-format can
+   leave (a channel's number in octal, decimal or hexadecimal, an
+   offset with or without its `u`, the wording in any case of letters
+   and over a comment's lines), not every spelling C allows: a number
+   behind a macro of the file's own is not seen. And
+   tools/ccs_helpers.py, where a function begins before a mask is
+   found, follows the function's callers only in its own file.
+   `make style-check` also holds each function's header to the
    listing page of the word the function stands at
    (tools/header_pages.py): the page is read from the assembled listing
    for the place the function's key names, and a header without it, one
@@ -1584,8 +1606,8 @@ builds the x86 flight program the same way and flies gate 2's 86
 scenarios. Each program that ran left its counts, and a line of `src/` is
 run if any of them ran it. What is counted is every line the build
 compiled, in a program that ran or not: each compile leaves the lines of
-its object, and a line no program holds counts as unrun. Of the 60,311
-lines of C with code in them, 1,727 (2.9%) are run by none, in 682
+its object, and a line no program holds counts as unrun. Of the 60,508
+lines of C with code in them, 1,745 (2.9%) are run by none, in 695
 stretches of 227 files. That is a figure for the C alone: interpretive
 code is tables of words, and none of its words is among those lines
 (below).
@@ -1619,10 +1641,10 @@ check holds each stretch to its kind's rule:
   reason: a state that can come, though no line of the program brings
   it, only a word keyed in by hand. There is one, ALFLT with a keyed -0
   in GEOCOMPS, where the listing would run an address word.
-- **not-modelled** (106 lines): the source marks the line
+- **not-modelled** (93 lines): the source marks the line
   `not_modelled()`, an outcome that cannot come there. The stretch must
   hold the call.
-- **impossible** (270 lines): no state brings the routine to the line,
+- **impossible** (293 lines): no state brings the routine to the line,
   and the reason says what in the routine's own lines, or its file's,
   rules the outcome out. An argument, not a run. The reason must say why.
 - **never** (85 lines): no program brings the state, though the routine's
@@ -1635,7 +1657,7 @@ check holds each stretch to its kind's rule:
   negative of a sine there, which can be -0, and a core set is not
   cleared for its next job), so no line of the interpreter rules it out
   and no check proves it of every entry.
-- **open** (496 lines, 193 stretches): not looked at yet. Each is owed a
+- **open** (504 lines, 195 stretches): not looked at yet. Each is owed a
   case that runs it or the reason none can, and the count is in the
   ledger's head.
 

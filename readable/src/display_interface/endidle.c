@@ -122,7 +122,9 @@ void itismask_after_upent2(void)
 
     ca(ADDRESS_OF(R1SAVE));
     mask_at(indexed(ADDRESS_OF(BIT3), kind));
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    /* CCS A, never negative: R1SAVE masked with BIT3, BIT2 or BIT1, the word
+     * of fixed memory at BIT3 or one of the two after it (INDEX COPINDEX). */
+    if (ccs_positive(A_ADDRESS)) {
         unsetr1();
         return;
     }
@@ -310,7 +312,7 @@ void linuschr(void)
 {
     cs(ADDRESS_OF(PLAYTEM4));
     mask(BIT14);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(Q_PLUS_1);
         return;
     }
@@ -360,7 +362,7 @@ void markover(void)
     ts(ADDRESS_OF(OUTHERE));
     ca(ADDRESS_OF(FLAGWRD4));
     mask(PRIO30);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(NORMBNCH);
         return;
     }
@@ -396,7 +398,7 @@ void normret_plus010(void)
 {
     ca(ADDRESS_OF(EBANKTEM));
     mask(OCT50);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         endret();
         return;
     }
@@ -409,7 +411,7 @@ void normret_plus4(void)
 {
     ca(ADDRESS_OF(FLAGWRD4));
     mask(BITS4_PLUS_10);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         normwake();
         return;
     }
@@ -424,7 +426,7 @@ void normret(void)
 {
     ca(ADDRESS_OF(FLAGWRD4));
     mask(BITS5_PLUS_11);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(MARKWAKE);
         return;
     }
@@ -437,7 +439,7 @@ void marsleep(void)
 {
     ca(ADDRESS_OF(FLAGWRD4));
     mask(BITS5_PLUS_11);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(ENDOFJOB);
         return;
     }

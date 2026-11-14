@@ -16,7 +16,7 @@ void chkprio(void)
 {
     ca(ADDRESS_OF(FLAGWRD4));
     mask(OCT24100);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(MARSLEEP);
         return;
     }

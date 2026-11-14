@@ -33,7 +33,7 @@ void ahfnorot(void)
     }
     ca(ADDRESS_OF(RCSFLAGS));
     mask(BIT14);
-    if (ccs_register(A_ADDRESS) == POSITIVE) { /* CCS A; TCF REINIT */
+    if (ccs_positive(A_ADDRESS)) { /* CCS A; TCF REINIT */
         continue_at(REINIT);
         return;
     }
@@ -145,9 +145,11 @@ void atthold_bias_errorx(void)
  * GRABANG. */
 void holdfunc(void)
 {
-    if (ccs_at(ADDRESS_OF(HOLDFLAG)) == IS_PLUS_ZERO) {
-        continue_at(ATTHOLD);
-        return;
+    switch (ccs_at(ADDRESS_OF(HOLDFLAG))) {
+    case POSITIVE: break; /* TCF +3 */
+    case IS_PLUS_ZERO: /* TCF ATTHOLD */ continue_at(ATTHOLD); return;
+    case NEGATIVE: break;      /* TCF +1 */
+    case IS_MINUS_ZERO: break; /* GRABANG is the next word */
     }
     grabang();
 }

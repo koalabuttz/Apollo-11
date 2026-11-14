@@ -51,8 +51,8 @@ void imuzero(void)
     inhint();
     cs(LAMPS);
     mask(BITS4_6);
-    if (ccs_register(A_ADDRESS) != POSITIVE) { /* CCS A; TCF IMUZEROA */
-        tc_at((word)(IMUZERO + 5u));           /* TC ALARM; OCT 00206 */
+    if (!ccs_positive(A_ADDRESS)) {  /* CCS A; TCF IMUZEROA */
+        tc_at((word)(IMUZERO + 5u)); /* TC ALARM; OCT 00206 */
         continue_at(ALARM);
         return;
     }
@@ -91,7 +91,7 @@ void imuzeroa_after_waitlist(void)
 {
     cs(ADDRESS_OF(IMODES30));
     mask(BIT9);
-    if (ccs_register(A_ADDRESS) == POSITIVE) { /* TCF MODEEXIT */
+    if (ccs_positive(A_ADDRESS)) { /* TCF MODEEXIT */
         modeexit();
         return;
     }
@@ -186,7 +186,8 @@ void coars(void)
         double_A();
         if (ts(ADDRESS_OF(ITEMP1))) ads(L_ADDRESS); /* TCF +2, or on overflow ADS L */
         lxch(indexed(ADDRESS_OF(COMMAND), CDUIND)); /* "DIFFERENCE TO BE COMPUTED" */
-        if (ccs_at(ADDRESS_OF(CDUIND)) != POSITIVE) break;
+        /* CCS CDUIND, never negative: the loop's index, TWO counted down. */
+        if (!ccs_positive(ADDRESS_OF(CDUIND))) break;
         tc_at((word)(COARS1 + 020u)); /* TC COARS1 */
     }
     set_A(TWO);
@@ -262,11 +263,14 @@ void coars2(void)
         }
         ad(NEG0);
         ts(indexed(ADDRESS_OF(CDUXCMD), CDUIND)); /* "SET UP COMMAND REGISTER." */
-        if (ccs_at(ADDRESS_OF(CDUIND)) != POSITIVE) break;
+        /* CCS CDUIND, never negative: the loop's index, TWO counted down. */
+        if (!ccs_positive(ADDRESS_OF(CDUIND))) break;
         tc_at((word)(NEXTCDU + 5u)); /* TC COARS2 +3 */
     }
-    if (ccs_at(ADDRESS_OF(ITEMP1)) == POSITIVE) { /* "SEE IF ANY PULSES TO GO OUT." */
-        set_A(BITS13_14_15);                      /* SENDPULS: CAF 13,14,15 */
+    /* CCS ITEMP1, never negative: the +0 stored above, and one more (NEXTCDU's
+     * INCR) for each CDU given pulses. */
+    if (ccs_positive(ADDRESS_OF(ITEMP1))) { /* "SEE IF ANY PULSES TO GO OUT." */
+        set_A(BITS13_14_15);                /* SENDPULS: CAF 13,14,15 */
         wor_channel(CHAN14);
         set_A(SIX_HUNDRED_MS);      /* CAF 600MS */
         tc_at((word)(COARS2 - 1u)); /* TCF COARS2 -1: "THEN TO VARDELAY" */
@@ -305,7 +309,9 @@ void nextcdu_after_fixdelay(void)
                 return;
             }
         }
-        if (ccs_at(ADDRESS_OF(ITEMP1)) != POSITIVE) break; /* CORSCHK2 */
+        /* CORSCHK2: CCS ITEMP1, never negative: the loop's index, TWO counted
+         * down. */
+        if (!ccs_positive(ADDRESS_OF(ITEMP1))) break;
     }
     endimu(); /* "END OF COARSE ALIGNMENT" */
 }
@@ -335,7 +341,7 @@ void setcoars(void)
 {
     set_A(BIT4);
     rand_channel(CHAN12);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_through(Q_ADDRESS); /* TC Q */
         return;
     }
@@ -463,7 +469,7 @@ void ifailok(void)
     }
     set_A(BIT4);
     rand_channel(CHAN12);
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(TASKOVER); /* TCF TASKOVER */
         return;
     }
@@ -571,7 +577,7 @@ void pipfree(void)
     mask(BIT1);
     ads(ADDRESS_OF(IMODES30));
     mask(BIT10);
-    if (ccs_register(A_ADDRESS) == POSITIVE) { /* TCF MODEEXIT */
+    if (ccs_positive(A_ADDRESS)) { /* TCF MODEEXIT */
         modeexit();
         return;
     }

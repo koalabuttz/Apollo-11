@@ -136,7 +136,7 @@ void xchqadd_after_upent2(void)
 #else
     mask(BIT3);
 #endif
-    if (ccs_register(A_ADDRESS) == POSITIVE) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_at(GENMARK); /* "USED AS GENADR FOR JOBWAKE" */
         continue_at(MARKPLAY);
         return;

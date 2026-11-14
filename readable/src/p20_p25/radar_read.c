@@ -410,13 +410,13 @@ void rendrad(void)
 {
     set_A(REPOSBIT);
     mask_at(ADDRESS_OF(RADMODES));
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(BADRAD);
         return;
     }
     cs(ADDRESS_OF(RADMODES));
     mask(RCDUFBIT);
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(BADRAD);
         return;
     }
@@ -425,7 +425,7 @@ void rendrad(void)
     set_A(BIT1); /* "SEE IF RR RDOT." */
     rand_channel(CHAN13);
     ts(Q_ADDRESS);
-    if (!bit_set_in_A()) {
+    if (!ccs_positive(A_ADDRESS)) {
         continue_at(RADIN);
         return;
     }
@@ -443,7 +443,10 @@ static void scalechk_with_bit(void)
     xch(L_ADDRESS);
     mask_at(ADDRESS_OF(RADMODES));
     rxor_lchan();
-    if (bit_set_in_A()) {
+    /* CCS A, never negative: RADMODES masked with BIT9 or BIT3, the caller's
+     * scale bit, then RXOR with L, the same bit masked with channel 33. No bit
+     * but that one. */
+    if (ccs_positive(A_ADDRESS)) {
         tc_to(SCALECHK + 7u, SCALCHNG);
         return;
     }
@@ -528,7 +531,7 @@ static void r77check(void)
 {
     cs(ADDRESS_OF(FLAGWRD5));
     mask(R77FLBIT);
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_q();
         return;
     }
@@ -559,7 +562,7 @@ static void scaladj(void)
     case IS_MINUS_ZERO: break;
     }
     mask(BIT3);
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         lrsck();
         return;
     }
@@ -789,7 +792,7 @@ void r12lites(void)
 {
     set_A(ONE);
     mask_at(ADDRESS_OF(IMODES33));
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         continue_at(ISWRETRN);
         return;
     }
@@ -817,7 +820,7 @@ static void radlites(void)
 {
     set_A(BIT1);
     mask_at(ADDRESS_OF(IMODES33));
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         tc_q();
         return;
     }
@@ -847,7 +850,7 @@ static void hlight(void)
     ts(L_ADDRESS);
     ca(ADDRESS_OF(FLGWRD11));
     mask(SCABBIT);
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         onlites();
         return;
     }
@@ -875,13 +878,16 @@ static void litit(void);
 static void bothlits(void)
 {
     mask_at(ADDRESS_OF(RADMODES));
-    if (bit_set_in_A()) {
+    if (ccs_positive(A_ADDRESS)) {
         onlites();
         return;
     }
     ca(ADDRESS_OF(FLGWRD11));
     mask_at(indexed(ADDRESS_OF(HFLSHBIT), fetch(ADDRESS_OF(ITEMP5))));
-    if (bit_set_in_A()) {
+    /* CCS A, never negative: FLGWRD11 masked with BIT1 or BIT2, a word of
+     * fixed memory: HFLSHBIT, the constant BIT1, or the word before it (INDEX
+     * ITEMP5, +0 or -1). */
+    if (ccs_positive(A_ADDRESS)) {
         rrtrkf();
         return;
     }

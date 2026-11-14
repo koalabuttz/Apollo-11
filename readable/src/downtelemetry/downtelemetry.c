@@ -301,9 +301,7 @@ static void dodnptr(void)
  * has a zero word: the CCS's two zero slots never run.) */
 static void snaploop(void)
 {
-    enum sign next;
-
-    do {
+    for (;;) {
         ts(EBANK_ADDRESS);
         mask(LOW8);
         dca(indexed(01401u, a_word()));
@@ -313,17 +311,16 @@ static void snaploop(void)
         /* SNAPAGN */
         incr(ADDRESS_OF(SUBLIST));
         index_ca(0u, SUBLIST); /* INDEX SUBLIST; 0 0 */
-        next = ccs_register(A_ADDRESS);
-    } while (next == POSITIVE);
-
-    switch (next) {
-    case POSITIVE: break; /* (not here: the loop went on, TCF SNAPLOOP) */
-    case IS_PLUS_ZERO:    /* (never) LDNPHAS2 (GENADR DNPHASE2) would run as TC DNPHASE2 */
-        tc_at(ADDRESS_OF(LDNPHAS2));
-        dnphase2();
-        return;
-    case NEGATIVE: ts(ADDRESS_OF(SUBLIST)); break; /* the last word */
-    case IS_MINUS_ZERO: break;                     /* (never) past the TS SUBLIST */
+        switch (ccs_register(A_ADDRESS)) {
+        case POSITIVE: continue; /* TCF SNAPLOOP */
+        case IS_PLUS_ZERO:       /* (never) LDNPHAS2 (GENADR DNPHASE2) would run as TC DNPHASE2 */
+            tc_at(ADDRESS_OF(LDNPHAS2));
+            dnphase2();
+            return;
+        case NEGATIVE: ts(ADDRESS_OF(SUBLIST)); break; /* the last word */
+        case IS_MINUS_ZERO: break;                     /* (never) past the TS SUBLIST */
+        }
+        break;
     }
     set_A(NEGONE);
     ts(ADDRESS_OF(DNECADR));
