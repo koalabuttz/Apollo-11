@@ -181,8 +181,8 @@ void finetime_plus1(void)
     read_channel(LOSCALAR);
     ts(L_ADDRESS);
     rxor_channel(LOSCALAR);
-    if (!A_is_zero()) { /* EXTEND; BZF +4 */
-        read_channel(LOSCALAR);
+    if (!A_is_zero()) {         /* EXTEND; BZF +4 */
+        read_channel(LOSCALAR); /* (never in these runs: the two reads above give one word) */
         ts(L_ADDRESS);
     }
     set_A(negate(POSMAX)); /* +4: CS POSMAX; AD L */

@@ -15,8 +15,8 @@
 # this measure does not see.
 #
 # By reason:
-#   impossible: 496 lines in 241 stretches
-#   never: 153 lines in 62 stretches
+#   impossible: 491 lines in 239 stretches
+#   never: 158 lines in 64 stretches
 #   not-modelled: 99 lines in 38 stretches
 #   refusal: 798 lines in 302 stretches
 #
@@ -2289,15 +2289,16 @@ src/fresh_start/v37.c
          negative, never -0.
 
 src/imu_calibration/drift_loop.c
-  finetime_plus1, lines 185-187 (3 unrun) 7a730130
-    | read_channel(LOSCALAR);
+  finetime_plus1, lines 185-187 (3 unrun) d5e679ab
+    | read_channel(LOSCALAR); /* (never in these runs: the two reads above give one word) */
     | ts(L_ADDRESS);
     | }
-    why: [impossible] The file's binding rules it out: its read of LOSCALAR
-         answers the one word the caller latched for the run, so the two
-         reads agree and the read after them is not taken. In the AGC the
-         scaler can move between the two reads; the faithful port latches it
-         likewise, so no run of either program meets the line.
+    why: [never] In the AGC the scaler can move between the two reads, and
+         the computer reaches the line. No run of this program does: the
+         binding latches the scaler for a run (its read of LOSCALAR answers
+         the one word the caller latched), so the two reads agree and the
+         read after them is not taken. The faithful port latches it likewise,
+         so no run of either program meets the line, and nothing compares it.
   loadstdt_plus1, lines 449-450 (2 unrun) ef032f09
     | case NEGATIVE: alloop(); return;
     | case IS_MINUS_ZERO: alloop_plus1(); return;
@@ -2394,14 +2395,15 @@ src/imu_performance/imu_performance.c
     | * left of it. The next words are interpretive words: ERTHRVSE's. */
     | not_modelled();
     why: [not-modelled]
-  finetime_plus1, lines 934-935 (2 unrun) a4b1d5ea
-    | finetime_reread();
+  finetime_plus1, lines 934-935 (2 unrun) 0c03ebab
+    | finetime_reread(); /* (never in these runs: the two reads above give one word) */
     | }
-    why: [impossible] The file's binding rules it out: its read of LOSCALAR
-         answers the one word the caller latched for the run, so the two
-         reads agree and the read after them is not taken. In the AGC the
-         scaler can move between the two reads; the faithful port latches it
-         likewise, so no run of either program meets the line.
+    why: [never] In the AGC the scaler can move between the two reads, and
+         the computer reaches the line. No run of this program does: the
+         binding latches the scaler for a run (its read of LOSCALAR answers
+         the one word the caller latched), so the two reads agree and the
+         read after them is not taken. The faithful port latches it likewise,
+         so no run of either program meets the line, and nothing compares it.
   alflt, lines 1091-1095 (3 unrun) b552ed4e
     | case IS_MINUS_ZERO:
     | /* never from the program: no line of it stores GEOCOMPS, which is keyed in for the test.

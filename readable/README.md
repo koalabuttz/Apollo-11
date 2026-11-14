@@ -1676,10 +1676,10 @@ check holds each stretch to its kind's rule:
 - **not-modelled** (99 lines): the source marks the line
   `not_modelled()`, an outcome that cannot come there. The stretch must
   hold the call.
-- **impossible** (496 lines): no state brings the routine to the line,
+- **impossible** (491 lines): no state brings the routine to the line,
   and the reason says what in the routine's own lines, or its file's,
   rules the outcome out. An argument, not a run. The reason must say why.
-- **never** (153 lines): no program brings the state, though the routine's
+- **never** (158 lines): no program brings the state, though the routine's
   own lines do not rule it out. The reason rests on what the rest of the
   program stores there or on what the assembler makes, and says what was
   looked at. The comment at the line must say never, and the reason why.
