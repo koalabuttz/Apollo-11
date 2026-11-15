@@ -38,10 +38,13 @@
  *
  *   interpreter-cases-<m> <lm.bin> <cm.bin> [cases] [seed]
  *   interpreter-cases-<m> <lm.bin> <cm.bin> shifts
+ *   interpreter-rope-cases-<m> <lm.bin> <cm.bin> rope
  *
  * The second form runs the shift orders, made on purpose (shift_cases(),
  * below): the random programs shift by whatever count comes up, and these
- * take each shift order and each count through both cores.
+ * take each shift order and each count through both cores. The third runs
+ * a few words of the rope itself (rope_cases(), below), under a program
+ * name of its own.
  *
  * Built once per mission. */
 #include "interp_runtime.h"
@@ -404,6 +407,113 @@ static int shift_cases(void)
     return 0;
 }
 
+/* ---- The rope's own words ----
+ * An order that waits in EDOP while its pair's left order, an RTB, runs a
+ * routine of another file. The case tests of the pair's file end where the
+ * RTB leaves it, and their routines take no state at DANZIG with an order
+ * waiting (the faithful port's refuse one). Here is the pass after, through
+ * both cores: at DANZIG, LOC at the RTB's address word, the order in EDOP
+ * (its code and one), FB and BANKSET the pair's bank, from ROPE_STATES
+ * states. Each pass must end in both cores with the same status, Z,
+ * erasable memory and channels, and the faithful core must run it.
+ *
+ * These words are the program's, so the passes are a program of their own
+ * (interpreter-rope-cases, this file again): the measure of interpretive
+ * words (tests/word_coverage.py) reads what that program ran, and nothing
+ * of the programs that write made-up words into the rope. */
+#define ROPE_STATES 256u
+
+static const struct rope_place {
+    unsigned bank;
+    agc_word loc, edop;
+    const char *what;
+} rope_places[] = {
+#if LUMINARY099
+    {037u, 02026u, 1u, "LATAZCHK's RTB EXIT"},
+#else
+    {004u, 02620u, 1u, "LATAZCHK's RTB EXIT"},
+#endif
+};
+
+static void rope_pass(const struct rope_place *place, struct shift_counts *n)
+{
+    static struct {
+        apollo_overlay_state s;
+        agc_word pad[0200000];
+    } fa, ra;
+    apollo_overlay_state *f = &fa.s, *r = &ra.s, pre;
+    enum exec_status sf, sr;
+    mission_io fio, rio;
+    unsigned i, diff = 0;
+
+    ++n->passes;
+    image(f, MISSION);
+    f->words[5] = MISSION ? 06030u : 06061u; /* DANZIG */
+    f->words[0164] = place->loc;
+    f->words[023] = place->edop;
+    f->words[4] = (agc_word)(place->bank << 10);
+    f->words[6] = (agc_word)(f->words[4] | (f->words[3] >> 8));
+    f->words[0165] = f->words[6]; /* BANKSET */
+    *r = *f;
+    memset(fa.pad, 0, sizeof fa.pad);
+    memset(ra.pad, 0, sizeof ra.pad);
+    memset(&fio, 0, sizeof fio);
+    fio.interrupt_enabled = 1;
+    rio = fio;
+    pre = *f;
+    if (sigsetjmp(hang, 1)) {
+        ++n->abandoned;
+        return;
+    }
+    arm(300);
+    sf = FAITHFUL(0, f, &fio);
+    READABLE_MCT = 0;
+    sr = READABLE(0, r, &rio);
+    arm(0);
+    if (sf != EXEC_OK) ++n->refused;
+    for (i = 0; i < 2048u; ++i) diff += f->words[i] != r->words[i];
+    if (memcmp(fa.pad, ra.pad, sizeof fa.pad)) ++diff;
+    if (sf == sr && !diff && !memcmp(&fio, &rio, sizeof fio)) {
+        ++n->compared;
+        return;
+    }
+    if (n->differ++ < 12u) {
+        fprintf(stderr, "%s: status %d/%d, %u words differ (faithful/readable):", place->what, sf,
+                sr, diff);
+        for (i = 0; i < 2048u && diff; ++i)
+            if (f->words[i] != r->words[i])
+                fprintf(stderr, " %04o=%06o/%06o (was %06o)", i, f->words[i], r->words[i],
+                        pre.words[i]);
+        fprintf(stderr, "\n");
+    }
+}
+
+static int rope_cases(void)
+{
+    struct shift_counts n;
+    unsigned k, s;
+
+    memset(&n, 0, sizeof n);
+    signal(SIGALRM, on_alarm);
+    signal(SIGSEGV, on_crash);
+    rs = 0x9e3779b97f4a7c15ull ^ 1203u;
+    rnd(2);
+    /* (image() draws LOC from the starts of a made-up program. There is
+     * none here, and LOC is the place's.) */
+    start[0] = 1u;
+    for (k = 0; k < sizeof rope_places / sizeof rope_places[0]; ++k)
+        for (s = 0; s < ROPE_STATES; ++s) rope_pass(&rope_places[k], &n);
+    printf("%s rope words: %u passes, %u compared and alike, %u the faithful core refuses, %u "
+           "abandoned (%u crashed), %u differ\n",
+           MISSION ? "CM" : "LM", n.passes, n.compared, n.refused, n.abandoned, crashed, n.differ);
+    if (n.compared != n.passes || n.refused) {
+        printf("FAIL: %u passes, %u of them compared and alike, %u refused\n", n.passes, n.compared,
+               n.refused);
+        return 1;
+    }
+    return 0;
+}
+
 int main(int argc, char **argv)
 {
     static struct {
@@ -418,10 +528,12 @@ int main(int argc, char **argv)
     (void)fuzz_main;
     if (argc < 3 || !apollo_rope_load(0, argv[1]) || !apollo_rope_load(1, argv[2])) {
         fprintf(stderr, "usage: interpreter-cases <lm.bin> <cm.bin> [cases] [seed]\n"
-                        "       interpreter-cases <lm.bin> <cm.bin> shifts\n");
+                        "       interpreter-cases <lm.bin> <cm.bin> shifts\n"
+                        "       interpreter-rope-cases <lm.bin> <cm.bin> rope\n");
         return 2;
     }
     if (argc > 3 && !strcmp(argv[3], "shifts")) return shift_cases();
+    if (argc > 3 && !strcmp(argv[3], "rope")) return rope_cases();
     first = getenv("FUZZ_FIRST") ? (unsigned)atoi(getenv("FUZZ_FIRST")) : 0u;
     if (first > cases) first = cases;
     for (c = first; c < cases; ++c) {

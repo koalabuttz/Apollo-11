@@ -9,7 +9,7 @@
  * for one (interpret_listing() has its own, for the interpreter's fixed
  * operands): a routine that did read one would stop, and its binding refuse
  * the state. */
-static word no_fixed_memory(unsigned physical)
+word no_fixed_memory(unsigned physical)
 {
     (void)physical;
     not_modelled();

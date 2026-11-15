@@ -62,6 +62,22 @@ static bool work_due(void)
     return (CORE_MCT & 0x8000u) != 0u;
 }
 
+/* ---- The word measure ----
+ * Which words of interpretive code run is counted by tests/word_coverage.py,
+ * and its build (WORD_COVERAGE) has a recorder here that is told what each
+ * pass does (tests/word_coverage.inc). In every other build the calls are
+ * nothing. */
+#ifdef WORD_COVERAGE
+#include "../../tests/word_coverage.inc"
+#else
+#define words_begin()         ((void)0)
+#define words_end(status)     ((void)0)
+#define words_at(z)           ((void)0)
+#define words_takes(what)     ((void)0)
+#define words_right()         ((void)0)
+#define words_read(at, value) (value)
+#endif
+
 /* ---- Interpretive code in the listing's notation ----
  * While the interpreter runs a table of it (src/interpreter/notation.h,
  * interpret_listing() below), it reads the table's words where the table
@@ -94,9 +110,9 @@ static word rope_word(unsigned physical)
     agc_word value = 0;
     word from_listing;
 
-    if (listing_word(physical, &from_listing)) return from_listing;
+    if (listing_word(physical, &from_listing)) return words_read(physical, from_listing);
     if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) return 0u;
-    return (word)(value & MINUS_ZERO);
+    return words_read(physical, (word)(value & MINUS_ZERO));
 }
 
 /* The word off words after LOC, in the interpretive program's bank (the
@@ -231,16 +247,19 @@ static enum exec_status run(void)
     for (guard = 0u; guard < POINTS_PER_PASS && more; ++guard) {
         word z = Z;
 
+        words_at(z);
         if (z == NEWOPS && !work_due()) {
             if (!code_word(0u, &w)) return EXEC_OUT_OF_SCOPE;
             if (!(w & 040000u)) { /* a store code */
                 charge(INTERP_WORD_STORE(w));
+                words_takes(STORE_RAN);
                 newops();
                 continue;
             }
             c = left_code(w);
             if (!order_taken(c)) return EXEC_OUT_OF_SCOPE;
             note_order(c);
+            words_takes(LEFT_RAN);
             newops();
             charge(interp_word_units_of(w));
             more = !pass_ends(c);
@@ -255,6 +274,7 @@ static enum exec_status run(void)
             c = EDOP - 1u;
             if (!order_taken(c)) return EXEC_OUT_OF_SCOPE;
             note_order(c);
+            words_right();
             if (z == DANZIG)
                 danzig();
             else
@@ -338,10 +358,13 @@ static enum exec_status entry(const agc_native_program *program, apollo_overlay_
         *state = before;
         *io = kept_io;
         CORE_MCT = clock;
+        words_end(EXEC_OUT_OF_SCOPE);
         return EXEC_OUT_OF_SCOPE;
     }
     switched = false;
+    words_begin();
     status = run();
+    words_end(status);
     if (!lanec) q_as_fifteen_bits();
     return status;
 }

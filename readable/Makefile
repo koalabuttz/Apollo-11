@@ -316,12 +316,18 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) $(R60_SOURCES) \
 	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(P40_SOURCES) $(CP40_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(R30_SOURCES) $(SO_SOURCES) $(BB_SOURCES) $(LLD_SOURCES) $(THR_SOURCES) $(LLGE_SOURCES) $(P70_SOURCES) $(P12_SOURCES) $(ASC_SOURCES) $(SVC_SOURCES) $(LAD_SOURCES) $(FCW_SOURCES) $(P51_SOURCES) $(CP51_SOURCES) $(EPH_SOURCES) $(CP61_SOURCES) $(CSVC_SOURCES) $(CRENT_SOURCES) $(CBAT_SOURCES) $(CP37_SOURCES) $(CTVCI_SOURCES) $(CTVCX_SOURCES) $(CTVCM_SOURCES) $(CTVCR_SOURCES) $(CTVCD_SOURCES) $(CTVCS_SOURCES) $(CTVCL_SOURCES) $(CMYS_SOURCES) $(CRCS_SOURCES) $(CAM_SOURCES) $(CRDX_SOURCES) $(CJS_SOURCES) $(CIC_SOURCES) $(CP11_SOURCES) $(CTPI_SOURCES) $(CED_SOURCES) $(FFCP_SOURCES) $(LL_SOURCES) $(PL_SOURCES) $(MINC_SOURCES) $(CON_SOURCES) $(II_SOURCES) $(OI_SOURCES) $(IFA_SOURCES) $(PFS_SOURCES) $(TFF_SOURCES) $(SC_SOURCES) $(IMS_SOURCES) $(DI_SOURCES) $(UP_SOURCES) $(STAR_SOURCES) $(RTB_CM_SOURCES) $(DAPIF_SOURCES) $(DAPID_SOURCES) $(PA_SOURCES) $(QR_SOURCES) $(TJ_SOURCES) $(KF_SOURCES) $(TG_SOURCES) $(AOS_SOURCES) $(SPB_SOURCES) $(ASM_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
 HEADERS := $(wildcard src/*/*.h src/*/*.inc)
+# (The line measure's build compiles the word recorder into the
+# interpreter's binding: tests/coverage_cc.py, -DWORD_COVERAGE.)
+ifdef LINE_COVERAGE
+HEADERS += tests/word_coverage.inc
+endif
 
 .PHONY: all check code-extents kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
 	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases throttle-cases llge-cases p70-cases p12-cases ascent-cases servicer-cases landing-displays-cases findcduw-cases p51-p53-cases cm-p51-p53-cases ephemerides-cases cm-p61-p67-cases cm-servicer-cases cm-reentry-cases cm-body-attitude-cases cm-p37-p70-cases cm-tvc-init-cases cm-tvc-exec-cases cm-tvc-massprop-cases cm-tvc-restarts-cases cm-tvc-daps-cases cm-tvc-stroke-cases cm-tvc-roll-cases cm-mysubs-cases cm-rcs-dap-cases cm-auto-man-cases cm-rcs-dap-exec-cases cm-jet-select-cases cm-imu-cal-cases cm-p11-cases cm-tpi-search-cases cm-entry-dap-cases constant-pool-cases lat-long-cases planetary-cases measurement-inc-cases conics-cases integration-init-cases orbital-integration-cases inflight-align-cases powered-flight-cases time-free-fall-cases self-check-cases imu-mode-switching-cases display-interface-cases update-program-cases star-tables-cases rtb-op-codes-cases dap-interface-cases dapidler-cases p-axis-cases q-r-axis-cases tjet-law-cases kalman-filter-cases trim-gimbal-cases aostask-cases sps-backup-cases assembly-cases names-check \
 	coverage x86-flight x86-link-check chan13-sites x86-objects-lm x86-objects-cm x86-scenarios-quick x86-scenarios \
-	x86-lockstep-quick x86-lockstep x86-lockstep-record line-coverage line-coverage-check style-check format clean
-all: names-check coverage code-extents x86-link-check chan13-sites line-coverage-check style-check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
+	x86-lockstep-quick x86-lockstep x86-lockstep-record line-coverage line-coverage-check word-coverage \
+	word-coverage-check style-check format clean
+all: names-check coverage code-extents x86-link-check chan13-sites line-coverage-check word-coverage-check style-check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
 	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases \
@@ -545,6 +551,15 @@ $(BUILD)/interpreter-cases-lm: $(INTERPRETER_SOURCES:src/%.c=$(BUILD)/cases-lm/%
 $(BUILD)/interpreter-cases-cm: $(INTERPRETER_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) \
 		$(BUILD)/faithful-cm/interp_core.o tests/interpreter_fuzz.c $(PORT)/tools/interp_core_fuzz.c
 	$(CC) $(IC_CFLAGS) $(INCLUDES) $(CM) $(IC_COMMON) $(filter %.o,$^) tests/interpreter_fuzz.c -o $@
+# The same program under another name, for the cases that run the rope's
+# own words (tests/interpreter_fuzz.c, rope_cases()): the word measure reads
+# a program's records by its name, and none of interpreter-cases-<m>'s.
+$(BUILD)/interpreter-rope-cases-lm: $(INTERPRETER_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) \
+		$(BUILD)/faithful-lm/interp_core.o tests/interpreter_fuzz.c $(PORT)/tools/interp_core_fuzz.c
+	$(CC) $(IC_CFLAGS) $(INCLUDES) $(LM) $(IC_COMMON) $(filter %.o,$^) tests/interpreter_fuzz.c -o $@
+$(BUILD)/interpreter-rope-cases-cm: $(INTERPRETER_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) \
+		$(BUILD)/faithful-cm/interp_core.o tests/interpreter_fuzz.c $(PORT)/tools/interp_core_fuzz.c
+	$(CC) $(IC_CFLAGS) $(INCLUDES) $(CM) $(IC_COMMON) $(filter %.o,$^) tests/interpreter_fuzz.c -o $@
 
 # tests/interpreter_side_cases.c enters the readable interpreter where
 # basic code does (src/binding/interpreter_basic.c) and runs the faithful
@@ -580,6 +595,7 @@ $(BUILD)/interpreter-side-cases-cm: $(INTERPRETER_SOURCES:src/%.c=$(BUILD)/cases
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(IS_COMMON) $(filter %.o,$^) tests/interpreter_side_cases.c -o $@
 
 interpreter-cases: $(BUILD)/interpreter-cases-lm $(BUILD)/interpreter-cases-cm \
+		$(BUILD)/interpreter-rope-cases-lm $(BUILD)/interpreter-rope-cases-cm \
 		$(BUILD)/interpreter-side-cases-lm $(BUILD)/interpreter-side-cases-cm
 	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
 	@for m in lm cm; do for s in $(INTERPRETER_SEEDS); do \
@@ -587,6 +603,8 @@ interpreter-cases: $(BUILD)/interpreter-cases-lm $(BUILD)/interpreter-cases-cm \
 	done; done
 	./$(BUILD)/interpreter-cases-lm $(ROPES) shifts
 	./$(BUILD)/interpreter-cases-cm $(ROPES) shifts
+	./$(BUILD)/interpreter-rope-cases-lm $(ROPES) rope
+	./$(BUILD)/interpreter-rope-cases-cm $(ROPES) rope
 	./$(BUILD)/interpreter-side-cases-lm $(word 1,$(ROPES))
 	./$(BUILD)/interpreter-side-cases-cm $(word 2,$(ROPES))
 
@@ -1539,13 +1557,26 @@ x86-lockstep-record: $(X86_OBJECTS) $(HARNESS_ENGINE)
 # gate 2's scenarios, built for coverage (LINE_COVERAGE, above) and run;
 # each stretch of lines that none of them runs must stand, with its
 # reason, in tests/line_coverage.txt.
+#
+# Interpretive code is tables of words, with no line to run, so the same
+# run also leaves which of those words the interpreter ran (the recorder in
+# its binding, tests/word_coverage.inc), and tests/word_coverage.py holds
+# them to a ledger of their own, tests/word_coverage.txt. Both checks are
+# made, and either fails the target.
 line-coverage:
-	python3 tests/line_coverage.py
+	@python3 tests/line_coverage.py; lines=$$?; python3 tests/word_coverage.py; words=$$?; \
+		test $$lines -eq 0 -a $$words -eq 0
 
-# That check itself, on made-up measures and ledgers: each way a ledger can
-# be wrong is reported as that (no build, no clang).
+# The word check alone, on what the last line-coverage run left.
+word-coverage:
+	python3 tests/word_coverage.py
+
+# Those checks themselves, on made-up measures and ledgers: each way a
+# ledger can be wrong is reported as that (no build, no clang).
 line-coverage-check:
 	@python3 tests/line_coverage.py --self-check
+word-coverage-check:
+	@python3 tests/word_coverage.py --self-check
 
 # The style guide's rules that a program can count (tools/style_check.py,
 # issue #1334): what the tree still owes stands in tests/style_owed.txt,

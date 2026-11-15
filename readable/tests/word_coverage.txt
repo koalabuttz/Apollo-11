@@ -1,0 +1,150 @@
+# The words of interpretive code that no test and no scenario runs, and why.
+# tests/word_coverage.py --write writes this file and keeps each reason;
+# `make line-coverage` measures again and holds the tree to it.
+#
+# Counted: every word of every table of interpretive code in src/ (each a
+# struct interpretive_code), as the interpreter took it in the case tests
+# and the scenarios: an order pair by its orders (the left one, the right
+# one), a branch by its two outcomes, a store code, an operand in line
+# with the code by whether a program that ran its order read it, and a
+# constant among the code by whether a program read it that took an
+# operand naming it. (A read alone is not enough: a made-up state's
+# address comes to any word of the rope.) A word stands here if any of
+# that was not seen: its line says what, then the listing's line.
+#
+# LM: 447 tables: 11434 words, 11410 of them run wholly (99.8%).
+#     orders: 6957 of 6957 run; store codes: 1324 of 1324; operands: 5912 of 5936 read;
+#     branches: 524 of 524 run, 524 both ways.
+#     (1 more in the tables are basic instructions, not counted.)
+#   The scenarios alone: 11434 words, 8424 of them run wholly (73.7%).
+#     orders: 5366 of 6957 run; store codes: 1018 of 1324; operands: 4458 of 5936 read;
+#     branches: 412 of 524 run, 140 both ways.
+#   From 93 programs. 43939 right orders ran that the recorder found no pair for,
+#   taken or behind LOC: counted nowhere.
+#   They were noted at 7 places: 6 are the CADR after a TC USPRCADR, where
+#   basic code has the interpreter run one routine and EXIT.
+#   The others: 10,2173 (TCF VXV).
+# CM: 520 tables: 13864 words, 13836 of them run wholly (99.8%).
+#     orders: 8336 of 8336 run; store codes: 1544 of 1544; operands: 7284 of 7312 read;
+#     branches: 737 of 737 run, 737 both ways.
+#   The scenarios alone: 13864 words, 10692 of them run wholly (77.1%).
+#     orders: 6687 of 8336 run; store codes: 1234 of 1544; operands: 5800 of 7312 read;
+#     branches: 606 of 737 run, 240 both ways.
+#   From 84 programs. 55486 right orders ran that the recorder found no pair for,
+#   taken or behind LOC: counted nowhere.
+#   They were noted at 7 places: 3 are the CADR after a TC USPRCADR, where
+#   basic code has the interpreter run one routine and EXIT.
+#   4 are at an indexed store code, where no pair's order waits: a made-up
+#   state's index can make the store write EDOP itself.
+#
+# By reason:
+#   basic: 35 words in 5 stretches
+#   unnamed: 6 words in 4 stretches
+#
+# A reason in brackets is one of these:
+
+[basic] Not the interpreter's to read: basic instructions read the word. The
+    check finds one in the mission's listing that names a word of the
+    stretch, or a TC as the word before it (whose routine reads the words
+    after its call). The line measure counts the C of those instructions.
+[impossible] No state brings the interpreter to the word, or the branch the
+    other way: the program's own words rule it out, and the reason says how.
+    An argument, not a run.
+[never] No program brings the state, though the words of the table do not
+    rule it out: the reason rests on what the rest of the program stores or
+    calls, and says what was looked at.
+[unnamed] A constant that no word of the mission's listing names. The check
+    looks: the constant has a name, and no instruction, order or address of
+    the listing has that name as its operand. An address reckoned from
+    another name could still come to it, and the reason says what stands
+    beside it.
+
+src/conics/constants.c
+  CONIC_CONSTANTS, cm 04,3602 (1 word) fab88ce4
+    | unread                  BEE17 DEC 0 B-14
+    why: [unnamed] The first half of a double precision 1.0 B-17, whose
+         second half is the first word of D1/8 after it. Luminary099 names it
+         (at SUFFCHEK, in the same file there); Comanche055 kept the word and
+         names it nowhere.
+
+src/integration_init/stateint.c
+  STATINT1_CODE, lm cm 13,2630 13,2654 (2 words) 26820d1d
+    | unread                  600SECS 2DEC 60000 B-28
+    | unread                  600SECS 2DEC 60000 B-28 (word 2)
+    why: [basic] STATEINT's basic code takes the ten minutes of its LONGCALL
+         from it (DCA 600SECS), and the restart tables hold its address
+         (2.3SPOT). No order has it as an operand.
+
+src/measurement_inc/measurement_inc.c
+  MEASUREMENT_INC_CODE[4], lm cm 23,3244 36,3767 (2 words) 24645a1d
+    | unread                  54DD DEC 54 B-14
+    | unread                  6DD DEC -6 B-14
+    why: [basic] The basic instructions between the file's EXITs and its
+         orders read them: CAF 54DD, the first setting of the W matrix's
+         index, and AD 6DD at FAZB1. No order has either as an operand.
+
+src/orbital_integration/constants.c
+  ORBITAL1_CONSTANTS, cm 11,3775 (1 word) 728c530c
+    | unread                  OCT27 OCT 27
+    why: [unnamed] Luminary099 names it (an SLOAD DSU of MODREG and OCT27, in
+         the same file there); Comanche055 kept the constant after DP2/3 and
+         names it nowhere. (OCT27/24, in P40-P47, is another word.)
+  ORBITAL2_CONSTANTS, cm 13,3752 (2 words) 70a0ea5d
+    | unread                  3J22R2MU 2DEC* 9.20479048 E16 B-58*
+    | unread                  3J22R2MU 2DEC* 9.20479048 E16 B-58* (word 2)
+    why: [unnamed] It lies between J2REQSQ and 5/8, and no word of
+         Comanche055 names it. (E3J22R2M, in erasable memory, is another
+         word.)
+
+src/powered_flight/ax_sr_t.c
+  AX_STAR_SR_STAR_T_CONSTANTS, lm cm 23,3762 23,3735 (5 words) ef815352
+    | unread                  SINESLOC ADRES SINCDU
+    | unread                  INDEXI DEC 4 B-14
+    | unread                  DEC 2 B-14
+    | unread                  DEC 0 B-14
+    | unread                  DEC 4 B-14
+    why: [basic] AX*SR*T is basic code, and these are its own constants: CA
+         SINESLOC for ADDRWD, and DCA INDEXI under an INDEX of 0 to 2, which
+         takes two of the four words from INDEXI on. No order has them as an
+         operand.
+
+src/time_free_fall/time_free_fall.c
+  TFF_CONSTANTS, lm cm 27,3766 27,3367 (2 words) f196ac78
+    | unread                  R300K 2DEC 6464778 B-29
+    | unread                  R300K 2DEC 6464778 B-29 (word 2)
+    why: [unnamed] R300K, 300 km, between DP2(-4) and NEARONE: no word of
+         either listing names it.
+  TFF_SERIES, lm 27,3736 (13 words) d25d3224
+    | unread                  DEC 4 B-14
+    | unread                  2DEC 3.333333333 E-1
+    | unread                  2DEC 3.333333333 E-1 (word 2)
+    | unread                  2DEC* -1.999819135 E-1 *
+    | unread                  2DEC* -1.999819135 E-1 * (word 2)
+    | unread                  2DEC* 1.418148467 E-1 *
+    | unread                  2DEC* 1.418148467 E-1 * (word 2)
+    | unread                  2DEC* -1.01310997 E-1 *
+    | unread                  2DEC* -1.01310997 E-1 * (word 2)
+    | unread                  2DEC* 5.609004986 E-2 *
+    | unread                  2DEC* 5.609004986 E-2 * (word 2)
+    | unread                  2DEC* -1.536156925 E-2 *
+    | unread                  2DEC* -1.536156925 E-2 * (word 2)
+    why: [basic] The series T(X). POLY, the interpreter's basic routine,
+         reads it as the words after T(X)'s TC POLY; no order has them as an
+         operand.
+  TFF_SERIES, cm 27,3335 (13 words) fe55199b
+    | unread                  DEC 4 B-14
+    | unread                  2DEC 3.333333333 E-1
+    | unread                  2DEC 3.333333333 E-1 (word 2)
+    | unread                  2DEC* -1.999819135 E-1*
+    | unread                  2DEC* -1.999819135 E-1* (word 2)
+    | unread                  2DEC* 1.418148467 E-1*
+    | unread                  2DEC* 1.418148467 E-1* (word 2)
+    | unread                  2DEC* -1.01310997 E-1*
+    | unread                  2DEC* -1.01310997 E-1* (word 2)
+    | unread                  2DEC* 5.609004986 E-2*
+    | unread                  2DEC* 5.609004986 E-2* (word 2)
+    | unread                  2DEC* -1.536156925 E-2*
+    | unread                  2DEC* -1.536156925 E-2* (word 2)
+    why: [basic] The series T(X). POLY, the interpreter's basic routine,
+         reads it as the words after T(X)'s TC POLY; no order has them as an
+         operand.

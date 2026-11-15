@@ -426,7 +426,11 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    shift on every address word YUL can make of a count of 0 to 127, a
    direction and a round, direct and indexed by X1 and X2 (which take a
    small count through zero, where the shift turns round), in each MODE:
-   111,744 passes a mission, every one compared. Then it
+   111,744 passes a mission, every one compared. Then a few words of
+   the rope itself (the test's `rope`, built again as
+   `interpreter-rope-cases`): the EXIT that waits in EDOP while LATAZCHK's
+   RTB runs a routine of another file, entered at DANZIG as that routine
+   leaves it, 256 states a mission, every one compared. Then it
    enters the interpreter where basic code does
    (`tests/interpreter_side_cases.c`): every entry of the readable table
    (DDV/BDDV, the MAXTEST prologues, UNIT, SQRTSUB, SINE, POLY, DMPSUB,
@@ -1638,8 +1642,8 @@ builds the x86 flight program the same way and flies gate 2's 86
 scenarios. Each program that ran left its counts, and a line of `src/` is
 run if any of them ran it. What is counted is every line the build
 compiled, in a program that ran or not: each compile leaves the lines of
-its object, and a line no program holds counts as unrun. Of the 60,368
-lines of C with code in them, 1,546 (2.6%) are run by none, in 643
+its object, and a line no program holds counts as unrun. Of the 60,376
+lines of C with code in them, 1,547 (2.6%) are run by none, in 643
 stretches of 223 files. That is a figure for the C alone: interpretive
 code is tables of words, and none of its words is among those lines
 (below).
@@ -1667,7 +1671,7 @@ the measure on made-up data (`line-coverage-check`), with no build. Each
 reason is one of four kinds. The ledger says what each means, and the
 check holds each stretch to its kind's rule:
 
-- **refusal** (798 lines): how a binding refuses a state its routines do
+- **refusal** (799 lines): how a binding refuses a state its routines do
   not model. No case's state and no scenario makes those files refuse.
   Outside `src/binding` only a `not_modelled()` may say this, with the
   reason: a state that can come, though no line of the program brings
@@ -1679,6 +1683,9 @@ check holds each stretch to its kind's rule:
 - **impossible** (491 lines): no state brings the routine to the line,
   and the reason says what in the routine's own lines, or its file's,
   rules the outcome out. An argument, not a run. The reason must say why.
+  About 25 of them rest on nothing else storing a word of erasable
+  memory, which speaks of the program's own stores: the crew can load
+  such a word from the keyboard, and no such reason covers that.
 - **never** (158 lines): no program brings the state, though the routine's
   own lines do not rule it out. The reason rests on what the rest of the
   program stores there or on what the assembler makes, and says what was
@@ -1734,18 +1741,88 @@ directly or through another header. The check fails on a file that is
 not counted and not named, on one named that the build does not compile,
 and on one named that has lines now.
 
-**What this measure leaves out: all interpretive code.** An interpretive
-program is a table of words to the compiler, with no line to run, so the
-measure cannot see which of its words the interpreter ran. `src/` holds
-821 such programs (each a `struct interpretive_code`) in 200 files. 55
-of those files are among the 68 with no line of C at all; the other 145
-have C lines of their own, which are counted, beside tables that are
-not. So "2.6% unrun" says nothing of the interpretive words, in any
-file. What holds those programs today is that each table is compared
-with the rope word for word and that the cases and scenarios compare
-what the programs compute. Which words run, and which way each branch
-goes, is a measure of its own that the validation plan now has as item
-3b.
+**Which words of interpretive code run.** An interpretive program is a
+table of words to the compiler, with no line to run, so the line measure
+cannot see which of its words the interpreter ran. `src/` holds 821 such
+programs (each a `struct interpretive_code`) in 200 files. 55 of those
+files are among the 68 with no line of C at all; the other 145 have C
+lines of their own, which are counted, beside tables that are not. So
+"2.6% unrun" says nothing of the interpretive words, in any file.
+
+The word measure does (`tests/word_coverage.py`, item 3b of the
+validation plan; `make line-coverage` runs it after the line measure, on
+the same run). All interpretive code is run by one function of the
+interpreter's binding (`run()` in `src/binding/interpreter_core.c`), in a
+case test and in a scenario alike. In the measure's build that file holds
+a recorder (`tests/word_coverage.inc`), and each program leaves what its
+passes did, by the word's place in the rope: the word NEWOPS took (an
+order pair, whose left order runs, or a store code), the right order when
+it ran, and how each order ended, on to the next order or away. What a
+pass noted counts only if the binding ran the pass, and only where the
+value read is the rope's own.
+
+What is counted is every word of every table, as the x86 objects hold
+them, each with its line of the assembled listing: 11,434 words in 447
+tables for the LM and 13,864 in 520 for the CM. The measure fails if an
+order or a store code of either listing lies outside the tables (none
+does), and if one ran, with the rope's value, at a word no table holds.
+
+| | LM | CM |
+|---|---|---|
+| orders run | 6,957 of 6,957 | 8,336 of 8,336 |
+| store codes run | 1,324 of 1,324 | 1,544 of 1,544 |
+| branches run both ways | 524 of 524 | 737 of 737 |
+| operands and constants read | 5,912 of 5,936 | 7,284 of 7,312 |
+| the scenarios alone: orders run | 5,366 | 6,687 |
+| the scenarios alone: branches both ways | 140 | 240 |
+
+A branch is counted by its two outcomes: the order went on to the next,
+and it went away. Most of this is the case tests' doing, which start
+every order from thousands of made-up states. The 86 scenarios by
+themselves run about three orders in four and take about three branches
+in ten both ways, and the ledger's head keeps those figures beside the
+others, so that nobody takes the first rows for what the flights show.
+
+An operand is harder to count than an order, because a made-up state's
+address can come to any word of the rope: one case test alone reads over
+ten thousand words it has no business with. So a read is not enough. An
+operand in line with the code is read when a program read it that also
+ran the order it follows. A constant among the code is read when a
+program read it that also took an operand naming it (its name, or with
+an index any constant of its table).
+
+The first count had one order that never ran and five branches that
+only ever went one way (all five in the LM, one of them in the CM too).
+The order (the EXIT of LATAZCHK's RTB EXIT in the LM) has its case now,
+above. The branches were all BZEs that want a number exactly zero, which
+a random number never is, and three case tests plant one now (`tests/conics_cases.c`,
+`tests/integration_init_cases.c`, `tests/r30_cases.c`). None of those
+states showed the readable code apart from the faithful port.
+
+What is left is 41 words of constants, in 9 stretches of
+`tests/word_coverage.txt`, each with its reason. The check fails on a
+word that does not run wholly and is not there, on a stretch of the
+ledger that runs now, and on a reason that does not stand. There are
+four kinds, and two of them are checked against the listing:
+
+- **basic** (35 words): basic instructions read the word, not an order.
+  The check finds a basic instruction in the listing that names a word
+  of the stretch, or a TC as the word before it. Examples: 600SECS,
+  which STATEINT's `DCA` takes for its LONGCALL; the series after T(X)'s
+  `TC POLY`.
+- **unnamed** (6 words): a constant that no word of the mission's
+  listing names. The check looks through the listing for the name. R300K
+  is one in both missions; the CM keeps BEE17 and OCT27, which only the
+  LM names, and 3J22R2MU.
+- **impossible** and **never** (none now): as in the line ledger, for an
+  order or an outcome. An argument, not a run.
+
+What the word measure cannot see: a word is run if it ran once, in any
+state. Basic code also has the interpreter run a routine for it (`TC
+USPRCADR`, with EXIT put in EDOP by hand), and such an EXIT is no word of
+any table: the ledger's head says how many ran and where. The fuzz's
+programs are made-up words written into the rope, and nothing of those
+programs is read.
 
 What else the measure cannot see: a line is run if it ran once, in any
 state, and a line with two branches on it is run if either was. A macro's
@@ -1757,7 +1834,8 @@ check's own link, which is made to be refused.
 CI runs the three gates on every PR that touches `readable/`, or what it
 is built from and checked against: the faithful port's sources, tests and
 tools and the listings (`.github/workflows/readable-ci.yml`). The line
-coverage runs there too, as a job of its own.
+coverage runs there too, as a job of its own, with the word measure
+after it.
 
 ## Departures
 
