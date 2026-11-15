@@ -190,8 +190,10 @@ static int code_in(uint16_t fb, uint16_t loc)
 /* The frozen cases of the mission. */
 static unsigned mission_cases[CONIC_VECTORS], mission_count;
 
-/* A stream of its own for states added later, so that the states of the
- * first stay as they were. */
+/* A stream of its own for states added later, so that the first stream's
+ * draws stay as they were. (The states do not all stay: a word planted from
+ * this stream takes the place of what the first stream put there, and a
+ * plant added before another moves the other's draws.) */
 static uint32_t later_seed = 264575u;
 static unsigned later(unsigned n)
 {

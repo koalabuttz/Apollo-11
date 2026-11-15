@@ -375,6 +375,8 @@ make x86-scenarios-quick   # gate 2 on the PR set (26 rows)
 make x86-scenarios         # gate 2 on every row (86)
 make x86-lockstep-quick    # gate 3 on the PR set (33 rows, four minutes)
 make x86-lockstep          # gate 3 on every row (117, about 20 minutes on 8 processors)
+make line-coverage         # which lines and interpretive words run (half an hour)
+make mutation-ledger       # the changes no test sees, each made and run (hours)
 ```
 
 Gates 2 and 3 need the port's toolchain once, for yaAGC:
@@ -1683,8 +1685,8 @@ check holds each stretch to its kind's rule:
 - **impossible** (491 lines): no state brings the routine to the line,
   and the reason says what in the routine's own lines, or its file's,
   rules the outcome out. An argument, not a run. The reason must say why.
-  About 25 of them rest on nothing else storing a word of erasable
-  memory, which speaks of the program's own stores: the crew can load
+  Where a reason rests on nothing else storing a word of erasable
+  memory, it speaks of the program's own stores: the crew can load
   such a word from the keyboard, and no such reason covers that.
 - **never** (158 lines): no program brings the state, though the routine's
   own lines do not rule it out. The reason rests on what the rest of the
@@ -1786,10 +1788,13 @@ others, so that nobody takes the first rows for what the flights show.
 An operand is harder to count than an order, because a made-up state's
 address can come to any word of the rope: one case test alone reads over
 ten thousand words it has no business with. So a read is not enough. An
-operand in line with the code is read when a program read it that also
-ran the order it follows. A constant among the code is read when a
-program read it that also took an operand naming it (its name, or with
-an index any constant of its table).
+operand in line with the code is read when a pass read it just after
+the word it follows was taken (at most four words on from a pair, two
+from a store code), in a program that also ran that order. A constant among the code is read when a program
+read it that also took an operand naming it (its name, or with an index
+any constant of its table). For the constants the figure is an upper
+one: the read and the operand are one program's, and need not be one
+pass's.
 
 The first count had one order that never ran and five branches that
 only ever went one way (all five in the LM, one of them in the CM too).
@@ -1831,11 +1836,69 @@ programs are built and not run here: the two `-core` flight programs,
 which link the same readable objects as the two that fly, and the link
 check's own link, which is made to be refused.
 
+**What no test sees.** A test is worth what it catches. Every PR that
+wrote a readable file made small changes to it by script (an address
+moved by one, a statement dropped, a branch turned round), ran its case
+tests on each, and named the changes the tests let pass. Those are
+gathered in one ledger now, `tests/mutation_ledger.txt` (item 4 of the
+validation plan), as they stand in today's code: each entry is the
+change itself, the routine it is in, a kind in brackets and one sentence
+that says why no test can tell the two apart. `make all` holds every
+entry to the tree (`tests/mutation_ledger.py`: its lines are there, in
+the routine it names), and `make mutation-ledger`, nightly in CI, makes
+each change in a copy of the tree and runs its tests: a survivor that a
+test catches now fails the run, and so does a caught change that nothing
+catches any more.
+
+The largest family by far was a TC's place. The readable C carries a
+transfer by a C call, and `tc_at(PLACE)` only says where the TC stands,
+so that Q gets its return address; most of the time the next TC writes Q
+again before anything reads it, and a place moved by one word passes
+every suite. `make tc-sites` (in `make all`, `tools/tc_sites.py`) reads
+every place against the listing instead, both ways: the word at each
+place is one the AGC runs as a TC, and to the routine the C calls
+(3,269 places in the LM, 3,093 in the CM); and every TC of the listings
+to fixed memory is named by some place (3,094 of 3,254, and 2,923 of
+3,097; the others, jump tables and TCs the C writes as plain calls, are
+listed in the tool). It found no slip in the tree, and it catches 368 of
+the 635 changes that the case tests still let pass: they stay in the
+ledger as `[killed: tc-sites]`, so that the run keeps holding the catch.
+
+The other 267 are the survivors. Their kinds:
+
+- **rewritten** (78): what the change touches is written again before
+  anything reads it. The return address in Q that the next TC sets, A
+  before a CAF, the interrupt latch before a RELINT.
+- **same** (23): two names of one thing. COM and CS A; two names of one
+  word; two branches that run the same code.
+- **unreached** (53): unlike only in a state no pass brings there. An
+  overflow at a TS that cannot overflow, a negative MASK result.
+- **repeated** (34): a check that another check repeats before anything
+  runs, most of them a binding's guard that the interpreter's own entry
+  check makes again.
+- **restore** (12): a binding putting its state back after a refusal,
+  where nothing refuses after it has written.
+- **refusal** (17): the refusal of a state the flight program never makes
+  and no case makes up (word 7 not zero, an index outside its table).
+- **owed** (50): no reason written yet. The entry says what the change
+  touches and what was not checked; each is owed a case that catches
+  it or a reason of a kind above.
+
+What the ledger cannot say: that these are all the changes no test
+sees. They are the ones the PRs' scripts made and their kept logs name
+(216 scripts kept, the logs of 132 of them): each of those 1,216 was
+made again on this tree, and 556 are caught by a case test now. The logs
+of 84 scripts were not kept; their
+survivors are named in the PR texts by kind only, most of them a TC's
+place, which `tc-sites` now holds everywhere. A change no script made
+is not here.
+
 CI runs the three gates on every PR that touches `readable/`, or what it
 is built from and checked against: the faithful port's sources, tests and
 tools and the listings (`.github/workflows/readable-ci.yml`). The line
 coverage runs there too, as a job of its own, with the word measure
-after it.
+after it. The mutation ledger's run is a nightly job; on a PR `make all`
+holds the ledger's entries to the tree.
 
 ## Departures
 

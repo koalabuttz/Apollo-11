@@ -25,6 +25,11 @@
  *                  pass the binding refuses is put back as it was found,
  *                  and so is what was noted of it.
  *
+ * A word read just after the word NEWOPS took (at most four words on from
+ * a pair, whose two orders take two each at most; two from a store code)
+ * is marked as read in line: one of that word's operands, and not a word
+ * some made-up address came to.
+ *
  * What is kept for each word is its value as read and what was seen of it
  * (the flags below). A word read with two values (a test that writes
  * made-up programs into the rope) is marked mixed, and the measure counts
@@ -67,7 +72,8 @@ enum {
     WORD_MIXED = 256,
     ORPHAN_RAN = 512,
     ORPHAN_ON = 1024,
-    ORPHAN_AWAY = 2048
+    ORPHAN_AWAY = 2048,
+    READ_IN_LINE = 4096
 };
 
 #define WORDS_IN_ROPE (044u * 1024u)
@@ -98,10 +104,25 @@ static bool words_in_pass;
 
 /* The pair NEWOPS last took, the order of it that has not ended yet
  * (LEFT_RAN, RIGHT_RAN or 0), and what the next read is to be marked. They
- * live from pass to pass: a pass can end in the middle of a pair. */
+ * live from pass to pass: a pass can end in the middle of a pair. So that
+ * one pass's pair is not taken for another's, the next pass goes on with the
+ * order only if it begins where this one stopped (Z, LOC and BANKSET as
+ * words_end() found them), and a right order is the kept pair's only if LOC
+ * is still at the pair or its operands (words_right()).
+ *
+ * taken_at is the word NEWOPS last took, a pair or a store code
+ * (WORDS_NO_PAIR: none), and taken_span how far its operands can lie from
+ * it: a word read that near after it is one of its operands in line
+ * (READ_IN_LINE). It is kept into the next pass while LOC and BANKSET are
+ * as this one left them. Z may differ: after a left order RTB the pass
+ * ends at the RTB's routine, basic code, and the next begins at DANZIG
+ * with the pair's right order still to read its operand. A right order
+ * that runs sets it too, to the pair words_right() finds for it: a case
+ * can begin at DANZIG, with a pair this recorder never saw taken. */
 static struct words_state {
-    unsigned pair_at, pair_word, running, next;
-} words_now = {WORDS_NO_PAIR, 0u, 0u, 0u}, words_before;
+    unsigned pair_at, pair_word, running, next, taken_at, taken_span;
+    unsigned z, loc, bankset;
+} words_now = {WORDS_NO_PAIR, 0u, 0u, 0u, WORDS_NO_PAIR, 0u, 0u, 0u, 0u}, words_before;
 
 static void words_note(unsigned at, unsigned value, unsigned flags)
 {
@@ -118,8 +139,17 @@ static void words_note(unsigned at, unsigned value, unsigned flags)
 
 static word words_read(unsigned at, word value)
 {
+    unsigned flags = WORD_READ | words_now.next;
+
     if (!words_in_pass) return value;
-    words_note(at, value, WORD_READ | words_now.next);
+    if (!words_now.next && words_now.taken_at != WORDS_NO_PAIR && at > words_now.taken_at &&
+        at <= words_now.taken_at + words_now.taken_span)
+        flags |= READ_IN_LINE;
+    words_note(at, value, flags);
+    if (words_now.next) {
+        words_now.taken_at = at;
+        words_now.taken_span = words_now.next == STORE_RAN ? 2u : 4u;
+    }
     if (words_now.next == LEFT_RAN) {
         words_now.pair_at = at;
         words_now.pair_word = value;
@@ -190,18 +220,32 @@ static bool words_behind(unsigned back, unsigned *at, word *value)
     return true;
 }
 
-/* The pair's right order runs now. If the pair is not the one this
- * recorder saw taken (an orphan), it is the nearest word at or behind LOC
- * that reads as a pair with this right order: LOC is at the last word the
- * left order took, the pair itself or one of its operands (two at most). */
+/* Whether LOC is at the pair this recorder last saw taken, or at one of
+ * the two words after it. */
+static bool words_at_pair(void)
+{
+    unsigned at;
+    word value;
+
+    if (words_now.pair_at == WORDS_NO_PAIR || !words_behind(0u, &at, &value)) return false;
+    return at >= words_now.pair_at && at <= words_now.pair_at + 2u;
+}
+
+/* The pair's right order runs now. LOC is at the last word the left order
+ * took, the pair itself or one of its operands (two at most). The pair is
+ * the one this recorder saw taken if that pair's right order is the one
+ * waiting and LOC is there; if not (an orphan), it is the nearest word at
+ * or behind LOC that reads as a pair with this right order. */
 static void words_right(void)
 {
     unsigned back, at;
     word value;
 
-    if (words_now.pair_at != WORDS_NO_PAIR && words_edop_of(words_now.pair_word) == EDOP) {
+    if (words_at_pair() && words_edop_of(words_now.pair_word) == EDOP) {
         words_note(words_now.pair_at, words_now.pair_word, RIGHT_RAN);
         words_now.running = RIGHT_RAN;
+        words_now.taken_at = words_now.pair_at;
+        words_now.taken_span = 4u;
         return;
     }
     for (back = 0u; back < 3u; ++back) {
@@ -210,6 +254,8 @@ static void words_right(void)
             words_now.pair_word = value;
             words_note(at, value, ORPHAN_RAN);
             words_now.running = ORPHAN_RAN;
+            words_now.taken_at = at;
+            words_now.taken_span = 4u;
             return;
         }
     }
@@ -256,6 +302,9 @@ static void words_write(void)
 static void words_begin(void)
 {
     words_before = words_now;
+    if (Z != words_now.z || LOC != words_now.loc || BANKSET != words_now.bankset)
+        words_now.running = 0u; /* not the pass that stopped in that order */
+    if (LOC != words_now.loc || BANKSET != words_now.bankset) words_now.taken_at = WORDS_NO_PAIR;
     words_count = 0u;
     words_orphans_noted = 0u;
     words_lost_noted_count = 0u;
@@ -274,6 +323,9 @@ static void words_end(enum exec_status status)
     }
     words_now.next = 0u;
     words_ended(Z, true);
+    words_now.z = Z;
+    words_now.loc = LOC;
+    words_now.bankset = BANKSET;
     if (!writes) {
         writes = true;
         atexit(words_write);
