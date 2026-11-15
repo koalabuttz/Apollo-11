@@ -148,8 +148,10 @@ static unsigned in_ebank(uint16_t eb, unsigned address)
     return (eb & 7u) * 0400u + (address - 01400u);
 }
 
-/* A stream of its own for states added later, so that the states of the
- * first stay as they were. */
+/* A stream of its own for states added later, so that the first stream's
+ * draws stay as they were. (The states do not all stay: a word planted from
+ * this stream takes the place of what the first stream put there, and a
+ * plant added before another moves the other's draws.) */
 static uint32_t later_seed = 282842u;
 static unsigned later(unsigned n)
 {

@@ -25,14 +25,18 @@ listing (c64-port's assembly.lst). A word is one of three things:
                   is STADR's operand: run when STADR read it.)
   an operand      an address, a switch and its bit or a shift count in
                   line with the code, or a constant that lies among it.
-                  One in line is read when a program read it that ran the
-                  order it follows. A constant is read when a program read
-                  it that also took an operand naming it: its name (the
-                  constant and the unnamed words after it), or, with an
-                  index (X,1), any constant of its table. A read is not
-                  enough: a made-up state's address can come to any word
-                  of the rope, and the case tests make such states by the
-                  thousand.
+                  One in line is read when a pass read it just after
+                  the word it follows was taken (at most four words on
+                  from a pair, two from a store code), in a program that
+                  ran that order. A constant is read when a
+                  program read it that also took an operand naming it: its
+                  name (the constant and the unnamed words after it), or,
+                  with an index (X,1), any constant of its table. A read
+                  is not enough: a made-up state's address can come to any
+                  word of the rope, and the case tests make such states by
+                  the thousand. For the constants the count is an upper
+                  one: the read and the operand are one program's, and
+                  need not be one pass's.
 
 A table can also hold a basic instruction (the TC INTPRET a routine's
 code begins at): no word of interpretive code, and not counted.
@@ -84,8 +88,11 @@ WORDS = BUILD / 'words'
 sys.path.insert(0, str(READABLE / 'tools'))
 import code_extents as CE  # noqa: E402
 
-READ, LEFT, LEFT_ON, LEFT_AWAY, RIGHT, RIGHT_ON, RIGHT_AWAY, STORE, MIXED, ORPHAN, ORPHAN_ON, ORPHAN_AWAY = (
-    1 << n for n in range(12))
+(READ, LEFT, LEFT_ON, LEFT_AWAY, RIGHT, RIGHT_ON, RIGHT_AWAY, STORE, MIXED, ORPHAN, ORPHAN_ON, ORPHAN_AWAY,
+ IN_LINE) = (1 << n for n in range(13))
+# How many different places of right orders with no pair the recorder keeps
+# for a program (WORDS_LOST of tests/word_coverage.inc).
+LOST_KEPT = 64
 # Programs whose interpretive words are made up: not read.
 MADE_UP = ('interpreter-cases-lm', 'interpreter-cases-cm')
 STORES = ('STORE', 'STODL', 'STOVL', 'STCALL')
@@ -304,9 +311,10 @@ def namers(words, inline, block, labels):
 
 def read_as_named(words, per, labels):
     """The operands that count as read, from what each program saw
-    ({program: {phys: flags}}): one in line, read by a program that ran
-    the order it follows; a constant, read by a program that took an
-    operand naming it."""
+    ({program: {phys: flags}}): one in line, read in a pass just after the
+    word NEWOPS took (IN_LINE: at most four words after a pair, two after
+    a store code), by a program that ran the order it follows; a constant,
+    read by a program that took an operand naming it."""
     inline, block = layout(words)
     named = namers(words, inline, block, labels)
 
@@ -317,7 +325,7 @@ def read_as_named(words, per, labels):
     out = set()
     for told in per.values():
         took = {phys for phys, owner in inline.items()
-                if told.get(phys, 0) & READ and (owner is None or ran(owner, told))}
+                if told.get(phys, 0) & IN_LINE and (owner is None or ran(owner, told))}
         out |= took
         out |= {phys for phys in block if told.get(phys, 0) & READ and named.get(phys, set()) & took}
     return out
@@ -325,17 +333,22 @@ def read_as_named(words, per, labels):
 
 def lost_places(mission):
     """Where the right orders were that the recorder found no pair for:
-    {LOC's physical address: how often}, over each program's first few
-    different places."""
-    places = Counter()
+    ({LOC's physical address: how often}, the programs that had more
+    different places than the recorder keeps). The recorder keeps each
+    program's first LOST_KEPT different places (LOC and EDOP)."""
+    places, full = Counter(), []
     for path in sorted(WORDS.glob(f'*.{mission}.*.words')):
         if path.name.rsplit('.', 3)[0] in MADE_UP:
             continue
+        kept = 0
         for record in path.read_text().split('\n'):
             parts = record.split()
             if parts and parts[0] == 'lost':
                 places[int(parts[1], 8)] += int(parts[3])
-    return places
+                kept += 1
+        if kept >= LOST_KEPT:
+            full.append(path.name)
+    return places, full
 
 
 def lost(mission, places, words, line_at):
@@ -417,7 +430,10 @@ def measure(mission):
         if ran_as and ran_as != word.kind and word.kind != 'basic':
             wrong.append(f'{mission} {word.table} {word.line!r}: ran as a {ran_as}, read from the listing as '
                          f'{word.kind}')
-    said, bad = lost(mission, lost_places(mission), words, {phys: at[0] for phys, at in listing.line_at.items()})
+    places, full = lost_places(mission)
+    said, bad = lost(mission, places, words, {phys: at[0] for phys, at in listing.line_at.items()})
+    bad += [f'{mission}: {name} had {LOST_KEPT} or more places of right orders with no pair: the recorder '
+            f'keeps no more, so some were not looked at' for name in full]
     return tables, words, flags, wrong + bad, (files, orphans, mixed, said), flight
 
 
@@ -432,8 +448,8 @@ def misses(word, got):
     if word.kind == 'basic':
         return []
     if word.kind == 'store':
-        # (A complemented one is STADR's operand, which STADR read.)
-        return [] if got & (READ if word.value & 0o40000 else STORE) else ['unrun']
+        # (A complemented one is STADR's operand, which STADR read, in line.)
+        return [] if got & (IN_LINE if word.value & 0o40000 else STORE) else ['unrun']
     if word.kind == 'operand':
         return [] if got & READ else ['unread']
     out = []
@@ -637,11 +653,13 @@ def write_ledger(path, heads, found, classes, reasons):
            '# struct interpretive_code), as the interpreter took it in the case tests',
            '# and the scenarios: an order pair by its orders (the left one, the right',
            '# one), a branch by its two outcomes, a store code, an operand in line',
-           '# with the code by whether a program that ran its order read it, and a',
-           '# constant among the code by whether a program read it that took an',
-           "# operand naming it. (A read alone is not enough: a made-up state's",
-           '# address comes to any word of the rope.) A word stands here if any of',
-           "# that was not seen: its line says what, then the listing's line.",
+           '# with the code by whether a pass read it just after taking the word it',
+           '# follows (in a program that ran that order), and a constant among the',
+           '# code by whether a program read it that took an operand naming it. (A',
+           "# read alone is not enough: a made-up state's address comes to any word",
+           '# of the rope. For the constants the count is an upper one: the read and',
+           "# the operand are one program's, not one pass's.) A word stands here if",
+           "# any of that was not seen: its line says what, then the listing's line.",
            '#',
            *[f'# {line}' for head in heads for line in head],
            '#',
@@ -737,7 +755,8 @@ def self_check():
           'operands read': 2, 'stores': 1, 'stores run': 1, 'words whole': 6})
     stadr = word(8200, 'store', ' STORE   Z')
     stadr.value = 0o77000
-    part("STADR's store code, read", misses(stadr, READ), [])
+    part("STADR's store code, read in line", misses(stadr, READ | IN_LINE), [])
+    part("STADR's store code, read from elsewhere", misses(stadr, READ), ['unrun'])
     part("STADR's store code, unread", misses(stadr, 0), ['unrun'])
     part('a basic instruction in a table', misses(word(8201, 'basic', ' TC INTPRET'), 0), [])
     part('an orphan at a pair with a right order', adopted(words[8192], READ | ORPHAN | ORPHAN_AWAY),
@@ -797,8 +816,8 @@ def self_check():
     fit('[basic] after a TC', 'basic', [(consts[9000], ['unread'])], [], False, before='T TC POLY')
     fit('[basic] after a word that is no TC', 'basic', [(consts[9000], ['unread'])], [], True, before='T DEC 4')
     fit('[basic] with an order', 'basic', [(consts[9004], ['unrun'])], [' CAF K1'], True)
-    # An operand is read by a program that ran its order, a constant by one
-    # that took an operand naming it.
+    # An operand is read in line by a program that ran its order, a constant
+    # by one that took an operand naming it.
     code = {w.phys: w for w in (
         word(9100, 'pair', ' DLOAD   DAD', 'DLOAD', 'DAD'), word(9101, 'operand', '         K1'),
         word(9102, 'operand', '         V,1'), word(9103, 'pair', ' SSP', 'SSP'),
@@ -813,16 +832,19 @@ def self_check():
     part('constants, by block', block, {9110: 9110, 9111: 9110, 9112: 9110, 9113: 9113, 9114: 9114, 9115: 9115})
     part('what names each constant', dict(namers(code, inline, block, labels)),
          {9110: {9101}, 9111: {9101}, 9112: {9101}, 9114: {9102}, 9115: {9102}})
-    every = {phys: READ for phys in code}
+    every = {phys: READ | (IN_LINE if phys in inline else 0) for phys in code}
+    took = READ | IN_LINE
     part('one program ran the order and read it all', read_as_named(code, {'a': {**every, 9100: READ | LEFT}}, labels),
          {9101, 9102, 9110, 9111, 9112, 9114, 9115})
     part("a named number in line, its order run", read_as_named(code, {'a': {**every, 9103: READ | LEFT}}, labels),
          {9104, 9105})
     part('a program that read everything and ran nothing', read_as_named(code, {'a': every}, labels), set())
     part('the order in one program, the reads in another',
-         read_as_named(code, {'a': {9100: READ | LEFT, 9101: READ, 9102: READ}, 'b': every}, labels), {9101, 9102})
+         read_as_named(code, {'a': {9100: READ | LEFT, 9101: took, 9102: took}, 'b': every}, labels), {9101, 9102})
     part('an operand taken, its constant not read',
-         read_as_named(code, {'a': {9100: READ | LEFT, 9101: READ, 9111: READ}}, labels), {9101, 9111})
+         read_as_named(code, {'a': {9100: READ | LEFT, 9101: took, 9111: READ}}, labels), {9101, 9111})
+    part('an operand read from elsewhere, its order run',
+         read_as_named(code, {'a': {9100: READ | LEFT, 9101: READ, 9102: took, 9110: READ}}, labels), {9102})
     # Right orders with no pair: basic code's, a store over EDOP, or wrong.
     lines = {8999: Line(' TC USPRCADR'), 9000: Line(' CADR X'), 9300: Line(' TCF VXV')}
     part("a lost order at USPRCADR's CADR, at a store code and in basic code",
