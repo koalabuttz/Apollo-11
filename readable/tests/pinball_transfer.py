@@ -52,7 +52,7 @@ SUITE_LIST = 'tests/lanec_suites.c'
 # module does not register (a TC POSTJUMP the module runs on through) ends
 # there: its chains are compared, not counted.
 # pin-stirred's chains taken are held to this number. A chain the readable
-# routines refuse is not compared with the original program, so a routine
+# routines refuse is not compared with the Virtual AGC run, so a routine
 # that came to refuse a state it took shows in this count alone (fewer),
 # and one that came to take a state it refused shows as more: either way
 # the number is changed here, with the reason for it.

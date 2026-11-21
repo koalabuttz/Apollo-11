@@ -487,8 +487,8 @@ def sites(sources, mission):
             function = sources.within(rel, found.start())
             line = code.count('\n', 0, found.start()) + 1
             if function is None:
-                # A helper's own declaration (`static inline void tc_at(word at)`) is no place; a place in
-                # a #define's body is read where the name is used, in a function; any other is not read.
+                # A helper's own declaration (`static inline void tc_at(word at)`) is no place; any other
+                # (a static initialiser, a #define's body) is not read, and fails.
                 before = code[code.rfind('\n', 0, found.start()) + 1:found.start()]
                 if not re.fullmatch(r'(?:static\s+)?(?:inline\s+)?void\s+', before):
                     outside.append((rel, line))

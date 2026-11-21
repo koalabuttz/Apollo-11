@@ -2447,7 +2447,7 @@ src/pinball/keys.c: decend [killed: pinball-cases]
 -     set_A(THREE);
   The MASK is then of what DMP left in A, not of 3. pin-edges keys the last
   digit of two decimal words (DECBRNCH 031 and 036), and they no longer end
-  as the original program ends them.
+  as the Virtual AGC run ends them.
 
 src/pinball/keys.c: decend [killed: pinball-cases]
 -     mask_at(ADDRESS_OF(DECBRNCH));
