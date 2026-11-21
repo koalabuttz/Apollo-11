@@ -1894,12 +1894,12 @@ The other 284 are the survivors. Their kinds:
   word; two branches that run the same code.
 - **unreached** (71): unlike only in a state no pass brings there. An
   overflow at a TS that cannot overflow, a negative MASK result.
-- **repeated** (39): a check that another check repeats before anything
+- **repeated** (38): a check that another check repeats before anything
   runs, most of them a binding's guard that the interpreter's own entry
   check makes again.
 - **restore** (24): a binding putting its state back after a refusal,
   where nothing refuses after it has written.
-- **refusal** (23): the refusal of a state the flight program never makes
+- **refusal** (24): the refusal of a state the flight program never makes
   and no case makes up (word 7 not zero, an index outside its table).
 - **owed** (5): no reason written yet. The entry says what the change
   touches and what was not checked; each is owed a case that catches
@@ -1918,11 +1918,10 @@ What the ledger cannot say: that these are all the changes no test
 sees. They are the ones the PRs' scripts made and their kept logs name
 (216 scripts kept, the logs of 132 of them): each of those 1,216 was
 made again on this tree, and 556 are caught by a case test now. The logs
-of 84 scripts were not kept, so every change of theirs that still applies
-(1,484) was made and run too: `tc-sites` catches 111, the case tests
-1,305, 17 no longer build, 1 runs a test past its time limit, 16 are
-changes to the tests, and 34 are in the ledger. A change no script made
-is not here.
+of 84 scripts were not kept; their
+survivors are named in the PR texts by kind only, most of them a TC's
+place, which `tc-sites` now holds wherever it can read one. A change no
+script made is not here.
 
 CI runs the three gates on every PR that touches `readable/`, or what it
 is built from and checked against: the faithful port's sources, tests and

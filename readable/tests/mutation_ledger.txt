@@ -30,8 +30,8 @@
 #
 # Not here: any change no script made.
 #
-# 284 survivors in 121 files: 91 rewritten, 31 same, 71 unreached, 39
-# repeated, 24 restore, 23 refusal, 5 owed. 385 more that a check or a case
+# 284 survivors in 121 files: 91 rewritten, 31 same, 71 unreached, 38
+# repeated, 24 restore, 24 refusal, 5 owed. 385 more that a check or a case
 # added since catches (killed).
 #
 # A reason in brackets is one of these:
@@ -547,9 +547,11 @@ src/binding/extended_verbs_routines.c: table_at_loc [unreached]
 -         if (cm_codes[i]->bank == interpretive_bank() && LOC >= cm_codes[i]->first &&
 +         if ((interpretive_bank() || true) && LOC >= cm_codes[i]->first &&
   A LOC inside the range of a table in another bank than the one the
-  interpreter reads: the entry holds the bank to 43 (cm_interpreter_contract)
-  and the passes after it leave it there. Probed: the table found with the
-  bank test and without it was the same table in every call of
+  interpreter reads: the entry holds the bank to 43
+  (cm_interpreter_contract), and the calls out of it that change BANKSET
+  (INTSTALL 03442, SVDWN1 02237, SVDWN2 02263) land outside every bank-43
+  table's range, so the range test alone excludes them. Probed: the table
+  found with the bank test and without it was the same table in every call of
   extended-verbs-cases, 0 differences.
 
 src/binding/extended_verbs_routines.c: interpretive [restore]
@@ -564,11 +566,13 @@ src/binding/extended_verbs_routines.c: interpretive [restore]
 
 src/binding/findcduw_routines.c: one_pass [unreached]
 -             if (Z == POODOO1) return EXEC_OUT_OF_SCOPE;
-  NORMUNIT's alarm 1302 for a zero vector is a stop in the readable code
-  (not_modelled in rtb_run_on, refused by the setjmp above this line), so Z
-  is never POODOO1 when it comes back: probed 0 of 2,165 passes, with a zero
-  command in 1 state in 16. If Z were POODOO1, the next interpret_listing
-  finds no point and refuses too.
+  NORMUNIT's only way to POODOO1 is SQRTABRT, which needs a negative MPAC,
+  and the sum of squares cannot be negative once OVFIND is clear (UNIT +1
+  sends an overflow to DVOVF); a zero vector goes to DVOVF too (SQRTSUB of 0
+  is 0, UNIT +020 takes dvovf and goes on at DANZIG). So Z is never POODOO1
+  when it comes back: probed 0 of 2,165 passes, with a zero command in 1
+  state in 16. If Z were POODOO1, the next interpret_listing finds no point
+  and refuses too.
 
 src/binding/geometry_routines.c: interpretive [restore]
 -         *state = before;
@@ -608,11 +612,12 @@ src/binding/gimbal_lock_routines.c: interpretive [killed: gimbal-lock-cases]
 src/binding/gimbal_lock_routines.c: interpretive [refusal]
 -     if (Z != NEWOPS || FBANK != BANK22 || LOC < CODE.first || LOC >= CODE.first + CODE.count ||
 +     if (Z != NEWOPS || FBANK != BANK22 ||
-  A LOC outside the pair's listing. The faithful routine, which works from
-  the key and not from LOC, runs it and this one refuses (probed with a case
-  that set LOC there: 297 states differ in gimbal-lock-cases LM); the flight
-  program never starts a pair with LOC off its own address, so no case makes
-  one up.
+  A LOC outside the pair's listing. This is not a refusal the faithful
+  routine makes: it works from the key and not from LOC, runs the state, and
+  this one refuses it (probed with a case that set LOC there: 297 states
+  differ in gimbal-lock-cases LM). A known difference in a state the flight
+  program never makes, since it starts a pair with LOC at its own address; no
+  case makes one up.
 
 src/binding/imu_mode_switching_routines.c: channel_out [unreached]
 -     *channel_at(number) = number == CHAN13 ? (agc_word)(value & 043777u) : value;
@@ -635,10 +640,11 @@ src/binding/inflight_align_routines.c: sane [unreached]
 
 src/binding/inflight_align_routines.c: one_pass [unreached]
 -     if (!sane()) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
-  pair() holds the state to sane() at its entry and the pass only writes
-  words of 15 bits and none of the registers sane() reads, so sane() is true
-  again here. Probed: sane() was false at this line 0 times in
-  inflight-align-cases (both missions, 90 keys of 2,048 states each).
+  pair() holds the state to sane() at its entry and the pass writes words of
+  15 bits and leaves the registers sane() reads as they were, but for FBANK
+  and BBANK, which move with the bank it ends in, so sane() is true again
+  here. Probed: sane() was false at this line 0 times in inflight-align-cases
+  (both missions, 90 keys of 2,048 states each).
 
 src/binding/integration_init_routines.c: pair [repeated]
 -     if (!started || !superbank_off(bank)) return EXEC_OUT_OF_SCOPE;
@@ -686,10 +692,12 @@ src/binding/lat_long_routines.c: interpretive [unreached]
 
 src/binding/llge_routines.c: one_pass [unreached]
 -     bind(program, state, io);
-  The hooks matter only to a routine that reads a channel or stops, and
-  NORMUNIT and the RTB run-on after the pass do neither (probed with the
-  hooks poisoned: 0 uses over llge-cases). The next call binds again at its
-  entry.
+  The hooks matter only to a routine that reads a channel or stops. NORMUNIT
+  (normunit_plus1's ts, offtunit_minus2's ts_indexed) and the RTB run-on
+  routines have not_modelled() sites, but no state under sane() reaches one
+  (probed with the hooks poisoned: 0 uses over llge-cases); without the call
+  a stop would longjmp through the interpreter's own, dead jump buffer and
+  not the binding's. The next call binds again at its entry.
 
 src/binding/llge_routines.c: one_pass [refusal]
 -     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
@@ -697,8 +705,11 @@ src/binding/llge_routines.c: one_pass [refusal]
 
 src/binding/llge_routines.c: one_pass [unreached]
 -     if (Z == POODOO1) return EXEC_OK;
-  NORMUNIT's way to POODOO1 is a stop in the readable code, so Z is never
-  POODOO1 when it comes back (probed 0 of 9,831 passes).
+  The only way to POODOO1 is SQRTABRT, which needs a negative MPAC, and the
+  sum of squares cannot be negative once OVFIND is clear (UNIT +1 sends an
+  overflow to DVOVF; a zero vector goes there too). So Z is never POODOO1
+  when it comes back (probed 0 of 9,831 passes), and the line matters only in
+  that state.
 
 src/binding/llge_routines.c: pair [refusal]
 -     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
@@ -744,21 +755,27 @@ src/binding/measurement_inc_routines.c: void [unreached]
 src/binding/measurement_inc_routines.c: one_pass [unreached]
 -         if (!move_sane()) return EXEC_OUT_OF_SCOPE;
 +         if (!move_sane() && 0) return EXEC_OUT_OF_SCOPE;
-  pair() holds the state to sane() at its entry and the pass changes none of
-  what move_sane() reads. Probed: move_sane() was false at this line 0 times
-  in measurement-inc-cases (both missions, 160 keys of 2,048 states each).
+  pair() holds the state to sane() at its entry and the pass leaves what
+  move_sane() reads as it was. Probed: move_sane() was false at this line 0
+  times in measurement-inc-cases (both missions, 160 keys of 2,048 states
+  each).
 
 src/binding/measurement_inc_routines.c: pair [unreached]
 -     if (Z != NEWOPS || FBANK != BANK(bank) || LOC != at || BANKSET != BBANK ||
 +     if (Z != NEWOPS || FBANK != BANK(bank) ||  BANKSET != BBANK ||
   LOC is always the key: the trampoline picks the routine by LOC.
 
-src/binding/noun_reader_routines.c: apollo_noun_reader [repeated]
+src/binding/noun_reader_routines.c: apollo_noun_reader [refusal]
 -     if (!state || !io || mission != MISSION || (unsigned)entry > APOLLO_GTSFIN) return false;
 +     if (!state || !io || mission > APOLLO_FIXED_CM || (unsigned)entry > APOLLO_GTSFIN) return false;
-  The other mission's call is refused a line later: the call of the other
-  build with the check gone stops at as_expected() (probed: 0 of the 234,557
-  calls of pinball-noun-tables-cases went past it with the other mission).
+  A call that names the other mission (this build called for the other
+  one's): the faithful routine refuses it, and no caller of the flight
+  program makes it (the faithful PINBALL passes its own mission).
+  as_expected() does not read mission, so the check is not repeated there: a
+  state at this build's own entry with the other mission's argument would run
+  without it. The probe (0 of 234,557 calls of pinball-noun-tables-cases went
+  past as_expected() with the other mission) shows only that the cases'
+  other-mission states are not this build's own.
 
 src/binding/noun_reader_routines.c: apollo_noun_reader [restore]
 -         *state = before;
@@ -2351,8 +2368,11 @@ src/pinball/display_verbs.c: dspcom3_after_dspoctwd [killed: tc-sites]
 
 src/pinball/display_verbs.c: chandsp [owed]
 -     mask(LOW9);
-  Unlike where NOUNCADR has a bit above the ninth. No reason found yet why no
-  case sees it.
+  Unlike where NOUNCADR has a bit above the ninth, which a crew can make:
+  noun 10 with a channel keyed in five octal digits. The one difference left
+  in the ledger that a crew can reach. No case sees it, and one needs a
+  pin-edges variant with a CHANDSP entry, run against the original program in
+  Virtual AGC; not done.
 
 src/pinball/display_verbs.c: decdsp [killed: tc-sites]
 -     tc_at(DECDSP + 1u);
@@ -2722,9 +2742,11 @@ src/pinball/keys.c: endall [killed: tc-sites]
 
 src/pinball/keys.c: decend [killed: pinball-cases]
 -     set_A(THREE);
-  The MASK is then of what DMP left in A, not of 3. pin-edges keys the last
-  digit of two decimal words (DECBRNCH 031 and 036), and they no longer end
-  as the Virtual AGC run ends them.
+  A is +0 after DMP (DMPSUB2 ends in DAS MPAC, "GUARANTEED NO OVERFLOW"), so
+  without the CAF THREE the MASK finds 0 and every decimal word is refused
+  (the default of the switch), where the Virtual AGC run ends it at DECEND.
+  pin-edges keys the last digit of two decimal words (DECBRNCH 031 and 036),
+  and the chains taken fall below the 138 it is held to.
 
 src/pinball/keys.c: decend [killed: pinball-cases]
 -     mask_at(ADDRESS_OF(DECBRNCH));
