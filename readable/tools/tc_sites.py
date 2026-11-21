@@ -30,8 +30,29 @@ its own listing.
 
 A place that is none of that is not checked: one computed from an index
 or a table, or a register. COMPUTED below names each of them by its file,
-and the check fails where the list and the source differ, so no place
-leaves the check unnoticed.
+with how many times the file writes it, and the check fails where the
+list and the source differ, so no place leaves the check unnoticed. A
+place written outside any function fails: nothing would read it.
+
+The other half reads the listing: every TC to the fixed memory is named by
+a place, or stands in UNNAMED below (a jump table's rows, the arms of a
+CCS, a call the C writes with no place).
+
+What the two halves leave open (the check prints the counts):
+
+  - Of a tc_at() place the first half asks only that its word is a TC, not
+    which one. A place moved to another TC shows by the second half, the
+    TC it left being named no more; not so a place whose word is no TC of
+    the listing to the fixed memory (a constant that is run, a word after
+    an INDEX, a TC to an erasable word), nor one of two places on one TC.
+    Such a place can move onto another TC, or go, unseen.
+  - A COMPUTED place is held by its text and its count, and its sum is
+    not worked out. The TCs those places stand on (the tables at WTLST5,
+    STORJUMP, CHARIN2 and the like) are in UNNAMED with the rest, so no
+    part of the check reads them.
+  - A routine that is no constant (`tc(at, key_routine[key])`) is not
+    compared, and tc_through(), a TC through an erasable word, is outside
+    the check.
 
   tc_sites.py               check
   tc_sites.py --list        print every place with its word of the listing
@@ -40,7 +61,7 @@ leaves the check unnoticed.
 """
 import re
 import sys
-from collections import ChainMap
+from collections import ChainMap, Counter
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -62,25 +83,26 @@ TOKEN = re.compile(r'\s*(\((?:word|unsigned)\)|(?:ADDRESS_OF|IN_BANK)\(\w+\)|[A-
                    r'|\d+[uU]?|[()+\-])')
 CALLERS = 4     # how many callers deep a place is followed
 
-# The places the check does not read, by file: `call(place)` as written.
+# The places the check does not read, by file: `call(place)` as written, and how many times the file writes
+# it (` x4`) where that is more than once. The count is of the lines, whichever mission compiles them.
 COMPUTED = {
     'burn_baby/burn_baby.c': [
         'tc_at(Q_ADDRESS)',
     ],
     'executive/executive.c': [
-        'tc_at((word)(at + 1u))',
-        'tc_at((word)(at + 2u))',
+        'tc_at((word)(at + 1u)) x2',
+        'tc_at((word)(at + 2u)) x2',
         'tc_at(1u)',
     ],
     'extended_verbs/front.c': [
-        'tc_at(Z)',
+        'tc_at(Z) x2',
     ],
     'imu_calibration/imu_calibration.h': [
         'tc_at(Q_ADDRESS + 1u)',
         'tc_at(Q_ADDRESS)',
     ],
     'imu_mode_switching/gyro_torquing.c': [
-        'tc_at(at)',
+        'tc_at(at) x4',
     ],
     'integration_init/intwakeu.c': [
         'tc_at(ADDRESS_OF(INTWAKUQ))',
@@ -109,7 +131,7 @@ COMPUTED = {
         'tc_at(at + 3u)',
     ],
     'pinball/output_scale.c': [
-        'tc_at(at)',
+        'tc_at(at) x2',
     ],
     'q_r_axis/q_r_axis.c': [
         'tc_at(0u)',
@@ -456,19 +478,27 @@ def expanded(text, sources, rel, function, keep=()):
 
 
 def sites(sources, mission):
-    """Every tc_at(), tc_to() and tc() of the source: [(file, line, the call's name, [arguments], ways)]."""
-    out = []
+    """Every tc_at(), tc_to() and tc() of the source: [(file, line, the call's name, [arguments], ways)];
+    and those written outside any function, which nothing reads: [(file, line)]."""
+    out, outside = [], []
     for rel in sorted(sources.code):
         code = sources.code[rel]
         for found in SITE.finditer(code):
             function = sources.within(rel, found.start())
-            if function is None or function[0] in ('tc_to', 'tc'):
-                continue                # a helper's own declaration; or its tc_at(at), read where it is called
-            arguments = split(inside(code, found.end()))
             line = code.count('\n', 0, found.start()) + 1
+            if function is None:
+                # A helper's own declaration (`static inline void tc_at(word at)`) is no place; a place in
+                # a #define's body is read where the name is used, in a function; any other is not read.
+                before = code[code.rfind('\n', 0, found.start()) + 1:found.start()]
+                if not re.fullmatch(r'(?:static\s+)?(?:inline\s+)?void\s+', before):
+                    outside.append((rel, line))
+                continue
+            if function[0] in ('tc_to', 'tc'):
+                continue                # the helper's tc_at(at), read where the helper is called
+            arguments = split(inside(code, found.end()))
             out.append((rel, line, found.group(1), arguments,
                         through(sources, mission, rel, function, arguments[:2])))
-    return out
+    return out, outside
 
 
 def judge(mission, name, got):
@@ -498,10 +528,16 @@ def written(name, arguments):
 
 
 def check(sources, mission, show=None):
-    """(failures, {file: [places not read]}, counts, the words named) of one mission's sources."""
-    failures, computed, named = [], {}, set()
-    counts = dict(places=0, callers=0, constants=0, indexed=0, routines=0)
-    for rel, line, name, arguments, ways in sites(sources, mission):
+    """(failures, {file: {place not read: the lines it is written on}}, counts, the words named) of one
+    mission's sources."""
+    failures, computed, named = [], {}, Counter()
+    calls = mission.calls()
+    counts = dict(places=0, callers=0, constants=0, indexed=0, routines=0, apart=0, unread=0)
+    found, outside = sites(sources, mission)
+    for rel, line in outside:
+        failures.append('%s %s:%d: a place written outside any function, which the check does not read'
+                        % (mission.key.upper(), rel, line))
+    for rel, line, name, arguments, ways in found:
         where = '%s %s:%d %s' % (mission.key.upper(), rel, line, written(name, arguments))
         unread = False
         for chain, got in ways:
@@ -514,7 +550,9 @@ def check(sources, mission, show=None):
                 failures.append('%s%s: %s' % (where, via, failure))
                 continue
             counts['places'] += 1
-            named.add(mission.at[got[0][0]] + got[0][1])
+            named[mission.at[got[0][0]] + got[0][1]] += 1
+            counts['apart'] += mission.at[got[0][0]] + got[0][1] not in calls
+            counts['unread'] += len(got) > 1 and isinstance(got[1], Unread)
             counts['callers'] += bool(chain)
             counts['constants'] += word.endswith('run)')
             counts['indexed'] += word.endswith('INDEX)')
@@ -522,8 +560,9 @@ def check(sources, mission, show=None):
             if show:
                 show('%s%s: %s' % (where, via, word))
         if unread:
-            computed.setdefault(rel, set()).add(written(name, arguments))
-    return failures, computed, counts, named
+            computed.setdefault(rel, {}).setdefault(written(name, arguments), set()).add(line)
+    counts['twice'] = sum(1 for where, times in named.items() if times > 1 and where in calls)
+    return failures, computed, counts, set(named)
 
 
 def texts_of(root=SRC):
@@ -564,19 +603,38 @@ def run(texts, missions, listed=COMPUTED, unnamed=None, show=None, say=print):
             say('%s: %d of the listing\'s %d TCs to the fixed memory named, %d not (UNNAMED)'
                 % (mission.key.upper(), len(mission.calls() & named), len(mission.calls()), len(have)))
         for rel, places in unread.items():
-            computed.setdefault(rel, set()).update(places)
+            for place, lines in places.items():
+                computed.setdefault(rel, {}).setdefault(place, set()).update(lines)
         say('%s: %d places, each a TC of the listing (%d read through a caller, %d a constant that is run, '
-            '%d after an INDEX); %d with the routine the TC goes to'
+            '%d after an INDEX); %d with the routine the TC goes to, %d with a routine that is no constant'
             % (mission.key.upper(), counts['places'], counts['callers'], counts['constants'], counts['indexed'],
-               counts['routines']))
+               counts['routines'], counts['unread']))
+        say('%s: %d places stand on a word that is no TC to the fixed memory, and %d of the TCs are named by '
+            'more than one place: the half that reads the listing\'s TCs does not see such a place go'
+            % (mission.key.upper(), counts['apart'], counts['twice']))
     for rel in sorted(set(computed) | set(listed)):
-        have, want = computed.get(rel, set()), set(listed.get(rel, ()))
-        for place in sorted(have - want):
+        have, want = computed.get(rel, {}), times_listed(listed.get(rel, ()))
+        for place in sorted(set(have) - set(want)):
             failures.append('%s: %s is not read against the listing, and COMPUTED does not name it' % (rel, place))
-        for place in sorted(want - have):
+        for place in sorted(set(want) - set(have)):
             failures.append('%s: COMPUTED names %s, and the source has no such place unread' % (rel, place))
-    say('%d places not read (COMPUTED)' % sum(len(places) for places in computed.values()))
+        for place in sorted(set(want) & set(have)):
+            if len(have[place]) != want[place]:
+                failures.append('%s: %s is written %d times unread, and COMPUTED has it %d times'
+                                % (rel, place, len(have[place]), want[place]))
+    say('%d places not read, %d as written (COMPUTED)' % (
+        sum(len(lines) for places in computed.values() for lines in places.values()),
+        sum(len(places) for places in computed.values())))
     return failures, computed, left
+
+
+def times_listed(places):
+    """COMPUTED's entries of one file: {the place as written: how many times}."""
+    out = {}
+    for entry in places:
+        often = re.fullmatch(r'(.*\S) x(\d+)', entry)
+        out[often.group(1) if often else entry] = int(often.group(2)) if often else 1
+    return out
 
 
 def self_check(missions):
@@ -630,6 +688,14 @@ def self_check(missions):
         ('a name COMPUTED has and the source has not', 'void f(void) { tc_at(%s); }' % place, '',
          {'x/x.c': ['tc_at(n)']}, (1, [])),
         ('a register', 'void f(void) { tc_at(2u); }', '', {'x/x.c': ['tc_at(2u)']}, (0, ['tc_at(2u)'])),
+        ('a computed place written twice, named once', 'void f(unsigned n) { tc_at(%s + n);\n tc_at(%s + n); }'
+         % (place, place), '', {'x/x.c': ['tc_at(%s + n)' % place]}, (1, ['tc_at(%s + n)' % place])),
+        ('a computed place written twice, named twice', 'void f(unsigned n) { tc_at(%s + n);\n tc_at(%s + n); }'
+         % (place, place), '', {'x/x.c': ['tc_at(%s + n) x2' % place]}, (0, ['tc_at(%s + n)' % place])),
+        ('a place outside any function', 'static const int t = tc_at(%s + 1u);\nvoid f(void) { }' % place, '',
+         None, (1, [])),
+        ("a helper's own declaration", 'static inline void tc_at(word at)\n{\n}\nvoid f(void) { tc_at(%s); }'
+         % place, '', None, (0, [])),
     ]
     bad = []
     for name, body, header, listed, want in parts:
@@ -666,7 +732,8 @@ def main(argv):
             for rel in sorted(computed):
                 print('    %r: [' % rel)
                 for place in sorted(computed[rel]):
-                    print('        %r,' % place)
+                    times = len(computed[rel][place])
+                    print('        %r,' % (place + (' x%d' % times if times > 1 else '')))
                 print('    ],')
         if '--unnamed' in argv:
             for mission in missions:

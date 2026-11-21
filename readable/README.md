@@ -1390,11 +1390,16 @@ Gates 2 and 3 need the port's toolchain once, for yaAGC:
    flight, where no faithful routine stands behind the readable one.
    pin-noun-z points each display verb's read of a noun at the Z
    register (tests/pinball_noun_z_cases.c), against Virtual AGC and
-   step for step. pin-edges takes three ways through Pinball that the
-   suites before it leave out (tests/pinball_edge_cases.c: a degrees
-   display of a zero and of the ends of its scale, a time display from
-   59 minutes 58.5 seconds up, a load into a channel), 90 chains against
-   Virtual AGC. Last, the binding's table for MPAC +3 after an operator's
+   step for step. pin-edges takes four ways through Pinball that the
+   suites before it leave out or do not hold (tests/pinball_edge_cases.c:
+   a degrees display of a zero and of the ends of its scale, a time
+   display from 59 minutes 58.5 seconds up, a load into a channel, and
+   the last digit of a word keyed in octal after another word of the
+   load was keyed in decimal), 138 chains against Virtual AGC. A chain
+   the readable routines refuse is not compared, so pin-stirred,
+   pin-noun-z and pin-edges are each held to the exact number of chains
+   taken (8,254, 162 and 138): a routine that came to refuse a state it
+   took shows there and nowhere else. Last, the binding's table for MPAC +3 after an operator's
    request (verbs 30 and 31: the TC ENDOFJOB that REQUESTC leaves there),
    which those tests do not enter since they run the port's tables,
    beside the port's own from 4,096 states of each mission
@@ -1848,7 +1853,8 @@ entry to the tree (`tests/mutation_ledger.py`: its lines are there, in
 the routine it names), and `make mutation-ledger`, nightly in CI, makes
 each change in a copy of the tree and runs its tests: a survivor that a
 test catches now fails the run, and so does a caught change that nothing
-catches any more.
+catches any more, a change that does not build, and a test that runs
+over its time.
 
 The largest family by far was a TC's place. The readable C carries a
 transfer by a C call, and `tc_at(PLACE)` only says where the TC stands,
@@ -1859,30 +1865,54 @@ every place against the listing instead, both ways: the word at each
 place is one the AGC runs as a TC, and to the routine the C calls
 (3,269 places in the LM, 3,093 in the CM); and every TC of the listings
 to fixed memory is named by some place (3,094 of 3,254, and 2,923 of
-3,097; the others, jump tables and TCs the C writes as plain calls, are
-listed in the tool). It found no slip in the tree, and it catches 368 of
-the 635 changes that the case tests still let pass: they stay in the
-ledger as `[killed: tc-sites]`, so that the run keeps holding the catch.
+3,097; the others are listed in the tool). It found no slip in the tree,
+and it catches 370 of the 635 changes that the case tests let pass:
+they stay in the ledger as `[killed: tc-sites]`, so that the run keeps
+holding the catch. 3 more are caught by Pinball cases added with the
+ledger (`[killed: pinball-cases]`).
 
-The other 267 are the survivors. Their kinds:
+What that check leaves open, and the tool prints the counts. Of a
+`tc_at()` place it asks only that the word is a TC, not which one; it is
+the other half, the TC left with no place, that shows a place moved. So
+a place whose word is no TC of the listing to fixed memory (a constant
+that is run, a word after an INDEX, a TC to an erasable word: 116 places
+in the LM, 99 in the CM), and one of two places on the same TC (55 TCs
+in the LM, 62 in the CM), can move onto another TC, or go, unseen. The
+45 places it cannot read (computed from an index, a table or a
+register) are held by their text and how often each file writes it, not
+by their sum, and the TCs they stand on (the jump tables at WTLST5,
+STORJUMP, CHARIN2 and the like) are among the listed ones, with the
+arms of a CCS and the calls the C writes with no place: nothing reads
+those.
 
-- **rewritten** (78): what the change touches is written again before
+The other 262 are the survivors. Their kinds:
+
+- **rewritten** (77): what the change touches is written again before
   anything reads it. The return address in Q that the next TC sets, A
   before a CAF, the interrupt latch before a RELINT.
-- **same** (23): two names of one thing. COM and CS A; two names of one
+- **same** (22): two names of one thing. COM and CS A; two names of one
   word; two branches that run the same code.
-- **unreached** (53): unlike only in a state no pass brings there. An
+- **unreached** (49): unlike only in a state no pass brings there. An
   overflow at a TS that cannot overflow, a negative MASK result.
-- **repeated** (34): a check that another check repeats before anything
+- **repeated** (33): a check that another check repeats before anything
   runs, most of them a binding's guard that the interpreter's own entry
   check makes again.
 - **restore** (12): a binding putting its state back after a refusal,
   where nothing refuses after it has written.
-- **refusal** (17): the refusal of a state the flight program never makes
+- **refusal** (21): the refusal of a state the flight program never makes
   and no case makes up (word 7 not zero, an index outside its table).
-- **owed** (50): no reason written yet. The entry says what the change
+- **owed** (48): no reason written yet. The entry says what the change
   touches and what was not checked; each is owed a case that catches
   it or a reason of a kind above.
+
+A reason is an argument, and an argument can be wrong. The ledger's
+first reading called a dropped `CAF THREE` at ENDNUM unreached, where a
+crew that keys a word in octal after one in decimal brings DECBRNCH
+there with the earlier word's bit in it. A case catches it now
+(pin-edges), and what let it pass is closed: the changed routine refused
+the state, and a chain the readable routines refuse was only counted
+against a floor, so the Pinball suites are held to their exact counts of
+chains taken.
 
 What the ledger cannot say: that these are all the changes no test
 sees. They are the ones the PRs' scripts made and their kept logs name
@@ -1890,8 +1920,8 @@ sees. They are the ones the PRs' scripts made and their kept logs name
 made again on this tree, and 556 are caught by a case test now. The logs
 of 84 scripts were not kept; their
 survivors are named in the PR texts by kind only, most of them a TC's
-place, which `tc-sites` now holds everywhere. A change no script made
-is not here.
+place, which `tc-sites` now holds wherever it can read one. A change no
+script made is not here.
 
 CI runs the three gates on every PR that touches `readable/`, or what it
 is built from and checked against: the faithful port's sources, tests and

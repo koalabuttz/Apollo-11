@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* pin-edges: three ways through Pinball that neither the port's cases nor
- * pin-stirred's variants of them take, each a state a crew could make.
+/* pin-edges: four ways through Pinball that neither the port's cases nor
+ * pin-stirred's variants of them check, each a state a crew could make.
  *
  *   - OPDEGOUT (CM p. 329, the optics' trunnion angle) with -0 in MPAC:
  *     "IF NEG ZERO SUBTRACT 1". The decimal display, from DSPDCPUT, of
@@ -14,6 +14,18 @@
  *   - PUTNORM (LM pp. 429-430, CM pp. 347-348), a load in octal, on noun
  *     10: "IF NNADTEM = -1, CHANNEL TO BE SPECIFIED" (CHANLOAD), with
  *     channel 7 named ("DONT LOAD CHAN 7") and with channel 011.
+ *   - ENDNUM (LM p. 400, CM p. 317), the last digit of a word keyed in
+ *     octal after an earlier word of the load was keyed in decimal. That
+ *     word's sign left its bit in DECBRNCH (BOTHSGN: "BIT 5 FOR R1. BIT 4
+ *     FOR R2."), and 5BLANK, which made the next register ready, cleared
+ *     that register's own bit and the low two only ("PROTECT OTHERS"). So
+ *     DECBRNCH is 020, 010 or 030 there, and CAF THREE; MASK DECBRNCH must
+ *     find +0 in it and end the word as octal (ENDALL), where A's own
+ *     word, -0, masked with it would go to DECEND. With them the last
+ *     digit of a decimal word after another, which does go to DECEND.
+ *     pin-stirred makes such states too, but a routine that refuses one
+ *     only lowers its count of chains taken; here every chain from NUM
+ *     must be taken.
  *
  * The states are the port's own cases from those entries (its pin-transfer
  * chains, c64-port/tests/lanec_pin_transfer_cases.c) with the few words
@@ -25,21 +37,23 @@
 #include "lanec_suites.h"
 #include "lanec_symbols.h"
 
-enum { DSPDCPUT_ENTRY, M_SOUT_ENTRY, PUTNORM_ENTRY, ENTRIES };
+enum { DSPDCPUT_ENTRY, M_SOUT_ENTRY, PUTNORM_ENTRY, NUM_ENTRY, ENTRIES };
 #define PER_ENTRY 4u /* the port's cases from each entry, in each mission */
-/* DSPDCPUT's in the CM, the other two's in both programs. */
-#define BASES    (5u * PER_ENTRY)
+/* DSPDCPUT's in the CM, the other three's in both programs. */
+#define BASES    (7u * PER_ENTRY)
 #define VARIANTS 6u
 #define CASES    (BASES * VARIANTS)
 
 /* The words changed, the same in both programs. */
 #define DECOUNT_AT  0117u
+#define CHAR_AT     0117u /* the same word, by its other name */
 #define MIXBR_AT    0140u
 #define NOUNADD_AT  0145u
 #define NNADTEM_AT  0146u
 #define NNTYPTEM_AT 0147u
 #define RUTMXTEM_AT 0153u
 #define MPAC_AT     0154u
+#define DSPCOUNT_AT 0777u
 #define DECBRNCH_AT 01000u
 #define XREG_AT     01003u
 #define NOUNCADR_AT 01017u
@@ -48,10 +62,13 @@ enum { DSPDCPUT_ENTRY, M_SOUT_ENTRY, PUTNORM_ENTRY, ENTRIES };
 #define TIME_AT 01300u
 
 /* The entries by bank and address, the LM's and the CM's: DSPDCPUT (the
- * CM alone has OPDEGOUT), M/SOUT and PUTNORM. */
+ * CM alone has OPDEGOUT), M/SOUT, PUTNORM and NUM. */
 static const struct {
     uint16_t bank, lm, cm;
-} entries[ENTRIES] = {{041u, 0u, 02537u}, {042u, 03303u, 03216u}, {041u, 03137u, 03137u}};
+} entries[ENTRIES] = {{041u, 0u, 02537u},
+                      {042u, 03303u, 03216u},
+                      {041u, 03137u, 03137u},
+                      {040u, LANEC_LM_NUM, LANEC_CM_NUM}};
 
 static struct {
     uint16_t number; /* the case of pin-transfer */
@@ -122,6 +139,24 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
             w[TIME_AT + 1u] ^= 077777u;
         }
         break;
+    case NUM_ENTRY: {
+        /* The last digit of R2 (DSPCOUNT 5, CRITCON's word for it) or of
+         * R3 (0), and DECBRNCH as the words keyed before it left it. */
+        static const struct {
+            uint16_t dspcount, decbrnch, so_far;
+        } last[VARIANTS] = {{5u, 020u, 01234u}, /* R2 octal; R1 was decimal */
+                            {0u, 020u, 07654u}, /* R3 octal; R1 was decimal */
+                            {0u, 010u, 0u},     /* R3 octal; R2 was decimal */
+                            {0u, 030u, 07777u}, /* R3 octal; R1 and R2 were */
+                            {5u, 031u, 1234u},  /* R2 decimal, +; R1 was too */
+                            {0u, 036u, 9876u}}; /* R3 decimal, -; all three */
+        w[DSPCOUNT_AT] = last[variant].dspcount;
+        w[DECBRNCH_AT] = last[variant].decbrnch;
+        w[CHAR_AT] = (uint16_t)(variant + 2u); /* the digit keyed, 2 to 7 */
+        /* The word so far, four digits: YREG's or ZREG's. */
+        w[XREG_AT + (last[variant].dspcount ? 1u : 2u)] = last[variant].so_far;
+        break;
+    }
     default:
         w[DECBRNCH_AT] = 0u;     /* octal */
         w[NNADTEM_AT] = 077776u; /* noun 10's word of NNADTAB */

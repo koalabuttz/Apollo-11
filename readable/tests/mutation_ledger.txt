@@ -18,15 +18,16 @@
 # tree. 556 are caught by a case test now and are not here, 17 no longer
 # build, 7 leave a test running past its time limit, and the other 636 are
 # the entries below, written as whole-line changes (two come to the same
-# one): the ones tc-sites catches as [killed], the rest as survivors.
+# one): the ones a check or a case added since catches as [killed], the
+# rest as survivors.
 #
 # Not here: the survivors of the 84 scripts whose logs were not kept (the
 # PR texts name them by kind, and most are a TC's place or the return
 # address it leaves, which tc-sites now catches wherever one is written),
 # and any change no script made.
 #
-# 267 survivors in 106 files: 78 rewritten, 23 same, 53 unreached, 34
-# repeated, 12 restore, 17 refusal, 50 owed. 368 more that a check or a
+# 262 survivors in 106 files: 77 rewritten, 22 same, 49 unreached, 33
+# repeated, 12 restore, 21 refusal, 48 owed. 373 more that a check or a
 # case added since catches (killed).
 #
 # A reason in brackets is one of these:
@@ -345,29 +346,40 @@ src/binding/cm_tpi_search_routines.c: pair [unreached]
 +     if (Z != NEWOPS || !in_bank(bank) || BANKSET != BBANK ||
   LOC is always the key: the trampoline picks the routine by LOC.
 
-src/binding/conics_routines.c: sane [repeated]
+src/binding/conics_routines.c: sane [refusal]
 -                       FIXLOC > 0661u || (FIXLOC - 0401u) % 054u))
 +                        (FIXLOC - 0401u) % 054u))
-  The interpreter's own check at its entry (as_expected(), reached by
-  interpret_listing()) refuses the same state before anything is run.
+  FIXLOC past the last VAC area, 0735 and on by 054s: the Executive gives a
+  job one of five areas, 0401 to 0661. At an order pair the interpreter's own
+  check at its entry (as_expected()) refuses the same state; the LM's basic
+  keys run no interpreter entry and have this line alone, and no case makes
+  up such a FIXLOC for them.
 
-src/binding/conics_routines.c: checkctr_sane [unreached]
+src/binding/conics_routines.c: checkctr_sane [refusal]
 -     if (agc.memory[ZERO_ADDRESS] != 0u || iterctr < 010u || iterctr >= 01400u) return false;
 +     if (agc.memory[ZERO_ADDRESS] != 0u ||  iterctr >= 01400u) return false;
-  FIXLOC is a VAC area, 0401 to 0661, as the pair's start held it and a pass
-  leaves it: ITERCTR's word, 026 above, is inside every bound here.
+  ITERCTR's word (INDEX FIXLOC, 026 on) among the central registers: FIXLOC
+  is a job's VAC area in flight, 0401 to 0661. At an order pair and at the
+  LM's basic keys sane() has held FIXLOC to that before this line. CHECKCTR's
+  own key (lm_conic_checkctr_routines) has this line alone, and the conics
+  cases do not enter that table.
 
-src/binding/conics_routines.c: checkctr_sane [unreached]
+src/binding/conics_routines.c: checkctr_sane [refusal]
 -     if (agc.memory[ZERO_ADDRESS] != 0u || iterctr < 010u || iterctr >= 01400u) return false;
 +     if (agc.memory[ZERO_ADDRESS] != 0u || iterctr < 010u || iterctr >= 02000u) return false;
-  FIXLOC is a VAC area, 0401 to 0661, as the pair's start held it and a pass
-  leaves it: ITERCTR's word, 026 above, is inside every bound here.
+  ITERCTR's word (INDEX FIXLOC, 026 on) in the switched erasable memory:
+  FIXLOC is a job's VAC area in flight, 0401 to 0661. At an order pair and at
+  the LM's basic keys sane() has held FIXLOC to that before this line.
+  CHECKCTR's own key (lm_conic_checkctr_routines) has this line alone, and
+  the conics cases do not enter that table.
 
-src/binding/conics_routines.c: checkctr_sane [unreached]
+src/binding/conics_routines.c: checkctr_sane [refusal]
 -     return iterctr < 02000u && (iterctr < FBANK_ADDRESS || iterctr > BBANK_ADDRESS);
 +     return iterctr < 02000u;
-  FIXLOC is a VAC area, 0401 to 0661, as the pair's start held it and a pass
-  leaves it: ITERCTR's word, 026 above, is inside every bound here.
+  ITERCTR's word (INDEX FIXLOC, 026 on) at FB, Z or BBANK (CM): FIXLOC is a
+  job's VAC area in flight, 0401 to 0661. The CM's basic key has no other
+  check of FIXLOC (its sane() leaves the work area out), and no case makes up
+  a FIXLOC that puts ITERCTR there.
 
 src/binding/conics_routines.c: one_pass [owed]
 -         if (!checkctr_sane()) return EXEC_OUT_OF_SCOPE;
@@ -461,10 +473,11 @@ src/binding/ephemerides_routines.c: interpretive [restore]
   The interpreter refuses at its entry, before it runs anything, and where it
   refuses later it puts the state back itself.
 
-src/binding/findcduw_routines.c: one_pass [unreached]
+src/binding/findcduw_routines.c: one_pass [owed]
 -             if (Z == POODOO1) return EXEC_OUT_OF_SCOPE;
-  NORMUNIT goes to POODOO only by its alarm 1302, which UNIT never comes to
-  (PR #1201).
+  Z at POODOO1 after NORMUNIT, its alarm 1302. The faithful pair refuses
+  there and so does this line. No case brings a pass there; not shown that
+  the vectors FINDCDUW gives NORMUNIT never do.
 
 src/binding/geometry_routines.c: interpretive [restore]
 -         *state = before;
@@ -2395,11 +2408,13 @@ src/pinball/keys.c: dectobin [killed: tc-sites]
 +     tc_at(DECTOBIN + 015u);
   The word at the changed place is no TC (CM): 40,2150 50137 INDEX INREL.
 
-src/pinball/keys.c: endnmtst [unreached]
+src/pinball/keys.c: endnmtst [killed: pinball-cases]
 -         set_A(THREE);
-  A is -0 there, all ones (CS DSPCOUNT; AD CRITCON came to zero), so the MASK
-  alone leaves DECBRNCH whole: unlike 3 masked with it only if DECBRNCH held
-  a bit above its two low ones, and Pinball sets it 0, 1 or 2.
+  A is -0 there, so the MASK alone leaves DECBRNCH whole, with the bits
+  BOTHSGN set for the registers keyed in decimal before this one (020, 010).
+  pin-edges keys an octal word's last digit after a decimal word: the change
+  sends it to DECEND, which refuses it, and the chains taken fall below the
+  138 the suite is held to.
 
 src/pinball/keys.c: endnmtst [killed: tc-sites]
 -             tc_at(ENDNUM + 3u);
@@ -2428,15 +2443,16 @@ src/pinball/keys.c: endall [killed: tc-sites]
 +     tc_at(ENDALL + 2u);
   The word at the changed place is no TC (CM): 40,2166 45017 CS ONE.
 
-src/pinball/keys.c: decend [owed]
+src/pinball/keys.c: decend [killed: pinball-cases]
 -     set_A(THREE);
-  Unlike wherever DMP leaves A without both low bits. No reason found yet why
-  no case sees it.
+  The MASK is then of what DMP left in A, not of 3. pin-edges keys the last
+  digit of two decimal words (DECBRNCH 031 and 036), and they no longer end
+  as the original program ends them.
 
-src/pinball/keys.c: decend [owed]
+src/pinball/keys.c: decend [killed: pinball-cases]
 -     mask_at(ADDRESS_OF(DECBRNCH));
-  A stays 3 and the routine refuses, where DECBRNCH 1 or 2 runs on. No reason
-  found yet why no case sees it.
+  A stays 3 and DECEND refuses every decimal word, where DECBRNCH's 1 or 2
+  runs on: the chains taken fall below the 138 pin-edges is held to.
 
 src/pinball/keys.c: decend [killed: tc-sites]
 -     tc_at(DECEND + 011u);
@@ -2882,9 +2898,10 @@ src/pinball/output_scale.c: m_sout_plus2 [killed: tc-sites]
 +     tc_at(M_SOUT + 3u);
   The word at the changed place is no TC (CM): 42,3221 10154 CCS MPAC.
 
-src/pinball/output_scale.c: m_sout_plus2 [owed]
+src/pinball/output_scale.c: m_sout_plus2 [killed: tc-sites]
 -         tc_at(at);
-  Q only, if M/SLIMIT's own TC sets it on every way through. Not read again.
+  The file writes tc_at(at), a place the check cannot read, twice, and
+  COMPUTED holds that count: one of the two gone fails it.
 
 src/pinball/output_scale.c: m_snorm_plus1 [killed: tc-sites]
 -     tc_at(M_SNORM + 2u);
@@ -2945,6 +2962,7 @@ src/pinball/subroutines.c: sfrutmix [rewritten]
 
 src/pinball/subroutines.c: sfrutmix [rewritten]
 -         tc_return(Q_ADDRESS); /* GOQ: TC Q */
++         ; /* GOQ: TC Q */
   TC Q's traces only, 3 in Q and SFRET1 in Z. SFRET1's TC EXITEM, the
   routine's last line, sets both again.
 
@@ -2980,6 +2998,7 @@ src/pinball/subroutines.c: sfconum [killed: tc-sites]
 
 src/pinball/subroutines.c: sfconum [owed]
 -         tc_return(Q_ADDRESS); /* GOQ: TC Q */
++         ; /* GOQ: TC Q */
   TC Q's traces only, if the lines after it set Q and Z again. Not read
   again.
 
@@ -3089,11 +3108,10 @@ src/r63/r63.c: v89call1_after_recycle [killed: tc-sites]
 -     tc_at(TC_V89RECL);
   No place names the listing's TC at V89CALL1 +13 any more (LM).
 
-src/rtb_op_codes/rtb_op_codes.c: one_sto2s [rewritten]
+src/rtb_op_codes/rtb_op_codes.c: one_sto2s [killed: tc-sites]
 -     tc_at(ONE_STO2S);
 +     tc_at(ONE_STO2S + 1u);
-  Q only. 1TO2SUB returns by TC Q, which leaves 3 in Q whatever this TC put
-  there.
+  The word at the changed place is no TC (LM): 10,3615 34755 CAF ZERO.
 
 src/rtb_op_codes/rtb_op_codes.c: v1sto2s_plus4 [killed: tc-sites]
 -     tc_at(V1STO2S + 7u);
@@ -3220,10 +3238,12 @@ src/tjet_law/tjet_law.c: ruflaw3 [killed: tc-sites]
 +     rufsetup(RUFLAW3 + 1u, true);
   The word at the changed place is no TC (LM): 17,3673 51746 INDEX ADRSDIF1.
 
-src/tjet_law/tjet_law.c: ruflaw3 [same]
+src/tjet_law/tjet_law.c: ruflaw3 [unreached]
 -     mp_at(by_adrsdif1(ADDRESS_OF(1_ANET1) + 2u));
 +     mp_at(by_adrsdif2(ADDRESS_OF(1_ANET1) + 2u));
-  ADRSDIF1 and ADRSDIF2 hold the same at RUFLAW3 (PR #1318).
+  Unlike only if the two indexers hold different words at RUFLAW3: TJETLAW
+  sets ADRSDIF2 from ADRSDIF1 and goes to RUFLAW3 before either is moved (PR
+  #1318).
 
 src/tjet_law/tjet_law.c: jet_time [unreached]
 -     if (!A_is_zero()) return ruflaw3();

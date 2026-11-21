@@ -18,7 +18,8 @@ no reason written yet is [owed]: the ledger says so in its counts.
     python3 tests/mutation_ledger.py --write    write the ledger again in its order,
                                                 with its counts
     python3 tests/mutation_ledger.py --run      make every change and run its tests
-        [--jobs N] [--only PATH] [--kind KIND]  (those of one file; those of one reason)
+        [--jobs N] [--only PATH] [--kind KIND]  (those of one file; those of one reason;
+        [--suite SUITE]                         those of the files one suite is made of)
     python3 tests/mutation_ledger.py --self-check
 
 The check (`make all` runs it) holds each entry to the tree: its lines are
@@ -29,7 +30,10 @@ checks of `make all` that only read the source (tc-sites), builds the case
 tests the changed file is part of and runs them: a survivor must build and
 pass them all, and a [killed] entry must fail the check or suite it names.
 The run fails on either side, so the ledger cannot keep a survivor that a
-test now catches, nor a catch that a test has lost.
+test now catches, nor a catch that a test has lost. A step that runs over
+its time is neither, and fails the run. What comes out wrong is tried once
+more alone before it counts, and build/mutation/report.txt has each result
+as it came, so a run cut short says how far it got.
 
 What it does not hold: that these are all the survivors. They are the
 ones the PRs' own mutation runs found, where those runs could be made
@@ -65,7 +69,8 @@ its script made to the line). Each of the 1,216 was made again on this
 tree. 556 are caught by a case test now and are not here, 17 no longer
 build, 7 leave a test running past its time limit, and the other 636 are
 the entries below, written as whole-line changes (two come to the same
-one): the ones tc-sites catches as [killed], the rest as survivors.
+one): the ones a check or a case added since catches as [killed], the
+rest as survivors.
 
 Not here: the survivors of the 84 scripts whose logs were not kept (the
 PR texts name them by kind, and most are a TC's place or the return
@@ -233,17 +238,26 @@ def read_ledger(text):
     return entries, wrong
 
 
-def judge(entries, read=None):
+def targets():
+    """The targets the Makefile names, a [killed] entry's check or suite among them."""
+    with open(os.path.join(ROOT, 'Makefile')) as f:
+        return set(re.findall(r'^([A-Za-z0-9][\w.-]*):(?!=)', f.read(), re.M))
+
+
+def judge(entries, read=None, known=None):
     """What is wrong with the entries against the tree."""
     wrong = []
     seen = {}
     texts = {}
+    known = targets() if known is None else known
     for e in entries:
         where = 'line %d (%s)' % (e.line, e.title())
         if e.klass not in CLASSES:
             wrong.append('%s: no such reason as [%s]' % (where, e.klass))
         if (e.klass == 'killed') != bool(e.suite):
             wrong.append('%s: a [killed] entry names its suite, and no other does' % where)
+        if e.suite and e.suite not in known:
+            wrong.append('%s: the Makefile has no check or suite %s' % (where, e.suite))
         if not e.old:
             wrong.append('%s: no line to change' % where)
             continue
@@ -402,6 +416,21 @@ def sh(command, cwd, seconds):
         return None, 'ran over %d s' % seconds
 
 
+class Both:
+    """Two files written as one: the run's lines go to the terminal and to the report."""
+
+    def __init__(self, *files):
+        self.files = files
+
+    def write(self, text):
+        for f in self.files:
+            f.write(text)
+
+    def flush(self):
+        for f in self.files:
+            f.flush()
+
+
 def copy_of_tree(number):
     """A copy of readable/ (without its build) beside links to the tree's other directories, so
     that the Makefile's paths out of readable/ hold."""
@@ -426,9 +455,11 @@ def copy_of_tree(number):
     return view
 
 
-def try_one(view, entry, suites, deps):
+def try_one(view, entry, suites, deps, locks=None):
     """Make the change in the copy, run the checks that read the source, build what the file is part of
-    and run it: ('build', text), ('killed', suite, text) or ('survived',)."""
+    and run it: ('build', text), ('killed', suite, text), ('survived',), or ('time', what, text) where a
+    step ran over its time, which is neither a catch nor a pass. A suite runs in one copy at a time
+    (locks): some write their results beside the port's build, which the copies share."""
     path = os.path.join(view, entry.path)
     good = default_read(entry.path)
     with open(path, 'w') as f:
@@ -437,16 +468,23 @@ def try_one(view, entry, suites, deps):
         for check in STATIC:
             if check in suites:
                 code, out = sh(['make', '-s', check], view, 600)
+                if code is None:
+                    return ('time', check, out)
                 if code != 0:
                     return ('killed', check, out[-400:])
         suites = [t for t in suites if t not in STATIC]
         programs = sorted({d for t in suites for d in deps.get(t, ()) if d.startswith('build/')})
         if programs:
             code, out = sh(['make', '-s', '-k'] + programs, view, 3600)
+            if code is None:
+                return ('time', 'the build', out)
             if code != 0:
                 return ('build', out[-400:])
         for suite in suites:
-            code, out = sh(['make', '-s', suite], view, 3600)
+            with (locks[suite] if locks is not None else threading.Lock()):
+                code, out = sh(['make', '-s', suite], view, 3600)
+            if code is None:
+                return ('time', suite, out)
             if code != 0:
                 return ('killed', suite, out[-400:])
         return ('survived',)
@@ -459,6 +497,8 @@ def verdict(entry, result):
     """None if the result is what the entry says, else what is wrong."""
     if result[0] == 'build':
         return 'does not build: ' + result[1].strip().split('\n')[-1][:200]
+    if result[0] == 'time':
+        return '%s %s: neither a catch nor a pass' % (result[1], result[2])
     if entry.klass == 'killed':
         if result[0] == 'survived':
             return 'no suite catches it any more'
@@ -472,6 +512,8 @@ def verdict(entry, result):
 
 
 def run(entries, jobs, out=sys.stdout):
+    """Every entry made and run: what is wrong. Each result is written to out as it comes, so that a
+    run cut short still says how far it came."""
     deps = graph()
     suites = suites_of(deps, sorted({e.path for e in entries}))
     for path in suites:
@@ -480,6 +522,7 @@ def run(entries, jobs, out=sys.stdout):
     todo = list(entries)
     results = {}
     lock = threading.Lock()
+    locks = {suite: threading.Lock() for of_path in suites.values() for suite in of_path}
 
     def worker(number):
         view = copy_of_tree(number)
@@ -491,7 +534,8 @@ def run(entries, jobs, out=sys.stdout):
             mine = suites[entry.path]
             if entry.klass == 'killed':
                 mine = [entry.suite] if entry.suite in mine else []
-            result = try_one(view, entry, mine, deps) if mine else ('build', 'no case suite is made of ' + entry.path)
+            result = try_one(view, entry, mine, deps, locks) if mine \
+                else ('build', 'no case suite is made of ' + entry.path)
             with lock:
                 results[id(entry)] = result
                 out.write('%s %s\n' % (result[0], entry.title()))
@@ -512,6 +556,8 @@ def run(entries, jobs, out=sys.stdout):
         mine = [entry.suite] if entry.klass == 'killed' else suites[entry.path]
         if mine and results[id(entry)][0] != 'build':
             results[id(entry)] = try_one(view, entry, mine, deps)
+            out.write('alone: %s %s\n' % (results[id(entry)][0], entry.title()))
+            out.flush()
         said = verdict(entry, results[id(entry)])
         if said:
             wrong.append('line %d (%s): %s' % (entry.line, entry.title(), said))
@@ -571,6 +617,8 @@ void second(int n)
         ('no why', ledger(block('up.c: first [rewritten]', 'inhint();', ';', '')), 'no why'),
         ('an unknown reason', ledger(block('up.c: first [equivalent]', 'inhint();', ';')), 'no such reason'),
         ('killed without a suite', ledger(block('up.c: first [killed]', 'inhint();', ';')), 'names its suite'),
+        ('a suite the Makefile has not', ledger(block('up.c: second [killed: made-cases]', 'if (n) {', 'if (!n) {')),
+         'has no check or suite'),
         ('a suite on a survivor', None, 'names its suite'),
         ('a change of nothing', ledger(block('up.c: first [rewritten]', 'inhint();', 'inhint();')), 'changes nothing'),
         ('the same change twice', ledger(good, good), 'the same change'),
@@ -586,11 +634,11 @@ void second(int n)
             entries, wrong = [Entry('src/made/up.c', 'first', 1, 'rewritten', 'x-cases', line, [], ['Why.'], 1)], []
         elif text is None:
             entries = [Entry('../made/up.c', 'first', 1, 'rewritten', None, line, [], ['Why.'], 1)]
-            wrong = judge(entries, lambda path: source)
+            wrong = judge(entries, lambda path: source, set())
             entries = []
         else:
             entries, wrong = read_ledger(text)
-        wrong = wrong + judge(entries, read)
+        wrong = wrong + judge(entries, read, {'made-cases'} if name != 'a suite the Makefile has not' else set())
         ok = (not wrong) if want is None else any(want in w for w in wrong)
         if not ok:
             failed += 1
@@ -608,12 +656,13 @@ void second(int n)
         failed += 1
         print('self-check: the written ledger is not read back as it was written')
     if verdict(two[0], ('killed', 'x-cases', 'failures')) is None or verdict(two[0], ('survived',)) is not None \
-            or verdict(two[0], ('build', 'error')) is None:
+            or verdict(two[0], ('build', 'error')) is None or verdict(two[0], ('time', 'x-cases', 'ran over')) is None:
         failed += 1
         print('self-check: a survivor\'s verdict is wrong')
     dead = Entry('src/made/up.c', 'first', 1, 'killed', 'x-cases', ['    inhint();'], [], ['Why.'], 1)
     if verdict(dead, ('survived',)) is None or verdict(dead, ('killed', 'y-cases', '')) is None \
-            or verdict(dead, ('killed', 'x-cases', '')) is not None:
+            or verdict(dead, ('killed', 'x-cases', '')) is not None \
+            or verdict(dead, ('time', 'x-cases', 'ran over')) is None:
         failed += 1
         print('self-check: a killed entry\'s verdict is wrong')
     print('mutation_ledger self-check: %d parts, %s' % (len(cases) + 4, 'ok' if not failed else '%d FAILED' % failed))
@@ -642,11 +691,15 @@ def main():
         if '--kind' in args:
             kind = args[args.index('--kind') + 1]
             entries = [e for e in entries if e.klass == kind]
+        if '--suite' in args:
+            suite = args[args.index('--suite') + 1]
+            part_of = suites_of(graph(), sorted({e.path for e in entries}))
+            entries = [e for e in entries if suite in part_of[e.path]]
         jobs = int(args[args.index('--jobs') + 1]) if '--jobs' in args else (os.cpu_count() or 1)
-        wrong = run(entries, jobs)
         os.makedirs(WORK, exist_ok=True)
-        with open(os.path.join(WORK, 'report.txt'), 'w') as f:
-            f.write('\n'.join(wrong) + ('\n' if wrong else ''))
+        with open(os.path.join(WORK, 'report.txt'), 'w') as report:
+            wrong = run(entries, jobs, Both(sys.stdout, report))
+            report.write(''.join('wrong: %s\n' % w for w in wrong) or 'nothing wrong\n')
         what = 'made and run'
     else:
         what = 'held to the tree'
