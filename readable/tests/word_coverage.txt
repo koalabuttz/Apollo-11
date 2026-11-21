@@ -6,11 +6,13 @@
 # struct interpretive_code), as the interpreter took it in the case tests
 # and the scenarios: an order pair by its orders (the left one, the right
 # one), a branch by its two outcomes, a store code, an operand in line
-# with the code by whether a program that ran its order read it, and a
-# constant among the code by whether a program read it that took an
-# operand naming it. (A read alone is not enough: a made-up state's
-# address comes to any word of the rope.) A word stands here if any of
-# that was not seen: its line says what, then the listing's line.
+# with the code by whether a pass read it just after taking the word it
+# follows (in a program that ran that order), and a constant among the
+# code by whether a program read it that took an operand naming it. (A
+# read alone is not enough: a made-up state's address comes to any word
+# of the rope. For the constants the count is an upper one: the read and
+# the operand are one program's, not one pass's.) A word stands here if
+# any of that was not seen: its line says what, then the listing's line.
 #
 # LM: 447 tables: 11434 words, 11410 of them run wholly (99.8%).
 #     orders: 6957 of 6957 run; store codes: 1324 of 1324; operands: 5912 of 5936 read;
@@ -104,9 +106,10 @@ src/powered_flight/ax_sr_t.c
     | unread                  DEC 0 B-14
     | unread                  DEC 4 B-14
     why: [basic] AX*SR*T is basic code, and these are its own constants: CA
-         SINESLOC for ADDRWD, and DCA INDEXI under an INDEX of 0 to 2, which
-         takes two of the four words from INDEXI on. No order has them as an
-         operand.
+         SINESLOC for ADDRWD (SINSLOC in the repository's Luminary099 text;
+         the assembled listing, which the check reads, has SINESLOC for both
+         missions), and DCA INDEXI under an INDEX of 0 to 2, which takes two
+         of the four words from INDEXI on. No order has them as an operand.
 
 src/time_free_fall/time_free_fall.c
   TFF_CONSTANTS, lm cm 27,3766 27,3367 (2 words) f196ac78

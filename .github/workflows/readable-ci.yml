@@ -20,6 +20,12 @@
 # text, changes that ledger with it. The same run says which words of
 # interpretive code the interpreter ran (readable/tests/word_coverage.py),
 # held to readable/tests/word_coverage.txt in the same way.
+# Nightly, the mutation ledger's run (readable/tests/mutation_ledger.py):
+# every change to the readable code that readable/tests/mutation_ledger.txt
+# says no test sees is made in a copy of the tree and its tests run; a
+# survivor that a test now catches fails the job, and so does a [killed]
+# entry that nothing catches any more. On PRs `make all` holds the ledger's
+# entries to the tree, without running them.
 name: readable-ci
 # It runs on a change to readable/ and on a change to what readable/ is
 # built from and checked against: the faithful port's sources, its tests
@@ -207,4 +213,41 @@ jobs:
           path: |
             readable/build/linecov/line_coverage.txt
             readable/build/linecov/word_coverage.txt
+          if-no-files-found: ignore
+
+  mutation-ledger:
+    if: github.event_name == 'schedule' || inputs.full == true
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Lean checkout
+        env:
+          REF: ${{ github.sha }}
+        run: |
+          git init -q .
+          git remote add origin "https://github.com/${GITHUB_REPOSITORY}"
+          git config http.https://github.com/.extraheader \
+            "AUTHORIZATION: basic $(printf 'x-access-token:%s' '${{ github.token }}' | base64 -w0)"
+          git fetch -q --filter=blob:limit=1m --depth=1 origin "$REF"
+          git show FETCH_HEAD:c64-port/tools/ci_checkout.sh | bash -s FETCH_HEAD
+      - name: Toolchain cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            c64-port/deps/llvm-mos
+            c64-port/deps/vice-data
+            c64-port/deps/virtualagc
+            c64-port/deps/fixture
+          key: port-deps-${{ hashFiles('c64-port/tools/versions.json', 'c64-port/tools/setup_cloud.sh', 'c64-port/tools/prepare_reference.py') }}
+      - name: Install pinned toolchain
+        working-directory: c64-port
+        run: tools/setup_cloud.sh
+      - name: The mutation ledger, every change made and run
+        working-directory: readable
+        run: make mutation-ledger
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: readable-mutation-ledger
+          path: readable/build/mutation/report.txt
           if-no-files-found: ignore

@@ -51,16 +51,19 @@ SUITE_LIST = 'tests/lanec_suites.c'
 # C64 program does, so a chain the readable code hands to a routine that
 # module does not register (a TC POSTJUMP the module runs on through) ends
 # there: its chains are compared, not counted.
-# pin-stirred's chains taken must not fall below this (a readable routine
-# refusing what it should take).
-STIRRED_FLOOR = 8000
+# pin-stirred's chains taken are held to this number. A chain the readable
+# routines refuse is not compared with the Virtual AGC run, so a routine
+# that came to refuse a state it took shows in this count alone (fewer),
+# and one that came to take a state it refused shows as more: either way
+# the number is changed here, with the reason for it.
+STIRRED_TAKEN = 8254
 # pin-noun-z's likewise: 162 of its 168 chains (the other 6 are two of
 # pin-transfer's cases, CM 1799 and 1806, which the faithful port refuses
 # too, with NOUNADD changed or not).
-NOUN_Z_FLOOR = 162
-# pin-edges's likewise: 90 of its 120 chains (the other 30 start from five
+NOUN_Z_TAKEN = 162
+# pin-edges's likewise: 138 of its 168 chains (the other 30 start from five
 # of pin-transfer's cases that the faithful port refuses too).
-EDGES_FLOOR = 90
+EDGES_TAKEN = 138
 SUITES = (('pin-transfer', '--refusals', 25), ('pin-transfer-c64', '--refusals', None),
           ('pin-decdsp3', '--refusals', 0), ('pin-refuse', '--refusals-only', None))
 
@@ -167,25 +170,25 @@ def main():
     subprocess.run([sys.executable, 'tools/lanec/diff.py', 'pin-stirred', '--refusals', '--native', str(NATIVE),
                     '--oracle', str(ORACLE)], cwd=PORT, check=True)
     taken = sum(rows('pin-stirred', '-readable'))
-    print(f"{'PASS' if taken >= STIRRED_FLOOR else 'FAIL'}: pin-stirred: {taken} chains taken with the readable "
-          f'Pinball (at least {STIRRED_FLOOR})')
-    bad |= taken < STIRRED_FLOOR
+    print(f"{'PASS' if taken == STIRRED_TAKEN else 'FAIL'}: pin-stirred: {taken} chains taken with the readable "
+          f'Pinball (held to {STIRRED_TAKEN})')
+    bad |= taken != STIRRED_TAKEN
     # pin-noun-z (tests/pinball_noun_z_cases.c), the same way: the display
     # verbs' reads of the Z register against the original program.
     subprocess.run([sys.executable, 'tools/lanec/diff.py', 'pin-noun-z', '--refusals', '--native', str(NATIVE),
                     '--oracle', str(ORACLE)], cwd=PORT, check=True)
     taken = sum(rows('pin-noun-z', '-readable'))
-    print(f"{'PASS' if taken >= NOUN_Z_FLOOR else 'FAIL'}: pin-noun-z: {taken} chains taken with the readable "
-          f'Pinball (at least {NOUN_Z_FLOOR})')
-    bad |= taken < NOUN_Z_FLOOR
-    # pin-edges (tests/pinball_edge_cases.c), the same way: three ways
-    # through Pinball that the suites above leave out.
+    print(f"{'PASS' if taken == NOUN_Z_TAKEN else 'FAIL'}: pin-noun-z: {taken} chains taken with the readable "
+          f'Pinball (held to {NOUN_Z_TAKEN})')
+    bad |= taken != NOUN_Z_TAKEN
+    # pin-edges (tests/pinball_edge_cases.c), the same way: four ways
+    # through Pinball that the suites above leave out or do not hold.
     subprocess.run([sys.executable, 'tools/lanec/diff.py', 'pin-edges', '--refusals', '--native', str(NATIVE),
                     '--oracle', str(ORACLE)], cwd=PORT, check=True)
     taken = sum(rows('pin-edges', '-readable'))
-    print(f"{'PASS' if taken >= EDGES_FLOOR else 'FAIL'}: pin-edges: {taken} chains taken with the readable "
-          f'Pinball (at least {EDGES_FLOOR})')
-    bad |= taken < EDGES_FLOOR
+    print(f"{'PASS' if taken == EDGES_TAKEN else 'FAIL'}: pin-edges: {taken} chains taken with the readable "
+          f'Pinball (held to {EDGES_TAKEN})')
+    bad |= taken != EDGES_TAKEN
     # Step for step as the faithful port (tests/pinball_steps.c), and the
     # binding's table of where the faithful steps end current.
     bad |= subprocess.run([str(STEPS)], cwd=PORT).returncode != 0

@@ -1,0 +1,3353 @@
+# The changes to the readable code that no test sees, and why.
+# tests/mutation_ledger.py holds this file to the tree (`make all`) and
+# makes each change and runs its tests (`make mutation-ledger`).
+#
+# An entry is one change: the file and the routine (or table) it is in, a
+# reason in brackets, the lines as they are (-) and as changed (+), and why
+# no test can tell the two apart. "(2)" after the routine's name is the
+# second place those lines stand in it; "-" for the routine is a line
+# outside any.
+#
+# Where these come from. The PRs that wrote readable/ made such changes by
+# script and named in their texts the ones their tests let pass. 282 PR
+# texts were read; 122 name survivors. 216 of the scripts were kept, and
+# they give 7,280 exact changes that still apply to this tree. The logs of
+# 132 of the scripts were kept too: they name 1,216 of those changes as
+# survivors (read widely: a log that names a line stands for every change
+# its script made to the line). Each of the 1,216 was made again on this
+# tree. 556 are caught by a case test now and are not here, 17 no longer
+# build, 7 leave a test running past its time limit, and the other 636 are
+# the entries below, written as whole-line changes (two come to the same
+# one): the ones a check or a case added since catches as [killed], the
+# rest as survivors.
+#
+# Not here: the survivors of the 84 scripts whose logs were not kept (the
+# PR texts name them by kind, and most are a TC's place or the return
+# address it leaves, which tc-sites now catches wherever one is written),
+# and any change no script made.
+#
+# 262 survivors in 106 files: 77 rewritten, 22 same, 49 unreached, 33
+# repeated, 12 restore, 21 refusal, 48 owed. 373 more that a check or a
+# case added since catches (killed).
+#
+# A reason in brackets is one of these:
+
+[rewritten] What the change touches is written again before anything reads it, on
+    every path from the changed line: the return address a TC leaves in Q,
+    which the next TC sets again; A or L, loaded again by the next
+    instruction; the interrupt latch, which a later INHINT or RELINT (or
+    INTPRET's own RELINT) sets before the pass ends, and a case test's pass
+    takes no interrupt in between. The why names the later write.
+[same] The two texts are one thing under two names: two orders with one code,
+    two names of one word or one bit, two branches that run the same code.
+    The why says which.
+[unreached] The changed line differs from the line as it is only in a state that
+    no pass brings there, and the why says what rules the state out: an
+    overflow that a sign-extended word cannot make, a -0 that a MASK cannot
+    leave, a bound that an earlier line of the same routine already holds.
+[repeated] The changed line is a check that another check repeats before anything
+    is run or written: most are a binding's, repeated by the interpreter's
+    own check at its entry, by bind_machine's, or by the same binding's
+    earlier line. Dropping one of the two changes no outcome. The why names
+    the other check.
+[restore] The changed line puts a binding's state back after a refusal, and no
+    pass of this file refuses after it has written what the line restores
+    (a refusal comes before the first write, or the routines write none of
+    it). The line is the binding's promise that a refusal leaves the state
+    as it found it, kept for the day a routine refuses later.
+[refusal] The changed line refuses a state the flight program never makes (a word
+    the AGC cannot hold, an index outside its table), and no case makes one
+    up to see the refusal. The readable code refuses there because the
+    faithful port does. The why says what state.
+[owed] No test tells the two apart, and no reason is written yet: the why says
+    what the change touches and what was not checked. Each is owed a case
+    that catches it or a reason of one of the kinds above.
+[killed] Not a survivor any more: a check or a case added since catches it. Kept
+    so that the run holds the catch: the entry names the check or suite that
+    must fail (tc-sites is tools/tc_sites.py, every TC's place held to the
+    listing both ways).
+
+src/aostask/aostask.c: invert [refusal]
+-     if (to < 010u || to > 07777u || (to >= ONE_ACCSET && to < 04000u)) not_modelled();
++     if (to < 010u || to > 07777u) not_modelled();
+  A return from INVERT into the file's own code, 1/ACCSET to 04000. Its
+  callers' returns are elsewhere, and the cases keep off that span by design
+  (PR #1321).
+
+src/aostask/aostask.c: invert [same]
+-     correct_L();
+  The DV has left L corrected already (PR #1321).
+
+src/aostask/aostask.c: dvovsub [rewritten]
+-     incr(Q_ADDRESS);           /* "STEP Q FOR PROPER RETURN SEQUENCE." */
++     ;           /* "STEP Q FOR PROPER RETURN SEQUENCE." */
+  Q, and through it where DVOVSUB's TC Q leaves Z. The C returns by its own
+  return, and the caller's next TC writes both again (PR #1321).
+
+src/aostask/aostask.c: dvovsub [rewritten]
+-     tc_through(Q_ADDRESS);
++     tc_through(ADDRESS_OF(SCRATCHZ));
+  Q, and through it where DVOVSUB's TC Q leaves Z. The C returns by its own
+  return, and the caller's next TC writes both again (PR #1321).
+
+src/aostask/aostask.c: commeqs [unreached]
+-         if (!ts(ADDRESS_OF(COEFFQ))) cs(ADDRESS_OF(MEPSILON));
++         ts(ADDRESS_OF(COEFFQ)); cs(ADDRESS_OF(MEPSILON));
+  The TS COEFFQ finds no overflow (PR #1321).
+
+src/aostask/aostask.c: inertias [unreached]
+-         ca(ADDRESS_OF(LEMMASS)); /* STCTR1 */
++         ca(ADDRESS_OF(MASS)); /* STCTR1 */
+  Unlike only in docked flight, and the loop runs outside it, where LEMMASS
+  is MASS (PR #1321).
+
+src/aostask/aostask.c: one_accs_plus3 [rewritten]
+-     if (!ts(ADDRESS_OF(LEMMASS))) inhint();
++     ts(ADDRESS_OF(LEMMASS));
+  The latch only. 1/ACCRET +1's RELINT sets it before the pass ends (PR
+  #1321), and a case test's pass takes no interrupt between.
+
+src/aostask/aostask.c: one_accs_plus3 [same]
+-         set_A(OCT14);
++         set_A(TWELVE);
+  OCT14 and TWELVE are one word.
+
+src/aostask/aostask.c: do1_net_plus [killed: tc-sites]
+-     tc_invert(DO1_NET_PLUS + 4u);
++     tc_invert(DO1_NET_PLUS + 3u);
+  The word at the changed place is no TC (LM): 20,3727 22161 QXCH ARET.
+
+src/aostask/aostask.c: skipdb2 [killed: tc-sites]
+-     tc_do1_net_plus(CL1_NET_PLUS);
++     tc_do1_net_plus(CL1_NET_PLUS + 1u);
+  The word at the changed place is no TC (LM): 20,3463 50164 INDEX -SIGNAOS.
+
+src/aostask/aostask.c: skipdb1 [killed: tc-sites]
+-     tc_invert(SKIPDB1 + 4u);
++     tc_invert(SKIPDB1 + 5u);
+  The word at the changed place is no TC (LM): 20,3377 50164 INDEX -SIGNAOS.
+
+src/aostask/aostask.c: skipdb1 [rewritten]
+-     set_A(ACCHERE); /* "SET UP RETURN FROM COMPUTATION ROUTINE" */
++     set_A(ACCHERE + 1u); /* "SET UP RETURN FROM COMPUTATION ROUTINE" */
+  ARET only. The QXCH ARET that follows replaces it before anything reads it
+  (PR #1321).
+
+src/aostask/aostask.c: bothaxes [killed: tc-sites]
+-     tc_do1_net_plus(ACCTHERE + 015u);
++     tc_do1_net_plus(ACCTHERE + 014u);
+  The word at the changed place is no TC (LM): 20,3477 54157 TS ANET.
+
+src/aostask/aostask.c: bothaxes [unreached]
+-     if (!ts(ADDRESS_OF(ANET))) ad(MINUS_POINT03R_S2); /* "TEST FOR AMIN" */
++     ts(ADDRESS_OF(ANET)); ad(MINUS_POINT03R_S2); /* "TEST FOR AMIN" */
+  The TS ANET finds no overflow (PR #1321).
+
+src/aostask/aostask.c: getaosuv_plus6 [killed: tc-sites]
+-     tc_invert(DOPAXIS + 4u);
++     tc_invert(DOPAXIS + 3u);
+  The word at the changed place is no TC (LM): 20,3273 31530 CA 1JACC.
+
+src/aostask/aostask.c: v_axis_stored [rewritten]
+-         one_accret();
++         one_accret_plus1();
+  The latch only: 1/ACCRET's INHINT, and the RELINT on its next line sets the
+  latch again.
+
+src/aostask/aostask.c: v_axis_stored [rewritten]
+-     one_accret_plus1();
++     one_accret();
+  The latch only: 1/ACCRET's INHINT, and the RELINT on its next line sets the
+  latch again.
+
+src/attitude_maneuver/attitude_maneuver.c: readcduk [rewritten]
+-     inhint();
+  The latch only. The RELINT three instructions on sets it, and a case test's
+  pass takes no interrupt between.
+
+src/binding/attitude_maneuver_routines.c: pair [unreached]
+-     if (!sane()) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
++     if (0) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
+  The pass before it began from a state sane() took, and a pass of the
+  interpreter leaves ZERO, the bank registers and FIXLOC as sane() asks.
+
+src/binding/burn_baby_routines.c: bind [owed]
+-     agc.dsalmout = &io->chan11;
+  Channel 11's place in the io record. Not checked why no case sees the
+  binding without it.
+
+src/binding/burn_baby_routines.c: a_killtask_call [owed]
+-     return Q > 02000u && Q <= 07777u && physical((word)(Q - 1u), FBANK) != AGC_TRANSFER_NONE &&
++     return Q > 02000u && Q <= 07777u && physical((word)(Q - 2u), FBANK) != AGC_TRANSFER_NONE &&
+  An edge of the check that the word before Q is in the rope: unlike for Q
+  02001 at most. Not read again.
+
+src/binding/burn_baby_routines.c: step [owed]
+-     bind(program, state, io);
+  The machine's hooks after a routine that ran the interpreter. Not checked
+  why no case sees them left as the interpreter set them.
+
+src/binding/burn_baby_routines.c: run [owed]
+-     lm_burn_baby_unentered = 0;
+  A count kept for the tests, not the program's state. No reason written yet.
+
+src/binding/cm_auto_man_routines.c: basic [unreached]
+-     if (!entry) return EXEC_OUT_OF_SCOPE;
++     if (!entry) return EXEC_OK;
+  basic() is called by the keys of the file's own table only, and each has
+  its entry.
+
+src/binding/cm_imu_cal_routines.c: pair_sane [repeated]
+-     if (agc.memory[ADDRESS_OF(NEWJOB)] > 037777u) return false;
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/cm_imu_cal_routines.c: pair [owed]
+-     if (status != EXEC_OK) {
++     if (0) {
+  Unlike where the RTB's routine or the pass after it refuses, after the
+  first pass has written. Not checked whether a case brings that, nor whether
+  the tests look at the state after a refusal.
+
+src/binding/cm_jet_select_routines.c: basic_entry [same]
+-     {YAWTIME + 4u, yawtime_dft2},
++     {YAWTIME + 4u, yawtime_to_dft2},
+  yawtime_to_dft2() is YAWTIME +2's TCF +2: all it does is call
+  yawtime_dft2().
+
+src/binding/cm_p11_routines.c: sane [repeated]
+-     if (agc.memory[ADDRESS_OF(NEWJOB)] > 037777u) return false;
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/cm_p11_routines.c: sane [repeated]
+-     if (FIXLOC < 0401u || FIXLOC > 0661u || (FIXLOC - 0401u) % 054u) return false;
++     if (FIXLOC < 0401u || FIXLOC > 0661u) return false;
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/cm_p11_routines.c: code_at [unreached]
+-             address < codes[i]->first + codes[i]->count)
++             address <= codes[i]->first + codes[i]->count)
+  code_at() is asked about keys only, and no key is the word one past a
+  table's end.
+
+src/binding/cm_p11_routines.c: one_pass [owed]
+-     if (Z != V1STO2S || FBANK != (word)(I_V1STO2S & 076000u)) return EXEC_OK;
++     if (Z != V1STO2S) return EXEC_OK;
+  Unlike where a pass ends at V1STO2S's address under another bank. Likely no
+  order of these pairs goes there; not checked.
+
+src/binding/cm_p11_routines.c: pair [owed]
+-     if (Z != NEWOPS || !in_bank(bank) || LOC != (word)(02000u + key % 1024u) || BANKSET != BBANK ||
++     if (!in_bank(bank) || LOC != (word)(02000u + key % 1024u) || BANKSET != BBANK ||
+  A pair entered with Z elsewhere than NEWOPS. The interpreter's entry check
+  does not hold Z there: from DANZIG and its other points it runs on. Not
+  checked whether a caller or a case brings a pair so.
+
+src/binding/cm_p11_routines.c: pair [unreached]
+-     if (Z != NEWOPS || !in_bank(bank) || LOC != (word)(02000u + key % 1024u) || BANKSET != BBANK ||
++     if (Z != NEWOPS || !in_bank(bank) || BANKSET != BBANK ||
+  LOC is always the key: the trampoline picks the routine by LOC.
+
+src/binding/cm_p11_routines.c: pair [owed]
+-         *state = before;
++         (void)before;
+  Unlike where the RTB's routine or the pass after it refuses, after the
+  first pass has written. Not checked whether a case brings that, nor whether
+  the tests look at the state after a refusal.
+
+src/binding/cm_p32_routines.c: loop_back [unreached]
+-     for (loops = 1u; loops < 4096u; ++loops) {
++     for (loops = 1u; loops < 4095u; ++loops) {
+  The loop's last pass. With TCDH and TTPI times it runs about 750 passes at
+  most (PR #1158), never 4,095.
+
+src/binding/cm_p40_routines.c: pair [refusal]
+-     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
+  A null program, state or device, which no caller passes and no case test
+  makes.
+
+src/binding/cm_p40_routines.c: pair [owed]
+-     kept = *io;
+  kept is read only by the restore after a refusal. Not checked why no case
+  sees that restore put back what was never kept.
+
+src/binding/cm_p61_routines.c: basic_sane [refusal]
+-     if (agc.memory[ZERO_ADDRESS] != 0u || EBANK > 03400u || (EBANK & 0377u) ||
++     if (EBANK > 03400u || (EBANK & 0377u) ||
+  Word 7 holding other than zero. The AGC's word 7 is wired to zero, so no
+  program brings the state, and no case makes it up.
+
+src/binding/cm_p61_routines.c: sane [repeated]
+-     if (agc.memory[ADDRESS_OF(NEWJOB)] > 037777u) return false;
++     (void)0;
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/cm_p61_routines.c: sane [repeated]
+-     if (FIXLOC < 0401u || FIXLOC > 0661u || (FIXLOC - 0401u) % 054u) return false;
++     if (FIXLOC < 0401u || FIXLOC > 0661u) return false;
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/cm_p61_routines.c: run_basic [owed]
+-         *state = before;
+-         *io = kept;
++         (void)before;
++         (void)kept;
+  Unlike where a routine refuses after it has written. Not checked whether
+  one here can, nor whether the tests look at the state after a refusal.
+
+src/binding/cm_p61_routines.c: pair [owed]
+-     if (Z != NEWOPS || FBANK != (word)(bank << 10) || !code ||
++     if (FBANK != (word)(bank << 10) || !code ||
+  A pair entered with Z elsewhere than NEWOPS. The interpreter's entry check
+  does not hold Z there: from DANZIG and its other points it runs on. Not
+  checked whether a caller or a case brings a pair so.
+
+src/binding/cm_p61_routines.c: pair [unreached]
+-         LOC != (word)(02000u + key % 1024u) || BANKSET != BBANK || INTBIT15 != (FBANK & 040000u) ||
++         BANKSET != BBANK || INTBIT15 != (FBANK & 040000u) ||
+  LOC is always the key: the trampoline picks the routine by LOC.
+
+src/binding/cm_p61_routines.c: pair [owed]
+-         *state = before;
++         (void)before;
+  Unlike where the RTB's routine or the pass after it refuses, after the
+  first pass has written. Not checked whether a case brings that, nor whether
+  the tests look at the state after a refusal.
+
+src/binding/cm_rcs_dap_exec_routines.c: run_basic [restore]
+-         *state = before;
++         (void)before;
+  Nothing in the file refuses part way (PR #1255).
+
+src/binding/cm_servicer_routines.c: pair [repeated]
+-     if (Z != NEWOPS || FBANK != (word)(bank << 10) || (*agc.superbank & 0100u) || !code ||
++     if (Z != NEWOPS || FBANK != (word)(bank << 10) || !code ||
+  basic_sane(), which sane() ends in, refuses the superbank bit under a bank
+  of 30 or more, and every pair here is in bank 37.
+
+src/binding/cm_tpi_search_routines.c: sane [refusal]
+-     if (agc.memory[ZERO_ADDRESS] != 0u || EBANK > 03400u || (EBANK & 0377u) ||
++     if (agc.memory[ZERO_ADDRESS] != 0u ||  (EBANK & 0377u) ||
+  EBANK with a bit above its three. The AGC's EBANK holds three bits, so no
+  program brings the state, and no case makes it up.
+
+src/binding/cm_tpi_search_routines.c: basic [restore]
+-         *io = kept;
++         (void)kept;
+  No routine or pass over these tables refuses after it has changed the state
+  (PR #1270).
+
+src/binding/cm_tpi_search_routines.c: pair [unreached]
+-     if (Z != NEWOPS || !in_bank(bank) || LOC != (word)(02000u + key % 1024u) || BANKSET != BBANK ||
++     if (Z != NEWOPS || !in_bank(bank) || BANKSET != BBANK ||
+  LOC is always the key: the trampoline picks the routine by LOC.
+
+src/binding/conics_routines.c: sane [refusal]
+-                       FIXLOC > 0661u || (FIXLOC - 0401u) % 054u))
++                        (FIXLOC - 0401u) % 054u))
+  FIXLOC past the last VAC area, 0735 and on by 054s: the Executive gives a
+  job one of five areas, 0401 to 0661. At an order pair the interpreter's own
+  check at its entry (as_expected()) refuses the same state; the LM's basic
+  keys run no interpreter entry and have this line alone, and no case makes
+  up such a FIXLOC for them.
+
+src/binding/conics_routines.c: checkctr_sane [refusal]
+-     if (agc.memory[ZERO_ADDRESS] != 0u || iterctr < 010u || iterctr >= 01400u) return false;
++     if (agc.memory[ZERO_ADDRESS] != 0u ||  iterctr >= 01400u) return false;
+  ITERCTR's word (INDEX FIXLOC, 026 on) among the central registers: FIXLOC
+  is a job's VAC area in flight, 0401 to 0661. At an order pair and at the
+  LM's basic keys sane() has held FIXLOC to that before this line. CHECKCTR's
+  own key (lm_conic_checkctr_routines) has this line alone, and the conics
+  cases do not enter that table.
+
+src/binding/conics_routines.c: checkctr_sane [refusal]
+-     if (agc.memory[ZERO_ADDRESS] != 0u || iterctr < 010u || iterctr >= 01400u) return false;
++     if (agc.memory[ZERO_ADDRESS] != 0u || iterctr < 010u || iterctr >= 02000u) return false;
+  ITERCTR's word (INDEX FIXLOC, 026 on) in the switched erasable memory:
+  FIXLOC is a job's VAC area in flight, 0401 to 0661. At an order pair and at
+  the LM's basic keys sane() has held FIXLOC to that before this line.
+  CHECKCTR's own key (lm_conic_checkctr_routines) has this line alone, and
+  the conics cases do not enter that table.
+
+src/binding/conics_routines.c: checkctr_sane [refusal]
+-     return iterctr < 02000u && (iterctr < FBANK_ADDRESS || iterctr > BBANK_ADDRESS);
++     return iterctr < 02000u;
+  ITERCTR's word (INDEX FIXLOC, 026 on) at FB, Z or BBANK (CM): FIXLOC is a
+  job's VAC area in flight, 0401 to 0661. The CM's basic key has no other
+  check of FIXLOC (its sane() leaves the work area out), and no case makes up
+  a FIXLOC that puts ITERCTR there.
+
+src/binding/conics_routines.c: one_pass [owed]
+-         if (!checkctr_sane()) return EXEC_OUT_OF_SCOPE;
+  What checkctr_sane() asks, the pair's start held before the pass, but for
+  Q's sixteenth bit (LM). Not checked whether a pass can leave Q unlike that.
+
+src/binding/conics_routines.c: pair [unreached]
+-         started = LOC == at && at_danzig(bank, pending_order(key));
++         started = at_danzig(bank, pending_order(key));
+  At a pending key the pass resumes with LOC the key: the trampoline picks
+  the routine by LOC (PR #1306).
+
+src/binding/ephemerides_routines.c: admitted [repeated]
+-     if (Z != NEWOPS || FBANK != BANK15 || EBANK > 03400u || (EBANK & 0377u) ||
++     if (Z != NEWOPS || EBANK > 03400u || (EBANK & 0377u) ||
+  BBANK is held to BANK15 with EBANK's bits on the next line, and to FBANK by
+  the interpreter's own check at its entry.
+
+src/binding/ephemerides_routines.c: admitted [repeated]
+-     if (Z != NEWOPS || FBANK != BANK15 || EBANK > 03400u || (EBANK & 0377u) ||
++     if (Z != NEWOPS || FBANK != BANK15 || (EBANK & 0377u) ||
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/ephemerides_routines.c: admitted [repeated]
+-         BBANK != (word)(BANK15 | (EBANK >> 8)) || BANKSET != BBANK)
++         BANKSET != BBANK)
+  FBANK is held to BANK15 on the line before, and BBANK to FBANK with EBANK's
+  bits by the interpreter's own check at its entry.
+
+src/binding/ephemerides_routines.c: admitted [repeated]
+-     if (agc.memory[ZERO_ADDRESS] != 0u || EDOP != 0u || agc.memory[ADDRESS_OF(NEWJOB)] != 0u ||
++     if ( EDOP != 0u || agc.memory[ADDRESS_OF(NEWJOB)] != 0u ||
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/ephemerides_routines.c: admitted [repeated]
+-     if (agc.memory[ZERO_ADDRESS] != 0u || EDOP != 0u || agc.memory[ADDRESS_OF(NEWJOB)] != 0u ||
++     if (EDOP != 0u || agc.memory[ADDRESS_OF(NEWJOB)] != 0u ||
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/ephemerides_routines.c: admitted [repeated]
+-     if (*agc.interrupts > 1u || (*agc.superbank & ~0160u)) return false;
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/ephemerides_routines.c: step [owed]
+-         if (Z != NEWOPS || FBANK != BANK15 || LOC < CODE.first || LOC >= CODE.first + CODE.count ||
++         if (FBANK != BANK15 || LOC < CODE.first || LOC >= CODE.first + CODE.count ||
+  After a pass, Z not at NEWOPS with LOC still in the table: the loop would
+  go round again where it should end. No reason found yet why no case sees
+  it.
+
+src/binding/ephemerides_routines.c: step [unreached]
+-         if (Z != NEWOPS || FBANK != BANK15 || LOC < CODE.first || LOC >= CODE.first + CODE.count ||
++         if (Z != NEWOPS || FBANK != BANK15 || LOC < CODE.first ||
+  LOC past the table's end. After a pass that came back to NEWOPS in bank 15,
+  LOC is in the table (PR #1223).
+
+src/binding/ephemerides_routines.c: step [owed]
+-     *state = before;
+-     *io = kept;
++     (void)before;
++     (void)kept;
+  Unlike where a later pass of the loop refuses after an earlier one ran. Not
+  checked whether a case brings that, nor whether the tests look at the state
+  after a refusal.
+
+src/binding/ephemerides_routines.c: sane [repeated]
+-     if (agc.memory[ZERO_ADDRESS] != 0u || agc.memory[ADDRESS_OF(NEWJOB)] > 037777u ||
++     if (agc.memory[ZERO_ADDRESS] != 0u ||
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/ephemerides_routines.c: sane [repeated]
+-         EBANK > 03400u || (EBANK & 0377u) || BBANK != (word)((FBANK & 076000u) | (EBANK >> 8)))
++         EBANK > 03400u || (EBANK & 0377u) || 0)
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/ephemerides_routines.c: interpretive [restore]
+-         *state = before;
++         (void)before;
+  The interpreter refuses at its entry, before it runs anything, and where it
+  refuses later it puts the state back itself.
+
+src/binding/ephemerides_routines.c: interpretive [restore]
+-         *io = kept;
++         (void)kept;
+  The interpreter refuses at its entry, before it runs anything, and where it
+  refuses later it puts the state back itself.
+
+src/binding/findcduw_routines.c: one_pass [owed]
+-             if (Z == POODOO1) return EXEC_OUT_OF_SCOPE;
+  Z at POODOO1 after NORMUNIT, its alarm 1302. The faithful pair refuses
+  there and so does this line. No case brings a pass there; not shown that
+  the vectors FINDCDUW gives NORMUNIT never do.
+
+src/binding/geometry_routines.c: interpretive [restore]
+-         *state = before;
++         (void)before;
+  A refusal of pair() comes from the interpreter's entry, which puts the
+  state back itself, or from the checks before the RTB's routine writes.
+
+src/binding/imu_mode_switching_routines.c: channel_out [unreached]
+-     *channel_at(number) = number == CHAN13 ? (agc_word)(value & 043777u) : value;
++     *channel_at(number) = value;
+  Unlike only where a word written to channel 13 has bit 12, 13 or 14, and
+  the file's writes there have none (PR #1309).
+
+src/binding/imu_mode_switching_routines.c: run [restore]
+-         *io = kept;
++         (void)kept;
+  The checks before the routine runs keep it from refusing part way (PR
+  #1309).
+
+src/binding/integration_init_routines.c: pair [owed]
+-     if (!started || !superbank_off(bank)) return EXEC_OUT_OF_SCOPE;
++     if (!started) return EXEC_OUT_OF_SCOPE;
+  A pair of bank 30 or above entered with the superbank bit on. Not checked
+  why no case sees it.
+
+src/binding/landing_displays_routines.c: channel_out [refusal]
+-     if (number == CHAN30) not_modelled();
+  A write to channel 30. The file writes channels 12 and 14 only (PR #1200).
+
+src/binding/lat_long_routines.c: sane [repeated]
+-     if (agc.memory[ZERO_ADDRESS] != 0u || agc.memory[ADDRESS_OF(NEWJOB)] > 037777u ||
++     if ( agc.memory[ADDRESS_OF(NEWJOB)] > 037777u ||
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/lat_long_routines.c: sane [repeated]
+-         EBANK > 03400u || (EBANK & 0377u) || BBANK != (word)((FBANK & 076000u) | (EBANK >> 8)))
++          (EBANK & 0377u) || BBANK != (word)((FBANK & 076000u) | (EBANK >> 8)))
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/lat_long_routines.c: sane [repeated]
+-         EBANK > 03400u || (EBANK & 0377u) || BBANK != (word)((FBANK & 076000u) | (EBANK >> 8)))
++         EBANK > 03400u || (EBANK & 0377u) || 0)
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/lat_long_routines.c: interpretive [owed]
+-     if (Z != NEWOPS || FBANK != BANK13 || LOC < CODE.first || LOC >= CODE.first + CODE.count ||
++     if (FBANK != BANK13 || LOC < CODE.first || LOC >= CODE.first + CODE.count ||
+  The routine entered with Z elsewhere than NEWOPS. The interpreter's entry
+  check does not hold Z there: from DANZIG and its other points it runs on.
+  Not checked whether a caller or a case brings it so.
+
+src/binding/lat_long_routines.c: interpretive [unreached]
+-     if (Z != NEWOPS || FBANK != BANK13 || LOC < CODE.first || LOC >= CODE.first + CODE.count ||
++     if (Z != NEWOPS || FBANK != BANK13 || LOC < CODE.first ||
+  LOC is always the key, a word of the table: the trampoline picks the
+  routine by LOC.
+
+src/binding/llge_routines.c: one_pass [owed]
+-     bind(program, state, io);
+  The machine's hooks, which the interpreter leaves pointed at its own.
+  Unlike only where a later step of the same call refuses or reads the rope
+  through them. Not checked why no case sees it.
+
+src/binding/llge_routines.c: one_pass [refusal]
+-     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
+  The way out for a step NORMUNIT does not model. No case brings one there.
+
+src/binding/llge_routines.c: one_pass [owed]
+-     if (Z == POODOO1) return EXEC_OK;
+  NORMUNIT's way to POODOO (alarm 1302, a vector too short). Likely never
+  taken from here; not checked.
+
+src/binding/llge_routines.c: pair [refusal]
+-     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
+  A null program, state or device, which no caller passes and no case test
+  makes.
+
+src/binding/llge_routines.c: pair [owed]
+-     bind(program, state, io);
+  The machine stays bound as the call before left it. In the case tests every
+  call has the same program, state and device, so none sees it: a case with
+  another would.
+
+src/binding/lunar_landing_routines.c: code_at [unreached]
+-         if (pair_keys[i].physical != at) continue;
+  code_at() is called with a pair's own key, which is always one of pair_keys
+  (PR #1188).
+
+src/binding/lunar_landing_routines.c: step [owed]
+-     bind(program, state, io);
+  The machine's hooks, which the interpreter leaves pointed at its own.
+  Unlike only where a later step of the same call refuses or reads the rope
+  through them. Not checked why no case sees it.
+
+src/binding/measurement_inc_routines.c: move_sane [repeated]
+-     if (*agc.interrupts > 1u || agc.memory[ZERO_ADDRESS] != 0u || EBANK > 03400u || (EBANK & 0377u))
++     if (agc.memory[ZERO_ADDRESS] != 0u || EBANK > 03400u || (EBANK & 0377u))
+  The pair's own guards held the same before the pass (PR #1286), and a pass
+  leaves the latch 0 or 1.
+
+src/binding/measurement_inc_routines.c: move_sane [owed]
+-     for (i = Q_ADDRESS; i < 2048u; ++i)
++     for (i = 3u; i < 2048u; ++i)
+  Q with its sixteenth bit unlike its fifteenth after the RTB's pass. The
+  pair's start held every word but Q so. Not checked whether a pass can leave
+  Q so.
+
+src/binding/measurement_inc_routines.c: void [unreached]
+-     if (FBANK != MOVES_BANK) return NULL;
+  Z comes to a move's address only by its RTB, which sets FB to the moves'
+  bank itself (PR #1286).
+
+src/binding/measurement_inc_routines.c: pair [unreached]
+-     if (Z != NEWOPS || FBANK != BANK(bank) || LOC != at || BANKSET != BBANK ||
++     if (Z != NEWOPS || FBANK != BANK(bank) ||  BANKSET != BBANK ||
+  LOC is always the key: the trampoline picks the routine by LOC.
+
+src/binding/p32_routines.c: store_spills [unreached]
+-     if (a <= 45u) return false; /* the work area, or word 45 itself */
++     if (a <= 44u) return false; /* the work area, or word 45 itself */
+  An edge of the spill bound. The one store these tables make there is at
+  01776 (PR #1156), at neither edge.
+
+src/binding/p32_routines.c: store_spills [unreached]
+-     n = MODE == 0u || MODE == 077777u ? 1u : (MODE & 040000u) ? 5u : 2u;
++     n = MODE == 0u || MODE == 077777u ? 1u : (MODE & 040000u) ? 4u : 2u;
+  An edge of the spill bound. The one store these tables make there is at
+  01776 (PR #1156), at neither edge.
+
+src/binding/p40_routines.c: basic [restore]
+-         if (hardware_now) *hardware_now = hardware_kept;
+  PR #1177 counts it among the lines no caller reaches: no routine here
+  refuses after it has written a word of the hardware record.
+
+src/binding/p40_routines.c: pair [refusal]
+-     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
+  A null program, state or device, which no caller passes and no case test
+  makes.
+
+src/binding/p40_routines.c: pair [owed]
+-     kept = *io;
+  kept is read only by the restore after a refusal. Not checked why no case
+  sees that restore put back what was never kept.
+
+src/binding/p_axis_routines.c: channel_out [unreached]
+-     if (number == CHAN13) value &= CHANNEL13_KEPT;
+  Unlike only where a word written to channel 13 has a bit the mask drops,
+  and no run writes one (PR #1316).
+
+src/binding/p_axis_routines.c: run [restore]
+-         *hardware_now = kept_hardware;
++         (void)kept_hardware;
+  No run refuses after a channel write (PR #1316).
+
+src/binding/planetary_routines.c: sane [repeated]
+-     if (agc.memory[ZERO_ADDRESS] != 0u || agc.memory[ADDRESS_OF(NEWJOB)] > 037777u ||
++     if (0 || agc.memory[ADDRESS_OF(NEWJOB)] > 037777u ||
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/planetary_routines.c: sane [repeated]
+-     if (agc.memory[ZERO_ADDRESS] != 0u || agc.memory[ADDRESS_OF(NEWJOB)] > 037777u ||
++     if (agc.memory[ZERO_ADDRESS] != 0u || 0 ||
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/planetary_routines.c: sane [repeated]
+-         EBANK > 03400u || (EBANK & 0377u) || BBANK != (word)((FBANK & 076000u) | (EBANK >> 8)))
++         0 || (EBANK & 0377u) || BBANK != (word)((FBANK & 076000u) | (EBANK >> 8)))
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/planetary_routines.c: sane [repeated]
+-         EBANK > 03400u || (EBANK & 0377u) || BBANK != (word)((FBANK & 076000u) | (EBANK >> 8)))
++         EBANK > 03400u || (EBANK & 0377u) || 0)
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/planetary_routines.c: sane [repeated]
+-     if (*agc.interrupts > 1u || (*agc.superbank & ~0160u)) return false;
++     if (0 || (*agc.superbank & ~0160u)) return false;
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/planetary_routines.c: sane [repeated]
+-     if (FIXLOC < 0401u || FIXLOC > 0661u || (FIXLOC - 0401u) % 054u) return false;
++     if (FIXLOC < 0401u || FIXLOC > 0661u || 0) return false;
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/planetary_routines.c: interpretive [owed]
+-     if (Z != NEWOPS || !code || BANKSET != BBANK || INTBIT15 != (FBANK & 040000u) || !sane())
++     if (0 || !code || BANKSET != BBANK || INTBIT15 != (FBANK & 040000u) || !sane())
+  The routine entered with Z elsewhere than NEWOPS. The interpreter's entry
+  check does not hold Z there: from DANZIG and its other points it runs on.
+  Not checked whether a caller or a case brings it so.
+
+src/binding/planetary_routines.c: interpretive [restore]
+-         *state = before;
++         (void)before;
+  The interpreter refuses at its entry, before it runs anything, and where it
+  refuses later it puts the state back itself.
+
+src/binding/planetary_routines.c: interpretive [restore]
+-         *io = kept;
++         (void)kept;
+  The interpreter refuses at its entry, before it runs anything, and where it
+  refuses later it puts the state back itself.
+
+src/binding/r63_routines.c: pair [unreached]
+-     if (!sane()) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
++     if (0) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
+  The pass before it began from a state sane() took, and a pass of the
+  interpreter leaves ZERO, the bank registers and FIXLOC as sane() asks.
+
+src/binding/radar_leadin_routines.c: sane [repeated]
+-     for (i = 3u; i < 2048u; ++i)
++     for (i = 4u; i < 2048u; ++i)
+  Word 3 is Z, and the binding runs only where Z is the address of one of its
+  routines.
+
+src/binding/rtb_op_codes_routines.c: basic [restore]
+-         *io = kept;
++         (void)kept;
+  The file changes no word of the io record before a refusal (PR #1313).
+
+src/binding/sband_antenna_routines.c: sane [repeated]
+-     if (FIXLOC < 0401u || FIXLOC > 0661u || (FIXLOC - 0401u) % 054u) return false;
++     if (FIXLOC < 0400u || FIXLOC > 0661u || (FIXLOC - 0401u) % 054u) return false;
+  (FIXLOC - 0401) % 054 on the same line refuses 0400 too.
+
+src/binding/sband_antenna_routines.c: basic [restore]
+-         *state = before;
++         (void)before;
+  The basic routines here never leave part way (PR #1108): the refusal the
+  line serves is not taken.
+
+src/binding/sps_backup_routines.c: rope_word [repeated]
+-     if (physical + 1u < B21(UTIME) || physical > B21(UTIME) + 1u) not_modelled();
+  The binding holds AXISCTR to its range before anything runs, and with it no
+  INDEX reads outside those three words (PR #1322).
+
+src/binding/stable_orbit_routines.c: work_area [repeated]
+-     return FIXLOC >= VACNUSE_ADDRESS(1u) + 1u && FIXLOC <= VACNUSE_ADDRESS(5u) + 1u &&
++     return FIXLOC >= VACNUSE_ADDRESS(1u) && FIXLOC <= VACNUSE_ADDRESS(5u) + 1u &&
+  (FIXLOC - VAC1USE - 1) % 054 on the same line refuses VAC1USE itself.
+
+src/binding/standard_lead_routines.c: lead_takes [owed]
+-     case E_CALL: return LOC >= 077u && LOC <= 07774u && cadr_readable((word)(LOC + 1u));
++     case E_CALL: return LOC <= 07774u && cadr_readable((word)(LOC + 1u));
+  PR #1090: "that state is refused anyway by the register check". Not read
+  again: which check refuses a LOC below 077.
+
+src/binding/time_free_fall_routines.c: sane [repeated]
+-     if (work_area && (agc.memory[ADDRESS_OF(NEWJOB)] > 037777u || FIXLOC < 0401u ||
++     if (work_area && (agc.memory[ADDRESS_OF(NEWJOB)] > 077777u || FIXLOC < 0401u ||
+  The interpreter's own check at its entry (as_expected(), reached by
+  interpret_listing()) refuses the same state before anything is run.
+
+src/binding/time_free_fall_routines.c: one_pass [unreached]
+-     if (Z != TCDANZIG || FBANK != (word)(TFF_BANK << 10)) return EXEC_OK;
++     if (Z != TCDANZIG) return EXEC_OK;
+  Z comes to TCDANZIG only by the pair's own BOVB, inside its own bank (PR
+  #1306).
+
+src/binding/time_free_fall_routines.c: pair [unreached]
+-         started = LOC == at && at_danzig(bank, pending);
++         started = at_danzig(bank, pending);
+  At a pending key the pass resumes with LOC the key: the trampoline picks
+  the routine by LOC (PR #1306).
+
+src/binding/tjet_law_routines.c: run [repeated]
+-         Q > 07777u || (axisctr > 1u && axisctr != MINUS_ONE_WORD))
++         Q > 07777u || (axisctr > 2u && axisctr != MINUS_ONE_WORD))
+  With AXISCTR 2 the INDEX reads AXISDIFF +2, a word the binding's rope
+  reader refuses (PR #1318).
+
+src/binding/trim_gimbal_routines.c: run [repeated]
+-     if (!state || !program || !io || !program->hardware || !bind_machine(program, state, io))
++     if (!state || !program || !program->hardware || !bind_machine(program, state, io))
+  bind_machine() on the same line refuses a missing record too (PR #1320).
+
+src/burn_baby/burn_baby.c: comfail2_after_phaschng [rewritten]
+-     inhint();
+  The latch only. KILLTASK's own INHINT, its second instruction, sets it.
+
+src/burn_baby/clock.c: nullclok [owed]
+-     inhint();
+  The latch only, if a later INHINT or RELINT sets it on every way to the
+  pass's end. Not read again.
+
+src/burn_baby/clock.c: ignite (2) [unreached]
+-         inhint();
+  The arm is never taken: the CCS is of a masked bit, never negative (the
+  code says so).
+
+src/burn_baby/clock.c: p40a_p_after_gpn_auto [owed]
+-     turniton();
+  TURNITON left out where channel 30's bit is set. No reason found yet why no
+  case sees it.
+
+src/burn_baby/killtask.c: killtask [repeated]
+-     if (Q < 02000u || Q > 07777u) not_modelled();
+  The binding's a_killtask_call() refuses a Q outside 02001 to 07777 before
+  KILLTASK is run, and the file's own calls come from a tc_at(), which leaves
+  a fixed address.
+
+src/cm_dap/attitude_hold.c: grabang [unreached]
+-     if (A_is_zero()) { /* EXTEND; BZF ENDDAMP */
++     if (A_is_zero_or_minus()) { /* EXTEND; BZF ENDDAMP */
+  A is a MASK's result under a mask without bit 15: never negative, never -0.
+  BZMF goes as BZF.
+
+src/cm_dap/dap_executive.c: ambgupdt [unreached]
+-     if (A_is_zero()) { /* EXTEND; BZF ENDOFJOB */
++     if (A_is_zero_or_minus()) { /* EXTEND; BZF ENDOFJOB */
+  A is a MASK's result under a mask without bit 15: never negative, never -0.
+  BZMF goes as BZF.
+
+src/cm_dap/indexing.c: dca_indexed_in [unreached]
+-         A = sign_extend(fetch(01777u));
++         A = sign_extend(fetch(0u));
+  The line is in the arm for a field of 0, and the code marks the arm never:
+  an index is an axis or twice it.
+
+src/cm_dap/indexing.c: index_ts [refusal]
+-     if (sum < 0 || sum > 01777 || (sum >= 4 && sum <= 6)) not_modelled();
++     if (sum < 0 || sum > 01777 || (sum == 5)) not_modelled();
+  A store by an index to FB or BB (a sum of 4 or 6). The autopilot's indexes
+  keep its fields far above them, and no case brings another.
+
+src/cm_dap/initialize.c: zerojet [rewritten]
+-     set_A(ELEVEN);
++     set_A(TEN);
+  From TEN the loop leaves out the last word, BLAST2 +1, which the lines
+  right after the loop zero (PR #1249).
+
+src/cm_dap/jet_select.c: jetslect [unreached]
+-     if (A_is_zero()) { /* EXTEND; BZF NOXLNCMD */
++     if (A_is_zero_or_minus()) { /* EXTEND; BZF NOXLNCMD */
+  A is a MASK's result under a mask without bit 15: never negative, never -0.
+  BZMF goes as BZF.
+
+src/cm_dap/rcsatt.c: body_rates [same]
+-     zl();
+  DAS has left L +0 before the ZL (PR #1248).
+
+src/cm_dap/rcsatt.c: deloop [same]
+-         dca_indexed(ADDRESS_OF(CDUXD), a_word());
++         dca_indexed(ADDRESS_OF(CDUXD), dpndx());
+  A holds what the TS on the line before stored in DPNDX, with no overflow
+  (PR #1248).
+
+src/cm_dap/switching.c: jloop [same]
+-         maneuver_dca_indexed(ADDRESS_OF(ADOT), a_word());
++         maneuver_dca_indexed(ADDRESS_OF(ADOT), dpndx());
+  A holds what the TS on the line before stored in DPNDX, with no overflow
+  (PR #1248).
+
+src/cm_dap/switching.c: j23 [unreached]
+-     if (A_is_zero()) { /* EXTEND; BZF DOJET +2 */
++     if (A_is_zero_or_minus()) { /* EXTEND; BZF DOJET +2 */
+  A is a MASK's result under a mask without bit 15: never negative, never -0.
+  BZMF goes as BZF.
+
+src/entry_dap/bodyrate.c: bodyrate_prel [rewritten]
+-         tc_at(BODYRATE + 067u); /* TC +2 */
+  Q only. The TC SPSIN that follows sets it again (PR #1277).
+
+src/entry_dap/bodyrate.c: bodyrate_prel [rewritten]
+-     case NEGATIVE: bodyrate_gamdot(); break;
++     case NEGATIVE: tc_at(BODYRATE + 067u); bodyrate_gamdot(); break;
+  Q only. The TC SPSIN that follows sets it again (PR #1277).
+
+src/entry_dap/cm_fdai.c: cm_dumpr_after_needler [killed: tc-sites]
+-     tc_at(CM_DUMPR + 6u);
++     tc_at(CM_DUMPR + 5u);
+  The word at the changed place is no TC (CM): 15,3716 42420 CADR NEEDLER.
+
+src/entry_dap/cm_rcs.c: geton1 [unreached]
+-     if (!ts(ADDRESS_OF(VDT_180))) ad_at(ADDRESS_OF(MVT_180));
++     ts(ADDRESS_OF(VDT_180)); ad_at(ADDRESS_OF(MVT_180));
+  The TS finds no overflow there (PR #1280), so the AD is never skipped.
+
+src/entry_dap/dapon.c: notyet_plus3 [rewritten]
+-     inhint();
+  The latch only. A RELINT follows before the pass ends (PR #1273), and a
+  case test's pass takes no interrupt between.
+
+src/entry_dap/dapon.c: cm_dap2c_2cadr [rewritten]
+-     set_A(6u);
++     set_A(7u);
+  A only. The CS on the next line, CM/DAP2C +021's, loads A.
+
+src/entry_dap/dapon.c: cm_dap2c_after_waitlist [same]
+-     ad(CM_SWIC2);
++     ad(TEN);
+  CM/SWIC2 and TEN hold one value, 00012.
+
+src/entry_dap/dapon.c: cm_dap2c_after_waitlist [unreached]
+-         continue_at(CM_DAP2C + 026u);
++         continue_at(CM_DAP2C + 025u);
+  The TS finds no overflow: A is CM/FLAGS without CM/SWIC1's bits, plus ten
+  (PR #1273).
+
+src/entry_dap/dead_zone.c: index_a_cs [unreached]
+-         cs(at);
++         ca(at);
+  The arm for a sum in erasable memory. The one caller's base is the fixed
+  word HALFPR, and its index keeps the sum in fixed memory (PR #1280).
+
+src/entry_dap/exdap.c: exdap_ts_a [rewritten]
+-         tc_at(EXDAP + 012u);
++         tc_at(EXDAP + 014u);
+  Q only. EXDAP4's next TC sets it again (PR #1279).
+
+src/entry_dap/exdap.c: exdap_plus013 [killed: tc-sites]
+-     tc_at(EXDAP + 013u);
+  No place names the listing's TC at EXDAP +13 any more (CM).
+
+src/entry_dap/roll_jets.c: ton2_interval [killed: tc-sites]
+-     tc_at(JETCALL3 + 013u);
++     tc_at(JETCALL3 + 012u);
+  The word at the changed place is no TC (CM): 15,3631 23612 LXCH NUJET.
+
+src/entry_dap/roll_jets.c: jetcall_outtag [unreached]
+-     if (A_is_zero()) { /* EXTEND; BZF JETACTN +1 */
++     if (A_is_zero_or_minus()) { /* EXTEND; BZF JETACTN +1 */
+  A is a MASK's result under BIT2 (PR #1281): never negative, never -0. BZMF
+  goes as BZF.
+
+src/extended_verbs/align.c: vbzero_after_op_inert_imu [killed: tc-sites]
+-     tc(VBZERO + 1u, IMUZEROK);
++     tc(VBZERO + 2u, IMUZEROK);
+  The TC at the changed place is to 2120 (CM: 43,2126 02120 TC ALM/END), and
+  the routine called is at 2127.
+
+src/extended_verbs/align.c: imuzerok_after_imustall_bad [killed: tc-sites]
+-     tc(IMUZEROK + 5u, IMUZEROK + 6u);
++     continue_at(IMUZEROK + 6u);
+  No place names the listing's TC at IMUZEROK +5 any more (LM and CM).
+
+src/extended_verbs/align.c: rwaitk_after_radstall_bad [killed: tc-sites]
+-     continue_at(RWAITK + 3u);
++     tc(RWAITK + 2u, RWAITK + 3u);
+  The word at the changed place is no TC (LM): 43,2147 12150 TCF +1.
+
+src/extended_verbs/align.c: imufinek_after_proceed [killed: tc-sites]
+-     tc(IMUFINEK + 6u, IMUFINEK + 7u);
++     continue_at(IMUFINEK + 7u);
+  No place names the listing's TC at IMUFINEK +6 any more (LM and CM).
+
+src/extended_verbs/align.c: rdruseck [same]
+-     mask(R77FLBIT);
++     mask(NR29FBIT);
+  R77FLBIT and NR29FBIT are both 02000, bit 11.
+
+src/extended_verbs/align.c: rdruseck [same]
+-         continue_at(CHECKRR); /* "NO" */
++         checkrr(); /* "NO" */
+  The binding runs on while Z is at a routine it has, and CHECKRR is one: it
+  calls checkrr() next itself.
+
+src/extended_verbs/dap.c: chkdata1 [killed: tc-sites]
+-         continue_at(FORCEONE);
++         tc_at(0u); continue_at(FORCEONE);
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/dap.c: mskdatr1_after_proceed [killed: tc-sites]
+-     continue_at(DPDAT1); /* TCF DPDAT1 */
++     tc_at(0u); continue_at(DPDAT1); /* TCF DPDAT1 */
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/dap.c: mskdatr1_after_enter [killed: tc-sites]
+-     continue_at(CHKDATA1); /* TCF CHKDATA1 */
++     tc_at(0u); continue_at(CHKDATA1); /* TCF CHKDATA1 */
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/dap.c: forceone [killed: tc-sites]
+-     continue_at(MSKDATR1); /* TCF MSKDATR1 */
++     tc_at(0u); continue_at(MSKDATR1); /* TCF MSKDATR1 */
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/dap.c: dapdata2_after_terminate [killed: tc-sites]
+-     continue_at(ENDR03); /* TCF ENDR03 */
++     tc_at(0u); continue_at(ENDR03); /* TCF ENDR03 */
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/dap.c: dapdata2_after_proceed [killed: tc-sites]
+-     continue_at(DAPDAT2); /* TCF DAPDAT2 */
++     tc_at(0u); continue_at(DAPDAT2); /* TCF DAPDAT2 */
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/dap.c: dapdata2_after_enter [killed: tc-sites]
+-     continue_at(DAPDATA2); /* TCF DAPDATA2 */
++     tc_at(0u); continue_at(DAPDATA2); /* TCF DAPDATA2 */
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/dap.c: dapdat2 [killed: tc-sites]
+-         continue_at(DAPDATA2);
++         tc_at(0u); continue_at(DAPDATA2);
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/dap.c: dapdat2 [killed: tc-sites]
+-         continue_at(LEMALONE);
++         tc_at(0u); continue_at(LEMALONE);
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/dap.c: dapdat2 (2) [killed: tc-sites]
+-         continue_at(DAPDATA2);
++         tc_at(0u); continue_at(DAPDATA2);
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/dap.c: dapdata3_after_proceed [killed: tc-sites]
+-     continue_at(DPDAT3); /* TCF DPDAT3 */
++     tc_at(0u); continue_at(DPDAT3); /* TCF DPDAT3 */
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/dap.c: dapdata3_after_enter [killed: tc-sites]
+-     continue_at(DAPDATA3 + 4u); /* TCF -5 */
++     tc_at(0u); continue_at(DAPDATA3 + 4u); /* TCF -5 */
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/dap.c: dapdisp [killed: tc-sites]
+-         continue_at(DAPDISP + 5u);
++         tc_at(0u); continue_at(DAPDISP + 5u);
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/dap.c: donoun46_after_proceed [killed: tc-sites]
+-     tc(DONOUN46 + 4u, DONOUN46 + 6u); /* TC +2 */
++     tc(DONOUN46 + 5u, DONOUN46 + 6u); /* TC +2 */
+  The TC at the changed place is to 2004 (CM: 42,2011 02004 TC DONOUN46), and
+  the routine called is at 2012.
+
+src/extended_verbs/dap.c: donoun46_after_enter [killed: tc-sites]
+-     tc(DONOUN46 + 5u, DONOUN46);
++     tc(DONOUN46 + 6u, DONOUN46);
+  The word at the changed place is no TC (CM): 42,2012 31466 CA DAPDATR1.
+
+src/extended_verbs/dap.c: donoun46_plus6 [killed: tc-sites]
+-         continue_at(MAXIN); /* TCF MAXIN */
++         tc_at(0u); continue_at(MAXIN); /* TCF MAXIN */
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/dap.c: donoun47_after_proceed [killed: tc-sites]
+-     tc(DONOUN47 + 4u, DONOUN47 + 6u); /* TC +2 */
++     tc(DONOUN47 + 5u, DONOUN47 + 6u); /* TC +2 */
+  The TC at the changed place is to 2022 (CM: 42,2027 02022 TC DONOUN47), and
+  the routine called is at 2030.
+
+src/extended_verbs/dap.c: donoun47_after_enter [killed: tc-sites]
+-     tc(DONOUN47 + 5u, DONOUN47);
++     tc(DONOUN47 + 6u, DONOUN47);
+  The word at the changed place is no TC (CM): 42,2030 31466 CAE DAPDATR1.
+
+src/extended_verbs/dap.c: donoun47_plus6 [killed: tc-sites]
+-         continue_at(DONOUN48);
++         tc_at(0u); continue_at(DONOUN48);
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/dap.c: donoun47_plus6 (2) [killed: tc-sites]
+-         continue_at(DONOUN48);
++         tc_at(0u); continue_at(DONOUN48);
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/dap.c: donoun48_after_enter [killed: tc-sites]
+-     tc(DONOUN48 + 5u, DONOUN48);
++     tc(DONOUN48 + 6u, DONOUN48);
+  The TC at the changed place is to 5546 (CM: 42,2054 05546 TC UPFLAG), and
+  the routine called is at 2046.
+
+src/extended_verbs/dap.c: maxin_after_upflag [killed: tc-sites]
+-     tc(MAXIN + 2u, MAXOUT);
++     tc(MAXIN + 3u, MAXOUT);
+  The TC at the changed place is to 1460 (CM: 42,2057 01460 VN 0648), and the
+  routine called is at 2020.
+
+src/extended_verbs/radar.c: r04z [rewritten]
+-     inhint();
+  The latch only. The RELINT seven instructions on sets it, and a case test's
+  pass takes no interrupt between.
+
+src/extended_verbs/short_verbs.c: v86perf [rewritten]
+-     xch(EBANK_ADDRESS);
++     ts(EBANK_ADDRESS);
+  XCH leaves the old EBANK in A where TS leaves EBANK7. CAF NEGONE loads A
+  next.
+
+src/extended_verbs/short_verbs.c: v52_after_checkmm22_yes [same]
+-     cs(A_ADDRESS);
++     com();
+  COM is CS A: one instruction under two names.
+
+src/extended_verbs/time.c: r33_after_enter [killed: tc-sites]
+-         continue_at(UPDATIME);
++         tc_at(0u); continue_at(UPDATIME);
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/time.c: alintime_after_enter [killed: tc-sites]
+-         continue_at(UPDATIME);
++         tc_at(0u); continue_at(UPDATIME);
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/time.c: attck2_plus1 [killed: tc-sites]
+-         continue_at(ATTCK2 + 1u); /* TCF ATTCK2 +1 */
++         tc_at(0u); continue_at(ATTCK2 + 1u); /* TCF ATTCK2 +1 */
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/track.c: lmtocm_after_gentran [killed: tc-sites]
+-     continue_at(TACHEXIT); /* TCF TACHEXIT */
++     tc_at(0u); continue_at(TACHEXIT); /* TCF TACHEXIT */
+  The place, tc_at(0u), is none the check can read, and it is not in the
+  check's list of computed places.
+
+src/extended_verbs/track.c: rrlosdsp_after_delayjob [killed: tc-sites]
+-         tc(RRLOSDSP + 055u, RRLOSDSP);
++         tc(RRLOSDSP + 056u, RRLOSDSP);
+  The TC at the changed place is to 5472 (LM: 40,2075 05472 TC ENDEXT), and
+  the routine called is at 2017.
+
+src/geometry/geometry.c: log_after_poly [killed: tc-sites]
+-     tc_at(LOG + 025u);
++     tc_at(LOG + 024u);
+  The word at the changed place is no TC (CM): 23,2201 40000 COM .
+
+src/imu_calibration/drift_loop.c: loadstdt_plus1 [unreached]
+-         case NEGATIVE: alloop(); return;
++         case NEGATIVE: alloop_plus1(); return;
+  MPAC is the loop's count, 25 counted down to zero (PR #1261): the CCS never
+  finds it negative.
+
+src/imu_calibration/drift_loop.c: alloop1 [same]
+-         ca(A_ADDRESS);
+  CA A loads A with itself; after the CCS, A holds no overflow to lose.
+
+src/imu_calibration/imu_test.c: checkg_look [same]
+-     ad_at(E(ZERONDX));
++     ad_at(E(ZERONDX1));
+  ZERONDX and ZERONDX1 are one word, E5,1655.
+
+src/imu_calibration/optical_verification.c: setnbpos [killed: tc-sites]
+-     tc_at(SETNBPOS);
+  No place names the listing's TC at SETNBPOS +0 any more (CM).
+
+src/imu_calibration/optical_verification.c: tazel1_pair [repeated]
+-     if (at == 0u) not_modelled();
+  Without it the address wraps past all of memory, and the DCA or DXCH that
+  takes it refuses the same pass (PR #1262).
+
+src/imu_calibration/optical_verification.c: latazchk_terminate [killed: tc-sites]
+-     tc_at(LATAZCHK + 015u);
+  No place names the listing's TC at LATAZCHK +15 any more (CM).
+
+src/imu_calibration/optical_verification.c: retarg_after_optstall [unreached]
+-     case NEGATIVE: ca(ADDRESS_OF(QPRET)); break;
++     case NEGATIVE: break;
+  A is a MASK's result under TRM03BIT: never negative (PR #1262).
+
+src/imu_compensation/imu_compensation.c: one_pipa [rewritten]
+-     inhint();
+  The latch only. The RELINT after 1/PIPA1 sets it, and a case test's pass
+  takes no interrupt between.
+
+src/imu_compensation/imu_compensation.c: drftsub2 [same]
+-     case IS_PLUS_ZERO: tc_through(ADDRESS_OF(BUF) + 1u); return; /* NO */
++     case IS_PLUS_ZERO: break; /* NO */
+  On +0 the lines after the switch do as on -0: the CCS of A finds +0 and
+  they end in the same TC BUF +1.
+
+src/imu_compensation/imu_compensation.c: irigcomp [killed: tc-sites]
+-     tc_at(IRIGCOMP + 7u);
++     tc_at(IRIGCOMP + 6u);
+  The word at the changed place is no TC (LM): 06,3336 41461 CS NBDY.
+
+src/imu_compensation/imu_compensation.c: nbd3 [killed: tc-sites]
+-     tc_at(NBD3 + 017u);
++     tc_at(NBD3 + 016u);
+  The word at the changed place is no TC (CM): 06,3605 31461 CA NBDY.
+
+src/imu_mode_switching/gyro_torquing.c: gselect [unreached]
+-     if (!ts(EBANK_ADDRESS)) mask(LOW8);
++     ts(EBANK_ADDRESS);
++     mask(LOW8);
+  The TS finds no overflow: A is LGYRO's sum, bit 13 and three low bits (PR
+  #1309).
+
+src/imu_mode_switching/gyro_torquing.c: gselect [unreached]
+-         mask(fetch_fixed(ADDRESS_FIELD(MINUS_GYROMIN)));
++         mask(MINUS_GYROMIN);
+  The line is in the arm for +0, which the code marks never: RUPTREG1 less
+  one is +0 for no RUPTREG1 (PR #1309).
+
+src/imu_mode_switching/mode_ends.c: cagetstq [rewritten]
+-         incr(Q_ADDRESS);
+  Z only: the INCR moves where TC Q leaves it, by one word. The C goes on by
+  what cagetstq() returns, and the caller's next step writes Z again (PR
+  #1309).
+
+src/imu_performance/imu_performance.c: aligncoa_after_bad_stall [killed: tc-sites]
+-     tc_at(ALIGNCOA + 2u);
++     tc_at(ALIGNCOA + 1u);
+  The word at the changed place is no TC (LM): 37,2312 17716 CADR IMUSTALL.
+
+src/imu_performance/imu_performance.c: finetime_plus1 [owed]
+-     rxor_channel(LOSCALAR);
++     rxor_channel(HISCALAR);
+  Unlike only where the two scaler words differ. Not looked up whether a case
+  feeds them unlike at FINETIME +1.
+
+src/integration_init/intstall.c: oktograb [rewritten]
+-     inhint();
++     relint();
+  The latch only. GOBAC goes back into the interpreter, and INTPRET begins
+  with its own RELINT (PR #1295).
+
+src/integration_init/intstall.c: intwake1_after_jobwake [rewritten]
+-         relint();
++         inhint();
+  The latch only. GOBAC goes back into the interpreter, and INTPRET begins
+  with its own RELINT (PR #1295).
+
+src/integration_init/intstall.c: intwake [unreached]
+-     case NEGATIVE: ca(ADDRESS_OF(QPRET)); break; /* CA QPRET, unindexed */
++     case NEGATIVE: break; /* CA QPRET, unindexed */
+  A is a MASK's result under REINTBIT: never negative (PR #1295).
+
+src/integration_init/intstall.c: intexit_after_exit [killed: tc-sites]
+-     tc_at((word)(INTEXIT + 015u)); /* TC INTWAKE */
++     tc_at((word)(INTEXIT + 014u)); /* TC INTWAKE */
+  No place names the listing's TC at INTEXIT +15 any more (LM and CM).
+
+src/integration_init/intwakeu.c: intwakeu [rewritten]
+-     relint();
++     inhint();
+  The latch only. The TC INTPRET that follows begins with INTPRET's own
+  RELINT.
+
+src/integration_init/intwakeu.c: intwakup_after_phaschng [rewritten]
+-     tc_at((word)(INTWAKUP + 7u)); /* TC INTWAKUQ */
++     tc_at((word)(INTWAKUP + 6u)); /* TC INTWAKUQ */
+  Q only. The TC at INTWAKUQ two lines on sets it again.
+
+src/integration_init/intwakeu.c: intwakup_after_phaschng [refusal]
+-     if ((instruction & 070000u) || instruction < 010u) not_modelled();
++     if ((instruction & 070000u) || instruction < 07u) not_modelled();
+  INTWAKUQ holding the word 00007, which no program leaves there and no case
+  brings.
+
+src/kalcmanu_steering/kalcmanu_steering.c: incrdcdu [owed]
+-     relint();
+  PR #1086: "a RELINT that is followed straight away by INHINT". Not read
+  again against TMANUCHK and what it calls.
+
+src/kalcmanu_steering/kalcmanu_steering.c: manustat_after_exit [rewritten]
+-     xch(ADDRESS_OF(NEXTIME));
++     ts(ADDRESS_OF(NEXTIME));
+  XCH leaves the old NEXTIME in A where TS leaves the new. NEWANGL's CAF TWO
+  loads A next.
+
+src/kalman_filter/kalman_filter.c: jet_time [rewritten]
+-     case IS_PLUS_ZERO: return; /* TCF LOOPRATE, A +0 */
++     case IS_PLUS_ZERO: break; /* TCF LOOPRATE, A +0 */
+  With TJ +0, SMALLTJU leaves A and TJ +0 as the TCF does (PR #1319), and L,
+  which its MP zeroes, LOOPRATE's MP writes next.
+
+src/kalman_filter/kalman_filter.c: jet_time [unreached]
+-     case IS_MINUS_ZERO: break; /* ADS of +0 */
++     case IS_MINUS_ZERO: set_A(ONE); break; /* ADS of +0 */
+  TJ is not zero at the second CCS: +0 has left by the TCF, and -0 by
+  SMALLTJU (PR #1319).
+
+src/kalman_filter/kalman_filter.c: jet_time (2) [unreached]
+-     case IS_MINUS_ZERO: break; /* A +0 */
++     case IS_MINUS_ZERO: set_A(ONE); break; /* A +0 */
+  TJ's magnitude is above 160 there, and 160 taken from it leaves no zero (PR
+  #1319).
+
+src/landing_guidance/indexing.h: mp_indexed [refusal]
+-     if (OPERATION_CODE(instruction) != 7u || ADDRESS_FIELD(instruction) >= 02000u) not_modelled();
+  An index that turns the MP into another instruction or sends it to fixed
+  memory. The program's own indexes do neither, and no case brings one.
+
+src/landing_guidance/pass.c: ttfincr_after_fastchng [killed: tc-sites]
+-     tc_at(TTFINCR + 037u);
+  No place names the listing's TC at TTFINCR +37 any more (LM).
+
+src/landing_guidance/pass.c: ttfincr_after_fastchng [killed: tc-sites]
+-     tc_at(TTFINCR + 037u);
++     tc_at(TTFINCR + 040u);
+  No place names the listing's TC at TTFINCR +37 any more (LM).
+
+src/landing_guidance/subroutines.c: tdispset [rewritten]
+-     tc_through(Q_ADDRESS);
+  TC Q's traces only: 3 in Q and the return in Z. The C returns by its own
+  return, and the routine it returns to writes Q and Z again before the pass
+  ends.
+
+src/landing_guidance/ttf8cl.c: ttf_8cl_good_root [killed: tc-sites]
+-     tc_at(TTF_8CL + 037u);
+  No place names the listing's TC at TTF/8CL +37 any more (LM).
+
+src/landing_guidance/ttf8cl.c: ttf_8cl_good_root [killed: tc-sites]
+-     tc_at(TTF_8CL + 037u);
++     tc_at(TTF_8CL + 040u);
+  The word at the changed place is no TC (LM): 31,3121 41642 CS TTF/8.
+
+src/p11/aterjob.c: rescales [killed: tc-sites]
+-     tc_at(Q_ADDRESS);
++     (void)0;
+  The place, tc_at(Q_ADDRESS), is none the check can read, and it is not in
+  the check's list of computed places.
+
+src/p11/aterjob.c: steersat_after_exit [rewritten]
+-     cs(ADDRESS_FIELD(fetch_fixed(SATOUT + 1u)));
++     cs(ADDRESS_FIELD(fetch_fixed(SATOUT)));
+  A only. ATERSET's CAF, the next instruction, loads A (PR #1267).
+
+src/p11/aterjob.c: attdisp2_after_exit [rewritten]
+-     case NEGATIVE: steersat(); return;
++     case NEGATIVE: tc_at(ATTDISP2 + 034u); steersat(); return;
+  Q only. The word is STEERSAT's own TC INTPRET, which steersat() writes as
+  its first line.
+
+src/p11/p11.c: rep11a_after_phaschng [rewritten]
+-     xch(ADDRESS_OF(TEPHEM) + 2u);
++     ts(ADDRESS_OF(TEPHEM) + 2u);
+  XCH leaves the old TEPHEM +2 in A where TS leaves the new. CAF EBDVCNT
+  loads A next.
+
+src/p20_p25/designate.c: okdessm_after_startdes [killed: tc-sites]
+-     tc_at(OKDESSM + 6u);
++     tc_at(OKDESSM + 5u);
+  The word at the changed place is no TC (LM): 25,2417 12456 BZF NORDSTAL.
+
+src/p20_p25/lrs22.c: lrs22_1_after_downflag [rewritten]
+-     inhint();
+  The latch only. The RELINT later in the routine sets it, and a case test's
+  pass takes no interrupt between.
+
+src/p20_p25/r22_r21.c: r22lem_after_phaschng [killed: tc-sites]
+-     tc_at(R22LEM + 024u);
++     tc_at(R22LEM + 025u);
+  The word at the changed place is no TC (LM): 24,2476 40110 CS RADMODES.
+
+src/p20_p25/r23_r24.c: r23lem1_terminate [killed: tc-sites]
+-     tc_at(R23LEM1 + 6u);
++     tc_at(R23LEM1 + 7u);
+  No place names the listing's TC at R23LEM1 +6 any more (LM).
+
+src/p20_p25/r23_r24.c: outoflim_terminate [killed: tc-sites]
+-     tc_at(OUTOFLIM + 4u);
++     tc_at(OUTOFLIM + 5u);
+  No place names the listing's TC at OUTOFLIM +4 any more (LM).
+
+src/p20_p25/r23_r24.c: r23lem3_after_r61lem [killed: tc-sites]
+-     tc_at(R23LEM3 + 2u);
++     tc_at(R23LEM3 + 3u);
+  No place names the listing's TC at R23LEM3 +2 any more (LM).
+
+src/p20_p25/r23_r24.c: r24lem2_enter [killed: tc-sites]
+-     tc_at(R24LEM2 + 7u);
++     tc_at(R24LEM2 + 6u);
+  No place names the listing's TC at R24LEM2 +7 any more (LM).
+
+src/p20_p25/r23_r24.c: r24lem4 [killed: tc-sites]
+-     tc_at(R24LEM4 + 2u);
++     tc_at(R24LEM4 + 3u);
+  No place names the listing's TC at R24LEM4 +2 any more (LM).
+
+src/p20_p25/r61.c: r61lem1_after_auto_check [killed: tc-sites]
+-         tc_at(R61LEM1 + 026u);
++         tc_at(R61LEM1 + 025u);
+  The word at the changed place is no TC (LM): 23,2164 10000 CCS A.
+
+src/p20_p25/r61.c: readcdud [rewritten]
+-     inhint();
+  The latch only. The RELINT later in the routine sets it, and a case test's
+  pass takes no interrupt between.
+
+src/p20_p25/radar_read.c: lrvel [owed]
+-     if (!ts(ADDRESS_OF(TIMEHOLD))) set_A(FIVE); /* "SPECIFY FIVE SAMPLES" */
++     ts(ADDRESS_OF(TIMEHOLD)); set_A(FIVE); /* "SPECIFY FIVE SAMPLES" */
+  Unlike only where A holds an overflow at the TS. Not checked what keeps one
+  out there.
+
+src/p20_p25/radar_read.c: badrad [killed: tc-sites]
+-     tc_at(BADRAD + 2u);
++     tc_at(BADRAD + 1u);
+  The word at the changed place is no TC (LM): 25,3207 55100 TS SAMPLIM.
+
+src/p20_p25/rr_routines.c: mode2chk_trunnion_out [killed: tc-sites]
+-     tc_return_in(RRLIMOK + 1u, L_ADDRESS);
++     tc_return_in(RRLIMOK, L_ADDRESS);
+  The word at the changed place is no TC (LM): 02,4560 50001 INDEX L.
+
+src/p20_p25/rr_routines.c: rr_axis [refusal]
+-     if (axis > 1u) not_modelled();
+  RRINDEX above 1, which RRTONLY and RRSONLY never set. The case tests shape
+  RRINDEX to 0 or 1 (PR #1114).
+
+src/p20_p25/rr_routines.c: rrout [same]
+-     lxch(Q_ADDRESS); /* "SAVE RETURN" */
++     qxch(L_ADDRESS); /* "SAVE RETURN" */
+  LXCH Q and QXCH L are the same swap of Q and L.
+
+src/p20_p25/rr_routines.c: count_out [rewritten]
+-     tc_return_in(SETRRCTR + 015u, L_ADDRESS); /* "RETURN." */
++     tc_return_in(SETRRCTR + 014u, L_ADDRESS); /* "RETURN." */
+  Q only. The TC through L that the same helper makes next sets Q again.
+
+src/p20_p25_cm/crs61.c: crs61_1_after_exit [killed: tc-sites]
+-     tc_at(CRS61_1 + 013u);
++     tc_at(CRS61_1 + 012u);
+  The word at the changed place is no TC (CM): 34,3355 77776 EXIT .
+
+src/p20_p25_cm/crs61.c: autock [killed: tc-sites]
+-     tc_at(AUTOCK + 6u);
++     tc_at(AUTOCK + 5u);
+  The word at the changed place is no TC (CM): 34,3364 13366 BZF DAPCK.
+
+src/p20_p25_cm/crs61.c: dapck [killed: tc-sites]
+-         tc_at(DAPCK + 3u);
++         tc_at(DAPCK + 2u);
+  The word at the changed place is no TC (CM): 34,3370 10000 CCS A.
+
+src/p20_p25_cm/crs61.c: cduloop_after_exit [killed: tc-sites]
+-         tc_at(CDULOOP + 015u);
++         tc_at(CDULOOP + 014u);
+  The word at the changed place is no TC (CM): 34,3416 11611 CCS DTHETASM.
+
+src/p20_p25_cm/crs61.c: cduloop_done [killed: tc-sites]
+-     tc_at(CDULOOP + 016u);
++     tc_at(CDULOOP + 015u);
+  No place names the listing's TC at CDULOOP +16 any more (CM).
+
+src/p20_p25_cm/crs61.c: stktest_after_exit [killed: tc-sites]
+-         tc_at(STKTEST + 4u);
++         tc_at(STKTEST + 3u);
+  The word at the changed place is no TC (CM): 34,3424 10000 CCS A.
+
+src/p20_p25_cm/crs61.c: stktest_upacty [killed: tc-sites]
+-     tc_at(STKTEST + 010u);
++     tc_at(STKTEST + 7u);
+  No place names the listing's TC at STKTEST +10 any more (CM).
+
+src/p20_p25_cm/crs61.c: crs61_2a_after_exit [rewritten]
+-     inhint();
+  The latch only. The RELINT later in the routine sets it, and a case test's
+  pass takes no interrupt between.
+
+src/p20_p25_cm/crs61.c: crs61_2a_after_exit [killed: tc-sites]
+-     tc_at(CRS61_2A + 044u);
++     tc_at(CRS61_2A + 043u);
+  No place names the listing's TC at CRS61.2A +44 any more (CM).
+
+src/p20_p25_cm/crs61.c: r63_words [same]
+-     STORE(THETAD),
++     STORE(CPHI),
+  CPHI = THETAD in the listing: one word under two names.
+
+src/p20_p25_cm/p22.c: prog22_proceed [killed: tc-sites]
+-     tc_at(PROG22 + 027u);
++     tc_at(PROG22 + 030u);
+  No place names the listing's TC at PROG22 +27 any more (CM).
+
+src/p20_p25_cm/p23_marks.c: p23_60_after_exit [owed]
+-     inhint();
++     relint();
+  The latch only, if the routine ends at TC INTPRET, whose RELINT sets it (PR
+  #1145). Not read again.
+
+src/p20_p25_cm/p23_targets.c: ldplanet_proceed [killed: tc-sites]
+-     tc_at(LDPLANET + 5u);
++     tc_at(LDPLANET + 6u);
+  No place names the listing's TC at LDPLANET +5 any more (CM).
+
+src/p20_p25_cm/p23_targets.c: ldplanet_enter [killed: tc-sites]
+-     tc_at(LDPLANET + 6u);
++     tc_at(LDPLANET + 5u);
+  No place names the listing's TC at LDPLANET +6 any more (CM).
+
+src/p20_p25_cm/r21_r23.c: r23csm_terminate [killed: tc-sites]
+-     tc_at(R23CSM + 012u);
++     tc_at(R23CSM + 013u);
+  No place names the listing's TC at R23CSM +12 any more (CM).
+
+src/p20_p25_cm/r21_r23.c: r23csm1_after_gentran [killed: tc-sites]
+-     tc_at(R23CSM1 + 023u);
++     tc_at(R23CSM1 + 024u);
+  The word at the changed place is no TC (CM): 37,2531 32464 CAF V51NB.
+
+src/p20_p25_cm/r21_r23.c: r21c1_terminate [killed: tc-sites]
+-     tc_at(R21C1 + 3u);
++     tc_at(R21C1 + 4u);
+  The word at the changed place is no TC (CM): 37,2535 12537 TCF R21CSMA.
+
+src/p20_p25_cm/r22.c: rend2_after_gentran [rewritten]
+-     relint();
++     inhint();
+  The latch only. The TC INTPRET that follows begins with INTPRET's own
+  RELINT.
+
+src/p20_p25_cm/r22_subroutines.c: redor22_after_priochng [killed: tc-sites]
+-     tc_at(REDOR22 + 4u);
++     tc_at(REDOR22 + 3u);
+  No place names the listing's TC at REDOR22 +4 any more (CM).
+
+src/p20_p25_cm/r22_subroutines.c: rangerd_bad [killed: tc-sites]
+-     tc_at(RANGERD + 020u);
++     tc_at(RANGERD + 021u);
+  No place names the listing's TC at RANGERD +20 any more (CM).
+
+src/p20_p25_cm/r22_subroutines.c: rangerd1_plus_zero [killed: tc-sites]
+-     tc_at(RANGERD1 + 2u);
++     tc_at(RANGERD1 + 3u);
+  No place names the listing's TC at RANGERD1 +2 any more (CM).
+
+src/p20_p25_cm/r22_subroutines.c: rangerd1_negative [killed: tc-sites]
+-     tc_at(RANGERD1 + 3u);
++     tc_at(RANGERD1 + 4u);
+  No place names the listing's TC at RANGERD1 +3 any more (CM).
+
+src/p20_p25_cm/r22_subroutines.c: rangerd1_minus_zero [killed: tc-sites]
+-     tc_at(RANGERD1 + 4u);
++     tc_at(RANGERD1 + 3u);
+  No place names the listing's TC at RANGERD1 +4 any more (CM).
+
+src/p20_p25_cm/r22_subroutines.c: bypass1 [killed: tc-sites]
+-     tc_at(BYPASS1 + 1u);
++     tc_at(BYPASS1 + 2u);
+  The word at the changed place is no TC (CM): 27,2544 35016 CAF TWO.
+
+src/p20_p25_cm/r22_update.c: rendisp_after_exit [killed: tc-sites]
+-     tc_at(RENDISP + 6u); /* TC +2 */
++     tc_at(RENDISP + 7u); /* TC +2 */
+  The word at the changed place is no TC (CM): 34,3266 35017 CA BIT1.
+
+src/p20_p25_cm/r22_update.c: rendisp3_after_exit [rewritten]
+-     relint();
+  The latch only. The TC INTPRET that follows begins with INTPRET's own
+  RELINT.
+
+src/p20_p25_cm/r57.c: r57_after_exit [killed: tc-sites]
+-         tc_at(R57 + 7u);
++         tc_at(R57 + 010u);
+  The word at the changed place is no TC (CM): 37,2411 35016 CAF BIT2.
+
+src/p20_p25_cm/r57.c: r57a_proceed [killed: tc-sites]
+-     tc_at(R57A + 6u);
++     tc_at(R57A + 7u);
+  No place names the listing's TC at R57A +6 any more (CM).
+
+src/p20_p25_cm/r61csm.c: r61csm_not_ready [killed: tc-sites]
+-     tc_at(R61CSM + 6u);
++     tc_at(R61CSM + 7u);
+  No place names the listing's TC at R61CSM +6 any more (CM).
+
+src/p20_p25_cm/r61csm.c: r61csm_do_r61 [killed: tc-sites]
+-     tc_at(R61CSM + 7u);
++     tc_at(R61CSM + 6u);
+  No place names the listing's TC at R61CSM +7 any more (CM).
+
+src/p20_p25_cm/r61csm.c: r61csm_leave [killed: tc-sites]
+-     tc_at(R61CSM + 010u);
++     tc_at(R61CSM + 011u);
+  No place names the listing's TC at R61CSM +10 any more (CM).
+
+src/p20_p25_cm/r61csm.c: r61csm_after_exit [killed: tc-sites]
+-     tc_at(R61CSM + 016u);
++     tc_at(R61CSM + 017u);
+  No place names the listing's TC at R61CSM +16 any more (CM).
+
+src/p20_p25_cm/r61csm.c: r61csm_after_exit [owed]
+-         r61csm_no_maneuver();
++         r61end();
+  Q only, the return address of TC R61END, if R61END writes Q before the pass
+  ends. Not read again.
+
+src/p20_p25_cm/r61csm.c: r61c1_after_phaschng [killed: tc-sites]
+-     tc_at(R61C1 + 015u);
++     tc_at(R61C1 + 014u);
+  The word at the changed place is no TC (CM): 37,2613 35021 CAF ZERO.
+
+src/p20_p25_cm/v67.c: v06n99ds_proceed [killed: tc-sites]
+-     tc_at(V06N99DS + 4u);
++     tc_at(V06N99DS + 5u);
+  No place names the listing's TC at V06N99DS +4 any more (CM).
+
+src/p20_p25_cm/v67.c: v06n99ds_loaded [killed: tc-sites]
+-     tc_at(V06N99DS + 5u);
++     tc_at(V06N99DS + 4u);
+  No place names the listing's TC at V06N99DS +5 any more (CM).
+
+src/p30_cm/p30.c: disp45_proceed [killed: tc-sites]
+-     tc_at(DISP45 + 4u);
++     tc_at(DISP45 + 5u);
+  No place names the listing's TC at DISP45 +4 any more (CM).
+
+src/p30_cm/p30.c: p30_p31 [refusal]
+-     if (ts(ADDRESS_OF(P30_31RT))) not_modelled();
++     ts(ADDRESS_OF(P30_31RT));
+  An overflow in Q at the TS (XCH Q; TS P30/31RT). Q comes there from a TC,
+  which leaves none (PR #1153).
+
+src/p30_cm/p30.c: p30_p31_proceed [killed: tc-sites]
+-     tc_at(P30_P31 + 012u);
++     tc_at(P30_P31 + 013u);
+  The word at the changed place is no TC (CM): 35,3370 13361 TCF P30/P31 +4.
+
+src/p30_cm/p30.c: cntnup30 [unreached]
+-     if (!ts(ADDRESS_OF(P30_RET))) set_A(V06N81);
++     ts(ADDRESS_OF(P30_RET));
++     set_A(V06N81);
+  Unlike only where Q holds an overflow at the TS. Q comes there from a TC,
+  which leaves none (PR #1153).
+
+src/p30_cm/p30.c: flashmga_after_exit [rewritten]
+-     tc_at(FLASHMGA + 3u);
++     tc_at(FLASHMGA + 4u);
+  Q only. The TC through P30/31RT on the next line sets it again.
+
+src/p32_p33_cm/programs.c: p32_after_avflaga [killed: tc-sites]
+-     tc_at(P32 + 1u);
++     tc_at(P32 + 2u);
+  No place names the listing's TC at P32 +1 any more (CM).
+
+src/p32_p33_cm/programs.c: p32strt_after_exit [killed: tc-sites]
+-     tc_at(P32STRT + 5u);
++     tc_at(P32STRT + 4u);
+  The word at the changed place is no TC (CM): 04,3312 77776 EXIT .
+
+src/p32_p33_cm/programs.c: almxit_proceed [killed: tc-sites]
+-     tc_at(ALMXIT + 012u);
++     tc_at(ALMXIT + 011u);
+  No place names the listing's TC at ALMXIT +12 any more (CM).
+
+src/p32_p33_cm/programs.c: vn0655_recycle [killed: tc-sites]
+-     tc_at(P32_P72A + 015u);
++     tc_at(P32_P72A + 014u);
+  No place names the listing's TC at P32/P72A +15 any more (CM).
+
+src/p32_p33_cm/programs.c: p33_after_avflaga [killed: tc-sites]
+-     tc_at(P33 + 1u);
++     tc_at(P33);
+  No place names the listing's TC at P33 +1 any more (CM).
+
+src/p32_p33_cm/programs.c: p33_p73_recycle [killed: tc-sites]
+-     tc_at(P33_P73B + 042u);
++     tc_at(P33_P73B + 041u);
+  No place names the listing's TC at P33/P73B +42 any more (CM).
+
+src/p32_p35/programs.c: p32_after_avflaga [killed: tc-sites]
+-     tc_at(P32 + 1u);
++     tc_at(P32 + 2u);
+  No place names the listing's TC at P32 +1 any more (LM).
+
+src/p32_p35/programs.c: after_tcsi_found [killed: tc-sites]
+-     tc_at(VN0655 - 1u);
++     tc_at(VN0655 - 2u);
+  The word at the changed place is no TC (LM): 35,2111 77776 EXIT .
+
+src/p32_p35/programs.c: vn0655_recycle [killed: tc-sites]
+-     tc_at(VN0655 + 6u);
++     tc_at(VN0655 + 7u);
+  The word at the changed place is no TC (LM): 35,2122 33723 CAF V06N37.
+
+src/p32_p35/programs.c: p33_after_avflaga [killed: tc-sites]
+-     tc_at(P33 + 1u);
++     tc_at(P33);
+  No place names the listing's TC at P33 +1 any more (LM).
+
+src/p32_p35/programs.c: p33_p73_recycle [killed: tc-sites]
+-     tc_at(P33_P73B + 042u);
++     tc_at(P33_P73B + 041u);
+  No place names the listing's TC at P33/P73B +42 any more (LM).
+
+src/p37_p70/p37_displays.c: tcf_past_return_in [same]
+-     word to = indexed_instruction((word)(010000u + words), fetch(address));
++     word to = (word)(010000u + words + fetch(address));
+  The two sums are unlike only where the word read is negative or the sum
+  overflows, and neither sum is then a TCF into fixed memory: both refuse (PR
+  #1234).
+
+src/p37_p70/p37_displays.c: rtevn_blank_r3 [killed: tc-sites]
+-     tc_at(RTEVN + 7u);
++     tc_at(RTEVN + 6u);
+  The word at the changed place is no TC (CM): 36,3010 35015 CAF FOUR.
+
+src/p40_p47/engine_off.c: implburn [killed: tc-sites]
+-     tc_at(IMPLBURN + 1u);
++     tc_at(IMPLBURN + 2u);
+  No place names the listing's TC at IMPLBURN +1 any more (LM).
+
+src/p40_p47/programs.c: p40sxt4_after_r60lem [rewritten]
+-     tc_at(P40SXT4 + 7u);
+  Q only. The TC through P40/RET on the next line sets it again.
+
+src/p40_p47/programs.c: p40sxt4_after_r60lem [killed: tc-sites]
+-     tc_at(P40SXT4 + 7u);
++     tc_at(P40SXT4 + 8u);
+  The word at the changed place is no TC (LM): 36,3223 30005 CA Z.
+
+src/p40_p47/programs.c: postburn_terminate [killed: tc-sites]
+-     tc_at(POSTBURN + 010u);
+  No place names the listing's TC at POSTBURN +10 any more (LM).
+
+src/p40_p47/programs.c: postburn_terminate [killed: tc-sites]
+-     tc_at(POSTBURN + 010u);
++     tc_at(POSTBURN + 011u);
+  The word at the changed place is no TC (LM): 36,3234 13241 TCF TIGNOW.
+
+src/p40_p47/programs.c: postburn_enter [killed: tc-sites]
+-     tc_at(POSTBURN + 012u);
+  No place names the listing's TC at POSTBURN +12 any more (LM).
+
+src/p40_p47/programs.c: postburn_enter [killed: tc-sites]
+-     tc_at(POSTBURN + 012u);
++     tc_at(POSTBURN + 013u);
+  No place names the listing's TC at POSTBURN +12 any more (LM).
+
+src/p40_p47/programs.c: tignow_terminate [killed: tc-sites]
+-     tc_at(TIGNOW + 011u);
+  No place names the listing's TC at TIGNOW +11 any more (LM).
+
+src/p40_p47/programs.c: tignow_terminate [killed: tc-sites]
+-     tc_at(TIGNOW + 011u);
++     tc_at(TIGNOW + 012u);
+  The word at the changed place is no TC (LM): 36,3253 13256 TCF TERM40.
+
+src/p40_p47/programs.c: tignow_enter [killed: tc-sites]
+-     tc_at(TIGNOW + 013u);
+  No place names the listing's TC at TIGNOW +13 any more (LM).
+
+src/p40_p47/programs.c: tignow_enter [killed: tc-sites]
+-     tc_at(TIGNOW + 013u);
++     tc_at(TIGNOW + 014u);
+  The word at the changed place is no TC (LM): 36,3255 13236 TCF P40PHS1.
+
+src/p40_p47/programs.c: p47body_after_exit [killed: tc-sites]
+-     tc_at(P47BODY + 6u);
+  No place names the listing's TC at P47BODY +6 any more (LM).
+
+src/p40_p47/programs.c: p47body_after_exit [killed: tc-sites]
+-     tc_at(P47BODY + 6u);
++     tc_at(P47BODY + 7u);
+  The word at the changed place is no TC (LM): 36,3522 31517 CA TGO +1.
+
+src/p40_p47/steering.c: tc_q [refusal]
+-     if ((Q & 070000u) || Q < 010u) not_modelled();
+  A Q that is no return address at a TC Q (bits 13 to 15 set, or below 010).
+  A TC leaves none such, and no case brings one.
+
+src/p40_p47/steering.c: tc_q [rewritten]
+-     Q = 3u;
+  Q only: TC Q leaves 3 there. The routine it returns to writes Q again with
+  its next TC before the pass ends.
+
+src/p40_p47/steering.c: nsteer_after_tpagree [killed: tc-sites]
+-     tc_at(NSTEER + 034u);
++     tc_at(NSTEER + 035u);
+  No place names the listing's TC at NSTEER +34 any more (LM).
+
+src/p40_p47_cm/clocktask.c: e6setter [rewritten]
+-     tc_q();
+  TC Q's traces only: 3 in Q and the return in Z. The C returns by its own
+  return, and the routine it returns to writes Q and Z again before the pass
+  ends.
+
+src/p40_p47_cm/clocktask.c: v97ttask_after_phaschng [killed: tc-sites]
+-     tc_at(V97TTASK + 010u);
++     tc_at(V97TTASK + 011u);
+  No place names the listing's TC at V97TTASK +10 any more (CM).
+
+src/p40_p47_cm/clocktask.c: v97etask [killed: tc-sites]
+-     tc_at(V97ETASK + 4u); /* TCR E6SETTER */
++     tc_at(V97ETASK + 5u); /* TCR E6SETTER */
+  The word at the changed place is no TC (CM): 24,3530 32434 CAF 3MDOT.
+
+src/p40_p47_cm/dap_data.c: s41_2 [rewritten]
+-     inhint();
+  The latch only. The routine's last RELINT sets it (PR #1187), and a case
+  test's pass takes no interrupt between.
+
+src/p40_p47_cm/dap_data.c: s41_2 [rewritten]
+-     relint();
+  The latch only. The routine's last RELINT sets it (PR #1187), and a case
+  test's pass takes no interrupt between.
+
+src/p40_p47_cm/dap_data.c: s41_2 (2) [rewritten]
+-     inhint();
+  The latch only. The routine's last RELINT sets it (PR #1187), and a case
+  test's pass takes no interrupt between.
+
+src/p40_p47_cm/ignition.c: steerull [rewritten]
+-     ulageoff();
+  DOSTRULL calls ULAGEOFF again as soon as STEERULL returns ("ONLY, OR
+  AGAIN"), and ULAGEOFF once leaves what ULAGEOFF twice does.
+
+src/p40_p47_cm/ignition.c: dostrull [killed: tc-sites]
+-         tc_at(DOSTRULL + 3u);
++         tc_at(DOSTRULL + 4u);
+  No place names the listing's TC at DOSTRULL +3 any more (CM).
+
+src/p40_p47_cm/ignition.c: dostrull_after_steerull [killed: tc-sites]
+-     tc_at(DOSTRULL + 4u);
++     tc_at(DOSTRULL + 5u);
+  No place names the listing's TC at DOSTRULL +4 any more (CM).
+
+src/p40_p47_cm/ignition.c: implburn [killed: tc-sites]
+-     tcr_e7setter(IMPLBURN + 3u);
++     tcr_e7setter(IMPLBURN + 4u);
+  No place names the listing's TC at IMPLBURN +3 any more (CM).
+
+src/p40_p47_cm/ignition.c: implcont [killed: tc-sites]
+-     tcr_e6setter(IMPLCONT + 3u);
++     tcr_e6setter(IMPLCONT + 4u);
+  The word at the changed place is no TC (CM): 24,2763 35021 CAF ZERO.
+
+src/p40_p47_cm/ignition.c: dotvcrcs_after_massprop [killed: tc-sites]
+-     tc_at(DOTVCRCS + 5u);
++     tc_at(DOTVCRCS + 6u);
+  No place names the listing's TC at DOTVCRCS +5 any more (CM).
+
+src/p40_p47_cm/programs.c: - [killed: tc-sites]
+- #define CALCN85_EXIT (CALCN85 + 5u)
++ #define CALCN85_EXIT (CALCN85 + 6u)
+  No place names the listing's TC at CALCN85 +6 any more (CM).
+
+src/p40_p47_cm/programs.c: tcr_setmindb [owed]
+-     inhint();
+  The latch only, if a later INHINT or RELINT sets it on every way to the
+  pass's end. Not read again.
+
+src/p40_p47_cm/programs.c: tcr_setmindb [rewritten]
+-     tc_q();
+  TC Q's traces only: 3 in Q and the return in Z. The C returns by its own
+  return, and the routine it returns to writes Q and Z again before the pass
+  ends.
+
+src/p40_p47_cm/programs.c: p40sxty_p41 [killed: tc-sites]
+-     tc_at(P40SXTY + 011u);
+  No place names the listing's TC at P40SXTY +11 any more (CM).
+
+src/p40_p47_cm/programs.c: p40sxty_p41 [killed: tc-sites]
+-     tc_at(P40SXTY + 011u);
++     tc_at(P40SXTY + 012u);
+  The word at the changed place is no TC (CM): 24,2135 32425 CAF V06N40.
+
+src/p40_p47_cm/programs.c: p40sxty_after_upflag [killed: tc-sites]
+-     if (p41_p40(P40SXTY + 010u))
++     if (p41_p40(P40SXTY + 011u))
+  No place names the listing's TC at P40SXTY +10 any more (CM).
+
+src/p40_p47_cm/programs.c: p40s_rs_after_waitlist [rewritten]
+-     relint();
+  The latch only. P40S/SV, called next, ends in TC INTPRET, which begins with
+  INTPRET's own RELINT.
+
+src/p40_p47_cm/programs.c: p40s_sv_after_midtoav1_fail [killed: tc-sites]
+-     tc_at(P40S_SV + 011u);
+  No place names the listing's TC at P40S/SV +11 any more (CM).
+
+src/p40_p47_cm/programs.c: p40s_sv_after_midtoav1_fail [killed: tc-sites]
+-     tc_at(P40S_SV + 011u);
++     tc_at(P40S_SV + 012u);
+  No place names the listing's TC at P40S/SV +11 any more (CM).
+
+src/p40_p47_cm/programs.c: calcn85_after_exit [killed: tc-sites]
+-     tc_at(CALCN85_EXIT + 1u);
+  No place names the listing's TC at CALCN85 +6 any more (CM).
+
+src/p40_p47_cm/programs.c: calcn85_after_exit [killed: tc-sites]
+-     tc_at(CALCN85_EXIT + 1u);
++     tc_at(CALCN85_EXIT + 2u);
+  No place names the listing's TC at CALCN85 +6 any more (CM).
+
+src/p40_p47_cm/programs.c: calcn83_after_gentran [killed: tc-sites]
+-     tc_at(CALCN83_EXIT + 7u);
+  No place names the listing's TC at CALCN83 +22 any more (CM).
+
+src/p40_p47_cm/programs.c: calcn83_after_gentran [killed: tc-sites]
+-     tc_at(CALCN83_EXIT + 7u);
++     tc_at(CALCN83_EXIT + 8u);
+  No place names the listing's TC at CALCN83 +22 any more (CM).
+
+src/p40_p47_cm/steering.c: steering_after_exit [killed: tc-sites]
+-     tc_at(STEERING_EXIT + 014u); /* TCR E7SETTER */
++     tc_at(STEERING_EXIT + 015u); /* TCR E7SETTER */
+  No place names the listing's TC at SERVXT +7 any more (CM).
+
+src/p40_p47_cm/timeburn.c: s40_132_after_tpagree [killed: tc-sites]
+-     tc_at(S40_132 + 6u);
+  No place names the listing's TC at S40.132 +6 any more (CM).
+
+src/p40_p47_cm/timeburn.c: s40_132_after_tpagree [killed: tc-sites]
+-     tc_at(S40_132 + 6u);
++     tc_at(S40_132 + 7u);
+  The word at the changed place is no TC (CM): 16,2520 77414 CLEAR EXIT.
+
+src/p_axis/p_axis.c: paxis_after_chekbits [killed: tc-sites]
+-     one_stotwos(PAXIS + 027u);
++     one_stotwos(PAXIS + 026u);
+  The word at the changed place is no TC (LM): 16,2241 21641 MSU DELCDUY.
+
+src/p_axis/p_axis.c: p_trap [killed: tc-sites]
+-     oversub(LMONLY + 021u);
++     oversub(LMONLY + 020u);
+  The word at the changed place is no TC (LM): 16,2502 27421 ADS OMEGAP.
+
+src/p_axis/p_axis.c: q_rate [killed: tc-sites]
+-     oversub(Q_RATE + 4u);
++     oversub(Q_RATE + 5u);
+  The word at the changed place is no TC (LM): 16,2551 55422 TS OMEGAQ.
+
+src/p_axis/p_axis.c: chkvisfz [killed: tc-sites]
+-         if (!selectp(TRYUORV + 1u, true)) return;
++         if (!selectp(TRYUORV + 2u, true)) return;
+  The word at the changed place is no TC (LM): 16,2755 46242 CS SIX.
+
+src/p_axis/p_axis.c: justout_minus1 [killed: tc-sites]
+-     zeroenbl(JUSTOUT + 024u);
++     zeroenbl(JUSTOUT + 025u);
+  The word at the changed place is no TC (LM): 16,3204 13442 TCF JETSOFF.
+
+src/p_axis/p_axis.c: ratedone_after_zatteror [rewritten]
+-     relint();
+  The latch only. PURGENCY's INHINT sets it on every way on (PR #1316), and a
+  case test's pass takes no interrupt between.
+
+src/p_axis/p_axis.c: pegi [killed: tc-sites]
+-     case NEGATIVE: tc_at(PEGI + 011u); break;
++     case NEGATIVE: break;
+  No place names the listing's TC at PEGI +11 any more (LM).
+
+src/p_axis/p_axis.c: raterror [killed: tc-sites]
+-             pegi(RATERROR + 037u);
++             pegi(RATERROR + 036u);
+  The word at the changed place is no TC (LM): 16,3265 55445 TS TCP.
+
+src/p_axis/p_axis.c: pjetslec_after_jtlst [killed: tc-sites]
+-     altsyst(PJETSLEC + 051u);
++     altsyst(PJETSLEC + 050u);
+  The word at the changed place is no TC (LM): 16,3426 55273 TS RCSFLAGS.
+
+src/p_axis/p_axis.c: purgency [killed: tc-sites]
+-     tc_at(PURGENCY);
+  No place names the listing's TC at PURGENCY +0 any more (LM).
+
+src/p_axis/p_axis.c: purgency_after_spsrcs [killed: tc-sites]
+-         altsyst(DKALT);
++         altsyst(DKALT + 1u);
+  No place names the listing's TC at DKALT +0 any more (LM).
+
+src/p_axis/p_axis.c: qraxis [killed: tc-sites]
+-     oversub(QRAXIS + 6u);
++     oversub(QRAXIS + 7u);
+  The word at the changed place is no TC (LM): 16,3633 55436 TS EDOTQ.
+
+src/pinball/display_verbs.c: comptst1_returns [same]
+-     tc_at(COMPTST1);
+  COMPTEST and COMPTST1, the two that call it, do the same tc_at(COMPTST1) on
+  the line before the call: Q holds it already.
+
+src/pinball/display_verbs.c: comptst1_returns [killed: tc-sites]
+-     tc_at(COMPTST1 + 1u);
++     tc_at(COMPTST1 + 2u);
+  The word at the changed place is no TC (CM): 41,2430 76214 MASK THREE.
+
+src/pinball/display_verbs.c: comptest_returns [rewritten]
+-     tc_at(COMPTST1);
+  comptst1_returns() begins with the same tc_at(COMPTST1).
+
+src/pinball/display_verbs.c: comptst1 [rewritten]
+-     tc_at(COMPTST1);
+  comptst1_returns() begins with the same tc_at(COMPTST1).
+
+src/pinball/display_verbs.c: dectest_returns [killed: tc-sites]
+-     tc_at(DECTEST + 2u);
++     tc_at(DECTEST + 3u);
+  The word at the changed place is no TC (CM): 41,2446 75002 MASK BIT14.
+
+src/pinball/display_verbs.c: dcomptst_returns [killed: tc-sites]
+-     tc_at(DCOMPTST + 3u);
+  No place names the listing's TC at DCOMPTST +3 any more (LM and CM).
+
+src/pinball/display_verbs.c: dcomptst_returns [killed: tc-sites]
+-     tc_at(DCOMPTST + 3u);
++     tc_at(DCOMPTST + 4u);
+  No place names the listing's TC at DCOMPTST +3 any more (LM and CM).
+
+src/pinball/display_verbs.c: dctstcyc_returns [killed: tc-sites]
+-     tc_at(DCTSTCYC + 1u);
++     tc_at(DCTSTCYC + 2u);
+  The word at the changed place is no TC (CM): 41,2454 75002 MASK BIT14.
+
+src/pinball/display_verbs.c: nountest [killed: tc-sites]
+-     tc_at(NOUNTEST + 1u);
++     tc_at(NOUNTEST + 2u);
+  The word at the changed place is no TC (CM): 41,2462 10000 CCS A.
+
+src/pinball/display_verbs.c: tstfordp_returns [rewritten]
+-         tc_return(L_ADDRESS); /* "MIXED CASE ALREADY HANDLED IN MIXNOUN" */
+  The TC's traces only: its word's address +1 in Q and the return in Z. The C
+  returns by its own return, and the routine it returns to writes Q and Z
+  again before the pass ends.
+
+src/pinball/display_verbs.c: tstfordp_returns [killed: tc-sites]
+-     tc_at(TSTFORDP + 7u); /* TC +2: "NORMAL" */
+  No place names the listing's TC at TSTFORDP +7 any more (LM and CM).
+
+src/pinball/display_verbs.c: tstfordp_returns [killed: tc-sites]
+-     tc_at(TSTFORDP + 7u); /* TC +2: "NORMAL" */
++     tc_at(TSTFORDP + 8u); /* TC +2: "NORMAL" */
+  No place names the listing's TC at TSTFORDP +7 any more (LM and CM).
+
+src/pinball/display_verbs.c: tstfordp_returns [killed: tc-sites]
+-     tc_at(TSTFORDP + 011u);
+  No place names the listing's TC at TSTFORDP +11 any more (LM and CM).
+
+src/pinball/display_verbs.c: tstfordp_returns [killed: tc-sites]
+-     tc_at(TSTFORDP + 011u);
++     tc_at(TSTFORDP + 012u);
+  No place names the listing's TC at TSTFORDP +11 any more (LM and CM).
+
+src/pinball/display_verbs.c: tstfordp_returns [killed: tc-sites]
+-     tc_at(TSTFORDP + 012u);
+  No place names the listing's TC at TSTFORDP +12 any more (LM and CM).
+
+src/pinball/display_verbs.c: tstfordp_returns [killed: tc-sites]
+-     tc_at(TSTFORDP + 012u);
++     tc_at(TSTFORDP + 013u);
+  No place names the listing's TC at TSTFORDP +12 any more (LM and CM).
+
+src/pinball/display_verbs.c: tstfordp_returns [rewritten]
+-     tc_return(L_ADDRESS);
+  The TC's traces only: its word's address +1 in Q and the return in Z. The C
+  returns by its own return, and the routine it returns to writes Q and Z
+  again before the pass ends.
+
+src/pinball/display_verbs.c: dspcom1 [killed: tc-sites]
+-     tc_at(DSPCOM1 + 1u);
+  No place names the listing's TC at DSPCOM1 +1 any more (LM and CM).
+
+src/pinball/display_verbs.c: dspcom1 [killed: tc-sites]
+-     tc_at(DSPCOM1 + 1u);
++     tc_at(DSPCOM1 + 2u);
+  The word at the changed place is no TC (CM): 41,2373 45017 CS ONE.
+
+src/pinball/display_verbs.c: dspb [killed: tc-sites]
+-     tc_at(DSPB + 4u);
+  No place names the listing's TC at DSPB +4 any more (LM and CM).
+
+src/pinball/display_verbs.c: dspb [killed: tc-sites]
+-     tc_at(DSPB + 4u);
++     tc_at(DSPB + 5u);
+  The word at the changed place is no TC (CM): 41,2400 45016 CS TWO.
+
+src/pinball/display_verbs.c: dspc [killed: tc-sites]
+-     tc_at(DSPC + 4u);
+  No place names the listing's TC at DSPC +4 any more (LM and CM).
+
+src/pinball/display_verbs.c: dspc [killed: tc-sites]
+-     tc_at(DSPC + 4u);
++     tc_at(DSPC + 5u);
+  The word at the changed place is no TC (CM): 41,2405 45016 CS TWO.
+
+src/pinball/display_verbs.c: dspcom3_after_dspoctwd [killed: tc-sites]
+-     tc_at(DSPCOM3 + 010u);
+  No place names the listing's TC at DSPCOM3 +10 any more (LM and CM).
+
+src/pinball/display_verbs.c: dspcom3_after_dspoctwd [killed: tc-sites]
+-     tc_at(DSPCOM3 + 010u);
++     tc_at(DSPCOM3 + 011u);
+  The word at the changed place is no TC (CM): 41,2424 54123 TS SFTEMP1.
+
+src/pinball/display_verbs.c: chandsp [owed]
+-     mask(LOW9);
+  Unlike where NOUNCADR has a bit above the ninth. No reason found yet why no
+  case sees it.
+
+src/pinball/display_verbs.c: decdsp [killed: tc-sites]
+-     tc_at(DECDSP + 1u);
++     tc_at(DECDSP + 2u);
+  The word at the changed place is no TC (CM): 41,2525 76214 MASK THREE.
+
+src/pinball/display_verbs.c: dspdcput [killed: tc-sites]
+-     tc_at(DSPDCPUT + 011u);
++     tc_at(DSPDCPUT + 012u);
+  The word at the changed place is no TC (CM): 41,2551 54123 TS SFTEMP1.
+
+src/pinball/display_verbs.c: dspdcput [killed: tc-sites]
+-         tc_at(DSPDCPUT + 022u);
+  No place names the listing's TC at DSPDCPUT +22 any more (LM and CM).
+
+src/pinball/display_verbs.c: dspdcput [killed: tc-sites]
+-         tc_at(DSPDCPUT + 022u);
++         tc_at(DSPDCPUT + 023u);
+  No place names the listing's TC at DSPDCPUT +22 any more (LM and CM).
+
+src/pinball/display_verbs.c: dspdcput [killed: tc-sites]
+-         tc_at(DSPDCPUT + 020u);
+  No place names the listing's TC at DSPDCPUT +20 any more (LM and CM).
+
+src/pinball/display_verbs.c: dspdcput [killed: tc-sites]
+-         tc_at(DSPDCPUT + 020u);
++         tc_at(DSPDCPUT + 021u);
+  No place names the listing's TC at DSPDCPUT +20 any more (LM and CM).
+
+src/pinball/display_verbs.c: dspdcput [killed: tc-sites]
+-         tc_at(DSPSFNOR + 1u);
+  No place names the listing's TC at DSPSFNOR +1 any more (LM and CM).
+
+src/pinball/display_verbs.c: dspdcput [killed: tc-sites]
+-         tc_at(DSPSFNOR + 1u);
++         tc_at(DSPSFNOR + 2u);
+  No place names the listing's TC at DSPSFNOR +1 any more (LM and CM).
+
+src/pinball/dspin.c: dspin1_returns [killed: tc-sites]
+-         tc_at(DSPIN1 + 3u); /* TC +2: "IF +" */
+  No place names the listing's TC at DSPIN1 +3 any more (LM and CM).
+
+src/pinball/dspin.c: dspin1_returns [killed: tc-sites]
+-         tc_at(DSPIN1 + 3u); /* TC +2: "IF +" */
++         tc_at(DSPIN1 + 4u); /* TC +2: "IF +" */
+  No place names the listing's TC at DSPIN1 +3 any more (LM and CM).
+
+src/pinball/dspin.c: dspin_returns [killed: tc-sites]
+-         tc_at(DSPIN + 012u); /* TC +2: "LEFT IF COUNT IS ODD" */
+  No place names the listing's TC at DSPIN +12 any more (LM and CM).
+
+src/pinball/dspin.c: dspin_returns [killed: tc-sites]
+-         tc_at(DSPIN + 012u); /* TC +2: "LEFT IF COUNT IS ODD" */
++         tc_at(DSPIN + 013u); /* TC +2: "LEFT IF COUNT IS ODD" */
+  No place names the listing's TC at DSPIN +12 any more (LM and CM).
+
+src/pinball/dspin.c: dspin_returns [killed: tc-sites]
+-         tc_at(DSPIN + 015u);
+  No place names the listing's TC at DSPIN +15 any more (LM and CM).
+
+src/pinball/dspin.c: dspin_returns [killed: tc-sites]
+-         tc_at(DSPIN + 015u);
++         tc_at(DSPIN + 016u);
+  The word at the changed place is no TC (CM): 40,3245 54124 TS CODE.
+
+src/pinball/dspin.c: dspin_returns [killed: tc-sites]
+-         tc_at(DSPIN + 013u); /* TC DSPIN1 -1: "RIGHT IF COUNT IS EVEN" */
++         tc_at(DSPIN + 014u); /* TC DSPIN1 -1: "RIGHT IF COUNT IS EVEN" */
+  The word at the changed place is no TC (CM): 40,3243 56124 XCH CODE.
+
+src/pinball/dspin.c: eleven_dspin_returns [killed: tc-sites]
+-     tc_at(ELEVEN_DSPIN + 5u);
+  No place names the listing's TC at 11DSPIN +5 any more (LM and CM).
+
+src/pinball/dspin.c: eleven_dspin_returns [killed: tc-sites]
+-     tc_at(ELEVEN_DSPIN + 5u);
++     tc_at(ELEVEN_DSPIN + 6u);
+  No place names the listing's TC at 11DSPIN +5 any more (LM and CM).
+
+src/pinball/enter.c: entpashi [killed: tc-sites]
+-         tc_at(ENTPASHI + 010u); /* TC ACCEPTWD: "OCTAL. ANY NUMBER OF CHAR OK." */
+  No place names the listing's TC at ENTPASHI +10 any more (LM and CM).
+
+src/pinball/enter.c: entpashi [killed: tc-sites]
+-         tc_at(ENTPASHI + 010u); /* TC ACCEPTWD: "OCTAL. ANY NUMBER OF CHAR OK." */
++         tc_at(ENTPASHI + 011u); /* TC ACCEPTWD: "OCTAL. ANY NUMBER OF CHAR OK." */
+  The word at the changed place is no TC (CM): 41,2023 10777 CCS DSPCOUNT.
+
+src/pinball/enter.c: entpashi [killed: tc-sites]
+-     tc_at(ENTPASHI + 7u); /* TC +2 */
+  No place names the listing's TC at ENTPASHI +7 any more (LM and CM).
+
+src/pinball/enter.c: entpashi [killed: tc-sites]
+-     tc_at(ENTPASHI + 7u); /* TC +2 */
++     tc_at(ENTPASHI + 8u); /* TC +2 */
+  No place names the listing's TC at ENTPASHI +7 any more (LM and CM).
+
+src/pinball/enter.c: acceptwd [killed: tc-sites]
+-     tc_at(ACCEPTWD + 2u);
+  No place names the listing's TC at ACCEPTWD +2 any more (LM and CM).
+
+src/pinball/enter.c: acceptwd [killed: tc-sites]
+-     tc_at(ACCEPTWD + 2u);
++     tc_at(ACCEPTWD + 3u);
+  No place names the listing's TC at ACCEPTWD +2 any more (LM and CM).
+
+src/pinball/enter.c: testnn [owed]
+-     read_noun_tables(TESTNN + 2u);
++     read_noun_tables(TESTNN + 3u);
+  The place goes into A and L by the DTCB, the return LODNNTAB keeps. Not
+  followed to where those words are written again.
+
+src/pinball/enter.c: testnn [rewritten]
+-         tc_at(TESTNN + 4u);
+  Q only. The TC on the next line sets it again.
+
+src/pinball/enter.c: testnn [rewritten]
+-         tc_at(TESTNN + 4u);
++         tc_at(TESTNN + 5u);
+  Q only. The TC on the next line sets it again.
+
+src/pinball/enter.c: testnn [rewritten]
+-     tc_at(TESTNN + 4u);
+  Q only. The TC on the next line sets it again.
+
+src/pinball/enter.c: testnn [rewritten]
+-     tc_at(TESTNN + 4u);
++     tc_at(TESTNN + 5u);
+  Q only. The TC on the next line sets it again.
+
+src/pinball/enter.c: testnn [killed: tc-sites]
+-     tc_at(TESTNN + 5u); /* TC +2: "NORMAL" */
+  No place names the listing's TC at TESTNN +5 any more (LM and CM).
+
+src/pinball/enter.c: testnn [killed: tc-sites]
+-     tc_at(TESTNN + 5u); /* TC +2: "NORMAL" */
++     tc_at(TESTNN + 6u); /* TC +2: "NORMAL" */
+  No place names the listing's TC at TESTNN +5 any more (LM and CM).
+
+src/pinball/enter.c: testnn [killed: tc-sites]
+-     tc_at(TESTNN + 014u);
+  No place names the listing's TC at TESTNN +14 any more (LM and CM).
+
+src/pinball/enter.c: testnn [killed: tc-sites]
+-     tc_at(TESTNN + 014u);
++     tc_at(TESTNN + 015u);
+  No place names the listing's TC at TESTNN +14 any more (LM and CM).
+
+src/pinball/enter.c: reqadd [killed: tc-sites]
+-     tc(REQADD + 6u, INTMCTBS);
++     tc(REQADD + 7u, INTMCTBS);
+  The TC at the changed place is to 2307 (CM: 41,2073 02307 TC REQDATZ), and
+  the routine called is at 2116.
+
+src/pinball/enter.c: reqadd_after_reqdatz [killed: tc-sites]
+-     tc_at(REQADD + 020u);
++     tc_at(REQADD + 021u);
+  The word at the changed place is no TC (CM): 41,2105 57005 XCH ZREG.
+
+src/pinball/enter.c: useadd_on [killed: tc-sites]
+-     tc_at(USEADD + 1u);
++     tc_at(USEADD + 2u);
+  No place names the listing's TC at USEADD +1 any more (LM and CM).
+
+src/pinball/enter.c: useadd_on [owed]
+-     read_noun_tables(USEADD + 4u);
++     read_noun_tables(USEADD + 5u);
+  The place goes into A and L by the DTCB, the return LODNNTAB keeps. Not
+  followed to where those words are written again.
+
+src/pinball/enter.c: intmctbs [killed: tc-sites]
+-     tc_at(INTMCTBS + 1u);
++     tc_at(INTMCTBS + 2u);
+  The word at the changed place is no TC (CM): 41,2120 45022 CS FIVE.
+
+src/pinball/enter.c: dptest [rewritten]
+-         tc_return(Q_ADDRESS); /* TC Q: "NO DP" */
+  TC Q's traces only: 3 in Q and the return in Z. The C returns by its own
+  return, and the routine it returns to writes Q and Z again before the pass
+  ends.
+
+src/pinball/enter.c: dptest [killed: tc-sites]
+-     tc(DPTEST1 + 1u, back); /* TCF DPTEST1; INDEX Q; TC 1 */
++     tc(DPTEST1 + 2u, back); /* TCF DPTEST1; INDEX Q; TC 1 */
+  The word at the changed place is no TC (CM): 41,2303 34333 CAF R1D1.
+
+src/pinball/enter.c: mixnoun [killed: tc-sites]
+-         tc_at(MIXNN1 + 7u);
+  No place names the listing's TC at MIXNN1 +7 any more (LM and CM).
+
+src/pinball/enter.c: mixnoun [killed: tc-sites]
+-         tc_at(MIXNN1 + 7u);
++         tc_at(MIXNN1 + 8u);
+  No place names the listing's TC at MIXNN1 +7 any more (LM and CM).
+
+src/pinball/enter.c: mixnoun [killed: tc-sites]
+-             tc_at(MIXNN1 + 010u); /* TC MIXNN2: "NO DP" */
++             tc_at(MIXNN1 + 011u); /* TC MIXNN2: "NO DP" */
+  The word at the changed place is no TC (CM): 41,2245 24122 INCR NOUNTEM.
+
+src/pinball/enter.c: mixnoun [owed]
+-         mask(LOW11); /* "ESUBK (NO DP) OR (ESUBK)+1 FOR DP" */
+  Unlike where NOUNTEM has a bit above the eleventh. Likely none: the noun
+  tables' words are erasable addresses. Not checked.
+
+src/pinball/enter.c: mixnoun [killed: tc-sites]
+-         tc_at(MIXNN2 + 2u);
+  No place names the listing's TC at MIXNN2 +2 any more (LM and CM).
+
+src/pinball/enter.c: mixnoun [killed: tc-sites]
+-         tc_at(MIXNN2 + 2u);
++         tc_at(MIXNN2 + 3u);
+  The word at the changed place is no TC (CM): 41,2251 50000 INDEX A.
+
+src/pinball/enter.c: reqcom_after_5blank [killed: tc-sites]
+-     tc_at(ENDRQDAT - 1u);
+  No place names the listing's TC at REQCOM +5 any more (LM and CM).
+
+src/pinball/enter.c: updatnn_on [owed]
+-     read_noun_tables(UPDATNN + 4u);
++     read_noun_tables(UPDATNN + 5u);
+  The place goes into A and L by the DTCB, the return LODNNTAB keeps. Not
+  followed to where those words are written again.
+
+src/pinball/keys.c: charin [killed: tc-sites]
+-         tc_at(CHARIN + 4u); /* TC +2 */
+  No place names the listing's TC at CHARIN +4 any more (LM and CM).
+
+src/pinball/keys.c: charin [killed: tc-sites]
+-         tc_at(CHARIN + 4u); /* TC +2 */
++         tc_at(CHARIN + 5u); /* TC +2 */
+  No place names the listing's TC at CHARIN +4 any more (LM and CM).
+
+src/pinball/keys.c: charin [killed: tc-sites]
+-         tc_at(CHARIN + 5u); /* TC CHARIN2 */
+  No place names the listing's TC at CHARIN +5 any more (LM and CM).
+
+src/pinball/keys.c: charin [killed: tc-sites]
+-         tc_at(CHARIN + 5u); /* TC CHARIN2 */
++         tc_at(CHARIN + 6u); /* TC CHARIN2 */
+  The word at the changed place is no TC (CM): 40,2006 42057 CS ELRCODE1.
+
+src/pinball/keys.c: charin [killed: tc-sites]
+-             tc_at(CHARIN + 012u);
+  No place names the listing's TC at CHARIN +12 any more (LM and CM).
+
+src/pinball/keys.c: charin [killed: tc-sites]
+-             tc_at(CHARIN + 012u);
++             tc_at(CHARIN + 013u);
+  The word at the changed place is no TC (CM): 40,2013 56154 XCH MPAC.
+
+src/pinball/keys.c: charin [killed: tc-sites]
+-     tc_at(CHARIN2 + 3u);
+  No place names the listing's TC at CHARIN2 +3 any more (LM and CM).
+
+src/pinball/keys.c: charin [killed: tc-sites]
+-     tc_at(CHARIN2 + 3u);
++     tc_at(CHARIN2 + 4u);
+  No place names the listing's TC at CHARIN2 +3 any more (LM and CM).
+
+src/pinball/keys.c: eighty_nine_test [killed: tc-sites]
+-         tc(EIGHTY_NINE_TEST + 010u, NUM);
++         tc(EIGHTY_NINE_TEST + 011u, NUM);
+  The TC at the changed place is to 3341 (CM: 40,2073 03341 TC CHARALRM), and
+  the routine called is at 2076.
+
+src/pinball/keys.c: clpass_plus_zero [killed: tc-sites]
+-         tc_at(at + 3u); /* TC +1 */
++         tc_at(at + 4u); /* TC +1 */
+  The word at the changed place is no TC (CM): 40,2110 50117 INDEX CHAR.
+
+src/pinball/keys.c: num [killed: tc-sites]
+-         tc_at(NUM + 3u); /* TC +1 */
+  No place names the listing's TC at NUM +3 any more (LM and CM).
+
+src/pinball/keys.c: num [killed: tc-sites]
+-         tc_at(NUM + 3u); /* TC +1 */
++         tc_at(NUM + 4u); /* TC +1 */
+  No place names the listing's TC at NUM +3 any more (LM and CM).
+
+src/pinball/keys.c: num [killed: tc-sites]
+-     tc_at(NUM + 5u);
+  No place names the listing's TC at NUM +5 any more (LM and CM).
+
+src/pinball/keys.c: num [killed: tc-sites]
+-     tc_at(NUM + 5u);
++     tc_at(NUM + 6u);
+  The word at the changed place is no TC (CM): 40,2104 11015 CCS CLPASS.
+
+src/pinball/keys.c: num [killed: tc-sites]
+-         tc_at(NUM + 024u);
+  No place names the listing's TC at NUM +24 any more (LM and CM).
+
+src/pinball/keys.c: num [killed: tc-sites]
+-         tc_at(NUM + 024u);
++         tc_at(NUM + 025u);
+  The word at the changed place is no TC (CM): 40,2123 50137 INDEX INREL.
+
+src/pinball/keys.c: num [killed: tc-sites]
+-     tc_at(DECTOBIN - 1u);
+  No place names the listing's TC at NUM +34 any more (LM and CM).
+
+src/pinball/keys.c: dectobin [killed: tc-sites]
+-     tc_at(DECTOBIN + 6u);
+  No place names the listing's TC at DECTOBIN +6 any more (LM and CM).
+
+src/pinball/keys.c: dectobin [killed: tc-sites]
+-     tc_at(DECTOBIN + 6u);
++     tc_at(DECTOBIN + 7u);
+  The word at the changed place is no TC (CM): 40,2142 56155 XCH MPAC +1.
+
+src/pinball/keys.c: dectobin [killed: tc-sites]
+-         tc_at(DECTOBIN + 012u); /* "NO OF" */
+  No place names the listing's TC at DECTOBIN +12 any more (LM and CM).
+
+src/pinball/keys.c: dectobin [killed: tc-sites]
+-         tc_at(DECTOBIN + 012u); /* "NO OF" */
++         tc_at(DECTOBIN + 013u); /* "NO OF" */
+  The word at the changed place is no TC (CM): 40,2146 26154 ADS MPAC.
+
+src/pinball/keys.c: dectobin [killed: tc-sites]
+-     tc_at(DECTOBIN + 014u);
+  No place names the listing's TC at DECTOBIN +14 any more (LM and CM).
+
+src/pinball/keys.c: dectobin [killed: tc-sites]
+-     tc_at(DECTOBIN + 014u);
++     tc_at(DECTOBIN + 015u);
+  The word at the changed place is no TC (CM): 40,2150 50137 INDEX INREL.
+
+src/pinball/keys.c: endnmtst [killed: pinball-cases]
+-         set_A(THREE);
+  A is -0 there, so the MASK alone leaves DECBRNCH whole, with the bits
+  BOTHSGN set for the registers keyed in decimal before this one (020, 010).
+  pin-edges keys an octal word's last digit after a decimal word: the change
+  sends it to DECEND, which refuses it, and the chains taken fall below the
+  138 the suite is held to.
+
+src/pinball/keys.c: endnmtst [killed: tc-sites]
+-             tc_at(ENDNUM + 3u);
+  No place names the listing's TC at ENDNUM +3 any more (LM and CM).
+
+src/pinball/keys.c: endnmtst [killed: tc-sites]
+-             tc_at(ENDNUM + 3u);
++             tc_at(ENDNUM + 4u);
+  The word at the changed place is no TC (CM): 40,2164 40777 CS DSPCOUNT.
+
+src/pinball/keys.c: endnmtst [killed: tc-sites]
+-     tc_at(ENDNMTST + 7u); /* "- , DSPCOUNT G/ CRITCON" */
+  No place names the listing's TC at ENDNMTST +7 any more (LM and CM).
+
+src/pinball/keys.c: endnmtst [killed: tc-sites]
+-     tc_at(ENDNMTST + 7u); /* "- , DSPCOUNT G/ CRITCON" */
++     tc_at(ENDNMTST + 8u); /* "- , DSPCOUNT G/ CRITCON" */
+  The word at the changed place is no TC (CM): 40,2160 36214 CAF THREE.
+
+src/pinball/keys.c: endall [killed: tc-sites]
+-     tc_at(ENDALL + 1u);
+  No place names the listing's TC at ENDALL +1 any more (LM and CM).
+
+src/pinball/keys.c: endall [killed: tc-sites]
+-     tc_at(ENDALL + 1u);
++     tc_at(ENDALL + 2u);
+  The word at the changed place is no TC (CM): 40,2166 45017 CS ONE.
+
+src/pinball/keys.c: decend [killed: pinball-cases]
+-     set_A(THREE);
+  The MASK is then of what DMP left in A, not of 3. pin-edges keys the last
+  digit of two decimal words (DECBRNCH 031 and 036), and they no longer end
+  as the Virtual AGC run ends them.
+
+src/pinball/keys.c: decend [killed: pinball-cases]
+-     mask_at(ADDRESS_OF(DECBRNCH));
+  A stays 3 and DECEND refuses every decimal word, where DECBRNCH's 1 or 2
+  runs on: the chains taken fall below the 138 pin-edges is held to.
+
+src/pinball/keys.c: decend [killed: tc-sites]
+-     tc_at(DECEND + 011u);
+  No place names the listing's TC at DECEND +11 any more (LM and CM).
+
+src/pinball/keys.c: decend [killed: tc-sites]
+-     tc_at(DECEND + 011u);
++     tc_at(DECEND + 012u);
+  No place names the listing's TC at DECEND +11 any more (LM and CM).
+
+src/pinball/keys.c: decend [killed: tc-sites]
+-     tc_at(PLUS_DECSGN + 6u);
+  No place names the listing's TC at +DECSGN +6 any more (LM and CM).
+
+src/pinball/keys.c: decend [killed: tc-sites]
+-     tc_at(PLUS_DECSGN + 6u);
++     tc_at(PLUS_DECSGN + 7u);
+  The word at the changed place is no TC (CM): 40,2213 10777 CCS DSPCOUNT.
+
+src/pinball/keys.c: getinrel_returns [rewritten]
+-     tc_return(Q_ADDRESS);
+  TC Q's traces only: 3 in Q and the return in Z. The C returns by its own
+  return, and the routine it returns to writes Q and Z again before the pass
+  ends.
+
+src/pinball/keys.c: noun [killed: tc-sites]
+-     tc_at(NOUN + 3u);
+  No place names the listing's TC at NOUN +3 any more (LM and CM).
+
+src/pinball/keys.c: noun [killed: tc-sites]
+-     tc_at(NOUN + 3u);
++     tc_at(NOUN + 4u);
+  No place names the listing's TC at NOUN +3 any more (LM and CM).
+
+src/pinball/keys.c: nvcom [killed: tc-sites]
+-     tc_at(NVCOM + 1u);
+  No place names the listing's TC at NVCOM +1 any more (LM and CM).
+
+src/pinball/keys.c: nvcom [killed: tc-sites]
+-     tc_at(NVCOM + 1u);
++     tc_at(NVCOM + 2u);
+  The word at the changed place is no TC (CM): 40,2262 35017 CAF ONE.
+
+src/pinball/keys.c: posgn [killed: tc-sites]
+-     tc_at(POSGN + 3u);
+  No place names the listing's TC at POSGN +3 any more (LM and CM).
+
+src/pinball/keys.c: posgn [killed: tc-sites]
+-     tc_at(POSGN + 3u);
++     tc_at(POSGN + 4u);
+  The word at the changed place is no TC (CM): 40,2314 22002 LXCH Q.
+
+src/pinball/keys.c: plus_on_returns [killed: tc-sites]
+-     tc_at(PLUS_ON + 1u);
++     tc_at(PLUS_ON + 2u);
+  The word at the changed place is no TC (CM): 40,2316 50137 INDEX INREL.
+
+src/pinball/keys.c: minus_on_returns [killed: tc-sites]
+-     tc_at(MINUS_ON + 1u);
++     tc_at(MINUS_ON + 2u);
+  The word at the changed place is no TC (CM): 40,2336 50137 INDEX INREL.
+
+src/pinball/keys.c: minus_on_returns [killed: tc-sites]
+-     tc_at(MINUS_ON + 7u);
+  No place names the listing's TC at -ON +7 any more (LM and CM).
+
+src/pinball/keys.c: minus_on_returns [killed: tc-sites]
+-     tc_at(MINUS_ON + 7u);
++     tc_at(MINUS_ON + 8u);
+  No place names the listing's TC at -ON +7 any more (LM and CM).
+
+src/pinball/keys.c: signtest_returns [rewritten]
+-             tc_return(L_ADDRESS);
+  TC Q's traces only: 3 in Q and the return in Z. The C returns by its own
+  return, and the routine it returns to writes Q and Z again before the pass
+  ends.
+
+src/pinball/keys.c: signtest_returns [rewritten]
+-         tc_return(Q_ADDRESS); /* TC Q: on to the next */
+  TC Q's traces only: 3 in Q and the return in Z. The C returns by its own
+  return, and the routine it returns to writes Q and Z again before the pass
+  ends.
+
+src/pinball/keys.c: clear [killed: tc-sites]
+-         tc_at(CLEAR + 2u); /* TC +2 */
+  No place names the listing's TC at CLEAR +2 any more (LM and CM).
+
+src/pinball/keys.c: clear [killed: tc-sites]
+-         tc_at(CLEAR + 2u); /* TC +2 */
++         tc_at(CLEAR + 3u); /* TC +2 */
+  The word at the changed place is no TC (CM): 40,2373 65017 AD ONE.
+
+src/pinball/keys.c: clear [killed: tc-sites]
+-         tc_at(CLEAR + 010u);
+  No place names the listing's TC at CLEAR +10 any more (LM and CM).
+
+src/pinball/keys.c: clear [killed: tc-sites]
+-         tc_at(CLEAR + 010u);
++         tc_at(CLEAR + 011u);
+  No place names the listing's TC at CLEAR +10 any more (LM and CM).
+
+src/pinball/keys.c: clear [killed: tc-sites]
+-     tc_at(CLEAR + 014u);
+  No place names the listing's TC at CLEAR +14 any more (LM and CM).
+
+src/pinball/keys.c: clear [killed: tc-sites]
+-     tc_at(CLEAR + 014u);
++     tc_at(CLEAR + 015u);
+  No place names the listing's TC at CLEAR +14 any more (LM and CM).
+
+src/pinball/keys.c: clear [killed: tc-sites]
+-     tc_at(CLEAR + 015u);
+  No place names the listing's TC at CLEAR +15 any more (LM and CM).
+
+src/pinball/keys.c: clear [killed: tc-sites]
+-     tc_at(CLEAR + 015u);
++     tc_at(CLEAR + 016u);
+  The word at the changed place is no TC (CM): 40,2406 10137 CCS INREL.
+
+src/pinball/keys.c: clpashi [killed: tc-sites]
+-         tc_at(CLPASHI + 2u);
+  No place names the listing's TC at CLPASHI +2 any more (LM and CM).
+
+src/pinball/keys.c: clpashi [killed: tc-sites]
+-         tc_at(CLPASHI + 2u);
++         tc_at(CLPASHI + 3u);
+  The word at the changed place is no TC (CM): 40,2411 32500 CAF DOUBLK +2.
+
+src/pinball/keys.c: legaltst_returns [rewritten]
+-     tc_return(Q_ADDRESS);
+  TC Q's traces only: 3 in Q and the return in Z. The C returns by its own
+  return, and the routine it returns to writes Q and Z again before the pass
+  ends.
+
+src/pinball/keys.c: five_blank_returns [killed: tc-sites]
+-     tc_at(FIVE_BLANK + 1u);
++     tc_at(FIVE_BLANK + 2u);
+  The word at the changed place is no TC (CM): 40,2441 35021 CAF ZERO.
+
+src/pinball/keys.c: five_blank_plus2_returns [killed: tc-sites]
+-     tc_at(FIVE_BLANK1 + 3u);
+  No place names the listing's TC at 5BLANK1 +3 any more (LM and CM).
+
+src/pinball/keys.c: five_blank_plus2_returns [killed: tc-sites]
+-     tc_at(FIVE_BLANK1 + 3u);
++     tc_at(FIVE_BLANK1 + 4u);
+  The word at the changed place is no TC (CM): 40,2464 45016 CS TWO.
+
+src/pinball/keys.c: five_blank_plus2_returns [killed: tc-sites]
+-     tc_at(FIVE_BLANK1 + 6u);
++     tc_at(FIVE_BLANK1 + 7u);
+  The word at the changed place is no TC (CM): 40,2467 50137 INDEX INREL.
+
+src/pinball/keys.c: clr5_returns [killed: tc-sites]
+-     tc_at(CLR5 + 1u);
+  No place names the listing's TC at CLR5 +1 any more (LM and CM).
+
+src/pinball/keys.c: two_blank_returns [rewritten]
+-     inhint();
+  The latch only. The RELINT three instructions on sets it, and a case test's
+  pass takes no interrupt between.
+
+src/pinball/output_scale.c: fixrange [rewritten]
+-     tc(FIXRANGE + 010u, back); /* INDEX Q; TC 1 */
++     tc(FIXRANGE + 011u, back); /* INDEX Q; TC 1 */
+  Q only, the return address this TC leaves. The routine it goes back to
+  writes Q again with its next TC before the pass ends.
+
+src/pinball/output_scale.c: setaug [rewritten]
+-     tc_return(Q_ADDRESS);
+  TC Q's traces only: 3 in Q and the return in Z. The C returns by its own
+  return, and the routine it returns to writes Q and Z again before the pass
+  ends.
+
+src/pinball/output_scale.c: degcom [killed: tc-sites]
+-     tc_at(DEGCOM + 4u);
+  No place names the listing's TC at DEGCOM +4 any more (LM and CM).
+
+src/pinball/output_scale.c: degcom [killed: tc-sites]
+-     tc_at(DEGCOM + 4u);
++     tc_at(DEGCOM + 5u);
+  The word at the changed place is no TC (CM): 40,2573 52124 DXCH SFTEMP1.
+
+src/pinball/output_scale.c: degcom [killed: tc-sites]
+-     tc_at(DEGCOM + 7u);
+  No place names the listing's TC at DEGCOM +7 any more (LM and CM).
+
+src/pinball/output_scale.c: degcom [killed: tc-sites]
+-     tc_at(DEGCOM + 7u);
++     tc_at(DEGCOM + 8u);
+  No place names the listing's TC at DEGCOM +7 any more (LM and CM).
+
+src/pinball/output_scale.c: degoutsf_plus1 [killed: tc-sites]
+-     tc_at(DEGOUTSF + 2u);
++     tc_at(DEGOUTSF + 3u);
+  No place names the listing's TC at DEGOUTSF +2 any more (LM and CM).
+
+src/pinball/output_scale.c: degoutsf_plus1 [killed: tc-sites]
+-         tc_at(DEGOUTSF + 4u);
+  No place names the listing's TC at DEGOUTSF +4 any more (LM and CM).
+
+src/pinball/output_scale.c: degoutsf_plus1 [killed: tc-sites]
+-         tc_at(DEGOUTSF + 4u);
++         tc_at(DEGOUTSF + 5u);
+  No place names the listing's TC at DEGOUTSF +4 any more (LM and CM).
+
+src/pinball/output_scale.c: degoutsf_plus1 [killed: tc-sites]
+-         tc_at(DEGOUTSF + 3u); /* TC +2: "NO AUGMENT NEEDED" */
+  No place names the listing's TC at DEGOUTSF +3 any more (LM and CM).
+
+src/pinball/output_scale.c: degoutsf_plus1 [killed: tc-sites]
+-         tc_at(DEGOUTSF + 3u); /* TC +2: "NO AUGMENT NEEDED" */
++         tc_at(DEGOUTSF + 4u); /* TC +2: "NO AUGMENT NEEDED" */
+  No place names the listing's TC at DEGOUTSF +3 any more (LM and CM).
+
+src/pinball/output_scale.c: degoutsf_plus1 [killed: tc-sites]
+-     tc_at(DEGOUTSF + 5u);
+  No place names the listing's TC at DEGOUTSF +5 any more (LM and CM).
+
+src/pinball/output_scale.c: degoutsf_plus1 [killed: tc-sites]
+-     tc_at(DEGOUTSF + 5u);
++     tc_at(DEGOUTSF + 6u);
+  The word at the changed place is no TC (CM): 40,2524 10154 CCS MPAC.
+
+src/pinball/output_scale.c: three_sixty_cduo [killed: tc-sites]
+-     tc(THREE_SIXTY_CDUO + 1u, DEGOUTSF);
++     tc(THREE_SIXTY_CDUO + 2u, DEGOUTSF);
+  The word at the changed place is no TC (LM): 40,2625 30154 CA MPAC.
+
+src/pinball/output_scale.c: lrposout [killed: tc-sites]
+-     tc(LRPOSOUT + 7u, ARTOUTSF);
++     tc(LRPOSOUT + 8u, ARTOUTSF);
+  The TC at the changed place is to 0006 (LM: 40,2645 00006 EXTEND ), and the
+  routine called is at 2677.
+
+src/pinball/output_scale.c: biascom [killed: tc-sites]
+-         tc_at(BIASCOM + 1u); /* TC +3: "NO OVFLOW" */
+  No place names the listing's TC at BIASCOM +1 any more (CM).
+
+src/pinball/output_scale.c: biascom [killed: tc-sites]
+-         tc_at(BIASCOM + 1u); /* TC +3: "NO OVFLOW" */
++         tc_at(BIASCOM + 2u); /* TC +3: "NO OVFLOW" */
+  The word at the changed place is no TC (CM): 40,2534 35001 CAF BIT15.
+
+src/pinball/output_scale.c: biascom [killed: tc-sites]
+-     tc_at(BIASCOM + 5u);
+  No place names the listing's TC at BIASCOM +5 any more (CM).
+
+src/pinball/output_scale.c: biascom [killed: tc-sites]
+-     tc_at(BIASCOM + 5u);
++     tc_at(BIASCOM + 6u);
+  The word at the changed place is no TC (CM): 40,2540 56154 XCH MPAC.
+
+src/pinball/output_scale.c: negopt [killed: tc-sites]
+-         tc_at(NEGOPT + 7u);
+  No place names the listing's TC at NEGOPT +7 any more (CM).
+
+src/pinball/output_scale.c: negopt [killed: tc-sites]
+-         tc_at(NEGOPT + 7u);
++         tc_at(NEGOPT + 8u);
+  No place names the listing's TC at NEGOPT +7 any more (CM).
+
+src/pinball/output_scale.c: opdegout [killed: tc-sites]
+-         tc_at(OPDEGOUT + 3u);
+  No place names the listing's TC at OPDEGOUT +3 any more (CM).
+
+src/pinball/output_scale.c: opdegout [killed: tc-sites]
+-         tc_at(OPDEGOUT + 3u);
++         tc_at(OPDEGOUT + 4u);
+  The word at the changed place is no TC (CM): 40,2530 67716 AD NEG1.
+
+src/pinball/output_scale.c: artoutsf [killed: tc-sites]
+-     tc_at(ARTOUTSF + 2u);
+  No place names the listing's TC at ARTOUTSF +2 any more (LM and CM).
+
+src/pinball/output_scale.c: artoutsf [killed: tc-sites]
+-     tc_at(ARTOUTSF + 2u);
++     tc_at(ARTOUTSF + 3u);
+  No place names the listing's TC at ARTOUTSF +2 any more (LM and CM).
+
+src/pinball/output_scale.c: arout1sf [killed: tc-sites]
+-     tc_at(AROUT1SF + 2u);
+  No place names the listing's TC at AROUT1SF +2 any more (LM and CM).
+
+src/pinball/output_scale.c: arout1sf [killed: tc-sites]
+-     tc_at(AROUT1SF + 2u);
++     tc_at(AROUT1SF + 3u);
+  No place names the listing's TC at AROUT1SF +2 any more (LM and CM).
+
+src/pinball/output_scale.c: arout1sf [killed: tc-sites]
+-     tc_at(AROUT1SF + 3u);
+  No place names the listing's TC at AROUT1SF +3 any more (LM and CM).
+
+src/pinball/output_scale.c: arout1sf [killed: tc-sites]
+-     tc_at(AROUT1SF + 3u);
++     tc_at(AROUT1SF + 4u);
+  No place names the listing's TC at AROUT1SF +3 any more (LM and CM).
+
+src/pinball/output_scale.c: dpout [killed: tc-sites]
+-     tc_at(DPOUT + 3u);
+  No place names the listing's TC at DPOUT +3 any more (LM and CM).
+
+src/pinball/output_scale.c: dpout [killed: tc-sites]
+-     tc_at(DPOUT + 3u);
++     tc_at(DPOUT + 4u);
+  No place names the listing's TC at DPOUT +3 any more (LM and CM).
+
+src/pinball/output_scale.c: dpout [rewritten]
+-     tc_return(MPAC_PLUS(6u));
+  The TC's traces only: its word's address +1 in Q and the return in Z. The C
+  returns by its own return, and the routine it returns to writes Q and Z
+  again before the pass ends.
+
+src/pinball/output_scale.c: l14_out [killed: tc-sites]
+-     tc_at(L14_OUT + 3u);
++     tc_at(L14_OUT + 4u);
+  No place names the listing's TC at L14/OUT +3 any more (LM and CM).
+
+src/pinball/output_scale.c: dp2outsf [killed: tc-sites]
+-     tc_at(DP2OUTSF + 1u);
+  No place names the listing's TC at DP2OUTSF +1 any more (LM and CM).
+
+src/pinball/output_scale.c: dp2outsf [killed: tc-sites]
+-     tc_at(DP2OUTSF + 1u);
++     tc_at(DP2OUTSF + 2u);
+  No place names the listing's TC at DP2OUTSF +1 any more (LM and CM).
+
+src/pinball/output_scale.c: dp3outsf [killed: tc-sites]
+-     tc_at(DP3OUTSF + 3u);
+  No place names the listing's TC at DP3OUTSF +3 any more (LM and CM).
+
+src/pinball/output_scale.c: dp3outsf [killed: tc-sites]
+-     tc_at(DP3OUTSF + 3u);
++     tc_at(DP3OUTSF + 4u);
+  The word at the changed place is no TC (CM): 40,2627 56002 XCH Q.
+
+src/pinball/output_scale.c: dpfracot [killed: tc-sites]
+-     tc_at(DPFRACOT + 1u);
+  No place names the listing's TC at DPFRACOT +1 any more (CM).
+
+src/pinball/output_scale.c: dpfracot [killed: tc-sites]
+-     tc_at(DPFRACOT + 1u);
++     tc_at(DPFRACOT + 2u);
+  The word at the changed place is no TC (CM): 40,2655 56002 XCH Q.
+
+src/pinball/output_scale.c: readlo [owed]
+-         mask(LOW11); /* "E SUBK" */
+  Unlike where IDAD1TEM has a bit above the eleventh. Likely none: the noun
+  tables' words are erasable addresses. Not checked.
+
+src/pinball/output_scale.c: readlo [killed: tc-sites]
+-         tc_at(READLO + 010u);
+  No place names the listing's TC at READLO +10 any more (LM and CM).
+
+src/pinball/output_scale.c: readlo [killed: tc-sites]
+-         tc_at(READLO + 010u);
++         tc_at(READLO + 011u);
+  No place names the listing's TC at READLO +10 any more (LM and CM).
+
+src/pinball/output_scale.c: readlo [killed: tc-sites]
+-         tc_at(READLO + 4u);
+  No place names the listing's TC at READLO +4 any more (LM and CM).
+
+src/pinball/output_scale.c: readlo [killed: tc-sites]
+-         tc_at(READLO + 4u);
++         tc_at(READLO + 5u);
+  The word at the changed place is no TC (CM): 40,2662 50117 INDEX DECOUNT.
+
+src/pinball/output_scale.c: readlo [killed: tc-sites]
+-         tc_at(ENDRDLO);
+  No place names the listing's TC at ENDRDLO +0 any more (LM and CM).
+
+src/pinball/output_scale.c: sepsecnr_plus1 [killed: tc-sites]
+-     tc_at(SEPSECNR + 7u);
++     tc_at(SEPSECNR + 8u);
+  No place names the listing's TC at SEPSECNR +7 any more (LM and CM).
+
+src/pinball/output_scale.c: sepsecnr_plus1 [killed: tc-sites]
+-     tc_at(SEPSECNR + 010u);
++     tc_at(SEPSECNR + 011u);
+  The word at the changed place is no TC (CM): 42,3343 35021 CAF ZERO.
+
+src/pinball/output_scale.c: hmsout_plus2 [killed: tc-sites]
+-     tc_at(HMSOUT + 2u);
+  No place names the listing's TC at HMSOUT +2 any more (LM and CM).
+
+src/pinball/output_scale.c: hmsout_plus2 [killed: tc-sites]
+-     tc_at(HMSOUT + 2u);
++     tc_at(HMSOUT + 3u);
+  No place names the listing's TC at HMSOUT +2 any more (LM and CM).
+
+src/pinball/output_scale.c: hmsout_plus012 [killed: tc-sites]
+-     tc_at(HMSOUT + 020u);
+  No place names the listing's TC at HMSOUT +20 any more (LM and CM).
+
+src/pinball/output_scale.c: hmsout_plus012 [killed: tc-sites]
+-     tc_at(HMSOUT + 020u);
++     tc_at(HMSOUT + 021u);
+  The word at the changed place is no TC (CM): 42,3164 34334 CAF R2D1.
+
+src/pinball/output_scale.c: hmsout_plus025 [killed: tc-sites]
+-     tc_at(HMSOUT + 031u);
+  No place names the listing's TC at HMSOUT +31 any more (LM and CM).
+
+src/pinball/output_scale.c: hmsout_plus025 [killed: tc-sites]
+-     tc_at(HMSOUT + 031u);
++     tc_at(HMSOUT + 032u);
+  The word at the changed place is no TC (CM): 42,3175 34333 CAF R1D1.
+
+src/pinball/output_scale.c: m_slimit [killed: tc-sites]
+-         tc_at(M_SLIMIT + 2u); /* +LIMIT */
+  No place names the listing's TC at M/SLIMIT +2 any more (LM and CM).
+
+src/pinball/output_scale.c: m_slimit [killed: tc-sites]
+-         tc_at(M_SLIMIT + 2u); /* +LIMIT */
++         tc_at(M_SLIMIT + 3u); /* +LIMIT */
+  The word at the changed place is no TC (CM): 42,3244 43315 CS M/SCON3.
+
+src/pinball/output_scale.c: m_slimit [killed: tc-sites]
+-         tc_at(PLUS_LIMIT + 2u); /* TC LIMITCOM */
+  No place names the listing's TC at +LIMIT +2 any more (LM and CM).
+
+src/pinball/output_scale.c: m_slimit [killed: tc-sites]
+-         tc_at(PLUS_LIMIT + 2u); /* TC LIMITCOM */
++         tc_at(PLUS_LIMIT + 3u); /* TC LIMITCOM */
+  No place names the listing's TC at +LIMIT +2 any more (LM and CM).
+
+src/pinball/output_scale.c: m_slimit [killed: tc-sites]
+-     tc_at(LIMITCOM + 2u);
+  No place names the listing's TC at LIMITCOM +2 any more (LM and CM).
+
+src/pinball/output_scale.c: m_slimit [killed: tc-sites]
+-     tc_at(LIMITCOM + 2u);
++     tc_at(LIMITCOM + 3u);
+  The word at the changed place is no TC (CM): 42,3252 54154 TS MPAC.
+
+src/pinball/output_scale.c: m_sout_plus2 [killed: tc-sites]
+-     tc_at(M_SOUT + 2u);
+  No place names the listing's TC at M/SOUT +2 any more (LM and CM).
+
+src/pinball/output_scale.c: m_sout_plus2 [killed: tc-sites]
+-     tc_at(M_SOUT + 2u);
++     tc_at(M_SOUT + 3u);
+  The word at the changed place is no TC (CM): 42,3221 10154 CCS MPAC.
+
+src/pinball/output_scale.c: m_sout_plus2 [killed: tc-sites]
+-         tc_at(at);
+  The file writes tc_at(at), a place the check cannot read, twice, and
+  COMPUTED holds that count: one of the two gone fails it.
+
+src/pinball/output_scale.c: m_snorm_plus1 [killed: tc-sites]
+-     tc_at(M_SNORM + 2u);
+  No place names the listing's TC at M/SNORM +2 any more (LM and CM).
+
+src/pinball/output_scale.c: m_snorm_plus1 [killed: tc-sites]
+-     tc_at(M_SNORM + 2u);
++     tc_at(M_SNORM + 3u);
+  The word at the changed place is no TC (CM): 42,3260 46214 CS THREE.
+
+src/pinball/subroutines.c: setncadr_plus1 [unreached]
+-         ad(OCT1400);         /* never, likewise */
+  The line is in the arm TS takes on an overflow, and A holds none there: the
+  code marks the arm never.
+
+src/pinball/subroutines.c: setebank [rewritten]
+-     tc_return(Q_ADDRESS);
+  TC Q's traces only: 3 in Q and the return in Z. The C returns by its own
+  return, and the routine it returns to writes Q and Z again before the pass
+  ends.
+
+src/pinball/subroutines.c: reldsp [owed]
+-     inhint();
+  The latch only, if a RELINT follows on every way out (RELDSP2's, by its
+  listing). Not read again.
+
+src/pinball/subroutines.c: reldsp [killed: tc-sites]
+-         tc_at(RELDSP + 010u); /* TC RELDSP2: "LIST EMPTY" */
+  No place names the listing's TC at RELDSP +10 any more (LM and CM).
+
+src/pinball/subroutines.c: reldsp [killed: tc-sites]
+-         tc_at(RELDSP + 010u); /* TC RELDSP2: "LIST EMPTY" */
++         tc_at(RELDSP + 011u); /* TC RELDSP2: "LIST EMPTY" */
+  The word at the changed place is no TC (CM): 02,4504 35021 CAF ZERO.
+
+src/pinball/subroutines.c: reldsp1 [killed: tc-sites]
+-         tc_at(RELDSP1 + 3u); /* TC +2: "+ NOT EMPTY" */
+  No place names the listing's TC at RELDSP1 +3 any more (LM and CM).
+
+src/pinball/subroutines.c: reldsp1 [killed: tc-sites]
+-         tc_at(RELDSP1 + 3u); /* TC +2: "+ NOT EMPTY" */
++         tc_at(RELDSP1 + 4u); /* TC +2: "+ NOT EMPTY" */
+  No place names the listing's TC at RELDSP1 +3 any more (LM and CM).
+
+src/pinball/subroutines.c: reldsp1 [killed: tc-sites]
+-         tc_at(RELDSP1 + 4u); /* TC RELDSP2: "+0 EMPTY" */
+  No place names the listing's TC at RELDSP1 +4 any more (LM and CM).
+
+src/pinball/subroutines.c: reldsp1 [killed: tc-sites]
+-         tc_at(RELDSP1 + 4u); /* TC RELDSP2: "+0 EMPTY" */
++         tc_at(RELDSP1 + 5u); /* TC RELDSP2: "+0 EMPTY" */
+  The word at the changed place is no TC (CM): 02,4523 35021 CAF ZERO.
+
+src/pinball/subroutines.c: sfrutmix [rewritten]
+-     tc_at(SFRUTMIX + 011u);
++     tc_at(SFRUTMIX + 012u);
+  Q only. SFRET1's TC EXITEM, the routine's last line, sets Q and Z again.
+
+src/pinball/subroutines.c: sfrutmix [rewritten]
+-         tc_return(Q_ADDRESS); /* GOQ: TC Q */
++         ; /* GOQ: TC Q */
+  TC Q's traces only, 3 in Q and SFRET1 in Z. SFRET1's TC EXITEM, the
+  routine's last line, sets both again.
+
+src/pinball/subroutines.c: sfrutmix [rewritten]
+-     tc_return(ADDRESS_OF(EXITEM)); /* SFRET1: "SF ROUTINE NUMBER IN A" */
+  The TC's traces only: its word's address +1 in Q and the return in Z. The C
+  returns by its own return, and the routine it returns to writes Q and Z
+  again before the pass ends.
+
+src/pinball/subroutines.c: sfrutnor [killed: tc-sites]
+-     tc_at(SFRUTNOR + 4u);
++     tc_at(SFRUTNOR + 5u);
+  No place names the listing's TC at SFRUTNOR +4 any more (LM and CM).
+
+src/pinball/subroutines.c: sfconum [killed: tc-sites]
+-         tc_at(SFCONUM + 4u); /* TC CONUMNOR: "NORMAL NOUN" */
+  No place names the listing's TC at SFCONUM +4 any more (LM and CM).
+
+src/pinball/subroutines.c: sfconum [killed: tc-sites]
+-         tc_at(SFCONUM + 4u); /* TC CONUMNOR: "NORMAL NOUN" */
++         tc_at(SFCONUM + 5u); /* TC CONUMNOR: "NORMAL NOUN" */
+  The word at the changed place is no TC (CM): 41,3054 50117 INDEX DECOUNT.
+
+src/pinball/subroutines.c: sfconum [owed]
+-     tc_at(SFCONUM + 014u);
+  Q only, but GOQ's TC Q reads it on the line after. No reason found yet why
+  no case sees it.
+
+src/pinball/subroutines.c: sfconum [killed: tc-sites]
+-     tc_at(SFCONUM + 014u);
++     tc_at(SFCONUM + 015u);
+  The word at the changed place is no TC (CM): 41,3064 60000 DOUBLE .
+
+src/pinball/subroutines.c: sfconum [owed]
+-         tc_return(Q_ADDRESS); /* GOQ: TC Q */
++         ; /* GOQ: TC Q */
+  TC Q's traces only, if the lines after it set Q and Z again. Not read
+  again.
+
+src/pinball/subroutines.c: leftncom [killed: tc-sites]
+-         tc_at(LEFTNCOM + 1u);
+  No place names the listing's TC at LEFTNCOM +1 any more (LM and CM).
+
+src/pinball/subroutines.c: leftncom [killed: tc-sites]
+-         tc_at(LEFTNCOM + 1u);
++         tc_at(LEFTNCOM + 2u);
+  The word at the changed place is no TC (CM): 40,3065 10123 CCS SFTEMP1.
+
+src/q_r_axis/q_r_axis.c: axis [refusal]
+-     if (count > 1u) not_modelled();
++     if (count > 2u) not_modelled();
+  AXISCTR holding 2. The autopilot keeps 0 or 1 there, "0,1 FOR U,V", and the
+  binding lets no case bring another (PR #1317).
+
+src/q_r_axis/q_r_axis.c: callqerr [killed: tc-sites]
+-         tc_at(CALLQERR + 011u);
++         tc_at(CALLQERR + 012u);
+  The word at the changed place is no TC (LM): 17,2104 11631 CCS COTROLER.
+
+src/q_r_axis/q_r_axis.c: rcs_plus1 [killed: tc-sites]
+-     tc_at(RCS + 3u);
++     tc_at(RCS + 4u);
+  The word at the changed place is no TC (LM): 17,2113 53427 DXCH OMEGAU.
+
+src/q_r_axis/q_r_axis.c: x_translation [killed: tc-sites]
+-     if (!selctsub(TSNUMBRT + 1u)) return;
++     if (!selctsub(TSNUMBRT + 2u)) return;
+  The word at the changed place is no TC (LM): 17,2166 11741 CCS POLYTEMP.
+
+src/q_r_axis/q_r_axis.c: breaks_out [same]
+-     ad_at(ADDRESS_OF(MRATEDB)); /* AD -RATEDB */
++     ad_at(ADDRESS_OF(TARGETDB)); /* AD -RATEDB */
+  -RATEDB and TARGETDB name one word, E6,1476.
+
+src/q_r_axis/q_r_axis.c: chekstik [killed: tc-sites]
+-     tc_at(ENTERQR + 1u); /* "TRANSFORM RATES FROM Q,R TO U,V AXES" */
++     tc_at(ENTERQR + 2u); /* "TRANSFORM RATES FROM Q,R TO U,V AXES" */
+  The word at the changed place is no TC (LM): 17,2420 53427 DXCH URATEDIF.
+
+src/q_r_axis/q_r_axis.c: within [same]
+-     ad_at(ADDRESS_OF(TARGETDB));
++     ad_at(ADDRESS_OF(MRATEDB));
+  -RATEDB and TARGETDB name one word, E6,1476.
+
+src/q_r_axis/q_r_axis.c: qerrcalc [rewritten]
+-     xch(ADDRESS_OF(QERROR));
++     ts(ADDRESS_OF(QERROR));
+  XCH leaves the old QERROR in A where TS leaves the new. RERRCALC's CA
+  DAPTEMP1 loads A next.
+
+src/q_r_axis/q_r_axis.c: stillrcs [killed: tc-sites]
+-     tc_at(STILLRCS + 3u);
++     tc_at(STILLRCS + 4u);
+  The word at the changed place is no TC (LM): 17,2665 53752 DXCH UERROR.
+
+src/q_r_axis/q_r_axis.c: aftertj [killed: tc-sites]
+-     if (!selctsub(DOROTAT + 022u)) return;
++     if (!selctsub(DOROTAT + 023u)) return;
+  The word at the changed place is no TC (LM): 17,2766 51505 INDEX AXISCTR.
+
+src/q_r_axis/q_r_axis.c: looper [killed: tc-sites]
+-     tc_at(LOOPER + 1u);
++     tc_at(LOOPER + 2u);
+  The word at the changed place is no TC (LM): 17,3007 13236 TCF CLOSEOUT.
+
+src/q_r_axis/q_r_axis.c: doskip_plus1 [same]
+-     case IS_MINUS_ZERO: mask(ONE); break;
++     case IS_MINUS_ZERO: break;
+  After the CCS finds -0, A is +0, and MASK ONE of +0 is +0.
+
+src/q_r_axis/q_r_axis.c: notmin_after_writep [killed: tc-sites]
+-     tc_at(NOTMIN + 012u);
++     tc_at(NOTMIN + 011u);
+  The word at the changed place is no TC (LM): 17,3043 55470 TS T6FURTHA.
+
+src/q_r_axis/q_r_axis.c: closeout [rewritten]
+-     store(ADDRESS_OF(BRUPT), fetch_fixed(MAKERUPT + 1u));
++     store(ADDRESS_OF(BRUPT), 0u);
+  CLOSEOUT's XCH BRUPT seven lines on writes BRUPT again, and what it takes
+  from there into A, CAF NEGMAX replaces (PR #1317).
+
+src/q_r_axis/q_r_axis.c: closeout [rewritten]
+-     xch(ADDRESS_OF(BRUPT));
++     ts(ADDRESS_OF(BRUPT));
+  XCH leaves the old BRUPT in A where TS leaves the new. CAF NEGMAX loads A
+  two lines on, and the LXCH Q between reads neither.
+
+src/r63/r63.c: v89call_after_proceed [killed: tc-sites]
+-     tc_at(TC_PLUS2_V0412);
+  No place names the listing's TC at V89CALL +12 any more (LM).
+
+src/r63/r63.c: v89call_after_data_in [killed: tc-sites]
+-     tc_at(TC_MINUS5_V0412);
++     tc_at(TC_PLUS2_V0412);
+  No place names the listing's TC at V89CALL +13 any more (LM).
+
+src/r63/r63.c: v89call1_after_proceed [killed: tc-sites]
+-     tc_at(TC_PLUS2_V0618);
++     tc_at(TC_V89RECL);
+  No place names the listing's TC at V89CALL1 +12 any more (LM).
+
+src/r63/r63.c: v89call1_after_recycle [killed: tc-sites]
+-     tc_at(TC_V89RECL);
+  No place names the listing's TC at V89CALL1 +13 any more (LM).
+
+src/rtb_op_codes/rtb_op_codes.c: one_sto2s [killed: tc-sites]
+-     tc_at(ONE_STO2S);
++     tc_at(ONE_STO2S + 1u);
+  The word at the changed place is no TC (LM): 10,3615 34755 CAF ZERO.
+
+src/rtb_op_codes/rtb_op_codes.c: v1sto2s_plus4 [killed: tc-sites]
+-     tc_at(V1STO2S + 7u);
++     tc_at(V1STO2S + 6u);
+  The word at the changed place is no TC (CM): 22,3560 52155 DXCH MPAC.
+
+src/rtb_op_codes/rtb_op_codes.c: two_v1sto2s_plus1 [killed: tc-sites]
+-     tc_at(TWO_V1STO2S + 3u);
++     tc_at(TWO_V1STO2S + 2u);
+  The word at the changed place is no TC (CM): 22,3571 52155 DXCH MPAC.
+
+src/rtb_op_codes/rtb_op_codes.c: cduinc [unreached]
+-         pulseimu();
+  The line is in the arm for an overflow at CDUINC's last TS, which no state
+  reaches (PR #1313).
+
+src/self_check/self_check.c: prerrors [unreached]
+-     if (ts(ADDRESS_OF(SFAIL))) not_modelled();
++     ts(ADDRESS_OF(SFAIL));
+  The TS finds no overflow: A is Q, a return address (PR #1308).
+
+src/self_check/self_check.c: cntrchk [rewritten]
+-         ad(SBIT4);              /* "+10 OCTAL" */
++         ad(SBIT7);              /* "+10 OCTAL" */
+  A only at first: the CS reads another word, and the CCS after it loads A
+  (PR #1308). The words a read edits, CYR, SR, CYL and EDOP, CYCLSHFT loads
+  right after the loop.
+
+src/servicer_cm/servicer.c: pipcheck [rewritten]
+-     case IS_MINUS_ZERO: piploop(); return;
++     case IS_MINUS_ZERO: pipcheck_no_count(); return;
+  Q only: the change goes by PIPCHECK +5's TC PIPLOOP. PIPLOOP's ways on
+  write Q again (TC PHASCHNG, TC ALARM).
+
+src/stable_orbit/stable_orbit.c: p38_active [killed: tc-sites]
+-     tc_at(P38 + 2u); /* TC +3 */
++     tc_at(P38 + 3u); /* TC +3 */
+  No place names the listing's TC at P38 +2 any more (LM).
+
+src/stable_orbit/stable_orbit.c: p38_active [killed: tc-sites]
+-     tc_at(P38 + 1u); /* TC +2 */
++     tc_at(P38 + 2u); /* TC +2 */
+  No place names the listing's TC at P38 +1 any more (CM).
+
+src/stable_orbit/stable_orbit.c: p39p79_exit [killed: tc-sites]
+-     tc_at(P39P79 + 1u);
++     tc_at(P39P79 + 2u);
+  The word at the changed place is no TC (CM): 04,3125 51575 VLOAD ABVAL.
+
+src/stable_orbit/stable_orbit.c: p39_active [killed: tc-sites]
+-     tc_at(P39 + 4u);
++     tc_at(P39 + 5u);
+  No place names the listing's TC at P39 +4 any more (LM).
+
+src/stable_orbit/stable_orbit.c: p39_active [killed: tc-sites]
+-     tc_at(P39 + 3u);
++     tc_at(P39 + 4u);
+  No place names the listing's TC at P39 +3 any more (CM).
+
+src/stable_orbit/stable_orbit.c: tc_rtrn_word [refusal]
+-     if ((instruction & 070000u) || instruction < 010u) not_modelled();
++     if ((instruction & 070000u) || instruction < 07u) not_modelled();
+  RTRN holding the word 00007, which no program leaves there and no case
+  brings.
+
+src/tjet_law/tjet_law.c: z123comp [killed: tc-sites]
+-     tc_at(at);
++     tc_at(at + 1u);
+  The word at the changed place is no TC (LM): 17,3543 31741 CAE FIREFCT.
+
+src/tjet_law/tjet_law.c: z123comp [rewritten]
+-     tc_q();
+  TC Q's traces only: 3 in Q and the return in Z. The C returns by its own
+  return, and the routine it returns to writes Q and Z again before the pass
+  ends.
+
+src/tjet_law/tjet_law.c: zone2_3 [killed: tc-sites]
+-         tc_at(ZONE3 + 3u);
++         tc_at(ZONE3 + 2u);
+  The word at the changed place is no TC (LM): 17,3557 13466 TCF RETURNTJ.
+
+src/tjet_law/tjet_law.c: zon1_2_3 [killed: tc-sites]
+-     if (!z123comp(ZON1_2_3)) return fulltime();
++     if (!z123comp(ZON1_2_3 + 1u)) return fulltime();
+  The word at the changed place is no TC (LM): 17,3543 31741 CAE FIREFCT.
+
+src/tjet_law/tjet_law.c: drift_on [killed: tc-sites]
+-     if (!z123comp(DRIFT_ON + 010u)) return fulltime();
++     if (!z123comp(DRIFT_ON + 7u)) return fulltime();
+  The word at the changed place is no TC (LM): 17,3423 13466 TCF RETURNTJ.
+
+src/tjet_law/tjet_law.c: zone4 [killed: tc-sites]
+-     if (!z123comp(JETSON + 7u)) return fulltime();
++     if (!z123comp(JETSON + 6u)) return fulltime();
+  The word at the changed place is no TC (LM): 17,3410 63422 BZMF COASTTJ.
+
+src/tjet_law/tjet_law.c: zone5 [killed: tc-sites]
+-             tc_at(ZONE5 + 3u);
++             tc_at(ZONE5 + 2u);
+  The word at the changed place is no TC (LM): 17,3430 13434 TCF +4.
+
+src/tjet_law/tjet_law.c: zone5 [same]
+-         case IS_MINUS_ZERO: ads(ADDRESS_OF(ADRSDIF2)); break;
++         case IS_MINUS_ZERO: break;
+  After the CCS finds -0, A is +0: the ADS adds nothing to ADRSDIF2, and CA L
+  loads A next.
+
+src/tjet_law/tjet_law.c: finelaw [rewritten]
+-         ad(fetch_fixed(ZON1_2_3));
+  A only. The CAE two lines on, ZONE4,5's first, loads A (PR #1318).
+
+src/tjet_law/tjet_law.c: rufsetup [killed: tc-sites]
+-     tc_at(at);
++     tc_at(at + 1u);
+  The word at the changed place is no TC (LM): 17,3635 31427 CAE EDOT.
+
+src/tjet_law/tjet_law.c: ruflaw1 [killed: tc-sites]
+-         rufsetup(RUFLAW1 + 4u, true);
++         rufsetup(RUFLAW1 + 3u, true);
+  The word at the changed place is no TC (LM): 17,3633 63654 BZMF SMALRATE.
+
+src/tjet_law/tjet_law.c: ruflaw3 [killed: tc-sites]
+-     rufsetup(RUFLAW3, true);
++     rufsetup(RUFLAW3 + 1u, true);
+  The word at the changed place is no TC (LM): 17,3673 51746 INDEX ADRSDIF1.
+
+src/tjet_law/tjet_law.c: ruflaw3 [unreached]
+-     mp_at(by_adrsdif1(ADDRESS_OF(1_ANET1) + 2u));
++     mp_at(by_adrsdif2(ADDRESS_OF(1_ANET1) + 2u));
+  Unlike only if the two indexers hold different words at RUFLAW3: TJETLAW
+  sets ADRSDIF2 from ADRSDIF1 and goes to RUFLAW3 before either is moved (PR
+  #1318).
+
+src/tjet_law/tjet_law.c: jet_time [unreached]
+-     if (!A_is_zero()) return ruflaw3();
++     if (!A_is_zero_or_minus()) return ruflaw3();
+  EDOT is not negative there: TJETLAW has taken its magnitude, so MP BIT4
+  leaves A +0 or above (PR #1318).
+
+src/tjet_law/tjet_law.c: tjetlaw [unreached]
+-     if (jet_time()) returntj();
++     jet_time(); returntj();
+  jet_time() is false only where a CCS has gone to CCSHOLE, ways the listing
+  marks as never taken (PR #1318).
+
+src/tpi_search/p17.c: p17_after_avflaga [killed: tc-sites]
+-     tc_at(P17 + 1u);
++     tc_at(P17 + 2u);
+  No place names the listing's TC at P17 +1 any more (CM).
+
+src/tpi_search/p17.c: p17_3_recycle [killed: tc-sites]
+-     tc_at(P17_3 + 7u);
++     tc_at(P17_3 + 6u);
+  No place names the listing's TC at P17.3 +7 any more (CM).
+
+src/tpi_search/p17.c: vncomp17 [same]
+-     if (!ts(ADDRESS_OF(VERBNOUN))) ca(ADDRESS_OF(VERBNOUN));
++     ts(ADDRESS_OF(VERBNOUN));
+  After a TS that finds no overflow, CA of the same word loads what A already
+  holds.
+
+src/tpi_search/p17.c: vncomp17_terminate [killed: tc-sites]
+-     tc_at(VNCOMP17 + 6u);
++     tc_at(VNCOMP17 + 7u);
+  No place names the listing's TC at VNCOMP17 +6 any more (CM).
+
+src/tpi_search/p17.c: vncomp17_proceed [rewritten]
+-     tc_at(VNCOMP17 + 7u);
++     tc_at(VNCOMP17 + 6u);
+  Q only. The return through QSAVED on the next line sets Q again.
+
+src/tpi_search/p17.c: vncomp17_recycle [killed: tc-sites]
+-     tc_at(VNCOMP17 + 014u);
++     tc_at(VNCOMP17 + 013u);
+  The word at the changed place is no TC (CM): 35,3252 13154 BZF P17.1.
+
+src/trim_gimbal/trim_gimbal.c: rootcycl [unreached]
+-     if (!ts(ADDRESS_OF(SCRATCH))) ts(SR_ADDRESS); /* "STORE X" */
++     ts(ADDRESS_OF(SCRATCH)); ts(SR_ADDRESS); /* "STORE X" */
+  A TS SCRATCH that finds an overflow, which no state reaches (PR #1320).
+
+src/trim_gimbal/trim_gimbal.c: rootcycl [rewritten]
+-     tc_q();
++     ;
+  TC Q's traces only: 3 in Q and the return in Z. The C returns by its own
+  return, and the routine it returns to writes Q and Z again before the pass
+  ends.
+
+src/trim_gimbal/trim_gimbal.c: scale [unreached]
+-         if (A_is_zero_or_minus()) {
++         if (A_is_zero()) {
+  ININDEX counts down by twos from an even word: it comes to +0 before it
+  could go negative (PR #1320).
+
+src/trim_gimbal/trim_gimbal.c: scale [rewritten]
+-     xch(ADDRESS_OF(HALFARG));
++     ts(ADDRESS_OF(HALFARG));
+  XCH leaves the old HALFARG in A where TS leaves the new. The DCA FUNCTION
+  on the next line loads A.
+
+src/trim_gimbal/trim_gimbal.c: gtsqrt [owed]
+-             xch(ADDRESS_OF(FUNCTION) + 1u);
+  PR #1320: the low word left in FUNCTION +1 adds less than a unit to a DV by
+  a power of two. Not worked through again.
+
+src/trim_gimbal/trim_gimbal.c: error_term_and_quotient [rewritten]
+-     xch(ADDRESS_OF(A2CNTRAL) + 1u);
++     ts(ADDRESS_OF(A2CNTRAL) + 1u);
+  XCH leaves the old A2CNTRAL +1 in A where TS leaves the new. HAVEQUOT's
+  first instruction loads A (PR #1320).
+
+src/trim_gimbal/trim_gimbal.c: second_term [owed]
+-         ts(ADDRESS_OF(K2CNTRAL)); /* DEFUNCT */
++         ; /* DEFUNCT */
+  Unlike only with DEL +0 while K2CNTRAL's high word is not zero: OMEGA
+  exactly cancelling the ALPHA term (PR #1320). No case brings it.
+
+src/trim_gimbal/trim_gimbal.c: shift_divisor [owed]
+-     if (ADDRESS_FIELD(order) == Z_ADDRESS) continue_at(DOSHIFT + 010u);
+  The CA reading Z after a zero root, which needs ACENTRAL near -5040 (PR
+  #1320). No case brings it.
+
+src/tvc/tvcmassprop.c: store_field [refusal]
+-     if (sum < 0 || sum > 01777 || (sum >= (int)FBANK_ADDRESS && sum <= (int)BBANK_ADDRESS))
++     if (sum < 0 || sum > 01777 || sum == (int)Z_ADDRESS)
+  A store by an index to FB or BB. MASSPROP's indexes keep its fields far
+  above them (PR #1241), and no case brings another.
+
+tests/cm_p20_p25_cases.c: catalog_end [owed]
+-     return (sum & 074000u) && (sum & 01777u) >= 01754u && (sum & 01777u) <= 01760u;
++     return (sum & 074000u) && (sum & 01777u) >= 01753u && (sum & 01777u) <= 01760u;
+  A change to the test's own count of the states it sets apart, not to the
+  readable code. No reason written yet.
+
+tests/cm_p20_p25_cases.c: s22_wraps [owed]
+-         here = words_cross(w[S22LOC_AT] & 077777u, fixloc, 2u);
++         here = false;
+  A change to the test's own count of the states it sets apart, not to the
+  readable code. No reason written yet.

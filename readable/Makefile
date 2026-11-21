@@ -56,6 +56,9 @@
 #   make line-coverage    which lines of src/ no test and no scenario runs,
 #                         held to tests/line_coverage.txt (needs clang with
 #                         its profile runtime; half an hour)
+#   make mutation-ledger  every change to src/ that no test sees
+#                         (tests/mutation_ledger.txt), made in a copy of
+#                         the tree and its tests run (hours)
 #
 # The readable sources build with READABLE_CFLAGS; the faithful port's
 # sources they are tested with build with the port's own flags.
@@ -324,10 +327,10 @@ endif
 
 .PHONY: all check code-extents kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
 	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases r30-cases stable-orbit-cases burn-baby-cases p40-cases cm-p40-cases lunar-landing-cases throttle-cases llge-cases p70-cases p12-cases ascent-cases servicer-cases landing-displays-cases findcduw-cases p51-p53-cases cm-p51-p53-cases ephemerides-cases cm-p61-p67-cases cm-servicer-cases cm-reentry-cases cm-body-attitude-cases cm-p37-p70-cases cm-tvc-init-cases cm-tvc-exec-cases cm-tvc-massprop-cases cm-tvc-restarts-cases cm-tvc-daps-cases cm-tvc-stroke-cases cm-tvc-roll-cases cm-mysubs-cases cm-rcs-dap-cases cm-auto-man-cases cm-rcs-dap-exec-cases cm-jet-select-cases cm-imu-cal-cases cm-p11-cases cm-tpi-search-cases cm-entry-dap-cases constant-pool-cases lat-long-cases planetary-cases measurement-inc-cases conics-cases integration-init-cases orbital-integration-cases inflight-align-cases powered-flight-cases time-free-fall-cases self-check-cases imu-mode-switching-cases display-interface-cases update-program-cases star-tables-cases rtb-op-codes-cases dap-interface-cases dapidler-cases p-axis-cases q-r-axis-cases tjet-law-cases kalman-filter-cases trim-gimbal-cases aostask-cases sps-backup-cases assembly-cases names-check \
-	coverage x86-flight x86-link-check chan13-sites x86-objects-lm x86-objects-cm x86-scenarios-quick x86-scenarios \
+	coverage x86-flight x86-link-check chan13-sites tc-sites x86-objects-lm x86-objects-cm x86-scenarios-quick x86-scenarios \
 	x86-lockstep-quick x86-lockstep x86-lockstep-record line-coverage line-coverage-check word-coverage \
-	word-coverage-check style-check format clean
-all: names-check coverage code-extents x86-link-check chan13-sites line-coverage-check word-coverage-check style-check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
+	word-coverage-check mutation-ledger mutation-ledger-check style-check format clean
+all: names-check coverage code-extents x86-link-check chan13-sites tc-sites line-coverage-check word-coverage-check mutation-ledger-check style-check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
 	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases \
@@ -1535,6 +1538,14 @@ x86-scenarios: $(X86_OBJECTS) $(HARNESS_ENGINE)
 chan13-sites:
 	@python3 tests/chan13_sites.py
 
+# Every TC the readable C writes with its place, held to the listing's word
+# there, and every TC of the listings held to a place that names it
+# (tools/tc_sites.py; the source and the listings, no build). First the
+# check itself, on made-up sources.
+tc-sites:
+	@python3 tools/tc_sites.py --self-check
+	@python3 tools/tc_sites.py
+
 # The readable program against Virtual AGC, routine by routine
 # (tests/x86_lockstep.py): first on three programs that are wrong, which it
 # must fail, then the port's check rows and one landing (quick) or those
@@ -1577,6 +1588,22 @@ line-coverage-check:
 	@python3 tests/line_coverage.py --self-check
 word-coverage-check:
 	@python3 tests/word_coverage.py --self-check
+
+# The changes to src/ that no test sees (tests/mutation_ledger.py): each
+# stands in tests/mutation_ledger.txt with its reason, and the ledger is
+# held to the tree: an entry's lines are there, in the routine it names.
+# First the check itself, on made-up ledgers (no build).
+mutation-ledger-check:
+	@python3 tests/mutation_ledger.py --self-check
+	@python3 tests/mutation_ledger.py
+
+# The run: every change of the ledger made in a copy of the tree under
+# build/mutation, and its tests run there. A survivor must pass them all;
+# a [killed] entry must fail the check or suite it names. What was found
+# wrong is left in build/mutation/report.txt.
+MUTATION_JOBS ?= 4
+mutation-ledger:
+	python3 tests/mutation_ledger.py --run --jobs $(MUTATION_JOBS)
 
 # The style guide's rules that a program can count (tools/style_check.py,
 # issue #1334): what the tree still owes stands in tests/style_owed.txt,
