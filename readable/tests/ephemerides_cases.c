@@ -245,6 +245,10 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
     w[BANKSET_AT] = rnd() % 32u ? w[6] : any_word();
     /* Now and then Z not at NEWOPS (the interpreter elsewhere). */
     if (n % 4u != 0u && rnd() % 64u == 0u) w[5] = (uint16_t)(rnd() % 010000u);
+    /* Now and then Z at DANZIG or NOIBNKSW (7 and 5 words before NEWOPS in both missions): the
+     * interpreter goes on with the pair's right order or the next word, where the faithful port refuses. (From n: the other cases' stirring stays.) */
+    if (interpretive && n % 4u != 0u && n % 61u == 7u)
+        w[5] = n / 61u % 2u ? (uint16_t)(NEWOPS_AT - 7u) : (uint16_t)(NEWOPS_AT - 5u);
 }
 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,

@@ -370,6 +370,9 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
                      int interpretive, unsigned *runs)
 {
+    static apollo_overlay_state ra_at[2];
+    static lm_channel_io rio_at[2];
+    static agc_hardware rhw_at[2];
     unsigned i, n, failures = 0;
 
     for (i = 0; i < faithful->count; ++i) {
@@ -377,48 +380,51 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
         unsigned ran = 0, bad = 0;
 
         for (n = 0; n < CASES; ++n) {
-            apollo_overlay_state start, fa, ra;
-            lm_channel_io io, fio, rio;
-            agc_hardware hardware, fhw, rhw;
+            /* (The readable side's records alternate between two places, so that a
+             * binding that left the machine pointed at the call before's would
+             * read the wrong ones.) */
+            apollo_overlay_state start, fa, *ra = &ra_at[n % 2u];
+            lm_channel_io io, fio, *rio = &rio_at[n % 2u];
+            agc_hardware hardware, fhw, *rhw = &rhw_at[n % 2u];
             agc_native_program p, fp, rp;
             enum exec_status sf, sr;
             const char *why = 0;
 
             state(&start, &io, key, interpretive, n);
-            fa = ra = start;
-            fio = rio = io;
+            fa = *ra = start;
+            fio = *rio = io;
             /* Channel 13 (RESETRPT's WOR): the trap bits (12-14) on or off,
              * or any; now and then no hardware record. */
             memset(&hardware, 0, sizeof hardware);
             hardware.channel13 = rnd() % 2u ? any_word() : (uint16_t)(rnd() % 8u << 11);
-            fhw = rhw = hardware;
+            fhw = *rhw = hardware;
             memset(&p, 0, sizeof p);
             fp = rp = p;
             if (rnd() % 64u) {
                 fp.hardware = &fhw;
-                rp.hardware = &rhw;
+                rp.hardware = rhw;
             }
             sf = faithful->entries[i].call(&fp, &fa, &fio);
-            sr = readable->entries[i].call(&rp, &ra, &rio);
+            sr = readable->entries[i].call(&rp, ra, rio);
             ran += sf == EXEC_OK;
-            if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio) ||
-                                  memcmp(&rhw, &hardware, sizeof rhw)))
+            if (sr != EXEC_OK && (memcmp(ra, &start, sizeof *ra) || memcmp(rio, &io, sizeof *rio) ||
+                                  memcmp(rhw, &hardware, sizeof *rhw)))
                 why = "readable refusal changed the state";
             else if (sf == EXEC_OK && sr != EXEC_OK)
                 why = "readable refused, faithful ran";
             else if (sf != EXEC_OK && sr == EXEC_OK)
                 why = "readable ran, faithful refused";
-            else if (sf == EXEC_OK && memcmp(&fa, &ra, sizeof fa))
+            else if (sf == EXEC_OK && memcmp(&fa, ra, sizeof fa))
                 why = "different memory";
             else if (sf == EXEC_OK &&
-                     (memcmp(&fio, &rio, sizeof fio) || memcmp(&fhw, &rhw, sizeof fhw)))
+                     (memcmp(&fio, rio, sizeof fio) || memcmp(&fhw, rhw, sizeof fhw)))
                 why = "different io record";
             if (why && ++bad <= 3) {
                 unsigned w;
                 printf("FAIL %02o,%04o case %u: %s\n", key / 1024u, z, n, why);
                 for (w = 0; w < APOLLO_SHARED_WORDS; ++w)
-                    if (fa.words[w] != ra.words[w])
-                        printf("  word %04o: %06o, faithful %06o (start %06o)\n", w, ra.words[w],
+                    if (fa.words[w] != ra->words[w])
+                        printf("  word %04o: %06o, faithful %06o (start %06o)\n", w, ra->words[w],
                                fa.words[w], start.words[w]);
             }
         }

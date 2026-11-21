@@ -206,6 +206,10 @@ static void pair_state(uint16_t *w, uint16_t key, unsigned n)
     if (pick(32u) == 0u) w[INTBIT15_AT] = any_word();
     if (pick(32u) == 0u) w[5] = pick(2u) ? (uint16_t)(NEWOPS_AT + 1u) : (uint16_t)(rnd() & 07777u);
     if (pick(32u) == 0u) w[NEWJOB_AT] = pick(2u) ? 077777u : (uint16_t)(any_word() | 040000u);
+    /* Z at DANZIG or NOIBNKSW now and then: the interpreter would go on with the pair's right order
+     * or the next word; the faithful pair refuses (Z is not NEWOPS), and so must this one. (From n:
+     * the other cases' stirring stays.) */
+    if (n % 61u == 7u) w[5] = n / 61u % 2u ? (uint16_t)K_DANZIG : (uint16_t)K_NOIBNKSW;
     if (pick(32u) == 0u) {
         /* (MPAC -044, a NOVAC job's, the interpreter takes; the faithful
          * order pairs do not.) */
@@ -213,6 +217,9 @@ static void pair_state(uint16_t *w, uint16_t key, unsigned n)
             pick(2u) ? (uint16_t)(MPAC_AT - 044u) : (uint16_t)(0402u + pick(0256u));
         w[PUSHLOC_AT] = (uint16_t)(fixloc + pick(040u));
     }
+    /* Q at V1STO2S's address now and then: a pass that ends with RVQ ends at that address, in the
+     * pair's own bank, which is not V1STO2S's, and goes no further. (From n, as above.) */
+    if (n % 61u == 13u) w[2] = (uint16_t)V1STO2S;
 }
 
 /* The frozen cases. */

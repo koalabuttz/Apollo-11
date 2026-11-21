@@ -286,6 +286,12 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
     if (n % 4u != 0u && rnd() % 64u == 0u) w[3u + rnd() % 03775u] |= 0100000u;
     if (n % 4u != 0u && rnd() % 64u == 0u) w[2] |= 0100000u; /* Q, which may hold 16 bits */
     w[BANKSET_AT] = rnd() % 32u ? w[6] : any_word();
+    /* Now and then Z at DANZIG or NOIBNKSW, where the interpreter goes on with the pair's right
+     * order or the next word (DANZIG and NOIBNKSW stand 7 and 5 words before NEWOPS in both
+     * missions): the faithful pair refuses (Z is not NEWOPS), and so must this one.
+     * (From n, so that the stirring of the other cases stays as it was.) */
+    if (interpretive && n % 4u != 0u && n % 61u == 7)
+        w[5] = n / 61u % 2u ? (uint16_t)(NEWOPS_AT - 7u) : (uint16_t)(NEWOPS_AT - 5u);
     /* 60GENRET: one of S61.1's returns, or now and then any word. */
     w[GENRET_AT] = rnd() % 8u ? s61_1_returns[rnd() % 2u] : any_word();
     /* (60GENRET's key with Z there, or now and then a word off it.) */

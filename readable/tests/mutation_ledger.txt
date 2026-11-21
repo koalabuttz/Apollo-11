@@ -21,14 +21,18 @@
 # one): the ones a check or a case added since catches as [killed], the
 # rest as survivors.
 #
-# Not here: the survivors of the 84 scripts whose logs were not kept (the
-# PR texts name them by kind, and most are a TC's place or the return
-# address it leaves, which tc-sites now catches wherever one is written),
-# and any change no script made.
+# The other 84 scripts have no log, so every change of theirs that still
+# applies, 1,484 of them, was made on this tree and run: 111 are caught by
+# tc-sites, 1,305 by a case test, 17 no longer build, 1 leaves a test running
+# past its time limit, 16 are changes to the tests and not to the code, and
+# 34 are entries below (one of them a case added with this ledger now
+# catches: [killed]).
 #
-# 262 survivors in 106 files: 77 rewritten, 22 same, 49 unreached, 33
-# repeated, 12 restore, 21 refusal, 48 owed. 373 more that a check or a
-# case added since catches (killed).
+# Not here: any change no script made.
+#
+# 284 survivors in 121 files: 91 rewritten, 31 same, 71 unreached, 39
+# repeated, 24 restore, 23 refusal, 5 owed. 385 more that a check or a case
+# added since catches (killed).
 #
 # A reason in brackets is one of these:
 
@@ -171,25 +175,33 @@ src/binding/attitude_maneuver_routines.c: pair [unreached]
   The pass before it began from a state sane() took, and a pass of the
   interpreter leaves ZERO, the bank registers and FIXLOC as sane() asks.
 
-src/binding/burn_baby_routines.c: bind [owed]
+src/binding/burn_baby_routines.c: bind [unreached]
 -     agc.dsalmout = &io->chan11;
-  Channel 11's place in the io record. Not checked why no case sees the
-  binding without it.
+  agc.dsalmout is read only by WOR and WAND DSALMOUT, and no routine of this
+  file, nor the code it calls, makes one (probed: 0 calls over burn-baby-
+  cases, host and flight); the file's channel 11 goes through channel_in and
+  channel_out.
 
-src/binding/burn_baby_routines.c: a_killtask_call [owed]
+src/binding/burn_baby_routines.c: a_killtask_call [unreached]
 -     return Q > 02000u && Q <= 07777u && physical((word)(Q - 1u), FBANK) != AGC_TRANSFER_NONE &&
 +     return Q > 02000u && Q <= 07777u && physical((word)(Q - 2u), FBANK) != AGC_TRANSFER_NONE &&
-  An edge of the check that the word before Q is in the rope: unlike for Q
-  02001 at most. Not read again.
+  The two checks differ only for Q 02001 and 04001, where Q-1 is a bank's
+  first word or the first of fixed-fixed, and the word there would have to be
+  TC KILLTASK (06027): the rope holds that word five times, none at 02000 of
+  a bank or at 04000.
 
-src/binding/burn_baby_routines.c: step [owed]
+src/binding/burn_baby_routines.c: step [killed: burn-baby-cases]
 -     bind(program, state, io);
-  The machine's hooks after a routine that ran the interpreter. Not checked
-  why no case sees them left as the interpreter set them.
+  The machine's hooks pointed at the binding again after a step that ran the
+  interpreter, which leaves them its own (no channels, its own way to stop).
+  A run that comes back with the interpreter's fails the check of
+  tests/machine_hooks.c that burn-baby-cases makes of every run that ran.
 
-src/binding/burn_baby_routines.c: run [owed]
+src/binding/burn_baby_routines.c: run [killed: burn-baby-cases]
 -     lm_burn_baby_unentered = 0;
-  A count kept for the tests, not the program's state. No reason written yet.
+  The word a run stopped at is cleared when the next run starts. burn-baby-
+  cases checks that a run that ran leaves none, which a stale one from an
+  earlier refusal fails.
 
 src/binding/cm_auto_man_routines.c: basic [unreached]
 -     if (!entry) return EXEC_OUT_OF_SCOPE;
@@ -202,12 +214,16 @@ src/binding/cm_imu_cal_routines.c: pair_sane [repeated]
   The interpreter's own check at its entry (as_expected(), reached by
   interpret_listing()) refuses the same state before anything is run.
 
-src/binding/cm_imu_cal_routines.c: pair [owed]
+src/binding/cm_imu_cal_routines.c: pair [restore]
 -     if (status != EXEC_OK) {
 +     if (0) {
-  Unlike where the RTB's routine or the pass after it refuses, after the
-  first pass has written. Not checked whether a case brings that, nor whether
-  the tests look at the state after a refusal.
+  No case brings a pass that refuses after it has written, and the restore is
+  what is left for the day one does: the interpreter's own entry puts back
+  what a stop (not_modelled) interrupts, and it refuses afterwards only at an
+  order the faithful port does not take (interpreter_core.c order_taken(): an
+  address order's index 015 or 035, 037, 004 or 011 ahead of a word with bit
+  15, a missing operand word). Probed: the refusal after the pass ran 0 times
+  in cm-imu-cal-cases (1,097,804 runs).
 
 src/binding/cm_jet_select_routines.c: basic_entry [same]
 -     {YAWTIME + 4u, yawtime_dft2},
@@ -232,30 +248,37 @@ src/binding/cm_p11_routines.c: code_at [unreached]
   code_at() is asked about keys only, and no key is the word one past a
   table's end.
 
-src/binding/cm_p11_routines.c: one_pass [owed]
+src/binding/cm_p11_routines.c: one_pass [unreached]
 -     if (Z != V1STO2S || FBANK != (word)(I_V1STO2S & 076000u)) return EXEC_OK;
 +     if (Z != V1STO2S) return EXEC_OK;
-  Unlike where a pass ends at V1STO2S's address under another bank. Likely no
-  order of these pairs goes there; not checked.
+  Z reaches V1STO2S's address only at NOPOLYM's RTB V1STO2S, in its own bank
+  (probed: 6,408 passes, all FB 44000). Another bank needs a pass that ends
+  with Z from Q at that address; the cases put it in Q at the pair's start (1
+  state in 61) and none ends there.
 
-src/binding/cm_p11_routines.c: pair [owed]
+src/binding/cm_p11_routines.c: pair [killed: cm-p11-cases]
 -     if (Z != NEWOPS || !in_bank(bank) || LOC != (word)(02000u + key % 1024u) || BANKSET != BBANK ||
 +     if (!in_bank(bank) || LOC != (word)(02000u + key % 1024u) || BANKSET != BBANK ||
-  A pair entered with Z elsewhere than NEWOPS. The interpreter's entry check
-  does not hold Z there: from DANZIG and its other points it runs on. Not
-  checked whether a caller or a case brings a pair so.
+  A pair entered with Z at DANZIG or NOIBNKSW (7 and 5 words before NEWOPS):
+  the interpreter goes on from there, the faithful pair refuses, and
+  cm-p11-cases now keys such a Z and sees the readable pair run where it
+  should refuse.
 
 src/binding/cm_p11_routines.c: pair [unreached]
 -     if (Z != NEWOPS || !in_bank(bank) || LOC != (word)(02000u + key % 1024u) || BANKSET != BBANK ||
 +     if (Z != NEWOPS || !in_bank(bank) || BANKSET != BBANK ||
   LOC is always the key: the trampoline picks the routine by LOC.
 
-src/binding/cm_p11_routines.c: pair [owed]
+src/binding/cm_p11_routines.c: pair [restore]
 -         *state = before;
 +         (void)before;
-  Unlike where the RTB's routine or the pass after it refuses, after the
-  first pass has written. Not checked whether a case brings that, nor whether
-  the tests look at the state after a refusal.
+  No case brings a pass that refuses after it has written, and the restore is
+  what is left for the day one does: the interpreter's own entry puts back
+  what a stop (not_modelled) interrupts, and it refuses afterwards only at an
+  order the faithful port does not take (interpreter_core.c order_taken(): an
+  address order's index 015 or 035, 037, 004 or 011 ahead of a word with bit
+  15, a missing operand word). Probed: the refusal after the pass ran 0 times
+  in cm-p11-cases (487,401 runs).
 
 src/binding/cm_p32_routines.c: loop_back [unreached]
 -     for (loops = 1u; loops < 4096u; ++loops) {
@@ -268,10 +291,15 @@ src/binding/cm_p40_routines.c: pair [refusal]
   A null program, state or device, which no caller passes and no case test
   makes.
 
-src/binding/cm_p40_routines.c: pair [owed]
+src/binding/cm_p40_routines.c: pair [restore]
 -     kept = *io;
-  kept is read only by the restore after a refusal. Not checked why no case
-  sees that restore put back what was never kept.
+  No case brings a pass that refuses after it has written, and the restore is
+  what is left for the day one does: the interpreter's own entry puts back
+  what a stop (not_modelled) interrupts, and it refuses afterwards only at an
+  order the faithful port does not take (interpreter_core.c order_taken(): an
+  address order's index 015 or 035, 037, 004 or 011 ahead of a word with bit
+  15, a missing operand word). Probed: 0 refusals after the pass in
+  cm-p40-cases (1,576,333 runs). kept is read only by this restore.
 
 src/binding/cm_p61_routines.c: basic_sane [refusal]
 -     if (agc.memory[ZERO_ADDRESS] != 0u || EBANK > 03400u || (EBANK & 0377u) ||
@@ -291,32 +319,42 @@ src/binding/cm_p61_routines.c: sane [repeated]
   The interpreter's own check at its entry (as_expected(), reached by
   interpret_listing()) refuses the same state before anything is run.
 
-src/binding/cm_p61_routines.c: run_basic [owed]
+src/binding/cm_p61_routines.c: run_basic [restore]
 -         *state = before;
 -         *io = kept;
 +         (void)before;
 +         (void)kept;
-  Unlike where a routine refuses after it has written. Not checked whether
-  one here can, nor whether the tests look at the state after a refusal.
+  No case brings a pass that refuses after it has written, and the restore is
+  what is left for the day one does: the interpreter's own entry puts back
+  what a stop (not_modelled) interrupts, and it refuses afterwards only at an
+  order the faithful port does not take (interpreter_core.c order_taken(): an
+  address order's index 015 or 035, 037, 004 or 011 ahead of a word with bit
+  15, a missing operand word). Probed: 0 stops in a basic routine after it
+  wrote, in cm-p61-p67-cases (639,386 runs).
 
-src/binding/cm_p61_routines.c: pair [owed]
+src/binding/cm_p61_routines.c: pair [killed: cm-p61-p67-cases]
 -     if (Z != NEWOPS || FBANK != (word)(bank << 10) || !code ||
 +     if (FBANK != (word)(bank << 10) || !code ||
-  A pair entered with Z elsewhere than NEWOPS. The interpreter's entry check
-  does not hold Z there: from DANZIG and its other points it runs on. Not
-  checked whether a caller or a case brings a pair so.
+  A pair entered with Z at DANZIG or NOIBNKSW (7 and 5 words before NEWOPS):
+  the interpreter goes on from there, the faithful pair refuses, and
+  cm-p61-p67-cases now keys such a Z and sees the readable pair run where it
+  should refuse.
 
 src/binding/cm_p61_routines.c: pair [unreached]
 -         LOC != (word)(02000u + key % 1024u) || BANKSET != BBANK || INTBIT15 != (FBANK & 040000u) ||
 +         BANKSET != BBANK || INTBIT15 != (FBANK & 040000u) ||
   LOC is always the key: the trampoline picks the routine by LOC.
 
-src/binding/cm_p61_routines.c: pair [owed]
+src/binding/cm_p61_routines.c: pair [restore]
 -         *state = before;
 +         (void)before;
-  Unlike where the RTB's routine or the pass after it refuses, after the
-  first pass has written. Not checked whether a case brings that, nor whether
-  the tests look at the state after a refusal.
+  No case brings a pass that refuses after it has written, and the restore is
+  what is left for the day one does: the interpreter's own entry puts back
+  what a stop (not_modelled) interrupts, and it refuses afterwards only at an
+  order the faithful port does not take (interpreter_core.c order_taken(): an
+  address order's index 015 or 035, 037, 004 or 011 ahead of a word with bit
+  15, a missing operand word). Probed: 0 refusals after the pass in
+  cm-p61-p67-cases (639,386 runs).
 
 src/binding/cm_rcs_dap_exec_routines.c: run_basic [restore]
 -         *state = before;
@@ -381,16 +419,34 @@ src/binding/conics_routines.c: checkctr_sane [refusal]
   check of FIXLOC (its sane() leaves the work area out), and no case makes up
   a FIXLOC that puts ITERCTR there.
 
-src/binding/conics_routines.c: one_pass [owed]
+src/binding/conics_routines.c: one_pass [unreached]
 -         if (!checkctr_sane()) return EXEC_OUT_OF_SCOPE;
-  What checkctr_sane() asks, the pair's start held before the pass, but for
-  Q's sixteenth bit (LM). Not checked whether a pass can leave Q unlike that.
+  checkctr_sane() asks what the pair's start already held (ZERO, ITERCTR's
+  place by FIXLOC, every word a 15-bit one), which a pass changes only
+  through Q: SWITCHES leaves the switch word in Q with TS Q after a CA of a
+  15-bit word, so A's two top bits agree, and the binding then leaves Q the
+  15 bits (q_as_fifteen_bits). Probed: all 2,338 passes that reach CHECKCTR
+  were sane.
+
+src/binding/conics_routines.c: pair [unreached]
+-     if (!code || !program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
++     if (!program || !state || !io || !bind(program, state, io)) return EXEC_OUT_OF_SCOPE;
+  Every order pair of the key table has its code: conics-cases fails for a
+  key that has none (conics_readable(), 455 of 455 keys in LM, 449 of 449 in
+  CM), so code_at() never finds none here.
 
 src/binding/conics_routines.c: pair [unreached]
 -         started = LOC == at && at_danzig(bank, pending_order(key));
 +         started = at_danzig(bank, pending_order(key));
   At a pending key the pass resumes with LOC the key: the trampoline picks
   the routine by LOC (PR #1306).
+
+src/binding/dapidler_routines.c: run [restore]
+-         *hardware_now = kept_hardware;
++         (void)kept_hardware;
+  No case brings a pass that refuses after it has written, and the restore is
+  what is left for the day one does. Probed: the routine left through leave()
+  0 times in dapidler-cases.
 
 src/binding/ephemerides_routines.c: admitted [repeated]
 -     if (Z != NEWOPS || FBANK != BANK15 || EBANK > 03400u || (EBANK & 0377u) ||
@@ -427,12 +483,13 @@ src/binding/ephemerides_routines.c: admitted [repeated]
   The interpreter's own check at its entry (as_expected(), reached by
   interpret_listing()) refuses the same state before anything is run.
 
-src/binding/ephemerides_routines.c: step [owed]
+src/binding/ephemerides_routines.c: step [unreached]
 -         if (Z != NEWOPS || FBANK != BANK15 || LOC < CODE.first || LOC >= CODE.first + CODE.count ||
 +         if (FBANK != BANK15 || LOC < CODE.first || LOC >= CODE.first + CODE.count ||
-  After a pass, Z not at NEWOPS with LOC still in the table: the loop would
-  go round again where it should end. No reason found yet why no case sees
-  it.
+  A pass here ends with Z elsewhere than NEWOPS only at an EXIT (TC INTPRET
+  to basic code), and none of the tables has one (their orders end by RVQ or
+  GOTO, which leave Z at NEWOPS or outside the file). Probed: Z was NEWOPS
+  after all 7.9 million passes.
 
 src/binding/ephemerides_routines.c: step [unreached]
 -         if (Z != NEWOPS || FBANK != BANK15 || LOC < CODE.first || LOC >= CODE.first + CODE.count ||
@@ -440,14 +497,18 @@ src/binding/ephemerides_routines.c: step [unreached]
   LOC past the table's end. After a pass that came back to NEWOPS in bank 15,
   LOC is in the table (PR #1223).
 
-src/binding/ephemerides_routines.c: step [owed]
+src/binding/ephemerides_routines.c: step [restore]
 -     *state = before;
 -     *io = kept;
 +     (void)before;
 +     (void)kept;
-  Unlike where a later pass of the loop refuses after an earlier one ran. Not
-  checked whether a case brings that, nor whether the tests look at the state
-  after a refusal.
+  No case brings a pass that refuses after it has written, and the restore is
+  what is left for the day one does: the interpreter's own entry puts back
+  what a stop (not_modelled) interrupts, and it refuses afterwards only at an
+  order the faithful port does not take (interpreter_core.c order_taken(): an
+  address order's index 015 or 035, 037, 004 or 011 ahead of a word with bit
+  15, a missing operand word). Probed: the loop's restore ran 0 times in
+  ephemerides-cases (the passes end at a stop or out of the file).
 
 src/binding/ephemerides_routines.c: sane [repeated]
 -     if (agc.memory[ZERO_ADDRESS] != 0u || agc.memory[ADDRESS_OF(NEWJOB)] > 037777u ||
@@ -473,17 +534,85 @@ src/binding/ephemerides_routines.c: interpretive [restore]
   The interpreter refuses at its entry, before it runs anything, and where it
   refuses later it puts the state back itself.
 
-src/binding/findcduw_routines.c: one_pass [owed]
+src/binding/extended_verbs_routines.c: lanec_ev_lmi_dispatch [restore]
+-             *state = before;
+-             *io = io_before;
++             (void)before;
++             (void)io_before;
+  No case brings a pass that refuses after it has written, and the restore is
+  what is left for the day one does. Probed: the dispatch refused 0 times in
+  extended-verbs-cases.
+
+src/binding/extended_verbs_routines.c: table_at_loc [unreached]
+-         if (cm_codes[i]->bank == interpretive_bank() && LOC >= cm_codes[i]->first &&
++         if ((interpretive_bank() || true) && LOC >= cm_codes[i]->first &&
+  A LOC inside the range of a table in another bank than the one the
+  interpreter reads: the entry holds the bank to 43 (cm_interpreter_contract)
+  and the passes after it leave it there. Probed: the table found with the
+  bank test and without it was the same table in every call of
+  extended-verbs-cases, 0 differences.
+
+src/binding/extended_verbs_routines.c: interpretive [restore]
+-             *state = before;
+-             *io = io_before;
++             (void)before;
++             (void)io_before;
+  No case brings a pass that refuses after it has written, and the restore is
+  what is left for the day one does. A refusal in the run comes on its first
+  pass (probed: 173 refusals in extended-verbs-cases, every one at pass 0,
+  before any write), which the interpreter has already put back itself.
+
+src/binding/findcduw_routines.c: one_pass [unreached]
 -             if (Z == POODOO1) return EXEC_OUT_OF_SCOPE;
-  Z at POODOO1 after NORMUNIT, its alarm 1302. The faithful pair refuses
-  there and so does this line. No case brings a pass there; not shown that
-  the vectors FINDCDUW gives NORMUNIT never do.
+  NORMUNIT's alarm 1302 for a zero vector is a stop in the readable code
+  (not_modelled in rtb_run_on, refused by the setjmp above this line), so Z
+  is never POODOO1 when it comes back: probed 0 of 2,165 passes, with a zero
+  command in 1 state in 16. If Z were POODOO1, the next interpret_listing
+  finds no point and refuses too.
 
 src/binding/geometry_routines.c: interpretive [restore]
 -         *state = before;
 +         (void)before;
   A refusal of pair() comes from the interpreter's entry, which puts the
   state back itself, or from the checks before the RTB's routine writes.
+
+src/binding/gimbal_lock_routines.c: sane [repeated]
+-         EBANK > 03400u || (EBANK & 0377u) || BBANK != (word)((FBANK & 076000u) | (EBANK >> 8)))
++         (EBANK & 0377u) || BBANK != (word)((FBANK & 076000u) | (EBANK >> 8)))
+  The interpreter refuses the same states at its entry: as_expected()
+  (interpreter_core.c) has the same EBANK > 03400u test, and the pair puts
+  the state back.
+
+src/binding/gimbal_lock_routines.c: sane [repeated]
+-     if (*agc.interrupts > 1u || (*agc.superbank & ~0160u)) return false;
++     if (*agc.interrupts > 1u || (*agc.superbank & ~0177u)) return false;
+  The interpreter refuses the same states at its entry: as_expected()
+  (interpreter_core.c) takes the superbank only as (*agc.superbank & ~0160u)
+  == 0, and the pair puts the state back.
+
+src/binding/gimbal_lock_routines.c: sane [repeated]
+-     if (FIXLOC < 0401u || FIXLOC > 0661u || (FIXLOC - 0401u) % 054u) return false;
++     if (FIXLOC < 0401u || FIXLOC > 0735u || (FIXLOC - 0401u) % 054u) return false;
+  The interpreter refuses the same states at its entry: as_expected()
+  (interpreter_core.c) takes FIXLOC only at the five VAC areas (0401 up to
+  0661) or at the NOVAC area, so FIXLOC 0735 is refused there, and the pair
+  puts the state back.
+
+src/binding/gimbal_lock_routines.c: interpretive [killed: gimbal-lock-cases]
+-     if (Z != NEWOPS || FBANK != BANK22 || LOC < CODE.first || LOC >= CODE.first + CODE.count ||
++     if (FBANK != BANK22 || LOC < CODE.first || LOC >= CODE.first + CODE.count ||
+  A case now starts an interpretive key with Z at DANZIG or NOIBNKSW, where
+  the interpreter goes on with the pair's right order or the next word, and
+  the faithful routine refuses.
+
+src/binding/gimbal_lock_routines.c: interpretive [refusal]
+-     if (Z != NEWOPS || FBANK != BANK22 || LOC < CODE.first || LOC >= CODE.first + CODE.count ||
++     if (Z != NEWOPS || FBANK != BANK22 ||
+  A LOC outside the pair's listing. The faithful routine, which works from
+  the key and not from LOC, runs it and this one refuses (probed with a case
+  that set LOC there: 297 states differ in gimbal-lock-cases LM); the flight
+  program never starts a pair with LOC off its own address, so no case makes
+  one up.
 
 src/binding/imu_mode_switching_routines.c: channel_out [unreached]
 -     *channel_at(number) = number == CHAN13 ? (agc_word)(value & 043777u) : value;
@@ -497,11 +626,27 @@ src/binding/imu_mode_switching_routines.c: run [restore]
   The checks before the routine runs keep it from refusing part way (PR
   #1309).
 
-src/binding/integration_init_routines.c: pair [owed]
+src/binding/inflight_align_routines.c: sane [unreached]
+-     if (agc.memory[ADDRESS_OF(NEWJOB)] > 037777u || FIXLOC < 0401u || FIXLOC > 0661u ||
++     if (agc.memory[ADDRESS_OF(NEWJOB)] > 037777u || FIXLOC < 0401u || FIXLOC > 0700u ||
+  The next work area after the fifth (0661) is 0735, and the line also holds
+  (FIXLOC - 0401) % 054, which no value from 0662 to 0700 satisfies: the two
+  bounds hold the same states.
+
+src/binding/inflight_align_routines.c: one_pass [unreached]
+-     if (!sane()) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
+  pair() holds the state to sane() at its entry and the pass only writes
+  words of 15 bits and none of the registers sane() reads, so sane() is true
+  again here. Probed: sane() was false at this line 0 times in
+  inflight-align-cases (both missions, 90 keys of 2,048 states each).
+
+src/binding/integration_init_routines.c: pair [repeated]
 -     if (!started || !superbank_off(bank)) return EXEC_OUT_OF_SCOPE;
 +     if (!started) return EXEC_OUT_OF_SCOPE;
-  A pair of bank 30 or above entered with the superbank bit on. Not checked
-  why no case sees it.
+  Repeated by the pass itself: with the superbank bit on, code_word() reads a
+  bank 30 or above as bank +010, outside the table, and the pass refuses.
+  Probed: all 350 states of a pair in bank 35 with the bit on, started, were
+  refused there.
 
 src/binding/landing_displays_routines.c: channel_out [refusal]
 -     if (number == CHAN30) not_modelled();
@@ -525,12 +670,13 @@ src/binding/lat_long_routines.c: sane [repeated]
   The interpreter's own check at its entry (as_expected(), reached by
   interpret_listing()) refuses the same state before anything is run.
 
-src/binding/lat_long_routines.c: interpretive [owed]
+src/binding/lat_long_routines.c: interpretive [killed: lat-long-cases]
 -     if (Z != NEWOPS || FBANK != BANK13 || LOC < CODE.first || LOC >= CODE.first + CODE.count ||
 +     if (FBANK != BANK13 || LOC < CODE.first || LOC >= CODE.first + CODE.count ||
-  The routine entered with Z elsewhere than NEWOPS. The interpreter's entry
-  check does not hold Z there: from DANZIG and its other points it runs on.
-  Not checked whether a caller or a case brings it so.
+  The routine entered with Z at DANZIG or NOIBNKSW (7 and 5 words before
+  NEWOPS): the interpreter goes on from there, the faithful routine refuses,
+  and lat-long-cases now keys such a Z and sees the readable one run where it
+  should refuse.
 
 src/binding/lat_long_routines.c: interpretive [unreached]
 -     if (Z != NEWOPS || FBANK != BANK13 || LOC < CODE.first || LOC >= CODE.first + CODE.count ||
@@ -538,42 +684,43 @@ src/binding/lat_long_routines.c: interpretive [unreached]
   LOC is always the key, a word of the table: the trampoline picks the
   routine by LOC.
 
-src/binding/llge_routines.c: one_pass [owed]
+src/binding/llge_routines.c: one_pass [unreached]
 -     bind(program, state, io);
-  The machine's hooks, which the interpreter leaves pointed at its own.
-  Unlike only where a later step of the same call refuses or reads the rope
-  through them. Not checked why no case sees it.
+  The hooks matter only to a routine that reads a channel or stops, and
+  NORMUNIT and the RTB run-on after the pass do neither (probed with the
+  hooks poisoned: 0 uses over llge-cases). The next call binds again at its
+  entry.
 
 src/binding/llge_routines.c: one_pass [refusal]
 -     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
   The way out for a step NORMUNIT does not model. No case brings one there.
 
-src/binding/llge_routines.c: one_pass [owed]
+src/binding/llge_routines.c: one_pass [unreached]
 -     if (Z == POODOO1) return EXEC_OK;
-  NORMUNIT's way to POODOO (alarm 1302, a vector too short). Likely never
-  taken from here; not checked.
+  NORMUNIT's way to POODOO1 is a stop in the readable code, so Z is never
+  POODOO1 when it comes back (probed 0 of 9,831 passes).
 
 src/binding/llge_routines.c: pair [refusal]
 -     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
   A null program, state or device, which no caller passes and no case test
   makes.
 
-src/binding/llge_routines.c: pair [owed]
+src/binding/llge_routines.c: pair [killed: llge-cases]
 -     bind(program, state, io);
-  The machine stays bound as the call before left it. In the case tests every
-  call has the same program, state and device, so none sees it: a case with
-  another would.
+  The binding points the machine at the call's own records: llge-cases now
+  alternates the readable side's state, io and hardware between two places,
+  so a pair that kept the call before's pointers reads the wrong ones.
 
 src/binding/lunar_landing_routines.c: code_at [unreached]
 -         if (pair_keys[i].physical != at) continue;
   code_at() is called with a pair's own key, which is always one of pair_keys
   (PR #1188).
 
-src/binding/lunar_landing_routines.c: step [owed]
+src/binding/lunar_landing_routines.c: step [killed: lunar-landing-cases]
 -     bind(program, state, io);
-  The machine's hooks, which the interpreter leaves pointed at its own.
-  Unlike only where a later step of the same call refuses or reads the rope
-  through them. Not checked why no case sees it.
+  The machine's hooks pointed at the binding again after a step that ran the
+  interpreter: lunar-landing-cases checks, with tests/machine_hooks.c, that
+  every run that ran came back with them.
 
 src/binding/measurement_inc_routines.c: move_sane [repeated]
 -     if (*agc.interrupts > 1u || agc.memory[ZERO_ADDRESS] != 0u || EBANK > 03400u || (EBANK & 0377u))
@@ -581,22 +728,64 @@ src/binding/measurement_inc_routines.c: move_sane [repeated]
   The pair's own guards held the same before the pass (PR #1286), and a pass
   leaves the latch 0 or 1.
 
-src/binding/measurement_inc_routines.c: move_sane [owed]
+src/binding/measurement_inc_routines.c: move_sane [unreached]
 -     for (i = Q_ADDRESS; i < 2048u; ++i)
 +     for (i = 3u; i < 2048u; ++i)
-  Q with its sixteenth bit unlike its fifteenth after the RTB's pass. The
-  pair's start held every word but Q so. Not checked whether a pass can leave
-  Q so.
+  Only Q is left out, and a pass leaves Q with its sixteenth bit unlike its
+  fifteenth only from SWITCHES' TS Q of an overflowed A: the CA before it
+  loads a 15-bit word with its sign copied, so the two bits agree (and
+  q_as_fifteen_bits makes Q the 15 bits).
 
 src/binding/measurement_inc_routines.c: void [unreached]
 -     if (FBANK != MOVES_BANK) return NULL;
   Z comes to a move's address only by its RTB, which sets FB to the moves'
   bank itself (PR #1286).
 
+src/binding/measurement_inc_routines.c: one_pass [unreached]
+-         if (!move_sane()) return EXEC_OUT_OF_SCOPE;
++         if (!move_sane() && 0) return EXEC_OUT_OF_SCOPE;
+  pair() holds the state to sane() at its entry and the pass changes none of
+  what move_sane() reads. Probed: move_sane() was false at this line 0 times
+  in measurement-inc-cases (both missions, 160 keys of 2,048 states each).
+
 src/binding/measurement_inc_routines.c: pair [unreached]
 -     if (Z != NEWOPS || FBANK != BANK(bank) || LOC != at || BANKSET != BBANK ||
 +     if (Z != NEWOPS || FBANK != BANK(bank) ||  BANKSET != BBANK ||
   LOC is always the key: the trampoline picks the routine by LOC.
+
+src/binding/noun_reader_routines.c: apollo_noun_reader [repeated]
+-     if (!state || !io || mission != MISSION || (unsigned)entry > APOLLO_GTSFIN) return false;
++     if (!state || !io || mission > APOLLO_FIXED_CM || (unsigned)entry > APOLLO_GTSFIN) return false;
+  The other mission's call is refused a line later: the call of the other
+  build with the check gone stops at as_expected() (probed: 0 of the 234,557
+  calls of pinball-noun-tables-cases went past it with the other mission).
+
+src/binding/noun_reader_routines.c: apollo_noun_reader [restore]
+-         *state = before;
++         (void)before;
+  No case brings a pass that refuses after it has written, and the restore is
+  what is left for the day one does. Probed: the reader left through leave()
+  0 times in pinball-noun-tables-cases.
+
+src/binding/orbital_integration_routines.c: basic [same]
+-     entry->routine();
++     (void)before;
++     entry->routine();
+  The added line, (void)before;, does nothing.
+
+src/binding/orbital_integration_routines.c: pair [restore]
+-         *state = before;
++         (void)before;
+  No case brings a pass that refuses after it has written, and the restore is
+  what is left for the day one does. Probed: one_pass refused 0 times in
+  orbital-integration-cases.
+
+src/binding/p20_p25_routines.c: one_pass [unreached]
+-     if (Z == TCDANZIG && FBANK == TCDANZIG_BANK) {
++     if (Z == TCDANZIG) {
+  Z at TCDANZIG's address with FB in another bank, after a pass: the pass
+  reaches it only by LPS20.1's BOVB, whose FCADR sets FB. Probed: 0 times in
+  p20-p25-cases.
 
 src/binding/p32_routines.c: store_spills [unreached]
 -     if (a <= 45u) return false; /* the work area, or word 45 itself */
@@ -620,10 +809,15 @@ src/binding/p40_routines.c: pair [refusal]
   A null program, state or device, which no caller passes and no case test
   makes.
 
-src/binding/p40_routines.c: pair [owed]
+src/binding/p40_routines.c: pair [restore]
 -     kept = *io;
-  kept is read only by the restore after a refusal. Not checked why no case
-  sees that restore put back what was never kept.
+  No case brings a pass that refuses after it has written, and the restore is
+  what is left for the day one does: the interpreter's own entry puts back
+  what a stop (not_modelled) interrupts, and it refuses afterwards only at an
+  order the faithful port does not take (interpreter_core.c order_taken(): an
+  address order's index 015 or 035, 037, 004 or 011 ahead of a word with bit
+  15, a missing operand word). Probed: 0 refusals after the pass in p40-cases
+  (LM). kept is read only by this restore.
 
 src/binding/p_axis_routines.c: channel_out [unreached]
 -     if (number == CHAN13) value &= CHANNEL13_KEPT;
@@ -671,12 +865,13 @@ src/binding/planetary_routines.c: sane [repeated]
   The interpreter's own check at its entry (as_expected(), reached by
   interpret_listing()) refuses the same state before anything is run.
 
-src/binding/planetary_routines.c: interpretive [owed]
+src/binding/planetary_routines.c: interpretive [killed: planetary-cases]
 -     if (Z != NEWOPS || !code || BANKSET != BBANK || INTBIT15 != (FBANK & 040000u) || !sane())
 +     if (0 || !code || BANKSET != BBANK || INTBIT15 != (FBANK & 040000u) || !sane())
-  The routine entered with Z elsewhere than NEWOPS. The interpreter's entry
-  check does not hold Z there: from DANZIG and its other points it runs on.
-  Not checked whether a caller or a case brings it so.
+  The routine entered with Z at DANZIG or NOIBNKSW (7 and 5 words before
+  NEWOPS): the interpreter goes on from there, the faithful routine refuses,
+  and planetary-cases now keys such a Z and sees the readable one run where
+  it should refuse.
 
 src/binding/planetary_routines.c: interpretive [restore]
 -         *state = before;
@@ -718,6 +913,14 @@ src/binding/sband_antenna_routines.c: basic [restore]
   The basic routines here never leave part way (PR #1108): the refusal the
   line serves is not taken.
 
+src/binding/servicer_routines.c: indexed_outside [owed]
+-     if (!(sum & HIGH4)) return (sum & 0377u) + n > 0400u;
++     if (!(sum & HIGH4)) return (sum & 0377u) + 2u > 0400u;
+  Differs only for a one-word operand whose last word is at offset 0377 of
+  the window (n = 1: 0377 + 1 = 0400 is in, 0377 + 2 is out). No case makes
+  the sum end there with a one-word operand; not checked whether a program
+  does.
+
 src/binding/sps_backup_routines.c: rope_word [repeated]
 -     if (physical + 1u < B21(UTIME) || physical > B21(UTIME) + 1u) not_modelled();
   The binding holds AXISCTR to its range before anything runs, and with it no
@@ -728,11 +931,11 @@ src/binding/stable_orbit_routines.c: work_area [repeated]
 +     return FIXLOC >= VACNUSE_ADDRESS(1u) && FIXLOC <= VACNUSE_ADDRESS(5u) + 1u &&
   (FIXLOC - VAC1USE - 1) % 054 on the same line refuses VAC1USE itself.
 
-src/binding/standard_lead_routines.c: lead_takes [owed]
+src/binding/standard_lead_routines.c: lead_takes [repeated]
 -     case E_CALL: return LOC >= 077u && LOC <= 07774u && cadr_readable((word)(LOC + 1u));
 +     case E_CALL: return LOC <= 07774u && cadr_readable((word)(LOC + 1u));
-  PR #1090: "that state is refused anyway by the register check". Not read
-  again: which check refuses a LOC below 077.
+  Repeated by cadr_readable(LOC + 1): below 02000 it asks erasable_index() >=
+  0100, which fails for LOC + 1 up to 077.
 
 src/binding/time_free_fall_routines.c: sane [repeated]
 -     if (work_area && (agc.memory[ADDRESS_OF(NEWJOB)] > 037777u || FIXLOC < 0401u ||
@@ -767,20 +970,24 @@ src/burn_baby/burn_baby.c: comfail2_after_phaschng [rewritten]
 -     inhint();
   The latch only. KILLTASK's own INHINT, its second instruction, sets it.
 
-src/burn_baby/clock.c: nullclok [owed]
+src/burn_baby/clock.c: nullclok [rewritten]
 -     inhint();
-  The latch only, if a later INHINT or RELINT sets it on every way to the
-  pass's end. Not read again.
+  The latch only: KILLTASK, which the run goes on to (NULLCLOK +4 and the
+  steps after it are one run), starts with INHINT (killtask.c), and a refusal
+  restores the whole state. The callers at GOPOST and GOCUTOFF are INHINT
+  already.
 
 src/burn_baby/clock.c: ignite (2) [unreached]
 -         inhint();
   The arm is never taken: the CCS is of a masked bit, never negative (the
   code says so).
 
-src/burn_baby/clock.c: p40a_p_after_gpn_auto [owed]
+src/burn_baby/clock.c: p40a_p_after_gpn_auto [rewritten]
 -     turniton();
-  TURNITON left out where channel 30's bit is set. No reason found yet why no
-  case sees it.
+  Without this TURNITON the routine comes back with Z as it was, and the run
+  goes on with the same key: A is then 020 (positive), CCS takes the first
+  POSITIVE branch, whose TURNITON sets A and the transfer as this one would
+  have. Every word ends the same.
 
 src/burn_baby/killtask.c: killtask [repeated]
 -     if (Q < 02000u || Q > 07777u) not_modelled();
@@ -824,6 +1031,25 @@ src/cm_dap/jet_select.c: jetslect [unreached]
   A is a MASK's result under a mask without bit 15: never negative, never -0.
   BZMF goes as BZF.
 
+src/cm_dap/jet_t6.c: t6l1 [same]
+-     case NEGATIVE: t6l2(); break;
++     case NEGATIVE: continue_at(T6L2); break;
+  A call of t6l2() and a continue_at(T6L2) end in the same routine: the
+  binding runs T6L2 as the next step, with the state the call would have
+  left.
+
+src/cm_dap/jet_words.c: asmblwr [same]
+-     case IS_PLUS_ZERO: no2y(); break;
++     case IS_PLUS_ZERO: no2y_plus1(); break;
+  CCS of a +0 word leaves +0 in A, which is what set_A(ZERO) in no2y() sets:
+  no2y_plus1() from the CCS stores the same A.
+
+src/cm_dap/jet_words.c: no2y_plus2 [same]
+-     case IS_PLUS_ZERO: no2z(); break;
++     case IS_PLUS_ZERO: no2z_plus1(); break;
+  CCS of a +0 word leaves +0 in A, which is what set_A(ZERO) in no2z() sets:
+  no2z_plus1() from the CCS adds the same A.
+
 src/cm_dap/rcsatt.c: body_rates [same]
 -     zl();
   DAS has left L +0 before the ZL (PR #1248).
@@ -845,6 +1071,12 @@ src/cm_dap/switching.c: j23 [unreached]
 +     if (A_is_zero_or_minus()) { /* EXTEND; BZF DOJET +2 */
   A is a MASK's result under a mask without bit 15: never negative, never -0.
   BZMF goes as BZF.
+
+src/dapidler/dapidler.c: altdsply [rewritten]
+-     xch(ADDRESS_OF(AK));
++     ts(ADDRESS_OF(AK));
+  XCH and TS store the same word in AK and differ only in what they leave in
+  A, and RETNMORE's DCA loads A and L again before anything reads A.
 
 src/entry_dap/bodyrate.c: bodyrate_prel [rewritten]
 -         tc_at(BODYRATE + 067u); /* TC +2 */
@@ -1203,11 +1435,12 @@ src/imu_performance/imu_performance.c: aligncoa_after_bad_stall [killed: tc-site
 +     tc_at(ALIGNCOA + 1u);
   The word at the changed place is no TC (LM): 37,2312 17716 CADR IMUSTALL.
 
-src/imu_performance/imu_performance.c: finetime_plus1 [owed]
+src/imu_performance/imu_performance.c: finetime_plus1 [rewritten]
 -     rxor_channel(LOSCALAR);
 +     rxor_channel(HISCALAR);
-  Unlike only where the two scaler words differ. Not looked up whether a case
-  feeds them unlike at FINETIME +1.
+  RXOR's A is only tested for zero. The other way, FINETIME +010
+  (finetime_reread), reads LOSCALAR into A and L again and goes on to the
+  same place; the scaler does not move in a run, so every word ends the same.
 
 src/integration_init/intstall.c: oktograb [rewritten]
 -     inhint();
@@ -1248,10 +1481,11 @@ src/integration_init/intwakeu.c: intwakup_after_phaschng [refusal]
   INTWAKUQ holding the word 00007, which no program leaves there and no case
   brings.
 
-src/kalcmanu_steering/kalcmanu_steering.c: incrdcdu [owed]
+src/kalcmanu_steering/kalcmanu_steering.c: incrdcdu [rewritten]
 -     relint();
-  PR #1086: "a RELINT that is followed straight away by INHINT". Not read
-  again against TMANUCHK and what it calls.
+  The latch only: TMANUCHK reads no latch, and each way on (CONTMANU through
+  MANUCALL, and MANUSTAL) goes through INHINT before the pass ends at
+  WAITLIST.
 
 src/kalcmanu_steering/kalcmanu_steering.c: manustat_after_exit [rewritten]
 -     xch(ADDRESS_OF(NEXTIME));
@@ -1379,11 +1613,11 @@ src/p20_p25/r61.c: readcdud [rewritten]
   The latch only. The RELINT later in the routine sets it, and a case test's
   pass takes no interrupt between.
 
-src/p20_p25/radar_read.c: lrvel [owed]
+src/p20_p25/radar_read.c: lrvel [killed: p20-p25-cases]
 -     if (!ts(ADDRESS_OF(TIMEHOLD))) set_A(FIVE); /* "SPECIFY FIVE SAMPLES" */
 +     ts(ADDRESS_OF(TIMEHOLD)); set_A(FIVE); /* "SPECIFY FIVE SAMPLES" */
-  Unlike only where A holds an overflow at the TS. Not checked what keeps one
-  out there.
+  p20-p25-cases now enters LRVEL with an overflowed A over the beam's index
+  (positive or negative), where the TS that overflows skips CAF FIVE.
 
 src/p20_p25/radar_read.c: badrad [killed: tc-sites]
 -     tc_at(BADRAD + 2u);
@@ -1465,11 +1699,24 @@ src/p20_p25_cm/p22.c: prog22_proceed [killed: tc-sites]
 +     tc_at(PROG22 + 030u);
   No place names the listing's TC at PROG22 +27 any more (CM).
 
-src/p20_p25_cm/p23_marks.c: p23_60_after_exit [owed]
+src/p20_p25_cm/p23_incorporate.c: r23_55_after_exit [unreached]
+-     if (ts(ADDRESS_OF(MPAC))) not_modelled();
++     (void)ts(ADDRESS_OF(MPAC));
+  The TS follows an MSU, which leaves A sign-extended, so there is no
+  overflow for the TS to skip on and not_modelled() is never called.
+
+src/p20_p25_cm/p23_incorporate.c: r23_55_trunnion_words [same]
+-     ORDERS(BOFF, SL2),
++     ORDERS(BON, SL2),
+  BON and BOFF are one order code (ORDER_BON and ORDER_BOFF, 0162,
+  notation.h); the sense is in the SWITCH word after it, which this line
+  leaves as it is.
+
+src/p20_p25_cm/p23_marks.c: p23_60_after_exit [rewritten]
 -     inhint();
 +     relint();
-  The latch only, if the routine ends at TC INTPRET, whose RELINT sets it (PR
-  #1145). Not read again.
+  The latch only: the RELINT before TC INTPRET (and INTPRET's own) sets it
+  again before the pass ends, and nothing between reads it.
 
 src/p20_p25_cm/p23_targets.c: ldplanet_proceed [killed: tc-sites]
 -     tc_at(LDPLANET + 5u);
@@ -1572,16 +1819,43 @@ src/p20_p25_cm/r61csm.c: r61csm_after_exit [killed: tc-sites]
 +     tc_at(R61CSM + 017u);
   No place names the listing's TC at R61CSM +16 any more (CM).
 
-src/p20_p25_cm/r61csm.c: r61csm_after_exit [owed]
+src/p20_p25_cm/r61csm.c: r61csm_after_exit [rewritten]
 -         r61csm_no_maneuver();
 +         r61end();
-  Q only, the return address of TC R61END, if R61END writes Q before the pass
-  ends. Not read again.
+  Q only, the return address of TC R61END: R61END's DECRM61 ends in TC
+  BANKJUMP (tc_to), which writes Q again before the pass ends.
 
 src/p20_p25_cm/r61csm.c: r61c1_after_phaschng [killed: tc-sites]
 -     tc_at(R61C1 + 015u);
 +     tc_at(R61C1 + 014u);
   The word at the changed place is no TC (CM): 37,2613 35021 CAF ZERO.
+
+src/p20_p25_cm/s22_display.c: s22box42_words [same]
+-     ORDERS(BOFF, CALL),
++     ORDERS(BON, CALL),
+  BON and BOFF are one order code (ORDER_BON and ORDER_BOFF, 0162,
+  notation.h); the sense is in the SWITCH word after it, which this line
+  leaves as it is.
+
+src/p20_p25_cm/s22_display.c: s22f2410_words [same]
+-     ORDERS(PDDL, BOFF),
++     ORDERS(PDDL, BON),
+  BON and BOFF are one order code (ORDER_BON and ORDER_BOFF, 0162,
+  notation.h); the sense is in the SWITCH word after it, which this line
+  leaves as it is.
+
+src/p20_p25_cm/s22_landmark.c: s22_unknown_words [same]
+-     ORDERS(BOFF, VSR2),
++     ORDERS(BON, VSR2),
+  BON and BOFF are one order code (ORDER_BON and ORDER_BOFF, 0162,
+  notation.h); the sense is in the SWITCH word after it, which this line
+  leaves as it is.
+
+src/p20_p25_cm/s22_landmark.c: s22_unknown_words [same]
+-     ORDERS(VXSC, VSR_STAR),
++     ORDERS(VXSC, VSL_STAR),
+  VSR* and VSL* are one order code (ORDER_VSR_STAR and ORDER_VSL_STAR, 0117,
+  notation.h); the shift count after it says which.
 
 src/p20_p25_cm/v67.c: v06n99ds_proceed [killed: tc-sites]
 -     tc_at(V06N99DS + 4u);
@@ -1828,10 +2102,10 @@ src/p40_p47_cm/programs.c: - [killed: tc-sites]
 + #define CALCN85_EXIT (CALCN85 + 6u)
   No place names the listing's TC at CALCN85 +6 any more (CM).
 
-src/p40_p47_cm/programs.c: tcr_setmindb [owed]
+src/p40_p47_cm/programs.c: tcr_setmindb [rewritten]
 -     inhint();
-  The latch only, if a later INHINT or RELINT sets it on every way to the
-  pass's end. Not read again.
+  The latch only: both callers (P40SXTY, P40MINDB) RELINT in the next
+  function, before the pass ends, and set_minimum_deadband reads no latch.
 
 src/p40_p47_cm/programs.c: tcr_setmindb [rewritten]
 -     tc_q();
@@ -2185,11 +2459,13 @@ src/pinball/enter.c: acceptwd [killed: tc-sites]
 +     tc_at(ACCEPTWD + 3u);
   No place names the listing's TC at ACCEPTWD +2 any more (LM and CM).
 
-src/pinball/enter.c: testnn [owed]
+src/pinball/enter.c: testnn [rewritten]
 -     read_noun_tables(TESTNN + 2u);
 +     read_noun_tables(TESTNN + 3u);
-  The place goes into A and L by the DTCB, the return LODNNTAB keeps. Not
-  followed to where those words are written again.
+  The place is the address DXCH Z puts in Z (A and L hold it while LODNNTAB
+  saves and restores them in IDAD2TEM and IDAD3TEM); the TC after it (TESTNN
+  +4) writes Z and Q again, and the CCS or the mixed noun's routine writes A
+  before the pass ends.
 
 src/pinball/enter.c: testnn [rewritten]
 -         tc_at(TESTNN + 4u);
@@ -2243,11 +2519,11 @@ src/pinball/enter.c: useadd_on [killed: tc-sites]
 +     tc_at(USEADD + 2u);
   No place names the listing's TC at USEADD +1 any more (LM and CM).
 
-src/pinball/enter.c: useadd_on [owed]
+src/pinball/enter.c: useadd_on [rewritten]
 -     read_noun_tables(USEADD + 4u);
 +     read_noun_tables(USEADD + 5u);
-  The place goes into A and L by the DTCB, the return LODNNTAB keeps. Not
-  followed to where those words are written again.
+  The place is the address DXCH Z puts in Z; the TC to VERBFAN after it
+  writes Z and Q again, and A is the DTCB's (LODNLV +1), not the place.
 
 src/pinball/enter.c: intmctbs [killed: tc-sites]
 -     tc_at(INTMCTBS + 1u);
@@ -2279,10 +2555,10 @@ src/pinball/enter.c: mixnoun [killed: tc-sites]
 +             tc_at(MIXNN1 + 011u); /* TC MIXNN2: "NO DP" */
   The word at the changed place is no TC (CM): 41,2245 24122 INCR NOUNTEM.
 
-src/pinball/enter.c: mixnoun [owed]
+src/pinball/enter.c: mixnoun [unreached]
 -         mask(LOW11); /* "ESUBK (NO DP) OR (ESUBK)+1 FOR DP" */
-  Unlike where NOUNTEM has a bit above the eleventh. Likely none: the noun
-  tables' words are erasable addresses. Not checked.
+  NOUNTEM comes from IDADDTAB's ECADRs, 11 bits (the largest is 03774 in the
+  LM, 03772 in the CM), and +1 for a double word stays below 04000.
 
 src/pinball/enter.c: mixnoun [killed: tc-sites]
 -         tc_at(MIXNN2 + 2u);
@@ -2297,11 +2573,12 @@ src/pinball/enter.c: reqcom_after_5blank [killed: tc-sites]
 -     tc_at(ENDRQDAT - 1u);
   No place names the listing's TC at REQCOM +5 any more (LM and CM).
 
-src/pinball/enter.c: updatnn_on [owed]
+src/pinball/enter.c: updatnn_on [rewritten]
 -     read_noun_tables(UPDATNN + 4u);
 +     read_noun_tables(UPDATNN + 5u);
-  The place goes into A and L by the DTCB, the return LODNNTAB keeps. Not
-  followed to where those words are written again.
+  The place is the address DXCH Z puts in Z; the CCS and the TCs after it
+  write Z and Q again, and the A the DTCB leaves is rewritten by the CCS
+  before the pass ends.
 
 src/pinball/keys.c: charin [killed: tc-sites]
 -         tc_at(CHARIN + 4u); /* TC +2 */
@@ -2798,10 +3075,10 @@ src/pinball/output_scale.c: dpfracot [killed: tc-sites]
 +     tc_at(DPFRACOT + 2u);
   The word at the changed place is no TC (CM): 40,2655 56002 XCH Q.
 
-src/pinball/output_scale.c: readlo [owed]
+src/pinball/output_scale.c: readlo [unreached]
 -         mask(LOW11); /* "E SUBK" */
-  Unlike where IDAD1TEM has a bit above the eleventh. Likely none: the noun
-  tables' words are erasable addresses. Not checked.
+  IDAD1TEM +DECOUNT comes from IDADDTAB's ECADRs, 11 bits (the largest is
+  03774 in the LM, 03772 in the CM).
 
 src/pinball/output_scale.c: readlo [killed: tc-sites]
 -         tc_at(READLO + 010u);
@@ -2923,10 +3200,11 @@ src/pinball/subroutines.c: setebank [rewritten]
   return, and the routine it returns to writes Q and Z again before the pass
   ends.
 
-src/pinball/subroutines.c: reldsp [owed]
+src/pinball/subroutines.c: reldsp [rewritten]
 -     inhint();
-  The latch only, if a RELINT follows on every way out (RELDSP2's, by its
-  listing). Not read again.
+  The latch only: every way out of RELDSP ends in RELDSP2, whose RELINT sets
+  it again (the check on JOBWAKE's return makes the one way that goes
+  elsewhere a stop), and nothing between reads it.
 
 src/pinball/subroutines.c: reldsp [killed: tc-sites]
 -         tc_at(RELDSP + 010u); /* TC RELDSP2: "LIST EMPTY" */
@@ -2986,21 +3264,21 @@ src/pinball/subroutines.c: sfconum [killed: tc-sites]
 +         tc_at(SFCONUM + 5u); /* TC CONUMNOR: "NORMAL NOUN" */
   The word at the changed place is no TC (CM): 41,3054 50117 INDEX DECOUNT.
 
-src/pinball/subroutines.c: sfconum [owed]
+src/pinball/subroutines.c: sfconum [rewritten]
 -     tc_at(SFCONUM + 014u);
-  Q only, but GOQ's TC Q reads it on the line after. No reason found yet why
-  no case sees it.
+  Q and Z only: where GOQ's TC Q reads Q the next line, Z goes to Q's value,
+  and the TC EXITEM at SFRET writes Q and Z again before the pass ends.
 
 src/pinball/subroutines.c: sfconum [killed: tc-sites]
 -     tc_at(SFCONUM + 014u);
 +     tc_at(SFCONUM + 015u);
   The word at the changed place is no TC (CM): 41,3064 60000 DOUBLE .
 
-src/pinball/subroutines.c: sfconum [owed]
+src/pinball/subroutines.c: sfconum [rewritten]
 -         tc_return(Q_ADDRESS); /* GOQ: TC Q */
 +         ; /* GOQ: TC Q */
-  TC Q's traces only, if the lines after it set Q and Z again. Not read
-  again.
+  TC Q's traces only: the TC EXITEM at SFRET writes Q and Z again, and A is
+  the same either way.
 
 src/pinball/subroutines.c: leftncom [killed: tc-sites]
 -         tc_at(LEFTNCOM + 1u);
@@ -3139,6 +3417,40 @@ src/self_check/self_check.c: cntrchk [rewritten]
   A only at first: the CS reads another word, and the CCS after it loads A
   (PR #1308). The words a read edits, CYR, SR, CYL and EDOP, CYCLSHFT loads
   right after the loop.
+
+src/servicer/lr_jobs.c: setpos [unreached]
+-     if (!ts(ADDRESS_OF(LRADRET))) set_A(EBANK5);
++     ts(ADDRESS_OF(LRADRET));
++     set_A(EBANK5);
+  A is the old Q, a TC's return address of 12 bits, which has no overflow for
+  the TS to skip on: CA EBANK5 always follows.
+
+src/servicer/lr_update.c: wstor [unreached]
+-     if (!ts(ADDRESS_OF(MPAC))) set_A(negate(BIT7)); /* "(=64D)" */
++     ts(ADDRESS_OF(MPAC));
++     set_A(negate(BIT7)); /* "(=64D)" */
+  The TS skips only for an A with overflow, and every caller enters WSTOR
+  with A from a set to +0, a CA of a constant or a DV's quotient, none of
+  which leaves one.
+
+src/servicer/lr_update.c: gnurvst [unreached]
+-     if (ts(ADDRESS_OF(BUF))) not_modelled();
++     ts(ADDRESS_OF(BUF));
+  A is 0 or 6 here (the index the caller sets, "A = 0 FOR R, A = 6 FOR V"),
+  which has no overflow for the TS to skip on, and not_modelled() is never
+  called.
+
+src/servicer/lr_update.c: quikfaz5 [unreached]
+-     if (ts(ADDRESS_OF(PHSNAME5))) not_modelled();
++     ts(ADDRESS_OF(PHSNAME5));
+  A is Q (the DXCH put it there), a TC's return address of 12 bits, so the TS
+  finds no overflow and not_modelled() is never called.
+
+src/servicer/servicer.c: return_to_a [refusal]
+-     computed(A);
+  Refuses an A that is not a fixed address (02000 to 07777) or is in the
+  interpreter, which QUIKFAZ5's TC leaves only as a return address in fixed
+  memory; no case sets A there. The same check on Q (return_to_q) stands.
 
 src/servicer_cm/servicer.c: pipcheck [rewritten]
 -     case IS_MINUS_ZERO: piploop(); return;
@@ -3340,14 +3652,14 @@ src/tvc/tvcmassprop.c: store_field [refusal]
   A store by an index to FB or BB. MASSPROP's indexes keep its fields far
   above them (PR #1241), and no case brings another.
 
-tests/cm_p20_p25_cases.c: catalog_end [owed]
+tests/cm_p20_p25_cases.c: catalog_end [killed: cm-p20-p25-cases]
 -     return (sum & 074000u) && (sum & 01777u) >= 01754u && (sum & 01777u) <= 01760u;
 +     return (sum & 074000u) && (sum & 01777u) >= 01753u && (sum & 01777u) <= 01760u;
-  A change to the test's own count of the states it sets apart, not to the
-  readable code. No reason written yet.
+  The test holds the number of states it counts apart (11,405, 7,642 where
+  both ran), so a change to what it sets apart shows.
 
-tests/cm_p20_p25_cases.c: s22_wraps [owed]
+tests/cm_p20_p25_cases.c: s22_wraps [killed: cm-p20-p25-cases]
 -         here = words_cross(w[S22LOC_AT] & 077777u, fixloc, 2u);
 +         here = false;
-  A change to the test's own count of the states it sets apart, not to the
-  readable code. No reason written yet.
+  The test holds the number of states it counts apart, and it now sets
+  GETTF's load at the last word of an E bank in some states.

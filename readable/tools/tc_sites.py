@@ -84,7 +84,8 @@ TOKEN = re.compile(r'\s*(\((?:word|unsigned)\)|(?:ADDRESS_OF|IN_BANK)\(\w+\)|[A-
 CALLERS = 4     # how many callers deep a place is followed
 
 # The places the check does not read, by file: `call(place)` as written, and how many times the file writes
-# it (` x4`) where that is more than once. The count is of the lines, whichever mission compiles them.
+# it (` x4`) where that is more than once. The count is of the places written, whichever mission
+# compiles them (two on one line are two).
 COMPUTED = {
     'burn_baby/burn_baby.c': [
         'tc_at(Q_ADDRESS)',
@@ -560,7 +561,10 @@ def check(sources, mission, show=None):
             if show:
                 show('%s%s: %s' % (where, via, word))
         if unread:
-            computed.setdefault(rel, {}).setdefault(written(name, arguments), set()).add(line)
+            # (a place written twice on one line counts twice: the line and which of them)
+            place = written(name, arguments)
+            ordinal = sum(1 for at in computed.get(rel, {}).get(place, ()) if at[0] == line)
+            computed.setdefault(rel, {}).setdefault(place, set()).add((line, ordinal))
     counts['twice'] = sum(1 for where, times in named.items() if times > 1 and where in calls)
     return failures, computed, counts, set(named)
 
@@ -692,6 +696,12 @@ def self_check(missions):
          % (place, place), '', {'x/x.c': ['tc_at(%s + n)' % place]}, (1, ['tc_at(%s + n)' % place])),
         ('a computed place written twice, named twice', 'void f(unsigned n) { tc_at(%s + n);\n tc_at(%s + n); }'
          % (place, place), '', {'x/x.c': ['tc_at(%s + n) x2' % place]}, (0, ['tc_at(%s + n)' % place])),
+        ('a computed place written twice on one line, named once',
+         'void f(unsigned n) { tc_at(%s + n); tc_at(%s + n); }' % (place, place), '',
+         {'x/x.c': ['tc_at(%s + n)' % place]}, (1, ['tc_at(%s + n)' % place])),
+        ('a computed place written twice on one line, named twice',
+         'void f(unsigned n) { tc_at(%s + n); tc_at(%s + n); }' % (place, place), '',
+         {'x/x.c': ['tc_at(%s + n) x2' % place]}, (0, ['tc_at(%s + n)' % place])),
         ('a place outside any function', 'static const int t = tc_at(%s + 1u);\nvoid f(void) { }' % place, '',
          None, (1, [])),
         ("a helper's own declaration", 'static inline void tc_at(word at)\n{\n}\nvoid f(void) { tc_at(%s); }'
