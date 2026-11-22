@@ -307,6 +307,10 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
                                 : k == 1u ? near[rnd() % (sizeof near / sizeof near[0])]
                                           : (uint16_t)(rnd() % 02000u);
     }
+    /* GETTF's load from S22LOC's address, at the last word of an E bank now and then: the double
+     * word crosses 01777 and the two machines differ, counted apart. (From n, as above.) */
+    if (key == 031u * 1024u + 0351u && n % 4u != 0u && n % 61u == 5u)
+        w[S22LOC_AT] = (uint16_t)(0377u + 0400u * (n / 61u % 8u));
     /* The push-down list in the work area. */
     if (w[PUSHLOC_AT] < fixloc || w[PUSHLOC_AT] > fixloc + 037u || n % 4u != 0u)
         w[PUSHLOC_AT] = (uint16_t)(fixloc + rnd() % 040u);
@@ -654,6 +658,8 @@ static bool apart_words_differ(const apollo_overlay_state *start, const apollo_o
 
 /* The most states counted apart at one key, and the key. */
 static unsigned apart_most, apart_most_key, both_ran_apart, getum_apart;
+#define APART_STATES   11405u
+#define APART_BOTH_RAN 7642u
 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
                      int interpretive, unsigned *runs, unsigned *readable_keys)
@@ -884,6 +890,13 @@ int main(int argc, char **argv)
         printf("FAIL: %u keys without a readable routine\n", cm_p20_p25_basic.count +
                                                                  cm_p20_p25_interpretive.count -
                                                                  readable_basic - readable_pairs);
+        ++failures;
+    }
+    /* The states counted apart are held to their numbers, so that a change to what the test sets
+     * apart (its own counting, catalog_end and s22_wraps above) shows. */
+    if (wraps != APART_STATES || both_ran_apart != APART_BOTH_RAN) {
+        printf("FAIL: %u states counted apart (%u where both ran), not the %u (%u) held\n", wraps,
+               both_ran_apart, APART_STATES, APART_BOTH_RAN);
         ++failures;
     }
     printf("cm-p20-p25-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "

@@ -1866,7 +1866,7 @@ place is one the AGC runs as a TC, and to the routine the C calls
 (3,269 places in the LM, 3,093 in the CM); and every TC of the listings
 to fixed memory is named by some place (3,094 of 3,254, and 2,923 of
 3,097; the others are listed in the tool). It found no slip in the tree,
-and it catches 370 of the 635 changes that the case tests let pass:
+and it catches 370 of the 669 changes that the case tests let pass:
 they stay in the ledger as `[killed: tc-sites]`, so that the run keeps
 holding the catch. 3 more are caught by Pinball cases added with the
 ledger (`[killed: pinball-cases]`).
@@ -1885,23 +1885,23 @@ STORJUMP, CHARIN2 and the like) are among the listed ones, with the
 arms of a CCS and the calls the C writes with no place: nothing reads
 those.
 
-The other 262 are the survivors. Their kinds:
+The other 284 are the survivors. Their kinds:
 
-- **rewritten** (77): what the change touches is written again before
+- **rewritten** (91): what the change touches is written again before
   anything reads it. The return address in Q that the next TC sets, A
   before a CAF, the interrupt latch before a RELINT.
-- **same** (22): two names of one thing. COM and CS A; two names of one
+- **same** (31): two names of one thing. COM and CS A; two names of one
   word; two branches that run the same code.
-- **unreached** (49): unlike only in a state no pass brings there. An
+- **unreached** (71): unlike only in a state no pass brings there. An
   overflow at a TS that cannot overflow, a negative MASK result.
-- **repeated** (33): a check that another check repeats before anything
+- **repeated** (38): a check that another check repeats before anything
   runs, most of them a binding's guard that the interpreter's own entry
   check makes again.
-- **restore** (12): a binding putting its state back after a refusal,
+- **restore** (24): a binding putting its state back after a refusal,
   where nothing refuses after it has written.
-- **refusal** (21): the refusal of a state the flight program never makes
+- **refusal** (24): the refusal of a state the flight program never makes
   and no case makes up (word 7 not zero, an index outside its table).
-- **owed** (48): no reason written yet. The entry says what the change
+- **owed** (5): no reason written yet. The entry says what the change
   touches and what was not checked; each is owed a case that catches
   it or a reason of a kind above.
 

@@ -31,9 +31,11 @@ tests the changed file is part of and runs them: a survivor must build and
 pass them all, and a [killed] entry must fail the check or suite it names.
 The run fails on either side, so the ledger cannot keep a survivor that a
 test now catches, nor a catch that a test has lost. A step that runs over
-its time is neither, and fails the run. What comes out wrong is tried once
-more alone before it counts, and build/mutation/report.txt has each result
-as it came, so a run cut short says how far it got.
+its time is neither, and fails the run. A catch by a suite is made again
+alone before it counts (a survivor caught under load, or a [killed] entry's
+catch, is held only if the suite fails again); nothing else is tried a
+second time. build/mutation/report.txt has each result as it came, so a run
+cut short says how far it got.
 
 What it does not hold: that these are all the survivors. They are the
 ones the PRs' own mutation runs found, where those runs could be made
@@ -72,10 +74,14 @@ the entries below, written as whole-line changes (two come to the same
 one): the ones a check or a case added since catches as [killed], the
 rest as survivors.
 
-Not here: the survivors of the 84 scripts whose logs were not kept (the
-PR texts name them by kind, and most are a TC's place or the return
-address it leaves, which tc-sites now catches wherever one is written),
-and any change no script made.
+The other 84 scripts have no log, so every change of theirs that still
+applies, 1,484 of them, was made on this tree and run: 111 are caught by
+tc-sites, 1,305 by a case test, 17 no longer build, 1 leaves a test running
+past its time limit, 16 are changes to the tests and not to the code, and
+34 are entries below (one of them a case added with this ledger now
+catches: [killed]).
+
+Not here: any change no script made.
 '''
 
 HEAD = '''\
@@ -239,9 +245,11 @@ def read_ledger(text):
 
 
 def targets():
-    """The targets the Makefile names, a [killed] entry's check or suite among them."""
+    """The checks and suites the Makefile names, a [killed] entry's among them: the static checks
+    and the case suites (the -cases targets), not any other target (all, clean)."""
     with open(os.path.join(ROOT, 'Makefile')) as f:
-        return set(re.findall(r'^([A-Za-z0-9][\w.-]*):(?!=)', f.read(), re.M))
+        names = set(re.findall(r'^([A-Za-z0-9][\w.-]*):(?!=)', f.read(), re.M))
+    return {n for n in names if n in STATIC or n.endswith('-cases')}
 
 
 def judge(entries, read=None, known=None):
@@ -546,18 +554,24 @@ def run(entries, jobs, out=sys.stdout):
         t.start()
     for t in threads:
         t.join()
-    # A suite that times a loop by the clock can fail under the load of the others: what the
-    # workers found wrong is tried once more, alone, before it counts.
+    # A suite that times a loop by the clock can fail under the load of the others, so a change of a
+    # survivor that a suite caught is tried once more, alone, and counts as caught only if it is
+    # caught again; and a [killed] entry's catch by a suite (not a static check) must be made alone
+    # too. A result that did not come from a catch (a build that fails, a step over its time, a
+    # change that survived where a catch is held) is not tried again: a retry that could turn it
+    # round would hide a flaky catch behind a pass.
     wrong = []
     view = os.path.join(WORK, 'w0', 'readable')
     for entry in entries:
-        if verdict(entry, results[id(entry)]) is None:
-            continue
-        mine = [entry.suite] if entry.klass == 'killed' else suites[entry.path]
-        if mine and results[id(entry)][0] != 'build':
-            results[id(entry)] = try_one(view, entry, mine, deps)
-            out.write('alone: %s %s\n' % (results[id(entry)][0], entry.title()))
+        first = results[id(entry)]
+        if first[0] == 'killed' and first[1] not in STATIC:
+            again = try_one(view, entry, [first[1]], deps)
+            out.write('alone: %s %s\n' % (again[0], entry.title()))
             out.flush()
+            if again[0] != 'killed':
+                first = again if entry.klass != 'killed' else \
+                    ('time', first[1], 'caught under load, not alone (a flaky catch)')
+            results[id(entry)] = first
         said = verdict(entry, results[id(entry)])
         if said:
             wrong.append('line %d (%s): %s' % (entry.line, entry.title(), said))
@@ -619,6 +633,8 @@ void second(int n)
         ('killed without a suite', ledger(block('up.c: first [killed]', 'inhint();', ';')), 'names its suite'),
         ('a suite the Makefile has not', ledger(block('up.c: second [killed: made-cases]', 'if (n) {', 'if (!n) {')),
          'has no check or suite'),
+        ('a target that is no suite', ledger(block('up.c: second [killed: clean]', 'if (n) {', 'if (!n) {')),
+         'has no check or suite'),
         ('a suite on a survivor', None, 'names its suite'),
         ('a change of nothing', ledger(block('up.c: first [rewritten]', 'inhint();', 'inhint();')), 'changes nothing'),
         ('the same change twice', ledger(good, good), 'the same change'),
@@ -665,7 +681,11 @@ void second(int n)
             or verdict(dead, ('time', 'x-cases', 'ran over')) is None:
         failed += 1
         print('self-check: a killed entry\'s verdict is wrong')
-    print('mutation_ledger self-check: %d parts, %s' % (len(cases) + 4, 'ok' if not failed else '%d FAILED' % failed))
+    names = targets()
+    if 'all' in names or 'clean' in names or 'tc-sites' not in names or 'pinball-cases' not in names:
+        failed += 1
+        print('self-check: a [killed] entry may name a check or a suite, and no other target')
+    print('mutation_ledger self-check: %d parts, %s' % (len(cases) + 5, 'ok' if not failed else '%d FAILED' % failed))
     return 1 if failed else 0
 
 

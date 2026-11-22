@@ -48,6 +48,7 @@ struct interpretive_code {
     unsigned count;
     const uint16_t *words;
 };
+extern int machine_hooks_bound(void);
 extern const struct interpretive_code IGNALG_CODE, DDUMCALC_CODE, P63SPOT2_CODE, LANDJUNK_CODE,
     GSAV_CODE;
 extern const agc_routine_table faithful_lm_lunar_landing_routines,
@@ -208,7 +209,9 @@ int main(int argc, char **argv)
         if (!key_in(&lm_lunar_landing_interpretive, resolved_point, resolved))
 #endif
             key_tally(resolved_point, resolved, sf == EXEC_OK);
-        if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || io_differs(&rio, &io_start)))
+        if (sr == EXEC_OK && !machine_hooks_bound())
+            why = "the run came back with the machine at the interpreter's hooks";
+        else if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || io_differs(&rio, &io_start)))
             why = "readable refusal changed the state";
         else if (sf == EXEC_OK && sr != EXEC_OK && start.words[067] > 037777u) {
             /* Not counted only if the same state with NEWJOB +0 runs alike

@@ -2479,13 +2479,13 @@ $(BUILD)/bb-oracle: $(BB_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/bb-fait
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(BB_COMMON) $(filter %.o,$^) \
 		tests/burn_baby_oracle.c -o $@
 $(BUILD)/bb-cases: $(BB_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/bb-faithful.o \
-		tests/burn_baby_cases.c
+		tests/burn_baby_cases.c tests/machine_hooks.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(BB_COMMON) $(filter %.o,$^) \
-		tests/burn_baby_cases.c -o $@
+		tests/burn_baby_cases.c tests/machine_hooks.c -o $@
 $(BUILD)/bb-cases-flight: $(BB_FLIGHT_OBJECTS) $(BUILD)/bb-faithful-flight.o \
-		tests/burn_baby_cases.c
+		tests/burn_baby_cases.c tests/machine_hooks.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) -DAGC_FLIGHT_INTERPRETER $(BB_COMMON) $(filter %.o,$^) \
-		tests/burn_baby_cases.c -o $@
+		tests/burn_baby_cases.c tests/machine_hooks.c -o $@
 
 burn-baby-cases: $(BUILD)/bb-oracle $(BUILD)/bb-cases $(BUILD)/bb-cases-flight
 	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
@@ -2523,13 +2523,13 @@ $(BUILD)/lld-oracle: $(LLD_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/lld-f
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(LLD_COMMON) $(filter %.o,$^) \
 		tests/lunar_landing_oracle.c -o $@
 $(BUILD)/lld-cases: $(LLD_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/lld-faithful.o \
-		tests/lunar_landing_cases.c
+		tests/lunar_landing_cases.c tests/machine_hooks.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(LLD_COMMON) $(filter %.o,$^) \
-		tests/lunar_landing_cases.c -o $@
+		tests/lunar_landing_cases.c tests/machine_hooks.c -o $@
 $(BUILD)/lld-cases-flight: $(LLD_FLIGHT_OBJECTS) $(BUILD)/lld-faithful-flight.o \
-		tests/lunar_landing_cases.c
+		tests/lunar_landing_cases.c tests/machine_hooks.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) -DAGC_FLIGHT_INTERPRETER $(LLD_COMMON) $(filter %.o,$^) \
-		tests/lunar_landing_cases.c -o $@
+		tests/lunar_landing_cases.c tests/machine_hooks.c -o $@
 
 lunar-landing-cases: $(BUILD)/lld-oracle $(BUILD)/lld-cases $(BUILD)/lld-cases-flight
 	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done

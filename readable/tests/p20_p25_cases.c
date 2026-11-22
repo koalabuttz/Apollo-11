@@ -401,6 +401,10 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
         w[0] = samples[rnd() % 5u];
     }
     if (key == LRVEL_KEY && rnd() % 2u) w[0] = (uint16_t)(2u * (rnd() % 3u));
+    /* A with an overflow now and then at LRVEL, the beam's index under it (0, 2 or 4): the TS that
+     * stores it overflows and skips CAF FIVE. (From n, as above.) */
+    if (key == LRVEL_KEY && n % 4u != 0u && n % 61u == 9u)
+        w[0] = (uint16_t)((n / 61u % 2u ? 0100000u : 040000u) | 2u * (n / 122u % 3u));
     if (key == RADIN_KEY && rnd() % 2u) {
         static const uint16_t q[] = {0u, 1u, 03276u, 0177777u};
         w[2] = q[rnd() % 4u];

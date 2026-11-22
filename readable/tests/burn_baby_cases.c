@@ -58,6 +58,7 @@ struct interpretive_code {
 extern const struct interpretive_code P41SPOT_CODE, ABVEL_CODE;
 extern const agc_routine_table faithful_lm_burn_baby_routines, faithful_lm_burn_baby_interpretive;
 extern uint16_t lm_burn_baby_unentered;
+extern int machine_hooks_bound(void);
 
 /* Whether the word the readable run stopped at (lm_burn_baby_unentered) is
  * where the case's own Q or ITEMP1 sent it: a TC Q, KILLTASK's return (Q
@@ -288,8 +289,12 @@ int main(int argc, char **argv)
         if (!key_in(&lm_burn_baby_interpretive, resolved_point, resolved))
 #endif
             key_tally(resolved_point, resolved, b.sf == EXEC_OK);
-        if (b.sr != EXEC_OK &&
-            (memcmp(&b.ra, &start, sizeof b.ra) || io_differs(&b.rio, &io_start)))
+        if (b.sr == EXEC_OK && lm_burn_baby_unentered)
+            why = "a stopping word is left from an earlier run (the run did not clear it)";
+        else if (b.sr == EXEC_OK && !machine_hooks_bound())
+            why = "the run came back with the machine at the interpreter's hooks";
+        else if (b.sr != EXEC_OK &&
+                 (memcmp(&b.ra, &start, sizeof b.ra) || io_differs(&b.rio, &io_start)))
             why = "readable refusal changed the state";
         else if (b.sf == EXEC_OK && b.sr != EXEC_OK && from_q_or_itemp1(&start)) {
             /* Not counted only if the same state with that return made a

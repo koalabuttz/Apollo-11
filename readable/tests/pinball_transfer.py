@@ -55,7 +55,11 @@ SUITE_LIST = 'tests/lanec_suites.c'
 # routines refuse is not compared with the Virtual AGC run, so a routine
 # that came to refuse a state it took shows in this count alone (fewer),
 # and one that came to take a state it refused shows as more: either way
-# the number is changed here, with the reason for it.
+# the number is changed here, with the reason for it. (The numbers are the two
+# programs' together: the rows do not say which program a case is of, so a
+# routine that came to refuse a state in one program while another came to
+# take one in the other, which the Virtual AGC run agrees with, would leave
+# the number as it is. Not held.)
 STIRRED_TAKEN = 8254
 # pin-noun-z's likewise: 162 of its 168 chains (the other 6 are two of
 # pin-transfer's cases, CM 1799 and 1806, which the faithful port refuses
